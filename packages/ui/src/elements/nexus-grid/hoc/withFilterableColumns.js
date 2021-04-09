@@ -100,7 +100,11 @@ const withFilterableColumns = ({
 
             if (filterValue) {
                 if (filterInstance instanceof SetFilter) {
-                    const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
+                    const filterValues = Array.isArray(filterValue)
+                        ? filterValue
+                        : filterValue.includes(',')
+                        ? filterValue.split(',')
+                        : filterValue;
                     applySetFilter(
                         filterInstance,
                         filterValues.map(el => typeof el === 'string' && el.trim())
@@ -166,10 +170,15 @@ const withFilterableColumns = ({
 
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
-            const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {searchDataType, queryParamName = columnDef.field, queryParamValue = '', icon} =
+            const filterableColumnDefs = copiedColumnDefs.map((columnDef, index) => {
+                const {colId} = copiedColumnDefs[index];
+
+                const {searchDataType, queryParamName = columnDef.field, queryParamValue = '', queryParamKey, icon} =
                     (Array.isArray(mapping) &&
-                        mapping.find(({javaVariableName}) => javaVariableName === columnDef.field)) ||
+                        mapping.find(
+                            ({javaVariableName, dataType}) =>
+                                javaVariableName === columnDef.field && (colId === 'icon' || dataType !== 'icon')
+                        )) ||
                     {};
                 const {field} = columnDef;
                 const isFilterable =
@@ -338,7 +347,7 @@ const withFilterableColumns = ({
                             }
                             case ICON:
                                 const searchQuery = {};
-                                searchQuery[queryParamName] = queryParamValue;
+                                searchQuery[queryParamKey] = queryParamValue;
                                 columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
                                 columnDef.filter = CUSTOM_ICON;
                                 columnDef.filterParams = {
