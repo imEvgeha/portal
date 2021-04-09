@@ -1,4 +1,5 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 
 .fulfillment-order {
     &__section {
@@ -29,6 +30,11 @@
     /* AtlasKit Bugfix */
     input[disabled] {
         height: auto;
+        color: map-get($neutrals, N200);
+    }
+
+    #readiness-status div {
+        color: map-get($neutrals, N200);
     }
 
     &__button-row {

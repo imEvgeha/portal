@@ -57,7 +57,8 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div
               className="nexus-fo-date-readonly"
             >
-              Servicer:  
+              Servicer:
+               
               <Lozenge
                 appearance="new"
                 isBold={false}
@@ -67,7 +68,8 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div
               className="nexus-fo-date-readonly"
             >
-              Start Date:  
+              Start Date:
+               
               <Lozenge
                 appearance="default"
                 isBold={false}
@@ -79,7 +81,8 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div
               className="nexus-fo-date-readonly"
             >
-              Due Date:  
+              Due Date:
+               
               <Lozenge
                 appearance="default"
                 isBold={false}
@@ -338,8 +341,8 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               Notes:
             </label>
             <NexusTextArea
+              disabled={false}
               isCompact={true}
-              isDisabled={false}
               name="notes"
               notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               onTextChange={[Function]}
