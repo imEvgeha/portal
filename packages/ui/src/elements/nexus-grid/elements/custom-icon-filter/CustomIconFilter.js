@@ -13,9 +13,9 @@ export default forwardRef((props, ref) => {
     }, [value]);
 
     const onChange = v => {
-        // if (!v) {
-        //     return;
-        // }
+        if (!v) {
+            return;
+        }
         // Filter doesn't persist when switching ingest without this check
         setValue(v);
     };
@@ -34,7 +34,7 @@ export default forwardRef((props, ref) => {
             getModel() {
                 return {
                     type: 'equals',
-                    filter: {updatedCatalogReceived: true},
+                    filter: props.searchQuery,
                 };
             },
 
