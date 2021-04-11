@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Bundle from './components/bundle/Bundle';
 import Ingest from './components/ingest/Ingest';
 import PanelHeader from './components/panel-header/PanelHeader';
+import RefreshConfigBtn from './components/reload-config/ReloadConfigBtn';
 import UploadIngestButton from './components/upload-ingest/upload-ingest-button/UploadIngestButton';
 import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import {getIngests, getSelectedIngest, getSelectedAttachmentId, getTotalIngests} from './ingestSelectors';
@@ -54,7 +55,7 @@ const IngestPanel = ({
         <div className="ingest-panel">
             <PanelHeader isShowingFilters={showFilters} toggleFilters={toggleFilters} onFiltersChange={filtersChange} />
             <div className="ingest-panel__list" onScroll={onScroll} ref={panelRef}>
-                {ingests.map(({id, attachments, received, licensor, ingestType}) => {
+                {ingests.map(({id, attachments, received, licensor, ingestType, emailSubject}) => {
                     const excelPdfAttachments = attachments.filter(
                         ({attachmentType}) => attachmentType && (attachmentType === EXCEL || attachmentType === PDF)
                     );
@@ -76,6 +77,7 @@ const IngestPanel = ({
                             ingestType={ingestType}
                             ingestClick={ingestClick}
                             selectedAttachmentId={selectedAttachmentId}
+                            emailSubject={emailSubject}
                         />
                     ) : (
                         excelPdfAttachments.length === 1 && (
@@ -92,12 +94,16 @@ const IngestPanel = ({
                                 }
                                 isSelected={selectedIngest && selectedIngest.id === id}
                                 ingestId={id}
+                                emailSubject={emailSubject}
                             />
                         )
                     );
                 })}
             </div>
-            <UploadIngestButton />
+            <div className="ingest-panel__btns">
+                <UploadIngestButton />
+                <RefreshConfigBtn />
+            </div>
         </div>
     );
 };

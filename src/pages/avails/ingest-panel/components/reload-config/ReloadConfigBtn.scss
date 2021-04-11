@@ -1,0 +1,27 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
+.ingest-reload-btn {
+    @include padding(2.5, 5);
+}
+
+.status-success {
+    color: map-get($greens, G400);
+}
+
+.status-failed {
+    color: map-get($reds, R400);
+}
+
+.rotate {
+    animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}

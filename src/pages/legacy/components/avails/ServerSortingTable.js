@@ -1,5 +1,6 @@
 import React from 'react';
 import {nextFrame} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 
 export default function withServerSorting(WrappedComponent) {
     return class extends React.Component {
@@ -34,23 +35,25 @@ export default function withServerSorting(WrappedComponent) {
                 });
             });
 
-            const currentSortModel = this.state.table.api.getSortModel();
+            const currentSortModel = getSortModel(this.state.table.columnApi);
             let toChangeSortModel = false;
 
-            if (currentSortModel.length !== sortModel.length) toChangeSortModel = true;
+            if (currentSortModel && currentSortModel.length !== sortModel.length) toChangeSortModel = true;
 
-            for (let i = 0; i < sortModel.length && !toChangeSortModel; i++) {
-                if (sortModel[i].colId !== currentSortModel[i].colId) toChangeSortModel = true;
-                if (sortModel[i].sortCriteria !== currentSortModel[i].sortCriteria) toChangeSortModel = true;
+            if (currentSortModel) {
+                for (let i = 0; i < sortModel.length && !toChangeSortModel; i++) {
+                    if (sortModel[i].colId !== currentSortModel[i].colId) toChangeSortModel = true;
+                    if (sortModel[i].sortCriteria !== currentSortModel[i].sortCriteria) toChangeSortModel = true;
+                }
             }
 
             if (toChangeSortModel) {
-                this.state.table.api.setSortModel(sortModel);
+                setSorting(sortModel, this.state.table.columnApi);
             }
         }
 
         onSortChanged(e) {
-            const sortParams = e.api.getSortModel();
+            const sortParams = getSortModel(e.columnApi);
             const newSort = [];
             if (sortParams.length > 0) {
                 sortParams.map(criteria => {

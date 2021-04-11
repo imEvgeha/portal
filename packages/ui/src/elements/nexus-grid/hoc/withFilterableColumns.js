@@ -1,6 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import SectionMessage from '@atlaskit/section-message';
+import Spinner from '@atlaskit/spinner';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
@@ -26,6 +28,7 @@ import {
     GRID_EVENTS,
     NOT_FILTERABLE_COLUMNS,
 } from '../constants';
+import './hoc.scss';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -64,7 +67,12 @@ const withFilterableColumns = ({
         }, []);
 
         useEffect(() => {
-            if (isMounted.current && !!columnDefs.length) {
+            if (
+                isMounted.current &&
+                isObject(selectValues) &&
+                !!Object.keys(selectValues).length &&
+                !!columnDefs.length
+            ) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }
         }, [columnDefs, selectValues]);
@@ -117,7 +125,7 @@ const withFilterableColumns = ({
                     });
                 }
             } else if (filterInstance instanceof SetFilter) {
-                filterInstance.selectEverything();
+                filterInstance.setModel({values: filterInstance.getValues()});
                 filterInstance.applyModel();
             } else {
                 filterInstance.setModel(null);
@@ -433,7 +441,7 @@ const withFilterableColumns = ({
         const propsWithoutHocProps = omit(props, [...DEFAULT_HOC_PROPS, ...hocProps]);
 
         // TODO - HOC should be props proxy, not bloquer
-        return filterableColumnDefs.length ? (
+        return filterableColumnDefs.length && Object.keys(selectValues).length > 0 ? (
             <WrappedComponent
                 {...propsWithoutHocProps}
                 columnDefs={filterableColumnDefs}
@@ -451,7 +459,16 @@ const withFilterableColumns = ({
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}
             />
-        ) : null;
+        ) : (
+            <div className="nexus-grid-filters-fallback">
+                <SectionMessage className="nexus-grid-fallback-section" title="Preparing table filters...">
+                    <span>
+                        {' '}
+                        <Spinner size="small" /> Please wait.
+                    </span>
+                </SectionMessage>
+            </div>
+        );
     };
 
     const createMapStateToProps = () => {

@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    @include addSpacing(min-width, 84);
+    @include addSpacing(width, 85.5);
     border-right: 1px solid map-get($light-neutral-colors, light-neutral-1);
     @include padding(6, 0, 0);
     color: map-get($dark-neutral-colors, dark-neutral-5);
@@ -15,5 +15,10 @@
         overflow-y: scroll;
         overflow-x: hidden;
         max-height: 100%;
+    }
+
+    &__btns {
+        display: flex;
+        justify-content: space-between;
     }
 }
