@@ -5,10 +5,10 @@ import './CustomIconFilter.scss';
 /* eslint-disable react/prop-types */
 
 export default forwardRef((props, ref) => {
-    const [value, setValue] = useState(false);
+    const [value, setValue] = useState(null);
 
     useEffect(() => {
-        props.filterChangedCallback();
+        value !== null && props.filterChangedCallback();
     }, [value]);
 
     const onChange = v => {
