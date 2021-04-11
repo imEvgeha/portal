@@ -78,7 +78,6 @@ const withInfiniteScrolling = ({
          */
         const getRows = debounce((params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel, context} = params || {};
-            console.log(props.params);
             const parsedParams = Object.keys(props.params || {})
                 .filter(key => !filterModel.hasOwnProperty(key))
                 .reduce((object, key) => {
