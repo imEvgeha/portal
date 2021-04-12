@@ -106,13 +106,9 @@ const withFilterableColumns = ({
                 filterValue = currentValue;
             }
 
-            if (filterValue) {
+            if (filterValue && !isObject(filterValue)) {
                 if (filterInstance instanceof SetFilter) {
-                    const filterValues = Array.isArray(filterValue)
-                        ? filterValue
-                        : filterValue.includes(',')
-                        ? filterValue.split(',')
-                        : filterValue;
+                    const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
                     applySetFilter(
                         filterInstance,
                         filterValues.map(el => typeof el === 'string' && el.trim())
