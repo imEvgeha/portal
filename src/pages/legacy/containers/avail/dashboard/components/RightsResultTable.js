@@ -305,7 +305,7 @@ class RightsResultTable extends React.Component {
         const currentSortModel = getSortModel(this.table.columnApi);
         let toChangeSortModel = false;
 
-        if (currentSortModel.length !== sortModel.length) toChangeSortModel = true;
+        if (currentSortModel?.length !== sortModel?.length) toChangeSortModel = true;
 
         for (let i = 0; i < sortModel.length && !toChangeSortModel; i++) {
             if (sortModel[i].colId !== currentSortModel[i].colId) toChangeSortModel = true;
