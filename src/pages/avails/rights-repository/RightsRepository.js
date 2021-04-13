@@ -286,8 +286,7 @@ const RightsRepository = ({
                     if (
                         params.data != null &&
                         Object.keys(params.data).length > 0 &&
-                        params.data.validationErrors.length > 0 &&
-                        !params.colDef.colId.includes('===')
+                        params.data.validationErrors.length > 0
                     ) {
                         const msg = [];
                         let severityType = '';
