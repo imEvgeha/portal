@@ -23,7 +23,6 @@ import DateTime from './components/DateTime/DateTime';
 import Licensors from './components/Licensors/Licensors';
 import MsvIds from './components/MsvIds/MsvIds';
 import './NexusField.scss';
-import moment from 'moment';
 
 const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
 
