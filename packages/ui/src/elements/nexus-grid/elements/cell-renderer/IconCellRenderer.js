@@ -7,13 +7,12 @@ import {getIcon} from '../value-formatter/createValueFormatter';
 const IconCellRenderer = params => {
     const {
         data,
-        colDef,
         colDef: {field},
         valueToDisplay = null,
         icon = '',
         tooltip = '',
     } = params;
-    if (!data && colDef !== 'actions') {
+    if (!data) {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
 
