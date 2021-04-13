@@ -23,6 +23,7 @@ import DateTime from './components/DateTime/DateTime';
 import Licensors from './components/Licensors/Licensors';
 import MsvIds from './components/MsvIds/MsvIds';
 import './NexusField.scss';
+import moment from 'moment';
 
 const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
 
@@ -203,8 +204,9 @@ const NexusField = ({
                     />
                 );
             case 'dateRange':
-            case 'datetime':
                 return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
+            case 'datetime':
+                return fieldProps.value || !dateProps.isReadOnly ?  <DateTimeWithOptional {...fieldProps} {...dateProps} /> : '' ;
             case 'castCrew':
                 return (
                     <CastCrew
