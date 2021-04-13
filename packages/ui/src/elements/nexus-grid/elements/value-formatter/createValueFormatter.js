@@ -11,7 +11,11 @@ import './createValueFormatter.scss';
 export const getIcon = (value, isFocus) => {
     switch (value) {
         case 'warning':
-            return <WarningIcon primaryColor={isFocus ? '#ff8b00' : '#a5adba'} width="20px" />;
+            return (
+                <span className={`nexus-c-warning-icon ${isFocus ? 'nexus-c-warning-icon--is-active' : ''}`}>
+                    <WarningIcon />
+                </span>
+            );
         case 'block':
             return (
                 <WithdrawnIcon

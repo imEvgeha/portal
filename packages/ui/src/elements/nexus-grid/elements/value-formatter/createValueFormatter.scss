@@ -10,4 +10,13 @@
 
 .nexus-c-repository-icon span {
     width: 25px;
+    fill: red;
+}
+
+.nexus-c-warning-icon svg {
+    color: map-get($mid-neutral-colors, mid-neutral-7);
+}
+
+.nexus-c-warning-icon--is-active svg {
+    color: map-get($yellows, Y500);
 }

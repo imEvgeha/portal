@@ -459,7 +459,6 @@ const withFilterableColumns = ({
             <div className="nexus-grid-filters-fallback">
                 <SectionMessage className="nexus-grid-fallback-section" title="Preparing table filters...">
                     <span>
-                        {' '}
                         <Spinner size="small" /> Please wait.
                     </span>
                 </SectionMessage>
