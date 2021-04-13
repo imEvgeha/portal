@@ -136,7 +136,8 @@ export const SelectedRightsActions = ({
 
     const checkPrePlanEligibilityCriteria = () => {
         return selectedRights.every(
-            ({rightStatus, licensed, status, territory, temporaryPriceReduction, end}) =>
+            ({rightStatus, licensed, status, territory, temporaryPriceReduction, end, updatedCatalogReceived}) =>
+                !updatedCatalogReceived &&
                 licensed &&
                 ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
                 ['ReadyNew', 'Ready'].includes(status) &&
