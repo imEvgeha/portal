@@ -122,6 +122,8 @@ const InputForm = ({
                 isLicenced={isLicensed}
                 onActionCancel={closeModalCallback}
                 onActionConfirm={uploadHandler}
+                territories={selectedTerritories.map(territory => territory.value).join(',')}
+                licenseTypes={selectedLicenseTypes.map(licenseType => licenseType.value).join(',')}
             />,
             {title: 'Attention', width: 'medium', shouldCloseOnOverlayClick: false}
         );
@@ -140,9 +142,13 @@ const InputForm = ({
         if (isShowingCatalogType) {
             params.catalogUpdate = isShowingCatalogType;
             params.catalogType = catalogType.value;
-            if (catalogType === 'Title Catalog') {
-                params.licenseTypes = selectedLicenseTypes.map(licenseType => licenseType.value).join(',');
-                params.territory = selectedTerritories.map(territory => territory.value).join(',');
+            if (catalogType.value === 'Title Catalog') {
+                if (!isEmpty(selectedLicenseTypes)) {
+                    params.licenseTypes = selectedLicenseTypes.map(licenseType => licenseType.value).join(',');
+                }
+                if (!isEmpty(selectedTerritories)) {
+                    params.territories = selectedTerritories.map(territory => territory.value).join(',');
+                }
             }
         }
 

@@ -15,6 +15,8 @@ const IngestConfirmation = ({
     licensee,
     isCatalog,
     catalogType,
+    territories,
+    licenseTypes,
     isLicenced,
     onActionCancel,
     onActionConfirm,
@@ -27,12 +29,8 @@ const IngestConfirmation = ({
                 <p>Service Region: {serviceRegion}</p>
                 <p>Licensee: {licensee || 'N/A'}</p>
                 <p>Catalog: {isCatalog ? 'Yes' : 'No'}</p>
-                {isCatalog && (
-                    <>
-                        <p>Catalog Type: {catalogType}</p>
-                        <p>Licensed: {isLicenced ? 'Yes' : 'No'}</p>
-                    </>
-                )}
+                {territories && <p>Territories: {territories}</p>}
+                {licenseTypes && <p>License Types: {licenseTypes}</p>}
             </div>
             <div className="nexus-c-ingest-confirmation__actions">
                 <p>{INGEST_UPLOAD_CONTINUE_MSG}</p>
@@ -64,6 +62,8 @@ IngestConfirmation.propTypes = {
     isCatalog: PropTypes.bool,
     catalogType: PropTypes.string,
     isLicenced: PropTypes.bool,
+    territories: PropTypes.string,
+    licenseTypes: PropTypes.string,
     onActionCancel: PropTypes.func,
     onActionConfirm: PropTypes.func,
 };
@@ -75,6 +75,8 @@ IngestConfirmation.defaultProps = {
     isCatalog: false,
     catalogType: '',
     isLicenced: false,
+    territories: '',
+    licenseTypes: '',
     onActionCancel: () => null,
     onActionConfirm: () => null,
 };
