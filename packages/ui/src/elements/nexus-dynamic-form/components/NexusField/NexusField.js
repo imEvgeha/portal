@@ -203,8 +203,9 @@ const NexusField = ({
                     />
                 );
             case 'dateRange':
-            case 'datetime':
                 return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
+            case 'datetime':
+                return fieldProps.value || !dateProps.isReadOnly ?  <DateTimeWithOptional {...fieldProps} {...dateProps} /> : '' ;
             case 'castCrew':
                 return (
                     <CastCrew
