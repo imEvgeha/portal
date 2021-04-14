@@ -52,6 +52,7 @@ export default {
         {label: 'UK', value: 'UK'},
     ],
     CATALOG_TYPES: [
+        {label: 'N/A', value: ''},
         {label: 'Full', value: 'Full Catalog'},
         {label: 'Title', value: 'Title Catalog'},
     ],
