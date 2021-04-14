@@ -9,7 +9,7 @@ import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import constants from '../../../constants';
 import {uploadIngest} from '../../../ingestActions';
-import {getLicensees, getLicensors} from '../../../ingestSelectors';
+import {getLicensees, getLicensors, getLicenseTypes, getTerritories} from '../../../ingestSelectors';
 import IngestConfirmation from '../../ingest-confirmation/IngestConfirmation';
 import './InputForm.scss';
 
@@ -28,6 +28,8 @@ const InputForm = ({
     file,
     browseClick,
     licensors,
+    licenseTypes,
+    countries,
     licensees,
     uploadIngest,
     isUploading,
@@ -68,7 +70,10 @@ const InputForm = ({
 
     const getLicensor = template === STUDIO &&
         ingestLicensor && {label: ingestLicensor, value: {value: ingestLicensor}};
+
     const [licensor, setLicensor] = useState(getLicensor);
+    const [selectedLicenseTypes, setSelectedLicenseTypes] = useState([]);
+    const [selectedTerritories, setSelectedTerritories] = useState([]);
 
     const [licenseesOptions, setLicenseesOptions] = useState([]);
     const [selectedLicensees, setSelectedLicensees] = useState([]);
@@ -117,6 +122,8 @@ const InputForm = ({
                 isLicenced={isLicensed}
                 onActionCancel={closeModalCallback}
                 onActionConfirm={uploadHandler}
+                territories={selectedTerritories.map(territory => territory.value).join(',')}
+                licenseTypes={selectedLicenseTypes.map(licenseType => licenseType.value).join(',')}
             />,
             {title: 'Attention', width: 'medium', shouldCloseOnOverlayClick: false}
         );
@@ -135,6 +142,14 @@ const InputForm = ({
         if (isShowingCatalogType) {
             params.catalogUpdate = isShowingCatalogType;
             params.catalogType = catalogType.value;
+            if (catalogType.value === 'Title Catalog') {
+                if (!isEmpty(selectedLicenseTypes)) {
+                    params.licenseTypes = selectedLicenseTypes.map(licenseType => licenseType.value).join(',');
+                }
+                if (!isEmpty(selectedTerritories)) {
+                    params.territories = selectedTerritories.map(territory => territory.value).join(',');
+                }
+            }
         }
 
         if (get(ingestData, 'externalId', '')) {
@@ -282,6 +297,34 @@ const InputForm = ({
                             </div>
                         </div>
                     </div>
+                    {get(catalogType, 'value', '') === 'Title Catalog' && (
+                        <>
+                            <div className="manual-ingest-config__license-types">
+                                <label className="manual-ingest-config__label">LICENSE TYPES</label>
+                                <Select
+                                    id="manual-upload-license-types"
+                                    onChange={val => setSelectedLicenseTypes(val || [])}
+                                    value={selectedLicenseTypes}
+                                    options={licenseTypes.map(lic => ({value: lic.value, label: lic.label}))}
+                                    placeholder="Select"
+                                    isMulti
+                                    {...selectProps}
+                                />
+                            </div>
+                            <div className="manual-ingest-config__territory">
+                                <label className="manual-ingest-config__label">TERRITORY</label>
+                                <Select
+                                    id="manual-upload-territory"
+                                    onChange={val => setSelectedTerritories(val || [])}
+                                    value={selectedTerritories}
+                                    options={countries.map(lic => ({value: lic.value, label: lic.label}))}
+                                    placeholder="Select"
+                                    isMulti
+                                    {...selectProps}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
             <div className="manual-ingest-config__buttons">
@@ -303,7 +346,9 @@ const InputForm = ({
 };
 
 InputForm.propTypes = {
+    licenseTypes: PropTypes.array,
     licensors: PropTypes.array,
+    countries: PropTypes.array,
     licensees: PropTypes.array,
     closeModal: PropTypes.func.isRequired,
     uploadIngest: PropTypes.func,
@@ -317,7 +362,9 @@ InputForm.propTypes = {
 };
 
 InputForm.defaultProps = {
+    licenseTypes: [],
     licensors: [],
+    countries: [],
     licensees: [],
     uploadIngest: () => null,
     browseClick: () => null,
@@ -333,9 +380,11 @@ const mapStateToProps = state => {
     const loadingSelector = createLoadingSelector(['UPLOAD_INGEST_FILES']);
 
     return {
+        licenseTypes: getLicenseTypes(state),
         licensors: getLicensors(state),
         licensees: getLicensees(state),
         isUploading: loadingSelector(state),
+        countries: getTerritories(state),
     };
 };
 

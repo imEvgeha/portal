@@ -84,6 +84,7 @@
 .manual-ingest-config__catalog,
 .manual-ingest-config__licensee,
 .manual-ingest-config--service-region,
-.manual-ingest-config--licensor {
+.manual-ingest-config__license-types,
+.manual-ingest-config__territory {
     @include margin(0, 0, 3, 0);
 }
