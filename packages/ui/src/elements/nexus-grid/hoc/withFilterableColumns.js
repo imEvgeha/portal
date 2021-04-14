@@ -1,16 +1,17 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import SectionMessage from '@atlaskit/section-message';
+import Spinner from '@atlaskit/spinner';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
 import {connect} from 'react-redux';
-import SectionMessage from '@atlaskit/section-message';
-import Spinner from '@atlaskit/spinner';
 import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
+import CustomIconFilter from '../elements/custom-icon-filter/CustomIconFilter';
 import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
 import TitleSelectionRenderer from '../elements/title-selection-renderer/TitleSelectionRenderer';
@@ -105,7 +106,7 @@ const withFilterableColumns = ({
                 filterValue = currentValue;
             }
 
-            if (filterValue) {
+            if (filterValue && !isObject(filterValue)) {
                 if (filterInstance instanceof SetFilter) {
                     const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
                     applySetFilter(
@@ -173,10 +174,15 @@ const withFilterableColumns = ({
 
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
-            const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {searchDataType, queryParamName = columnDef.field} =
+            const filterableColumnDefs = copiedColumnDefs.map((columnDef, index) => {
+                const {colId} = copiedColumnDefs[index];
+
+                const {searchDataType, queryParamName = columnDef.field, queryParamValue = '', queryParamKey, icon} =
                     (Array.isArray(mapping) &&
-                        mapping.find(({javaVariableName}) => javaVariableName === columnDef.field)) ||
+                        mapping.find(
+                            ({javaVariableName, dataType}) =>
+                                javaVariableName === columnDef.field && (colId === 'icon' || dataType !== 'icon')
+                        )) ||
                     {};
                 const {field} = columnDef;
                 const isFilterable =
@@ -198,11 +204,13 @@ const withFilterableColumns = ({
                         CUSTOM_DATE,
                         CUSTOM_COMPLEX,
                         CUSTOM_READONLY,
+                        CUSTOM_ICON,
                         CUSTOM_FLOAT_READONLY,
                     } = AG_GRID_COLUMN_FILTER;
                     const {
                         BOOLEAN,
                         INTEGER,
+                        ICON,
                         DOUBLE,
                         YEAR,
                         MULTISELECT,
@@ -341,6 +349,18 @@ const withFilterableColumns = ({
                                 };
                                 break;
                             }
+                            case ICON:
+                                const searchQuery = {};
+                                searchQuery[queryParamKey] = queryParamValue;
+                                columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
+                                columnDef.filter = CUSTOM_ICON;
+                                columnDef.filterParams = {
+                                    // TODO; check is this necessary
+                                    ...DEFAULT_FILTER_PARAMS,
+                                    searchQuery,
+                                    icon,
+                                };
+                                break;
                             default:
                                 columnDef.filter = TEXT;
                                 columnDef.filterParams = DEFAULT_FILTER_PARAMS;
@@ -425,6 +445,7 @@ const withFilterableColumns = ({
                 frameworkComponents={{
                     customDateFloatingFilter: CustomDateFloatingFilter,
                     customDateFilter: CustomDateFilter,
+                    customIconFilter: CustomIconFilter,
                     customComplexFloatingFilter: CustomComplexFloatingFilter,
                     customComplexFilter: CustomComplexFilter,
                     customReadOnlyFilter: CustomReadOnlyFilter,
@@ -434,11 +455,15 @@ const withFilterableColumns = ({
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}
             />
-        ) : (<div className="nexus-grid-filters-fallback">
+        ) : (
+            <div className="nexus-grid-filters-fallback">
                 <SectionMessage className="nexus-grid-fallback-section" title="Preparing table filters...">
-                    <span> <Spinner size="small" /> Please wait.</span>
+                    <span>
+                        <Spinner size="small" /> Please wait.
+                    </span>
                 </SectionMessage>
-            </div>)
+            </div>
+        );
     };
 
     const createMapStateToProps = () => {

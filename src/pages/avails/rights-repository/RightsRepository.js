@@ -339,10 +339,10 @@ const RightsRepository = ({
         };
     });
 
-    const cellStyling = ({data = {}, value}, column) => {
+    const cellStyling = ({data = {}, value, colDef}, column) => {
         const styling = {};
 
-        if (Object.keys(data).length > 0 && data.validationErrors.length > 0) {
+        if (Object.keys(data).length > 0 && data.validationErrors.length > 0 && colDef.colId !== 'icon') {
             let severityType = '';
             data.validationErrors.forEach(function (validation) {
                 const fieldName = validation.fieldName.includes('[')

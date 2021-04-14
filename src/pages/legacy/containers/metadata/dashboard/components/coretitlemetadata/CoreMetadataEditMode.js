@@ -32,7 +32,7 @@ import NexusTagsContainer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-ta
 import Button from '@atlaskit/button';
 import Tooltip from '@material-ui/core/Tooltip';
 import {loadOptionsPerson} from '../utils/utils';
-import "./CoreMetadata.scss";
+import './CoreMetadata.scss';
 
 const {MOVIDA, VZ} = TitleSystems;
 
@@ -619,12 +619,28 @@ class CoreMetadataEditMode extends Component {
                                             <option key={e.licenseeName} value={e.movidaName || e.licenseeName}>
                                                 {(() => {
                                                     if (e.movidaName) {
-                                                        if (e.additionalMSVContentProviders && e.additionalMSVContentProviders.length > 0)
-                                                            return e.licenseeName + ' | ' + e.movidaName + ' | ' + e.additionalMSVContentProviders.join(', ');
+                                                        if (
+                                                            e.additionalMSVContentProviders &&
+                                                            e.additionalMSVContentProviders.length > 0
+                                                        )
+                                                            return (
+                                                                e.licenseeName +
+                                                                ' | ' +
+                                                                e.movidaName +
+                                                                ' | ' +
+                                                                e.additionalMSVContentProviders.join(', ')
+                                                            );
                                                         return e.licenseeName + ' | ' + e.movidaName;
                                                     } else {
-                                                        if (e.additionalMSVContentProviders && e.additionalMSVContentProviders.length > 0)
-                                                            return e.licenseeName + ' | ' + e.additionalMSVContentProviders.join(', ');
+                                                        if (
+                                                            e.additionalMSVContentProviders &&
+                                                            e.additionalMSVContentProviders.length > 0
+                                                        )
+                                                            return (
+                                                                e.licenseeName +
+                                                                ' | ' +
+                                                                e.additionalMSVContentProviders.join(', ')
+                                                            );
                                                         return e.licenseeName;
                                                     }
                                                 })()}

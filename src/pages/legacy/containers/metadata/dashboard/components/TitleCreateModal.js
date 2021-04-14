@@ -537,12 +537,12 @@ class TitleCreate extends React.Component {
                                                     minLength: {value: MAX_RELEASE_YEAR_LENGTH},
                                                     maxLength: {value: MAX_RELEASE_YEAR_LENGTH},
                                                 }}
-                                                 placeholder="Enter Release Year"
+                                                placeholder="Enter Release Year"
                                                 value={this.state.titleForm.releaseYear}
                                                 onChange={this.handleChange}
                                             />
                                         </Col>
-                                    </Row>                        
+                                    </Row>
                                     {this.props.tenantCode && (
                                         <Row>
                                             <Col>

@@ -11,6 +11,38 @@
             "required": false
         },
         {
+            "javaVariableName": "updatedCatalogReceived",
+            "searchDataType": "icon",
+            "displayName": " ",
+            "dataType": "icon",
+            "readOnly": true,
+            "enableSearch": true,
+            "queryParamName": "icon",
+            "queryParamKey": "updatedCatalogReceived",
+            "queryParamValue": true,
+            "enableEdit": false,
+            "required": false,
+            "icon": "warning",
+            "tooltip": "Removed from Catalog",
+            "width": 20
+        },
+        {
+            "javaVariableName": "rightStatus",
+            "searchDataType": "icon",
+            "displayName": " ",
+            "dataType": "icon",
+            "readOnly": true,
+            "enableSearch": true,
+            "queryParamName": "icon",
+            "queryParamKey": "rightStatusList",
+            "queryParamValue": ["Withdrawn"],
+            "enableEdit": false,
+            "required": false,
+            "icon": "block",
+            "tooltip": "Withdrawn",
+            "valueToDisplay": "Withdrawn"
+        },
+        {
             "javaVariableName": "title",
             "displayName": "Title",
             "dataType": "string",
@@ -1861,17 +1893,6 @@
             "queryParamName": "originallyReceivedAt",
             "readOnly": false,
             "readOnlyInDetails": true,
-            "enableSearch": true,
-            "enableEdit": true,
-            "required": false
-        },
-        {
-            "javaVariableName": "updatedCatalogReceived",
-            "displayName": "Removed from Catalogue",
-            "dataType": "boolean",
-            "searchDataType": "boolean",
-            "queryParamName": "updatedCatalogReceived",
-            "readOnly": true,
             "enableSearch": true,
             "enableEdit": true,
             "required": false
