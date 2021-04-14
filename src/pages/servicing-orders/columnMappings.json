@@ -54,6 +54,17 @@
         "sortable": true
     },
     {
+        "colId": "title_manager",
+        "field": "title_manager",
+        "dataType": "string",
+        "headerName": "Title Manager",
+        "width": 100,
+        "javaVariableName": "title_manager",
+        "enableSearch": true,
+        "searchDataType": "string",
+        "sortable": true
+    },
+    {
         "colId": "sr_due_date",
         "field": "sr_due_date",
         "dataType": "regionalMidnight",
@@ -98,5 +109,60 @@
         "enableSearch": true,
         "searchDataType": "multiselect",
         "options": ["NEW", "READY", "ON_HOLD"]
+    },
+    {
+        "colId": "premiering",
+        "field": "premiering",
+        "dataType": "boolean",
+        "headerName": "Premiering",
+        "width": 100,
+        "javaVariableName": "premiering",
+        "searchDataType": "boolean",
+        "sortable": true,
+        "hide": true
+    },
+    {
+        "colId": "watermark",
+        "field": "watermark",
+        "dataType": "boolean",
+        "headerName": "Watermark",
+        "width": 100,
+        "javaVariableName": "watermark",
+        "searchDataType": "boolean",
+        "sortable": true,
+        "hide": true
+    },
+    {
+        "colId": "late",
+        "field": "late",
+        "dataType": "boolean",
+        "headerName": "Late",
+        "width": 100,
+        "javaVariableName": "late",
+        "searchDataType": "boolean",
+        "sortable": true,
+        "hide": true
+    },
+    {
+        "colId": "market_type",
+        "field": "market_type",
+        "dataType": "string",
+        "headerName": "Market Type",
+        "width": 100,
+        "javaVariableName": "market_type",
+        "searchDataType": "string",
+        "sortable": true,
+        "hide": true
+    },
+    {
+        "colId": "completed_date",
+        "field": "completed_date",
+        "dataType": "regionalMidnight",
+        "headerName": "Completed Date",
+        "width": 100,
+        "javaVariableName": "completed_date",
+        "searchDataType": "regionalMidnight",
+        "sortable": true,
+        "hide": true
     }
 ]

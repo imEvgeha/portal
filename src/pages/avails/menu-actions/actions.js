@@ -1,5 +1,11 @@
 import {cloneDeep} from 'lodash';
+import moment from 'moment';
 import {ELIGIBLE_RIGHT_STATUS, ELIGIBLE_STATUS} from '../pre-plan-actions/constants';
+
+export const isEndDateExpired = (endDate = '') => {
+    const currentDate = moment();
+    return moment(endDate).isBefore(currentDate);
+};
 
 export const prePlanEligible = (
     status,
@@ -7,7 +13,8 @@ export const prePlanEligible = (
     licensed,
     territory,
     updatedCatalogReceived,
-    temporaryPriceReduction
+    temporaryPriceReduction,
+    end
 ) => {
     return !!(
         ELIGIBLE_STATUS.includes(status) &&
@@ -15,7 +22,8 @@ export const prePlanEligible = (
         licensed &&
         !updatedCatalogReceived &&
         !temporaryPriceReduction &&
-        hasAtLeastOneUnselectedTerritory(territory)
+        hasAtLeastOneUnselectedTerritory(territory) &&
+        !isEndDateExpired(end)
     );
 };
 
@@ -23,9 +31,18 @@ export const getEligibleRights = selectedRights => {
     let eligibleRights = [];
     let nonEligibleRights = [];
     selectedRights.forEach(right => {
-        const {status, rightStatus, licensed, territory, updatedCatalogReceived, temporaryPriceReduction} = right || {};
+        const {status, rightStatus, licensed, territory, updatedCatalogReceived, temporaryPriceReduction, end} =
+            right || {};
         if (
-            prePlanEligible(status, rightStatus, licensed, territory, updatedCatalogReceived, temporaryPriceReduction)
+            prePlanEligible(
+                status,
+                rightStatus,
+                licensed,
+                territory,
+                updatedCatalogReceived,
+                temporaryPriceReduction,
+                end
+            )
         ) {
             eligibleRights = [...eligibleRights, right];
         } else {

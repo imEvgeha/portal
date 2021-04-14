@@ -1,7 +1,7 @@
 import {DATETIME_FIELDS, SORT_DIRECTION} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {get} from 'lodash';
 import moment from 'moment';
-import {RELATIVE_TIME_FORMAT, SIMULCAST_TIME_FORMAT, TIMESTAMP_TIME_FORMAT} from './constants';
+import {RELATIVE_TIME_FORMAT, SIMULCAST_TIME_FORMAT, TIMESTAMP_TIME_FORMAT, LOCALE_TIME_FORMAT} from './constants';
 
 const localStorageLanguage = localStorage.getItem('localization');
 const browserLocale = navigator.language.toString().toLowerCase();
@@ -76,7 +76,7 @@ const ISODateToView = (date, type, isLocal = false, shouldDisplayTime = true) =>
         }
 
         if (isLocal) {
-            return momentDate.utc(isUtcTime).local().format(appendDateTimeFormats(dateFormat, RELATIVE_TIME_FORMAT));
+            return momentDate.utc(isUtcTime).local().format(appendDateTimeFormats(dateFormat, LOCALE_TIME_FORMAT));
         }
         return momentDate.utc(isUtcTime).format(dateTimeFormat);
     }

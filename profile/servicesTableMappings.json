@@ -4,9 +4,9 @@
         "displayName": "Service Type",
         "dataType": "select",
         "queryParamName": "serviceType",
-        "readOnly": false,
+        "readOnly": true,
         "enableSearch": true,
-        "enableEdit": true,
+        "enableEdit": false,
         "required": true
     },
     {

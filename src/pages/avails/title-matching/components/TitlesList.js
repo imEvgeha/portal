@@ -57,11 +57,13 @@ const TitlesList = ({
     const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
     const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...columnDefs]);
     const repository = getRepositoryCell();
-
-    const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
-    if (contentTypeIndex !== -1) {
-        updatedColumnDefs[contentTypeIndex]['sortable'] = false;
-    }
+    const columnDefsClone = updatedColumnDefs.map(columnDef => {
+        if (!['releaseYear', 'contentType', 'title'].includes(columnDef.colId)) {
+            columnDef.sortable = false;
+            columnDef.isFilterable = false;
+        }
+        return columnDef;
+    });
 
     return (
         <>
@@ -82,7 +84,7 @@ const TitlesList = ({
                 <TitleRepositoriesTable
                     id="titleMatchigRepo"
                     onGridEvent={onGridReady}
-                    columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
+                    columnDefs={[matchButton, duplicateButton, repository, ...columnDefsClone]}
                     setTotalCount={setTotalCount}
                     initialFilter={queryParams}
                     mapping={mappings}

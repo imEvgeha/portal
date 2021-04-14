@@ -17,6 +17,7 @@ const NexusGrid = ({
     frameworkComponents,
     dragStopped,
     onGridReady,
+    link,
     ...restProps
 }) => {
     const isMounted = useRef(true);
@@ -51,7 +52,7 @@ const NexusGrid = ({
         >
             <AgGridReact
                 columnDefs={columnDefs}
-                getContextMenuItems={getContextMenuItems}
+                getContextMenuItems={params => getContextMenuItems(params, link)}
                 rowData={rowData}
                 suppressPropertyNamesCheck
                 onGridReady={onGridReady || handleGridEvent}
@@ -85,6 +86,7 @@ NexusGrid.propTypes = {
     frameworkComponents: PropTypes.object,
     dragStopped: PropTypes.func,
     onGridReady: PropTypes.func,
+    link: PropTypes.string,
 };
 
 NexusGrid.defaultProps = {
@@ -96,6 +98,7 @@ NexusGrid.defaultProps = {
     frameworkComponents: {},
     dragStopped: null,
     onGridReady: null,
+    link: null,
 };
 
 export default NexusGrid;

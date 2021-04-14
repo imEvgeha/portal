@@ -4,7 +4,7 @@ import {AvField} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Select from 'react-select';
-import {debounce} from 'lodash';
+import {debounce, get} from 'lodash';
 import {editorialMetadataService} from '../../../../../constants/metadata/editorialMetadataService';
 import {MASTER_RECORD_ERROR} from './Constants';
 import {resolutionFormat} from '../../../../../constants/resolutionFormat';
@@ -61,6 +61,7 @@ class EditorialMetadataEditMode extends Component {
         });
 
         this.state = {
+            language: data.language,
             genres,
             showGenreError: false,
             category,
@@ -76,7 +77,7 @@ class EditorialMetadataEditMode extends Component {
     };
 
     handleGenre = e => {
-        if (e.length > 10) {
+        if (e?.length > 10) {
             this.setState({
                 showGenreError: true,
             });
@@ -91,6 +92,7 @@ class EditorialMetadataEditMode extends Component {
                 genres: e,
             });
         }
+
         this.props.handleGenreEditChange(this.props.data, e);
     };
 
@@ -118,6 +120,18 @@ class EditorialMetadataEditMode extends Component {
             this.props.updatedEditorialMetadata.filter(e => e.id === this.props.data.id) !==
             nextProps.updatedEditorialMetadata.filter(e => e.id === nextProps.data.id);
         return differentData || differentTitleContentType || differentUpdatedData;
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        const {language, category, genres} = props.data || {};
+        if (language !== state.language) {
+            return {
+                category: (category || []).map(e => ({value: e.name, label: e.name})),
+                language,
+                genres,
+            };
+        }
+        return null;
     }
 
     handleFieldLength = name => {
@@ -209,7 +223,8 @@ class EditorialMetadataEditMode extends Component {
             sasktelLineupId,
             castCrew,
             shortTitleTemplate,
-        } = updateData || this.props.data;
+        } = updateData ? updateData : this.props.data;
+
         const metadataStatus = updateData ? updateData.metadataStatus : this.props.data.metadataStatus;
         this.raiseValidationError(isMaster, [
             shortTitleTemplate,
@@ -463,7 +478,7 @@ class EditorialMetadataEditMode extends Component {
                     <Col>
                         <Select
                             name={this.getNameWithPrefix('edit-genres')}
-                            value={this.state.genres.map(e => {
+                            value={(get(this, 'state.genres', []) || []).map(e => {
                                 return {id: e.id, genre: e.genre, value: e.genre, label: e.genre};
                             })}
                             onChange={e => this.handleGenre(e)}
@@ -562,7 +577,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: `Too long Display Title. Max ${MAX_TITLE_LENGTH} symbols.`,
                                 },
                             }}
-                            value={title.title}
+                            value={title.title || ''}
                             required={isMaster}
                             errorMessage="Field cannot be empty!"
                         />
@@ -597,7 +612,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: `Too long Brief Title. Max ${MAX_BRIEF_TITLE_LENGTH} symbols.`,
                                 },
                             }}
-                            value={title.shortTitle}
+                            value={title.shortTitle || ''}
                         />
                         <span
                             style={{
@@ -630,7 +645,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: `Too long Medium Title. Max ${MAX_MEDIUM_TITLE_LENGTH} symbols.`,
                                 },
                             }}
-                            value={title.mediumTitle}
+                            value={title.mediumTitle || ''}
                         />
                         <span
                             style={{
@@ -663,7 +678,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: `Too long Long Title. Max ${MAX_TITLE_LENGTH} symbols.`,
                                 },
                             }}
-                            value={title.longTitle}
+                            value={title.longTitle || ''}
                         />
                         <span
                             style={{
@@ -696,7 +711,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: `Too long Sort Title. Max ${MAX_SORT_TITLE_LENGTH} symbols.`,
                                 },
                             }}
-                            value={title.sortTitle}
+                            value={title.sortTitle || ''}
                         />
                         <span
                             style={{
@@ -730,7 +745,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: `Too long Short Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.`,
                                 },
                             }}
-                            value={synopsis.description}
+                            value={synopsis.description || ''}
                             required={isMaster}
                             errorMessage="Field cannot be empty!"
                         />
@@ -768,7 +783,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: `Too long Medium Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.`,
                                 },
                             }}
-                            value={synopsis.shortDescription}
+                            value={synopsis.shortDescription || ''}
                             required={isMaster}
                             errorMessage="Field cannot be empty!"
                         />
@@ -807,7 +822,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: `Too long Long Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.`,
                                 },
                             }}
-                            value={synopsis.longDescription}
+                            value={synopsis.longDescription || ''}
                         />
                         <span
                             style={{
@@ -881,7 +896,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: `Too long Copyright. Max ${MAX_COPYRIGHT_LENGTH} symbols.`,
                                 },
                             }}
-                            value={copyright}
+                            value={copyright || ''}
                         />
                         <span
                             style={{
@@ -911,7 +926,7 @@ class EditorialMetadataEditMode extends Component {
                             validate={{
                                 maxLength: {value: 500, errorMessage: 'Too long Awards. Max 500 symbols.'},
                             }}
-                            value={awards}
+                            value={awards || ''}
                         />
                         <span
                             style={{
@@ -940,7 +955,7 @@ class EditorialMetadataEditMode extends Component {
                                     errorMessage: 'Too long Sasktel Inventory ID. Max 200 symbols.',
                                 },
                             }}
-                            value={sasktelInventoryId}
+                            value={sasktelInventoryId || ''}
                         />
                         <span
                             style={{
@@ -970,7 +985,7 @@ class EditorialMetadataEditMode extends Component {
                             validate={{
                                 maxLength: {value: 200, errorMessage: 'Too long Sasktel Lineup ID. Max 200 symbols.'},
                             }}
-                            value={sasktelLineupId}
+                            value={sasktelLineupId || ''}
                         />
                         <span
                             style={{

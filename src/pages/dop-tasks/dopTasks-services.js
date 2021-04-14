@@ -11,6 +11,7 @@ import {
     PROJECT_STATUS_ENUM,
     STRING_FIELDS,
     DATE_FIELDS,
+    FIELDS_OPERATOR_IN,
 } from './constants';
 
 const PAGE_LIMIT = 100;
@@ -139,7 +140,7 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
                 });
             }
         }
-        if (key === 'user') {
+        if (key === 'user' && !activeFilters.includes(POTENTIAL_OWNERS)) {
             const userIndex = payload.filterCriterion.findIndex(
                 item => item.fieldName === POTENTIAL_OWNERS || item.fieldName === ACTUAL_OWNER
             );
@@ -158,6 +159,20 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
         }
         if (key === 'sortCriterion' && val.length) {
             payload.sortCriterion = val;
+        }
+        if (FIELDS_OPERATOR_IN.includes(key) && val) {
+            const filterIndex = payload.filterCriterion.findIndex(item => item.fieldName === key);
+            if (filterIndex > 0) {
+                payload.filterCriterion[filterIndex].value = val;
+            } else {
+                payload.filterCriterion.push({
+                    value: val,
+                    fieldName: key,
+                    operator: 'in',
+                    valueDataType: 'String',
+                    logicalAnd: true,
+                });
+            }
         }
         return null;
     });

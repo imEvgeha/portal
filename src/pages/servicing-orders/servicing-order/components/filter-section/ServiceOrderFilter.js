@@ -33,27 +33,15 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
     return (
         <div className="so-panel-filter-detail">
             <div className="so-panel-filter-detail__row">
-                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Customer: {tenant}
-                </div>
+                <div>Customer: {tenant}</div>
 
-                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Servicing Request ID: {externalId}
-                </div>
+                <div>Servicing Request ID: {externalId}</div>
 
-                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Servicing Order ID: {soNumber}
-                </div>
+                <div>Servicing Order ID: {soNumber}</div>
 
-                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Title Manager: {titleManager}
-                </div>
+                {titleManager && <div>Title Manager: {titleManager}</div>}
 
-                {description !== null && (
-                    <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                        Description: {description}
-                    </div>
-                )}
+                {description !== null && <div>Description: {description}</div>}
             </div>
 
             <div className="so-panel-filter-detail__row">
@@ -77,6 +65,7 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
                     isReturningTime={false}
                     onChange={() => null}
                 />
+                {completedDate && 
                 <NexusDatePicker
                     id="completedDate"
                     label="Completed Date"
@@ -84,7 +73,7 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
                     isDisabled
                     isReturningTime={false}
                     onChange={() => null}
-                />
+                />}
             </div>
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
                 <div className="so-panel-filter-detail__dropdown">

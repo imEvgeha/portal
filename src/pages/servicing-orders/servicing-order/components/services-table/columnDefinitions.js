@@ -9,6 +9,7 @@ const columnDefinitions = [
         headerName: 'Service Type',
         width: 150,
         sortable: false,
+        readOnly: true,
     },
     {
         colId: 'assetType',
@@ -68,7 +69,7 @@ const columnDefinitions = [
     {
         colId: 'operationalStatus',
         field: 'operationalStatus',
-        headerName: 'Operational Status',
+        headerName: 'Status',
         width: 170,
         sortable: false,
     },

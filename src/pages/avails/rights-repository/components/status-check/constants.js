@@ -35,5 +35,10 @@ export const header = {
             content: 'Temporary Price Reduction',
             width: 25,
         },
+        {
+            key: 8,
+            content: 'License End Date',
+            width: 35,
+        },
     ],
 };

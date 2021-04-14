@@ -1,10 +1,11 @@
 import Constants from './Constants';
-import {get, isEqual} from 'lodash';
+import * as jsonpatch from 'fast-json-patch';
+import {get, isEqual, cloneDeep} from 'lodash';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const {
-    dataTypes: {DATE, AUDIO, RATING, METHOD},
+    dataTypes: {DATE, AUDIO, RATING, METHOD, YES_OR_NO, TERRITORY, TERRITORY_SELECTED, TERRITORY_WITHDRAWN},
     colors: {CURRENT_VALUE, STALE_VALUE},
     RATING_SUBFIELD,
     method: {MANUAL, INGEST},
@@ -12,6 +13,13 @@ const {
 } = Constants;
 
 const languageMapper = audioObj => [...new Set(audioObj.map(audio => audio.language))];
+const countryMapper = territoryObj => [...new Set(territoryObj.map(territory => territory.country))];
+const selectedCountryMapper = territoryObj => [
+    ...new Set(territoryObj.filter(territory => territory.selected).map(territory => territory.country)),
+];
+const withdrawnCountryMapper = territoryObj => [
+    ...new Set(territoryObj.filter(territory => territory.withdrawn).map(territory => territory.country)),
+];
 
 export const valueFormatter = ({colId, field, dataType}) => {
     return params => {
@@ -34,6 +42,34 @@ export const valueFormatter = ({colId, field, dataType}) => {
                 case METHOD:
                     const {data: {headerRow, updatedBy} = {}} = params || {};
                     return headerRow ? data[field] : INGEST_ACCOUNTS.includes(updatedBy) ? INGEST : MANUAL;
+                case YES_OR_NO:
+                    const value = typeof data[field] === 'boolean' ? data[field] : null;
+                    if (value === null) return '';
+                    return value ? 'Yes' : 'No';
+                case TERRITORY:
+                    if (Array.isArray(data[field])) {
+                        return data[field]
+                            .filter(Boolean)
+                            .map(item => item.country)
+                            .join(', ');
+                    }
+                    return '';
+                case TERRITORY_SELECTED:
+                    if (Array.isArray(data[field])) {
+                        return data[field]
+                            .filter(item => item.selected)
+                            .map(item => item.country)
+                            .join(', ');
+                    }
+                    return '';
+                case TERRITORY_WITHDRAWN:
+                    if (Array.isArray(data[field])) {
+                        return data[field]
+                            .filter(item => item.withdrawn)
+                            .map(item => item.country)
+                            .join(', ');
+                    }
+                    return '';
                 default:
                     return data[field];
             }
@@ -56,6 +92,12 @@ const valueCompare = (diffValue, currentValue, column) => {
                 );
             case AUDIO:
                 return isEqual(languageMapper(diffValue), languageMapper(currentValue));
+            case TERRITORY:
+                return isEqual(countryMapper(diffValue), countryMapper(currentValue));
+            case TERRITORY_SELECTED:
+                return isEqual(selectedCountryMapper(diffValue), selectedCountryMapper(currentValue));
+            case TERRITORY_WITHDRAWN:
+                return isEqual(withdrawnCountryMapper(diffValue), withdrawnCountryMapper(currentValue));
             default:
                 return isEqual(diffValue, currentValue);
         }
@@ -74,52 +116,70 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
             //for null valued rating field we dont need to color the cell
             styling.background = STALE_VALUE;
         }
+    } else if (typeof value === 'boolean' && !data.headerRow && !noStyles) {
+        const equalityCheck = valueCompare(value, focusedRight[field], column);
+        if (equalityCheck) {
+            styling.background = CURRENT_VALUE;
+        } else if (equalityCheck === false) {
+            //for null valued rating field we dont need to color the cell
+            styling.background = STALE_VALUE;
+        }
     }
     if (!!data && data[`${colId || field}Deleted`]) {
-        styling.textDecoration = 'line-through';
-        const path = field === RATING ? [field, colId] : [field];
-        if (get(focusedRight, path, '').length) {
-            styling.background = STALE_VALUE;
+        if (Array.isArray(data[field]) && get(focusedRight, field, []).length) {
+            styling.textDecoration = 'none';
         } else {
-            styling.background = CURRENT_VALUE;
+            styling.textDecoration = 'line-through';
+        }
+        const path = field === RATING ? [field, colId] : [field];
+        if (field === RATING || !Array.isArray(focusedRight[path])) {
+            const fldVal = get(focusedRight, path) || '';
+            if (fldVal.length) {
+                styling.background = STALE_VALUE;
+            } else {
+                styling.background = CURRENT_VALUE;
+            }
         }
     }
     return styling;
 };
 
 export const formatData = data => {
-    const {eventHistory, diffs} = data;
-    let tableRows = eventHistory
-        .filter(x => x && !!x.message)
-        .map((dataObj, index) => {
-            const {
-                message: {updatedBy, createdBy, lastUpdateReceivedAt},
-            } = dataObj;
-            const row = {};
-            diffs[index].forEach(diff => {
-                const {path, op} = diff;
-                const field = path.split('/')[2]; //as path is always like '/message/field/sub-field'
-                const valueUpdated = dataObj.message[field];
-                if (op === 'remove') {
-                    row[field] = get(eventHistory[index - 1], ['message', field], '');
-                    row[`${field}Deleted`] = true;
-                } else {
-                    row[field] = Array.isArray(valueUpdated) ? [...new Set(valueUpdated)] : valueUpdated;
-                }
-                if (field === RATING) {
-                    const subField = path.split('/')[4];
-                    if (subField) {
-                        if (op === 'remove') {
-                            row[`${subField}Deleted`] = true;
-                        }
+    const {originalEvent, diffs} = data;
+    const {
+        message: {updatedBy, createdBy, lastUpdateReceivedAt},
+    } = originalEvent;
+    let temporaryValues = cloneDeep(originalEvent);
+    let tableRows = diffs.map(diffArr => {
+        const row = {};
+        diffArr.forEach(diff => {
+            const {path, op} = diff;
+            const splittedPath = path.split('/');
+            const originalEventField = splittedPath[1];
+            const field = splittedPath[2];
+
+            const patch = [{...diff}];
+            temporaryValues = jsonpatch.applyPatch(temporaryValues, patch).newDocument;
+            const newValue = get(temporaryValues, [originalEventField, field]);
+            row[field] = cloneDeep(newValue);
+            if (op === 'remove') {
+                row[`${field}Deleted`] = true;
+            }
+
+            if (field === RATING) {
+                const subField = splittedPath[4];
+                if (subField) {
+                    if (op === 'remove') {
+                        row[`${subField}Deleted`] = true;
                     }
                 }
-            });
-            row.updatedBy = updatedBy || createdBy;
-            row.lastUpdateReceivedAt = lastUpdateReceivedAt;
-            return row;
+            }
         });
-    tableRows[0] = eventHistory[0].message;
+        row.updatedBy = updatedBy || createdBy;
+        row.lastUpdateReceivedAt = lastUpdateReceivedAt;
+        return row;
+    });
+    tableRows[0] = originalEvent.message;
     tableRows = tableRows.reverse();
     return tableRows;
 };

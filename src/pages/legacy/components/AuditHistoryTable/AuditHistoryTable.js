@@ -1,37 +1,43 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
+import {compose} from 'redux';
 import {NexusGrid} from '../../../../ui/elements/';
 import Constants from './Constants';
 import {cellStyling, formatData, valueFormatter} from './utils';
-import RulesEngineInfo from './components/RulesEngineInfo';
 import './AuditHistoryTable.scss';
 
+const AuditHistoryTableWithSideBar = compose(withSideBar({toolPanels: Constants.COLUMN_TOOL_PANEL}))(NexusGrid);
+
 const AuditHistoryTable = ({data, focusedRight}) => {
-    const [auditData, setAuditData] = useState([]);
+    const [auditData, setAuditData] = useState(null);
     const [columnDefs, setColumnDefs] = useState([]);
     const {columns, SEPARATION_ROW, HEADER_ROW} = Constants;
 
     useEffect(() => {
-        const {eventHistory = []} = data || {};
-        if (!auditData.length && eventHistory.length) {
-            const tableRows = formatData(data);
-            tableRows.splice(
-                0,
-                0,
-                {
-                    ...focusedRight,
-                    ...HEADER_ROW,
-                },
-                SEPARATION_ROW
-            );
-            setAuditData(tableRows);
+        if (data && !auditData) {
+            if (data.originalEvent) {
+                const tableRows = formatData(data);
+                tableRows.splice(
+                    0,
+                    0,
+                    {
+                        ...focusedRight,
+                        ...HEADER_ROW,
+                    },
+                    SEPARATION_ROW
+                );
+                setAuditData(tableRows);
+            } else {
+                setAuditData([]);
+            }
         }
     }, [data]);
 
     useEffect(() => {
         if (columns.length !== columnDefs.length) {
             const cols = columns.map(col => {
-                const {field, colId, headerName} = col;
+                const {field, colId, headerName, hide = false} = col;
                 return {
                     field,
                     headerName,
@@ -39,8 +45,7 @@ const AuditHistoryTable = ({data, focusedRight}) => {
                     width: 155,
                     valueFormatter: valueFormatter(col),
                     cellStyle: params => cellStyling(params, focusedRight, col),
-                    tooltipComponent: 'customTooltip',
-                    tooltipValueGetter: params => params.valueFormatted,
+                    hide: hide,
                 };
             });
             setColumnDefs(cols);
@@ -49,11 +54,7 @@ const AuditHistoryTable = ({data, focusedRight}) => {
 
     return (
         <div className="nexus-c-audit-history-table">
-            <NexusGrid
-                columnDefs={columnDefs}
-                rowData={auditData}
-                frameworkComponents={{customTooltip: RulesEngineInfo}}
-            />
+            <AuditHistoryTableWithSideBar columnDefs={columnDefs} rowData={auditData} />
         </div>
     );
 };
@@ -64,10 +65,7 @@ AuditHistoryTable.propTypes = {
 };
 
 AuditHistoryTable.defaultProps = {
-    data: {
-        eventHistory: [],
-        diff: [],
-    },
+    data: undefined,
     focusedRight: {},
 };
 

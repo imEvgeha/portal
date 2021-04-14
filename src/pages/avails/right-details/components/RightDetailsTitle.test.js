@@ -10,7 +10,7 @@ describe('RightDetailsTitle', () => {
         wrapper = shallow(<RightDetailsTitle title="Right Details" />);
     });
 
-    it('should have ArrowLeftIcon component in span element', () => {
-        expect(wrapper.find('span').find(ArrowLeftIcon)).toHaveLength(1);
+    it('should contain ArrowLeftIcon component', () => {
+        expect(wrapper.find(ArrowLeftIcon)).toHaveLength(1);
     });
 });

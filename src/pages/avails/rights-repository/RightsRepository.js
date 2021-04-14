@@ -1,5 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import Error from '@atlaskit/icon/glyph/error';
+import Warning from '@atlaskit/icon/glyph/warning';
+import * as colors from '@atlaskit/theme/colors';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
@@ -12,7 +15,8 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
-import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
+import {isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -163,10 +167,10 @@ const RightsRepository = ({
     }, [rightsFilter, mapping, previousExternalStatusFilter, gridApi]);
 
     useEffect(() => {
-        let newSelectedRepoRights = cloneDeep(currentUserSelectedRights);
+        let newSelectedRepoRights = currentUserSelectedRights;
 
         if (isMounted.current && gridApi) {
-            const selectedIds = newSelectedRepoRights.map(({id}) => id);
+            const selectedIds = currentUserSelectedRights.map(({id}) => id);
             const loadedSelectedRights = [];
 
             // Filter selected rights only when ingest is selected
@@ -197,15 +201,17 @@ const RightsRepository = ({
 
     useEffect(() => {
         if (isMounted.current && selectedGridApi && selectedRepoRights.length > 0) {
-            const updatedPrePlanRights = cloneDeep(currentUserPrePlanRights);
+            const updatedPrePlanRights = [...currentUserPrePlanRights];
             selectedRepoRights.forEach(selectedRight => {
                 const index = currentUserPrePlanRights.findIndex(right => right.id === selectedRight.id);
                 if (index >= 0) {
-                    updatedPrePlanRights[index].coreTitleId = selectedRight.coreTitleId;
+                    updatedPrePlanRights[index] = {
+                        ...currentUserPrePlanRights[index],
+                        coreTitleId: selectedRight.coreTitleId,
+                    };
                 }
             });
             setPreplanRights({[username]: updatedPrePlanRights});
-
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
@@ -239,14 +245,27 @@ const RightsRepository = ({
         }
     }, [selectedRights, username]);
 
-    const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
-        columnDef.menuTabs = ['generalMenuTab'];
+    const columnDefsClone = columnDefs.map(columnDef => {
+        const updatedColumnDef = {
+            ...columnDef,
+            menuTabs: ['generalMenuTab'],
+            sortable: !['Withdrawn', 'Selected'].includes(columnDef.headerName),
+        };
 
-        if (columnDef.headerName === 'Withdrawn' || columnDef.headerName === 'Selected') {
-            columnDef.sortable = false;
+        if (columnDef.colId === 'displayName') {
+            updatedColumnDef.cellRendererFramework = params => {
+                const {valueFormatted} = params || {};
+                const value = valueFormatted ? ' '.concat(valueFormatted.split(';').join('\n')) : '';
+                return (
+                    <div className="nexus-c-rights-repo-table__cast-crew">
+                        <NexusTooltip content={value}>
+                            <div>{valueFormatted || ''}</div>
+                        </NexusTooltip>
+                    </div>
+                );
+            };
         }
-
-        return columnDef;
+        return updatedColumnDef;
     });
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
@@ -257,9 +276,94 @@ const RightsRepository = ({
         cellStyle: {overflow: 'visible'},
     });
 
-    const updatedColumnDefs = columnDefsClone.length
-        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
-        : columnDefsClone;
+    const columnsValidationDefsClone = columnDefsClone.map(col => {
+        if (!['buttons', 'title', 'id', 'action'].includes(col.field)) {
+            return {
+                ...col,
+                cellStyle: params => cellStyling(params, col),
+                cellRendererFramework: params => {
+                    const cellValue = params.valueFormatted ? params.valueFormatted : params.value;
+
+                    if (
+                        params.data != null &&
+                        Object.keys(params.data).length > 0 &&
+                        params.data.validationErrors.length > 0
+                    ) {
+                        const msg = [];
+                        let severityType = '';
+                        params.data.validationErrors.forEach(function (validation) {
+                            const fieldName = validation.fieldName.includes('[')
+                                ? validation.fieldName.split('[')[0]
+                                : validation.fieldName;
+
+                            if (col.field === fieldName) {
+                                msg.push(validation.message);
+
+                                if (
+                                    severityType === '' ||
+                                    (validation.severityType === 'Error' && severityType === 'Warning')
+                                ) {
+                                    severityType = validation.severityType;
+                                }
+                            }
+                        });
+
+                        if (severityType === 'Error') {
+                            return (
+                                <div>
+                                    {cellValue}{' '}
+                                    <span style={{float: 'right'}} title={msg.join(', ')}>
+                                        <Error />
+                                    </span>
+                                </div>
+                            );
+                        } else if (severityType === 'Warning') {
+                            return (
+                                <div>
+                                    {cellValue}{' '}
+                                    <span style={{float: 'right'}} title={msg.join(', ')}>
+                                        <Warning />
+                                    </span>
+                                </div>
+                            );
+                        }
+                    }
+
+                    return <span>{cellValue}</span>;
+                },
+            };
+        }
+
+        return {
+            ...col,
+        };
+    });
+
+    const cellStyling = ({data = {}, value}, column) => {
+        const styling = {};
+
+        if (Object.keys(data).length > 0 && data.validationErrors.length > 0) {
+            let severityType = '';
+            data.validationErrors.forEach(function (validation) {
+                const fieldName = validation.fieldName.includes('[')
+                    ? validation.fieldName.split('[')[0]
+                    : validation.fieldName;
+                if (column.field === fieldName && severityType !== 'Error') {
+                    severityType = validation.severityType;
+                }
+            });
+
+            if (severityType !== '') {
+                styling.background = severityType === 'Error' ? colors.R100 : colors.Y100;
+            }
+        }
+
+        return styling;
+    };
+
+    const updatedColumnDefs = columnsValidationDefsClone.length
+        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnsValidationDefsClone]
+        : columnsValidationDefsClone;
 
     const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
         headerCheckboxSelection: true,
@@ -278,7 +382,7 @@ const RightsRepository = ({
                 setColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED: {
-                const clonedSelectedRights = cloneDeep(currentUserSelectedRights);
+                let clonedSelectedRights = currentUserSelectedRights;
 
                 // Get selected rows from both tables
                 const rightsTableSelectedRows = api.getSelectedRows() || [];
@@ -330,7 +434,7 @@ const RightsRepository = ({
                     if (wasSelected && !node.isSelected()) {
                         idsToRemove.push(data.id);
                     } else if (!wasSelected && node.isSelected()) {
-                        clonedSelectedRights.push(data);
+                        clonedSelectedRights = [...currentUserSelectedRights, data];
                     }
                 });
 
@@ -396,6 +500,7 @@ const RightsRepository = ({
                 } else {
                     nodesToDeselect.forEach(node => node.setSelected(false));
                 }
+
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -437,7 +542,7 @@ const RightsRepository = ({
             )}
             <AvailsTableToolbar
                 totalRows={totalCount}
-                selectedRightsCount={currentUserSelectedRights.length}
+                selectedRightsCount={selectedRepoRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
@@ -478,6 +583,7 @@ const RightsRepository = ({
                 isGridHidden={activeTab !== RIGHTS_TAB}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
+                multiSortKey="ctrl"
                 setDataLoading={setIsTableDataLoading}
                 rowClassRules={{
                     'nexus-c-rights-repository__row': params =>

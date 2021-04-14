@@ -287,6 +287,22 @@ class CoreMetadataEditMode extends Component {
                                 }}
                             />
                         </Col>
+                        <Col md={1}>
+                            <Label for="contentProviderId">Content Provider Id </Label>
+                        </Col>
+                        <Col>
+                            <AvField
+                                type="text"
+                                onChange={e => this.props.handleOnExternalIds(e)}
+                                name="contentProviderId"
+                                id="contentProviderId"
+                                value={this.props.data?.externalIds?.contentProviderId}
+                                placeholder="Content Provider Id "
+                                validate={{
+                                    maxLength: {value: 200},
+                                }}
+                            />
+                        </Col>
                     </Row>
                     <Row style={{marginTop: '10px'}}>
                         <Col md={1}>

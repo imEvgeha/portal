@@ -1,25 +1,26 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
-import ErrorIcon from "@atlaskit/icon/glyph/error";
+import ErrorIcon from '@atlaskit/icon/glyph/error';
+import Lozenge from '@atlaskit/lozenge';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import Tooltip from "@atlaskit/tooltip";
-import NexusDatePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import Tooltip from '@atlaskit/tooltip';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {createSuccessMessageSelector} from '@vubiquity-nexus/portal-ui/lib/success/successSelector';
 import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
+import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
+import {SELECT_VALUES, DETE_SERVICE_TYPE} from '../services-table/Constants';
 import ErrorsList from './ErrorsList';
 import Constants from './constants';
 import './FulfillmentOrder.scss';
-
 
 export const FulfillmentOrder = ({
     selectedFulfillmentOrder = {},
@@ -45,6 +46,15 @@ export const FulfillmentOrder = ({
     const dispatch = useDispatch();
 
     const {openModal, closeModal} = useContext(NexusModalContext);
+
+    const lateFaults = useSelector(state => get(state, 'servicingOrders.servicingOrder.lateFaults'));
+
+    // fetch (and store) late reasons if not available in store for the tenant
+    useEffect(() => {
+        if (fulfillmentOrder.tenant && !lateFaults.hasOwnProperty(fulfillmentOrder.tenant)) {
+            dispatch({type: 'FETCH_CONFIG', payload: get(fulfillmentOrder, 'tenant')});
+        }
+    }, [get(fulfillmentOrder, 'tenant')]);
 
     const ModalContent = (
         <>
@@ -114,6 +124,11 @@ export const FulfillmentOrder = ({
         const fo = cloneDeep(fulfillmentOrder);
         set(fo, path, value);
 
+        if (path === fieldKeys.LATE_FAULT) {
+            // set late reason = null when user select/reselect late fault
+            set(fo, fieldKeys.LATE_REASON, null);
+        }
+
         // Show warning modal when status is set to READY
         get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness'
             ? openWarningModal(fo)
@@ -143,6 +158,10 @@ export const FulfillmentOrder = ({
 
     const readinessOption = fulfillmentOrder
         ? Constants.READINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.READINESS])
+        : {};
+
+    const marketTypeOption = fulfillmentOrder
+        ? Constants.MARKET_TYPES.find(l => l.value === fulfillmentOrder[fieldKeys.MARKET_TYPE])
         : {};
 
     const onCancel = () => {
@@ -191,6 +210,24 @@ export const FulfillmentOrder = ({
         setIsSaveDisabled(true);
     };
 
+    const getLateFaultOptions = () => {
+        let faultOptions = [];
+        if (fulfillmentOrder.tenant) {
+            const faultArray = Object.keys(lateFaults[fulfillmentOrder.tenant] || {});
+            faultOptions = faultArray.length > 0 ? faultArray.map(item => ({value: item, label: item})) : [];
+        }
+
+        return faultOptions;
+    };
+
+    const getLateReasonOptions = fault => {
+        const faultObj = lateFaults[fulfillmentOrder.tenant] || {};
+        return fault && fault in faultObj ? faultObj[fault].map(item => ({value: item, label: item})) : [];
+    };
+
+    const lateFaultOptions = [...Constants.LATE_FAULT, ...getLateFaultOptions()];
+    const lateReasonOptions = getLateReasonOptions(fulfillmentOrder?.late_fault);
+
     return (
         <Page>
             <div className="fulfillment-order__section">
@@ -203,16 +240,13 @@ export const FulfillmentOrder = ({
                             </div>
                             <div className="fulfillment-order__save-buttons">
                                 <ButtonGroup>
-                                    <Button
-                                        onClick={onCancel}
-                                        isDisabled={isSaveDisabled || isSaving || isFormDisabled}
-                                    >
+                                    <Button onClick={onCancel} isDisabled={isSaveDisabled || isSaving}>
                                         Cancel
                                     </Button>
                                     <Button
                                         onClick={onSaveHandler}
                                         appearance="primary"
-                                        isDisabled={isSaveDisabled || isFormDisabled}
+                                        isDisabled={isSaveDisabled}
                                         isLoading={isSaving}
                                     >
                                         Save
@@ -220,41 +254,187 @@ export const FulfillmentOrder = ({
                                 </ButtonGroup>
                             </div>
                         </div>
-                        <Grid>
-                            <GridColumn medium={6}>
-                                <label htmlFor="notes">Notes:</label>
-                                <NexusTextArea
-                                    name="notes"
-                                    onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
-                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
-                                    isDisabled={isFormDisabled}
-                                />
+                        <Grid layout="fluid">
+                            <GridColumn medium={3}>
+                                <div className="nexus-fo-date-readonly">
+                                    Servicer:{' '}
+                                    <Lozenge appearance="new">{get(fulfillmentOrder, fieldKeys.SERVICER, '')}</Lozenge>
+                                </div>
+                                <div className="nexus-fo-date-readonly">
+                                    Start Date:{' '}
+                                    <Lozenge>
+                                        {moment(getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))).format(
+                                            'MM/DD/YYYY'
+                                        )}
+                                    </Lozenge>
+                                </div>
+                                <div className="nexus-fo-date-readonly">
+                                    Due Date:{' '}
+                                    <Lozenge>
+                                        {moment(getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))).format(
+                                            'MM/DD/YYYY'
+                                        )}
+                                    </Lozenge>
+                                </div>
+                                {get(fulfillmentOrder, fieldKeys.STATUS) === Constants.STATUS.COMPLETE && (
+                                    <div className="nexus-fo-date-readonly">
+                                        Completed Date:{' '}
+                                        <Lozenge>
+                                            {moment(
+                                                getValidDate(get(fulfillmentOrder, fieldKeys.COMPLETED_DATE, ''))
+                                            ).format('MM/DD/YYYY')}
+                                        </Lozenge>
+                                    </div>
+                                )}
+                                <div>
+                                    {fulfillmentOrder.hasOwnProperty(fieldKeys.PREMIERING) && (
+                                        <div>
+                                            <input
+                                                type="checkbox"
+                                                id="inp-premiering"
+                                                checked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
+                                                onClick={() =>
+                                                    onFieldChange(
+                                                        fieldKeys.PREMIERING,
+                                                        !get(fulfillmentOrder, fieldKeys.PREMIERING)
+                                                    )
+                                                }
+                                                disabled={false}
+                                            />
+                                            <label htmlFor="inp-premiering" className="fo-gridhdr-radio">
+                                                Premiering
+                                            </label>
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    {fulfillmentOrder.hasOwnProperty(fieldKeys.WATERMARK) && (
+                                        <div>
+                                            <input
+                                                type="checkbox"
+                                                id="inp-watermark"
+                                                checked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
+                                                onClick={() =>
+                                                    onFieldChange(
+                                                        fieldKeys.WATERMARK,
+                                                        !get(fulfillmentOrder, fieldKeys.WATERMARK)
+                                                    )
+                                                }
+                                                disabled={false}
+                                            />
+                                            <label htmlFor="inp-watermark" className="fo-gridhdr-radio">
+                                                Watermark
+                                            </label>
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    {fulfillmentOrder.hasOwnProperty(fieldKeys.LATE) && (
+                                        <div>
+                                            <input
+                                                type="checkbox"
+                                                id="inp-late"
+                                                checked={get(fulfillmentOrder, fieldKeys.LATE, false)}
+                                                onClick={() =>
+                                                    onFieldChange(
+                                                        fieldKeys.LATE,
+                                                        !get(fulfillmentOrder, fieldKeys.LATE)
+                                                    )
+                                                }
+                                                disabled={false}
+                                            />
+                                            <label htmlFor="inp-late" className="fo-gridhdr-radio">
+                                                Late
+                                            </label>
+                                        </div>
+                                    )}
+                                </div>
                             </GridColumn>
-                            <GridColumn medium={2}>
-                                <label htmlFor="servicer">Servicer</label>
-                                <Textfield
-                                    name="servicer"
-                                    value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
-                                    isDisabled={true}
-                                />
+                            <GridColumn medium={3}>
+                                {fulfillmentOrder.hasOwnProperty(fieldKeys.MARKET_TYPE) && (
+                                    <div className="fulfillment-order__input">
+                                        <label htmlFor="readiness-status">Market Type</label>
+                                        <Select
+                                            id="market-type"
+                                            name="market-type"
+                                            options={Constants.MARKET_TYPES}
+                                            value={{
+                                                value: get(fulfillmentOrder, fieldKeys.MARKET_TYPE, ''),
+                                                label: marketTypeOption && marketTypeOption.label,
+                                            }}
+                                            onChange={val => onFieldChange(fieldKeys.MARKET_TYPE, val.value)}
+                                            isDisabled={false}
+                                        />
+                                    </div>
+                                )}
+                                {fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_FAULT) && (
+                                    <div className="fulfillment-order__input">
+                                        <label htmlFor="late-fault">Late At Fault</label>
+                                        <Select
+                                            id="late-fault"
+                                            name="late-fault"
+                                            options={lateFaultOptions}
+                                            value={{
+                                                value: get(fulfillmentOrder, fieldKeys.LATE_FAULT),
+                                                label: get(fulfillmentOrder, fieldKeys.LATE_FAULT) || 'NONE',
+                                            }}
+                                            onChange={val => onFieldChange(fieldKeys.LATE_FAULT, val.value)}
+                                            isDisabled={false}
+                                        />
+                                    </div>
+                                )}
                             </GridColumn>
-
-                            <GridColumn medium={2}>
+                            <GridColumn medium={3}>
+                                {fulfillmentOrder.hasOwnProperty(fieldKeys.CAR) && (
+                                    <div className="fulfillment-order__input">
+                                        <label htmlFor="car">CAR</label>
+                                        <Tooltip content={get(fulfillmentOrder, fieldKeys.CAR, '')}>
+                                            <Textfield
+                                                name="CAR"
+                                                id="car"
+                                                value={get(fulfillmentOrder, fieldKeys.CAR, '') || ''}
+                                                onChange={e => onFieldChange(fieldKeys.CAR, e.target.value)}
+                                                isDisabled={false}
+                                                css={{height: 'auto'}}
+                                            />
+                                        </Tooltip>
+                                    </div>
+                                )}
+                                {fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_REASON) && (
+                                    <div className="fulfillment-order__input">
+                                        <label htmlFor="late-reason">Late Reason</label>
+                                        <Tooltip content={get(fulfillmentOrder, fieldKeys.LATE_REASON, '')}>
+                                            <Select
+                                                id="late-reason"
+                                                name="late-reason"
+                                                options={lateReasonOptions}
+                                                value={{
+                                                    value: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
+                                                    label: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
+                                                }}
+                                                onChange={val => onFieldChange(fieldKeys.LATE_REASON, val.value)}
+                                                isDisabled={false}
+                                            />
+                                        </Tooltip>
+                                    </div>
+                                )}
+                            </GridColumn>
+                            <GridColumn medium={3}>
                                 <div className="fulfillment-order__input">
-                                    <Tooltip content={deteErrors.length ?
-                                        `View ${deteErrors.length} errors`
-                                        : '0 errors'}>
+                                    <Tooltip
+                                        content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}
+                                    >
                                         <div
                                             onClick={() =>
-                                                deteErrors.length ?
-                                                    openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />)
+                                                deteErrors.length
+                                                    ? openModal(
+                                                          <ErrorsList errors={deteErrors} closeModal={closeModal} />
+                                                      )
                                                     : null
                                             }
                                         >
-                                            Fulfillment Status <ErrorIcon size="small" primaryColor={deteErrors.length ?
-                                            'red' :
-                                            'grey'}
-                                        />
+                                            <label htmlFor="late-reason">Fulfillment Status</label>
+                                            <ErrorIcon size="small" primaryColor={deteErrors.length ? 'red' : 'grey'} />
                                         </div>
                                     </Tooltip>
                                     <Textfield
@@ -263,19 +443,6 @@ export const FulfillmentOrder = ({
                                         isDisabled={true}
                                     />
                                 </div>
-                                <div className="fulfillment-order__input">
-                                    <NexusDatePicker
-                                        id="ff_startDate"
-                                        label="Start Date"
-                                        value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
-                                        onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
-                                        isReturningTime={false}
-                                        isDisabled={true}
-                                    />
-                                </div>
-                            </GridColumn>
-
-                            <GridColumn medium={2}>
                                 <div className="fulfillment-order__input">
                                     <label htmlFor="readiness-status">Readiness Status</label>
                                     <Select
@@ -291,16 +458,15 @@ export const FulfillmentOrder = ({
                                         isDisabled={isFormDisabled}
                                     />
                                 </div>
-                                <div className="fulfillment-order__input">
-                                    <NexusDatePicker
-                                        id="ff_dueDate"
-                                        label="Due Date"
-                                        value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
-                                        onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
-                                        isReturningTime={false}
-                                        isDisabled={true}
-                                    />
-                                </div>
+                                <label htmlFor="notes">Notes:</label>
+                                <NexusTextArea
+                                    name="notes"
+                                    onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
+                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
+                                    disabled={false}
+                                    resize="smart"
+                                    isCompact
+                                />
                             </GridColumn>
                         </Grid>
                         <hr />

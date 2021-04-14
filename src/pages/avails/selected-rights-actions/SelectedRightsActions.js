@@ -22,6 +22,7 @@ import {
     getEligibleRights,
     hasAtLeastOneUnselectedTerritory,
     filterOutUnselectedTerritories,
+    isEndDateExpired,
 } from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {PRE_PLAN_TAB, RIGHTS_TAB} from '../rights-repository/constants';
@@ -108,7 +109,8 @@ export const SelectedRightsActions = ({
     // None of the rights has status 'Deleted' and no territories with selected status (no rights are selected for planning)
     const checkRightDeletionCriteria = () =>
         selectedRights.every(
-            ({status, territory = []}) => status !== 'Deleted' && territory.filter(item => item.selected).length === 0
+            ({status, territory = []}) =>
+                !['Deleted', 'Merged'].includes(status) && territory.filter(item => item.selected).length === 0
         );
 
     // At least one of the selected rights has status 'Deleted' or 'Merged'
@@ -134,12 +136,14 @@ export const SelectedRightsActions = ({
 
     const checkPrePlanEligibilityCriteria = () => {
         return selectedRights.every(
-            ({rightStatus, licensed, status, territory, temporaryPriceReduction}) =>
+            ({rightStatus, licensed, status, territory, temporaryPriceReduction, end, updatedCatalogReceived}) =>
+                !updatedCatalogReceived &&
                 licensed &&
                 ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
                 ['ReadyNew', 'Ready'].includes(status) &&
                 hasAtLeastOneUnselectedTerritory(territory) &&
-                !temporaryPriceReduction
+                !temporaryPriceReduction &&
+                !isEndDateExpired(end)
         );
     };
 

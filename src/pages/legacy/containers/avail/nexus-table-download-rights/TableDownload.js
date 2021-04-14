@@ -25,6 +25,7 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
     };
 
     const prettyTabName = () => {
+        if (selectedTab === 'ATTACHMENTS_TAB') return `Attachments`;
         return `${selectedTab[0]}${selectedTab.slice(1).toLowerCase()}`.replace('_', ' ');
     };
 
@@ -38,7 +39,7 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
                         () => {
                             // Empty because of design confirmModal. The modal will just close on cancel button press.
                         },
-                        {description: `You have select ${prettyTabName()} tab for download.`}
+                        {description: `You have selected ${prettyTabName()} tab for download.`}
                     );
                 } else {
                     noAvailSelectedAlert();

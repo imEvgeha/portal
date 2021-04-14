@@ -5,6 +5,8 @@ import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
 import {connect} from 'react-redux';
+import SectionMessage from '@atlaskit/section-message';
+import Spinner from '@atlaskit/spinner';
 import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
@@ -25,6 +27,7 @@ import {
     GRID_EVENTS,
     NOT_FILTERABLE_COLUMNS,
 } from '../constants';
+import './hoc.scss';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -62,19 +65,12 @@ const withFilterableColumns = ({
             };
         }, []);
 
-        // TODO: temporary solution to get select values
-        useEffect(() => {
-            if (isMounted.current && isEmpty(selectValues)) {
-                fetchAvailMapping();
-            }
-        }, [selectValues]);
-
         useEffect(() => {
             if (
                 isMounted.current &&
-                !!columnDefs.length &&
                 isObject(selectValues) &&
-                !!Object.keys(selectValues).length
+                !!Object.keys(selectValues).length &&
+                !!columnDefs.length
             ) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }
@@ -124,7 +120,7 @@ const withFilterableColumns = ({
                     });
                 }
             } else if (filterInstance instanceof SetFilter) {
-                filterInstance.selectEverything();
+                filterInstance.setModel({values: filterInstance.getValues()});
                 filterInstance.applyModel();
             } else {
                 filterInstance.setModel(null);
@@ -186,7 +182,8 @@ const withFilterableColumns = ({
                 const isFilterable =
                     FILTERABLE_DATA_TYPES.includes(searchDataType) &&
                     (columns ? columns.includes(columnDef.field) : true) &&
-                    !excludedFilterColumns.includes(columnDef.field);
+                    !excludedFilterColumns.includes(columnDef.field) &&
+                    get(columnDef, 'isFilterable', true);
 
                 if (isFilterable) {
                     let locked = false;
@@ -420,7 +417,7 @@ const withFilterableColumns = ({
         const propsWithoutHocProps = omit(props, [...DEFAULT_HOC_PROPS, ...hocProps]);
 
         // TODO - HOC should be props proxy, not bloquer
-        return filterableColumnDefs.length ? (
+        return filterableColumnDefs.length && Object.keys(selectValues).length > 0 ? (
             <WrappedComponent
                 {...propsWithoutHocProps}
                 columnDefs={filterableColumnDefs}
@@ -437,7 +434,11 @@ const withFilterableColumns = ({
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}
             />
-        ) : null;
+        ) : (<div className="nexus-grid-filters-fallback">
+                <SectionMessage className="nexus-grid-fallback-section" title="Preparing table filters...">
+                    <span> <Spinner size="small" /> Please wait.</span>
+                </SectionMessage>
+            </div>)
     };
 
     const createMapStateToProps = () => {

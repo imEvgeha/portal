@@ -124,6 +124,11 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
     onRowSelected={[Function]}
     rowData={Array []}
     rowSelection="single"
+    rowStyle={
+      Object {
+        "zIndex": "0",
+      }
+    }
     selectValues={
       Object {
         "assetStatus": Array [

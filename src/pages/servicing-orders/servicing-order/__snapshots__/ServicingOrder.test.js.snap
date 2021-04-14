@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServicingOrder service section with async data fetch should match snapshot 1`] = `
+<div
+  className="servicing-order"
+>
+  <div
+    className="servicing-order__left"
+  >
+    <Loading
+      spinnerSize="large"
+    />
+  </div>
+  <div
+    className="servicing-order__right"
+  >
+    <Loading
+      spinnerSize="large"
+    />
+  </div>
+</div>
+`;

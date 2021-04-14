@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox} from '@atlaskit/checkbox';
-import {Radio} from '@atlaskit/radio';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineEpisodeAndSeasonNumberColumn,
     getLinkableColumnDefs,
@@ -13,7 +10,7 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
-import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import classNames from 'classnames';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -26,8 +23,7 @@ const TitlesTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
-    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
-    withSorting()
+    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
 )(NexusGrid);
 
 const RightsMatchingTitlesTable = ({
@@ -40,11 +36,26 @@ const RightsMatchingTitlesTable = ({
     onCellValueChanged,
 }) => {
     const updateColumnDefs = columnDefs => {
-        return columnDefs.map(columnDef => ({
-            ...columnDef,
-            valueFormatter: createValueFormatter(columnDef),
-            cellRenderer: 'loadingCellRenderer',
-        }));
+        return columnDefs.map(columnDef => {
+            const updatedColumnDef = {
+                ...columnDef,
+                valueFormatter: createValueFormatter(columnDef),
+            };
+            if (columnDef.colId.startsWith('castCrew')) {
+                updatedColumnDef.cellRendererFramework = params => {
+                    const {valueFormatted} = params || {};
+                    const value = valueFormatted ? ' '.concat(valueFormatted.split(';').join('\n')) : '';
+                    return (
+                        <div className="nexus-c-rights-matching-titles-table__cast-crew">
+                            <NexusTooltip content={value}>
+                                <div>{valueFormatted || ''}</div>
+                            </NexusTooltip>
+                        </div>
+                    );
+                };
+            }
+            return updatedColumnDef;
+        });
     };
     const updatedColumns = updateColumnDefs(mappings);
 

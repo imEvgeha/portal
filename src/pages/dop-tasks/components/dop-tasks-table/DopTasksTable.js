@@ -9,6 +9,7 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
+import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
 import {
@@ -127,9 +128,9 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
         }
     };
 
-    const onSortChanged = ({api}) => {
+    const onSortChanged = ({columnApi}) => {
         // get sorting column and prepare data for passing it as a payload instead of url params (not supported by DOP api)
-        const sortModel = api.getSortModel();
+        const sortModel = getSortModel(columnApi);
         if (sortModel.length) {
             const sortCriterion = [
                 {

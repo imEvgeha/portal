@@ -10,7 +10,9 @@ const getAvailsMapping = () => {
 };
 
 const getSelectValues = field => {
-    const url = config.get('gateway.configuration') + '/configuration-api/v1' + field + '?page=0&size=10000';
+    const url = `${config.get('gateway.configuration')}${config.get(
+        'gateway.service.configuration'
+    )}${field}?page=0&size=10000`;
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 
@@ -21,6 +23,7 @@ export const profileService = {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping()
                 .then(response => {
+                    const fields = [];
                     response.mappings.map(rec => {
                         if (rec.searchDataType === 'multiselect') {
                             if (rec.options) {
@@ -34,10 +37,13 @@ export const profileService = {
                                 );
                             } else {
                                 if (rec.configEndpoint) {
-                                    getSelectValues(rec.configEndpoint).then(response => {
-                                        const options = processOptions(response.data, rec.configEndpoint);
-                                        store.dispatch(loadSelectLists(rec.javaVariableName, options));
-                                    });
+                                    if (!fields.includes(rec.configEndpoint)) {
+                                        fields.push(rec.configEndpoint);
+                                        getSelectValues(rec.configEndpoint).then(response => {
+                                            const options = processOptions(response.data, rec.configEndpoint);
+                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
+                                        });
+                                    }
                                 } else {
                                     console.warn('MISSING options or endpoint: for ', rec.javaVariableName);
                                 }

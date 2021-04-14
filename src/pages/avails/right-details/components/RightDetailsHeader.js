@@ -18,11 +18,12 @@ import {
     NoteError,
     NoteMerged,
     NotePending,
+    NoteDeleted,
     STATUS,
 } from '../constants';
 import './RightDetailsHeader.scss';
 
-const RightDetailsHeader = ({title, right, history, containerRef}) => {
+const RightDetailsHeader = ({title, right, containerRef}) => {
     const tabs = useMemo(
         () =>
             schema.fields.map(({title = ''}, index) => {
@@ -86,10 +87,6 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
         }
     }, [isShrinked]);
 
-    const onBackArrowClicked = () => {
-        history.goBack();
-    };
-
     const onScroll = event => {
         let toShrink = false;
         const SHRINK_BOUNDARY = 20;
@@ -105,16 +102,18 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
         if (right) {
             let note = {};
             const {status} = right;
-            const [ERROR, MERGED, PENDING] = STATUS;
+            const [ERROR, MERGED, PENDING, DELETED] = STATUS;
             if (status === ERROR) {
                 note = NoteError;
             } else if (status === MERGED) {
                 note = NoteMerged;
             } else if (status === PENDING) {
                 note = NotePending;
+            } else if (status === DELETED) {
+                note = NoteDeleted;
             }
 
-            return status === ERROR || status === MERGED || status === PENDING ? (
+            return status === ERROR || status === MERGED || status === PENDING || status === DELETED ? (
                 <div className="nexus-c-right-details-match">
                     <SectionMessage appearance={note.noteStyle}>
                         {status === 'Pending' ? (
@@ -141,7 +140,7 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
             })}
         >
             <div className="nexus-c-right-details-header__top">
-                <RightDetailsTitle title={title} goBack={onBackArrowClicked} />
+                <RightDetailsTitle title={title} />
                 <RightDetailsTags right={right} />
             </div>
             <div
@@ -173,14 +172,12 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
 };
 
 RightDetailsHeader.propTypes = {
-    history: PropTypes.object,
     title: PropTypes.string,
     right: PropTypes.object,
     containerRef: PropTypes.any,
 };
 
 RightDetailsHeader.defaultProps = {
-    history: {},
     title: null,
     right: {},
     containerRef: null,

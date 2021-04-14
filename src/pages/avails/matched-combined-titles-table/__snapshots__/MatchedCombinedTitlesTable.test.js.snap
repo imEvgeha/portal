@@ -256,6 +256,7 @@ exports[`MatchedCombinedTitlesTable should match snapshot 1`] = `
     dragStopped={null}
     frameworkComponents={Object {}}
     isGridHidden={false}
+    link={null}
     mapping={
       Array [
         Object {
