@@ -36,7 +36,7 @@ export default {
         LICENSOR: 'licensor',
         INGEST_TYPE: 'ingestType',
         EMAIL_SUBJECT: 'emailSubject',
-        FILE_NAME: 'attachmentFilename',
+        FILE_NAME: 'attachmentFilenames',
     },
     URLFilterKeys: {
         receivedFrom: 'igReceivedFrom',
@@ -45,7 +45,7 @@ export default {
         status: 'igStatus',
         licensor: 'igLicensor',
         emailSubject: 'emailSubject',
-        attachmentFilename: 'attachmentFilename',
+        attachmentFilename: 'attachmentFilenames',
     },
     SERVICE_REGIONS: [
         {label: 'US', value: 'US'},
