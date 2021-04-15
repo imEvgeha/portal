@@ -248,9 +248,9 @@ export const COLUMN_MAPPINGS = [
         hide: true,
     },
     {
-        colId: 'titleID',
-        field: 'titleID',
-        javaVariableName: 'titleID',
+        colId: 'coreTitleID',
+        field: 'coreTitleID',
+        javaVariableName: 'coreTitleID',
         headerName: 'Title ID',
         width: 100,
         enableSearch: true,
