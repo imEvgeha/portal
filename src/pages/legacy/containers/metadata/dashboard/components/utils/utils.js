@@ -6,6 +6,7 @@ import {
     PERSONS_PER_REQUEST,
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {searchPerson} from '../../../service/ConfigService';
+import {formatNumberTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
@@ -35,4 +36,11 @@ export const loadOptionsPerson = (searchPersonText, type) => {
             })
         );
     }
+};
+
+export const renderTitleName = (title, seasonNumber, episodeNumber) => {
+    if (seasonNumber && episodeNumber) {
+        return `${title} S${formatNumberTwoDigits(seasonNumber)} E${formatNumberTwoDigits(episodeNumber)}`;
+    }
+    return title;
 };
