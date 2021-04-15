@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
 import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
 import Spinner from '@atlaskit/spinner';
+import {formatNumberTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 class TitleReadOnlyMode extends Component {
     constructor(props) {
@@ -71,11 +72,25 @@ class TitleReadOnlyMode extends Component {
                                 <Alert color="light" id="titleName">
                                     <h2>
                                         <b>Title: </b>
-                                        {title ? title : <span style={{color: '#999'}}>Empty</span>}
+                                        {title ? (
+                                            this.renderTitle(title, seasonNumber, episodeNumber)
+                                        ) : (
+                                            <span style={{color: '#999'}}>Empty</span>
+                                        )}
                                     </h2>
                                 </Alert>
                             </Col>
                         </Row>
+                        {seasonNumber && episodeNumber && (
+                            <Row>
+                                <Col>
+                                    <Alert color="light" id="titleContentType">
+                                        <b>Concatenated Title:</b>
+                                        {title ? title : <span style={{color: '#999'}}>Empty</span>}
+                                    </Alert>
+                                </Col>
+                            </Row>
+                        )}
                         <Row>
                             <Col>
                                 <Alert color="light" id="titleContentType">
@@ -299,6 +314,13 @@ class TitleReadOnlyMode extends Component {
                 />
             </Container>
         );
+    };
+
+    renderTitle = (title, seasonNumber, episodeNumber) => {
+        if (seasonNumber && episodeNumber) {
+            return `${title} S${formatNumberTwoDigits(seasonNumber)} E${formatNumberTwoDigits(episodeNumber)}`;
+        }
+        return title;
     };
 
     render() {
