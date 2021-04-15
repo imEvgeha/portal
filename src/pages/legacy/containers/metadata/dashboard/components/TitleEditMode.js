@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import CoreMetadataEditMode from './coretitlemetadata/CoreMetadataEditMode';
 import {connect} from 'react-redux';
 import {configFields} from '../../service/ConfigService';
+import {renderTitleName} from './utils/utils';
 import {
     ADVERTISEMENT,
     EPISODE,
@@ -93,6 +94,19 @@ class TitleEditMode extends Component {
                         />
                     </Col>
                     <Col>
+                        {episodic && episodic.seasonNumber && episodic.episodeNumber && (
+                            <Row>
+                                <Col>
+                                    <Label for="title">Concatenated Title</Label>
+                                    <AvField
+                                        readOnly
+                                        name="concatenatedTitle"
+                                        id="concatenatedTitle"
+                                        value={renderTitleName(title, episodic.seasonNumber, episodic.episodeNumber)}
+                                    />
+                                </Col>
+                            </Row>
+                        )}
                         <Row>
                             <Col>
                                 <Label for="title">
