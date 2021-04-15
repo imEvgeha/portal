@@ -45,7 +45,7 @@ export default {
         status: 'igStatus',
         licensor: 'igLicensor',
         emailSubject: 'emailSubject',
-        attachmentFilename: 'attachmentFilenames',
+        attachmentFilenames: 'attachmentFilenames',
     },
     SERVICE_REGIONS: [
         {label: 'US', value: 'US'},
