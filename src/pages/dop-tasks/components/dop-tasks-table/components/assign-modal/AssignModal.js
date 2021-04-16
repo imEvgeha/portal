@@ -13,6 +13,7 @@ const AssignModal = ({getOwners, selectedTasks, tasksOwners, setTaskOwner}) => {
 
     return (
         <div className="dop-tasks-assign-tasks">
+            <label>Assign to: </label>
             <Select
                 placeholder="Select Task Owner"
                 options={tasksOwners.map(({firstName, lastName, userId}) => ({
