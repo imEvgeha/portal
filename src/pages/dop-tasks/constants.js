@@ -324,3 +324,4 @@ export const DATE_FIELDS = [
     'projectPlannedCompletionDate',
 ];
 export const FIELDS_OPERATOR_IN = ['language', 'locale', 'territories'];
+export const ASSIGN_TASK_TITLE = 'Assign Task';

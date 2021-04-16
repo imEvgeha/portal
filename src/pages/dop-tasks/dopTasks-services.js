@@ -29,6 +29,12 @@ const DopTasksService = {
             true
         );
     },
+    getOwners: taskIds => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get(
+            'gateway.service.DOPTasksPotentialOwners'
+        )}?taskId=${taskIds}`;
+        return nexusFetch(url);
+    },
 };
 
 const prepareFilterPayload = (initialParams, externalFilter) => {

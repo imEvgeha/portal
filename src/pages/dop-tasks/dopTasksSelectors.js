@@ -6,3 +6,5 @@ const getDopTasksReducer = state => {
 };
 
 export const createGridStateSelector = () => createSelector(getDopTasksReducer, dopTasks => dopTasks.gridState || {});
+export const createTaskOwnersSelector = () =>
+    createSelector(getDopTasksReducer, dopTasks => dopTasks.tasksOwners || []);
