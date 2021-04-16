@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag/dist/cjs/Tag';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import {defineCheckboxSelectionColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
@@ -158,7 +159,9 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
         <div className="nexus-c-dop-tasks-table">
             <DopTasksTableGrid
                 id="DopTasksTable"
-                columnDefs={formattedValueColDefs}
+                columnDefs={[defineCheckboxSelectionColumn(), ...formattedValueColDefs]}
+                rowSelection="multiple"
+                notFilterableColumns={['action']}
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onSortChanged={onSortChanged}
