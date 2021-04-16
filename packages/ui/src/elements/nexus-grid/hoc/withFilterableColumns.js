@@ -428,6 +428,10 @@ const withFilterableColumns = ({
             return options.map(option => {
                 if (isObject(option)) {
                     // TODO: This is just a temporary solution for territory fields
+                    if (field === 'language') {
+                        return option.label;
+                    }
+
                     return option.value || option.countryCode;
                 }
                 return option;
