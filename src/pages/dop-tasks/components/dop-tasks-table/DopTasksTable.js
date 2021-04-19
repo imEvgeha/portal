@@ -37,12 +37,13 @@ const DopTasksTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
-const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumnApi}) => {
+const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumnApi, assignTasks}) => {
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
     });
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [assign, setAssign] = useState(false);
     const [rowsSelected, setRowsSelected] = useState([]);
     const [taskOwner, setTaskOwner] = useState(null);
     const {openModal, closeModal} = useContext(NexusModalContext);
@@ -55,6 +56,12 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
             window.removeEventListener('click', removeMenu);
         };
     }, []);
+
+    useEffect(() => {
+        if (taskOwner) {
+            assignTasks({userId: taskOwner, taskIds: rowsSelected, closeModal});
+        }
+    }, [assign]);
 
     const formattedValueColDefs = COLUMN_MAPPINGS.map(col => {
         if (col.colId === 'taskName') {
@@ -142,7 +149,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
                 break;
             }
             case SELECTION_CHANGED: {
-                setRowsSelected(api.getSelectedRows());
+                setRowsSelected(api.getSelectedRows().map(n => n.id));
                 break;
             }
             default:
@@ -181,17 +188,13 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const applyAssign = () => {
-        // taskOwner is updated in state
-    };
-
     const handleAssign = () => {
-        openModal(<AssignModal selectedTasks={rowsSelected.map(t => t.id)} setTaskOwner={setTaskOwner} />, {
+        openModal(<AssignModal selectedTasks={rowsSelected} setTaskOwner={setTaskOwner} />, {
             title: ASSIGN_TASK_TITLE,
             actions: [
                 {
                     text: 'Apply',
-                    onClick: applyAssign,
+                    onClick: () => setAssign(!assign),
                     appearance: 'primary',
                 },
                 {
@@ -242,6 +245,7 @@ DopTasksTable.propTypes = {
     setExternalFilter: PropTypes.func,
     setGridApi: PropTypes.func,
     setColumnApi: PropTypes.func,
+    assignTasks: PropTypes.func,
 };
 
 DopTasksTable.defaultProps = {
@@ -249,6 +253,7 @@ DopTasksTable.defaultProps = {
     setExternalFilter: () => null,
     setGridApi: () => null,
     setColumnApi: () => null,
+    assignTasks: () => null,
 };
 
 export default DopTasksTable;

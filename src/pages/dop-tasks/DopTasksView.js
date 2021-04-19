@@ -11,13 +11,19 @@ import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
 import SavedTableDropdown from './components/saved-table-dropdown/SavedTableDropdown';
-import {setDopTasksUserDefinedGridState} from './dopTasksActions';
+import {setDopTasksUserDefinedGridState, assignDopTasks} from './dopTasksActions';
 import {createGridStateSelector} from './dopTasksSelectors';
 import {applyPredefinedTableView, insertNewGridModel} from './utils';
 import {USER} from './constants';
 import './DopTasksView.scss';
 
-export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDopTasksUserDefinedGridState}) => {
+export const DopTasksView = ({
+    toggleRefreshGridData,
+    username,
+    gridState,
+    setDopTasksUserDefinedGridState,
+    assignTasks,
+}) => {
     const [externalFilter, setExternalFilter] = useState({
         user: USER,
     });
@@ -95,6 +101,7 @@ export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDop
                 setExternalFilter={setExternalFilter}
                 setGridApi={setGridApi}
                 setColumnApi={setColumnApi}
+                assignTasks={assignTasks}
             />
         </div>
     );
@@ -112,11 +119,13 @@ const mapStateToProps = () => {
 const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
     setDopTasksUserDefinedGridState: payload => dispatch(setDopTasksUserDefinedGridState(payload)),
+    assignTasks: payload => dispatch(assignDopTasks(payload)),
 });
 
 DopTasksView.propTypes = {
     toggleRefreshGridData: PropTypes.func,
     setDopTasksUserDefinedGridState: PropTypes.func,
+    assignTasks: PropTypes.func,
     gridState: PropTypes.object,
     username: PropTypes.string.isRequired,
 };
@@ -124,6 +133,7 @@ DopTasksView.propTypes = {
 DopTasksView.defaultProps = {
     toggleRefreshGridData: () => null,
     setDopTasksUserDefinedGridState: () => null,
+    assignTasks: () => null,
     gridState: {},
 };
 

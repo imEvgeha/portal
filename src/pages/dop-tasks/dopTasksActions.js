@@ -9,3 +9,8 @@ export const getDopTasksOwners = payload => ({
     type: actionTypes.GET_DOP_TASKS_OWNERS,
     payload,
 });
+
+export const assignDopTasks = payload => ({
+    type: actionTypes.ASSIGN_DOP_TASKS,
+    payload,
+});
