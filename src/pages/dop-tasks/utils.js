@@ -36,7 +36,6 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
                 territory = '',
                 affiliate = '',
                 licenseStartDate = '',
-
             } = customData || {};
             const potentialOwners = potentialOwner.map(item => item.userId).join(', ');
             const {userId: actualOwner} = owner || {};
