@@ -325,3 +325,8 @@ export const DATE_FIELDS = [
 ];
 export const FIELDS_OPERATOR_IN = ['language', 'locale', 'territories'];
 export const ASSIGN_TASK_TITLE = 'Assign Task';
+export const jobStatus = {
+    SUCCESS: 'COMPLETED',
+    ERROR: 'ERRORED',
+    PARTIAL: 'Partially Completed',
+};
