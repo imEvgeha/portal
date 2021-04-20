@@ -10,6 +10,29 @@ const columnDefinitions = [
         cellRenderer: 'loadingCellRenderer',
     },
     {
+        colId: 'updatedCatalogReceived',
+        field: 'updatedCatalogReceived',
+        headerName: '',
+        cellRenderer: 'iconCellRenderer',
+        cellRendererParams: {
+            icon: 'warning',
+            tooltip: 'Removed from Catalog',
+        },
+        width: 45,
+    },
+    {
+        colId: 'rightStatus',
+        field: 'rightStatus',
+        headerName: '',
+        cellRenderer: 'iconCellRenderer',
+        cellRendererParams: {
+            icon: 'block',
+            tooltip: 'Withdrawn',
+            valueToDisplay: 'Withdrawn',
+        },
+        width: 45,
+    },
+    {
         colId: 'title',
         field: 'title',
         headerName: 'Title',
