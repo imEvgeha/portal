@@ -211,11 +211,12 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'licenseStartDate',
         headerName: 'License Start Date',
         width: 120,
+        searchDataType: 'businessDateTime',
         dataType: 'regionalMidnight',
         hide: true,
     },
     {
-        colId: 'affiliates',
+        colId: 'affiliate',
         field: 'affiliate',
         javaVariableName: 'affiliate',
         headerName: 'Affiliates',
@@ -226,7 +227,7 @@ export const COLUMN_MAPPINGS = [
         hide: true,
     },
     {
-        colId: 'territories',
+        colId: 'territory',
         field: 'territory',
         javaVariableName: 'territory',
         headerName: 'Territories',
@@ -314,6 +315,10 @@ export const STRING_FIELDS = [
     'Customer',
     'servicingRegion',
     'potentialOwners',
+    'coreTitleID',
+    'title',
+    'seasonNumber',
+    'episodeNumber',
 ];
 export const DATE_FIELDS = [
     'activityEstimatedEndDate',
@@ -322,8 +327,9 @@ export const DATE_FIELDS = [
     'activityPlannedCompletionDate',
     'projectStartDate',
     'projectPlannedCompletionDate',
+    'licenseStartDate',
 ];
-export const FIELDS_OPERATOR_IN = ['language', 'locale', 'territories'];
+export const FIELDS_OPERATOR_IN = ['language', 'locale', 'territory', 'affiliate', 'contentType'];
 export const ASSIGN_TASK_TITLE = 'Assign Task';
 export const jobStatus = {
     SUCCESS: 'COMPLETED',
