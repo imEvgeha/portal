@@ -318,7 +318,7 @@ export const STRING_FIELDS = [
     'coreTitleID',
     'title',
     'seasonNumber',
-    'episodeNumber'
+    'episodeNumber',
 ];
 export const DATE_FIELDS = [
     'activityEstimatedEndDate',
@@ -327,6 +327,12 @@ export const DATE_FIELDS = [
     'activityPlannedCompletionDate',
     'projectStartDate',
     'projectPlannedCompletionDate',
-    'licenseStartDate'
+    'licenseStartDate',
 ];
 export const FIELDS_OPERATOR_IN = ['language', 'locale', 'territory', 'affiliate', 'contentType'];
+export const ASSIGN_TASK_TITLE = 'Assign Task';
+export const jobStatus = {
+    SUCCESS: 'COMPLETED',
+    ERROR: 'ERRORED',
+    PARTIAL: 'Partially Completed',
+};

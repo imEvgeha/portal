@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag/dist/cjs/Tag';
+import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {defineCheckboxSelectionColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
@@ -10,6 +11,7 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
@@ -20,9 +22,11 @@ import {
     DOP_GUIDED_TASK_URL,
     DOP_PROJECT_URL,
     PROJECT_STATUS_ENUM,
+    ASSIGN_TASK_TITLE,
 } from '../../constants';
 import {fetchDopTasksData} from '../../utils';
 import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
+import AssignModal from './components/assign-modal/AssignModal';
 import './DopTasksTable.scss';
 
 const DopTasksTableGrid = compose(
@@ -33,11 +37,31 @@ const DopTasksTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
-const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumnApi}) => {
+const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumnApi, assignTasks}) => {
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
     });
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [assign, setAssign] = useState(false);
+    const [rowsSelected, setRowsSelected] = useState([]);
+    const [taskOwner, setTaskOwner] = useState(null);
+    const {openModal, closeModal} = useContext(NexusModalContext);
+
+    const removeMenu = () => setIsMenuOpen(false);
+
+    useEffect(() => {
+        window.addEventListener('click', removeMenu);
+        return () => {
+            window.removeEventListener('click', removeMenu);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (taskOwner) {
+            assignTasks({userId: taskOwner, taskIds: rowsSelected, closeModal});
+        }
+    }, [assign]);
 
     const formattedValueColDefs = COLUMN_MAPPINGS.map(col => {
         if (col.colId === 'taskName') {
@@ -116,12 +140,16 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
     };
 
     const onGridReady = ({type, api, columnApi}) => {
-        const {READY} = GRID_EVENTS;
+        const {READY, SELECTION_CHANGED} = GRID_EVENTS;
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
                 setGridApi(api);
                 setColumnApi(columnApi);
+                break;
+            }
+            case SELECTION_CHANGED: {
+                setRowsSelected(api.getSelectedRows().map(n => n.id));
                 break;
             }
             default:
@@ -155,8 +183,45 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
         }
     };
 
+    const openMenu = e => {
+        e.stopPropagation();
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    const handleAssign = () => {
+        openModal(<AssignModal selectedTasks={rowsSelected} setTaskOwner={setTaskOwner} />, {
+            title: ASSIGN_TASK_TITLE,
+            actions: [
+                {
+                    text: 'Apply',
+                    onClick: () => setAssign(!assign),
+                    appearance: 'primary',
+                },
+                {
+                    text: 'Cancel',
+                    onClick: closeModal,
+                    appearance: 'default',
+                },
+            ],
+        });
+    };
+
     return (
         <div className="nexus-c-dop-tasks-table">
+            <MoreIcon className="nexus-c-dop-tasks-table__more-actions" onClick={openMenu} />
+            {isMenuOpen && (
+                <div className="nexus-c-dop-tasks-table__action-menu">
+                    <div
+                        className={`nexus-c-dop-tasks-table__action-menu--item ${
+                            rowsSelected.length ? 'enable-option' : ''
+                        }`}
+                        onClick={handleAssign}
+                    >
+                        Assign
+                    </div>
+                    <div className="nexus-c-dop-tasks-table__action-menu--item">Forward</div>
+                </div>
+            )}
             <DopTasksTableGrid
                 id="DopTasksTable"
                 columnDefs={[defineCheckboxSelectionColumn(), ...formattedValueColDefs]}
@@ -180,6 +245,7 @@ DopTasksTable.propTypes = {
     setExternalFilter: PropTypes.func,
     setGridApi: PropTypes.func,
     setColumnApi: PropTypes.func,
+    assignTasks: PropTypes.func,
 };
 
 DopTasksTable.defaultProps = {
@@ -187,6 +253,7 @@ DopTasksTable.defaultProps = {
     setExternalFilter: () => null,
     setGridApi: () => null,
     setColumnApi: () => null,
+    assignTasks: () => null,
 };
 
 export default DopTasksTable;
