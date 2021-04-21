@@ -7,6 +7,7 @@ import {
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {searchPerson} from '../../../service/ConfigService';
 import {formatNumberTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {EPISODE} from '../../../../../constants/metadata/contentType';
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
@@ -38,9 +39,15 @@ export const loadOptionsPerson = (searchPersonText, type) => {
     }
 };
 
-export const renderTitleName = (title, seasonNumber, episodeNumber) => {
-    if (seasonNumber && episodeNumber) {
-        return `${title} S${formatNumberTwoDigits(seasonNumber)} E${formatNumberTwoDigits(episodeNumber)}`;
+export const renderTitleName = (title, contentType, seasonNumber, episodeNumber, seriesTitleName) => {
+    if (contentType === EPISODE.apiName) {
+        return seriesTitleName
+            ? `${seriesTitleName} S${formatNumberTwoDigits(seasonNumber)} E${formatNumberTwoDigits(
+                  episodeNumber
+              )}: ${title}`
+            : `[SeriesNotFound] S${formatNumberTwoDigits(seasonNumber)} E${formatNumberTwoDigits(
+                  episodeNumber
+              )}: ${title}`;
     }
     return title;
 };

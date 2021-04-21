@@ -15,5 +15,10 @@ export const titleMapping = {
             javaVariableName: 'releaseYear',
             fullTextSearch: 'true',
         },
+        {
+            displayName: 'Concatenated Title',
+            javaVariableName: 'concatenatedTitle',
+            fullTextSearch: 'true',
+        },
     ],
 };
