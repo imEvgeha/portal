@@ -6,6 +6,7 @@ import {
     WARNING_ICON,
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {TOGGLE_REFRESH_GRID_DATA} from '@vubiquity-nexus/portal-ui/lib/grid/gridActionTypes';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {uniqBy} from 'lodash';
 import {call, put, all, takeLatest} from 'redux-saga/effects';
@@ -38,6 +39,7 @@ function* assignTasks({payload}) {
         const [response, headers] = yield call(DopTasksService.assignTask, taskIds, userId);
         const batchJobId = headers.get('Location')?.split('/').pop();
         const statusResponse = yield call(DopTasksService.getBatchJobStatus, batchJobId);
+        yield put({type: TOGGLE_REFRESH_GRID_DATA, payload: true});
         let toastParams = {};
         switch (statusResponse.status) {
             case jobStatus.SUCCESS: {
