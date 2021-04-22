@@ -69,7 +69,7 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
                     episodeNumber,
                     territory,
                     affiliate,
-                    licenseStartDate
+                    licenseStartDate,
                 },
             ];
         }, []);

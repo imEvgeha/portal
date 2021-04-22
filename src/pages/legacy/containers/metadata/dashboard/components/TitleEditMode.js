@@ -94,7 +94,7 @@ class TitleEditMode extends Component {
                         />
                     </Col>
                     <Col>
-                        {episodic && episodic.seasonNumber && episodic.episodeNumber && (
+                        {contentType === EPISODE.apiName && (
                             <Row>
                                 <Col>
                                     <Label for="title">Concatenated Title</Label>

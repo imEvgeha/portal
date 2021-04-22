@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssignModal should match snapshot 1`] = `
+<div
+  className="dop-tasks-assign-tasks"
+>
+  <label>
+    Assign to: 
+  </label>
+  <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+    onChange={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "test test (test)",
+          "value": "test",
+        },
+      ]
+    }
+    placeholder="Select Task Owner"
+  />
+</div>
+`;

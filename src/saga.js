@@ -2,6 +2,7 @@ import {all, fork} from 'redux-saga/effects';
 import availsWatcher from './pages/avails/availsSagas';
 import {rightMatchingWatcher} from './pages/avails/right-matching/rightMatchingSagas';
 import {titleMatchingWatcher} from './pages/avails/title-matching/titleMatchingSagas';
+import dopTasksWatcher from './pages/dop-tasks/dopTasksSagas';
 import {eventManagementWatcher} from './pages/event-management/eventManagementSagas';
 import {availWatcher} from './pages/legacy/containers/avail/availSagas';
 import {settingsWatcher} from './pages/legacy/containers/settings/settingsSagas';
@@ -20,5 +21,6 @@ export default function* rootSaga() {
         fork(eventManagementWatcher),
         fork(servicingOrdersWatcher),
         fork(titleMetadataWatcher),
+        fork(dopTasksWatcher),
     ]);
 }

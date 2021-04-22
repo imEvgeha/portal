@@ -26,6 +26,7 @@ import ActionCellRender from './cell/ActionCellRenderer';
 import {getRepositoryCell} from '../../../../../../avails/utils';
 import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {renderTitleName} from '../utils/utils';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -108,15 +109,6 @@ class TitleResultTable extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.columnsOrder != prevProps.columnsOrder) {
-            this.refreshColumns();
-            for (let i = 0; i < Math.min(this.props.columnsOrder.length, prevProps.columnsOrder.length); i++) {
-                this.table.columnApi.moveColumn(this.props.columnsOrder[i], i + 1);
-            }
-
-            this.setState({});
-        }
-
         if (this.props.titleTabPageSort != prevProps.titleTabPageSort) {
             const sortModel = [];
             this.props.titleTabPageSort.map(sortCriteria => {
@@ -265,16 +257,10 @@ class TitleResultTable extends React.Component {
         switch (contentType) {
             case SEASON.apiName:
                 return seriesTitleName
-                    ? `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}`
-                    : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}`;
+                    ? `${seriesTitleName} S${formatNumberTwoDigits(seasonNumber)}`
+                    : `[SeriesNotFound] S${formatNumberTwoDigits(seasonNumber)}`;
             case EPISODE.apiName:
-                return seriesTitleName
-                    ? `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(
-                          episodeNumber
-                      )}: ${episodeTitle}`
-                    : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(
-                          episodeNumber
-                      )}: ${episodeTitle}`;
+                return renderTitleName(episodeTitle, contentType, seasonNumber, episodeNumber, seriesTitleName);
         }
 
         return item.title;
@@ -289,13 +275,12 @@ class TitleResultTable extends React.Component {
 
         const rows = data.data.map(row => {
             const contentType = row.contentType.toUpperCase();
-
+            row.concatenatedTitle = row.title;
             if (contentType === SEASON.apiName) {
                 row.title = this.getFormatTitle(row, SEASON.apiName);
             } else if (contentType === EPISODE.apiName) {
-                row.title = this.getFormatTitle(row, EPISODE.apiName);
+                row.concatenatedTitle = this.getFormatTitle(row, EPISODE.apiName);
             }
-
             return row;
         });
 
@@ -358,20 +343,19 @@ class TitleResultTable extends React.Component {
 
     refreshColumns() {
         const newCols = [];
-        if (this.props.columnsOrder) {
-            this.props.columnsOrder.map(acc => {
-                if (colDef.hasOwnProperty(acc)) {
-                    newCols.push(colDef[acc]);
-                }
-            });
-            newCols.push(getRepositoryCell({headerName: 'Repository'}));
-            const actionColumn = defineColumn({
-                headerName: 'Action',
-                field: 'action',
-                cellRendererFramework: ActionCellRender,
-            });
-            this.cols = [actionColumn, ...newCols];
-        }
+        const columnsOrder = ['title', 'concatenatedTitle', 'contentType', 'releaseYear'];
+        columnsOrder.map(acc => {
+            if (colDef.hasOwnProperty(acc)) {
+                newCols.push(colDef[acc]);
+            }
+        });
+        newCols.push(getRepositoryCell({headerName: 'Repository'}));
+        const actionColumn = defineColumn({
+            headerName: 'Action',
+            field: 'action',
+            cellRendererFramework: ActionCellRender,
+        });
+        this.cols = [actionColumn, ...newCols];
     }
 
     loadingRenderer = params => {

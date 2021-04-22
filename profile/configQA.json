@@ -29,6 +29,9 @@
             "DOPProjectManagementBase": "/dop/be-services/projectManagement",
             "DOPProjectManagementProject": "/dop/be-services/projectManagement/project",
             "DOPLoginWithKeycloak": "/AmdocsOSS/Portal/services/LoginWithKeycloak",
+            "DOPTasksPotentialOwners": "/dop/be-services/taskManagement/taskPotentialOwner",
+            "DOPTasksAssign": "/dop/be-services/taskManagement/task/assign",
+            "DOPTasksBatchJob": "/dop/be-services/taskManagement/taskBatchJob",
             "publisher": "/publisher/v1"
         }
     },

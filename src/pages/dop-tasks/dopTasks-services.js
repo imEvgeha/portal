@@ -29,6 +29,37 @@ const DopTasksService = {
             true
         );
     },
+    getOwners: taskIds => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get(
+            'gateway.service.DOPTasksPotentialOwners'
+        )}?taskId=${taskIds}`;
+        return nexusFetch(url);
+    },
+    assignTask: (taskIds, userId) => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksAssign')}`;
+        const dataToSend = {
+            assignmentDetail: {
+                action: 'DELEGATE',
+                assignee: {userId},
+                isoverrideExistingAssignment: true,
+            },
+            taskList: taskIds.map(t => ({id: t})),
+        };
+        return nexusFetch(
+            url,
+            {
+                method: 'post',
+                credentials: 'include',
+                body: JSON.stringify(dataToSend),
+            },
+            DEFAULT_TIMEOUT,
+            true
+        );
+    },
+    getBatchJobStatus: jobId => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksBatchJob')}/${jobId}`;
+        return nexusFetch(url);
+    },
 };
 
 const prepareFilterPayload = (initialParams, externalFilter) => {
