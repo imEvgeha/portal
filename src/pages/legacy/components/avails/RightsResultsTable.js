@@ -48,7 +48,7 @@ export default class RightsResultsTable extends React.Component {
                     return ({data = {}}) => {
                         if (data && Array.isArray(data[javaVariableName])) {
                             return data[javaVariableName]
-                                .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                                .map(e => String(e.country || `${e.language || '-'}/${e.audioType || '-'}`))
                                 .join(', ');
                         }
                     };

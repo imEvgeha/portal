@@ -1,68 +1,56 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {isEmpty} from 'lodash';
+import React, {useState, useEffect, forwardRef, useImperativeHandle} from 'react';
+import Button from '@atlaskit/button';
 import {Form} from 'react-forms-processor';
 import {renderer} from 'react-forms-processor-atlaskit';
 import './CustomComplexFilter.scss';
+/* eslint-disable react/prop-types */
 
-export class CustomComplexFilter extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: props.initialFilters,
-        };
-    }
+export default forwardRef((props, ref) => {
+    const [value, setValue] = useState(null);
 
-    onChange = value => {
-        if (!value) {
+    useEffect(() => {
+        value !== null && props.filterChangedCallback();
+    }, [value]);
+
+    const onChange = v => {
+        if (!v) {
             return;
-        } // Filter doesn't persist when switching ingest without this check
-        const {filterChangedCallback} = this.props;
-
-        this.setState({value}, filterChangedCallback);
+        }
+        setValue(v);
     };
 
-    setModel = val => {
-        this.onChange(val);
-    };
-
-    getModel = () => {
-        const {value} = this.state;
+    // expose AG Grid Filter Lifecycle callbacks
+    useImperativeHandle(ref, () => {
         return {
-            type: 'equals',
-            filter: value,
+            doesFilterPass() {
+                return true;
+            },
+
+            isFilterActive() {
+                return !!value;
+            },
+
+            getModel() {
+                if (value) {
+                    return {
+                        type: 'equals',
+                        filter: value?.filter || value,
+                    };
+                }
+            },
+
+            setModel(val) {
+                onChange(val);
+            },
         };
-    };
+    });
 
-    isFilterActive = () => {
-        const {value} = this.state;
-        return value && !isEmpty(value);
-    };
-
-    doesFilterPass = () => {
-        return true;
-    };
-
-    render() {
-        const {schema} = this.props;
-        const {value} = this.state;
-
-        return (
-            <div className="nexus-c-custom-complex-filter">
-                <Form renderer={renderer} defaultFields={schema} value={value} onChange={this.onChange} />
-            </div>
-        );
-    }
-}
-
-CustomComplexFilter.propTypes = {
-    initialFilters: PropTypes.object,
-    schema: PropTypes.arrayOf(PropTypes.object).isRequired,
-    filterChangedCallback: PropTypes.func.isRequired,
-};
-
-CustomComplexFilter.defaultProps = {
-    initialFilters: {},
-};
-
-export default CustomComplexFilter;
+    return (
+        <div className="nexus-c-custom-complex-filter">
+            <Form key={value} renderer={renderer} defaultFields={props.schema} onChange={onChange} />
+            <Button className="nexus-c-custom-complex-filter--clear" onClick={() => onChange({})}>
+                Clear
+            </Button>
+        </div>
+    );
+});
