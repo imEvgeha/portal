@@ -37,7 +37,8 @@ function* assignTasks({payload}) {
     const {userId, taskIds, closeModal} = payload;
     try {
         const [response, headers] = yield call(DopTasksService.assignTask, taskIds, userId);
-        const batchJobId = headers.get('Location')?.split('/').pop();
+        const location = headers.get('Location') || headers.get('location') || '';
+        const batchJobId = location?.split('/').pop();
         const statusResponse = yield call(DopTasksService.getBatchJobStatus, batchJobId);
         yield put({type: TOGGLE_REFRESH_GRID_DATA, payload: true});
         let toastParams = {};

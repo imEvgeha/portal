@@ -46,6 +46,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
     const [assign, setAssign] = useState(false);
     const [rowsSelected, setRowsSelected] = useState([]);
     const [taskOwner, setTaskOwner] = useState(null);
+    const [api, setApi] = useState(null);
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     const removeMenu = () => setIsMenuOpen(false);
@@ -60,6 +61,8 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
     useEffect(() => {
         if (taskOwner) {
             assignTasks({userId: taskOwner, taskIds: rowsSelected, closeModal});
+            setRowsSelected([]);
+            api && api.deselectAll();
         }
     }, [assign]);
 
@@ -144,6 +147,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
+                setApi(api);
                 setGridApi(api);
                 setColumnApi(columnApi);
                 break;
