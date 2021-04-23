@@ -35,6 +35,7 @@
             "publisher": "/publisher/v1"
         }
     },
+    "DOP_base": "https://dop.qa.vubiquity.com:8045",
     "keycloak": {
         "clientId": "portalapp-public",
         "realm": "Vubiquity",
