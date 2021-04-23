@@ -71,7 +71,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
             return {
                 ...col,
                 cellRendererParams: {
-                    link: `${config.get('gateway.DOPUrl')}${DOP_GUIDED_TASK_URL}`,
+                    link: `${config.get('DOP_base')}${DOP_GUIDED_TASK_URL}`,
                 },
             };
         }
@@ -107,7 +107,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
             return {
                 ...col,
                 cellRendererParams: {
-                    link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
+                    link: `${config.get('DOP_base')}${DOP_PROJECT_URL}`,
                     linkId: 'projectId',
                 },
             };

@@ -35,6 +35,7 @@
         "url": "https://availsapi.dev.vubiquity.com",
         "injestUrl": "https://avails-ingest.dev.vubiquity.com"
     },
+    "DOP_base": "http://dops.dev.vubiquity.com:8040",
     "keycloak": {
         "clientId": "portalapp-public",
         "realm": "Vubiquity",
