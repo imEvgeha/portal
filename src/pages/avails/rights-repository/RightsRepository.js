@@ -16,7 +16,7 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
-import {isEmpty, isEqual, get, isObject} from 'lodash';
+import {isEmpty, isEqual, get, isObject, debounce,unionBy} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -240,10 +240,12 @@ const RightsRepository = ({
     // Fetch only selected rights from the current user
     useEffect(() => {
         if (isMounted.current && isObject(selectedRights) && username) {
-            const usersSelectedRights = get(selectedRights, username, {});
-            setCurrentUserSelectedRights(Object.values(usersSelectedRights) || []);
+            const usersSelectedRights = get(selectedRights, username, []);
+            console.log('usersSelectedRights: ', usersSelectedRights);
+            setCurrentUserSelectedRights(usersSelectedRights);
         }
     }, [selectedRights, username]);
+    console.log('currentUserSelectedRights ', currentUserSelectedRights)
 
     const columnDefsClone = columnDefs.map(columnDef => {
         const updatedColumnDef = {
@@ -374,7 +376,7 @@ const RightsRepository = ({
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
         : columnDefsClone;
 
-    const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
+    const onRightsRepositoryGridEvent = debounce(({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
             case READY:
@@ -383,10 +385,15 @@ const RightsRepository = ({
                 break;
             case SELECTION_CHANGED: {
                 let clonedSelectedRights = currentUserSelectedRights;
+                
 
                 // Get selected rows from both tables
                 const rightsTableSelectedRows = api.getSelectedRows() || [];
                 const selectedTableSelectedRows = selectedGridApi.getSelectedRows() || [];
+
+
+                console.log('rightsTableSelectedRows, selectedTableSelectedRows, selectedIngest: ', rightsTableSelectedRows, selectedTableSelectedRows, selectedIngest);
+                console.log('selectedRights, selectedRepoRights: ', selectedRights, selectedRepoRights);
 
                 // Extract IDs of selected rights in main table
                 const allSelectedRowsIds = rightsTableSelectedRows.map(({id}) => id);
@@ -402,9 +409,10 @@ const RightsRepository = ({
                 //      is freshly loaded and we have selected rights from the store, while they appear in the table
                 //      and appear selected, they are not selected from the main table's perspective, so this would
                 //      cause loss of data without the check, as rights from ingest would have been removed.
+            
                 if (
-                    !selectedIngest &&
-                    rightsTableSelectedRows.length === selectedTableSelectedRows.length &&
+                    !Object.keys(selectedIngest).length &&
+                    rightsTableSelectedRows.length !== selectedTableSelectedRows.length &&
                     clonedSelectedRights.length > rightsTableSelectedRows.length
                 ) {
                     // Filter out the selected rights whose rows are not selected. Basically finding the row
@@ -419,7 +427,14 @@ const RightsRepository = ({
                         selectedRights[currentRight.id] = currentRight;
                         return selectedRights;
                     }, {});
+                    console.log('1 clonedSelectedRights,updatedSelectedRights,payload ',clonedSelectedRights,updatedSelectedRights,payload);
                     setSelectedRights({[username]: payload});
+                    break;
+                }
+                else if(!Object.keys(selectedIngest).length && selectedTableSelectedRows.length !== rightsTableSelectedRows.length) {
+                    console.log('2');
+                    
+                    setSelectedRights({[username]: rightsTableSelectedRows});
                     break;
                 }
 
@@ -447,7 +462,16 @@ const RightsRepository = ({
                     selectedRights[currentRight.id] = currentRight;
                     return selectedRights;
                 }, {});
-                setSelectedRights({[username]: payload});
+                
+                if(selectedTableSelectedRows.length !== rightsTableSelectedRows.length && rightsTableSelectedRows.length > 0 && payload.length > 0) {
+                    console.log('3'); setSelectedRights({[username]: payload});
+                }
+
+                const sel = Object.values(selectedRights)[0];
+                console.log('4');
+                //sel.length && setSelectedRights({[username]: sel})
+                //setCurrentUserSelectedRights(selectedTableSelectedRows);
+                    
                 break;
             }
             case FILTER_CHANGED: {
@@ -464,7 +488,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    };
+    }, 500);
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
@@ -481,7 +505,7 @@ const RightsRepository = ({
                 break;
             case SELECTION_CHANGED: {
                 // Get IDs from all selected rights from selectedRights ag-grid table
-                const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
+                const allSelectedRowsIds = api?.getSelectedRows()?.map(({id}) => id);
                 // Get ID of a right to be deselected
                 const toDeselectIds = selectedRepoRights
                     .map(({id}) => id)
@@ -489,16 +513,16 @@ const RightsRepository = ({
 
                 // Get all selected nodes from main ag-grid table and filter only ones to deselect
                 const nodesToDeselect = gridApi
-                    .getSelectedNodes()
-                    .filter(({data = {}}) => toDeselectIds.includes(data.id));
+                    ?.getSelectedNodes()
+                    ?.filter(({data = {}}) => toDeselectIds.includes(data.id));
 
                 // If row was unselected but it was not found via gridApi, then manually deselect it and
                 // update the store. Otherwise proceed with normal flow via gridApi and update the store via
                 // onRightsRepositoryGridEvent handler
-                if (!nodesToDeselect.length && api.getSelectedRows().length < selectedRepoRights.length) {
+                if (!nodesToDeselect?.length && api.getSelectedRows()?.length < selectedRepoRights.length) {
                     setSelectedRights({[username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id))});
                 } else {
-                    nodesToDeselect.forEach(node => node.setSelected(false));
+                    nodesToDeselect?.forEach(node => node?.setSelected(false));
                 }
 
                 break;
@@ -579,7 +603,7 @@ const RightsRepository = ({
                 context={{selectedRows: currentUserSelectedRights}}
                 mapping={mapping}
                 setTotalCount={setTotalCount}
-                onGridEvent={onRightsRepositoryGridEvent}
+                onGridEvent={(type) => onRightsRepositoryGridEvent(type, gridApi, columnApi)}
                 isGridHidden={activeTab !== RIGHTS_TAB}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
