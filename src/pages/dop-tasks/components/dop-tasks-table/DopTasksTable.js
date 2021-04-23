@@ -32,7 +32,6 @@ import './DopTasksTable.scss';
 const DopTasksTableGrid = compose(
     withSideBar(),
     withFilterableColumns(),
-    withColumnsResizing(),
     withSorting(),
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
@@ -67,6 +66,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
     }, [assign]);
 
     const formattedValueColDefs = COLUMN_MAPPINGS.map(col => {
+        col.resizable = true;
         if (col.colId === 'taskName') {
             return {
                 ...col,
