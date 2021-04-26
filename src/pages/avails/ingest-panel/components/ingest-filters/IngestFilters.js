@@ -25,24 +25,29 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
     };
 
     const onDateChange = dates => {
-        setFilters({...filters, ...dates});
-        setIsApplyActive(true);
+        if (dates.startDate || dates.endDate) {
+            setFilters({...filters, ...dates});
+            setIsApplyActive(true);
+        }
     };
 
     const clearFilters = () => {
-        setFilters({
+        const filterValues = {
             status: STATUS_LIST[0],
             licensor: '',
             ingestType: INGEST_LIST[0],
             startDate: '',
             endDate: '',
-        });
+            [EMAIL_SUBJECT]: '',
+            [FILE_NAME]: '',
+        };
+        setFilters(filterValues);
         setIsApplyActive(false);
-        onFiltersChange({});
+        applyFilters(filterValues);
     };
 
-    const applyFilters = () => {
-        onFiltersChange(getFiltersToSend(filters));
+    const applyFilters = values => {
+        onFiltersChange(getFiltersToSend(values || filters));
     };
 
     return (
@@ -116,7 +121,7 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
             <div className="ingest-filters__actions">
                 <Button onClick={clearFilters}>Clear All</Button>
                 <Button
-                    onClick={applyFilters}
+                    onClick={() => applyFilters()}
                     appearance="primary"
                     isDisabled={!isApplyActive}
                     isLoading={isFilterLoading}
