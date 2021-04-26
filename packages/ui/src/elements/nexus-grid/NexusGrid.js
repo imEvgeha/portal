@@ -58,7 +58,7 @@ const NexusGrid = ({
                 suppressPropertyNamesCheck
                 onGridReady={onGridReady || handleGridEvent}
                 onGridSizeChanged={onGridSizeChanged}
-                onSelectionChanged={debounce(handleGridEvent, SELECTION_DELAY)}
+                onSelectionChanged={handleGridEvent}
                 onCellValueChanged={handleGridEvent}
                 onFirstDataRendered={handleGridEvent}
                 onRowDataChanged={handleGridEvent}

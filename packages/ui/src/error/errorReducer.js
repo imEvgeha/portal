@@ -8,7 +8,7 @@ const errorReducer = (state = {}, action) => {
     }
 
     const [, requestName, requestState] = matches;
-    const {message} = payload;
+    const {message='ERROR'} = payload;
 
     return {
         ...state,
