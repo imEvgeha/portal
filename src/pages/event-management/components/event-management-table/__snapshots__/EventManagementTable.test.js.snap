@@ -134,6 +134,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
             "javaVariableName": "createdTimeStamp",
             "minWidth": 240,
             "searchDataType": "timestamp",
+            "sortable": true,
             "valueFormatter": [Function],
           },
           Object {
@@ -287,6 +288,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
             "javaVariableName": "createdTimeStamp",
             "minWidth": 240,
             "searchDataType": "timestamp",
+            "sortable": true,
           },
           Object {
             "colId": "postedTimeStamp",
