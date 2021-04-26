@@ -170,18 +170,26 @@ const RightsRepository = ({
         let newSelectedRepoRights = currentUserSelectedRights;
 
         if (isMounted.current && gridApi) {
-            const selectedIds = currentUserSelectedRights.map(({id}) => id);
+            const selectedIds = currentUserSelectedRights?.map(({id}) => id);
             const loadedSelectedRights = [];
 
             // Filter selected rights only when ingest is selected
             if (selectedIngest) {
                 gridApi.getSelectedRows().forEach(row => {
-                    if (selectedIds.includes(row.id)) {
+                    if (selectedIds?.includes(row.id)) {
                         loadedSelectedRights.push(row);
                     }
                 });
                 newSelectedRepoRights = loadedSelectedRights;
             }
+            
+            gridApi.forEachNode(node => {
+                const {data = {}} = node;
+                if(selectedIds.includes(data.id)) 
+                    node.setSelected(true);
+                else
+                data.id && node.setSelected(false);
+            });
         }
         if (isMounted.current) {
             setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
@@ -202,8 +210,8 @@ const RightsRepository = ({
     useEffect(() => {
         if (isMounted.current && selectedGridApi && selectedRepoRights.length > 0) {
             const updatedPrePlanRights = [...currentUserPrePlanRights];
-            selectedRepoRights.forEach(selectedRight => {
-                const index = currentUserPrePlanRights.findIndex(right => right.id === selectedRight.id);
+            selectedRepoRights?.forEach(selectedRight => {
+                const index = currentUserPrePlanRights?.findIndex(right => right.id === selectedRight.id);
                 if (index >= 0) {
                     updatedPrePlanRights[index] = {
                         ...currentUserPrePlanRights[index],
@@ -211,7 +219,7 @@ const RightsRepository = ({
                     };
                 }
             });
-            setPreplanRights({[username]: updatedPrePlanRights});
+            updatedPrePlanRights.length && setPreplanRights({[username]: updatedPrePlanRights});
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
@@ -240,12 +248,10 @@ const RightsRepository = ({
     // Fetch only selected rights from the current user
     useEffect(() => {
         if (isMounted.current && isObject(selectedRights) && username) {
-            const usersSelectedRights = get(selectedRights, username, []);
-            console.log('usersSelectedRights: ', usersSelectedRights);
-            setCurrentUserSelectedRights(usersSelectedRights);
+            const usersSelectedRights = get(selectedRights, username, {});
+            setCurrentUserSelectedRights(Object.values(usersSelectedRights));
         }
-    }, [selectedRights, username]);
-    console.log('currentUserSelectedRights ', currentUserSelectedRights)
+    }, [Object.values(get(selectedRights, username, {})).length, username]);
 
     const columnDefsClone = columnDefs.map(columnDef => {
         const updatedColumnDef = {
@@ -386,14 +392,9 @@ const RightsRepository = ({
             case SELECTION_CHANGED: {
                 let clonedSelectedRights = currentUserSelectedRights;
                 
-
                 // Get selected rows from both tables
-                const rightsTableSelectedRows = api.getSelectedRows() || [];
-                const selectedTableSelectedRows = selectedGridApi.getSelectedRows() || [];
-
-
-                console.log('rightsTableSelectedRows, selectedTableSelectedRows, selectedIngest: ', rightsTableSelectedRows, selectedTableSelectedRows, selectedIngest);
-                console.log('selectedRights, selectedRepoRights: ', selectedRights, selectedRepoRights);
+                const rightsTableSelectedRows = api?.getSelectedRows() || [];
+                const selectedTableSelectedRows = selectedGridApi?.getSelectedRows() || [];
 
                 // Extract IDs of selected rights in main table
                 const allSelectedRowsIds = rightsTableSelectedRows.map(({id}) => id);
@@ -427,13 +428,10 @@ const RightsRepository = ({
                         selectedRights[currentRight.id] = currentRight;
                         return selectedRights;
                     }, {});
-                    console.log('1 clonedSelectedRights,updatedSelectedRights,payload ',clonedSelectedRights,updatedSelectedRights,payload);
                     setSelectedRights({[username]: payload});
                     break;
                 }
-                else if(!Object.keys(selectedIngest).length && selectedTableSelectedRows.length !== rightsTableSelectedRows.length) {
-                    console.log('2');
-                    
+                else if(!Object.keys(selectedIngest).length && selectedTableSelectedRows.length !== rightsTableSelectedRows.length) {                    
                     setSelectedRights({[username]: rightsTableSelectedRows});
                     break;
                 }
@@ -462,16 +460,7 @@ const RightsRepository = ({
                     selectedRights[currentRight.id] = currentRight;
                     return selectedRights;
                 }, {});
-                
-                if(selectedTableSelectedRows.length !== rightsTableSelectedRows.length && rightsTableSelectedRows.length > 0 && payload.length > 0) {
-                    console.log('3'); setSelectedRights({[username]: payload});
-                }
-
-                const sel = Object.values(selectedRights)[0];
-                console.log('4');
-                //sel.length && setSelectedRights({[username]: sel})
-                //setCurrentUserSelectedRights(selectedTableSelectedRows);
-                    
+ 
                 break;
             }
             case FILTER_CHANGED: {
@@ -496,7 +485,7 @@ const RightsRepository = ({
         setPreplanRights({[username]: [...(currentUserPrePlanRights || []), ...newSelectedRights]});
     };
 
-    const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
+    const onSelectedRightsRepositoryGridEvent = debounce(({type, api, columnApi}) => {
         const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
             case READY:
@@ -519,12 +508,13 @@ const RightsRepository = ({
                 // If row was unselected but it was not found via gridApi, then manually deselect it and
                 // update the store. Otherwise proceed with normal flow via gridApi and update the store via
                 // onRightsRepositoryGridEvent handler
-                if (!nodesToDeselect?.length && api.getSelectedRows()?.length < selectedRepoRights.length) {
-                    setSelectedRights({[username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id))});
-                } else {
-                    nodesToDeselect?.forEach(node => node?.setSelected(false));
-                }
-
+                
+                    if (api.getSelectedRows()?.length < selectedRepoRights.length) {
+                        setSelectedRights({[username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id))});
+                    } else {
+                        nodesToDeselect?.forEach(node => node?.setSelected(false));
+                    }
+                
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -536,7 +526,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    };
+    },500);
 
     // Returns only selected rights that are also included in the selected ingest
     const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
