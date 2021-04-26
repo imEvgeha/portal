@@ -3,6 +3,7 @@ import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
+import {renderTitleName} from '../../../../../../../src/pages/legacy/containers/metadata/dashboard/components/utils/utils';
 
 const LoadingCellRenderer = params => {
     const {
@@ -30,7 +31,17 @@ const LoadingCellRenderer = params => {
     if (Array.isArray(value) && value.length > 1) {
         value = value.join(', ');
     }
-    const content = valueFormatted || value;
+    const {title, episodic, contentType} = data;
+    const content =
+        colId === 'concatenatedTitle' && episodic
+            ? renderTitleName(
+                  title,
+                  contentType,
+                  episodic.seasonNumber,
+                  episodic.episodeNumber,
+                  episodic.seriesTitleName
+              )
+            : valueFormatted || value;
     if ((content !== undefined && content !== null) || content === false) {
         let highlighted = false;
         if (data && data.highlightedFields) {

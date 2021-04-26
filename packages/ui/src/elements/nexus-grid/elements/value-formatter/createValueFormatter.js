@@ -182,20 +182,6 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip
                         return data[javaVariableName].map(({genre}) => genre).join(', ');
                     }
                 };
-            } else if (javaVariableName === 'title') {
-                return params => {
-                    const {data = {}} = params || {};
-                    if (data && data[javaVariableName]) {
-                        const {contentType} = data || '';
-                        if (contentType && contentType === EPISODE_CONTENT_TYPE) {
-                            const {seriesTitleName = '', seasonNumber = '', episodeNumber = ''} =
-                                data.episodic || data || {};
-                            if (seriesTitleName && seasonNumber && episodeNumber)
-                                return `${seriesTitleName}: S${seasonNumber},E${episodeNumber}: ${data[javaVariableName]}`;
-                        }
-                        return data[javaVariableName];
-                    }
-                };
             }
             return;
         case 'yesOrNo':
