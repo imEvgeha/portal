@@ -36,7 +36,7 @@ export default {
         LICENSOR: 'licensor',
         INGEST_TYPE: 'ingestType',
         EMAIL_SUBJECT: 'emailSubject',
-        FILE_NAME: 'attachmentFilename',
+        FILE_NAME: 'attachmentFilenames',
     },
     URLFilterKeys: {
         receivedFrom: 'igReceivedFrom',
@@ -45,13 +45,14 @@ export default {
         status: 'igStatus',
         licensor: 'igLicensor',
         emailSubject: 'emailSubject',
-        attachmentFilename: 'attachmentFilename',
+        attachmentFilenames: 'attachmentFilenames',
     },
     SERVICE_REGIONS: [
         {label: 'US', value: 'US'},
         {label: 'UK', value: 'UK'},
     ],
     CATALOG_TYPES: [
+        {label: 'N/A', value: ''},
         {label: 'Full', value: 'Full Catalog'},
         {label: 'Title', value: 'Title Catalog'},
     ],

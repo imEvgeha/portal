@@ -130,6 +130,10 @@ const EventManagement = props => {
                     clearFilters={clearFilters}
                     onGridEvent={onGridEvent}
                     onSortChanged={onSortChanged}
+                    defaultColDef={{
+                        filter: 'createdTimeStamp',
+                        sortable: true,
+                    }}
                 />
             </div>
             {selectedEventId && <EventDrawer id={selectedEventId} onDrawerClose={closeEventDrawer} />}

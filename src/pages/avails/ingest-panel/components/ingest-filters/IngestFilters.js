@@ -25,24 +25,35 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
     };
 
     const onDateChange = dates => {
-        setFilters({...filters, ...dates});
-        setIsApplyActive(true);
+        if (dates.startDate || dates.endDate) {
+            setFilters({...filters, ...dates});
+            setIsApplyActive(true);
+        }
     };
 
     const clearFilters = () => {
-        setFilters({
+        const filterValues = {
             status: STATUS_LIST[0],
             licensor: '',
             ingestType: INGEST_LIST[0],
             startDate: '',
             endDate: '',
-        });
+            [EMAIL_SUBJECT]: '',
+            [FILE_NAME]: '',
+        };
+        setFilters(filterValues);
         setIsApplyActive(false);
-        onFiltersChange({});
+        applyFilters(filterValues);
     };
 
-    const applyFilters = () => {
-        onFiltersChange(getFiltersToSend(filters));
+    const applyFilters = values => {
+        onFiltersChange(getFiltersToSend(values || filters));
+    };
+
+    const handleKeyDown = e => {
+        if (e.key === 'Enter') {
+            applyFilters();
+        }
     };
 
     return (
@@ -100,6 +111,7 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                                 placeholder="Enter subject"
                                 value={filters.emailSubject}
                                 onChange={e => onFilterChange(EMAIL_SUBJECT, e.target.value)}
+                                onKeyDown={handleKeyDown}
                             />
                         </div>
                         <div className="ingest-filters__section ingest-filters__section--filename">
@@ -108,6 +120,7 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                                 placeholder="Enter file name"
                                 value={filters[FILE_NAME]}
                                 onChange={e => onFilterChange(FILE_NAME, e.target.value)}
+                                onKeyDown={handleKeyDown}
                             />
                         </div>
                     </>
@@ -116,7 +129,7 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
             <div className="ingest-filters__actions">
                 <Button onClick={clearFilters}>Clear All</Button>
                 <Button
-                    onClick={applyFilters}
+                    onClick={() => applyFilters()}
                     appearance="primary"
                     isDisabled={!isApplyActive}
                     isLoading={isFilterLoading}

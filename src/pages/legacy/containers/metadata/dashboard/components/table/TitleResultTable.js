@@ -450,7 +450,7 @@ class TitleResultTable extends React.Component {
             >
                 <AgGridReact
                     id="titleTable"
-                    getContextMenuItems={params => getContextMenuItems(params, '/metadata/v2/detail')}
+                    getContextMenuItems={params => getContextMenuItems(params, '/metadata/detail')}
                     ref={this.setTable}
                     getRowNodeId={data => data.id}
                     defaultColDef={this.state.defaultColDef}

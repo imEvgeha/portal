@@ -36,7 +36,7 @@ const SelectedForPlanning = ({
             ? {
                   ...col,
                   cellRendererParams: {
-                      link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
+                      link: `${config.get('DOP_base')}${DOP_PROJECT_URL}`,
                   },
               }
             : col

@@ -29,6 +29,37 @@ const DopTasksService = {
             true
         );
     },
+    getOwners: taskIds => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get(
+            'gateway.service.DOPTasksPotentialOwners'
+        )}?taskId=${taskIds}`;
+        return nexusFetch(url);
+    },
+    assignTask: (taskIds, userId) => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksAssign')}`;
+        const dataToSend = {
+            assignmentDetail: {
+                action: 'DELEGATE',
+                assignee: {userId},
+                isoverrideExistingAssignment: true,
+            },
+            taskList: taskIds.map(t => ({id: t})),
+        };
+        return nexusFetch(
+            url,
+            {
+                method: 'post',
+                credentials: 'include',
+                body: JSON.stringify(dataToSend),
+            },
+            DEFAULT_TIMEOUT,
+            true
+        );
+    },
+    getBatchJobStatus: jobId => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksBatchJob')}/${jobId}`;
+        return nexusFetch(url);
+    },
 };
 
 const prepareFilterPayload = (initialParams, externalFilter) => {
@@ -118,25 +149,27 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
             }
         }
         if (DATE_FIELDS.includes(key)) {
-            const [dateFrom, dateTo = null] = Object.values(val) || [];
+            const dateFrom = val[`${key}From`] || null;
+            const dateTo = val[`${key}To`] || null;
             const dateIndex = payload.filterCriterion.findIndex(item => item.fieldName === key);
+            const operator = dateFrom ? (dateTo ? 'between' : 'moreEqual') : 'lessEqual';
+            const otherValue = dateFrom && dateTo ? dateTo : '';
             if (dateIndex > -1) {
-                payload.filterCriterion[dateIndex].value = dateFrom;
-                payload.filterCriterion[dateIndex].fieldName = key;
-                payload.filterCriterion[dateIndex].operator = 'equal';
-                payload.filterCriterion[dateIndex].valueDataType = 'Date';
-                if (dateTo) {
-                    payload.filterCriterion[dateIndex].otherValue = dateTo;
-                    payload.filterCriterion[dateIndex].operator = 'between';
+                if (dateFrom || dateTo) {
+                    payload.filterCriterion[dateIndex].operator = operator;
+                    payload.filterCriterion[dateIndex].value = dateFrom || dateTo;
+                    payload.filterCriterion[dateIndex].otherValue = otherValue;
+                } else {
+                    payload.filterCriterion.splice(dateIndex, 1);
                 }
             } else {
                 payload.filterCriterion.push({
-                    value: dateFrom,
                     fieldName: key,
-                    operator: 'equal',
-                    valueDataType: 'Date',
                     logicalAnd: true,
-                    ...(dateTo && {otherValue: dateTo, operator: 'between'}),
+                    value: dateFrom || dateTo,
+                    valueDataType: 'date',
+                    otherValue,
+                    operator,
                 });
             }
         }

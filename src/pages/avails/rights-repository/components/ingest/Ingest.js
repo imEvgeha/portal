@@ -24,7 +24,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
 
     let renderIngestId = ingest.id;
     if (ingest.dopProjectId) {
-        const url = config.get('gateway.DOPUrl') + DOP_PROJECT_URL + ingest.dopProjectId;
+        const url = config.get('DOP_base') + DOP_PROJECT_URL + ingest.dopProjectId;
         renderIngestId = (
             <a href={url} target="_blank">
                 {ingest.id}

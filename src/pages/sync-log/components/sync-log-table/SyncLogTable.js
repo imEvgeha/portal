@@ -133,7 +133,7 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
                     {errorsData.map((error, i) =>
                         ERROR_TABLE_COLUMNS.map(key => (
                             <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i - key}`}>
-                                {error[key]}
+                                {error.split(' - ')[key === 'type' ? 0 : 1]}
                             </div>
                         ))
                     )}

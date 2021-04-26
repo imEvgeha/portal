@@ -71,7 +71,8 @@
         "dataType": "timestamp",
         "searchDataType": "timestamp",
         "enableSearch": true,
-        "minWidth": 240
+        "minWidth": 240,
+        "sortable": true
     },
     {
         "colId": "postedTimeStamp",

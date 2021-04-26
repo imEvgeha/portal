@@ -18,6 +18,29 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
           "headerName": "Right ID",
         },
         Object {
+          "cellRenderer": "iconCellRenderer",
+          "cellRendererParams": Object {
+            "icon": "warning",
+            "tooltip": "Removed from Catalog",
+          },
+          "colId": "updatedCatalogReceived",
+          "field": "updatedCatalogReceived",
+          "headerName": "",
+          "width": 45,
+        },
+        Object {
+          "cellRenderer": "iconCellRenderer",
+          "cellRendererParams": Object {
+            "icon": "block",
+            "tooltip": "Withdrawn",
+            "valueToDisplay": "Withdrawn",
+          },
+          "colId": "rightStatus",
+          "field": "rightStatus",
+          "headerName": "",
+          "width": 45,
+        },
+        Object {
           "cellRenderer": "loadingCellRenderer",
           "colId": "title",
           "field": "title",

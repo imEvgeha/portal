@@ -28,6 +28,14 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
                 projectStatus = '',
                 language = '',
                 locale = '',
+                title = '',
+                contentType = '',
+                coreTitleID = '',
+                seasonNumber = '',
+                episodeNumber = '',
+                territory = '',
+                affiliate = '',
+                licenseStartDate = '',
             } = customData || {};
             const potentialOwners = potentialOwner.map(item => item.userId).join(', ');
             const {userId: actualOwner} = owner || {};
@@ -54,6 +62,14 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
                     projectStatus,
                     language,
                     locale,
+                    title,
+                    contentType,
+                    coreTitleID,
+                    seasonNumber,
+                    episodeNumber,
+                    territory,
+                    affiliate,
+                    licenseStartDate,
                 },
             ];
         }, []);
