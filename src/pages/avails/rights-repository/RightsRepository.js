@@ -391,7 +391,7 @@ const RightsRepository = ({
                 break;
             case SELECTION_CHANGED: {
                 let clonedSelectedRights = currentUserSelectedRights;
-                
+
                 // Get selected rows from both tables
                 const rightsTableSelectedRows = api?.getSelectedRows() || [];
                 const selectedTableSelectedRows = selectedGridApi?.getSelectedRows() || [];
