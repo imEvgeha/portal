@@ -86,7 +86,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "valueFormatter": undefined,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRenderer": "concatenatedTitleCellRenderer",
           "cellRendererParams": Object {
             "link": undefined,
           },
@@ -273,7 +273,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "searchDataType": "string",
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRenderer": "concatenatedTitleCellRenderer",
           "colId": "concatenatedTitle",
           "dataType": "string",
           "enableEdit": true,
