@@ -284,17 +284,11 @@ const withFilterableColumns = ({
                                 columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
                                 const priceTypes = getFilterOptions(`${field}.priceType`);
                                 const currencies = getFilterOptions(`${field}.priceCurrency`);
-                                const priceSchema = PriceTypeFormSchema(priceTypes, currencies);
+                                const priceSchema = PriceTypeFormSchema({priceTypes, currencies});
                                 columnDef.filter = CUSTOM_COMPLEX;
-                                const {priceType, priceValue, priceCurrency} = filters;
-                                const pricingInitialFilters = {
-                                    ...(priceType && {priceType}),
-                                    ...(priceValue && {priceValue}),
-                                    ...(priceCurrency && {priceCurrency}),
-                                };
                                 columnDef.filterParams = {
                                     ...DEFAULT_FILTER_PARAMS,
-                                    initialFilters: pricingInitialFilters,
+                                    searchQuery: filters.priceType,
                                     schema: priceSchema,
                                 };
                                 break;
@@ -303,19 +297,14 @@ const withFilterableColumns = ({
                                 columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
                                 // TODO generate schema and values for select
                                 //  based on initial schema and found subfields
-                                const languages = getFilterOptions(`${field}.language`);
+                                const languages = getFilterOptions('language');
                                 const audioTypes = getFilterOptions(`${field}.audioType`);
-                                const schema = AudioLanguageTypeFormSchema(languages, audioTypes);
+                                const schema = AudioLanguageTypeFormSchema({languages, audioTypes});
                                 columnDef.filter = CUSTOM_COMPLEX;
-                                const {audioTypeLanguage, audioType} = filters;
-                                const audioLanguageInitialFilters = {
-                                    ...(audioTypeLanguage && {audioTypeLanguage}),
-                                    ...(audioType && {audioType}),
-                                };
                                 columnDef.filterParams = {
                                     // TODO; check is this necessary
                                     ...DEFAULT_FILTER_PARAMS,
-                                    initialFilters: audioLanguageInitialFilters,
+                                    searchQuery: filters.audioTypeLanguage || {},
                                     schema,
                                 };
                                 break;

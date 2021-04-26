@@ -100,7 +100,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip
                 if (data && Array.isArray(data[javaVariableName])) {
                     return data[javaVariableName]
                         .filter(Boolean)
-                        .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                        .map(e => String(e.country || `${e.language || '-'}/${e.audioType || '-'}`))
                         .join(', ');
                 }
             };

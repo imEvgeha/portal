@@ -49,7 +49,7 @@ const withRightsResultsTable = BaseComponent => {
                             const {data} = params;
                             if (data && Array.isArray(data[column.javaVariableName])) {
                                 return data[column.javaVariableName]
-                                    .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                                    .map(e => String(e.country || `${e.language || '-'}/${e.audioType || '-'}`))
                                     .join(', ');
                             }
                         };

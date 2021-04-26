@@ -1,10 +1,10 @@
 export const AudioLanguageTypeFormSchema = ({languages, audioTypes}) => {
     return [
         {
-            id: 'language',
+            id: 'audioTypeLanguageList',
             label: 'LANGUAGE',
-            name: 'language',
-            type: 'select',
+            name: 'audioTypeLanguageList',
+            type: 'multiselect',
             shouldFitContainer: true,
             required: true,
             options: [
@@ -14,10 +14,10 @@ export const AudioLanguageTypeFormSchema = ({languages, audioTypes}) => {
             ],
         },
         {
-            id: 'audioType',
+            id: 'audioTypesList',
             label: 'AUDIO TYPE',
-            name: 'audioType',
-            type: 'select',
+            name: 'audioTypesList',
+            type: 'multiselect',
             shouldFitContainer: true,
             required: true,
             options: [
