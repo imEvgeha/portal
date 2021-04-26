@@ -45,6 +45,12 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
         onFiltersChange(getFiltersToSend(filters));
     };
 
+    const handleKeyDown = e => {
+        if (e.key === 'Enter') {
+            applyFilters();
+        }
+    };
+
     return (
         <div className="ingest-filters">
             <div className="ingest-filters__row1">
@@ -100,6 +106,7 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                                 placeholder="Enter subject"
                                 value={filters.emailSubject}
                                 onChange={e => onFilterChange(EMAIL_SUBJECT, e.target.value)}
+                                onKeyDown={handleKeyDown}
                             />
                         </div>
                         <div className="ingest-filters__section ingest-filters__section--filename">
@@ -108,6 +115,7 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                                 placeholder="Enter file name"
                                 value={filters[FILE_NAME]}
                                 onChange={e => onFilterChange(FILE_NAME, e.target.value)}
+                                onKeyDown={handleKeyDown}
                             />
                         </div>
                     </>
