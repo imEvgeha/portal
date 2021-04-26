@@ -120,7 +120,12 @@ class EditorialMetadataCreateTab extends Component {
     handleEditorialRemovePerson = (person, castCrew) => {
         let newCastCrewList = [];
         if (castCrew) {
-            newCastCrewList = castCrew.filter(e => e.id !== person.id);
+            newCastCrewList = castCrew.filter(e => {
+                if (e.id === person.id) {
+                    return e.personType !== person.personType;
+                }
+                return true;
+            });
         }
         this.props.handleEditorialCastCrewCreate(newCastCrewList, this.props.editorialMetadataForCreate);
     };
