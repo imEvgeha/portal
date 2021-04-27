@@ -142,6 +142,13 @@ class TitleReadOnlyMode extends Component {
                                         </Alert>
                                     </Col>
                                 )}
+                                {totalNumberOfEpisodes && (
+                                    <Col md="6">
+                                        <Alert color="light" id="totalNumberOfEpisodes">
+                                            <b>Total Episodes: </b> <span>{totalNumberOfEpisodes}</span>
+                                        </Alert>
+                                    </Col>
+                                )}
                                 {episodeNumber && (
                                     <Col md="6">
                                         <Alert color="light" id="titleEpisodeNumber">
