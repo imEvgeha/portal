@@ -1,7 +1,6 @@
 const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = [
     'retailer.retailerId1',
     'regionExcluded',
-    'contractId',
     'originalRightIds',
     'keywords',
     'castCrew',
