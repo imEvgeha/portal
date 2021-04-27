@@ -182,13 +182,11 @@ const RightsRepository = ({
                 });
                 newSelectedRepoRights = loadedSelectedRights;
             }
-            
+
             gridApi.forEachNode(node => {
                 const {data = {}} = node;
-                if(selectedIds.includes(data.id)) 
-                    node.setSelected(true);
-                else
-                data.id && node.setSelected(false);
+                if (selectedIds.includes(data.id)) node.setSelected(true);
+                else data.id && node.setSelected(false);
             });
         }
         if (isMounted.current) {
@@ -410,7 +408,7 @@ const RightsRepository = ({
                 //      is freshly loaded and we have selected rights from the store, while they appear in the table
                 //      and appear selected, they are not selected from the main table's perspective, so this would
                 //      cause loss of data without the check, as rights from ingest would have been removed.
-            
+
                 if (
                     !Object.keys(selectedIngest).length &&
                     rightsTableSelectedRows.length !== selectedTableSelectedRows.length &&
@@ -430,8 +428,10 @@ const RightsRepository = ({
                     }, {});
                     setSelectedRights({[username]: payload});
                     break;
-                }
-                else if(!Object.keys(selectedIngest).length && selectedTableSelectedRows.length !== rightsTableSelectedRows.length) {                    
+                } else if (
+                    !Object.keys(selectedIngest).length &&
+                    selectedTableSelectedRows.length !== rightsTableSelectedRows.length
+                ) {
                     setSelectedRights({[username]: rightsTableSelectedRows});
                     break;
                 }
@@ -460,7 +460,7 @@ const RightsRepository = ({
                     selectedRights[currentRight.id] = currentRight;
                     return selectedRights;
                 }, {});
- 
+
                 break;
             }
             case FILTER_CHANGED: {
@@ -508,13 +508,13 @@ const RightsRepository = ({
                 // If row was unselected but it was not found via gridApi, then manually deselect it and
                 // update the store. Otherwise proceed with normal flow via gridApi and update the store via
                 // onRightsRepositoryGridEvent handler
-                
-                    if (api.getSelectedRows()?.length < selectedRepoRights.length) {
-                        setSelectedRights({[username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id))});
-                    } else {
-                        nodesToDeselect?.forEach(node => node?.setSelected(false));
-                    }
-                
+
+                if (api.getSelectedRows()?.length < selectedRepoRights.length) {
+                    setSelectedRights({[username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id))});
+                } else {
+                    nodesToDeselect?.forEach(node => node?.setSelected(false));
+                }
+
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -526,7 +526,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    },500);
+    }, 500);
 
     // Returns only selected rights that are also included in the selected ingest
     const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
@@ -593,7 +593,7 @@ const RightsRepository = ({
                 context={{selectedRows: currentUserSelectedRights}}
                 mapping={mapping}
                 setTotalCount={setTotalCount}
-                onGridEvent={(type) => onRightsRepositoryGridEvent(type, gridApi, columnApi)}
+                onGridEvent={type => onRightsRepositoryGridEvent(type, gridApi, columnApi)}
                 isGridHidden={activeTab !== RIGHTS_TAB}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}

@@ -102,7 +102,13 @@ class TitleEditMode extends Component {
                                         readOnly
                                         name="concatenatedTitle"
                                         id="concatenatedTitle"
-                                        value={renderTitleName(title, episodic.seasonNumber, episodic.episodeNumber)}
+                                        value={renderTitleName(
+                                            title,
+                                            contentType,
+                                            episodic.seasonNumber,
+                                            episodic.episodeNumber,
+                                            episodic.seriesTitleName
+                                        )}
                                     />
                                 </Col>
                             </Row>

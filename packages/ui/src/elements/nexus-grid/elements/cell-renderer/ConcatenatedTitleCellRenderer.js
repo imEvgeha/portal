@@ -2,46 +2,28 @@ import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
-import './LoadingCellRenderer.scss';
 import {renderTitleName} from '../../../../../../../src/pages/legacy/containers/metadata/dashboard/components/utils/utils';
 
-const LoadingCellRenderer = params => {
+const ConcatenatedTitleCellRenderer = params => {
     const {
         data,
-        colDef,
-        colDef: {field, colId},
-        valueFormatted,
-        linkId = '',
-        link = null,
+        colDef: {field},
         newTab = true,
     } = params;
-    if (!data && colDef !== 'actions') {
+    if (!data) {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
-
-    let linkTo = link && URL.keepEmbedded(`${link}${data[linkId] || data.id || data[colId]}`);
-    if (data.type === 'title') {
-        linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
-    }
+    const linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
 
     let value = getDeepValue(data, field);
     if (isObject(value)) {
         value = JSON.stringify(value);
     }
-    if (Array.isArray(value) && value.length > 1) {
-        value = value.join(', ');
-    }
+
     const {title, episodic, contentType} = data;
-    const content =
-        colId === 'concatenatedTitle' && episodic
-            ? renderTitleName(
-                  title,
-                  contentType,
-                  episodic.seasonNumber,
-                  episodic.episodeNumber,
-                  episodic.seriesTitleName
-              )
-            : valueFormatted || value;
+    const content = episodic
+        ? renderTitleName(title, contentType, episodic.seasonNumber, episodic.episodeNumber, episodic.seriesTitleName)
+        : value;
     if ((content !== undefined && content !== null) || content === false) {
         let highlighted = false;
         if (data && data.highlightedFields) {
@@ -65,19 +47,15 @@ const LoadingCellRenderer = params => {
             </div>
         );
 
-        return linkTo ? (
-            newTab ? (
-                <a href={linkTo} target="_blank">
-                    {displayValue}
-                </a>
-            ) : (
-                <Link to={linkTo}>{displayValue}</Link>
-            )
+        return newTab ? (
+            <a href={linkTo} target="_blank">
+                {displayValue}
+            </a>
         ) : (
-            displayValue
+            <Link to={linkTo}>{displayValue}</Link>
         );
     }
 
     return null;
 };
-export default LoadingCellRenderer;
+export default ConcatenatedTitleCellRenderer;

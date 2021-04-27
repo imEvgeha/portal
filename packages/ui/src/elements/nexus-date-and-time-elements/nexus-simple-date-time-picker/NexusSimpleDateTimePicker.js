@@ -114,7 +114,11 @@ const NexusSimpleDateTimePicker = ({
                         {...restProps}
                     />
                 </div>
-                {error && <div><ErrorMessage>{error}</ErrorMessage></div>}
+                {error && (
+                    <div>
+                        <ErrorMessage>{error}</ErrorMessage>
+                    </div>
+                )}
             </div>
         </>
     );
