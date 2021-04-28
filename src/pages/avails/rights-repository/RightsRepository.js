@@ -283,6 +283,15 @@ const RightsRepository = ({
     });
 
     const columnsValidationDefsClone = columnDefsClone.map(col => {
+        if (['id'].includes(col.field) || ['icon'].includes(col.colId)) {
+            col = {
+                ...col,
+                lockPinned: true,
+                lockPosition: true,
+                sortable: !!['id'].includes(col.field),
+            };
+        }
+
         if (!['buttons', 'title', 'id', 'action'].includes(col.field)) {
             return {
                 ...col,
