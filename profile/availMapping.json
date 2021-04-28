@@ -411,17 +411,6 @@
             "required": false
         },
         {
-            "javaVariableName": "contractId",
-            "displayName": "Contract Id",
-            "dataType": "string",
-            "searchDataType": "string",
-            "queryParamName": "contractId",
-            "readOnly": false,
-            "enableSearch": true,
-            "enableEdit": true,
-            "required": false
-        },
-        {
             "javaVariableName": "titleStatus",
             "displayName": "Title Status",
             "dataType": "select",
