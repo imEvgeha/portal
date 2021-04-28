@@ -59,7 +59,7 @@ function* assignTasks({payload}) {
                 toastParams = {
                     title: SUCCESS_TITLE,
                     icon: SUCCESS_ICON,
-                    description: `${taskIds.length} tasks successfully assigned to ${userId}.`,
+                    description: `${taskIds.length} tasks successfully ${action.toLowerCase()}ed to ${userId}.`,
                 };
                 break;
             }
@@ -67,7 +67,7 @@ function* assignTasks({payload}) {
                 toastParams = {
                     title: ERROR_TITLE,
                     icon: ERROR_ICON,
-                    description: `Error in assigning ${taskIds.length} tasks to ${userId}.`,
+                    description: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
                 };
                 break;
             }
@@ -82,8 +82,8 @@ function* assignTasks({payload}) {
                 toastParams = {
                     title: WARNING_TITLE,
                     icon: WARNING_ICON,
-                    description: `${jobDetails.success} tasks assigned successfully to ${userId}.
-                    Error in assigning ${jobDetails.error} tasks.`,
+                    description: `${jobDetails.success} tasks ${action.toLowerCase()}ed successfully to ${userId}.
+                    Error in ${action.toLowerCase()}ing ${jobDetails.error} tasks.`,
                 };
                 break;
             }
@@ -108,7 +108,7 @@ function* assignTasks({payload}) {
                 title: ERROR_TITLE,
                 icon: ERROR_ICON,
                 isAutoDismiss: true,
-                description: `Error in assigning ${taskIds.length} tasks to ${userId}.`,
+                description: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
             },
         });
     } finally {
