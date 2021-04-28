@@ -71,7 +71,7 @@ exports[`MatchedCombinedTitlesTable should match snapshot 1`] = `
           "readOnly": false,
           "required": true,
           "searchDataType": "string",
-          "valueFormatter": [Function],
+          "valueFormatter": undefined,
         },
         Object {
           "cellRenderer": "loadingCellRenderer",

@@ -137,11 +137,6 @@ export default {
             hide: true,
         },
         {
-            field: 'contractId',
-            headerName: 'Contract Id',
-            hide: true,
-        },
-        {
             field: 'titleStatus',
             headerName: 'Title Status',
             hide: true,

@@ -23,7 +23,8 @@
         "enableSearch": false,
         "enableEdit": true,
         "required": true,
-        "cellRenderer": "loadingCellRenderer"
+        "cellRenderer": "loadingCellRenderer",
+        "hide": true
     },
     {
         "colId": "title",
@@ -37,6 +38,20 @@
         "enableSearch": true,
         "enableEdit": true,
         "required": true
+    },
+    {
+        "colId": "concatenatedTitle",
+        "javaVariableName": "title",
+        "field": "title",
+        "headerName": "Concatenated Title",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "title",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true,
+        "cellRenderer": "concatenatedTitleCellRenderer"
     },
     {
         "colId": "releaseYear",

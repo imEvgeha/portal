@@ -2,8 +2,8 @@ import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-enterprise';
-import {debounce} from 'lodash';
 import './NexusGrid.scss';
+import ConcatenatedTitleCellRenderer from './elements/cell-renderer/ConcatenatedTitleCellRenderer';
 import IconCellRenderer from './elements/cell-renderer/IconCellRenderer';
 import LoadingCellRenderer from './elements/cell-renderer/LoadingCellRenderer';
 import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
@@ -71,6 +71,7 @@ const NexusGrid = ({
                 frameworkComponents={{
                     ...frameworkComponents,
                     loadingCellRenderer: LoadingCellRenderer,
+                    concatenatedTitleCellRenderer: ConcatenatedTitleCellRenderer,
                     iconCellRenderer: IconCellRenderer,
                 }}
                 onDragStopped={dragStopped}
