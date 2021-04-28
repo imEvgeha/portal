@@ -6,7 +6,6 @@ import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusG
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {defineCheckboxSelectionColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
-import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
@@ -23,6 +22,9 @@ import {
     DOP_PROJECT_URL,
     PROJECT_STATUS_ENUM,
     ASSIGN_TASK_TITLE,
+    TASK_ACTIONS_ASSIGN,
+    TASK_ACTIONS_FORWARD,
+    FORWARD_TASK_TITLE,
 } from '../../constants';
 import {fetchDopTasksData} from '../../utils';
 import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
@@ -42,7 +44,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
         totalCount: 0,
     });
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [assign, setAssign] = useState(false);
+    const [action, setAction] = useState(null);
     const [rowsSelected, setRowsSelected] = useState([]);
     const [taskOwner, setTaskOwner] = useState(null);
     const [api, setApi] = useState(null);
@@ -59,11 +61,11 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
 
     useEffect(() => {
         if (taskOwner) {
-            assignTasks({userId: taskOwner, taskIds: rowsSelected, closeModal});
+            assignTasks({userId: taskOwner, taskIds: rowsSelected, closeModal, action});
             setRowsSelected([]);
             api && api.deselectAll();
         }
-    }, [assign]);
+    }, [action]);
 
     const formattedValueColDefs = COLUMN_MAPPINGS.map(col => {
         col.resizable = true;
@@ -192,13 +194,13 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const handleAssign = () => {
-        openModal(<AssignModal selectedTasks={rowsSelected} setTaskOwner={setTaskOwner} />, {
-            title: ASSIGN_TASK_TITLE,
+    const handleAssign = val => {
+        openModal(<AssignModal selectedTasks={rowsSelected} setTaskOwner={setTaskOwner} action={val} />, {
+            title: val === TASK_ACTIONS_ASSIGN ? ASSIGN_TASK_TITLE : FORWARD_TASK_TITLE,
             actions: [
                 {
                     text: 'Apply',
-                    onClick: () => setAssign(!assign),
+                    onClick: () => setAction([val]),
                     appearance: 'primary',
                 },
                 {
@@ -215,15 +217,16 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
             <MoreIcon className="nexus-c-dop-tasks-table__more-actions" onClick={openMenu} />
             {isMenuOpen && (
                 <div className="nexus-c-dop-tasks-table__action-menu">
-                    <div
-                        className={`nexus-c-dop-tasks-table__action-menu--item ${
-                            rowsSelected.length ? 'enable-option' : ''
-                        }`}
-                        onClick={handleAssign}
-                    >
-                        Assign
-                    </div>
-                    <div className="nexus-c-dop-tasks-table__action-menu--item">Forward</div>
+                    {[TASK_ACTIONS_ASSIGN, TASK_ACTIONS_FORWARD].map(key => (
+                        <div
+                            className={`nexus-c-dop-tasks-table__action-menu--item ${
+                                rowsSelected.length ? 'enable-option' : ''
+                            }`}
+                            onClick={() => handleAssign(key)}
+                        >
+                            {key}
+                        </div>
+                    ))}
                 </div>
             )}
             <DopTasksTableGrid

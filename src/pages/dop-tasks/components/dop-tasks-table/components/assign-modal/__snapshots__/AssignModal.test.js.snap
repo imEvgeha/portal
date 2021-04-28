@@ -12,8 +12,9 @@ exports[`AssignModal should match snapshot 1`] = `
     options={
       Array [
         Object {
-          "label": "test test (test)",
-          "value": "test",
+          "firstName": "test",
+          "lastName": "test",
+          "userId": "test",
         },
       ]
     }

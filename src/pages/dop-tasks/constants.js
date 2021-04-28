@@ -330,9 +330,12 @@ export const DATE_FIELDS = [
     'licenseStartDate',
 ];
 export const FIELDS_OPERATOR_IN = ['language', 'locale', 'territory', 'affiliate', 'contentType'];
-export const ASSIGN_TASK_TITLE = 'Assign Task';
+export const ASSIGN_TASK_TITLE = 'Assign Tasks';
+export const FORWARD_TASK_TITLE = 'Forward Tasks';
 export const jobStatus = {
     SUCCESS: 'COMPLETED',
     ERROR: 'ERRORED',
     PARTIAL: 'Partially Completed',
 };
+export const TASK_ACTIONS_ASSIGN = 'Assign';
+export const TASK_ACTIONS_FORWARD = 'Forward';

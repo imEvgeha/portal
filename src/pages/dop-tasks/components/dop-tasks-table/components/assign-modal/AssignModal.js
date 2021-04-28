@@ -2,24 +2,22 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select';
 import {connect} from 'react-redux';
+import {TASK_ACTIONS_ASSIGN} from '../../../../constants';
 import {getDopTasksOwners} from '../../../../dopTasksActions';
 import {createTaskOwnersSelector} from '../../../../dopTasksSelectors';
 import './AssignModal.scss';
 
-const AssignModal = ({getOwners, selectedTasks, tasksOwners, setTaskOwner}) => {
+const AssignModal = ({getOwners, selectedTasks, tasksOwners, setTaskOwner, action}) => {
     useEffect(() => {
-        getOwners(selectedTasks);
+        action === TASK_ACTIONS_ASSIGN ? getOwners(selectedTasks) : getOwners([]);
     }, []);
 
     return (
         <div className="dop-tasks-assign-tasks">
             <label>Assign to: </label>
             <Select
-                placeholder="Select Task Owner"
-                options={tasksOwners.map(({firstName, lastName, userId}) => ({
-                    label: `${firstName} ${lastName} (${userId})`,
-                    value: userId,
-                }))}
+                placeholder={`Select ${action === TASK_ACTIONS_ASSIGN ? 'Task Owner' : 'Work Queue'}`}
+                options={tasksOwners}
                 onChange={val => setTaskOwner(val.value)}
             />
         </div>
@@ -31,11 +29,13 @@ AssignModal.propTypes = {
     setTaskOwner: PropTypes.func.isRequired,
     selectedTasks: PropTypes.array,
     tasksOwners: PropTypes.array,
+    action: PropTypes.string,
 };
 
 AssignModal.defaultProps = {
     selectedTasks: [],
     tasksOwners: [],
+    action: TASK_ACTIONS_ASSIGN,
 };
 
 const mapStateToProps = () => {

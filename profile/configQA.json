@@ -31,6 +31,7 @@
             "DOPLoginWithKeycloak": "/AmdocsOSS/Portal/services/LoginWithKeycloak",
             "DOPTasksPotentialOwners": "/dop/be-services/taskManagement/taskPotentialOwner",
             "DOPTasksAssign": "/dop/be-services/taskManagement/task/assign",
+            "DOPTasksForward": "/dop/be-services/taskManagement/task/forward",
             "DOPTasksBatchJob": "/dop/be-services/taskManagement/taskBatchJob",
             "publisher": "/publisher/v1"
         }
