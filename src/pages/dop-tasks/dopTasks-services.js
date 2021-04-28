@@ -30,9 +30,9 @@ const DopTasksService = {
         );
     },
     getOwners: taskIds => {
-        const url = `${config.get('gateway.DOPUrl')}${config.get(
-            'gateway.service.DOPTasksPotentialOwners'
-        )}?taskId=${taskIds}`;
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksPotentialOwners')}${
+            taskIds ? `?taskId=${taskIds}` : ''
+        }`;
         return nexusFetch(url);
     },
     assignTask: (taskIds, userId) => {
@@ -41,6 +41,26 @@ const DopTasksService = {
             assignmentDetail: {
                 action: 'DELEGATE',
                 assignee: {userId},
+                isoverrideExistingAssignment: true,
+            },
+            taskList: taskIds.map(t => ({id: t})),
+        };
+        return nexusFetch(
+            url,
+            {
+                method: 'post',
+                credentials: 'include',
+                body: JSON.stringify(dataToSend),
+            },
+            DEFAULT_TIMEOUT,
+            true
+        );
+    },
+    forwardTask: (taskIds, userId) => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksForward')}`;
+        const dataToSend = {
+            forwardDetail: {
+                targetWorkQueue: userId,
                 isoverrideExistingAssignment: true,
             },
             taskList: taskIds.map(t => ({id: t})),
