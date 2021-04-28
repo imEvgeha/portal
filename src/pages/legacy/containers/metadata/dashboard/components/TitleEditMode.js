@@ -216,6 +216,19 @@ class TitleEditMode extends Component {
                                                     />
                                                 </FormGroup>
                                             </Col>
+                                            {contentType === SEASON.apiName && (
+                                                <Col>
+                                                    <Label for="totalNumberOfEpisodes">Total Episodes</Label>
+                                                    <AvField
+                                                        type="number"
+                                                        name="totalNumberOfEpisodes"
+                                                        value={totalNumberOfEpisodes}
+                                                        id="totalNumberOfEpisodes"
+                                                        placeholder="Enter Total Episodes"
+                                                        onChange={this.props.handleOnChangeEdit}
+                                                    />
+                                                </Col>
+                                            )}
                                             {contentType !== SEASON.apiName ? (
                                                 <Col>
                                                     <FormGroup>
