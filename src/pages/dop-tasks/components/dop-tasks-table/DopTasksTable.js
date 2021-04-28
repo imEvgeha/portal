@@ -61,7 +61,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
 
     useEffect(() => {
         if (taskOwner) {
-            assignTasks({userId: taskOwner, taskIds: rowsSelected, closeModal, action});
+            assignTasks({userId: taskOwner, taskIds: rowsSelected, closeModal, action: action[0]});
             setRowsSelected([]);
             api && api.deselectAll();
         }

@@ -14,7 +14,7 @@ const AssignModal = ({getOwners, selectedTasks, tasksOwners, setTaskOwner, actio
 
     return (
         <div className="dop-tasks-assign-tasks">
-            <label>Assign to: </label>
+            <label>{`${action} to: `}</label>
             <Select
                 placeholder={`Select ${action === TASK_ACTIONS_ASSIGN ? 'Task Owner' : 'Work Queue'}`}
                 options={tasksOwners}
