@@ -95,7 +95,6 @@ const EditorialMetadata = ({
     useEffect(() => setCurrentFolder(foldersOptions[0]), [foldersOptions]);
 
     const titleHasMaster = editorialMetadata.find(e => e['hasGeneratedChildren']);
-    const {updatedAt: masterUpdatedAt} = titleHasMaster;
 
     const isNexusTitle = coreTitleData.id && coreTitleData.id.startsWith('titl');
 
@@ -174,6 +173,7 @@ const EditorialMetadata = ({
                 ) : null}
                 {masterFirstFoldersChildren &&
                     masterFirstFoldersChildren.map((item, index) => {
+                        const {updatedAt: masterUpdatedAt} = titleHasMaster;
                         const duration = moment.duration(
                             moment.utc(masterUpdatedAt).diff(moment.utc(item['updatedAt']))
                         );
