@@ -173,13 +173,15 @@ const EditorialMetadata = ({
                 ) : null}
                 {masterFirstFoldersChildren &&
                     masterFirstFoldersChildren.map((item, index) => {
-                        const {updatedAt: masterUpdatedAt} = titleHasMaster;
-                        const duration = moment.duration(
-                            moment.utc(masterUpdatedAt).diff(moment.utc(item['updatedAt']))
-                        );
-                        const secs = Math.abs(duration.asSeconds());
-
-                        const isDecorated = !!item['parentEmetId'] && secs < 5;
+                        let isDecorated = false;
+                        if (titleHasMaster) {
+                            const {updatedAt: masterUpdatedAt = ''} = titleHasMaster;
+                            const duration = moment.duration(
+                                moment.utc(masterUpdatedAt).diff(moment.utc(item['updatedAt']))
+                            );
+                            const secs = Math.abs(duration.asSeconds());
+                            isDecorated = !!item['parentEmetId'] && secs < 5;
+                        }
                         const isMaster = item['hasGeneratedChildren'];
                         return (
                             <span
