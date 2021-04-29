@@ -22,7 +22,7 @@ describe('EventDrawerHeader', () => {
         onReplicateEventMock = jest.fn();
         props = {
             store,
-            event: {eventId: '123'},
+            event: {headers: {eventId: '123'}},
             onReplay: onReplayEventMock,
             onReplicate: onReplicateEventMock,
         };

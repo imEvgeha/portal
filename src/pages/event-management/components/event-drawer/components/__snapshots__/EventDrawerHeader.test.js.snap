@@ -32,7 +32,9 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
     className="nexus-c-event-drawer-header__download-button"
     data={
       Object {
-        "eventId": "123",
+        "headers": Object {
+          "eventId": "123",
+        },
       }
     }
     filename="123 - event"
