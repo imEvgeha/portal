@@ -237,6 +237,7 @@ class TitleResultTable extends React.Component {
             .then(response => {
                 const {data, total} = response || {};
                 if (total > 0) {
+                    data.forEach(item => item.repository = item.id.split('_')[0]);
                     this.addLoadedItems(response);
                     this.addItemToTable(response, params);
                 } else {
@@ -398,7 +399,7 @@ class TitleResultTable extends React.Component {
                 );
             } else return params.value;
         } else {
-            return <img src={LoadingGif} />;
+            return '';
         }
     };
 
