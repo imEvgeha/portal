@@ -80,7 +80,7 @@ const NexusSimpleDateTimePicker = ({
                     {label}
                 </label>
             )}
-            <TemporaryErrorBorder error={error}>
+            <div>
                 <div className="nexus-c-date-picker__date-clear-wrapper">
                     <DateTimePicker
                         locale={locale}
@@ -113,17 +113,13 @@ const NexusSimpleDateTimePicker = ({
                         times={TIMES}
                         {...restProps}
                     />
-                    {isClearable && (
-                        <ClearButton
-                            onClear={() => {
-                                setDate('');
-                                onDateChange('');
-                            }}
-                        />
-                    )}
                 </div>
-            </TemporaryErrorBorder>
-            {error && <ErrorMessage>{error}</ErrorMessage>}
+                {error && (
+                    <div>
+                        <ErrorMessage>{error}</ErrorMessage>
+                    </div>
+                )}
+            </div>
         </>
     );
 };

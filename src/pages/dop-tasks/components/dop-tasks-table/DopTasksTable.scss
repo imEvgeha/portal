@@ -1,12 +1,44 @@
 @import '~@vubiquity-nexus/portal-styles/scss/config.scss';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 
 .nexus-c-dop-tasks-table {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    @include padding(6, 6, 10, 6);
+    @include padding(0, 6, 10, 6);
+
+    &__more-actions {
+        margin-bottom: 10px;
+        cursor: pointer;
+        fill: map-get($neutrals, N70);
+    }
+    &__action-menu {
+        position: absolute;
+        top: 25px;
+        background: map-get($neutrals, N0);
+        border: 1px solid map-get($neutrals, N70);
+        z-index: 2;
+        width: 150px;
+        padding: 10px;
+
+        &--item {
+            color: map-get($neutrals, N70);
+            pointer-events: none;
+            white-space: nowrap;
+            padding-bottom: 10px;
+            &.enable-option {
+                pointer-events: all;
+                color: map-get($neutrals, N900);
+                cursor: pointer;
+            }
+            &:last-of-type {
+                padding-bottom: 0;
+            }
+        }
+    }
 
     & .nexus-c-nexus-grid {
         height: 100%;

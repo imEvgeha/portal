@@ -24,4 +24,8 @@ export const getLicensors = createSelector(getSelectValues, selectValues => sele
 
 export const getLicensees = createSelector(getSelectValues, selectValues => selectValues.licensee || []);
 
+export const getLicenseTypes = createSelector(getSelectValues, selectValues => selectValues.licenseType || []);
+
+export const getTerritories = createSelector(getSelectValues, selectValues => selectValues.territory || []);
+
 export const getFilterLoadingState = createSelector(getIngestReducer, ingest => ingest.isFilterLoading);

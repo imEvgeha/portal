@@ -32,7 +32,7 @@ import NexusTagsContainer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-ta
 import Button from '@atlaskit/button';
 import Tooltip from '@material-ui/core/Tooltip';
 import {loadOptionsPerson} from '../utils/utils';
-import "./CoreMetadata.scss";
+import './CoreMetadata.scss';
 
 const {MOVIDA, VZ} = TitleSystems;
 
@@ -282,6 +282,22 @@ class CoreMetadataEditMode extends Component {
                                 id="assetName"
                                 value={this.props.data.externalIds ? this.props.data.externalIds.assetName : ''}
                                 placeholder="Asset Name"
+                                validate={{
+                                    maxLength: {value: 200},
+                                }}
+                            />
+                        </Col>
+                        <Col md={1}>
+                            <Label for="contentProviderId">Content Provider Id </Label>
+                        </Col>
+                        <Col>
+                            <AvField
+                                type="text"
+                                onChange={e => this.props.handleOnExternalIds(e)}
+                                name="contentProviderId"
+                                id="contentProviderId"
+                                value={this.props.data?.externalIds?.contentProviderId}
+                                placeholder="Content Provider Id "
                                 validate={{
                                     maxLength: {value: 200},
                                 }}
@@ -603,12 +619,28 @@ class CoreMetadataEditMode extends Component {
                                             <option key={e.licenseeName} value={e.movidaName || e.licenseeName}>
                                                 {(() => {
                                                     if (e.movidaName) {
-                                                        if (e.additionalMSVContentProviders && e.additionalMSVContentProviders.length > 0)
-                                                            return e.licenseeName + ' | ' + e.movidaName + ' | ' + e.additionalMSVContentProviders.join(', ');
+                                                        if (
+                                                            e.additionalMSVContentProviders &&
+                                                            e.additionalMSVContentProviders.length > 0
+                                                        )
+                                                            return (
+                                                                e.licenseeName +
+                                                                ' | ' +
+                                                                e.movidaName +
+                                                                ' | ' +
+                                                                e.additionalMSVContentProviders.join(', ')
+                                                            );
                                                         return e.licenseeName + ' | ' + e.movidaName;
                                                     } else {
-                                                        if (e.additionalMSVContentProviders && e.additionalMSVContentProviders.length > 0)
-                                                            return e.licenseeName + ' | ' + e.additionalMSVContentProviders.join(', ');
+                                                        if (
+                                                            e.additionalMSVContentProviders &&
+                                                            e.additionalMSVContentProviders.length > 0
+                                                        )
+                                                            return (
+                                                                e.licenseeName +
+                                                                ' | ' +
+                                                                e.additionalMSVContentProviders.join(', ')
+                                                            );
                                                         return e.licenseeName;
                                                     }
                                                 })()}

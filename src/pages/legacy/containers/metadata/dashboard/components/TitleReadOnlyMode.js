@@ -3,8 +3,9 @@ import {Link} from 'react-router-dom';
 import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
-import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
+import {EPISODE, toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
 import Spinner from '@atlaskit/spinner';
+import {renderTitleName} from './utils/utils';
 
 class TitleReadOnlyMode extends Component {
     constructor(props) {
@@ -70,12 +71,32 @@ class TitleReadOnlyMode extends Component {
                             <Col>
                                 <Alert color="light" id="titleName">
                                     <h2>
-                                        <b>Title: </b>
-                                        {title ? title : <span style={{color: '#999'}}>Empty</span>}
+                                        <b>{contentType === EPISODE.apiName ? 'Concatenated Title' : 'Title'} </b>
+                                        {title ? (
+                                            renderTitleName(
+                                                title,
+                                                contentType,
+                                                seasonNumber,
+                                                episodeNumber,
+                                                seriesTitleName
+                                            )
+                                        ) : (
+                                            <span style={{color: '#999'}}>Empty</span>
+                                        )}
                                     </h2>
                                 </Alert>
                             </Col>
                         </Row>
+                        {seasonNumber && episodeNumber && (
+                            <Row>
+                                <Col>
+                                    <Alert color="light" id="titleContentType">
+                                        <b>Title:</b>
+                                        {title ? title : <span style={{color: '#999'}}>Empty</span>}
+                                    </Alert>
+                                </Col>
+                            </Row>
+                        )}
                         <Row>
                             <Col>
                                 <Alert color="light" id="titleContentType">
@@ -118,6 +139,13 @@ class TitleReadOnlyMode extends Component {
                                             <a href={seasonLink} className="linked-data">
                                                 {seasonNumber}
                                             </a>
+                                        </Alert>
+                                    </Col>
+                                )}
+                                {totalNumberOfEpisodes && (
+                                    <Col md="6">
+                                        <Alert color="light" id="totalNumberOfEpisodes">
+                                            <b>Total Episodes: </b> <span>{totalNumberOfEpisodes}</span>
                                         </Alert>
                                     </Col>
                                 )}

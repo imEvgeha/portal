@@ -1,6 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import SectionMessage from '@atlaskit/section-message';
+import Spinner from '@atlaskit/spinner';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
@@ -9,6 +11,7 @@ import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplex
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
+import CustomIconFilter from '../elements/custom-icon-filter/CustomIconFilter';
 import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
 import TitleSelectionRenderer from '../elements/title-selection-renderer/TitleSelectionRenderer';
@@ -25,6 +28,7 @@ import {
     GRID_EVENTS,
     NOT_FILTERABLE_COLUMNS,
 } from '../constants';
+import './hoc.scss';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -65,6 +69,8 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (
                 isMounted.current &&
+                isObject(selectValues) &&
+                !!Object.keys(selectValues).length &&
                 !!columnDefs.length
             ) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
@@ -100,7 +106,7 @@ const withFilterableColumns = ({
                 filterValue = currentValue;
             }
 
-            if (filterValue) {
+            if (filterValue && !isObject(filterValue)) {
                 if (filterInstance instanceof SetFilter) {
                     const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
                     applySetFilter(
@@ -115,7 +121,7 @@ const withFilterableColumns = ({
                     });
                 }
             } else if (filterInstance instanceof SetFilter) {
-                filterInstance.selectEverything();
+                filterInstance.setModel({values: filterInstance.getValues()});
                 filterInstance.applyModel();
             } else {
                 filterInstance.setModel(null);
@@ -168,10 +174,15 @@ const withFilterableColumns = ({
 
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
-            const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {searchDataType, queryParamName = columnDef.field} =
+            const filterableColumnDefs = copiedColumnDefs.map((columnDef, index) => {
+                const {colId} = copiedColumnDefs[index];
+
+                const {searchDataType, queryParamName = columnDef.field, queryParamValue = '', queryParamKey, icon} =
                     (Array.isArray(mapping) &&
-                        mapping.find(({javaVariableName}) => javaVariableName === columnDef.field)) ||
+                        mapping.find(
+                            ({javaVariableName, dataType}) =>
+                                javaVariableName === columnDef.field && (colId === 'icon' || dataType !== 'icon')
+                        )) ||
                     {};
                 const {field} = columnDef;
                 const isFilterable =
@@ -193,11 +204,13 @@ const withFilterableColumns = ({
                         CUSTOM_DATE,
                         CUSTOM_COMPLEX,
                         CUSTOM_READONLY,
+                        CUSTOM_ICON,
                         CUSTOM_FLOAT_READONLY,
                     } = AG_GRID_COLUMN_FILTER;
                     const {
                         BOOLEAN,
                         INTEGER,
+                        ICON,
                         DOUBLE,
                         YEAR,
                         MULTISELECT,
@@ -271,17 +284,11 @@ const withFilterableColumns = ({
                                 columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
                                 const priceTypes = getFilterOptions(`${field}.priceType`);
                                 const currencies = getFilterOptions(`${field}.priceCurrency`);
-                                const priceSchema = PriceTypeFormSchema(priceTypes, currencies);
+                                const priceSchema = PriceTypeFormSchema({priceTypes, currencies});
                                 columnDef.filter = CUSTOM_COMPLEX;
-                                const {priceType, priceValue, priceCurrency} = filters;
-                                const pricingInitialFilters = {
-                                    ...(priceType && {priceType}),
-                                    ...(priceValue && {priceValue}),
-                                    ...(priceCurrency && {priceCurrency}),
-                                };
                                 columnDef.filterParams = {
                                     ...DEFAULT_FILTER_PARAMS,
-                                    initialFilters: pricingInitialFilters,
+                                    searchQuery: filters.priceType,
                                     schema: priceSchema,
                                 };
                                 break;
@@ -290,19 +297,14 @@ const withFilterableColumns = ({
                                 columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
                                 // TODO generate schema and values for select
                                 //  based on initial schema and found subfields
-                                const languages = getFilterOptions(`${field}.language`);
+                                const languages = getFilterOptions('language');
                                 const audioTypes = getFilterOptions(`${field}.audioType`);
-                                const schema = AudioLanguageTypeFormSchema(languages, audioTypes);
+                                const schema = AudioLanguageTypeFormSchema({languages, audioTypes});
                                 columnDef.filter = CUSTOM_COMPLEX;
-                                const {audioTypeLanguage, audioType} = filters;
-                                const audioLanguageInitialFilters = {
-                                    ...(audioTypeLanguage && {audioTypeLanguage}),
-                                    ...(audioType && {audioType}),
-                                };
                                 columnDef.filterParams = {
                                     // TODO; check is this necessary
                                     ...DEFAULT_FILTER_PARAMS,
-                                    initialFilters: audioLanguageInitialFilters,
+                                    searchQuery: filters.audioTypeLanguage || {},
                                     schema,
                                 };
                                 break;
@@ -336,6 +338,18 @@ const withFilterableColumns = ({
                                 };
                                 break;
                             }
+                            case ICON:
+                                const searchQuery = {};
+                                searchQuery[queryParamKey] = queryParamValue;
+                                columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
+                                columnDef.filter = CUSTOM_ICON;
+                                columnDef.filterParams = {
+                                    // TODO; check is this necessary
+                                    ...DEFAULT_FILTER_PARAMS,
+                                    searchQuery,
+                                    icon,
+                                };
+                                break;
                             default:
                                 columnDef.filter = TEXT;
                                 columnDef.filterParams = DEFAULT_FILTER_PARAMS;
@@ -412,7 +426,7 @@ const withFilterableColumns = ({
         const propsWithoutHocProps = omit(props, [...DEFAULT_HOC_PROPS, ...hocProps]);
 
         // TODO - HOC should be props proxy, not bloquer
-        return filterableColumnDefs.length ? (
+        return filterableColumnDefs.length && Object.keys(selectValues).length > 0 ? (
             <WrappedComponent
                 {...propsWithoutHocProps}
                 columnDefs={filterableColumnDefs}
@@ -420,6 +434,7 @@ const withFilterableColumns = ({
                 frameworkComponents={{
                     customDateFloatingFilter: CustomDateFloatingFilter,
                     customDateFilter: CustomDateFilter,
+                    customIconFilter: CustomIconFilter,
                     customComplexFloatingFilter: CustomComplexFloatingFilter,
                     customComplexFilter: CustomComplexFilter,
                     customReadOnlyFilter: CustomReadOnlyFilter,
@@ -429,7 +444,15 @@ const withFilterableColumns = ({
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}
             />
-        ) : null;
+        ) : (
+            <div className="nexus-grid-filters-fallback">
+                <SectionMessage className="nexus-grid-fallback-section" title="Preparing table filters...">
+                    <span>
+                        <Spinner size="small" /> Please wait.
+                    </span>
+                </SectionMessage>
+            </div>
+        );
     };
 
     const createMapStateToProps = () => {

@@ -27,11 +27,23 @@
             color: #42526e;
             padding: 0 10px;
         }
+        &--filename {
+            margin-top: 16px;
+            flex-grow: 1;
+            & > input {
+                width: 100%;
+            }
+        }
     }
 
-    &__row1 {
+    &__row1,
+    &__row3 {
         display: flex;
         justify-content: space-between;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+    }
+    &__row2 {
         margin-bottom: 16px;
     }
 
@@ -42,6 +54,7 @@
         &__start-date,
         &__end-date {
             width: 135px;
+            margin-bottom: 0;
 
             div {
                 background: white;

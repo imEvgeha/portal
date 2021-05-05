@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import CoreMetadataEditMode from './coretitlemetadata/CoreMetadataEditMode';
 import {connect} from 'react-redux';
 import {configFields} from '../../service/ConfigService';
+import {renderTitleName} from './utils/utils';
 import {
     ADVERTISEMENT,
     EPISODE,
@@ -93,6 +94,25 @@ class TitleEditMode extends Component {
                         />
                     </Col>
                     <Col>
+                        {contentType === EPISODE.apiName && (
+                            <Row>
+                                <Col>
+                                    <Label for="title">Concatenated Title</Label>
+                                    <AvField
+                                        readOnly
+                                        name="concatenatedTitle"
+                                        id="concatenatedTitle"
+                                        value={renderTitleName(
+                                            title,
+                                            contentType,
+                                            episodic.seasonNumber,
+                                            episodic.episodeNumber,
+                                            episodic.seriesTitleName
+                                        )}
+                                    />
+                                </Col>
+                            </Row>
+                        )}
                         <Row>
                             <Col>
                                 <Label for="title">
@@ -196,6 +216,19 @@ class TitleEditMode extends Component {
                                                     />
                                                 </FormGroup>
                                             </Col>
+                                            {contentType === SEASON.apiName && (
+                                                <Col>
+                                                    <Label for="totalNumberOfEpisodes">Total Episodes</Label>
+                                                    <AvField
+                                                        type="number"
+                                                        name="totalNumberOfEpisodes"
+                                                        value={totalNumberOfEpisodes}
+                                                        id="totalNumberOfEpisodes"
+                                                        placeholder="Enter Total Episodes"
+                                                        onChange={this.props.handleOnChangeEdit}
+                                                    />
+                                                </Col>
+                                            )}
                                             {contentType !== SEASON.apiName ? (
                                                 <Col>
                                                     <FormGroup>

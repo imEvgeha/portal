@@ -7,6 +7,7 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
+import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep} from 'lodash';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
@@ -35,7 +36,7 @@ const SelectedForPlanning = ({
             ? {
                   ...col,
                   cellRendererParams: {
-                      link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
+                      link: `${config.get('DOP_base')}${DOP_PROJECT_URL}`,
                   },
               }
             : col
@@ -53,9 +54,9 @@ const SelectedForPlanning = ({
         }
     };
 
-    const onSortChanged = ({api}) => {
+    const onSortChanged = ({columnApi}) => {
         // prepare sorting as a payload
-        const sortModel = api.getSortModel();
+        const sortModel = getSortModel(columnApi);
         if (sortModel.length) {
             const sortCriterion = [
                 {

@@ -269,7 +269,7 @@ class TitleCreate extends React.Component {
                 seasonChecked: false,
                 episodeChecked: true,
                 seriesChecked: false,
-                isReleaseYearRequired: false,
+                isReleaseYearRequired: true,
                 isSeriesCompleted: true,
                 isSeasonNumberRequired: true,
                 titleForm: {
@@ -516,35 +516,33 @@ class TitleCreate extends React.Component {
                                             ) : null}
                                         </Row>
                                     ) : null}
-                                    {this.state.titleForm.contentType !== SEASON.apiName ? (
-                                        <Row style={{marginTop: '15px'}}>
-                                            <Col>
-                                                <Label for="titleReleaseYear">
-                                                    Release Year
-                                                    {!this.state.isReleaseYearRequired ? null : (
-                                                        <span style={{color: 'red'}}>*</span>
-                                                    )}
-                                                </Label>
-                                                <AvField
-                                                    name="releaseYear"
-                                                    errorMessage="Please enter a valid year!"
-                                                    id="titleReleaseYear"
-                                                    validate={{
-                                                        required: {
-                                                            value: this.state.isReleaseYearRequired,
-                                                            errorMessage: 'Field cannot be empty!',
-                                                        },
-                                                        pattern: {value: '^[0-9]+$'},
-                                                        minLength: {value: MAX_RELEASE_YEAR_LENGTH},
-                                                        maxLength: {value: MAX_RELEASE_YEAR_LENGTH},
-                                                    }}
-                                                    placeholder="Enter Release Year"
-                                                    value={this.state.titleForm.releaseYear}
-                                                    onChange={this.handleChange}
-                                                />
-                                            </Col>
-                                        </Row>
-                                    ) : null}
+                                    <Row style={{marginTop: '15px'}}>
+                                        <Col>
+                                            <Label for="titleReleaseYear">
+                                                Release Year
+                                                {!this.state.isReleaseYearRequired ? null : (
+                                                    <span style={{color: 'red'}}>*</span>
+                                                )}
+                                            </Label>
+                                            <AvField
+                                                name="releaseYear"
+                                                errorMessage="Please enter a valid year!"
+                                                id="titleReleaseYear"
+                                                validate={{
+                                                    required: {
+                                                        value: this.state.isReleaseYearRequired,
+                                                        errorMessage: 'Field cannot be empty!',
+                                                    },
+                                                    pattern: {value: '^[0-9]+$'},
+                                                    minLength: {value: MAX_RELEASE_YEAR_LENGTH},
+                                                    maxLength: {value: MAX_RELEASE_YEAR_LENGTH},
+                                                }}
+                                                placeholder="Enter Release Year"
+                                                value={this.state.titleForm.releaseYear}
+                                                onChange={this.handleChange}
+                                            />
+                                        </Col>
+                                    </Row>
                                     {this.props.tenantCode && (
                                         <Row>
                                             <Col>

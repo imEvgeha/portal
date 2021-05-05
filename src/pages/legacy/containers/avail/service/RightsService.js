@@ -154,7 +154,8 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 continue;
             }
             const map = mappings.find(
-                ({queryParamName, javaVariableName}) => queryParamName === key || javaVariableName === key
+                ({queryParamName, javaVariableName, dataType}) =>
+                    (queryParamName === key || javaVariableName === key) && dataType !== 'icon'
             );
             let keyValue = (map && map.queryParamName) || key;
             if (key === 'selected' || key === 'withdrawn') {

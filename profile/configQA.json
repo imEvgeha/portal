@@ -1,6 +1,7 @@
 {
     "gateway": {
         "url": "https://availsapi.qa.vubiquity.com",
+        "injestUrl": "https://avails-ingest.qa.vubiquity.com",
         "availsParserUrl": "https://avails-parser.qa.vubiquity.com",
         "titleUrl": "https://titlesapi.qa.vubiquity.com",
         "configuration": "https://configapi.qa.vubiquity.com",
@@ -12,6 +13,8 @@
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
         "service": {
             "avails": "/avails-api/v1",
+            "availsInjest": "/avails-ingest/v1",
+            "clearCache": "/cache/clear",
             "availsParser": "/avails-parser/v1",
             "title": "/titles-api/v1",
             "titleV2": "/titles-api/v2",
@@ -26,9 +29,14 @@
             "DOPProjectManagementBase": "/dop/be-services/projectManagement",
             "DOPProjectManagementProject": "/dop/be-services/projectManagement/project",
             "DOPLoginWithKeycloak": "/AmdocsOSS/Portal/services/LoginWithKeycloak",
+            "DOPTasksPotentialOwners": "/dop/be-services/taskManagement/taskPotentialOwner",
+            "DOPTasksAssign": "/dop/be-services/taskManagement/task/assign",
+            "DOPTasksForward": "/dop/be-services/taskManagement/task/forward",
+            "DOPTasksBatchJob": "/dop/be-services/taskManagement/taskBatchJob",
             "publisher": "/publisher/v1"
         }
     },
+    "DOP_base": "https://dop.qa.vubiquity.com:8045",
     "keycloak": {
         "clientId": "portalapp-public",
         "realm": "Vubiquity",

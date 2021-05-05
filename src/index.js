@@ -25,7 +25,7 @@ import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
 import './styles/legacy/global.scss'; // TODO; refactor
 
 const AG_GRID_LICENSE_KEY =
-    'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
+    'CompanyName=QBS Software Ltd_on_behalf_of_Vubiquity Management Ltd,LicensedGroup=Multi,LicenseType=MultipleApplications,LicensedConcurrentDeveloperCount=4,LicensedProductionInstancesCount=0,AssetReference=AG-010641,ExpiryDate=11_November_2021_[v2]_MTYzNjU4ODgwMDAwMA==14105f72d5a1473f60b320a047d57a3b';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
 // setEnvConfiguration('qa')

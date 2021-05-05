@@ -1,9 +1,33 @@
+import React from 'react';
+import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import WithdrawnIcon from '@vubiquity-nexus/portal-assets/withdrawn.svg';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
-import {camelCase, startCase, get} from 'lodash';
+import {camelCase, startCase} from 'lodash';
 import {EPISODE_CONTENT_TYPE} from '../../constants';
+import './createValueFormatter.scss';
 
-const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
+export const getIcon = (value, isFocus) => {
+    switch (value) {
+        case 'warning':
+            return (
+                <span className={`nexus-c-warning-icon ${isFocus ? 'nexus-c-warning-icon--is-active' : ''}`}>
+                    <WarningIcon />
+                </span>
+            );
+        case 'block':
+            return (
+                <WithdrawnIcon
+                    className={`nexus-c-withdrawn-icon ${isFocus ? 'nexus-c-withdrawn-icon--is-active' : ''}`}
+                />
+            );
+        default:
+            return value;
+    }
+};
+
+const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip, icon, valueToDisplay}) => {
     switch (dataType) {
         case DATETIME_FIELDS.TIMESTAMP:
         case DATETIME_FIELDS.BUSINESS_DATETIME:
@@ -76,7 +100,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 if (data && Array.isArray(data[javaVariableName])) {
                     return data[javaVariableName]
                         .filter(Boolean)
-                        .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                        .map(e => String(e.country || `${e.language || '-'}/${e.audioType || '-'}`))
                         .join(', ');
                 }
             };
@@ -158,20 +182,6 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         return data[javaVariableName].map(({genre}) => genre).join(', ');
                     }
                 };
-            } else if (javaVariableName === 'title') {
-                return params => {
-                    const {data = {}} = params || {};
-                    if (data && data[javaVariableName]) {
-                        const {contentType} = data || '';
-                        if (contentType && contentType === EPISODE_CONTENT_TYPE) {
-                            const {seriesTitleName = '', seasonNumber = '', episodeNumber = ''} =
-                                data.episodic || data || {};
-                            if (seriesTitleName && seasonNumber && episodeNumber)
-                                return `${seriesTitleName}: S${seasonNumber},E${episodeNumber}: ${data[javaVariableName]}`;
-                        }
-                        return data[javaVariableName];
-                    }
-                };
             }
             return;
         case 'yesOrNo':
@@ -206,6 +216,17 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         .join(', ');
                     return [items];
                 }
+            };
+        case 'icon':
+            // eslint-disable-next-line react/prop-types
+            return ({value}) => {
+                return (!valueToDisplay && value) || (valueToDisplay && value === valueToDisplay) ? (
+                    <NexusTooltip content={tooltip}>
+                        <span className="nexus-c-repository-icon">{getIcon(icon, false)}</span>
+                    </NexusTooltip>
+                ) : (
+                    ' '
+                );
             };
         default:
             return ({value}) => value;

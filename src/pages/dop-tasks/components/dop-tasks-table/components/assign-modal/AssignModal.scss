@@ -1,0 +1,14 @@
+.dop-tasks-assign-tasks {
+    display: flex;
+    min-height: 120px;
+    width: 100%;
+    align-items: flex-start;
+    overflow-y: hidden;
+    label {
+        margin-right: 10px;
+        padding-top: 10px;
+    }
+    & > div {
+        flex-grow: 1;
+    }
+}

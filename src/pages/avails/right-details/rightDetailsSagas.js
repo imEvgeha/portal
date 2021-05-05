@@ -40,7 +40,9 @@ export function* getSelectValuesSaga() {
 }
 
 const fetchSelectValues = endpoint => {
-    const url = `${config.get('gateway.configuration')}/configuration-api/v1${endpoint}?page=0&size=10000`;
+    const url = `${config.get('gateway.configuration')}${config.get(
+        'gateway.service.configuration'
+    )}${endpoint}?page=0&size=10000`;
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 

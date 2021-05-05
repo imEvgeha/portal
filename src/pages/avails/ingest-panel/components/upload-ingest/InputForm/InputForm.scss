@@ -53,28 +53,38 @@
     @include margin(1, 0, 0, 0);
 }
 
-.manual-ingest-config__catalog {
-    @include margin(2, 0, 5, 0);
-}
-
-.manual-ingest-config__catalog-options {
-    display: flex;
-    flex-direction: row;
-    @include margin(5, 0, 0, 0);
-}
-
-.manual-ingest-config__catalog-select {
-    width: 50%;
-}
-
-.manual-ingest-config__catalog-checkbox {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-}
-
 .manual-ingest-config__label {
     @include heading(h200);
     @include margin(2, 0, 1, 0);
+}
+
+.manual-ingest-config__body {
+    display: flex;
+    @include padding(3, 0);
+    border-top: 1px solid map-get($colors, nexus-light-grey);
+}
+
+.manual-ingest-config__templates {
+    width: 30%;
+}
+
+.manual-ingest-config__fields {
+    width: 70%;
+}
+
+.manual-ingest-config__buttons {
+    @include margin(10, 0, 0, 0);
+    text-align: right;
+    button {
+        @include margin(0, 3, 0, 0);
+        width: 140px;
+    }
+}
+
+.manual-ingest-config__catalog,
+.manual-ingest-config__licensee,
+.manual-ingest-config--service-region,
+.manual-ingest-config__license-types,
+.manual-ingest-config__territory {
+    @include margin(0, 0, 3, 0);
 }

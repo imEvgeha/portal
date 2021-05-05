@@ -2,17 +2,16 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import {connect} from "react-redux";
+import {connect} from 'react-redux';
 import {NexusDateTimeWindowPicker} from '../../../../../ui/elements';
 import Constants from '../../constants';
-import {getFilterLoadingState} from "../../ingestSelectors";
+import {getFilterLoadingState} from '../../ingestSelectors';
 import {getFiltersToSend, getInitialFilters} from '../../utils';
 import './IngestFilters.scss';
 
-
 const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
     const {
-        filterKeys: {LICENSOR, STATUS, INGEST_TYPE},
+        filterKeys: {LICENSOR, STATUS, INGEST_TYPE, EMAIL_SUBJECT, FILE_NAME},
         STATUS_LIST,
         INGEST_LIST,
     } = Constants;
@@ -26,24 +25,35 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
     };
 
     const onDateChange = dates => {
-        setFilters({...filters, ...dates});
-        setIsApplyActive(true);
+        if (dates.startDate || dates.endDate) {
+            setFilters({...filters, ...dates});
+            setIsApplyActive(true);
+        }
     };
 
     const clearFilters = () => {
-        setFilters({
+        const filterValues = {
             status: STATUS_LIST[0],
             licensor: '',
-            ingestType:INGEST_LIST[0],
+            ingestType: INGEST_LIST[0],
             startDate: '',
             endDate: '',
-        });
+            [EMAIL_SUBJECT]: '',
+            [FILE_NAME]: '',
+        };
+        setFilters(filterValues);
         setIsApplyActive(false);
-        onFiltersChange({});
+        applyFilters(filterValues);
     };
 
-    const applyFilters = () => {
-        onFiltersChange(getFiltersToSend(filters));
+    const applyFilters = values => {
+        onFiltersChange(getFiltersToSend(values || filters));
+    };
+
+    const handleKeyDown = e => {
+        if (e.key === 'Enter') {
+            applyFilters();
+        }
     };
 
     return (
@@ -84,19 +94,42 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                     labels={Constants.DATEPICKER_LABELS}
                 />
             </div>
-            <div className="ingest-filters__section">
-                Ingest Method
-                <Select
-                    options={Constants.INGEST_LIST}
-                    value={filters.ingestType}
-                    onChange={value => onFilterChange(INGEST_TYPE, value)}
-                />
+            <div className="ingest-filters__row3">
+                <div className="ingest-filters__section">
+                    Ingest Method
+                    <Select
+                        options={Constants.INGEST_LIST}
+                        value={filters.ingestType}
+                        onChange={value => onFilterChange(INGEST_TYPE, value)}
+                    />
+                </div>
+                {filters.ingestType?.value === Constants.ingestTypes.EMAIL.toUpperCase() && (
+                    <>
+                        <div className="ingest-filters__section">
+                            Email Subject
+                            <input
+                                placeholder="Enter subject"
+                                value={filters.emailSubject}
+                                onChange={e => onFilterChange(EMAIL_SUBJECT, e.target.value)}
+                                onKeyDown={handleKeyDown}
+                            />
+                        </div>
+                        <div className="ingest-filters__section ingest-filters__section--filename">
+                            Attachment File Name
+                            <input
+                                placeholder="Enter file name"
+                                value={filters[FILE_NAME]}
+                                onChange={e => onFilterChange(FILE_NAME, e.target.value)}
+                                onKeyDown={handleKeyDown}
+                            />
+                        </div>
+                    </>
+                )}
             </div>
             <div className="ingest-filters__actions">
                 <Button onClick={clearFilters}>Clear All</Button>
                 <Button
-
-                    onClick={applyFilters}
+                    onClick={() => applyFilters()}
                     appearance="primary"
                     isDisabled={!isApplyActive}
                     isLoading={isFilterLoading}
@@ -124,4 +157,3 @@ const mapStateToProps = () => {
 };
 
 export default connect(mapStateToProps)(IngestFilters);
-

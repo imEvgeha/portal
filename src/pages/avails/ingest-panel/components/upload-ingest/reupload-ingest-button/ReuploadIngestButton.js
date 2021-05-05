@@ -23,7 +23,7 @@ const ReuploadIngestButton = ({attachment, ingestData}) => {
     };
 
     const reUploadIngestFile = () => {
-        openModal(buildForm(), {title: TITLE, width: 'small', shouldCloseOnOverlayClick: false});
+        openModal(buildForm(), {title: TITLE, width: 'medium', shouldCloseOnOverlayClick: false});
     };
 
     return (

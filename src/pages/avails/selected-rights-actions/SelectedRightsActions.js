@@ -109,7 +109,8 @@ export const SelectedRightsActions = ({
     // None of the rights has status 'Deleted' and no territories with selected status (no rights are selected for planning)
     const checkRightDeletionCriteria = () =>
         selectedRights.every(
-            ({status, territory = []}) => status !== 'Deleted' && territory.filter(item => item.selected).length === 0
+            ({status, territory = []}) =>
+                !['Deleted', 'Merged'].includes(status) && territory.filter(item => item.selected).length === 0
         );
 
     // At least one of the selected rights has status 'Deleted' or 'Merged'
@@ -135,7 +136,8 @@ export const SelectedRightsActions = ({
 
     const checkPrePlanEligibilityCriteria = () => {
         return selectedRights.every(
-            ({rightStatus, licensed, status, territory, temporaryPriceReduction, end}) =>
+            ({rightStatus, licensed, status, territory, temporaryPriceReduction, end, updatedCatalogReceived}) =>
+                !updatedCatalogReceived &&
                 licensed &&
                 ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
                 ['ReadyNew', 'Ready'].includes(status) &&

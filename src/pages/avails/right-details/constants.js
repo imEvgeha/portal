@@ -35,4 +35,9 @@ export const NoteMerged = {
     noteStyle: 'info',
 };
 
-export const STATUS = ['Error', 'Merged', 'Pending'];
+export const NoteDeleted = {
+    note: "Right Editing disabled for rights with status 'Deleted'",
+    noteStyle: 'info',
+};
+
+export const STATUS = ['Error', 'Merged', 'Pending', 'Deleted'];

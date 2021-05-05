@@ -4,19 +4,26 @@ import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
+import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
 import SavedTableDropdown from './components/saved-table-dropdown/SavedTableDropdown';
-import {setDopTasksUserDefinedGridState} from './dopTasksActions';
+import {setDopTasksUserDefinedGridState, assignDopTasks} from './dopTasksActions';
 import {createGridStateSelector} from './dopTasksSelectors';
 import {applyPredefinedTableView, insertNewGridModel} from './utils';
 import {USER} from './constants';
 import './DopTasksView.scss';
 
-export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDopTasksUserDefinedGridState}) => {
+export const DopTasksView = ({
+    toggleRefreshGridData,
+    username,
+    gridState,
+    setDopTasksUserDefinedGridState,
+    assignTasks,
+}) => {
     const [externalFilter, setExternalFilter] = useState({
         user: USER,
     });
@@ -43,7 +50,7 @@ export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDop
     const saveUserDefinedGridState = viewId => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && username && viewId) {
             const filterModel = gridApi.getFilterModel();
-            const sortModel = gridApi.getSortModel();
+            const sortModel = getSortModel(columnApi);
             const columnState = columnApi.getColumnState();
             const model = {id: viewId, filterModel, sortModel, columnState};
             const newUserData = insertNewGridModel(viewId, userDefinedGridStates, model);
@@ -57,7 +64,7 @@ export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDop
     };
 
     const selectPredefinedTableView = filter => {
-        applyPredefinedTableView(gridApi, filter);
+        applyPredefinedTableView(gridApi, filter, columnApi);
     };
 
     const selectUserDefinedTableView = id => {
@@ -65,7 +72,7 @@ export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDop
             const selectedModel = userDefinedGridStates.filter(item => item.id === id);
             const {columnState, filterModel, sortModel} = selectedModel[0] || {};
             gridApi.setFilterModel(filterModel);
-            gridApi.setSortModel(sortModel);
+            setSorting(sortModel, columnApi);
             columnApi.setColumnState(columnState);
         }
     };
@@ -94,6 +101,7 @@ export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDop
                 setExternalFilter={setExternalFilter}
                 setGridApi={setGridApi}
                 setColumnApi={setColumnApi}
+                assignTasks={assignTasks}
             />
         </div>
     );
@@ -111,11 +119,13 @@ const mapStateToProps = () => {
 const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
     setDopTasksUserDefinedGridState: payload => dispatch(setDopTasksUserDefinedGridState(payload)),
+    assignTasks: payload => dispatch(assignDopTasks(payload)),
 });
 
 DopTasksView.propTypes = {
     toggleRefreshGridData: PropTypes.func,
     setDopTasksUserDefinedGridState: PropTypes.func,
+    assignTasks: PropTypes.func,
     gridState: PropTypes.object,
     username: PropTypes.string.isRequired,
 };
@@ -123,6 +133,7 @@ DopTasksView.propTypes = {
 DopTasksView.defaultProps = {
     toggleRefreshGridData: () => null,
     setDopTasksUserDefinedGridState: () => null,
+    assignTasks: () => null,
     gridState: {},
 };
 

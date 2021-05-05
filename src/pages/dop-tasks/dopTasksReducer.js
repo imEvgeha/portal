@@ -2,6 +2,7 @@ import * as actionTypes from './dopTasksActionTypes';
 
 const initialState = {
     gridState: {},
+    tasksOwners: [],
 };
 
 const dopTasksReducer = (state = initialState, action = {}) => {
@@ -14,6 +15,11 @@ const dopTasksReducer = (state = initialState, action = {}) => {
                 gridState: {...gridState, ...payload},
             };
         }
+        case actionTypes.SET_OWNERS_LIST:
+            return {
+                ...state,
+                tasksOwners: payload,
+            };
         default:
             return state;
     }

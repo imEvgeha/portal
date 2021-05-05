@@ -7,7 +7,7 @@ import config from 'react-global-configuration';
 import InputForm from '../InputForm/InputForm';
 import './UploadIngestButton.scss';
 
-const TITLE = 'Avail Ingest';
+const TITLE = 'AVAIL INGEST';
 
 const UploadIngestButton = ({ingestData}) => {
     const inputRef = useRef();
@@ -41,7 +41,7 @@ const UploadIngestButton = ({ingestData}) => {
 
     useEffect(() => {
         if (file) {
-            openModalCallback(buildForm(), {title: TITLE, width: 'small', shouldCloseOnOverlayClick: false});
+            openModalCallback(buildForm(), {title: TITLE, width: 'medium', shouldCloseOnOverlayClick: false});
         }
     }, [buildForm, file]);
 

@@ -2,14 +2,18 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Chevron from '@vubiquity-nexus/portal-assets/chevron-right.svg';
 import classnames from 'classnames';
+import constants from '../../constants';
 import IngestReport from '../ingest-report/IngestReport';
 import IngestStatus from '../ingest-status/IngestStatus';
 import IngestTitle from '../ingest-title/IngestTitle';
 import './Ingest.scss';
 
-const Ingest = ({received, attachment, isSelected, ingestClick, isInBundle, ingestId, ingestType}) => {
+const Ingest = ({received, attachment, isSelected, ingestClick, isInBundle, ingestId, ingestType, emailSubject}) => {
     const [showReport, setShowReport] = useState(false);
     const {link, status, ingestReport} = attachment;
+    const {
+        ingestTypes: {EMAIL},
+    } = constants;
 
     const onChevronClick = e => {
         e.stopPropagation();
@@ -44,6 +48,11 @@ const Ingest = ({received, attachment, isSelected, ingestClick, isInBundle, inge
                     )}
                 >
                     <IngestStatus date={received} status={status} ingestType={ingestType} />
+                    {ingestType === EMAIL && showReport && emailSubject ? (
+                        <div className="nexus-c-avail-ingest__status--subject">Subject: {emailSubject}</div>
+                    ) : (
+                        ''
+                    )}
                 </div>
             </div>
             {showReport && ingestReport && <IngestReport report={ingestReport} ingestId={ingestId} />}
@@ -59,6 +68,7 @@ Ingest.propTypes = {
     ingestType: PropTypes.string,
     isInBundle: PropTypes.bool,
     ingestId: PropTypes.string,
+    emailSubject: PropTypes.string,
 };
 
 Ingest.defaultProps = {
@@ -69,6 +79,7 @@ Ingest.defaultProps = {
     ingestType: '',
     isInBundle: false,
     ingestId: '',
+    emailSubject: '',
 };
 
 export default Ingest;

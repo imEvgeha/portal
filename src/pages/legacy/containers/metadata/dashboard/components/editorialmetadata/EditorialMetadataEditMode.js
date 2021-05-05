@@ -125,14 +125,14 @@ class EditorialMetadataEditMode extends Component {
     static getDerivedStateFromProps(props, state) {
         const {language, category, genres} = props.data || {};
         if (language !== state.language) {
-          return {
-            category: (category || []).map(e => ({value: e.name, label: e.name})),
-            language,
-            genres,
-          };
+            return {
+                category: (category || []).map(e => ({value: e.name, label: e.name})),
+                language,
+                genres,
+            };
         }
         return null;
-      }
+    }
 
     handleFieldLength = name => {
         return name ? name.length : 0;
@@ -162,7 +162,12 @@ class EditorialMetadataEditMode extends Component {
     handleEditorialRemovePerson = (person, castCrew) => {
         let newCastCrewList = [];
         if (castCrew) {
-            newCastCrewList = castCrew.filter(e => e.id !== person.id);
+            newCastCrewList = castCrew.filter(e => {
+                if (e.id === person.id) {
+                    return e.personType !== person.personType;
+                }
+                return true;
+            });
         }
         this.props.handleEditorialCastCrew(newCastCrewList, this.props.data);
     };
@@ -223,9 +228,9 @@ class EditorialMetadataEditMode extends Component {
             sasktelLineupId,
             castCrew,
             shortTitleTemplate,
-        } = updateData?.length ? updateData : this.props.data;
+        } = updateData ? updateData : this.props.data;
 
-        const metadataStatus = updateData?.length ? updateData.metadataStatus : this.props.data.metadataStatus;
+        const metadataStatus = updateData ? updateData.metadataStatus : this.props.data.metadataStatus;
         this.raiseValidationError(isMaster, [
             shortTitleTemplate,
             title.title,
@@ -478,7 +483,7 @@ class EditorialMetadataEditMode extends Component {
                     <Col>
                         <Select
                             name={this.getNameWithPrefix('edit-genres')}
-                            value={(get(this,'state.genres',[]) || []).map(e => {
+                            value={(get(this, 'state.genres', []) || []).map(e => {
                                 return {id: e.id, genre: e.genre, value: e.genre, label: e.genre};
                             })}
                             onChange={e => this.handleGenre(e)}

@@ -1,0 +1,21 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+
+.nexus-c-withdrawn-icon {
+    fill: map-get($mid-neutral-colors, mid-neutral-7);
+    width: 20px;
+    &--is-active {
+        fill: map-get($yellows, Y500);
+    }
+}
+
+.nexus-c-repository-icon span {
+    width: 25px;
+}
+
+.nexus-c-warning-icon svg {
+    color: map-get($mid-neutral-colors, mid-neutral-7);
+}
+
+.nexus-c-warning-icon--is-active svg {
+    color: map-get($yellows, Y500);
+}

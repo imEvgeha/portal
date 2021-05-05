@@ -27,6 +27,7 @@ import {getDeepValue, equalOrIncluded} from '@vubiquity-nexus/portal-utils/lib/C
 import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
+import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -257,7 +258,7 @@ class RightsResultTable extends React.Component {
                     return ({data = {}}) => {
                         if (data && Array.isArray(data[javaVariableName])) {
                             const cellValue = data[javaVariableName]
-                                .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                                .map(e => String(e.country || `${e.language || '-'}/${e.audioType || '-'}`))
                                 .join(', ');
                             return cellValue || undefined;
                         } else {
@@ -301,10 +302,10 @@ class RightsResultTable extends React.Component {
             });
         });
 
-        const currentSortModel = this.table.api.getSortModel();
+        const currentSortModel = getSortModel(this.table.columnApi);
         let toChangeSortModel = false;
 
-        if (currentSortModel.length !== sortModel.length) toChangeSortModel = true;
+        if (currentSortModel?.length !== sortModel?.length) toChangeSortModel = true;
 
         for (let i = 0; i < sortModel.length && !toChangeSortModel; i++) {
             if (sortModel[i].colId !== currentSortModel[i].colId) toChangeSortModel = true;
@@ -312,12 +313,12 @@ class RightsResultTable extends React.Component {
         }
 
         if (toChangeSortModel) {
-            this.table.api.setSortModel(sortModel);
+            setSorting(sortModel, this.table.columnApi);
         }
     }
 
     onSortChanged(e) {
-        const sortParams = e.api.getSortModel();
+        const sortParams = getSortModel(e.columnApi);
         const newSort = [];
         if (sortParams.length > 0) {
             sortParams.map(criteria => {

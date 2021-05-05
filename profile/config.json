@@ -10,6 +10,8 @@
         "service": {
             "avails": "/avails-api/v1",
             "availsParser": "/avails-parser/v1",
+            "availsInjest": "/avails-ingest/v1",
+            "clearCache": "/cache/clear",
             "title": "/titles-api/v1",
             "titleV2": "/titles-api/v2",
             "configuration": "/configuration-api/v1",
@@ -23,12 +25,18 @@
             "DOPProjectManagementBase": "/dop/be-services/projectManagement",
             "DOPProjectManagementProject": "/dop/be-services/projectManagement/project",
             "DOPLoginWithKeycloak": "/AmdocsOSS/Portal/services/LoginWithKeycloak",
+            "DOPTasksPotentialOwners": "/dop/be-services/taskManagement/taskPotentialOwner",
+            "DOPTasksAssign": "/dop/be-services/taskManagement/task/assign",
+            "DOPTasksForward": "/dop/be-services/taskManagement/task/forward",
+            "DOPTasksBatchJob": "/dop/be-services/taskManagement/taskBatchJob",
             "publisher": "/publisher/v1"
         },
         "servicingOrdersUrl": "https://servicing-order-manager.dev.vubiquity.com",
         "titleUrl": "https://titlesapi.dev.vubiquity.com",
-        "url": "https://availsapi.dev.vubiquity.com"
+        "url": "https://availsapi.dev.vubiquity.com",
+        "injestUrl": "https://avails-ingest.dev.vubiquity.com"
     },
+    "DOP_base": "http://dops.dev.vubiquity.com:8040",
     "keycloak": {
         "clientId": "portalapp-public",
         "realm": "Vubiquity",

@@ -36,6 +36,7 @@ const FILTER_TYPE = {
     DURATION: 'duration',
     INTEGER: 'integer',
     DOUBLE: 'double',
+    ICON: 'icon',
     YEAR: 'year',
     MULTISELECT: 'multiselect',
     PRICE: 'priceType',
@@ -47,6 +48,7 @@ const FILTER_TYPE = {
     REGIONAL_MIDNIGHT: DATETIME_FIELDS.REGIONAL_MIDNIGHT,
 };
 const FILTERABLE_DATA_TYPES = [
+    'icon',
     'string',
     'stringToArray',
     'integer',
@@ -73,6 +75,7 @@ const AG_GRID_COLUMN_FILTER = {
     CUSTOM_DATE: 'customDateFilter',
     CUSTOM_COMPLEX: 'customComplexFilter',
     CUSTOM_READONLY: 'customReadOnlyFilter',
+    CUSTOM_ICON: 'customIconFilter',
     CUSTOM_FLOAT_READONLY: 'customReadOnlyFloatingFilter',
 };
 
