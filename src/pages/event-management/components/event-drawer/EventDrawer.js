@@ -89,7 +89,7 @@ const EventDrawer = ({id, onDrawerClose}) => {
                 isLoading={isLoading}
                 title={DRAWER_TITLE}
                 width="wide"
-                headerContent={headers && <EventDrawerHeader event={headers} />}
+                headerContent={headers && <EventDrawerHeader event={event} />}
             >
                 <div className="nexus-c-event-drawer__content">
                     <EventSectionCollapsible title={EVENT_HEADER}>
