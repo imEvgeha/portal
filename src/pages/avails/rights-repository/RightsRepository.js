@@ -388,14 +388,15 @@ const RightsRepository = ({
                 setColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED: {
-                let clonedSelectedRights = currentUserSelectedRights;
+        
+                let clonedSelectedRights = currentUserSelectedRights;            
 
                 // Get selected rows from both tables
                 const rightsTableSelectedRows = api?.getSelectedRows() || [];
                 const selectedTableSelectedRows = selectedGridApi?.getSelectedRows() || [];
 
                 // Extract IDs of selected rights in main table
-                const allSelectedRowsIds = rightsTableSelectedRows.map(({id}) => id);
+                const allSelectedRowsIds = rightsTableSelectedRows?.map(({id}) => id);
 
                 const idsToRemove = [];
 
@@ -408,14 +409,14 @@ const RightsRepository = ({
                 //      is freshly loaded and we have selected rights from the store, while they appear in the table
                 //      and appear selected, they are not selected from the main table's perspective, so this would
                 //      cause loss of data without the check, as rights from ingest would have been removed.
-
                 if (
+                    !selectedIngest &&
                     rightsTableSelectedRows.length === selectedTableSelectedRows.length &&
                     clonedSelectedRights.length > rightsTableSelectedRows.length
                 ) {
                     // Filter out the selected rights whose rows are not selected. Basically finding the row
                     // that was just deselected.
-                    const updatedSelectedRights = clonedSelectedRights.filter(right =>
+                    const updatedSelectedRights = clonedSelectedRights?.filter(right =>
                         allSelectedRowsIds.includes(right.id)
                     );
 
@@ -425,13 +426,7 @@ const RightsRepository = ({
                         selectedRights[currentRight.id] = currentRight;
                         return selectedRights;
                     }, {});
-                    setSelectedRights({[username]: payload});
-                    break;
-                } else if (
-                    !Object.keys(selectedIngest).length &&
-                    selectedTableSelectedRows.length !== rightsTableSelectedRows.length
-                ) {
-                    setSelectedRights({[username]: rightsTableSelectedRows});
+                    setSelectedRights({[username]: payload})
                     break;
                 }
 
@@ -446,7 +441,7 @@ const RightsRepository = ({
                     if (wasSelected && !node.isSelected()) {
                         idsToRemove.push(data.id);
                     } else if (!wasSelected && node.isSelected()) {
-                        clonedSelectedRights = [...currentUserSelectedRights, data];
+                        clonedSelectedRights = [...currentUserSelectedRights, ...clonedSelectedRights, data];
                     }
                 });
 
@@ -459,7 +454,8 @@ const RightsRepository = ({
                     selectedRights[currentRight.id] = currentRight;
                     return selectedRights;
                 }, {});
-
+                setSelectedRights({[username]: payload})
+                
                 break;
             }
             case FILTER_CHANGED: {
@@ -475,8 +471,9 @@ const RightsRepository = ({
             }
             default:
                 break;
+        
         }
-    }, 500);
+    }, 1000);
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
