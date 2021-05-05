@@ -388,7 +388,7 @@ const RightsRepository = ({
                 setColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED: {
-                let clonedSelectedRights = currentUserSelectedRights;            
+                let clonedSelectedRights = currentUserSelectedRights;
 
                 // Get selected rows from both tables
                 const rightsTableSelectedRows = api?.getSelectedRows() || [];
@@ -469,7 +469,6 @@ const RightsRepository = ({
             }
             default:
                 break;
-        
         }
     }, 500);
     // add only new selected rights to pre-plan
