@@ -21,7 +21,6 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
             headerName: 'Master',
             cellRendererParams: {isNexusDisabled, selectionType: 'radio', restrictedIds},
             cellRenderer: 'titleSelectionRenderer',
-            editable: true,
         };
         const duplicateButton = {
             ...PINNED_COLUMN_DEF,
@@ -30,7 +29,6 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
             headerName: 'Duplicate',
             cellRendererParams: {isNexusDisabled: true, restrictedIds},
             cellRenderer: 'titleSelectionRenderer',
-            editable: true,
         };
 
         const onCellValueChanged = (params = {}) => {
@@ -57,35 +55,31 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
                     delete newList[id];
                 }
                 setDuplicateList(newList);
-            } else if (column.colId === 'matchButton') {
+            } else if (column.colId === 'matchButton' && newValue) {
                 const newMatchList = {...matchList};
-                if (newValue) {
-                    if (duplicateList[id]) {
-                        const newList = {...duplicateList};
-                        delete newList[id];
-                        node.setDataValue('duplicateButton', false);
-                        setDuplicateList(newList);
-                    }
-                    if (matchList[repo]) {
-                        nodeFound = api.getRowNode(matchList[repo].id);
-                        nodeFound && nodeFound.setDataValue('matchButton', false);
-                    }
-                    newMatchList[repo] = data;
-                    if (repo === NEXUS) {
-                        [MOVIDA, VZ].forEach(r => {
-                            if (matchList[r]) {
-                                delete newMatchList[r];
-                                nodeFound = api.getRowNode(matchList[r].id);
-                                nodeFound && nodeFound.setDataValue('matchButton', false);
-                            }
-                        });
-                    } else if (matchList[NEXUS]) {
-                        delete newMatchList[NEXUS];
-                        nodeFound = api.getRowNode(matchList[NEXUS].id);
-                        nodeFound && nodeFound.setDataValue('matchButton', false);
-                    }
-                } else if (id === newMatchList[repo]?.id) {
-                    delete newMatchList[repo];
+                if (duplicateList[id]) {
+                    const newList = {...duplicateList};
+                    delete newList[id];
+                    node.setDataValue('duplicateButton', false);
+                    setDuplicateList(newList);
+                }
+                if (matchList[repo]) {
+                    nodeFound = api.getRowNode(matchList[repo].id);
+                    nodeFound && nodeFound.setDataValue('matchButton', false);
+                }
+                newMatchList[repo] = data;
+                if (repo === NEXUS) {
+                    [MOVIDA, VZ].forEach(r => {
+                        if (matchList[r]) {
+                            delete newMatchList[r];
+                            nodeFound = api.getRowNode(matchList[r].id);
+                            nodeFound && nodeFound.setDataValue('matchButton', false);
+                        }
+                    });
+                } else if (matchList[NEXUS]) {
+                    delete newMatchList[NEXUS];
+                    nodeFound = api.getRowNode(matchList[NEXUS].id);
+                    nodeFound && nodeFound.setDataValue('matchButton', false);
                 }
                 setMatchList(newMatchList);
             }
