@@ -51,8 +51,8 @@ export const getRepositoryName = id => {
 
 // eslint-disable-next-line
 const repositoryCell = ({data}) => {
-    const {id} = data || {};
-    return (
+    const {id = ''} = data || {};
+    return id === ''? null : (
         <CustomActionsCellRenderer id={id}>
             <div className="nexus-c-custom-actions-cell-renderer">{getRepositoryName(id).toUpperCase()}</div>
         </CustomActionsCellRenderer>

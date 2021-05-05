@@ -226,7 +226,7 @@ class TitleResultTable extends React.Component {
     }
 
     getRows(params) {
-        if (this.table && this.table.api.getDisplayedRowCount() == 0) {
+        if (this.table && this.table.api) {
             this.table.api.showLoadingOverlay();
         }
         this.doSearch(
@@ -237,7 +237,8 @@ class TitleResultTable extends React.Component {
             .then(response => {
                 const {data, total} = response || {};
                 if (total > 0) {
-                    data.forEach(item => item.repository = item.id.split('_')[0]);
+                    // put some value on repository field to avoid 'loading' in case when result have one row
+                    if(total === 1) data[0].repository = data[0].id.split('_')[0];
                     this.addLoadedItems(response);
                     this.addItemToTable(response, params);
                 } else {
