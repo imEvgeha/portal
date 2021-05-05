@@ -388,7 +388,6 @@ const RightsRepository = ({
                 setColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED: {
-        
                 let clonedSelectedRights = currentUserSelectedRights;            
 
                 // Get selected rows from both tables
@@ -455,7 +454,6 @@ const RightsRepository = ({
                     return selectedRights;
                 }, {});
                 setSelectedRights({[username]: payload})
-                
                 break;
             }
             case FILTER_CHANGED: {
@@ -473,7 +471,7 @@ const RightsRepository = ({
                 break;
         
         }
-    }, 1000);
+    }, 500);
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
