@@ -314,7 +314,7 @@ const RightsRepository = ({
                 //      and appear selected, they are not selected from the main table's perspective, so this would
                 //      cause loss of data without the check, as rights from ingest would have been removed.
                 if (
-                    !selectedIngest &&
+                    
                     rightsTableSelectedRows.length === selectedTableSelectedRows.length &&
                     clonedSelectedRights.length > rightsTableSelectedRows.length
                 ) {
