@@ -12,6 +12,7 @@ import EditorialMetadataEditMode from './EditorialMetadataEditMode';
 import {configFields} from '../../../service/ConfigService';
 import Title from '../../../../../../metadata/title/Title';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import moment from 'moment';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import StatusLink from '@vubiquity-nexus/portal-assets/status-linked.svg';
 
@@ -94,6 +95,7 @@ const EditorialMetadata = ({
     useEffect(() => setCurrentFolder(foldersOptions[0]), [foldersOptions]);
 
     const titleHasMaster = editorialMetadata.find(e => e['hasGeneratedChildren']);
+
     const isNexusTitle = coreTitleData.id && coreTitleData.id.startsWith('titl');
 
     const {value: currentFolderName = ''} = currentFolder || {};
@@ -171,7 +173,15 @@ const EditorialMetadata = ({
                 ) : null}
                 {masterFirstFoldersChildren &&
                     masterFirstFoldersChildren.map((item, index) => {
-                        const isDecorated = !!item['parentEmetId'];
+                        let isDecorated = false;
+                        if (titleHasMaster) {
+                            const {updatedAt: masterUpdatedAt = ''} = titleHasMaster;
+                            const duration = moment.duration(
+                                moment.utc(masterUpdatedAt).diff(moment.utc(item['updatedAt']))
+                            );
+                            const secs = Math.abs(duration.asSeconds());
+                            isDecorated = !!item['parentEmetId'] && secs < 5;
+                        }
                         const isMaster = item['hasGeneratedChildren'];
                         return (
                             <span
