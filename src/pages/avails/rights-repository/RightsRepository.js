@@ -127,6 +127,7 @@ const RightsRepository = ({
     }, [columnDefs, mapping, createRightMatchingColumnDefs]);
 
     useEffect(() => {
+        setTotalCount(0);
         ingestClick();
     }, [ingestClick]);
 
@@ -281,6 +282,8 @@ const RightsRepository = ({
         lockVisible: true,
         cellStyle: {overflow: 'visible'},
     });
+
+    console.log('totalCount, singleRightMatch:' , totalCount, singleRightMatch);
 
     const columnsValidationDefsClone = columnDefsClone.map(col => {
         if (['id'].includes(col.field) || ['icon'].includes(col.colId)) {
