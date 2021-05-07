@@ -42,14 +42,13 @@
     {
         "colId": "concatenatedTitle",
         "javaVariableName": "title",
-        "field": "title",
+        "field": "concatenatedTitle",
         "headerName": "Concatenated Title",
         "dataType": "string",
-        "searchDataType": "string",
-        "queryParamName": "title",
+        "queryParamName": "concatenatedTitle",
         "readOnly": false,
-        "enableSearch": true,
-        "enableEdit": true,
+        "enableSearch": false,
+        "enableEdit": false,
         "required": true,
         "cellRenderer": "concatenatedTitleCellRenderer"
     },

@@ -7,7 +7,7 @@ import {renderTitleName} from '../../../../../../../src/pages/legacy/containers/
 const ConcatenatedTitleCellRenderer = params => {
     const {
         data,
-        colDef: {field},
+        colDef: {javaVariableName},
         newTab = true,
     } = params;
     if (!data) {
@@ -15,7 +15,7 @@ const ConcatenatedTitleCellRenderer = params => {
     }
     const linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
 
-    let value = getDeepValue(data, field);
+    let value = getDeepValue(data, javaVariableName);
     if (isObject(value)) {
         value = JSON.stringify(value);
     }
@@ -27,7 +27,7 @@ const ConcatenatedTitleCellRenderer = params => {
     if ((content !== undefined && content !== null) || content === false) {
         let highlighted = false;
         if (data && data.highlightedFields) {
-            highlighted = data.highlightedFields.indexOf(field) > -1;
+            highlighted = data.highlightedFields.indexOf(javaVariableName) > -1;
         }
         const displayValue = (
             <div className="nexus-c-loading-cell-renderer">
