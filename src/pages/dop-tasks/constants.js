@@ -78,6 +78,16 @@ export const COLUMN_MAPPINGS = [
         minWidth: 200,
     },
     {
+        colId: 'priority',
+        field: 'priority',
+        javaVariableName: 'priority',
+        enableSearch: true,
+        headerName: 'Priority',
+        minWidth: 80,
+        searchDataType: 'multiselect',
+        options: ['Low', 'Medium', 'High'],
+    },
+    {
         colId: 'OrderExternalID',
         field: 'OrderExternalID',
         javaVariableName: 'OrderExternalID',
@@ -319,6 +329,7 @@ export const STRING_FIELDS = [
     'title',
     'seasonNumber',
     'episodeNumber',
+    'priority',
 ];
 export const DATE_FIELDS = [
     'activityEstimatedEndDate',
