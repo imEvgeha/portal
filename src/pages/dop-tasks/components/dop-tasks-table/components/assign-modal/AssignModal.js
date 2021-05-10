@@ -2,23 +2,38 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select';
 import {connect} from 'react-redux';
-import {TASK_ACTIONS_ASSIGN} from '../../../../constants';
+import {
+    CHANGE_PRIORITY_TITLE,
+    TASK_ACTIONS_ASSIGN,
+    TASK_ACTIONS_FORWARD,
+    PRIORITY_OPTIONS,
+} from '../../../../constants';
 import {getDopTasksOwners} from '../../../../dopTasksActions';
 import {createTaskOwnersSelector} from '../../../../dopTasksSelectors';
 import './AssignModal.scss';
 
-const AssignModal = ({getOwners, selectedTasks, tasksOwners, setTaskOwner, action}) => {
+const AssignModal = ({getOwners, selectedTasks, tasksOwners, onChange, action}) => {
     useEffect(() => {
-        action === TASK_ACTIONS_ASSIGN ? getOwners(selectedTasks) : getOwners([]);
+        if (action === TASK_ACTIONS_ASSIGN) {
+            getOwners(selectedTasks.map(n => n.id));
+        } else if (action === TASK_ACTIONS_FORWARD) {
+            getOwners([]);
+        }
     }, []);
 
     return (
         <div className="dop-tasks-assign-tasks">
             <label>{`${action} to: `}</label>
             <Select
-                placeholder={`Select ${action === TASK_ACTIONS_ASSIGN ? 'Task Owner' : 'Work Queue'}`}
-                options={tasksOwners}
-                onChange={val => setTaskOwner(val.value)}
+                placeholder={`Select ${
+                    action === CHANGE_PRIORITY_TITLE
+                        ? 'priority'
+                        : action === TASK_ACTIONS_ASSIGN
+                        ? 'Task Owner'
+                        : 'Work Queue'
+                }`}
+                options={action === CHANGE_PRIORITY_TITLE ? PRIORITY_OPTIONS : tasksOwners}
+                onChange={val => onChange(val.value)}
             />
         </div>
     );
@@ -26,7 +41,7 @@ const AssignModal = ({getOwners, selectedTasks, tasksOwners, setTaskOwner, actio
 
 AssignModal.propTypes = {
     getOwners: PropTypes.func.isRequired,
-    setTaskOwner: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
     selectedTasks: PropTypes.array,
     tasksOwners: PropTypes.array,
     action: PropTypes.string,

@@ -11,7 +11,7 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {uniqBy} from 'lodash';
 import {call, put, all, takeLatest} from 'redux-saga/effects';
 import DopTasksService from './dopTasks-services';
-import {GET_DOP_TASKS_OWNERS, SET_OWNERS_LIST, ASSIGN_DOP_TASKS} from './dopTasksActionTypes';
+import {GET_DOP_TASKS_OWNERS, SET_OWNERS_LIST, ASSIGN_DOP_TASKS, CHANGE_PRIORITY} from './dopTasksActionTypes';
 import {jobStatus, TASK_ACTIONS_ASSIGN} from './constants';
 
 function* fetchOwners({payload}) {
@@ -116,7 +116,39 @@ function* assignTasks({payload}) {
     }
 }
 
+function* changeDOPPriority({payload}) {
+    const {taskIds, priority} = payload;
+    try {
+        yield call(
+            DopTasksService.changePriority,
+            taskIds.map(n => n.projectId),
+            priority
+        );
+        yield put({type: TOGGLE_REFRESH_GRID_DATA, payload: true});
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: `Changed priority of ${taskIds.length} tasks to ${priority}.`,
+            },
+        });
+    } catch (error) {
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: `Error in changing priority of ${taskIds.length} tasks.`,
+            },
+        });
+    }
+}
+
 export default function* dopTasksWatcher() {
     yield all([takeLatest(GET_DOP_TASKS_OWNERS, fetchOwners)]);
     yield all([takeLatest(ASSIGN_DOP_TASKS, assignTasks)]);
+    yield all([takeLatest(CHANGE_PRIORITY, changeDOPPriority)]);
 }

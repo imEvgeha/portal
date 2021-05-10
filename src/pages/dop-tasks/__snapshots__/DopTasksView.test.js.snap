@@ -30,6 +30,7 @@ exports[`DopTasksView should match snapshot 1`] = `
   </DopTasksHeader>
   <DopTasksTable
     assignTasks={[Function]}
+    changePriority={[Function]}
     externalFilter={
       Object {
         "user": "user",

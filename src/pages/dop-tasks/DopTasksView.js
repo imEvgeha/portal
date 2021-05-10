@@ -11,7 +11,7 @@ import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
 import SavedTableDropdown from './components/saved-table-dropdown/SavedTableDropdown';
-import {setDopTasksUserDefinedGridState, assignDopTasks} from './dopTasksActions';
+import {setDopTasksUserDefinedGridState, assignDopTasks, changeDOPPriority} from './dopTasksActions';
 import {createGridStateSelector} from './dopTasksSelectors';
 import {applyPredefinedTableView, insertNewGridModel} from './utils';
 import {USER} from './constants';
@@ -23,6 +23,7 @@ export const DopTasksView = ({
     gridState,
     setDopTasksUserDefinedGridState,
     assignTasks,
+    changePriority,
 }) => {
     const [externalFilter, setExternalFilter] = useState({
         user: USER,
@@ -102,6 +103,7 @@ export const DopTasksView = ({
                 setGridApi={setGridApi}
                 setColumnApi={setColumnApi}
                 assignTasks={assignTasks}
+                changePriority={changePriority}
             />
         </div>
     );
@@ -120,12 +122,14 @@ const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
     setDopTasksUserDefinedGridState: payload => dispatch(setDopTasksUserDefinedGridState(payload)),
     assignTasks: payload => dispatch(assignDopTasks(payload)),
+    changePriority: payload => dispatch(changeDOPPriority(payload)),
 });
 
 DopTasksView.propTypes = {
     toggleRefreshGridData: PropTypes.func,
     setDopTasksUserDefinedGridState: PropTypes.func,
     assignTasks: PropTypes.func,
+    changePriority: PropTypes.func,
     gridState: PropTypes.object,
     username: PropTypes.string.isRequired,
 };
@@ -134,6 +138,7 @@ DopTasksView.defaultProps = {
     toggleRefreshGridData: () => null,
     setDopTasksUserDefinedGridState: () => null,
     assignTasks: () => null,
+    changePriority: () => null,
     gridState: {},
 };
 

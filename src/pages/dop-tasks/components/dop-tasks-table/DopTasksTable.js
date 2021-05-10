@@ -21,10 +21,9 @@ import {
     DOP_GUIDED_TASK_URL,
     DOP_PROJECT_URL,
     PROJECT_STATUS_ENUM,
-    ASSIGN_TASK_TITLE,
     TASK_ACTIONS_ASSIGN,
     TASK_ACTIONS_FORWARD,
-    FORWARD_TASK_TITLE,
+    CHANGE_PRIORITY_TITLE,
 } from '../../constants';
 import {fetchDopTasksData} from '../../utils';
 import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
@@ -38,7 +37,7 @@ const DopTasksTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
-const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumnApi, assignTasks}) => {
+const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumnApi, assignTasks, changePriority}) => {
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
@@ -46,7 +45,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [action, setAction] = useState(null);
     const [rowsSelected, setRowsSelected] = useState([]);
-    const [taskOwner, setTaskOwner] = useState(null);
+    const [modalValue, setModalValue] = useState(null);
     const [api, setApi] = useState(null);
     const {openModal, closeModal} = useContext(NexusModalContext);
 
@@ -60,8 +59,12 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
     }, []);
 
     useEffect(() => {
-        if (taskOwner) {
-            assignTasks({userId: taskOwner, taskIds: rowsSelected, closeModal, action: action[0]});
+        if (modalValue) {
+            if (action[0] === CHANGE_PRIORITY_TITLE) {
+                changePriority({taskIds: rowsSelected, priority: modalValue});
+            } else {
+                assignTasks({userId: modalValue, taskIds: rowsSelected.map(n => n.id), closeModal, action: action[0]});
+            }
             setRowsSelected([]);
             api && api.deselectAll();
         }
@@ -155,7 +158,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
                 break;
             }
             case SELECTION_CHANGED: {
-                setRowsSelected(api.getSelectedRows().map(n => n.id));
+                setRowsSelected(api.getSelectedRows().map(({id, projectId}) => ({id, projectId})));
                 break;
             }
             default:
@@ -195,8 +198,8 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
     };
 
     const handleAssign = val => {
-        openModal(<AssignModal selectedTasks={rowsSelected} setTaskOwner={setTaskOwner} action={val} />, {
-            title: val === TASK_ACTIONS_ASSIGN ? ASSIGN_TASK_TITLE : FORWARD_TASK_TITLE,
+        openModal(<AssignModal selectedTasks={rowsSelected} onChange={setModalValue} action={val} />, {
+            title: val === CHANGE_PRIORITY_TITLE ? CHANGE_PRIORITY_TITLE : `${val} Tasks`,
             actions: [
                 {
                     text: 'Apply',
@@ -217,11 +220,12 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
             <MoreIcon className="nexus-c-dop-tasks-table__more-actions" onClick={openMenu} />
             {isMenuOpen && (
                 <div className="nexus-c-dop-tasks-table__action-menu">
-                    {[TASK_ACTIONS_ASSIGN, TASK_ACTIONS_FORWARD].map(key => (
+                    {[TASK_ACTIONS_ASSIGN, TASK_ACTIONS_FORWARD, CHANGE_PRIORITY_TITLE].map(key => (
                         <div
                             className={`nexus-c-dop-tasks-table__action-menu--item ${
                                 rowsSelected.length ? 'enable-option' : ''
                             }`}
+                            key={key}
                             onClick={() => handleAssign(key)}
                         >
                             {key}
@@ -253,6 +257,7 @@ DopTasksTable.propTypes = {
     setGridApi: PropTypes.func,
     setColumnApi: PropTypes.func,
     assignTasks: PropTypes.func,
+    changePriority: PropTypes.func,
 };
 
 DopTasksTable.defaultProps = {
@@ -261,6 +266,7 @@ DopTasksTable.defaultProps = {
     setGridApi: () => null,
     setColumnApi: () => null,
     assignTasks: () => null,
+    changePriority: () => null,
 };
 
 export default DopTasksTable;
