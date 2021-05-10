@@ -41,7 +41,6 @@ const NexusGrid = ({
     };
 
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
-    console.log('rowData: ', rowData);
 
     return (
         <div

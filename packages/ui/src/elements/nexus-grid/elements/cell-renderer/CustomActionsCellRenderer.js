@@ -5,7 +5,6 @@ import './CustomActionsCellRenderer.scss';
 
 // eslint-disable-next-line
 const CustomActionsCellRenderer = ({id, children, classname}) => {
-    console.log('id, children', id, children);
     return (
         <div className={`nexus-c-custom-actions-cell-renderer ${classname}`}>
         {id ? (
@@ -15,7 +14,7 @@ const CustomActionsCellRenderer = ({id, children, classname}) => {
         )}
     </div>
     )
-    
+
 };
 
 CustomActionsCellRenderer.propTypes = {
