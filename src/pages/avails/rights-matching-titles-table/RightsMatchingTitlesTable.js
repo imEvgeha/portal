@@ -40,6 +40,7 @@ const RightsMatchingTitlesTable = ({
             const updatedColumnDef = {
                 ...columnDef,
                 valueFormatter: createValueFormatter(columnDef),
+                sortable: ['releaseYear'].includes(columnDef.field),
             };
             if (columnDef.colId.startsWith('castCrew')) {
                 updatedColumnDef.cellRendererFramework = params => {

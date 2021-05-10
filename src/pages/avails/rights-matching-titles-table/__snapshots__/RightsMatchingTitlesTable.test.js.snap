@@ -50,6 +50,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
+          "sortable": false,
           "valueFormatter": [Function],
         },
         Object {
@@ -69,6 +70,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "readOnly": false,
           "required": true,
           "searchDataType": "string",
+          "sortable": false,
           "valueFormatter": undefined,
         },
         Object {
@@ -83,6 +85,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "readOnly": false,
           "required": true,
           "searchDataType": "string",
+          "sortable": false,
           "valueFormatter": undefined,
         },
         Object {
@@ -101,6 +104,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "readOnly": false,
           "required": true,
           "searchDataType": "string",
+          "sortable": false,
           "valueFormatter": undefined,
         },
         Object {
@@ -115,6 +119,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "readOnly": false,
           "required": false,
           "searchDataType": "year",
+          "sortable": true,
           "valueFormatter": [Function],
         },
         Object {
@@ -130,6 +135,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "readOnly": true,
           "required": true,
           "searchDataType": "readonly",
+          "sortable": false,
           "valueFormatter": undefined,
         },
         Object {
@@ -142,6 +148,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "javaVariableName": "episodic.seriesTitleName",
           "readOnly": true,
           "required": false,
+          "sortable": false,
           "valueFormatter": undefined,
         },
         Object {
@@ -154,6 +161,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "javaVariableName": "episodic.seasonTitleName",
           "readOnly": true,
           "required": false,
+          "sortable": false,
           "valueFormatter": undefined,
         },
         Object {
@@ -168,6 +176,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
+          "sortable": false,
           "valueFormatter": [Function],
         },
         Object {
@@ -181,6 +190,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "ratings",
           "readOnly": false,
           "required": false,
+          "sortable": false,
           "valueFormatter": [Function],
         },
         Object {
@@ -194,6 +204,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
+          "sortable": false,
           "valueFormatter": [Function],
         },
         Object {
@@ -207,6 +218,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
+          "sortable": false,
           "valueFormatter": [Function],
         },
         Object {
@@ -221,6 +233,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
+          "sortable": false,
           "valueFormatter": [Function],
         },
       ]
