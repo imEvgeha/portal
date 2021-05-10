@@ -49,7 +49,11 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
             </Tooltip>
             <NexusDownload
                 className="nexus-c-event-drawer-header__download-button"
-                data={event}
+                data={{
+                    headers: event.headers,
+                    message: event.message,
+                    metadata: event.metadata
+                }}
                 filename={`${eventId} - event`}
                 isDisabled={!event || !eventId}
             />
@@ -63,6 +67,7 @@ EventDrawerH.propTypes = {
     onReplay: PropTypes.func,
     isReplicating: PropTypes.bool,
     onReplicate: PropTypes.func,
+    downloadableEvent: PropTypes.object,
 };
 
 EventDrawerH.defaultProps = {
@@ -71,6 +76,7 @@ EventDrawerH.defaultProps = {
     onReplay: null,
     isReplicating: false,
     onReplicate: null,
+    downloadableEvent: {}
 };
 
 const createMapStateToProps = () => {

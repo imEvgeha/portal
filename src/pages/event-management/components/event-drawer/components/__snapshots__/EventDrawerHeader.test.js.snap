@@ -35,6 +35,8 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
         "headers": Object {
           "eventId": "123",
         },
+        "message": undefined,
+        "metadata": undefined,
       }
     }
     filename="123 - event"
