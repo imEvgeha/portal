@@ -86,6 +86,7 @@ const RightToMatchView = ({
 
                           return <span>{cellValue}</span>;
                       },
+                      width: 40,
                   }
                 : columnDef;
         });
