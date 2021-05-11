@@ -226,8 +226,8 @@ const RightToMatchView = ({
         if (columnDefs.length === 1) return [];
 
         const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
-        const {RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
-        const headerNames = [RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
+        const {RIGHT_ID, REMOVED_CATALOG, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
+        const headerNames = [RIGHT_ID, REMOVED_CATALOG, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
 
         let columnDefinitions = columnDefs;
         if (tableName === PENDING_RIGHT) {

@@ -13,7 +13,7 @@
         {
             "javaVariableName": "updatedCatalogReceived",
             "searchDataType": "icon",
-            "displayName": " ",
+            "displayName": "Removed from Catalog",
             "dataType": "icon",
             "readOnly": true,
             "enableSearch": true,
@@ -29,7 +29,7 @@
         {
             "javaVariableName": "rightStatus",
             "searchDataType": "icon",
-            "displayName": " ",
+            "displayName": "Withdrawn",
             "dataType": "icon",
             "readOnly": true,
             "enableSearch": true,
