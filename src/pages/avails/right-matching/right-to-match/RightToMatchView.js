@@ -239,7 +239,7 @@ const RightToMatchView = ({
             }
         }
 
-        const reorderedHeaders = createColumnDefsRightMatching(columnDefinitions, headerNames);
+        const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames);
 
         if (tableName === CONFLICTING_RIGHTS) highlightDiffCells(reorderedHeaders);
 

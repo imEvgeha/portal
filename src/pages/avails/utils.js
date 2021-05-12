@@ -2,7 +2,6 @@ import React from 'react';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
-import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
 import {get, isEqual, cloneDeep} from 'lodash';
 import TitleSystems from '../legacy/constants/metadata/systems';
 import Constants from './title-matching/titleMatchingConstants';
@@ -17,10 +16,12 @@ export const createColumnDefs = payload => {
         .reduce((columnDefs, column) => {
             const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
             const hasLink = ['id', 'title'].includes(javaVariableName);
+            const hasIcon = ['icon'].includes(dataType);
             const columnDef = {
                 field: javaVariableName,
                 headerName: displayName,
                 colId: sortParamName || queryParamName,
+                cellRendererFramework: hasIcon ? params => <span>{params.valueFormatted || params.value}</span> : null,
                 cellRenderer: hasLink ? 'loadingCellRenderer' : null,
                 cellRendererParams: hasLink
                     ? {
@@ -31,7 +32,7 @@ export const createColumnDefs = payload => {
                 valueFormatter: createValueFormatter(column),
                 width: ['businessDateTime', 'timestamp'].includes(dataType)
                     ? COLUMN_WIDTH_WIDE
-                    : ['icon'].includes(dataType)
+                    : hasIcon
                     ? COLUMN_WIDTH_ICON
                     : COLUMN_WIDTH_DEFAULT,
                 type: Object.values(DATETIME_FIELDS).includes(dataType) ? 'dateColumn' : '',
@@ -128,21 +129,4 @@ export const addCellClass = ({value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}
     if (Object.keys(fieldValues).length && !isMajorValue(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
     }
-};
-
-export const createColumnDefsRightMatching = (columnDefinitions, headerNames) => {
-    const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames);
-    return reorderedHeaders.map(columnDef => {
-        return ['icon'].includes(columnDef.colId)
-            ? {
-                  ...columnDef,
-                  cellRendererFramework: params => {
-                      const cellValue = params.valueFormatted ? params.valueFormatted : params.value;
-
-                      return <span>{cellValue}</span>;
-                  },
-                  width: 40,
-              }
-            : columnDef;
-    });
 };
