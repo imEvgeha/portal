@@ -208,6 +208,7 @@ class EditorialMetadataEditMode extends Component {
     };
 
     render() {
+        console.log('this.props.data ', this.props.data)
         const {handleDelete, data: currentMetadata} = this.props;
         const isMaster = !!this.props.data.hasGeneratedChildren;
         const isDecorated = !!this.props.data.parentEmetId;
@@ -466,7 +467,7 @@ class EditorialMetadataEditMode extends Component {
                                           value: 'pending',
                                       }
                             }
-                            onChange={value => this.props.handleUpdatingMetadataStatus(value, this.props.data)}
+                            onChange={value => this.props.handleUpdatingMetadataStatus(value, updateData ? updateData : this.props.data)}
                             placeholder="Select Metadata Status"
                             options={[
                                 {label: 'pending', value: 'pending'},
