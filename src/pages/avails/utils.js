@@ -2,6 +2,7 @@ import React from 'react';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
+import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
 import {get, isEqual, cloneDeep} from 'lodash';
 import TitleSystems from '../legacy/constants/metadata/systems';
 import Constants from './title-matching/titleMatchingConstants';
@@ -129,8 +130,9 @@ export const addCellClass = ({value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}
     }
 };
 
-export const createColumnDefsRightMatching = columnDefs => {
-    return columnDefs.map(columnDef => {
+export const createColumnDefsRightMatching = (columnDefinitions, headerNames) => {
+    const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames);
+    return reorderedHeaders.map(columnDef => {
         return ['icon'].includes(columnDef.colId)
             ? {
                   ...columnDef,
