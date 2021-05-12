@@ -208,7 +208,6 @@ class EditorialMetadataEditMode extends Component {
     };
 
     render() {
-        console.log('this.props.data ', this.props.data)
         const {handleDelete, data: currentMetadata} = this.props;
         const isMaster = !!this.props.data.hasGeneratedChildren;
         const isDecorated = !!this.props.data.parentEmetId;
