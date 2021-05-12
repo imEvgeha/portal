@@ -2,14 +2,17 @@ import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import classnames from 'classnames';
+import {tabFilter, ERRORS_UNMATCHED} from '../../../../legacy/constants/avails/manualRightsEntryTabs';
+import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
 import RightsURL from '../../../../legacy/containers/avail/util/RightsURL';
 import Constants from '../../constants';
 import './IngestReport.scss';
 
-const IngestReport = ({report, isShowingError = true, filterClick, ingestId, hasTooltips = false}) => {
+const IngestReport = ({report, isShowingError = true, filterClick, attachmentId, ingestId}) => {
     const [activeFilter, setActiveFilter] = useState('total');
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
+    const currentValues = [];
 
     const onFilterClick = useCallback(
         filterKey => {
@@ -19,6 +22,22 @@ const IngestReport = ({report, isShowingError = true, filterClick, ingestId, has
         },
         [activeFilter, filterClick, reportFields]
     );
+
+    const getCustomSearchCriteria = () => {
+        return Object.assign({ingestHistoryAttachmentIds: attachmentId}, tabFilter.get(ERRORS_UNMATCHED), {
+            availHistoryIds: ingestId,
+        });
+    };
+
+    useEffect(() => {
+        rightsService.advancedSearch(getCustomSearchCriteria(), 0, 1).then(
+            response => {
+                currentValues['errors'] = response.data.filter(d => d.status === 'Error').length;
+                currentValues['pending'] = response.data.filter(d => d.status === 'Pending').length;
+            }
+            // setPendingCount(response.total)
+        );
+    }, []);
 
     useEffect(() => {
         onFilterClick('total');
@@ -51,7 +70,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, ingestId, has
                     'ingest-report__field-value--is-selectable': key === 'fatal',
                 })}
             >
-                {reportValues[key] || 0}
+                {ORIGINAL_VALUES_KEYS.includes(key) ? currentValues[key] || 0 : reportValues[key] || 0}
             </div>
         </div>
     );
@@ -70,7 +89,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, ingestId, has
         <div className="ingest-report">
             <div className="ingest-report__fields">
                 {Object.keys(reportFields).map(key =>
-                    hasTooltips && ORIGINAL_VALUES_KEYS.includes(key) ? createTooltipTag(key) : createTag(key)
+                    ORIGINAL_VALUES_KEYS.includes(key) ? createTooltipTag(key) : createTag(key)
                 )}
             </div>
             {isShowingError && report.errorDetails && (
@@ -85,7 +104,7 @@ IngestReport.propTypes = {
     isShowingError: PropTypes.bool,
     filterClick: PropTypes.func,
     ingestId: PropTypes.string,
-    hasTooltips: PropTypes.bool,
+    attachmentId: PropTypes.string,
 };
 
 IngestReport.defaultProps = {
@@ -93,7 +112,7 @@ IngestReport.defaultProps = {
     isShowingError: true,
     filterClick: () => null,
     ingestId: '',
-    hasTooltips: false,
+    attachmentId: '',
 };
 
 export default IngestReport;

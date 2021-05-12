@@ -10,7 +10,7 @@ import './Ingest.scss';
 
 const Ingest = ({received, attachment, isSelected, ingestClick, isInBundle, ingestId, ingestType, emailSubject}) => {
     const [showReport, setShowReport] = useState(false);
-    const {link, status, ingestReport} = attachment;
+    const {id, link, status, ingestReport} = attachment;
     const {
         ingestTypes: {EMAIL},
     } = constants;
@@ -55,7 +55,7 @@ const Ingest = ({received, attachment, isSelected, ingestClick, isInBundle, inge
                     )}
                 </div>
             </div>
-            {showReport && ingestReport && <IngestReport report={ingestReport} ingestId={ingestId} />}
+            {showReport && ingestReport && <IngestReport attachmentId={id} report={ingestReport} ingestId={ingestId} />}
         </div>
     );
 };
