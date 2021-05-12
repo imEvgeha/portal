@@ -24,7 +24,7 @@ const withSorting = (initialSort = null) => WrappedComponent => {
             // When table is loaded, set default sortModel
             if (type === GRID_EVENTS.READY && initialSort) {
                 const sortModel = columnApi && getSortModel(columnApi) ? getSortModel(columnApi) : [];
-                if (!sortModel) {
+                if (sortModel.length === 0) {
                     setSorting(initialSort, columnApi);
                 } else {
                     setSorting(sortModel[0], columnApi);
