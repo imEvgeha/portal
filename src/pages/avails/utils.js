@@ -52,7 +52,7 @@ export const getRepositoryName = id => {
 // eslint-disable-next-line
 const repositoryCell = ({data}) => {
     const {id = ''} = data || {};
-    return id === ''? null : (
+    return id === '' ? null : (
         <CustomActionsCellRenderer id={id}>
             <div className="nexus-c-custom-actions-cell-renderer">{getRepositoryName(id).toUpperCase()}</div>
         </CustomActionsCellRenderer>
@@ -127,4 +127,20 @@ export const addCellClass = ({value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}
     if (Object.keys(fieldValues).length && !isMajorValue(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
     }
+};
+
+export const createColumnDefsRightMatching = columnDefs => {
+    return columnDefs.map(columnDef => {
+        return ['icon'].includes(columnDef.colId)
+            ? {
+                  ...columnDef,
+                  cellRendererFramework: params => {
+                      const cellValue = params.valueFormatted ? params.valueFormatted : params.value;
+
+                      return <span>{cellValue}</span>;
+                  },
+                  width: 40,
+              }
+            : columnDef;
+    });
 };
