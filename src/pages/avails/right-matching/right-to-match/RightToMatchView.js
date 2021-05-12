@@ -75,21 +75,6 @@ const RightToMatchView = ({
         : focusedRight.id
         ? `/avails/rights/${focusedRight.id}`
         : AVAILS_PATH;
-    const updateColumnDefs = columnDefs => {
-        return columnDefs.map(columnDef => {
-            return ['icon'].includes(columnDef.colId)
-                ? {
-                      ...columnDef,
-                      cellRendererFramework: params => {
-                          const cellValue = params.valueFormatted ? params.valueFormatted : params.value;
-
-                          return <span>{cellValue}</span>;
-                      },
-                      width: 40,
-                  }
-                : columnDef;
-        });
-    };
 
     // DOP Integration
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
@@ -257,7 +242,7 @@ const RightToMatchView = ({
 
         if (tableName === CONFLICTING_RIGHTS) highlightDiffCells(reorderedHeaders);
 
-        return updateColumnDefs(reorderedHeaders);
+        return reorderedHeaders;
     };
 
     return (
