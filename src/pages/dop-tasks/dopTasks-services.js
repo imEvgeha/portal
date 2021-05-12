@@ -86,7 +86,7 @@ const DopTasksService = {
         )}/projectAttribute`;
         const dataToSend = [...new Set(taskIds)].map(id => ({
             projectId: id,
-            code: 'priority',
+            code: 'customPriority',
             value: priority,
         }));
         return nexusFetch(
