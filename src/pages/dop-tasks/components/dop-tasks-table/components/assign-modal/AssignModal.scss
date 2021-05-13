@@ -1,6 +1,6 @@
 .dop-tasks-assign-tasks {
     display: flex;
-    min-height: 120px;
+    min-height: 150px;
     width: 100%;
     align-items: flex-start;
     overflow-y: hidden;
@@ -11,4 +11,7 @@
     & > div {
         flex-grow: 1;
     }
+}
+.nexus-c-modal {
+    padding-bottom: 0;
 }

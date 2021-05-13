@@ -80,6 +80,26 @@ const DopTasksService = {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksBatchJob')}/${jobId}`;
         return nexusFetch(url);
     },
+    changePriority: (taskIds, priority) => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get(
+            'gateway.service.DOPProjectManagementBase'
+        )}/projectAttribute`;
+        const dataToSend = [...new Set(taskIds)].map(id => ({
+            projectId: id,
+            code: 'customPriority',
+            value: priority,
+        }));
+        return nexusFetch(
+            url,
+            {
+                method: 'put',
+                credentials: 'include',
+                body: JSON.stringify(dataToSend),
+            },
+            DEFAULT_TIMEOUT,
+            true
+        );
+    },
 };
 
 const prepareFilterPayload = (initialParams, externalFilter) => {

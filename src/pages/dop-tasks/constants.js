@@ -78,6 +78,16 @@ export const COLUMN_MAPPINGS = [
         minWidth: 200,
     },
     {
+        colId: 'customPriority',
+        field: 'customPriority',
+        javaVariableName: 'customPriority',
+        enableSearch: true,
+        headerName: 'Priority',
+        minWidth: 80,
+        searchDataType: 'multiselect',
+        options: ['Low', 'Medium', 'High'],
+    },
+    {
         colId: 'OrderExternalID',
         field: 'OrderExternalID',
         javaVariableName: 'OrderExternalID',
@@ -319,6 +329,7 @@ export const STRING_FIELDS = [
     'title',
     'seasonNumber',
     'episodeNumber',
+    'customPriority',
 ];
 export const DATE_FIELDS = [
     'activityEstimatedEndDate',
@@ -330,8 +341,7 @@ export const DATE_FIELDS = [
     'licenseStartDate',
 ];
 export const FIELDS_OPERATOR_IN = ['language', 'locale', 'territory', 'affiliate', 'contentType'];
-export const ASSIGN_TASK_TITLE = 'Assign Tasks';
-export const FORWARD_TASK_TITLE = 'Forward Tasks';
+export const CHANGE_PRIORITY_TITLE = 'Change Priority';
 export const jobStatus = {
     SUCCESS: 'COMPLETED',
     ERROR: 'ERRORED',
@@ -339,3 +349,17 @@ export const jobStatus = {
 };
 export const TASK_ACTIONS_ASSIGN = 'Assign';
 export const TASK_ACTIONS_FORWARD = 'Forward';
+export const PRIORITY_OPTIONS = [
+    {
+        value: 'Low',
+        label: 'Low',
+    },
+    {
+        value: 'Medium',
+        label: 'Medium',
+    },
+    {
+        value: 'High',
+        label: 'High',
+    },
+];
