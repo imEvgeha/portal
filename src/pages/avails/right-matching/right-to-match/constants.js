@@ -7,6 +7,7 @@ export const TABLE_HEADERS = {
     AVAIL_END: 'Avail End',
     START: 'Start',
     END: 'End',
+    REMOVED_CATALOG: 'Removed from Catalog',
 };
 
 export const FIELDS = {
