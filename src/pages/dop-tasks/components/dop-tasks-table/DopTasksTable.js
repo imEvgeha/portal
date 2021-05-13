@@ -67,6 +67,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
             }
             setRowsSelected([]);
             api && api.deselectAll();
+            closeModal();
         }
     }, [action]);
 
