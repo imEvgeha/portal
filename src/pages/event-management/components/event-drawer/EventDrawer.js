@@ -63,12 +63,14 @@ const EventDrawer = ({id, onDrawerClose}) => {
             return getEventById(id).then(evt => {
                 const fetchedEvent = {...get(evt, 'event', null), id};
                 const message = get(fetchedEvent, 'message', {});
+                const metadata = get(fetchedEvent, 'metadata', {});
                 const headers = {...get(fetchedEvent, 'headers', {}), id: get(fetchedEvent, 'id', '')};
                 const attachments = get(message, 'attachments', {});
                 setEvent({
-                    message,
                     headers,
-                    attachments,
+                    message,
+                    metadata,
+                    attachments
                 });
                 setIsLoading(false);
             });
