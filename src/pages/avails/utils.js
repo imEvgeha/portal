@@ -16,10 +16,12 @@ export const createColumnDefs = payload => {
         .reduce((columnDefs, column) => {
             const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
             const hasLink = ['id', 'title'].includes(javaVariableName);
+            const hasIcon = ['icon'].includes(dataType);
             const columnDef = {
                 field: javaVariableName,
                 headerName: displayName,
                 colId: sortParamName || queryParamName,
+                cellRendererFramework: hasIcon ? params => <span>{params.valueFormatted || params.value}</span> : null,
                 cellRenderer: hasLink ? 'loadingCellRenderer' : null,
                 cellRendererParams: hasLink
                     ? {
@@ -30,7 +32,7 @@ export const createColumnDefs = payload => {
                 valueFormatter: createValueFormatter(column),
                 width: ['businessDateTime', 'timestamp'].includes(dataType)
                     ? COLUMN_WIDTH_WIDE
-                    : ['icon'].includes(dataType)
+                    : hasIcon
                     ? COLUMN_WIDTH_ICON
                     : COLUMN_WIDTH_DEFAULT,
                 type: Object.values(DATETIME_FIELDS).includes(dataType) ? 'dateColumn' : '',
@@ -52,7 +54,7 @@ export const getRepositoryName = id => {
 // eslint-disable-next-line
 const repositoryCell = ({data}) => {
     const {id = ''} = data || {};
-    return id === ''? null : (
+    return id === '' ? null : (
         <CustomActionsCellRenderer id={id}>
             <div className="nexus-c-custom-actions-cell-renderer">{getRepositoryName(id).toUpperCase()}</div>
         </CustomActionsCellRenderer>
