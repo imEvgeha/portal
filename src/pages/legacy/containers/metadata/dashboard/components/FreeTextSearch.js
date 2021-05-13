@@ -37,18 +37,32 @@ class FreeTextSearch extends React.Component {
     }
 
     handleSearch() {
-        const {title} = this.state;
+        let {title} = this.state;
+        const seasonNumber =  title.match(/[S]\d{1,2}/i)?.[0].match(/\d{1,2}/)?.[0]; // match s/S ,(1-2) digits
+        const episodeNumber = title.match(/[E]\d{1,2}/i)?.[0].match(/\d{1,2}/)?.[0]; // match e/E ,(1-2) digits
+
+        title = title.split(' ')[0]; // title will always be first word
+
         const {searchFormUpdateTextSearch, onSearch} = this.props;
 
-        searchFormUpdateTextSearch({title});
+        if(seasonNumber || episodeNumber)
+            searchFormUpdateTextSearch({seriesName: title, seasonNumber, episodeNumber});
+        else
+            searchFormUpdateTextSearch({title});
 
         // If title was wrapped with double-quotes then do an exact search,
         // otherwise proceed with standard search
         if (title.startsWith('"') && title.endsWith('"')) {
             const strippedTitle = title.slice(1, title.length - 1); // Strip double-quotes
-            onSearch({title: strippedTitle, exactMatch: true});
+            if(seasonNumber || episodeNumber)
+                onSearch({seriesName: strippedTitle, seasonNumber, episodeNumber, exactMatch: true});
+            else
+                onSearch({title: strippedTitle, exactMatch: true});
         } else {
-            onSearch({title});
+            if(seasonNumber || episodeNumber)
+                onSearch({seriesName: title, seasonNumber, episodeNumber});
+            else
+             onSearch({title});
         }
     }
 
