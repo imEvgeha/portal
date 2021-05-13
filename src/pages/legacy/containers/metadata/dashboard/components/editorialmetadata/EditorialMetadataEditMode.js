@@ -466,7 +466,7 @@ class EditorialMetadataEditMode extends Component {
                                           value: 'pending',
                                       }
                             }
-                            onChange={value => this.props.handleUpdatingMetadataStatus(value, this.props.data)}
+                            onChange={value => this.props.handleUpdatingMetadataStatus(value, updateData ? updateData : this.props.data)}
                             placeholder="Select Metadata Status"
                             options={[
                                 {label: 'pending', value: 'pending'},
