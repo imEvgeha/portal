@@ -127,6 +127,7 @@ const RightsRepository = ({
     }, [columnDefs, mapping, createRightMatchingColumnDefs]);
 
     useEffect(() => {
+        setTotalCount(0);
         ingestClick();
     }, [ingestClick]);
 
@@ -250,6 +251,12 @@ const RightsRepository = ({
             setCurrentUserSelectedRights(Object.values(usersSelectedRights));
         }
     }, [Object.values(get(selectedRights, username, {})).length, username]);
+
+    useEffect(() => {
+        // temp fix for aggrid not refreshing matching column when row count = 1
+        setTotalCount('One');
+        gridApi &&  gridApi.refreshCells({force: true});
+    },[totalCount === 1]);
 
     const columnDefsClone = columnDefs.map(columnDef => {
         const updatedColumnDef = {
@@ -557,7 +564,7 @@ const RightsRepository = ({
                 />
             )}
             <AvailsTableToolbar
-                totalRows={totalCount}
+                totalRows={totalCount === 'One'? 1 : totalCount}
                 selectedRightsCount={selectedRepoRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}
