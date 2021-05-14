@@ -234,12 +234,13 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
             payload.sortCriterion = val;
         }
         if (FIELDS_OPERATOR_IN.includes(key) && val) {
+            const searchText = val.split(', ').join(',');
             const filterIndex = payload.filterCriterion.findIndex(item => item.fieldName === key);
             if (filterIndex > 0) {
-                payload.filterCriterion[filterIndex].value = val;
+                payload.filterCriterion[filterIndex].value = searchText;
             } else {
                 payload.filterCriterion.push({
-                    value: val,
+                    value: searchText,
                     fieldName: key,
                     operator: 'in',
                     valueDataType: 'String',
