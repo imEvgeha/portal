@@ -55,7 +55,9 @@ const Ingest = ({received, attachment, isSelected, ingestClick, isInBundle, inge
                     )}
                 </div>
             </div>
-            {showReport && ingestReport && <IngestReport attachmentId={id} report={ingestReport} ingestId={ingestId} />}
+            {showReport && ingestReport && (
+                <IngestReport key={id} attachmentId={id} report={ingestReport} ingestId={ingestId} />
+            )}
         </div>
     );
 };

@@ -5,12 +5,14 @@ import classnames from 'classnames';
 import {tabFilter, ERRORS_UNMATCHED} from '../../../../legacy/constants/avails/manualRightsEntryTabs';
 import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
 import RightsURL from '../../../../legacy/containers/avail/util/RightsURL';
+import Loading from '../../../../static/Loading';
 import Constants from '../../constants';
 import './IngestReport.scss';
 
 const IngestReport = ({report, isShowingError = true, filterClick, attachmentId, ingestId}) => {
     const [activeFilter, setActiveFilter] = useState('total');
     const [currentValues, setCurrentValues] = useState([]);
+    const [loading, setLoading] = useState(false);
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
 
@@ -30,11 +32,13 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
     };
 
     useEffect(() => {
+        setLoading(true);
         rightsService.advancedSearch(getCustomSearchCriteria(), 0, 1).then(response => {
             const updatedCurrentValues = [];
             updatedCurrentValues['errors'] = response.data.filter(d => d.status === 'Error').length;
             updatedCurrentValues['pending'] = response.data.filter(d => d.status === 'Pending').length;
             setCurrentValues(updatedCurrentValues);
+            setLoading(false);
         });
     }, [attachmentId]);
 
@@ -82,13 +86,19 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
 
     return (
         <div className="ingest-report">
-            <div className="ingest-report__fields">
-                {Object.keys(reportFields).map(key =>
-                    ORIGINAL_VALUES_KEYS.includes(key) ? createTooltipTag(key) : createTag(key)
-                )}
-            </div>
-            {isShowingError && report.errorDetails && (
-                <span className="ingest-report__error-message">{report.errorDetails}</span>
+            {loading ? (
+                <Loading />
+            ) : (
+                <>
+                    <div className="ingest-report__fields">
+                        {Object.keys(reportFields).map(key =>
+                            ORIGINAL_VALUES_KEYS.includes(key) ? createTooltipTag(key) : createTag(key)
+                        )}
+                    </div>
+                    {isShowingError && report.errorDetails && (
+                        <span className="ingest-report__error-message">{report.errorDetails}</span>
+                    )}
+                </>
             )}
         </div>
     );

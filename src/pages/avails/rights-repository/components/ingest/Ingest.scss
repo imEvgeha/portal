@@ -60,6 +60,7 @@
             @include addSpacing(padding-right, 4);
             @include addSpacing(margin-top, 0);
             border-right: 1px solid map-get($mid-neutral-colors, mid-neutral-7);
+            min-width: 304px;
         }
     }
 
