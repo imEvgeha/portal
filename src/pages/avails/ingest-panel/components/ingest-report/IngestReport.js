@@ -36,7 +36,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
             updatedCurrentValues['pending'] = response.data.filter(d => d.status === 'Pending').length;
             setCurrentValues(updatedCurrentValues);
         });
-    }, []);
+    }, [attachmentId]);
 
     useEffect(() => {
         onFilterClick('total');
