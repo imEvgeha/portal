@@ -329,7 +329,6 @@ export const STRING_FIELDS = [
     'title',
     'seasonNumber',
     'episodeNumber',
-    'customPriority',
 ];
 export const DATE_FIELDS = [
     'activityEstimatedEndDate',
@@ -340,7 +339,7 @@ export const DATE_FIELDS = [
     'projectPlannedCompletionDate',
     'licenseStartDate',
 ];
-export const FIELDS_OPERATOR_IN = ['language', 'locale', 'territory', 'affiliate', 'contentType'];
+export const FIELDS_OPERATOR_IN = ['language', 'locale', 'territory', 'affiliate', 'contentType', 'customPriority'];
 export const CHANGE_PRIORITY_TITLE = 'Change Priority';
 export const jobStatus = {
     SUCCESS: 'COMPLETED',
