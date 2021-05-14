@@ -52,7 +52,7 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
                     configCastList.push(newCastCrew);
                 });
     }
-    return configCastList;
+    return configCastList.sort((a, b) => a.creditsOrder - b.creditsOrder);
 };
 
 export const isCastPersonType = (item, isConfig) => {
