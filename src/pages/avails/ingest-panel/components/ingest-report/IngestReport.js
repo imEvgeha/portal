@@ -10,9 +10,9 @@ import './IngestReport.scss';
 
 const IngestReport = ({report, isShowingError = true, filterClick, attachmentId, ingestId}) => {
     const [activeFilter, setActiveFilter] = useState('total');
+    const [currentValues, setCurrentValues] = useState([]);
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
-    const currentValues = [];
 
     const onFilterClick = useCallback(
         filterKey => {
@@ -30,13 +30,12 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
     };
 
     useEffect(() => {
-        rightsService.advancedSearch(getCustomSearchCriteria(), 0, 1).then(
-            response => {
-                currentValues['errors'] = response.data.filter(d => d.status === 'Error').length;
-                currentValues['pending'] = response.data.filter(d => d.status === 'Pending').length;
-            }
-            // setPendingCount(response.total)
-        );
+        rightsService.advancedSearch(getCustomSearchCriteria(), 0, 1).then(response => {
+            const updatedCurrentValues = [];
+            updatedCurrentValues['errors'] = response.data.filter(d => d.status === 'Error').length;
+            updatedCurrentValues['pending'] = response.data.filter(d => d.status === 'Pending').length;
+            setCurrentValues(updatedCurrentValues);
+        });
     }, []);
 
     useEffect(() => {
@@ -76,11 +75,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
     );
 
     const createTooltipTag = key => (
-        <NexusTooltip
-            content={
-                reportValues[key] ? `Original Value: ${reportFields[key].label} (${reportValues[key].toString()})` : ''
-            }
-        >
+        <NexusTooltip content={`Original Value: ${reportFields[key].label} (${reportValues[key].toString()})`}>
             {createTag(key)}
         </NexusTooltip>
     );
