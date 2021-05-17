@@ -41,7 +41,15 @@ class FreeTextSearch extends React.Component {
         const seasonNumber =  title.match(/[S]\d{1,2}/i)?.[0].match(/\d{1,2}/)?.[0]; // match s/S ,(1-2) digits
         const episodeNumber = title.match(/[E]\d{1,2}/i)?.[0].match(/\d{1,2}/)?.[0]; // match e/E ,(1-2) digits
 
-        title = title.split(' ')[0]; // title will always be first word
+        let splitTitle = title.split(' ');
+        if(splitTitle.length > 1) {
+            if(seasonNumber && episodeNumber) {
+                splitTitle.splice(splitTitle.length-2, 2);
+            }
+            else if(seasonNumber || episodeNumber)
+            splitTitle.pop();
+        }
+        title = splitTitle.join(' ');
 
         const {searchFormUpdateTextSearch, onSearch} = this.props;
 
