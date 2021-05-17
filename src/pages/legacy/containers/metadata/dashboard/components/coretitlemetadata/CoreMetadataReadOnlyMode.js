@@ -125,7 +125,7 @@ class CoreMetadataReadOnlyMode extends Component {
                         </Col>
                     ) : null}
                 </Row>
-                {externalIds || this.props.externalIDs ? (
+                {externalIds || this.props.externalIDs || legacyIds ? (
                     <>
                         <hr />
                         <h4>External IDs</h4>
