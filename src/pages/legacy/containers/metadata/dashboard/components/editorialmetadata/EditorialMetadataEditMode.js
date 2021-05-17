@@ -466,7 +466,12 @@ class EditorialMetadataEditMode extends Component {
                                           value: 'pending',
                                       }
                             }
-                            onChange={value => this.props.handleUpdatingMetadataStatus(value, updateData ? updateData : this.props.data)}
+                            onChange={value =>
+                                this.props.handleUpdatingMetadataStatus(
+                                    value,
+                                    updateData ? updateData : this.props.data
+                                )
+                            }
                             placeholder="Select Metadata Status"
                             options={[
                                 {label: 'pending', value: 'pending'},
@@ -528,14 +533,15 @@ class EditorialMetadataEditMode extends Component {
                                 style={{
                                     float: 'right',
                                     fontSize: '13px',
-                                    color: title
-                                        ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH
+                                    color: shortTitleTemplate
+                                        ? this.handleFieldLength(shortTitleTemplate) === MAX_TITLE_LENGTH
                                             ? 'red'
                                             : '#111'
                                         : '#111',
                                 }}
                             >
-                                {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
+                                {shortTitleTemplate ? this.handleFieldLength(shortTitleTemplate) : 0}/{MAX_TITLE_LENGTH}{' '}
+                                char
                             </span>
                         </Col>
                     </Row>
