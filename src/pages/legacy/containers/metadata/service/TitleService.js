@@ -18,10 +18,12 @@ export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
 };
 
 const updateCreditsOrder = title => {
-    title.castCrew = title.castCrew.map((cast, index) => ({
-        ...cast,
-        creditsOrder: index + 1,
-    }));
+    if (title.castCrew) {
+        title.castCrew = title.castCrew.map((cast, index) => ({
+            ...cast,
+            creditsOrder: index + 1,
+        }));
+    }
 };
 
 export const titleService = {
