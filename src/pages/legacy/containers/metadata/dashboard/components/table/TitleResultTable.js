@@ -428,7 +428,6 @@ class TitleResultTable extends React.Component {
         }
     }
     handleTitleFreeTextSearch(searchCriteria) {
-        console.log('in Table, handleTitleFreeTextSearch')
         titleSearchHelper.freeTextSearch(searchCriteria);
     }
 
