@@ -243,6 +243,7 @@ class TitleResultTable extends React.Component {
                     this.addItemToTable(response, params);
                 } else {
                     this.table && this.table.api && this.table.api.showNoRowsOverlay();
+                    params.failCallback();
                 }
             })
             .catch(error => {
@@ -296,7 +297,7 @@ class TitleResultTable extends React.Component {
             });
         }
 
-        this.table.api.hideOverlay();
+        this.table?.api.hideOverlay();
         this.onSelectionChanged(this.table);
     };
 

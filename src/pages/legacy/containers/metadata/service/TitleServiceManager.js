@@ -10,6 +10,7 @@ export const titleServiceManager = {
     search: searchCriteria => {
         store.dispatch(searchFormSetSearchCriteria(searchCriteria));
         store.dispatch(resultPageLoading(true));
+
     },
 
     //called by the table either as result of other systems triggering the table (page 0) or scrolling the table (page > 0)
@@ -49,9 +50,9 @@ export const titleServiceManager = {
                     store.dispatch(
                         resultPageUpdate({
                             pages: 1,
-                            titles: response.data,
-                            pageSize: response.data.length,
-                            total: response.total,
+                            titles: response?.data,
+                            pageSize: response?.data?.length,
+                            total: response?.total,
                         })
                     );
                 }
