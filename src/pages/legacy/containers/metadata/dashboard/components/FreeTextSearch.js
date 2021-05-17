@@ -46,8 +46,9 @@ class FreeTextSearch extends React.Component {
             if(seasonNumber && episodeNumber) {
                 splitTitle.splice(splitTitle.length-2, 2);
             }
-            else if(seasonNumber || episodeNumber)
-            splitTitle.pop();
+            else if(seasonNumber || episodeNumber) {
+                splitTitle.pop();
+            }
         }
         title = splitTitle.join(' ');
 
