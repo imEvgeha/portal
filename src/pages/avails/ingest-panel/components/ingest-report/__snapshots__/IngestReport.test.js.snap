@@ -75,40 +75,54 @@ exports[`IngestReport should match snapshot 1`] = `
         3
       </div>
     </div>
-    <div
-      className="ingest-report__field"
+    <NexusTooltip
+      content="Original Value: Pending (0)"
+      hasWhiteBackground={false}
+      isDisabled={false}
       key="pending"
-      onClick={[Function]}
-      role="button"
     >
-      <span
-        className="ingest-report__field-label"
-      >
-        Pending
-      </span>
       <div
-        className="ingest-report__field-value"
+        className="ingest-report__field"
+        key="pending"
+        onClick={[Function]}
+        role="button"
       >
-        0
+        <span
+          className="ingest-report__field-label"
+        >
+          Pending
+        </span>
+        <div
+          className="ingest-report__field-value"
+        >
+          0
+        </div>
       </div>
-    </div>
-    <div
-      className="ingest-report__field"
+    </NexusTooltip>
+    <NexusTooltip
+      content="Original Value: Errors (2)"
+      hasWhiteBackground={false}
+      isDisabled={false}
       key="errors"
-      onClick={[Function]}
-      role="button"
     >
-      <span
-        className="ingest-report__field-label"
-      >
-        Errors
-      </span>
       <div
-        className="ingest-report__field-value"
+        className="ingest-report__field"
+        key="errors"
+        onClick={[Function]}
+        role="button"
       >
-        2
+        <span
+          className="ingest-report__field-label"
+        >
+          Errors
+        </span>
+        <div
+          className="ingest-report__field-value"
+        >
+          0
+        </div>
       </div>
-    </div>
+    </NexusTooltip>
   </div>
   <span
     className="ingest-report__error-message"
