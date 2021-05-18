@@ -33,7 +33,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
 
     useEffect(() => {
         setLoading(true);
-        rightsService.advancedSearch(getCustomSearchCriteria(), 0, 1).then(response => {
+        rightsService.advancedSearch(getCustomSearchCriteria(), 0, 100000).then(response => {
             const updatedCurrentValues = [];
             updatedCurrentValues['errors'] = response.data.filter(d => d.status === 'Error').length;
             updatedCurrentValues['pending'] = response.data.filter(d => d.status === 'Pending').length;
