@@ -10,17 +10,18 @@ export const titleServiceManager = {
     search: searchCriteria => {
         store.dispatch(searchFormSetSearchCriteria(searchCriteria));
         store.dispatch(resultPageLoading(true));
-
     },
 
     //called by the table either as result of other systems triggering the table (page 0) or scrolling the table (page > 0)
     //this function is just a wrapper that decides which service function (and API as a result) to call depending on data in search criteria
     doSearch: (page, pageSize, sortedParams) => {
         let storeTitleReducer = store.getState().titleReducer;
-        if (storeTitleReducer.freeTextSearch.title ||
-            ( storeTitleReducer.freeTextSearch.title && storeTitleReducer.freeTextSearch.seriesName) ||
+        if (
+            storeTitleReducer.freeTextSearch.title ||
+            (storeTitleReducer.freeTextSearch.title && storeTitleReducer.freeTextSearch.seriesName) ||
             (storeTitleReducer.freeTextSearch.title && storeTitleReducer.freeTextSearch.episodeNumber) ||
-            storeTitleReducer.session.searchCriteria.parentId) {
+            storeTitleReducer.session.searchCriteria.parentId
+        ) {
             return titleServiceManager.callService(titleService.freeTextSearch, page, pageSize, sortedParams);
         } else {
             return titleServiceManager.callService(titleService.advancedSearch, page, pageSize, sortedParams);

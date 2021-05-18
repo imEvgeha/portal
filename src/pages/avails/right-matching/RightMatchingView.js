@@ -76,12 +76,12 @@ const RightMatchingView = ({
     };
 
     const actionCol = {
-        field:"id",
-        headerName:"Actions",
-        colId:"id",
+        field: 'id',
+        headerName: 'Actions',
+        colId: 'id',
         cellRendererFramework: createCellRenderer,
-        width:100
-    }
+        width: 100,
+    };
 
     const updatedColumnDefs = columnDefs.length ? [actionCol, ...columnDefs] : columnDefs;
 

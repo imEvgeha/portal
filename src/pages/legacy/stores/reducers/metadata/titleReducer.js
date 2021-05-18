@@ -61,9 +61,8 @@ const metadata = (state = initialState, action) => {
         case METADATA_TITLE_LOAD_SESSION:
             return {...state, session: {...state.session, ...action.payload}};
         case METADATA_TITLE_RESULT_PAGE__UPDATE:
-            if(action.payload.pageSize)
-                return {...state, titleTabPage: {...state.titleTabPage, ...action.payload}};
-            return {...state, titleTabPage: initialState.titleTabPage}
+            if (action.payload.pageSize) return {...state, titleTabPage: {...state.titleTabPage, ...action.payload}};
+            return {...state, titleTabPage: initialState.titleTabPage};
         case METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH:
             return {...state, freeTextSearch: {...state.freeTextSearch, ...action.payload}};
         case METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA:

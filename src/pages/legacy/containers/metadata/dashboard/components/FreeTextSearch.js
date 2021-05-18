@@ -38,15 +38,14 @@ class FreeTextSearch extends React.Component {
 
     handleSearch() {
         let {title} = this.state;
-        const seasonNumber =  title.match(/[S]\d{1,2}/i)?.[0].match(/\d{1,2}/)?.[0]; // match s/S ,(1-2) digits
+        const seasonNumber = title.match(/[S]\d{1,2}/i)?.[0].match(/\d{1,2}/)?.[0]; // match s/S ,(1-2) digits
         const episodeNumber = title.match(/[E]\d{1,2}/i)?.[0].match(/\d{1,2}/)?.[0]; // match e/E ,(1-2) digits
 
         let splitTitle = title.split(' ');
-        if(splitTitle.length > 1) {
-            if(seasonNumber && episodeNumber) {
-                splitTitle.splice(splitTitle.length-2, 2);
-            }
-            else if(seasonNumber || episodeNumber) {
+        if (splitTitle.length > 1) {
+            if (seasonNumber && episodeNumber) {
+                splitTitle.splice(splitTitle.length - 2, 2);
+            } else if (seasonNumber || episodeNumber) {
                 splitTitle.pop();
             }
         }
@@ -54,24 +53,19 @@ class FreeTextSearch extends React.Component {
 
         const {searchFormUpdateTextSearch, onSearch} = this.props;
 
-        if(seasonNumber || episodeNumber)
-            searchFormUpdateTextSearch({seriesName: title, seasonNumber, episodeNumber});
-        else
-            searchFormUpdateTextSearch({title});
+        if (seasonNumber || episodeNumber) searchFormUpdateTextSearch({seriesName: title, seasonNumber, episodeNumber});
+        else searchFormUpdateTextSearch({title});
 
         // If title was wrapped with double-quotes then do an exact search,
         // otherwise proceed with standard search
         if (title.startsWith('"') && title.endsWith('"')) {
             const strippedTitle = title.slice(1, title.length - 1); // Strip double-quotes
-            if(seasonNumber || episodeNumber)
+            if (seasonNumber || episodeNumber)
                 onSearch({seriesName: strippedTitle, seasonNumber, episodeNumber, exactMatch: true});
-            else
-                onSearch({title: strippedTitle, exactMatch: true});
+            else onSearch({title: strippedTitle, exactMatch: true});
         } else {
-            if(seasonNumber || episodeNumber)
-                onSearch({seriesName: title, seasonNumber, episodeNumber});
-            else
-             onSearch({title});
+            if (seasonNumber || episodeNumber) onSearch({seriesName: title, seasonNumber, episodeNumber});
+            else onSearch({title});
         }
     }
 
