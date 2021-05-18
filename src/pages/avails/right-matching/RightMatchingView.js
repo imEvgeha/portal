@@ -75,8 +75,15 @@ const RightMatchingView = ({
         }
     };
 
-    const focusButtonColumnDef = defineActionButtonColumn({cellRendererFramework: createCellRenderer});
-    const updatedColumnDefs = columnDefs.length ? [focusButtonColumnDef, ...columnDefs] : columnDefs;
+    const actionCol = {
+        field: 'id',
+        headerName: 'Actions',
+        colId: 'id',
+        cellRendererFramework: createCellRenderer,
+        width: 100,
+    };
+
+    const updatedColumnDefs = columnDefs.length ? [actionCol, ...columnDefs] : columnDefs;
 
     const {params = {}} = match;
     const {availHistoryIds} = params || {};

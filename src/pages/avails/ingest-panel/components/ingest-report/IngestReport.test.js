@@ -38,7 +38,7 @@ describe('IngestReport', () => {
         expect(ingestReportFields).toHaveLength(1);
     });
 
-    it('should include error message', () => {
+    it('should include an error message', () => {
         const errorMessage = wrapper.find('.ingest-report__error-message');
         expect(errorMessage).toHaveLength(1);
         expect(errorMessage.text()).toEqual(errorText);
@@ -65,17 +65,10 @@ describe('IngestReport', () => {
         expect(values.at(4).text()).toEqual('0');
 
         expect(labels.at(5).text()).toEqual('Errors');
-        expect(values.at(5).text()).toEqual('2');
-    });
-
-    it('should not include any tooltip', () => {
-        const tooltips = wrapper.find(NexusTooltip);
-        expect(tooltips).toHaveLength(0);
+        expect(values.at(5).text()).toEqual('0');
     });
 
     it('should include tooltip', () => {
-        const updatedProps = {...props, hasTooltips: true};
-        wrapper = shallow(<IngestReport {...updatedProps} />);
         const tooltips = wrapper.find(NexusTooltip);
         expect(tooltips).toHaveLength(2);
     });

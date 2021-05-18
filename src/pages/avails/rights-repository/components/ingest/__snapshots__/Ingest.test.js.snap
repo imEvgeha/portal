@@ -41,8 +41,8 @@ exports[`Ingest should match snapshot 1`] = `
     className="nexus-c-avails-ingest__stats"
   >
     <IngestReport
+      attachmentId="aath_iq5zK"
       filterClick={[Function]}
-      hasTooltips={false}
       ingestId="avih_Tergd"
       isShowingError={false}
       report={

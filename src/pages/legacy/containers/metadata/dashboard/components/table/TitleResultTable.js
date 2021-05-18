@@ -238,11 +238,12 @@ class TitleResultTable extends React.Component {
                 const {data, total} = response || {};
                 if (total > 0) {
                     // put some value on repository field to avoid 'loading' in case when result have one row
-                    if(total === 1) data[0].repository = data[0].id.split('_')[0];
+                    if (total === 1) data[0].repository = data[0].id.split('_')[0];
                     this.addLoadedItems(response);
                     this.addItemToTable(response, params);
                 } else {
                     this.table && this.table.api && this.table.api.showNoRowsOverlay();
+                    params.failCallback();
                 }
             })
             .catch(error => {
@@ -296,7 +297,7 @@ class TitleResultTable extends React.Component {
             });
         }
 
-        this.table.api.hideOverlay();
+        this.table?.api.hideOverlay();
         this.onSelectionChanged(this.table);
     };
 

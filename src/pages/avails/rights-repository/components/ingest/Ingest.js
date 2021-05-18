@@ -16,7 +16,7 @@ import './Ingest.scss';
 
 const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) => {
     const {attachments = [{}], ingestType, received, id} = ingest;
-    const {link, status, ingestReport = {}} = attachment;
+    const {id: attachmentId, link, status, ingestReport = {}} = attachment;
     const {
         attachmentTypes: {EMAIL},
     } = Constants;
@@ -45,6 +45,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                 </div>
                 <div className="nexus-c-avails-ingest__stats">
                     <IngestReport
+                        attachmentId={attachmentId}
                         report={ingestReport}
                         isShowingError={false}
                         filterClick={filterByStatus}
