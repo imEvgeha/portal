@@ -238,7 +238,10 @@ class TitleResultTable extends React.Component {
                 const {data, total} = response || {};
                 if (total > 0) {
                     // put some value on repository field to avoid 'loading' in case when result have one row
-                    if (total === 1) data[0].repository = data[0].id.split('_')[0];
+                    if (total === 1) {
+                        data[0].repository = data[0].id.split('_')[0];
+                        data[0].action = data[0].id;
+                    }
                     this.addLoadedItems(response);
                     this.addItemToTable(response, params);
                 } else {
