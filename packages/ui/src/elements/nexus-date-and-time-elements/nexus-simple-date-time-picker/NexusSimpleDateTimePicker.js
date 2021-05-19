@@ -39,7 +39,7 @@ const NexusSimpleDateTimePicker = ({
         // Removing the 'Z' at the end if it exists, because otherwise you always
         // get local date in preview, but requirements let the user choose
         // whether they want to use UTC or Relative
-        const strippedValue = value.endsWith('Z') ? value.slice(0, -1) : value;
+        const strippedValue = value.toString().endsWith('Z') ? value.slice(0, -1) : value;
         const newDate = moment(strippedValue).format(ATLASKIT_DATE_FORMAT);
         setDate(newDate);
     };
