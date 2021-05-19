@@ -1082,14 +1082,13 @@
         {
             "javaVariableName": "temporaryPriceReduction",
             "displayName": "Temporary Price Reduction",
-            "dataType": "yesOrNo",
+            "dataType": "boolean",
             "searchDataType": "boolean",
             "queryParamName": "temporaryPriceReduction",
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false,
-            "defaultValue": "false"
+            "required": false
         },
         {
             "javaVariableName": "srp",
