@@ -401,7 +401,7 @@
                                     "path": "dateWithdrawn",
                                     "className": "area-seven",
                                     "isHighlighted": true,
-                                    "isReadOnly": true,
+                                    "isReadOnly": false,
                                     "useCurrentDate": true
                                 },
                                 "comment": {
