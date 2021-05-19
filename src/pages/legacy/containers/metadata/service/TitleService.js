@@ -17,6 +17,15 @@ export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     return null;
 };
 
+const updateCreditsOrder = title => {
+    if (title?.castCrew?.length) {
+        title.castCrew = title.castCrew.map((cast, index) => ({
+            ...cast,
+            creditsOrder: index + 1,
+        }));
+    }
+};
+
 export const titleService = {
     freeTextSearch: (searchCriteria, page, size, sortedParams) => {
         const queryParams = {};
@@ -114,6 +123,7 @@ export const titleService = {
         const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/titles/${title.id}`;
+        updateCreditsOrder(title);
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(title),
@@ -191,6 +201,7 @@ export const titleService = {
 
     addEditorialMetadata: editorialMetadata => {
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/editorialmetadata';
+        editorialMetadata.forEach(e => updateCreditsOrder(e.body.editorialMetadata));
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(editorialMetadata),
@@ -207,6 +218,7 @@ export const titleService = {
 
     updateEditorialMetadata: editedEditorialMetadata => {
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/editorialmetadata';
+        editedEditorialMetadata.forEach(e => updateCreditsOrder(e.body));
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(editedEditorialMetadata),
