@@ -1082,7 +1082,7 @@
         {
             "javaVariableName": "temporaryPriceReduction",
             "displayName": "Temporary Price Reduction",
-            "dataType": "boolean",
+            "dataType": "yesOrNo",
             "searchDataType": "boolean",
             "queryParamName": "temporaryPriceReduction",
             "readOnly": false,
