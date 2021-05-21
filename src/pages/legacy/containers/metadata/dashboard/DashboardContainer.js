@@ -19,12 +19,25 @@ import {titleSearchHelper} from './TitleSearchHelper';
 import DashboardTab from './DashboardTab';
 
 const mapStateToProps = state => {
+    const lastSearch = () => {
+        if(state.titleReducer.freeTextSearch.title)
+            return state.titleReducer.freeTextSearch.title;
+        if(state.titleReducer.freeTextSearch.seriesName) {
+            let searchString = state.titleReducer.freeTextSearch.seriesName;
+            if(state.titleReducer.freeTextSearch.seasonNumber)
+                searchString += ' ' + 'S' + state.titleReducer.freeTextSearch.seasonNumber;
+            if(state.titleReducer.freeTextSearch.episodeNumber)
+                searchString += ' ' + 'E' + state.titleReducer.freeTextSearch.episodeNumber;
+            return searchString;
+        }
+        return '';
+    }
     return {
         profileInfo: state.profileInfo,
         selected: state.titleReducer.session.titleTabPageSelection.selected,
         showSearchResults: state.titleReducer.session.showSearchResults,
         searchCriteria: state.titleReducer.session.searchCriteria,
-        lastSearch: state.titleReducer.freeTextSearch.title || '',
+        lastSearch: lastSearch(),
     };
 };
 
