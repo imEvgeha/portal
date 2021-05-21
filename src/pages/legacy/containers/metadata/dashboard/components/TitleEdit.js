@@ -1231,7 +1231,7 @@ class TitleEdit extends Component {
         }
         const newEditorial = {
             ...edited,
-            castCrew,
+            castCrew: this.sortCreditsOrder(castCrew),
         };
 
         this.updateEditedEditorialMetadata(newEditorial, originalData.id);
@@ -1240,7 +1240,7 @@ class TitleEdit extends Component {
     handleEditorialCastCrewCreate = (castCrew, originalData) => {
         const newEditorial = {
             ...originalData,
-            castCrew,
+            castCrew: this.sortCreditsOrder(castCrew),
         };
         this.setState({
             editorialMetadataForCreate: newEditorial,

@@ -132,7 +132,7 @@ export const getFilteredCrewList = (originalConfigCrewList, isConfig) => {
                 }
             });
 
-    return configCrewList;
+    return configCrewList.sort((a, b) => a.creditsOrder - b.creditsOrder);
 };
 
 export const getFormatTypeName = personType => {
