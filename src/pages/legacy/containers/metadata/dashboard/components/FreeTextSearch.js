@@ -61,7 +61,7 @@ class FreeTextSearch extends React.Component {
         const {searchFormUpdateTextSearch, onSearch} = this.props;
 
         if (seasonNumber || episodeNumber) {
-            searchFormUpdateTextSearch({seriesName: title, seasonNumber, episodeNumber});
+            searchFormUpdateTextSearch({title: '', seriesName: title, seasonNumber, episodeNumber});
         }
         else searchFormUpdateTextSearch({title, seriesName: ''});
 
@@ -70,11 +70,11 @@ class FreeTextSearch extends React.Component {
         if (title.startsWith('"') && title.endsWith('"')) {
             const strippedTitle = title.slice(1, title.length - 1); // Strip double-quotes
             if (seasonNumber || episodeNumber)
-                onSearch({seriesName: strippedTitle, seasonNumber, episodeNumber, exactMatch: true});
+                onSearch({title: '', seriesName: strippedTitle, seasonNumber, episodeNumber, exactMatch: true});
             else onSearch({title: strippedTitle, seriesName: '', exactMatch: true});
         } else {
             if (seasonNumber || episodeNumber) {
-                onSearch({seriesName: title, seasonNumber, episodeNumber});
+                onSearch({title: '', seriesName: title, seasonNumber, episodeNumber});
             }
             else onSearch({title, seriesName: ''});
         }
