@@ -17,9 +17,7 @@ export const titleServiceManager = {
     doSearch: (page, pageSize, sortedParams) => {
         let storeTitleReducer = store.getState().titleReducer;
         if (
-            storeTitleReducer.freeTextSearch.title ||
-            (storeTitleReducer.freeTextSearch.title && storeTitleReducer.freeTextSearch.seriesName) ||
-            (storeTitleReducer.freeTextSearch.title && storeTitleReducer.freeTextSearch.episodeNumber) ||
+            storeTitleReducer.freeTextSearch.title || storeTitleReducer.freeTextSearch.seriesName ||
             storeTitleReducer.session.searchCriteria.parentId
         ) {
             return titleServiceManager.callService(titleService.freeTextSearch, page, pageSize, sortedParams);
