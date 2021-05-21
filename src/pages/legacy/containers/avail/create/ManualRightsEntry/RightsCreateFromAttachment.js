@@ -26,10 +26,10 @@ import IngestReport from '../../../../../avails/ingest-panel/components/ingest-r
 import TableColumnCustomization from '@vubiquity-nexus/portal-ui/lib/elements/nexus-table-column-customization/TableColumnCustomization';
 import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
+import moment from 'moment';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
-import IngestStatus from '../../../../../avails/ingest-panel/components/ingest-status/IngestStatus';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON} = Constants;
 
@@ -125,31 +125,29 @@ class RightsCreateFromAttachment extends React.Component {
             </div>
         ),
         attachment: ({value, data}) => (
-            <div className="nexus-c-attachment">
-                <NexusTooltip
-                    content={
-                        <div>
-                            {ATTACHMENT_TOOLTIP}
-                            <div className="nexus-c-attachment-name">{this.formatAttachmentName(value.link)}</div>
+            <div>
+                <div className="nexus-c-attachment">
+                    <NexusTooltip
+                        content={
+                            <div>
+                                {ATTACHMENT_TOOLTIP}
+                                <div className="nexus-c-attachment-name">{this.formatAttachmentName(value.link)}</div>
+                            </div>
+                        }
+                    >
+                        <div className="nexus-c-attachment-link-old">
+                            <AkButton appearance="link" onClick={() => this.getDownloadLink(value)}>
+                                <>{typeof value.link === 'string' && this.formatAttachmentName(value.link)}</>
+                            </AkButton>
                         </div>
-                    }
-                >
-                    <div className="nexus-c-attachment-link-old">
-                        <AkButton appearance="link" onClick={() => this.getDownloadLink(value)}>
-                            <>{typeof value.link === 'string' && this.formatAttachmentName(value.link)}</>
-                        </AkButton>
-                    </div>
-                    <div>
-                        <IngestStatus
-                            status={data.attachment.status}
-                            date={data.attachment.received}
-                            ingestType={data.attachment.ingestType}
-                        />
-                    </div>
-                </NexusTooltip>
-                {data.attachment.status === 'FAILED' && (
-                    <ReuploadIngestButton attachment={data.attachment} ingestData={this.state.historyData} />
-                )}
+                    </NexusTooltip>
+                    {data.attachment.status === 'FAILED' && (
+                        <ReuploadIngestButton attachment={data.attachment} ingestData={this.state.historyData} />
+                    )}
+                </div>
+                <div className="nexus-c-received-date ">
+                    {moment(this.state.historyData.received).format('ddd, MMM D, YYYY | hh:mm:ss A')}
+                </div>
             </div>
         ),
         error: ({value}) => (
