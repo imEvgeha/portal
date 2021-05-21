@@ -36,7 +36,7 @@ const DateTime = ({dateType, type, labels, isReadOnly, isDisabled, value, onChan
         isTimestamp,
         onChange,
     };
-    return isUsingTime ? <NexusDateTimePicker {...props} /> : <NexusDatePicker {...props} />;
+    return isUsingTime ? <NexusDateTimePicker {...props} value={value.toString()} /> : <NexusDatePicker {...props} value={value.toString()} />;
 };
 
 DateTime.propTypes = {

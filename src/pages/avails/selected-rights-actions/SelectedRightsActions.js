@@ -294,7 +294,7 @@ export const SelectedRightsActions = ({
     };
 
     const onCloseStatusCheckModal = () => {
-        gridApi.deselectAll();
+        gridApi && gridApi.deselectAll();
         toggleRefreshGridData(true);
         closeModal();
     };

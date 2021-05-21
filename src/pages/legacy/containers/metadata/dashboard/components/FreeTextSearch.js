@@ -38,14 +38,21 @@ class FreeTextSearch extends React.Component {
 
     handleSearch() {
         let {title} = this.state;
+        title = title.trim();
         const seasonNumber = title.match(/[S]\d{1,2}/i)?.[0].match(/\d{1,2}/)?.[0]; // match s/S ,(1-2) digits
         const episodeNumber = title.match(/[E]\d{1,2}/i)?.[0].match(/\d{1,2}/)?.[0]; // match e/E ,(1-2) digits
 
         let splitTitle = title.split(' ');
+
         if (splitTitle.length > 1) {
             if (seasonNumber && episodeNumber) {
-                splitTitle.splice(splitTitle.length - 2, 2);
+                // remove only last word for cases S01E03
+                if(splitTitle[splitTitle.length-1].match(/[S]\d{1,2}/i) && splitTitle[splitTitle.length-1].match(/[E]\d{1,2}/i))
+                    splitTitle.pop();
+                else // remove last two words in case S02 E05
+                    splitTitle.splice(splitTitle.length - 2, 2);
             } else if (seasonNumber || episodeNumber) {
+                // remove last word if only season or episode is provided
                 splitTitle.pop();
             }
         }
