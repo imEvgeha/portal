@@ -1368,15 +1368,23 @@ class TitleEdit extends Component {
      * Title core additional fields
      */
 
-    addCastCrew = person => {
-        let castCrewArray = [person];
-        if (this.state.editedForm.castCrew) {
-            castCrewArray = [...castCrewArray, ...this.state.editedForm.castCrew];
-        }
+    sortCreditsOrder = castCrew => {
+        return castCrew.sort((a, b) => a.creditsOrder - b.creditsOrder).map((c, i) => ({...c, creditsOrder: i + 1}));
+    };
 
+    addCastCrew = person => {
+        person.creditsOrder = 1;
+        let castCrewArray = [];
+        if (this.state.editedForm.castCrew) {
+            const existingCast = this.state.editedForm.castCrew.map(c => ({
+                ...c,
+                creditsOrder: c.creditsOrder + 1,
+            }));
+            castCrewArray = [person, ...existingCast];
+        }
         const updateEditForm = {
             ...this.state.editedForm,
-            castCrew: castCrewArray,
+            castCrew: this.sortCreditsOrder(castCrewArray),
         };
         this.setState({
             editedForm: updateEditForm,
@@ -1392,7 +1400,7 @@ class TitleEdit extends Component {
         });
         const updateEditForm = {
             ...this.state.editedForm,
-            castCrew: cast,
+            castCrew: this.sortCreditsOrder(cast),
         };
         this.setState({
             editedForm: updateEditForm,
@@ -1410,10 +1418,9 @@ class TitleEdit extends Component {
             crewList = orderedArray;
         }
 
-        const castAndCrewList = [...castList, ...crewList];
         const reOrderedCastCrewList = {
             ...this.state.editedForm,
-            castCrew: castAndCrewList,
+            castCrew: this.sortCreditsOrder([...castList, ...crewList]),
         };
         this.setState({
             editedForm: reOrderedCastCrewList,
