@@ -5,6 +5,12 @@
             "type": "readOnly",
             "field": "sourceRightId",
             "value": "any"
+        },
+        {
+            "view": "EDIT",
+            "type": "readOnly",
+            "field": "dateWithdrawn",
+            "value": "date"
         }
     ],
     "fields": [
