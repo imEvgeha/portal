@@ -1,3 +1,5 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+
 .nexus-c-manual-rights-entry {
     label {
         font-weight: bold;
@@ -61,6 +63,12 @@
     > div {
         width: 100%;
     }
+}
+
+.nexus-c-received-date {
+    @include heading(h100);
+    @include addSpacing(margin-top, 0);
+    @include addSpacing(margin-left, 3);
 }
 
 .nexus-c-status-tag-old {
