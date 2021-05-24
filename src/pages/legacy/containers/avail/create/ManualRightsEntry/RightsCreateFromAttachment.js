@@ -277,7 +277,7 @@ class RightsCreateFromAttachment extends React.Component {
         const {selected} = this.props || [];
         const {table} = this.state || {};
         const selectedOnTab = [];
-        if (table.api) {
+        if (table.api && selected) {
             table.api.forEachNode(rowNode => {
                 if (rowNode.data && selected.filter(sel => sel.id === rowNode.data.id).length > 0) {
                     selectedOnTab.push(rowNode.data);

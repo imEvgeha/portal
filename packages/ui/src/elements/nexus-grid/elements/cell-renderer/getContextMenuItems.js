@@ -1,13 +1,14 @@
 export default function getContextMenuItems(params, link) {
-    const url = `${link}/${params.node.data.id}`;
+    const url = params.node && params.node.data ? `${link}/${params.node.data.id}` : null;
     return [
         'copy',
         'copyWithHeaders',
-        link && {
-            name: 'Open link in new tab ',
-            action: () => {
-                window.open(url, '_blank');
+        link &&
+            url && {
+                name: 'Open link in new tab ',
+                action: () => {
+                    window.open(url, '_blank');
+                },
             },
-        },
     ];
 }
