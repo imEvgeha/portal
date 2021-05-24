@@ -48,3 +48,6 @@ export default {
     SERVICES_TITLE: 'Services',
     SERVICES_BARCODE: 'Barcode',
 };
+
+export const READINESS_CHANGE_WARNING = "You are about to set a Fulfillment Order's readiness status to 'Ready'. Order revisions will only be possible prior to DETE processing";
+export const ORDER_REVISION_WARNING = "You are about to submit an order revision to DETE. Order revisions will only be possible prior to DETE processing."
