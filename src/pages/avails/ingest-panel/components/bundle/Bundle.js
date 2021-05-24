@@ -32,7 +32,7 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
                         <Ingest
                             key={attachment.id}
                             attachment={attachment}
-                            received={received}
+                            received={attachment.updatedAt || received}
                             licensor={licensor}
                             ingestType={ingestType}
                             ingestClick={() =>
