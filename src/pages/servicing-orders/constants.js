@@ -9,6 +9,11 @@ export const readinessStatus = {
     NEW: 'NEW',
 };
 
+export const TENANTS = {
+    MGM: 'MGM',
+    WB: 'WB',
+}
+
 export const EXPORT_WARNING_MESSAGE =
     'One or more of the selected orders has a readiness status of ON HOLD and was previously exported.';
 

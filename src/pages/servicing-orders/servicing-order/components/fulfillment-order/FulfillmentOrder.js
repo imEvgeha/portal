@@ -15,6 +15,7 @@ import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
 import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
+import { readinessStatus } from '../../../constants';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
 import {SELECT_VALUES, DETE_SERVICE_TYPE} from '../services-table/Constants';
@@ -121,7 +122,7 @@ export const FulfillmentOrder = ({
         }
 
         // Show warning modal when status is set to READY
-        get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness'
+        get(fo, fieldKeys.READINESS, '') === readinessStatus.READY && path === 'readiness'
             ? openWarningModal(fo)
             : setFulfillmentOrder(fo);
         setIsSaveDisabled(false);
@@ -201,7 +202,7 @@ export const FulfillmentOrder = ({
     };
 
     const onSaveHandler = () => {
-        const readinessStatus = get(selectedFulfillmentOrder, fieldKeys.READINESS, '');
+        const status = get(selectedFulfillmentOrder, fieldKeys.READINESS, '');
         const actions = [
             {
                 text: 'Continue',
@@ -219,7 +220,7 @@ export const FulfillmentOrder = ({
                 },
             },
         ];
-        if(readinessStatus === 'READY') {
+        if(status === readinessStatus.READY) {
             const ModalContent = (
                 <>
                     <p>{ORDER_REVISION_WARNING}</p>

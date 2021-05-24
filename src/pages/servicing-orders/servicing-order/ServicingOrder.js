@@ -16,7 +16,9 @@ import {
     getBarCodes,
     populateAssetInfo,
 } from './components/sources-table/util';
+import { SERVICERS, readinessStatus, TENANTS } from '../constants';
 import './ServicingOrder.scss';
+
 
 
 const ServicingOrder = ({match}) => {
@@ -134,7 +136,7 @@ const ServicingOrder = ({match}) => {
 
     const isFormDisabled = selectedOrder => {
         const {readiness, tenant, fs} = selectedOrder;
-        return (readiness === 'READY' && fs !== 'DETE') || tenant === 'WB';
+        return (readiness === readinessStatus.READY && fs !== SERVICERS.DETE) || tenant === TENANTS.WB;
     };
 
     const cancelEdit = () => {
