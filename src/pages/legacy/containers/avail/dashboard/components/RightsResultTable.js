@@ -25,9 +25,8 @@ import {
 import {rightServiceManager} from '../../service/RightServiceManager';
 import {getDeepValue, equalOrIncluded} from '@vubiquity-nexus/portal-utils/lib/Common';
 import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
-import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
-import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
+import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -217,58 +216,6 @@ class RightsResultTable extends React.Component {
         if (colDef.length > 0) {
             return;
         }
-        const formatter = column => {
-            const {dataType, javaVariableName} = column || {};
-
-            switch (dataType) {
-                case DATETIME_FIELDS.TIMESTAMP:
-                case DATETIME_FIELDS.BUSINESS_DATETIME:
-                case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-                    return ({data = {}}) => {
-                        const {[column.javaVariableName]: date = ''} = data || {};
-                        return ISODateToView(date, dataType);
-                    };
-                case 'string':
-                    if (javaVariableName === 'castCrew') {
-                        return ({data = {}}) => {
-                            if (data && Array.isArray(data[javaVariableName])) {
-                                return data[javaVariableName]
-                                    .map(({personType, displayName}) => personType + ': ' + displayName)
-                                    .join('; ');
-                            } else {
-                                return undefined;
-                            }
-                        };
-                    } else {
-                        return null;
-                    }
-                case 'priceType':
-                    return ({data = {}}) => {
-                        if (data && Array.isArray(data[javaVariableName])) {
-                            const cellValue = data[javaVariableName]
-                                .map(e => String(`${e.priceType} ${e.priceValue}`))
-                                .join(', ');
-                            return cellValue || undefined;
-                        } else {
-                            return undefined;
-                        }
-                    };
-                case 'territoryType':
-                case 'audioLanguageType':
-                    return ({data = {}}) => {
-                        if (data && Array.isArray(data[javaVariableName])) {
-                            const cellValue = data[javaVariableName]
-                                .map(e => String(e.country || `${e.language || '-'}/${e.audioType || '-'}`))
-                                .join(', ');
-                            return cellValue || undefined;
-                        } else {
-                            return undefined;
-                        }
-                    };
-                default:
-                    return null;
-            }
-        };
         if (this.props.availsMapping) {
             this.props.availsMapping.mappings
                 .filter(({dataType}) => dataType)
@@ -278,7 +225,7 @@ class RightsResultTable extends React.Component {
                             field: column.javaVariableName,
                             headerName: column.displayName,
                             cellRendererFramework: this.loadingRenderer,
-                            valueFormatter: formatter(column),
+                            valueFormatter: createValueFormatter(column),
                             width:
                                 this.props.columnsSize && this.props.columnsSize.hasOwnProperty(column.javaVariableName)
                                     ? this.props.columnsSize[column.javaVariableName]
