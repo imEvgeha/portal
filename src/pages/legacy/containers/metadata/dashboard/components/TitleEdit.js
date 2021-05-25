@@ -524,10 +524,10 @@ class TitleEdit extends Component {
             const newRating = JSON.parse(JSON.stringify(this.state.ratingForCreate));
             newRating.advisoriesCode = newAdvisoryCodes;
 
-            if (newAdditionalFields.ratings === null) {
-                newAdditionalFields.ratings = [newRating];
-            } else {
+            if (!!newAdditionalFields.ratings) {
                 newAdditionalFields.ratings.push(newRating);
+            } else {
+                newAdditionalFields.ratings = [newRating];
             }
         }
     };
