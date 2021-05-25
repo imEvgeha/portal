@@ -1374,7 +1374,7 @@ class TitleEdit extends Component {
 
     addCastCrew = person => {
         person.creditsOrder = 1;
-        let castCrewArray = [];
+        let castCrewArray = [person];
         if (this.state.editedForm.castCrew) {
             const existingCast = this.state.editedForm.castCrew.map(c => ({
                 ...c,
