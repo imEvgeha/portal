@@ -33,7 +33,7 @@ const DopTasksService = {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksPotentialOwners')}${
             taskIds ? `?taskId=${taskIds}` : ''
         }`;
-        return nexusFetch(url);
+        return nexusFetch(url, {credentials: 'include'});
     },
     assignTask: (taskIds, userId) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksAssign')}`;
@@ -78,7 +78,7 @@ const DopTasksService = {
     },
     getBatchJobStatus: jobId => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksBatchJob')}/${jobId}`;
-        return nexusFetch(url);
+        return nexusFetch(url, {credentials: 'include'});
     },
 };
 

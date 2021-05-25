@@ -23,7 +23,12 @@ const DOPService = {
         )}/search`;
         const payload = getInitialSearchPayload(getUsername(store.getState()), offset, limit);
         const body = prepareFilters(payload, externalFilter);
-        return nexusFetch(url, {method: 'post', body: JSON.stringify(body)}, DEFAULT_TIMEOUT, true);
+        return nexusFetch(
+            url,
+            {method: 'post', credentials: 'include', body: JSON.stringify(body)},
+            DEFAULT_TIMEOUT,
+            true
+        );
     },
     getProjectAttributes: (projectIds = []) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get(
@@ -46,7 +51,7 @@ const DOPService = {
             ],
         };
 
-        return nexusFetch(url, {method: 'post', body: JSON.stringify(body)});
+        return nexusFetch(url, {method: 'post', credentials: 'include', body: JSON.stringify(body)});
     },
     createProjectRequestData: (data = []) => {
         const projectAttribute = [];
@@ -79,13 +84,14 @@ const DOPService = {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagementProject')}`;
         return nexusFetch(url, {
             method: 'POST',
+            credentials: 'include',
             body: JSON.stringify(data),
         });
     },
     startProject: projectId => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagementProject')}`;
         // TODO: Error handling if necessary
-        return nexusFetch(`${url}/${projectId}/start`, {method: 'post'});
+        return nexusFetch(`${url}/${projectId}/start`, {method: 'post', credentials: 'include'});
     },
 };
 
