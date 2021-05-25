@@ -15,12 +15,15 @@ import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
 import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
+import { readinessStatus } from '../../../constants';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
 import {SELECT_VALUES, DETE_SERVICE_TYPE} from '../services-table/Constants';
 import ErrorsList from './ErrorsList';
-import Constants from './constants';
+import Constants, { READINESS_CHANGE_WARNING, ORDER_REVISION_WARNING } from './constants';
 import './FulfillmentOrder.scss';
+
+const modalHeading = 'Warning';
 
 export const FulfillmentOrder = ({
     selectedFulfillmentOrder = {},
@@ -55,17 +58,6 @@ export const FulfillmentOrder = ({
             dispatch({type: 'FETCH_CONFIG', payload: get(fulfillmentOrder, 'tenant')});
         }
     }, [get(fulfillmentOrder, 'tenant')]);
-
-    const ModalContent = (
-        <>
-            <p>
-                You are about to set a Fulfillment Order&apos;s readiness status to &quot;Ready&quot;. No further edits
-                will be possible.
-            </p>
-            <p>Do you wish to continue?</p>
-        </>
-    );
-    const modalHeading = 'Warning';
 
     // runs when a fulfillment order has been successfully edited and saved
     // 1. re-fetches all the fulfillment orders
@@ -130,13 +122,19 @@ export const FulfillmentOrder = ({
         }
 
         // Show warning modal when status is set to READY
-        get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness'
+        get(fo, fieldKeys.READINESS, '') === readinessStatus.READY && path === 'readiness'
             ? openWarningModal(fo)
             : setFulfillmentOrder(fo);
         setIsSaveDisabled(false);
     };
 
     const openWarningModal = fo => {
+        const ModalContent = (
+            <>
+                <p>{READINESS_CHANGE_WARNING}</p>
+                <p>Do you wish to continue?</p>
+            </>
+        );
         const actions = [
             {
                 text: 'Continue',
@@ -204,10 +202,39 @@ export const FulfillmentOrder = ({
     };
 
     const onSaveHandler = () => {
-        const dataToSave = prepareOrderPutData(fulfillmentOrder);
-        const payload = {data: dataToSave};
-        dispatch(saveFulfillmentOrder(payload));
-        setIsSaveDisabled(true);
+        const status = get(selectedFulfillmentOrder, fieldKeys.READINESS, '');
+        const actions = [
+            {
+                text: 'Continue',
+                onClick: () => {
+                    closeModal();
+                    const dataToSave = prepareOrderPutData(fulfillmentOrder);
+                    const payload = {data: dataToSave};
+                    dispatch(saveFulfillmentOrder(payload));
+                },
+            },
+            {
+                text: 'Cancel',
+                onClick: () => {
+                    closeModal();
+                },
+            },
+        ];
+        if(status === readinessStatus.READY) {
+            const ModalContent = (
+                <>
+                    <p>{ORDER_REVISION_WARNING}</p>
+                    <p>Do you wish to continue?</p>
+                </>
+            );
+            openModal(ModalContent, {title: modalHeading, width: 'small', actions});
+        }
+        else {
+            const dataToSave = prepareOrderPutData(fulfillmentOrder);
+            const payload = {data: dataToSave};
+            dispatch(saveFulfillmentOrder(payload));
+            setIsSaveDisabled(true);
+        }
     };
 
     const getLateFaultOptions = () => {
