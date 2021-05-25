@@ -174,7 +174,7 @@ class EditorialMetadataEditMode extends Component {
 
     handleEditorialAddPerson = (person, castCrew) => {
         person.creditsOrder = 1;
-        let newCastCrewList = [];
+        let newCastCrewList = [person];
         if (castCrew) {
             const existingCast = castCrew.map(c => ({
                 ...c,
