@@ -230,14 +230,14 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
         else if (key === 'genres') {
             body[key] =
                 data[key] &&
-                data[key].map(genre => {
+                data[key].map((genre, i) => {
                     let genreValue = genre;
                     if (isObjectLike(genre) && get(genre, 'value')) {
                         genreValue = get(genre, 'value');
                     }
                     return {
                         genre: genreValue,
-                        order: null,
+                        order: i,
                     };
                 });
         } else if (key === 'category') {
