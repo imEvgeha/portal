@@ -324,7 +324,7 @@ export const updateEditorialMetadata = async (values, titleId) => {
         );
         if (response && response.length > 0) {
             let toast = errorToast;
-            if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
+            if (!get(response[0], 'response.failed') || get(response[0], 'response.failed').length === 0) {
                 const isMgm = isMgmTitle(titleId);
                 store.dispatch(getEditorialMetadata({id: titleId, isMgm}));
                 toast = {
