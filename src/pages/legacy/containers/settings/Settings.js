@@ -83,14 +83,6 @@ class Settings extends Component {
                         >
                             Localization
                         </ListElement>
-                        {URL.isLocalOrDevOrQA() && (
-                            <ListElement
-                                className={showSettings === 'devLab' ? 'list-item' : null}
-                                onClick={() => this.showSettings('devLab')}
-                            >
-                                DevLab
-                            </ListElement>
-                        )}
                     </ListParent>
                 </SideMenu>
 
@@ -137,38 +129,6 @@ class Settings extends Component {
                             <Localization />
                         </TabPane>
                     </TabContent>
-                ) : showSettings === 'devLab' ? (
-                    <div className="dev-lab">
-                        <div>NexusDrawer testing</div>
-                        <Select
-                            placeholder="Choose width"
-                            options={[
-                                {label: 'Full', value: 'full'},
-                                {label: 'Narrow', value: 'narrow'},
-                                {label: 'Wide', value: 'wide'},
-                                {label: 'Extended', value: 'extended'},
-                                {label: 'Medium', value: 'medium'},
-                            ]}
-                            defaultValue={{label: 'Medium', value: 'medium'}}
-                            onChange={({value}) => this.setState({drawerWidth: value})}
-                        />
-                        <Select
-                            placeholder="Choose position"
-                            options={[
-                                {label: 'Right', value: 'right'},
-                                {label: 'Left', value: 'left'},
-                            ]}
-                            defaultValue={{label: 'Right', value: 'right'}}
-                            onChange={({value}) => this.setState({drawerPosition: value})}
-                        />
-                        <Button onClick={() => this.setState({isDrawerOpen: true})}>Open Drawer</Button>
-                        <NexusDrawer
-                            position={drawerPosition}
-                            width={drawerWidth}
-                            isOpen={isDrawerOpen}
-                            onClose={this.onDrawerClose}
-                        />
-                    </div>
                 ) : null}
             </div>
         );
