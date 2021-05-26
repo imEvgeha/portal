@@ -102,9 +102,21 @@ const TitleDetails = ({
         updateEditorialMetadata(values, id);
     };
 
-    const extendTitleWithExternalIds = () => {
-        const [vzExternalIds] = externalIds.filter(ids => ids.externalSystem === 'vz');
-        const [movidaExternalIds] = externalIds.filter(ids => ids.externalSystem === 'movida');
+    const getExternaIds = repo => {
+        if (isNexusTitle(title.id)) {
+            return externalIds.filter(ids => ids.externalSystem === repo);
+        } 
+            return [
+                {
+                    externalTitleId: get(title.legacyIds, `${repo}.${repo}TitleId`, ''),
+                    externalId: get(title.legacyIds, `${repo}.${repo}Id`, ''),
+                },
+            ];
+        
+    };
+    const extendTitleWithExternalIds = repo => {
+        const [vzExternalIds] = getExternaIds('vz');
+        const [movidaExternalIds] = getExternaIds('movida');
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
         return {
