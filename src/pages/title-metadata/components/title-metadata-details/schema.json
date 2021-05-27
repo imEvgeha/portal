@@ -242,6 +242,18 @@
                                 }
                             ]
                         },
+                        "totalEpisodes": {
+                            "name": "Total Episodes",
+                            "path": "totalNumberOfEpisodes",
+                            "type": "number",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                }
+                            ]
+                        },
+
                         "episodeNumber": {
                             "name": "Episode Number",
                             "path": "episodic.episodeNumber",
