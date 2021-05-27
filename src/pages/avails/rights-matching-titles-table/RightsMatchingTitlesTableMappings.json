@@ -102,6 +102,33 @@
         "required": false
     },
     {
+        "colId": "seriesName",
+        "field": "seriesName",
+        "headerName": "Series Name",
+        "javaVariableName": "seriesName",
+        "enableSearch": true,
+        "dataType": "string",
+        "searchDataType": "string"
+    },
+    {
+        "colId": "seasonNumber",
+        "field": "seasonNumber",
+        "headerName": "Season Number",
+        "javaVariableName": "seasonNumber",
+        "enableSearch": true,
+        "dataType": "integer",
+        "searchDataType": "integer"
+    },
+    {
+        "colId": "episodeNumber",
+        "field": "episodeNumber",
+        "headerName": "Episode Number",
+        "javaVariableName": "episodeNumber",
+        "enableSearch": true,
+        "dataType": "integer",
+        "searchDataType": "integer"
+    },
+    {
         "colId": "castCrew.director",
         "javaVariableName": "castCrew.director",
         "field": "castCrew.director",

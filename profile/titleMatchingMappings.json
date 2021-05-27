@@ -63,6 +63,39 @@
         "required": false
     },
     {
+        "displayName": "Series Name",
+        "javaVariableName": "episodic.seriesName",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "seriesName",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": false,
+        "required": false
+    },
+    {
+        "displayName": "Season Number",
+        "javaVariableName": "episodic.seasonNumber",
+        "dataType": "integer",
+        "searchDataType": "integer",
+        "queryParamName": "seasonNumber",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": false,
+        "required": false
+    },
+    {
+        "displayName": "Episode Number",
+        "javaVariableName": "episodic.episodeNumber",
+        "dataType": "integer",
+        "searchDataType": "integer",
+        "queryParamName": "episodeNumber",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": false,
+        "required": false
+    },
+    {
         "javaVariableName": "castCrew.director",
         "displayName": "Director",
         "dataType": "string",

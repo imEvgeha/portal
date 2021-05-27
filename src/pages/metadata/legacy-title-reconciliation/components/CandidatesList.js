@@ -57,6 +57,7 @@ const CandidatesList = ({
             gridApi.setFilterModel();
         }
     };
+    console.log('updatedColumnDefs: ', updatedColumnDefs);
 
     return (
         <div className="nexus-c-candidates-list">
