@@ -51,6 +51,7 @@ const NexusField = ({
     optionsConfig,
     label,
     isOptional,
+    maxLength,
     setFieldValue,
     useCurrentDate,
     getCurrentValues,
@@ -75,6 +76,7 @@ const NexusField = ({
         setFieldValue,
         path,
         view,
+        maxLength,
     };
 
     const getIsReadOnly = () => {
@@ -97,7 +99,7 @@ const NexusField = ({
     };
 
     const renderFieldEditMode = fieldProps => {
-        let selectFieldProps = {...fieldProps};
+        const selectFieldProps = {...fieldProps};
         const multiselectFieldProps = {...fieldProps};
         switch (type) {
             case 'string':
@@ -143,21 +145,22 @@ const NexusField = ({
                 // set label to full text string (not code). label is used in select as display text
                 if (/locale/i.test(fieldProps.name)) {
                     const selectVal = getValueFromSelectValues('country', fieldProps.value);
-                    selectFieldProps.value = typeof selectVal === "string" ?
-                        {
-                            label: selectVal,
-                            value: fieldProps.value,
-                        }: selectVal;
-
-                }
-                else if (/language/i.test(fieldProps.name)) {
+                    selectFieldProps.value =
+                        typeof selectVal === 'string'
+                            ? {
+                                  label: selectVal,
+                                  value: fieldProps.value,
+                              }
+                            : selectVal;
+                } else if (/language/i.test(fieldProps.name)) {
                     const selectVal = getValueFromSelectValues('language', fieldProps.value);
-                    selectFieldProps.value = typeof selectVal === "string" ?
-                    {
-                        label: selectVal,
-                        value: fieldProps.value,
-                    }: selectVal;
-
+                    selectFieldProps.value =
+                        typeof selectVal === 'string'
+                            ? {
+                                  label: selectVal,
+                                  value: fieldProps.value,
+                              }
+                            : selectVal;
                 }
 
                 return (
@@ -206,9 +209,13 @@ const NexusField = ({
                 return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
             case 'datetime':
                 // withdrawn date is readOnly when populated (when empty, user can populate it using checkbox)
-                const isWithDrawnReadOnly = fieldProps?.name.includes('dateWithdrawn') && fieldProps?.value ? true : dateProps?.isReadOnly;
-                return fieldProps.value || !dateProps.isReadOnly ?
-                <DateTimeWithOptional {...fieldProps} {...dateProps} isReadOnly={isWithDrawnReadOnly}/> : '' ;
+                const isWithDrawnReadOnly =
+                    fieldProps?.name.includes('dateWithdrawn') && fieldProps?.value ? true : dateProps?.isReadOnly;
+                return fieldProps.value || !dateProps.isReadOnly ? (
+                    <DateTimeWithOptional {...fieldProps} {...dateProps} isReadOnly={isWithDrawnReadOnly} />
+                ) : (
+                    ''
+                );
             case 'castCrew':
                 return (
                     <CastCrew
@@ -259,11 +266,11 @@ const NexusField = ({
         }
         if (/country/i.test(fieldProps.name) || /locale/i.test(fieldProps.name)) {
             // the section doesn't get refreshed (rights detail) when save, hence the below check
-            const val = typeof fieldProps.value === "object" ? fieldProps.value.value : fieldProps.value;
+            const val = typeof fieldProps.value === 'object' ? fieldProps.value.value : fieldProps.value;
             return getValueFromSelectValues('country', val);
         }
         if (/language/i.test(fieldProps.name)) {
-            const val = typeof fieldProps.value === "object" ? fieldProps.value.value : fieldProps.value;
+            const val = typeof fieldProps.value === 'object' ? fieldProps.value.value : fieldProps.value;
             return getValueFromSelectValues('language', val);
         }
         return getFieldValue(fieldProps.value);
@@ -404,6 +411,7 @@ NexusField.propTypes = {
     setDisableSubmit: PropTypes.func,
     initialData: PropTypes.object,
     linkConfig: PropTypes.object,
+    maxLength: PropTypes.number,
 };
 
 NexusField.defaultProps = {
@@ -436,6 +444,7 @@ NexusField.defaultProps = {
     setDisableSubmit: undefined,
     initialData: {},
     linkConfig: {},
+    maxLength: undefined,
 };
 
 export default NexusField;
