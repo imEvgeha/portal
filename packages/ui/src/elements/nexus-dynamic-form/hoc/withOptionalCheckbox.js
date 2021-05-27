@@ -6,7 +6,7 @@ import {VIEWS} from '../constants';
 
 const withOptionalCheckbox = () => WrappedComponent => {
     const ComposedComponent = props => {
-        const {isOptional, useCurrentDate, setFieldValue, path, name, view, ...fieldProps} = props;
+        const {isOptional, maxLength, useCurrentDate, setFieldValue, path, name, view, ...fieldProps} = props;
         const {value, isDisabled, ...restFieldProps} = fieldProps;
         const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== ''));
 
@@ -30,6 +30,11 @@ const withOptionalCheckbox = () => WrappedComponent => {
                 <Checkbox isDisabled={isDisabled} onChange={changeCheckboxValue} defaultChecked={visible} />
                 {visible && <WrappedComponent {...restFieldProps} value={getDateValue(value)} />}
             </div>
+        ) : maxLength ? (
+            <div className="nexuc-c-with-chars">
+                <WrappedComponent {...propsWithoutDispatch} maxLength={maxLength} value={val || ''} />
+                <div>{` ${val.length}/${maxLength}`}</div>
+            </div>
         ) : (
             <WrappedComponent {...propsWithoutDispatch} value={val || ''} />
         );
@@ -38,12 +43,14 @@ const withOptionalCheckbox = () => WrappedComponent => {
     ComposedComponent.propTypes = {
         ...WrappedComponent.propTypes,
         isOptional: PropTypes.bool,
+        maxLength: PropTypes.bool,
         value: PropTypes.any,
     };
 
     ComposedComponent.defaultProps = {
         ...WrappedComponent.defaultProps,
         isOptional: false,
+        maxLength: undefined,
         value: '',
     };
 
