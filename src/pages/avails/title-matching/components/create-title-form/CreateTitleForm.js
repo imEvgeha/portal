@@ -19,7 +19,7 @@ const {NEW_TITLE_LABEL_CANCEL, NEW_TITLE_LABEL_SUBMIT, getTitleFormSchema} = con
 // Building a URL where user can check the newly created title
 // (Opens in new tab)
 const onViewTitleClick = id => {
-    window.open(`${getDomainName()}/metadata/detail/${id}`, '_blank');
+    window.open(`${getDomainName()}/metadata/v2/detail/${id}`, '_blank');
 };
 
 const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
