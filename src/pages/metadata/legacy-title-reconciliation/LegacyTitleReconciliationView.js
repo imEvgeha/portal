@@ -60,26 +60,15 @@ const LegacyTitleReconciliationView = ({
         setSelectedList({matchList, duplicateList});
     }, []);
 
-    const handleGridEvent = ({type, columnApi, api}) => {
-        if (GRID_EVENTS.READY === type) {
-            const directorIndex = columnApi.columnController.columnDefs.findIndex(
-                ({field}) => field === 'castCrew.director'
-            );
-            columnApi.moveColumn('episodeAndSeasonNumber', directorIndex);
-        }
-    };
-
     const colDefsWithTitleLink = () => {
         const [title] = columnDefs.filter(col => col.cellRendererParams.link);
         set(title, 'cellRendererParams.link', '/metadata/v2/detail/');
         return columnDefs;
     };
 
-    const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
     const updatedColumnDefs = [
         getRepositoryCell({headerName: 'Repository'}),
         ...colDefsWithTitleLink(),
-        episodeAndSeasonNumberColumnDef,
     ];
 
     return (
@@ -90,7 +79,6 @@ const LegacyTitleReconciliationView = ({
                 <NexusGridWithColumnResizing
                     columnDefs={updatedColumnDefs}
                     rowData={[titleMetadata]}
-                    onGridEvent={handleGridEvent}
                     domLayout="autoHeight"
                 />
             </div>
