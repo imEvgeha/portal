@@ -20,6 +20,10 @@ export const storeTitle = title => ({
     payload: {[title.id]: title},
 });
 
+export const resetTitle = () => ({
+    type: actionTypes.RESET_TITLE,
+});
+
 export const reconcileTitles = payload => ({
     type: actionTypes.TITLES_RECONCILE,
     payload,
