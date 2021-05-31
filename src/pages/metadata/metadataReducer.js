@@ -16,6 +16,11 @@ const metadataReducer = (state = initialState, action) => {
                 titles: {...state.titles, ...payload},
                 titleId: Object.values(payload)[0].id,
             };
+        case actionTypes.RESET_TITLE:
+            return {
+                ...state,
+                titleId: '',
+            };
         case actionTypes.STORE_TITLES:
             return {
                 ...state,
