@@ -80,50 +80,33 @@
         "required": true
     },
     {
-        "colId": "episodic.seriesTitleName",
-        "javaVariableName": "episodic.seriesTitleName",
-        "field": "episodic.seriesTitleName",
-        "headerName": "Series",
-        "dataType": "string",
-        "readOnly": true,
-        "enableSearch": false,
-        "enableEdit": false,
-        "required": false
-    },
-    {
-        "colId": "episodic.seasonTitleName",
-        "javaVariableName": "episodic.seasonTitleName",
-        "field": "episodic.seasonTitleName",
-        "headerName": "Season",
-        "dataType": "string",
-        "readOnly": true,
-        "enableSearch": false,
-        "enableEdit": false,
-        "required": false
-    },
-    {
         "colId": "seriesName",
-        "field": "seriesName",
-        "headerName": "Series Name",
-        "javaVariableName": "seriesName",
+        "field": "episodic.seriesTitleName",
+        "headerName": "Series Title",
+        "javaVariableName": "episodic.seriesTitleName",
+        "queryParamName": "seriesName",
         "enableSearch": true,
         "dataType": "string",
-        "searchDataType": "string"
+        "searchDataType": "string",
+        "enableEdit": true,
+        "required": false
     },
     {
         "colId": "seasonNumber",
-        "field": "seasonNumber",
+        "field": "episodic.seasonNumber",
         "headerName": "Season Number",
-        "javaVariableName": "seasonNumber",
+        "javaVariableName": "episodic.seasonNumber",
+        "queryParamName": "seasonNumber",
         "enableSearch": true,
         "dataType": "integer",
         "searchDataType": "integer"
     },
     {
         "colId": "episodeNumber",
-        "field": "episodeNumber",
+        "field": "episodic.episodeNumber",
         "headerName": "Episode Number",
-        "javaVariableName": "episodeNumber",
+        "javaVariableName": "episodic.episodeNumber",
+        "queryParamName": "episodeNumber",
         "enableSearch": true,
         "dataType": "integer",
         "searchDataType": "integer"
