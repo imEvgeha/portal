@@ -416,6 +416,11 @@
                             "type": "string",
                             "path": "externalIds.cid"
                         },
+                        "contentProviderId": {
+                            "name": "Content Provider ID",
+                            "type": "string",
+                            "path": "externalIds.contentProviderId"
+                        },
                         "isan": {
                             "name": "ISAN",
                             "type": "string",
