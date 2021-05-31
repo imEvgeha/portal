@@ -27,6 +27,7 @@ const NexusArrayWithTabs = ({
     generateMsvIds,
     searchPerson,
     regenerateAutoDecoratedMetadata,
+    castCrewConfig,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -311,6 +312,7 @@ const NexusArrayWithTabs = ({
                                                 selectValues,
                                                 setFieldValue,
                                                 searchPerson,
+                                                castCrewConfig,
                                             })}
                                         </div>
                                     );
@@ -376,6 +378,7 @@ const NexusArrayWithTabs = ({
                         setFieldValue,
                         config,
                         searchPerson,
+                        castCrewConfig,
                         inTabs: true,
                         path,
                     })}
@@ -447,6 +450,7 @@ NexusArrayWithTabs.propTypes = {
     generateMsvIds: PropTypes.func,
     searchPerson: PropTypes.func,
     regenerateAutoDecoratedMetadata: PropTypes.func,
+    castCrewConfig: PropTypes.object,
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -463,6 +467,7 @@ NexusArrayWithTabs.defaultProps = {
     generateMsvIds: undefined,
     searchPerson: undefined,
     regenerateAutoDecoratedMetadata: undefined,
+    castCrewConfig: {},
 };
 
 export default NexusArrayWithTabs;
