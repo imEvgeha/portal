@@ -45,10 +45,6 @@ const CandidatesList = ({
     const handleGridEvent = ({type, api, columnApi}) => {
         if (type === GRID_EVENTS.READY) {
             setGridApi(api);
-            const directorIndex = columnApi.columnController.columnDefs.findIndex(
-                ({field}) => field === 'castCrew.director'
-            );
-            columnApi.moveColumn('episodeAndSeasonNumber', directorIndex);
         }
     };
 
