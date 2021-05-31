@@ -9,7 +9,7 @@ import {
 import classnames from 'classnames';
 import './CastCrew.scss';
 
-const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) => {
+const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, castCrewConfig}) => {
     const [cast, setCast] = useState(
         persons
             .filter(person => !CREW_LIST.includes(person.personType))
@@ -74,6 +74,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
             >
                 <NexusPersonsList
                     searchPerson={searchPerson}
+                    castCrewConfig={castCrewConfig}
                     personsList={cast}
                     uiConfig={CAST_CONFIG}
                     hasCharacter={isEdit}
@@ -88,6 +89,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
             >
                 <NexusPersonsList
                     searchPerson={searchPerson}
+                    castCrewConfig={castCrewConfig}
                     personsList={crew}
                     uiConfig={CREW_CONFIG}
                     hasCharacter={false}
@@ -105,6 +107,7 @@ CastCrew.propTypes = {
     onChange: PropTypes.func,
     isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
+    castCrewConfig: PropTypes.object,
 };
 
 CastCrew.defaultProps = {
@@ -113,6 +116,7 @@ CastCrew.defaultProps = {
     onChange: () => null,
     isVerticalLayout: false,
     searchPerson: undefined,
+    castCrewConfig: {},
 };
 
 export default CastCrew;

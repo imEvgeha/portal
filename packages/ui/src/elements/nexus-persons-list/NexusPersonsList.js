@@ -10,13 +10,24 @@ import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-m
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import CharacterModal from './components/CharacterModal';
+import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
+import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
 import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './constants';
 import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
 
-const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCastCrew, searchPerson}) => {
+const NexusPersonsList = ({
+    personsList,
+    uiConfig,
+    hasCharacter,
+    isEdit,
+    updateCastCrew,
+    searchPerson,
+    castCrewConfig,
+}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
 
+    const [openPersonModal, setOpenPersonModal] = useState(false);
     const [persons, setPersons] = useState(personsList || []);
     const [searchText, setSearchText] = useState('');
 
@@ -44,21 +55,27 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
     };
 
     const validateAndAddPerson = personJSON => {
-        const person = JSON.parse(personJSON.original);
-        const isValid = isPersonValid(person);
-        if (isValid) {
-            addPerson(person);
-            setSearchText('');
+        if (isObject(personJSON) && personJSON.id === 'create') {
+            setOpenPersonModal(true);
         } else {
-            openModal(
-                <Button appearance="primary" onClick={closeModal}>
-                    OK
-                </Button>,
-                {
-                    title: <div className="nexus-c-nexus-persons-list__error-modal-title">Person already exists!</div>,
-                    width: 'small',
-                }
-            );
+            const person = JSON.parse(personJSON.original);
+            const isValid = isPersonValid(person);
+            if (isValid) {
+                addPerson(person);
+                setSearchText('');
+            } else {
+                openModal(
+                    <Button appearance="primary" onClick={closeModal}>
+                        OK
+                    </Button>,
+                    {
+                        title: (
+                            <div className="nexus-c-nexus-persons-list__error-modal-title">Person already exists!</div>
+                        ),
+                        width: 'small',
+                    }
+                );
+            }
         }
     };
 
@@ -188,6 +205,17 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
             <div className="nexus-c-nexus-persons-list__heading">{uiConfig.title}</div>
             {isEdit ? (
                 <>
+                    {castCrewConfig && openPersonModal && (
+                        <CreateEditConfigForm
+                            onRemoveItem={() => {}}
+                            schema={castCrewConfig && castCrewConfig.uiSchema}
+                            label={castCrewConfig && castCrewConfig.displayName}
+                            displayName={castCrewConfig && castCrewConfig.displayName}
+                            value={{}}
+                            onSubmit={() => {}}
+                            onCancel={() => {}}
+                        />
+                    )}
                     <div className="nexus-c-nexus-persons-list__add">
                         <UserPicker
                             fieldId={uiConfig.htmlFor}
@@ -216,6 +244,7 @@ NexusPersonsList.propTypes = {
     isEdit: PropTypes.bool,
     updateCastCrew: PropTypes.func,
     searchPerson: PropTypes.func,
+    castCrewConfig: PropTypes.object,
 };
 
 NexusPersonsList.defaultProps = {
@@ -225,6 +254,7 @@ NexusPersonsList.defaultProps = {
     isEdit: false,
     updateCastCrew: () => null,
     searchPerson: () => null,
+    castCrewConfig: {},
 };
 
 export default NexusPersonsList;
