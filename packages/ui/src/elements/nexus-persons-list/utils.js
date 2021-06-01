@@ -16,13 +16,12 @@ export const loadOptions = (uiConfig, searchText, searchPerson) => {
                         original: JSON.stringify(e),
                     };
                 });
-            } 
-                return {
-                    id: 'create',
-                    name: 'Create New +',
-                    original: 'create',
-                };
-            
+            }
+            return {
+                id: 'create',
+                name: 'Create New +',
+                original: 'create',
+            };
         });
     }
     return searchPerson(searchText, PERSONS_PER_REQUEST, type).then(res =>

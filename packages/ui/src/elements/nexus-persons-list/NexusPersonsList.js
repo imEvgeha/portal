@@ -15,6 +15,7 @@ import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/con
 import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './constants';
 import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
+import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
 
 const NexusPersonsList = ({
     personsList,
@@ -28,6 +29,7 @@ const NexusPersonsList = ({
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     const [openPersonModal, setOpenPersonModal] = useState(false);
+    const [currentRecord, setCurrentRecord] = useState({});
     const [persons, setPersons] = useState(personsList || []);
     const [searchText, setSearchText] = useState('');
 
@@ -200,6 +202,35 @@ const NexusPersonsList = ({
         });
     };
 
+    const editRecord = val => {
+        const newVal = {...currentRecord, ...val};
+        if (newVal.id) {
+            configService
+                .update(castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'], newVal.id, newVal)
+                .then(response => {
+                    const data = this.state.data.slice(0);
+                    const index = data.findIndex(item => item.id === newVal.id);
+                    data[index] = response;
+                    setCurrentRecord(null);
+                    setOpenPersonModal(false);
+                    // this.setState({data, openEditPersonModal: false});
+                });
+        } else {
+            configService
+                .create(castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'], newVal)
+                .then(response => {
+                    setOpenPersonModal(false);
+                    let person = response;
+                    if (response['personTypes']) {
+                        person = {...person, personType: response['personTypes'][0]};
+                    }
+                    delete person['personTypes'];
+                    addPerson(person);
+                    setSearchText('');
+                });
+        }
+    };
+
     return (
         <>
             <div className="nexus-c-nexus-persons-list__heading">{uiConfig.title}</div>
@@ -211,9 +242,9 @@ const NexusPersonsList = ({
                             schema={castCrewConfig && castCrewConfig.uiSchema}
                             label={castCrewConfig && castCrewConfig.displayName}
                             displayName={castCrewConfig && castCrewConfig.displayName}
-                            value={{}}
-                            onSubmit={() => {}}
-                            onCancel={() => {}}
+                            value={currentRecord}
+                            onSubmit={editRecord}
+                            onCancel={() => setOpenPersonModal(false)}
                         />
                     )}
                     <div className="nexus-c-nexus-persons-list__add">
