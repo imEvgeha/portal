@@ -16,6 +16,7 @@ import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './cons
 import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
 import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
+import {get} from 'lodash';
 
 const NexusPersonsList = ({
     personsList,
@@ -221,8 +222,8 @@ const NexusPersonsList = ({
                 .then(response => {
                     setOpenPersonModal(false);
                     let person = response;
-                    if (response['personTypes']) {
-                        person = {...person, personType: response['personTypes'][0]};
+                    if (response['personTypes'] && Array.isArray(response['personTypes'])) {
+                        person = {...person, personType: get(response['personTypes'], '[0]', null)};
                     }
                     delete person['personTypes'];
                     addPerson(person);
