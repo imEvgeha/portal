@@ -74,6 +74,7 @@ exports[`Title should match snapshot 1`] = `
     className="nexus-c-metadata-title__section"
   >
     <EditorialMetadata
+      castCrewConfig={Object {}}
       data={Array []}
     />
   </div>

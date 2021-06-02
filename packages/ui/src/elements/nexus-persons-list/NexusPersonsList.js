@@ -83,7 +83,19 @@ const NexusPersonsList = ({
     };
 
     const addPerson = person => {
-        const updatedPersons = [...[person], ...persons];
+        let updatedPersons = [...persons];
+
+        if (person['personTypes'] && Array.isArray(person['personTypes'])) {
+            let personWithType = {...person};
+            delete personWithType['personTypes'];
+
+            person['personTypes'].map(personType => {
+                updatedPersons.push({...personWithType, personType: personType});
+            });
+        } else {
+            updatedPersons.push(person);
+        }
+
         const isCast = uiConfig.type === CAST;
         updatedPersons.forEach((person, index) => {
             person.creditsOrder = index;
@@ -214,18 +226,12 @@ const NexusPersonsList = ({
                     data[index] = response;
                     setCurrentRecord(null);
                     setOpenPersonModal(false);
-                    // this.setState({data, openEditPersonModal: false});
                 });
         } else {
             configService
                 .create(castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'], newVal)
-                .then(response => {
+                .then(person => {
                     setOpenPersonModal(false);
-                    let person = response;
-                    if (response['personTypes'] && Array.isArray(response['personTypes'])) {
-                        person = {...person, personType: get(response['personTypes'], '[0]', null)};
-                    }
-                    delete person['personTypes'];
                     addPerson(person);
                     setSearchText('');
                 });
