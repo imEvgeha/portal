@@ -95,7 +95,7 @@ const NexusField = ({
     };
 
     const disableSaveButton = () => {
-        setDisableSubmit(false);
+        typeof setDisableSubmit === 'function' && setDisableSubmit(false);
     };
 
     const renderFieldEditMode = fieldProps => {

@@ -27,11 +27,13 @@ const NexusArrayWithTabs = ({
     generateMsvIds,
     searchPerson,
     regenerateAutoDecoratedMetadata,
+    setRefresh
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
     const [currentData, setCurrentData] = useState(null);
     const [isRemoved, setIsRemoved] = useState(false);
+    const [regenerateLoading, setRegenerateLoading] = useState(false);
 
     useEffect(() => {
         const groupedObj = data ? groupBy(data) : {};
@@ -357,11 +359,16 @@ const NexusArrayWithTabs = ({
         return false;
     };
 
-    const handleRegenerateAutoDecoratedMetadata = () => {
+    const handleRegenerateAutoDecoratedMetadata = async () => {
         const usEnData = get(groupedData, 'US en');
         if (usEnData) {
             const masterEmet = usEnData.find(data => data.hasGeneratedChildren);
-            if (masterEmet) regenerateAutoDecoratedMetadata({...masterEmet});
+            if (masterEmet) {
+                setRegenerateLoading(true);
+                await regenerateAutoDecoratedMetadata({...masterEmet});
+                setRefresh(prev => !prev);
+                setRegenerateLoading(false);
+            }
         }
     };
 
@@ -410,7 +417,7 @@ const NexusArrayWithTabs = ({
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                     {showRegenerateAutoDecoratedMetadata() && (
-                        <Button appearance="primary" onClick={handleRegenerateAutoDecoratedMetadata}>
+                        <Button appearance="primary" onClick={handleRegenerateAutoDecoratedMetadata} isLoading={regenerateLoading}>
                             Regenerate Auto-Decorated Metadata
                         </Button>
                     )}
@@ -447,6 +454,7 @@ NexusArrayWithTabs.propTypes = {
     generateMsvIds: PropTypes.func,
     searchPerson: PropTypes.func,
     regenerateAutoDecoratedMetadata: PropTypes.func,
+    setRefresh: PropTypes.func,
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -463,6 +471,7 @@ NexusArrayWithTabs.defaultProps = {
     generateMsvIds: undefined,
     searchPerson: undefined,
     regenerateAutoDecoratedMetadata: undefined,
+    setRefresh: () => null,
 };
 
 export default NexusArrayWithTabs;

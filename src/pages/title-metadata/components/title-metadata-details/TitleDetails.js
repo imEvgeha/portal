@@ -58,6 +58,7 @@ const TitleDetails = ({
 }) => {
     const containerRef = useRef();
     const [isEditView, setIsEditView] = useState(false);
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         const {params} = match || {};
@@ -70,7 +71,7 @@ const TitleDetails = ({
             getTerritoryMetadata({id, isMgm});
             getEditorialMetadata({id, isMgm});
         }
-    }, []);
+    }, [refresh]);
 
     const onSubmit = values => {
         handleDirtyValues(values);
@@ -105,14 +106,14 @@ const TitleDetails = ({
     const getExternaIds = repo => {
         if (isNexusTitle(title.id)) {
             return externalIds.filter(ids => ids.externalSystem === repo);
-        } 
+        }
             return [
                 {
                     externalTitleId: get(title.legacyIds, `${repo}.${repo}TitleId`, ''),
                     externalId: get(title.legacyIds, `${repo}.${repo}Id`, ''),
                 },
             ];
-        
+
     };
     const extendTitleWithExternalIds = repo => {
         const [vzExternalIds] = getExternaIds('vz');
@@ -167,6 +168,7 @@ const TitleDetails = ({
                 hasButtons={isNexusTitle(title.id)}
                 setIsEditView={setIsEditView}
                 isSaving={isSaving}
+                setRefresh={setRefresh}
             />
         </div>
     );

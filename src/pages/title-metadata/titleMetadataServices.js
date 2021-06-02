@@ -1,6 +1,9 @@
+import { WARNING_ICON,SUCCESS_ICON } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
 import config from 'react-global-configuration';
+import {store} from '../../index';
 import {nexusFetch} from '../../util/http-client/index';
 import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';
@@ -62,7 +65,7 @@ export const generateMsvIds = (id, licensor, licensee) => {
         });
 };
 
-export const regenerateAutoDecoratedMetadata = masterEmet => {
+export const regenerateAutoDecoratedMetadata = async masterEmet => {
     const body = [
         {
             itemIndex: null,
@@ -70,14 +73,36 @@ export const regenerateAutoDecoratedMetadata = masterEmet => {
         },
     ];
 
-    return titleService
-        .updateEditorialMetadata(body)
-        .then(response => {
-            // add toast
-        })
-        .catch(err => {
-            // add toast
-        });
+    try {
+        const response = await titleService.regenerateAutoDecoratedMetadata(masterEmet.id);
+        const failed = get(response, ['data', '0', 'response', 'failed'], []);
+
+        // If some EMets failed to regenerate/update, toast the error messages
+        if (failed.length) {
+            const message = failed.map(e => e.description).join(' ');
+            const errorToast = {
+                title: 'Regenerating Editorial Metadata Failed',
+                icon: WARNING_ICON,
+                isAutoDismiss: true,
+                description: message,
+            };
+            store.dispatch(addToast(errorToast));
+            return false;
+        } else {
+            const successToast = {
+                title: 'Success',
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: 'Editorial Metadata Successfully Regenerated!',
+            };
+            store.dispatch(addToast(successToast));
+            return true;
+        }
+    }
+    catch(err) {
+        console.error(err)
+    }
+
 };
 
 export const syncTitle = payload => {
@@ -184,5 +209,12 @@ export const titleService = {
             body: JSON.stringify(editedTerritoryMetadata),
             params: encodedSerialize(params),
         });
+    },
+    regenerateAutoDecoratedMetadata: masterEmetId => {
+        const url =
+            config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/regenerateEmets/' + masterEmetId;
+                return nexusFetch(url, {
+                method: 'put',
+            });
     },
 };
