@@ -23,6 +23,7 @@ const NexusDynamicForm = ({
     regenerateAutoDecoratedMetadata,
     hasButtons,
     setEditMode,
+    setRefresh,
     castCrewConfig,
 }) => {
     const [disableSubmit, setDisableSubmit] = useState(true);
@@ -211,6 +212,7 @@ const NexusDynamicForm = ({
                                                     view,
                                                     generateMsvIds,
                                                     regenerateAutoDecoratedMetadata,
+                                                    setRefresh,
                                                     {
                                                         selectValues,
                                                         initialData,
@@ -253,6 +255,7 @@ NexusDynamicForm.propTypes = {
     hasButtons: PropTypes.bool,
     setIsEditView: PropTypes.func,
     setEditMode: PropTypes.func,
+    setRefresh: PropTypes.func,
     castCrewConfig: PropTypes.object,
 };
 
@@ -270,6 +273,7 @@ NexusDynamicForm.defaultProps = {
     hasButtons: true,
     setIsEditView: () => null,
     setEditMode: () => null,
+    setRefresh: () => null,
     castCrewConfig: {},
 };
 

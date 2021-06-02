@@ -203,7 +203,7 @@ export function* reconcileTitles({payload}) {
                 actions: [
                     {
                         content: 'View title',
-                        onClick: () => window.open(`${getDomainName()}/metadata/detail/${newTitleId}`, '_blank'),
+                        onClick: () => window.open(`${getDomainName()}/metadata/v2/detail/${newTitleId}`, '_blank'),
                     },
                 ],
             },

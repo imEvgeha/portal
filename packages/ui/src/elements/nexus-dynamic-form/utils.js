@@ -301,6 +301,7 @@ export const buildSection = (
     view,
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
+    setRefresh,
     {
         selectValues,
         initialData,
@@ -352,6 +353,7 @@ export const buildSection = (
                             searchPerson={searchPerson}
                             castCrewConfig={castCrewConfig}
                             {...fields[key]}
+                            setRefresh={setRefresh}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">

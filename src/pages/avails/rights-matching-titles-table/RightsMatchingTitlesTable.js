@@ -60,17 +60,13 @@ const RightsMatchingTitlesTable = ({
     };
     const updatedColumns = updateColumnDefs(mappings);
 
-    const onGridReady = ({type, columnApi}) => {
+    const onGridReady = ({type}) => {
         if (type === GRID_EVENTS.READY) {
             setTitlesTableIsReady(true);
-            const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
-            const PINNED_COLUMNS_NUMBER = 3;
-            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + PINNED_COLUMNS_NUMBER);
         }
     };
 
-    const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
-    const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...updatedColumns]);
+    const updatedColumnDefs = getLinkableColumnDefs(updatedColumns);
     const repository = getRepositoryCell();
 
     return (

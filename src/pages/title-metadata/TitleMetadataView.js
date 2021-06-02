@@ -1,21 +1,26 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // replace with new component
+import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER} from './constants';
 import './TitleMetadataView.scss';
 
-export const TitleMetadataView = ({history, toggleRefreshGridData}) => {
+export const TitleMetadataView = ({history, toggleRefreshGridData, resetTitleId}) => {
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
         tenantCode: DEFAULT_CATALOGUE_OWNER,
     });
+
+    useEffect(() => {
+        resetTitleId();
+    }, []);
 
     const closeModalAndRefreshTable = () => {
         setShowModal(false);
@@ -63,16 +68,19 @@ export const TitleMetadataView = ({history, toggleRefreshGridData}) => {
 
 const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+    resetTitleId: () => dispatch(resetTitle()),
 });
 
 TitleMetadataView.propTypes = {
     history: PropTypes.object,
     toggleRefreshGridData: PropTypes.func,
+    resetTitleId: PropTypes.func,
 };
 
 TitleMetadataView.defaultProps = {
     history: {},
     toggleRefreshGridData: () => null,
+    resetTitleId: () => null,
 };
 
 export default connect(null, mapDispatchToProps)(TitleMetadataView);

@@ -21,7 +21,7 @@ const LoadingCellRenderer = params => {
 
     let linkTo = link && URL.keepEmbedded(`${link}${data[linkId] || data.id || data[colId]}`);
     if (data.type === 'title') {
-        linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
+        linkTo = URL.keepEmbedded(`/metadata/v2/detail/${data.id}`);
     }
 
     let value = getDeepValue(data, field);

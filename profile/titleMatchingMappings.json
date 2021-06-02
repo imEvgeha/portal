@@ -45,26 +45,8 @@
         "required": true
     },
     {
+        "displayName": "Series Title",
         "javaVariableName": "episodic.seriesTitleName",
-        "displayName": "Series",
-        "dataType": "string",
-        "readOnly": true,
-        "enableSearch": false,
-        "enableEdit": false,
-        "required": false
-    },
-    {
-        "javaVariableName": "episodic.seasonTitleName",
-        "displayName": "Season",
-        "dataType": "string",
-        "readOnly": true,
-        "enableSearch": false,
-        "enableEdit": false,
-        "required": false
-    },
-    {
-        "displayName": "Series Name",
-        "javaVariableName": "episodic.seriesName",
         "dataType": "string",
         "searchDataType": "string",
         "queryParamName": "seriesName",

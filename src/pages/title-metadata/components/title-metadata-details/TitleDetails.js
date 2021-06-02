@@ -62,6 +62,7 @@ const TitleDetails = ({
 }) => {
     const containerRef = useRef();
     const [isEditView, setIsEditView] = useState(false);
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         fetchConfigApiEndpoints();
@@ -75,7 +76,7 @@ const TitleDetails = ({
             getTerritoryMetadata({id, isMgm});
             getEditorialMetadata({id, isMgm});
         }
-    }, []);
+    }, [refresh]);
 
     const onSubmit = values => {
         handleDirtyValues(values);
@@ -172,6 +173,7 @@ const TitleDetails = ({
                 hasButtons={isNexusTitle(title.id)}
                 setIsEditView={setIsEditView}
                 isSaving={isSaving}
+                setRefresh={setRefresh}
             />
         </div>
     );

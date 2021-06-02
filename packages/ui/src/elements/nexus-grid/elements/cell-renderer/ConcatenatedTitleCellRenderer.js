@@ -13,7 +13,7 @@ const ConcatenatedTitleCellRenderer = params => {
     if (!data) {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
-    const linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
+    const linkTo = URL.keepEmbedded(`/metadata/v2/detail/${data.id}`);
 
     let value = getDeepValue(data, javaVariableName);
     if (isObject(value)) {

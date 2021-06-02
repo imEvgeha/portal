@@ -242,6 +242,18 @@
                                 }
                             ]
                         },
+                        "totalEpisodes": {
+                            "name": "Total Episodes",
+                            "path": "totalNumberOfEpisodes",
+                            "type": "number",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                }
+                            ]
+                        },
+
                         "episodeNumber": {
                             "name": "Episode Number",
                             "path": "episodic.episodeNumber",
@@ -403,6 +415,11 @@
                             "name": "CID",
                             "type": "string",
                             "path": "externalIds.cid"
+                        },
+                        "contentProviderId": {
+                            "name": "Content Provider ID",
+                            "type": "string",
+                            "path": "externalIds.contentProviderId"
                         },
                         "isan": {
                             "name": "ISAN",
@@ -721,6 +738,7 @@
                                 },
                                 "editorial.title.title": {
                                     "name": "Display Title",
+                                    "maxLength": 2000,
                                     "path": "title.title",
                                     "type": "string",
                                     "dependencies": [
@@ -746,28 +764,33 @@
                                         }
                                     ]
                                 },
-                                "editorial.title.sortTitle": {
-                                    "name": "Sort Title",
-                                    "path": "title.sortTitle",
+                                "editorial.title.shortTitle": {
+                                    "name": "Short Title",
+                                    "maxLength": 500,
+                                    "path": "title.shortTitle",
                                     "type": "string"
                                 },
                                 "editorial.title.mediumTitle": {
                                     "name": "Medium Title",
+                                    "maxLength": 500,
                                     "path": "title.mediumTitle",
                                     "type": "string"
                                 },
                                 "editorial.title.longTitle": {
                                     "name": "Long Title",
+                                    "maxLength": 2000,
                                     "path": "title.longTitle",
                                     "type": "string"
                                 },
-                                "editorial.title.shortTitle": {
-                                    "name": "Short Title",
-                                    "path": "title.shortTitle",
+                                "editorial.title.sortTitle": {
+                                    "name": "Sort Title",
+                                    "maxLength": 500,
+                                    "path": "title.sortTitle",
                                     "type": "string"
                                 },
                                 "editorial.synopsis.description": {
                                     "name": "Short Synopsis",
+                                    "maxLength": 4000,
                                     "path": "synopsis.description",
                                     "type": "textarea",
                                     "dependencies": [
@@ -795,6 +818,7 @@
                                 },
                                 "editorial.synopsis.shortDescription": {
                                     "name": "Medium Synopsis",
+                                    "maxLength": 4000,
                                     "path": "synopsis.shortDescription",
                                     "type": "textarea",
                                     "dependencies": [
@@ -822,6 +846,7 @@
                                 },
                                 "editorial.synopsis.longDescription": {
                                     "name": "Long Synopsis",
+                                    "maxLength": 4000,
                                     "path": "synopsis.longDescription",
                                     "type": "textarea"
                                 },

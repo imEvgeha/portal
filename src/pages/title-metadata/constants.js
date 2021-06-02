@@ -75,13 +75,13 @@ export const COLUMN_MAPPINGS = [
     },
     {
         colId: 'seriesName',
-        field: 'seriesName',
-        headerName: 'Series Name',
-        javaVariableName: 'seriesName',
+        field: 'seriesTitleName',
+        headerName: 'Series Title',
+        javaVariableName: 'seriesTitleName',
         enableSearch: true,
         dataType: 'string',
         searchDataType: 'string',
-        width: 50,
+        width: 150,
     },
     {
         colId: 'seasonNumber',

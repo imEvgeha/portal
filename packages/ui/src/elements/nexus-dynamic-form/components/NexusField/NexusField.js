@@ -51,6 +51,7 @@ const NexusField = ({
     optionsConfig,
     label,
     isOptional,
+    maxLength,
     setFieldValue,
     useCurrentDate,
     getCurrentValues,
@@ -76,6 +77,7 @@ const NexusField = ({
         setFieldValue,
         path,
         view,
+        maxLength,
     };
 
     const getIsReadOnly = () => {
@@ -94,7 +96,7 @@ const NexusField = ({
     };
 
     const disableSaveButton = () => {
-        setDisableSubmit(false);
+        typeof setDisableSubmit === 'function' && setDisableSubmit(false);
     };
 
     const renderFieldEditMode = fieldProps => {
@@ -446,8 +448,8 @@ NexusField.defaultProps = {
     setDisableSubmit: undefined,
     initialData: {},
     linkConfig: {},
-    maxLength: undefined,
     castCrewConfig: {},
+    maxLength: undefined,
 };
 
 export default NexusField;
