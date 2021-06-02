@@ -61,6 +61,16 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
         }
     };
 
+    const updateCastCrewConfig = () => {
+        if (castCrewConfig && castCrewConfig.uiSchema) {
+            const updatedCastCrewConfig = castCrewConfig;
+            updatedCastCrewConfig.uiSchema = castCrewConfig.uiSchema.map(c =>
+                c.id === 'personTypes' ? {...c, required: true} : c
+            );
+            return updatedCastCrewConfig;
+        }
+    };
+
     return (
         <div
             className={classnames('nexus-c-cast-crew', {
@@ -74,7 +84,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
             >
                 <NexusPersonsList
                     searchPerson={searchPerson}
-                    castCrewConfig={castCrewConfig}
+                    castCrewConfig={updateCastCrewConfig()}
                     personsList={cast}
                     uiConfig={CAST_CONFIG}
                     hasCharacter={isEdit}
@@ -89,7 +99,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
             >
                 <NexusPersonsList
                     searchPerson={searchPerson}
-                    castCrewConfig={castCrewConfig}
+                    castCrewConfig={updateCastCrewConfig()}
                     personsList={crew}
                     uiConfig={CREW_CONFIG}
                     hasCharacter={false}
