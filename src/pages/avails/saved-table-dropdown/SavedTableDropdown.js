@@ -83,6 +83,8 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
             const model = {id: value, filterModel, sortModel, columnState};
             const newUserData = insertNewGridModel(value, get(gridState, username, []), model);
             setUserDefinedGridState({[username]: newUserData});
+            const newUserOptions = [...groupedOptions[1].options, {label: value, value}]
+            setGroupedOptions([groupedOptions[0], {...groupedOptions[1], options: newUserOptions}]);
         }
     };
 
