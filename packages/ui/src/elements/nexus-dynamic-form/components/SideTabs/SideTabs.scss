@@ -49,3 +49,12 @@
 .nexus-c-side-tabs__subtab-container--open {
     display: flex;
 }
+
+.tablinks__status-link {
+    &--active {
+        fill: white;
+    }
+    width: 15px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
