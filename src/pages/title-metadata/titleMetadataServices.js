@@ -1,4 +1,4 @@
-import { WARNING_ICON,SUCCESS_ICON } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {WARNING_ICON, SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
@@ -88,7 +88,7 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
             };
             store.dispatch(addToast(errorToast));
             return false;
-        } else {
+        } 
             const successToast = {
                 title: 'Success',
                 icon: SUCCESS_ICON,
@@ -97,12 +97,10 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
             };
             store.dispatch(addToast(successToast));
             return true;
-        }
+        
+    } catch (err) {
+        console.error(err);
     }
-    catch(err) {
-        console.error(err)
-    }
-
 };
 
 export const syncTitle = payload => {
@@ -212,9 +210,9 @@ export const titleService = {
     },
     regenerateAutoDecoratedMetadata: masterEmetId => {
         const url =
-            config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/regenerateEmets/' + masterEmetId;
-                return nexusFetch(url, {
-                method: 'put',
-            });
+            `${config.get('gateway.titleUrl') + config.get('gateway.service.titleV2')  }/regenerateEmets/${  masterEmetId}`;
+        return nexusFetch(url, {
+            method: 'put',
+        });
     },
 };

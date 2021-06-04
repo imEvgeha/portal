@@ -66,10 +66,7 @@ const LegacyTitleReconciliationView = ({
         return columnDefs;
     };
 
-    const updatedColumnDefs = [
-        getRepositoryCell({headerName: 'Repository'}),
-        ...colDefsWithTitleLink(),
-    ];
+    const updatedColumnDefs = [getRepositoryCell({headerName: 'Repository'}), ...colDefsWithTitleLink()];
 
     return (
         <div className="nexus-c-legacy-title-reconciliation-view">

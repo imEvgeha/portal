@@ -27,7 +27,8 @@ const NexusArrayWithTabs = ({
     generateMsvIds,
     searchPerson,
     regenerateAutoDecoratedMetadata,
-    setRefresh
+    setRefresh,
+    castCrewConfig,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -313,6 +314,7 @@ const NexusArrayWithTabs = ({
                                                 selectValues,
                                                 setFieldValue,
                                                 searchPerson,
+                                                castCrewConfig,
                                             })}
                                         </div>
                                     );
@@ -383,6 +385,7 @@ const NexusArrayWithTabs = ({
                         setFieldValue,
                         config,
                         searchPerson,
+                        castCrewConfig,
                         inTabs: true,
                         path,
                     })}
@@ -417,7 +420,11 @@ const NexusArrayWithTabs = ({
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                     {showRegenerateAutoDecoratedMetadata() && (
-                        <Button appearance="primary" onClick={handleRegenerateAutoDecoratedMetadata} isLoading={regenerateLoading}>
+                        <Button
+                            appearance="primary"
+                            onClick={handleRegenerateAutoDecoratedMetadata}
+                            isLoading={regenerateLoading}
+                        >
                             Regenerate Auto-Decorated Metadata
                         </Button>
                     )}
@@ -454,6 +461,7 @@ NexusArrayWithTabs.propTypes = {
     generateMsvIds: PropTypes.func,
     searchPerson: PropTypes.func,
     regenerateAutoDecoratedMetadata: PropTypes.func,
+    castCrewConfig: PropTypes.object,
     setRefresh: PropTypes.func,
 };
 
@@ -471,7 +479,8 @@ NexusArrayWithTabs.defaultProps = {
     generateMsvIds: undefined,
     searchPerson: undefined,
     regenerateAutoDecoratedMetadata: undefined,
-    setRefresh: () => null,
+    castCrewConfig: {},
+    setRefresh: undefined,
 };
 
 export default NexusArrayWithTabs;
