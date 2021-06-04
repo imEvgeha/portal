@@ -315,6 +315,15 @@
                                     }
                                 ]
                             ]
+                        },
+                        "awards": {
+                            "name": "Awards",
+                            "path": "awards",
+                            "type": "multiselect",
+                            "optionsConfig": {
+                                "defaultValuePath": "name",
+                                "defaultLabelPath": "name"
+                            }
                         }
                     }
                 }
@@ -858,7 +867,11 @@
                                 "editorial.awards": {
                                     "name": "Awards",
                                     "path": "awards",
-                                    "type": "string"
+                                    "type": "multiselect",
+                                    "optionsConfig": {
+                                        "defaultValuePath": "name",
+                                        "defaultLabelPath": "name"
+                                    }
                                 },
                                 "editorial.sakstelInventoryId": {
                                     "name": "Sakstel Inventory ID",

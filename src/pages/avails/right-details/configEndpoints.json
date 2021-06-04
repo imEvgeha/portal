@@ -126,5 +126,9 @@
     {
         "field": "category",
         "configEndpoint": "/categories"
+    },
+    {
+        "field": "awards",
+        "configEndpoint": "/awards"
     }
 ]
