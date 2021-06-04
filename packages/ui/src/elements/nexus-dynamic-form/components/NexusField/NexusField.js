@@ -61,6 +61,7 @@ const NexusField = ({
     isGridLayout,
     isVerticalLayout,
     searchPerson,
+    castCrewConfig,
     generateMsvIds,
     setDisableSubmit,
     initialData,
@@ -224,6 +225,7 @@ const NexusField = ({
                         isEdit={true}
                         isVerticalLayout={isVerticalLayout}
                         searchPerson={searchPerson}
+                        castCrewConfig={castCrewConfig}
                         {...fieldProps}
                     />
                 );
@@ -296,6 +298,7 @@ const NexusField = ({
                         isEdit={false}
                         isVerticalLayout={isVerticalLayout}
                         searchPerson={searchPerson}
+                        castCrewConfig={castCrewConfig}
                     />
                 );
             case 'licensors':
@@ -412,6 +415,7 @@ NexusField.propTypes = {
     initialData: PropTypes.object,
     linkConfig: PropTypes.object,
     maxLength: PropTypes.number,
+    castCrewConfig: PropTypes.object,
 };
 
 NexusField.defaultProps = {
@@ -444,6 +448,7 @@ NexusField.defaultProps = {
     setDisableSubmit: undefined,
     initialData: {},
     linkConfig: {},
+    castCrewConfig: {},
     maxLength: undefined,
 };
 
