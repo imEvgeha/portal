@@ -23,8 +23,7 @@ const NexusDynamicForm = ({
     regenerateAutoDecoratedMetadata,
     hasButtons,
     setEditMode,
-    setRefresh,
-    castCrewConfig,
+    setRefresh
 }) => {
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
@@ -36,6 +35,7 @@ const NexusDynamicForm = ({
     useEffect(() => {
         update && setUpdate(false);
     }, [update]);
+
 
     useEffect(() => {
         // eslint-disable-next-line prefer-destructuring
@@ -59,13 +59,8 @@ const NexusDynamicForm = ({
         return view !== VIEWS.VIEW ? (
             <>
                 {errors > 0 && (
-                    <div
-                        className={
-                            isTitlePage
-                                ? 'nexus-c-dynamic-form__title-validation-msg'
-                                : 'nexus-c-dynamic-form__validation-msg'
-                        }
-                    >
+                    <div className={isTitlePage? "nexus-c-dynamic-form__title-validation-msg":
+                        "nexus-c-dynamic-form__validation-msg"}>
                         <ErrorMessage>{errors} errors on page</ErrorMessage>
                     </div>
                 )}
@@ -132,19 +127,15 @@ const NexusDynamicForm = ({
                     // keep original null value if updated value is object and all its properties are falsy
                     // non object values are null already if not edited
                     else if (obj === null && typeof src === 'object') {
-                        if (!src) return null;
-                        if (
-                            !Object.keys(src).some(k => {
-                                if (Array.isArray(src[k]))
-                                    // if value is array
-                                    return src[k].length;
-                                else if (typeof src[k] === 'object' && src[k] !== null)
-                                    // if value is object
-                                    return Object.keys(src[k]).length;
-                                return src[k]; // else return value
-                            })
-                        )
-                            return null;
+                        if(!src) return null;
+                        if (!Object.keys(src).some(k =>
+                        {
+                            if(Array.isArray(src[k])) // if value is array
+                                return src[k].length;
+                            else if(typeof src[k] === 'object' && src[k] !== null) // if value is object
+                                return Object.keys(src[k]).length;
+                            return src[k]; // else return value
+                        })) return null;
                     }
                 })
             );
@@ -221,7 +212,6 @@ const NexusDynamicForm = ({
                                                         config: schema.config || [],
                                                         isGridLayout,
                                                         searchPerson,
-                                                        castCrewConfig,
                                                         tabs,
                                                         subTabs,
                                                         setDisableSubmit,
@@ -256,7 +246,6 @@ NexusDynamicForm.propTypes = {
     setIsEditView: PropTypes.func,
     setEditMode: PropTypes.func,
     setRefresh: PropTypes.func,
-    castCrewConfig: PropTypes.object,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -273,8 +262,7 @@ NexusDynamicForm.defaultProps = {
     hasButtons: true,
     setIsEditView: () => null,
     setEditMode: () => null,
-    setRefresh: () => null,
-    castCrewConfig: {},
+    setRefresh: () => null
 };
 
 export default NexusDynamicForm;

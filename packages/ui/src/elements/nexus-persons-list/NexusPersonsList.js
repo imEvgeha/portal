@@ -10,27 +10,13 @@ import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-m
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import CharacterModal from './components/CharacterModal';
-import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
 import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './constants';
 import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
-import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
-import {get} from 'lodash';
 
-const NexusPersonsList = ({
-    personsList,
-    uiConfig,
-    hasCharacter,
-    isEdit,
-    updateCastCrew,
-    searchPerson,
-    castCrewConfig,
-}) => {
+const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCastCrew, searchPerson}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
 
-    const [openPersonModal, setOpenPersonModal] = useState(false);
-    const [currentRecord, setCurrentRecord] = useState({});
     const [persons, setPersons] = useState(personsList || []);
     const [searchText, setSearchText] = useState('');
 
@@ -58,44 +44,26 @@ const NexusPersonsList = ({
     };
 
     const validateAndAddPerson = personJSON => {
-        if (isObject(personJSON) && personJSON.id === 'create') {
-            setOpenPersonModal(true);
+        const person = JSON.parse(personJSON.original);
+        const isValid = isPersonValid(person);
+        if (isValid) {
+            addPerson(person);
+            setSearchText('');
         } else {
-            const person = JSON.parse(personJSON.original);
-            const isValid = isPersonValid(person);
-            if (isValid) {
-                addPerson(person);
-                setSearchText('');
-            } else {
-                openModal(
-                    <Button appearance="primary" onClick={closeModal}>
-                        OK
-                    </Button>,
-                    {
-                        title: (
-                            <div className="nexus-c-nexus-persons-list__error-modal-title">Person already exists!</div>
-                        ),
-                        width: 'small',
-                    }
-                );
-            }
+            openModal(
+                <Button appearance="primary" onClick={closeModal}>
+                    OK
+                </Button>,
+                {
+                    title: <div className="nexus-c-nexus-persons-list__error-modal-title">Person already exists!</div>,
+                    width: 'small',
+                }
+            );
         }
     };
 
     const addPerson = person => {
-        let updatedPersons = [...persons];
-
-        if (person['personTypes'] && Array.isArray(person['personTypes'])) {
-            let personWithType = {...person};
-            delete personWithType['personTypes'];
-
-            person['personTypes'].map(personType => {
-                updatedPersons.push({...personWithType, personType: personType});
-            });
-        } else {
-            updatedPersons.push(person);
-        }
-
+        const updatedPersons = [...[person], ...persons];
         const isCast = uiConfig.type === CAST;
         updatedPersons.forEach((person, index) => {
             person.creditsOrder = index;
@@ -215,45 +183,11 @@ const NexusPersonsList = ({
         });
     };
 
-    const editRecord = val => {
-        const newVal = {...currentRecord, ...val};
-        if (newVal.id) {
-            configService
-                .update(castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'], newVal.id, newVal)
-                .then(response => {
-                    const data = this.state.data.slice(0);
-                    const index = data.findIndex(item => item.id === newVal.id);
-                    data[index] = response;
-                    setCurrentRecord(null);
-                    setOpenPersonModal(false);
-                });
-        } else {
-            configService
-                .create(castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'], newVal)
-                .then(person => {
-                    setOpenPersonModal(false);
-                    addPerson(person);
-                    setSearchText('');
-                });
-        }
-    };
-
     return (
         <>
             <div className="nexus-c-nexus-persons-list__heading">{uiConfig.title}</div>
             {isEdit ? (
                 <>
-                    {castCrewConfig && openPersonModal && (
-                        <CreateEditConfigForm
-                            onRemoveItem={() => {}}
-                            schema={castCrewConfig && castCrewConfig.uiSchema}
-                            label={castCrewConfig && castCrewConfig.displayName}
-                            displayName={castCrewConfig && castCrewConfig.displayName}
-                            value={currentRecord}
-                            onSubmit={editRecord}
-                            onCancel={() => setOpenPersonModal(false)}
-                        />
-                    )}
                     <div className="nexus-c-nexus-persons-list__add">
                         <UserPicker
                             fieldId={uiConfig.htmlFor}
@@ -282,7 +216,6 @@ NexusPersonsList.propTypes = {
     isEdit: PropTypes.bool,
     updateCastCrew: PropTypes.func,
     searchPerson: PropTypes.func,
-    castCrewConfig: PropTypes.object,
 };
 
 NexusPersonsList.defaultProps = {
@@ -292,7 +225,6 @@ NexusPersonsList.defaultProps = {
     isEdit: false,
     updateCastCrew: () => null,
     searchPerson: () => null,
-    castCrewConfig: {},
 };
 
 export default NexusPersonsList;

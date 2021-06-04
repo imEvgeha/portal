@@ -6,8 +6,6 @@ import {get} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
-import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
-import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
 import {FIELDS_TO_REMOVE, SYNC} from '../../constants';
 import {
     getTitle,
@@ -42,14 +40,12 @@ const TitleDetails = ({
     externalIds,
     territoryMetadata,
     editorialMetadata,
-    fetchConfigApiEndpoints,
     getTitle,
     getExternalIds,
     getTerritoryMetadata,
     getEditorialMetadata,
     updateTitle,
     selectValues,
-    castCrewConfig,
     syncTitle,
     publishTitle,
     isSaving,
@@ -65,7 +61,6 @@ const TitleDetails = ({
     const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
-        fetchConfigApiEndpoints();
         const {params} = match || {};
         const {id} = params;
         if (id) {
@@ -112,12 +107,13 @@ const TitleDetails = ({
         if (isNexusTitle(title.id)) {
             return externalIds.filter(ids => ids.externalSystem === repo);
         }
-        return [
-            {
-                externalTitleId: get(title.legacyIds, `${repo}.${repo}TitleId`, ''),
-                externalId: get(title.legacyIds, `${repo}.${repo}Id`, ''),
-            },
-        ];
+            return [
+                {
+                    externalTitleId: get(title.legacyIds, `${repo}.${repo}TitleId`, ''),
+                    externalId: get(title.legacyIds, `${repo}.${repo}Id`, ''),
+                },
+            ];
+
     };
     const extendTitleWithExternalIds = repo => {
         const [vzExternalIds] = getExternaIds('vz');
@@ -158,7 +154,6 @@ const TitleDetails = ({
                 isMOVPublishing={isMOVTitlePublishing}
             />
             <NexusDynamicForm
-                castCrewConfig={castCrewConfig}
                 searchPerson={searchPerson}
                 schema={schema}
                 initialData={extendTitleWithExternalIds()}
@@ -201,8 +196,6 @@ TitleDetails.propTypes = {
     isMOVTitlePublishing: PropTypes.bool,
     isEditMode: PropTypes.bool,
     setEditTitle: PropTypes.func,
-    fetchConfigApiEndpoints: PropTypes.func,
-    castCrewConfig: PropTypes.object,
 };
 
 TitleDetails.defaultProps = {
@@ -227,8 +220,6 @@ TitleDetails.defaultProps = {
     isMOVTitlePublishing: false,
     isEditMode: false,
     setEditTitle: () => null,
-    fetchConfigApiEndpoints: () => null,
-    castCrewConfig: {},
 };
 
 const mapStateToProps = () => {
@@ -241,7 +232,6 @@ const mapStateToProps = () => {
     const isVZTitlePublishingSelector = selectors.createVZTitleIsPublishingSelector();
     const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
     const isEditModeSelector = selectors.createIsEditModeSelector();
-    const settingsConfigEndpointsSelector = settingsSelectors.createSettingsEndpointsSelector();
 
     return (state, props) => ({
         title: titleSelector(state, props),
@@ -255,7 +245,6 @@ const mapStateToProps = () => {
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
         isEditMode: isEditModeSelector(state, props),
-        castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
     });
 };
 
@@ -268,7 +257,6 @@ const mapDispatchToProps = dispatch => ({
     syncTitle: payload => dispatch(syncTitle(payload)),
     publishTitle: payload => dispatch(publishTitle(payload)),
     setEditTitle: payload => dispatch(editTitle(payload)),
-    fetchConfigApiEndpoints: payload => dispatch(fetchConfigApiEndpoints(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleDetails);
