@@ -9,13 +9,10 @@ export default forwardRef((props, ref) => {
     const [value, setValue] = useState(null);
 
     useEffect(() => {
-        value !== null && props.filterChangedCallback();
+        props.filterChangedCallback();
     }, [value]);
 
     const onChange = v => {
-        if (!v) {
-            return;
-        }
         setValue(v);
     };
 
@@ -48,7 +45,7 @@ export default forwardRef((props, ref) => {
     return (
         <div className="nexus-c-custom-complex-filter">
             <Form key={value} renderer={renderer} defaultFields={props.schema} onChange={onChange} />
-            <Button className="nexus-c-custom-complex-filter--clear" onClick={() => onChange({})}>
+            <Button className="nexus-c-custom-complex-filter--clear" onClick={() => onChange(null)}>
                 Clear
             </Button>
         </div>
