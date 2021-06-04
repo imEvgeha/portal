@@ -16,7 +16,7 @@ import {
 } from './constants';
 import './Title.scss';
 
-const Title = ({coreTitleData, editorialTitleData, castCrewConfig}) => {
+const Title = ({coreTitleData, editorialTitleData}) => {
     const [currentSection, setCurrentSection] = useState(METADATA_TITLE_EDITORIAL_SECTION);
     const {title, releaseYear, type} = coreTitleData || {};
 
@@ -31,7 +31,7 @@ const Title = ({coreTitleData, editorialTitleData, castCrewConfig}) => {
             case METADATA_TITLE_EXTERNAL_IDS_SECTION:
                 return null;
             case METADATA_TITLE_EDITORIAL_SECTION:
-                return <EditorialMetadata data={editorialTitleData} castCrewConfig={castCrewConfig} />;
+                return <EditorialMetadata data={editorialTitleData} />;
             case METADATA_TITLE_TERRITORIAL_SECTION:
                 return null;
             case METADATA_TITLE_RIGHTS_SECTION:
@@ -68,11 +68,8 @@ const Title = ({coreTitleData, editorialTitleData, castCrewConfig}) => {
 Title.propTypes = {
     coreTitleData: PropTypes.object.isRequired,
     editorialTitleData: PropTypes.array.isRequired,
-    castCrewConfig: PropTypes.object,
 };
 
-Title.defaultProps = {
-    castCrewConfig: {},
-};
+Title.defaultProps = {};
 
 export default Title;

@@ -310,7 +310,6 @@ export const buildSection = (
         config,
         isGridLayout,
         searchPerson,
-        castCrewConfig,
         tabs,
         subTabs,
         setDisableSubmit,
@@ -351,7 +350,6 @@ export const buildSection = (
                             generateMsvIds={generateMsvIds}
                             regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                             searchPerson={searchPerson}
-                            castCrewConfig={castCrewConfig}
                             {...fields[key]}
                             setRefresh={setRefresh}
                         />
@@ -365,7 +363,6 @@ export const buildSection = (
                                 config,
                                 isGridLayout,
                                 searchPerson,
-                                castCrewConfig,
                                 setDisableSubmit,
                             })}
                         </div>
@@ -389,7 +386,6 @@ export const renderNexusField = (
         config,
         isGridLayout,
         searchPerson,
-        castCrewConfig,
         inTabs,
         path,
         setDisableSubmit,
@@ -412,7 +408,6 @@ export const renderNexusField = (
             config={config}
             isGridLayout={isGridLayout}
             searchPerson={searchPerson}
-            castCrewConfig={castCrewConfig}
             generateMsvIds={generateMsvIds}
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
