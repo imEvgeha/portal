@@ -25,10 +25,8 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
     };
 
     const onDateChange = dates => {
-        if (dates.startDate || dates.endDate) {
-            setFilters({...filters, ...dates});
-            setIsApplyActive(true);
-        }
+        setFilters({...filters, ...dates});
+        setIsApplyActive(true);
     };
 
     const clearFilters = () => {
