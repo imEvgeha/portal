@@ -601,6 +601,111 @@
                                         ]
                                     }
                                 },
+                                "editorial.episodic.seriesName": {
+                                    "name": "Series title",
+                                    "path": "episodic.seriesName",
+                                    "type": "string",
+                                    "showWhen": [
+                                        {
+                                            "field": "contentType",
+                                            "hasValue": "SEASON"
+                                        },
+                                        {
+                                            "field": "contentType",
+                                            "hasValue": "EPISODE"
+                                        },
+                                        {
+                                            "field": "contentType",
+                                            "hasValue": "SERIES"
+                                        },
+                                        [
+                                            {
+                                                "field": "contentType",
+                                                "hasValue": "EVENT"
+                                            },
+                                            {
+                                                "field": "episodic.seriesName",
+                                                "hasValue": "any"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "field": "contentType",
+                                                "hasValue": "SPORTS"
+                                            },
+                                            {
+                                                "field": "episodic.seriesName",
+                                                "hasValue": "any"
+                                            }
+                                        ]
+                                    ]
+                                },
+                                "editorial.episodic.episodeNumber": {
+                                    "name": "Episode Number",
+                                    "path": "episodic.episodeNumber",
+                                    "type": "string",
+                                    "showWhen": [
+                                        {
+                                            "field": "contentType",
+                                            "hasValue": "EPISODE"
+                                        },
+                                        [
+                                            {
+                                                "field": "contentType",
+                                                "hasValue": "EVENT"
+                                            },
+                                            {
+                                                "field": "episodic.seriesName",
+                                                "hasValue": "any"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "field": "contentType",
+                                                "hasValue": "SPORTS"
+                                            },
+                                            {
+                                                "field": "episodic.seriesName",
+                                                "hasValue": "any"
+                                            }
+                                        ]
+                                    ]
+                                },
+                                "editorial.episodic.seasonNumber": {
+                                    "name": "Season Number",
+                                    "path": "episodic.seasonNumber",
+                                    "type": "string",
+                                    "showWhen": [
+                                        {
+                                            "field": "contentType",
+                                            "hasValue": "SEASON"
+                                        },
+                                        {
+                                            "field": "contentType",
+                                            "hasValue": "EPISODE"
+                                        },
+                                        [
+                                            {
+                                                "field": "contentType",
+                                                "hasValue": "EVENT"
+                                            },
+                                            {
+                                                "field": "episodic.seriesName",
+                                                "hasValue": "any"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "field": "contentType",
+                                                "hasValue": "SPORTS"
+                                            },
+                                            {
+                                                "field": "episodic.seriesName",
+                                                "hasValue": "any"
+                                            }
+                                        ]
+                                    ]
+                                },
                                 "editorial.service": {
                                     "name": "Service",
                                     "type": "select",

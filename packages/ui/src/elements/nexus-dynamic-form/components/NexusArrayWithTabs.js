@@ -29,6 +29,7 @@ const NexusArrayWithTabs = ({
     regenerateAutoDecoratedMetadata,
     setRefresh,
     castCrewConfig,
+    initialData
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -315,6 +316,7 @@ const NexusArrayWithTabs = ({
                                                 setFieldValue,
                                                 searchPerson,
                                                 castCrewConfig,
+                                                initialData: {contentType: initialData.contentType}
                                             })}
                                         </div>
                                     );
@@ -376,10 +378,11 @@ const NexusArrayWithTabs = ({
 
     const renderFields = () => {
         return Object.keys(fields).map((key, index) => {
+            const initData = currentData ? {...currentData, contentType: initialData.contentType} : { ...data[0], contentType: initialData.contentType}
             return (
                 <div key={`nexus-c-array__field ${index}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
-                        initialData: currentData || data[0],
+                        initialData: initData,
                         field: fields[key],
                         selectValues,
                         setFieldValue,
@@ -463,6 +466,7 @@ NexusArrayWithTabs.propTypes = {
     regenerateAutoDecoratedMetadata: PropTypes.func,
     castCrewConfig: PropTypes.object,
     setRefresh: PropTypes.func,
+    initialData: PropTypes.object
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -481,6 +485,7 @@ NexusArrayWithTabs.defaultProps = {
     regenerateAutoDecoratedMetadata: undefined,
     castCrewConfig: {},
     setRefresh: undefined,
+    initialData: {}
 };
 
 export default NexusArrayWithTabs;

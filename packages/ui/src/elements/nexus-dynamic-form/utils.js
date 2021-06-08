@@ -25,17 +25,19 @@ export const getFieldConfig = (field, config, view) => {
 };
 
 export const getDefaultValue = (field = {}, view, data) => {
+
     if (field.type === 'dateRange') {
         return {
             startDate: get(data, field.path[0]),
             endDate: get(data, field.path[1]),
         };
     }
-    const value = get(data, field.path) !== null ? get(data, field.path) : '';
+    let value = get(data, field.path) !== null ? get(data, field.path) : '';
 
     if ((view === VIEWS.CREATE || get(field, 'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
     }
+
     return value;
 };
 
@@ -354,6 +356,7 @@ export const buildSection = (
                             castCrewConfig={castCrewConfig}
                             {...fields[key]}
                             setRefresh={setRefresh}
+                            initialData={initialData}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
@@ -395,7 +398,7 @@ export const renderNexusField = (
         setDisableSubmit,
     }
 ) => {
-    return (
+    return ( toShow(field, initialData) ?
         <NexusField
             {...field}
             id={key}
@@ -416,7 +419,7 @@ export const renderNexusField = (
             generateMsvIds={generateMsvIds}
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
-        />
+        /> : null
     );
 };
 
