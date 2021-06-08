@@ -273,7 +273,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                 body[key] = null;
             }
         } else if (key === 'metadataStatus') {
-            body[key] = data[key]?.value || null;
+            body[key] = get(data[key], 'value') ? get(data[key], 'value') : data[key];
         } else body[key] = data[key];
     });
     if (body.isDeleted) {
