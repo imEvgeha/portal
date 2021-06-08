@@ -32,7 +32,7 @@ export const getDefaultValue = (field = {}, view, data) => {
             endDate: get(data, field.path[1]),
         };
     }
-    let value = get(data, field.path) !== null ? get(data, field.path) : '';
+    const value = get(data, field.path) !== null ? get(data, field.path) : '';
 
     if ((view === VIEWS.CREATE || get(field, 'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
