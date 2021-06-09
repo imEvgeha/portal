@@ -25,7 +25,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
     useEffect(() => {
         const userList = get(gridState, username, []).map(o => ({label: o.id, value: o.id}));
         setGroupedOptions([groupedOptions[0], {...groupedOptions[1], options: userList}]);
-    }, [gridState]);
+    }, [get(gridState, username, []).length !== groupedOptions[1]?.options?.length]);
 
     const applyPredefinedTableView = filter => {
         gridApi.setFilterModel(null);
@@ -66,9 +66,9 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
 
     const filterRemovalHandler = (e, item) => {
         e.stopPropagation();
-        if (selectedItem.value === item) {
+        if (selectedItem?.value === item) {
             setSelectedItem(SAVED_TABLE_SELECT_OPTIONS[0]);
-            applyPredefinedTableView(gridApi, SAVED_TABLE_SELECT_OPTIONS[0].value);
+            applyPredefinedTableView(gridApi, SAVED_TABLE_SELECT_OPTIONS[0]?.value);
         }
         const filtered = get(gridState, username, []).filter(o => o.id !== item);
         setUserDefinedGridState({[username]: filtered});
