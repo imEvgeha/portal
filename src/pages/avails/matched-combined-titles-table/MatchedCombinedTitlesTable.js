@@ -23,16 +23,16 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
 
     const updatedColumns = updateColumnDefs(mappings);
 
-    const onGridReady = ({type, columnApi}) => {
-        if (type === GRID_EVENTS.READY) {
-            const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
-            const PINNED_COLUMNS_NUMBER = 3;
-            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + PINNED_COLUMNS_NUMBER);
-        }
-    };
+    // const onGridReady = ({type, columnApi}) => {
+    //     if (type === GRID_EVENTS.READY) {
+    //         const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
+    //         const PINNED_COLUMNS_NUMBER = 3;
+    //         columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + PINNED_COLUMNS_NUMBER);
+    //     }
+    // };
 
-    const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
-    const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...updatedColumns]);
+    //const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
+   // const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...updatedColumns]);
     const repository = getRepositoryCell();
 
     return (
@@ -44,12 +44,12 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
         >
             <NexusGrid
                 className="nexus-c-matched-combined-titles-table"
-                columnDefs={[repository, ...updatedColumnDefs]}
+                columnDefs={[repository, ...mappings]}
                 rowData={data}
                 mapping={mappings}
                 rowSelection="single"
                 domLayout={isFullHeight ? 'normal' : 'autoHeight'}
-                onGridEvent={onGridReady}
+
             />
         </div>
     );
