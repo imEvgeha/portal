@@ -29,7 +29,7 @@ const NexusArrayWithTabs = ({
     regenerateAutoDecoratedMetadata,
     setRefresh,
     castCrewConfig,
-    initialData
+    initialData,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -307,16 +307,16 @@ const NexusArrayWithTabs = ({
                     {({formProps, reset, getValues}) => (
                         <form {...formProps}>
                             <div>
-                                {Object.keys(fields).map((key, index) => {
+                                {Object.keys(fields).map(key => {
                                     return (
-                                        <div key={index} className="nexus-c-nexus-array-with-tabs__field">
+                                        <div key={`${data.id}_${key}`} className="nexus-c-nexus-array-with-tabs__field">
                                             {renderNexusField(key, VIEWS.CREATE, getValues, generateMsvIds, {
                                                 field: fields[key],
                                                 selectValues,
                                                 setFieldValue,
                                                 searchPerson,
                                                 castCrewConfig,
-                                                initialData: {contentType: initialData.contentType}
+                                                initialData: {contentType: initialData.contentType},
                                             })}
                                         </div>
                                     );
@@ -378,7 +378,9 @@ const NexusArrayWithTabs = ({
 
     const renderFields = () => {
         return Object.keys(fields).map((key, index) => {
-            const initData = currentData ? {...currentData, contentType: initialData.contentType} : { ...data[0], contentType: initialData.contentType}
+            const initData = currentData
+                ? {...currentData, contentType: initialData.contentType}
+                : {...data[0], contentType: initialData.contentType};
             return (
                 <div key={`nexus-c-array__field ${index}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
@@ -466,7 +468,7 @@ NexusArrayWithTabs.propTypes = {
     regenerateAutoDecoratedMetadata: PropTypes.func,
     castCrewConfig: PropTypes.object,
     setRefresh: PropTypes.func,
-    initialData: PropTypes.object
+    initialData: PropTypes.object,
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -485,7 +487,7 @@ NexusArrayWithTabs.defaultProps = {
     regenerateAutoDecoratedMetadata: undefined,
     castCrewConfig: {},
     setRefresh: undefined,
-    initialData: {}
+    initialData: {},
 };
 
 export default NexusArrayWithTabs;
