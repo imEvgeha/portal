@@ -362,15 +362,14 @@ const NexusArrayWithTabs = ({
     };
 
     const renderFields = () => {
-        return Object.keys(fields).map((key, index) => {
+        return Object.keys(fields).map(key => {
             const initData = currentData
                 ? {...currentData, contentType: initialData.contentType}
                 : {...data[0], contentType: initialData.contentType};
+            const tabId = initData.id ? initData.id : initData.ratingSystem;
+
             return (
-                <div
-                    key={`nexus-c-array__field_${initData.id}_${key}`}
-                    className="nexus-c-nexus-array-with-tabs__field"
-                >
+                <div key={`nexus-c-array__field_${tabId}_${key}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
                         initialData: initData,
                         field: fields[key],
