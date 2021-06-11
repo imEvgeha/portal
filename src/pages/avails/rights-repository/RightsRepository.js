@@ -255,8 +255,8 @@ const RightsRepository = ({
     useEffect(() => {
         // temp fix for aggrid not refreshing matching column when row count = 1
         setTotalCount('One');
-        gridApi &&  gridApi.refreshCells({force: true});
-    },[totalCount === 1]);
+        gridApi && gridApi.refreshCells({force: true});
+    }, [totalCount === 1]);
 
     const columnDefsClone = columnDefs.map(columnDef => {
         const updatedColumnDef = {
@@ -396,7 +396,7 @@ const RightsRepository = ({
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
         : columnDefsClone;
 
-    const onRightsRepositoryGridEvent = debounce(({type, api, columnApi}) => {
+    const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
             case READY:
@@ -441,7 +441,7 @@ const RightsRepository = ({
                         selectedRights[currentRight.id] = currentRight;
                         return selectedRights;
                     }, {});
-                    setSelectedRights({[username]: payload})
+                    setSelectedRights({[username]: payload});
                     break;
                 }
 
@@ -469,7 +469,7 @@ const RightsRepository = ({
                     selectedRights[currentRight.id] = currentRight;
                     return selectedRights;
                 }, {});
-                setSelectedRights({[username]: payload})
+                setSelectedRights({[username]: payload});
                 break;
             }
             case FILTER_CHANGED: {
@@ -486,7 +486,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    }, 500);
+    };
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
@@ -564,7 +564,7 @@ const RightsRepository = ({
                 />
             )}
             <AvailsTableToolbar
-                totalRows={totalCount === 'One'? 1 : totalCount}
+                totalRows={totalCount === 'One' ? 1 : totalCount}
                 selectedRightsCount={selectedRepoRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}
