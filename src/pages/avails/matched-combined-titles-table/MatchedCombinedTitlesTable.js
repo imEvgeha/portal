@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
-    defineEpisodeAndSeasonNumberColumn,
     getLinkableColumnDefs,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
@@ -23,16 +21,7 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
 
     const updatedColumns = updateColumnDefs(mappings);
 
-    const onGridReady = ({type, columnApi}) => {
-        if (type === GRID_EVENTS.READY) {
-            const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
-            const PINNED_COLUMNS_NUMBER = 3;
-            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + PINNED_COLUMNS_NUMBER);
-        }
-    };
-
-    const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
-    const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...updatedColumns]);
+    const updatedColumnDefs = getLinkableColumnDefs(updatedColumns);
     const repository = getRepositoryCell();
 
     return (
@@ -49,7 +38,6 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
                 mapping={mappings}
                 rowSelection="single"
                 domLayout={isFullHeight ? 'normal' : 'autoHeight'}
-                onGridEvent={onGridReady}
             />
         </div>
     );

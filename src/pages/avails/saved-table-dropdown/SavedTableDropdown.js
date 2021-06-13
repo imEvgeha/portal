@@ -28,27 +28,29 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
     }, [get(gridState, username, []).length !== groupedOptions[1]?.options?.length]);
 
     const applyPredefinedTableView = filter => {
-        gridApi.setFilterModel(null);
-        const filterInstance = gridApi.getFilterInstance('status');
-        switch (filter) {
-            case ERROR_VIEW:
-                filterInstance.setModel({
-                    filterType: 'set',
-                    values: ['Error'],
-                });
-                break;
-            case READY_PENDING_VIEW:
-                filterInstance.setModel({
-                    filterType: 'set',
-                    values: ['Pending', 'ReadyNew', 'Ready'],
-                });
-                break;
-            default:
-                break;
+        if (gridApi) {
+            gridApi.setFilterModel(null);
+            const filterInstance = gridApi.getFilterInstance('status');
+            switch (filter) {
+                case ERROR_VIEW:
+                    filterInstance.setModel({
+                        filterType: 'set',
+                        values: ['Error'],
+                    });
+                    break;
+                case READY_PENDING_VIEW:
+                    filterInstance.setModel({
+                        filterType: 'set',
+                        values: ['Pending', 'ReadyNew', 'Ready'],
+                    });
+                    break;
+                default:
+                    break;
+            }
+            gridApi.onFilterChanged();
+            setSorting({colId: 'updatedAt', sort: 'desc'}, columnApi);
+            columnApi.resetColumnState();
         }
-        gridApi.onFilterChanged();
-        setSorting({colId: 'updatedAt', sort: 'desc'}, columnApi);
-        columnApi.resetColumnState();
     };
 
     const handleChange = item => {
@@ -83,7 +85,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
             const model = {id: value, filterModel, sortModel, columnState};
             const newUserData = insertNewGridModel(value, get(gridState, username, []), model);
             setUserDefinedGridState({[username]: newUserData});
-            const newUserOptions = [...groupedOptions[1].options, {label: value, value}]
+            const newUserOptions = [...groupedOptions[1].options, {label: value, value}];
             setGroupedOptions([groupedOptions[0], {...groupedOptions[1], options: newUserOptions}]);
         }
     };

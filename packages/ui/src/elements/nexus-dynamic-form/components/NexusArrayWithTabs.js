@@ -72,25 +72,10 @@ const NexusArrayWithTabs = ({
         return formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]];
     };
 
-    const checkIsUpdated = (values, currentData) => {
-        if (path !== 'ratings') {
-            const isUpdated = Object.keys(values).some(key => {
-                return !!(
-                    (get(values, key) && get(values, key) !== get(currentData, key)) ||
-                    (get(currentData, key) && get(values, key) !== get(currentData, key))
-                );
-            });
-            if (isUpdated) {
-                values.isUpdated = true;
-            }
-        }
-    };
-
     const changeTabData = (oldSubTab, key, index) => {
         if (view === VIEWS.EDIT) {
             const currentFormData = getCurrentFormData();
             const current = currentData || currentFormData;
-            checkIsUpdated(currentFormData, current);
             replaceRecordInGroupedData(currentFormData, current, oldSubTab, index, key);
             const newData = replaceRecordInData(currentFormData, current);
             setFieldValue(path, newData);
@@ -377,12 +362,14 @@ const NexusArrayWithTabs = ({
     };
 
     const renderFields = () => {
-        return Object.keys(fields).map((key, index) => {
+        return Object.keys(fields).map(key => {
             const initData = currentData
                 ? {...currentData, contentType: initialData.contentType}
                 : {...data[0], contentType: initialData.contentType};
+            const tabId = initData.id ? initData.id : initData.ratingSystem;
+
             return (
-                <div key={`nexus-c-array__field ${index}`} className="nexus-c-nexus-array-with-tabs__field">
+                <div key={`nexus-c-array__field_${tabId}_${key}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
                         initialData: initData,
                         field: fields[key],
