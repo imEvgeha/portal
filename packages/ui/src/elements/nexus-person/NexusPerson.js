@@ -5,9 +5,9 @@ import {Draggable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
 import Lozenge from '@atlaskit/lozenge';
 import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
-import DragButton from './elements/DragButton';
-import DraggableContent from './elements/DraggableContent';
-import RemovePerson from './elements/RemovePerson';
+import DragButton from './elements/DragButton/DragButton';
+import DraggableContent from './elements/DraggableContent/DraggableContent';
+import RemovePerson from './elements/RemovePerson/RemovePerson';
 import './NexusPerson.scss';
 
 const NexusPerson = ({person, index, onRemove, onEditCharacter}) => {
