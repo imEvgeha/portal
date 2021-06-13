@@ -16,7 +16,6 @@ import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './cons
 import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
 import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
-import {get} from 'lodash';
 
 const NexusPersonsList = ({
     personsList,
