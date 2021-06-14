@@ -29,10 +29,22 @@
         @include margin(0);
         @include padding(0);
     }
+    margin-left: 3px;
 }
 
 .nexus-c-nexus-person__img {
     height: 35px;
     width: 35px;
     @include margin(0, 2);
+}
+
+.nexus-c-person-action {
+    @include margin(0);
+    @include padding(0);
+    cursor: pointer;
+    > span {
+        &:hover {
+            color: map-get($reds, R400);
+        }
+    }
 }
