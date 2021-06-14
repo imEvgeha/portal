@@ -172,6 +172,13 @@ const NexusPersonsList = ({
         updateCastCrew(updatedPersons, isCast);
     };
 
+    const onEditPerson = async person => {
+        const endpoint = castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'];
+        const personData = await configService.get(endpoint, person.id);
+        setCurrentRecord(personData);
+        setOpenPersonModal(true);
+    };
+
     const makeDraggableContainer = content => {
         return (
             <DragDropContext onDragEnd={onDragEnd}>
@@ -202,7 +209,7 @@ const NexusPersonsList = ({
                     index={i}
                     hasCharacter={hasCharacter}
                     onRemove={() => removePerson(person)}
-                    onEditCharacter={index => openCharacterModal(index)}
+                    onEditPerson={() => onEditPerson(person)}
                 />
             );
         });
@@ -216,25 +223,38 @@ const NexusPersonsList = ({
 
     const editRecord = val => {
         const newVal = {...currentRecord, ...val};
+        const endpoint = castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'];
         if (newVal.id) {
-            configService
-                .update(castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'], newVal.id, newVal)
-                .then(response => {
-                    const data = this.state.data.slice(0);
-                    const index = data.findIndex(item => item.id === newVal.id);
-                    data[index] = response;
-                    setCurrentRecord(null);
-                    setOpenPersonModal(false);
+            configService.update(endpoint, newVal.id, newVal).then(response => {
+                const updatedList = persons.map(person => {
+                    if (person.id === newVal.id) {
+                        return {
+                            displayName: response.displayName,
+                            creditsOrder: person.creditsOrder,
+                            personType: person.personType,
+                            id: response.id,
+                        };
+                    }
+                    return person;
                 });
+                setPersons(updatedList);
+                setCurrentRecord({});
+                updateCastCrew(updatedList, uiConfig.type === CAST);
+                setOpenPersonModal(false);
+            });
         } else {
-            configService
-                .create(castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'], newVal)
-                .then(person => {
-                    setOpenPersonModal(false);
-                    addPerson(person);
-                    setSearchText('');
-                });
+            configService.create(endpoint, newVal).then(person => {
+                setCurrentRecord({});
+                setOpenPersonModal(false);
+                addPerson(person);
+                setSearchText('');
+            });
         }
+    };
+
+    const closePersonModal = () => {
+        setOpenPersonModal(false);
+        setCurrentRecord({});
     };
 
     return (
@@ -250,7 +270,7 @@ const NexusPersonsList = ({
                             displayName={castCrewConfig && castCrewConfig.displayName}
                             value={currentRecord}
                             onSubmit={editRecord}
-                            onCancel={() => setOpenPersonModal(false)}
+                            onCancel={closePersonModal}
                         />
                     )}
                     <div className="nexus-c-nexus-persons-list__add">

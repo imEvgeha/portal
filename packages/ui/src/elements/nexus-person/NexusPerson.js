@@ -8,9 +8,10 @@ import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png
 import DragButton from './elements/DragButton/DragButton';
 import DraggableContent from './elements/DraggableContent/DraggableContent';
 import RemovePerson from './elements/RemovePerson/RemovePerson';
+import EditPerson from './elements/EditPerson/EditPerson';
 import './NexusPerson.scss';
 
-const NexusPerson = ({person, index, onRemove, onEditCharacter}) => {
+const NexusPerson = ({person, index, onRemove, onEditPerson}) => {
     return (
         <Draggable draggableId={uid(person.id, index)} index={index}>
             {(provided, snapshot) => (
@@ -25,6 +26,7 @@ const NexusPerson = ({person, index, onRemove, onEditCharacter}) => {
                                 <Lozenge appearance="default">{person.personType}</Lozenge>
                             </div>
                             <div className="nexus-c-nexus-person__buttons">
+                                <EditPerson onClick={onEditPerson} />
                                 <RemovePerson onClick={onRemove} />
                                 <DragButton {...provided.dragHandleProps} />
                             </div>
@@ -40,12 +42,12 @@ NexusPerson.propTypes = {
     person: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     onRemove: PropTypes.func,
-    onEditCharacter: PropTypes.func,
+    onEditPerson: PropTypes.func,
 };
 
 NexusPerson.defaultProps = {
     onRemove: () => null,
-    onEditCharacter: () => null,
+    onEditPerson: () => null,
 };
 
 export default NexusPerson;

@@ -11,21 +11,11 @@ import './CastCrew.scss';
 
 const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, castCrewConfig}) => {
     const [cast, setCast] = useState(
-        persons
-            .filter(person => !CREW_LIST.includes(person.personType))
-            .map((e, index) => {
-                return {...e, id: index};
-            })
-            .sort((a, b) => a.creditsOrder - b.creditsOrder)
+        persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
     );
 
     const [crew, setCrew] = useState(
-        persons
-            .filter(person => CREW_LIST.includes(person.personType))
-            .map((e, index) => {
-                return {...e, id: index};
-            })
-            .sort((a, b) => a.creditsOrder - b.creditsOrder)
+        persons.filter(person => CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
     );
 
     useEffect(() => {
@@ -36,17 +26,11 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
         setCast(
             persons
                 .filter(person => !CREW_LIST.includes(person.personType))
-                .map((e, index) => {
-                    return {...e, id: index};
-                })
                 .sort((a, b) => a.creditsOrder - b.creditsOrder)
         );
         setCrew(
             persons
                 .filter(person => CREW_LIST.includes(person.personType))
-                .map((e, index) => {
-                    return {...e, id: index};
-                })
                 .sort((a, b) => a.creditsOrder - b.creditsOrder)
         );
     };
