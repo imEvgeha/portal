@@ -233,6 +233,8 @@ const NexusPersonsList = ({
                             creditsOrder: person.creditsOrder,
                             personType: person.personType,
                             id: response.id,
+                            firstName: response.firstName,
+                            lastName: response.lastName,
                         };
                     }
                     return person;
