@@ -91,7 +91,7 @@ export const prepareRight = function (right, keepNulls = false) {
 
 const parseAdvancedFilter = function (searchCriteria) {
     const rootStore = store.getState().root;
-    const mappings = rootStore.availsMapping.mappings;
+    const mappings = rootStore?.availsMapping?.mappings;
     let params = {};
 
     function isQuoted(value) {
@@ -115,7 +115,7 @@ const parseAdvancedFilter = function (searchCriteria) {
                 };
                 continue;
             }
-            const map = mappings.find(({queryParamName}) => queryParamName === key);
+            const map = mappings?.find(({queryParamName}) => queryParamName === key);
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
@@ -132,7 +132,7 @@ const parseAdvancedFilter = function (searchCriteria) {
 
 const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
     const rootStore = store.getState().root;
-    const mappings = rootStore.availsMapping.mappings;
+    const mappings = rootStore?.availsMapping?.mappings;
     let params = {};
     function isQuoted(value) {
         return value[0] === '"' && value[value.length - 1] === '"';
@@ -153,7 +153,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 }
                 continue;
             }
-            const map = mappings.find(
+            const map = mappings?.find(
                 ({queryParamName, javaVariableName, dataType}) =>
                     (queryParamName === key || javaVariableName === key) && dataType !== 'icon'
             );
