@@ -118,7 +118,7 @@ function mergeDeep(target, source) {
 }
 
 function getDeepValue(source, location) {
-    const dotPos = location.indexOf('.');
+    const dotPos = location?.indexOf('.');
     if (dotPos > 0) {
         const firstKey = location.split('.')[0];
         const restKey = location.substring(dotPos + 1);
@@ -171,7 +171,7 @@ const URL = {
     keepEmbedded(url) {
         let parts = '';
         if (this.isEmbedded()) {
-            if (url.indexOf('embedded=true') > 0) {
+            if (url?.indexOf('embedded=true') > 0) {
                 return url;
             }
             parts = url.split('?');
