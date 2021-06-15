@@ -210,10 +210,15 @@ const NexusField = ({
                 return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
             case 'datetime':
                 // withdrawn date is readOnly when populated (when empty, user can populate it using checkbox)
-                const isWithDrawnReadOnly =
-                    fieldProps?.name.includes('dateWithdrawn') && fieldProps?.value ? true : dateProps?.isReadOnly;
+                const hasWithDrawnDate = fieldProps?.name.includes('dateWithdrawn');
+                const isWithDrawnReadOnly = hasWithDrawnDate && fieldProps?.value ? true : dateProps?.isReadOnly;
                 return fieldProps.value || !dateProps.isReadOnly ? (
-                    <DateTimeWithOptional {...fieldProps} {...dateProps} isReadOnly={isWithDrawnReadOnly} />
+                    <DateTimeWithOptional
+                        {...fieldProps}
+                        {...dateProps}
+                        isReadOnly={isWithDrawnReadOnly}
+                        territoryLenght={hasWithDrawnDate && formData?.territory?.length}
+                    />
                 ) : (
                     ''
                 );
