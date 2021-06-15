@@ -30,6 +30,9 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
     const applyPredefinedTableView = filter => {
         if (gridApi) {
             gridApi.setFilterModel(null);
+            gridApi.destroyFilter('icon');
+            gridApi.destroyFilter('icon_1');
+
             const filterInstance = gridApi.getFilterInstance('status');
             switch (filter) {
                 case ERROR_VIEW:
@@ -58,6 +61,8 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
         if (SAVED_TABLE_SELECT_OPTIONS.map(o => o.value).includes(item.value)) {
             applyPredefinedTableView(item.value);
         } else if (!isEmpty(gridApi) && !isEmpty(columnApi) && item.value) {
+            gridApi.destroyFilter('icon');
+            gridApi.destroyFilter('icon_1');
             const selectedModel = get(gridState, username, []).filter(i => i.id === item.value);
             const {columnState, filterModel, sortModel} = selectedModel[0] || {};
             gridApi.setFilterModel(filterModel);
@@ -79,7 +84,10 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
     const onCreateOption = value => {
         setSelectedItem({label: value, value});
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && value) {
-            const filterModel = gridApi.getFilterModel();
+            let filterModel = gridApi.getFilterModel();
+            if (get(filterModel, 'icon_1.filter.rightStatusList', null)) {
+                filterModel = {...filterModel, ...{rightStatusList: {filterType: 'set', values: ['Withdrawn']}}};
+            }
             const sortModel = getSortModel(columnApi);
             const columnState = columnApi.getColumnState();
             const model = {id: value, filterModel, sortModel, columnState};
