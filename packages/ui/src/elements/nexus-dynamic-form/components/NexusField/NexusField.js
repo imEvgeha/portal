@@ -39,6 +39,7 @@ const NexusField = ({
     type,
     view,
     tooltip,
+    isRequiredVZ,
     formData,
     isReadOnly,
     isReadOnlyInEdit,
@@ -362,7 +363,8 @@ const NexusField = ({
                                     label,
                                     !!(checkDependencies('required') || isRequired),
                                     tooltip,
-                                    isGridLayout
+                                    isGridLayout,
+                                    isRequiredVZ
                                 )}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
@@ -416,6 +418,7 @@ NexusField.propTypes = {
     linkConfig: PropTypes.object,
     maxLength: PropTypes.number,
     castCrewConfig: PropTypes.object,
+    isRequiredVZ: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -450,6 +453,7 @@ NexusField.defaultProps = {
     linkConfig: {},
     castCrewConfig: {},
     maxLength: undefined,
+    isRequiredVZ: false,
 };
 
 export default NexusField;

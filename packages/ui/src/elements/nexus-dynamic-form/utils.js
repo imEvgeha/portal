@@ -14,7 +14,7 @@ import {isInteger} from './valdationUtils/isInteger';
 import {isTime} from './valdationUtils/isTime';
 import {isYear} from './valdationUtils/isYear';
 import {lengthEqual} from './valdationUtils/lengthEqual';
-import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS} from './constants';
+import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, MANDATORY_VZ} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
     const viewConfig =
@@ -25,7 +25,6 @@ export const getFieldConfig = (field, config, view) => {
 };
 
 export const getDefaultValue = (field = {}, view, data) => {
-
     if (field.type === 'dateRange') {
         return {
             startDate: get(data, field.path[0]),
@@ -398,7 +397,7 @@ export const renderNexusField = (
         setDisableSubmit,
     }
 ) => {
-    return ( toShow(field, initialData) ?
+    return toShow(field, initialData) ? (
         <NexusField
             {...field}
             id={key}
@@ -419,8 +418,8 @@ export const renderNexusField = (
             generateMsvIds={generateMsvIds}
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
-        /> : null
-    );
+        />
+    ) : null;
 };
 
 export const getProperValues = (schema, values) => {
@@ -445,16 +444,17 @@ export const getProperValues = (schema, values) => {
     return properValues;
 };
 
-export const renderLabel = (label, isRequired, tooltip, isGridLayout) => {
+export const renderLabel = (label, isRequired, tooltip, isGridLayout, isRequiredVZ) => {
+    const tooltipText = tooltip || (isRequiredVZ ? MANDATORY_VZ : undefined);
     return (
         <div
             className={classnames('nexus-c-field__label', {
                 'nexus-c-field__label--grid': isGridLayout,
             })}
         >
-            {`${label}${isRequired ? '*' : ''}: `}
-            {tooltip && (
-                <span title={tooltip} style={{color: 'grey'}}>
+            {`${label}${isRequired ? '*' : ''}${isRequiredVZ ? '**' : ''}: `}
+            {tooltipText && (
+                <span title={tooltipText} style={{color: 'grey'}}>
                     <i className="far fa-question-circle" />
                 </span>
             )}
