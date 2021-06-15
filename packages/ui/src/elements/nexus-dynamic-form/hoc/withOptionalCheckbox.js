@@ -8,17 +8,19 @@ const withOptionalCheckbox = () => WrappedComponent => {
     const ComposedComponent = props => {
         const {isOptional, maxLength, useCurrentDate, setFieldValue, path, name, view, ...fieldProps} = props;
         const {value, isDisabled, ...restFieldProps} = fieldProps;
-        const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== ''));
+        const [checked, setChecked] = useState(!!(view !== VIEWS.CREATE && value && value !== ''));
 
         // remove dispatch when isOptional = false and check for value - fix react warnings
         const {dispatch, value: val, ...propsWithoutDispatch} = fieldProps;
 
-        const changeCheckboxValue = () => {
-            const newVisible = !visible;
-            setVisible(newVisible);
-            if (!newVisible) {
+        const changeCheckboxValue = e => {
+            const checkValue = e.target.checked;
+
+            if (!checkValue) {
                 setFieldValue(name, '');
             }
+
+            setChecked(checkValue);
         };
 
         const getDateValue = value => {
@@ -27,8 +29,8 @@ const withOptionalCheckbox = () => WrappedComponent => {
 
         return isOptional ? (
             <div className="nexuc-c-with-optional">
-                <Checkbox isDisabled={isDisabled} onChange={changeCheckboxValue} defaultChecked={visible} />
-                {visible && <WrappedComponent {...restFieldProps} value={getDateValue(value)} />}
+                <Checkbox isDisabled={isDisabled} onChange={changeCheckboxValue} defaultChecked={checked} />
+                {checked && <WrappedComponent {...restFieldProps} value={getDateValue(value)} />}
             </div>
         ) : maxLength ? (
             <div className="nexuc-c-with-chars">
@@ -43,7 +45,7 @@ const withOptionalCheckbox = () => WrappedComponent => {
     ComposedComponent.propTypes = {
         ...WrappedComponent.propTypes,
         isOptional: PropTypes.bool,
-        maxLength: PropTypes.bool,
+        maxLength: PropTypes.number,
         value: PropTypes.any,
     };
 
