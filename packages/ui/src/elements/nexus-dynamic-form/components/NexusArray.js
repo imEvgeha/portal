@@ -58,7 +58,8 @@ const NexusArray = ({
     };
 
     const onRemove = index => {
-        const editedData = allData.filter((obj, i) => i !== index);
+        const values = getValues();
+        const editedData = values[path].filter((obj, i) => i !== index);
         setAllData(editedData);
         setFieldValue(path, editedData);
         closeModal && closeModal();
@@ -163,10 +164,10 @@ const NexusArray = ({
         return (
             <div className="nexus-c-array__modal">
                 <AKForm onSubmit={values => handleOnSubmit(values)}>
-                    {({formProps, dirty, submitting, reset, getValues}) => (
+                    {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
                         <form {...formProps}>
                             <div className="nexus-c-array__modal-fields">
-                                {buildSection(fields, getValues, VIEWS.CREATE, null, null, {
+                                {buildSection(fields, getValues, VIEWS.CREATE, null, null, null, {
                                     selectValues,
                                     setFieldValue,
                                 })}
