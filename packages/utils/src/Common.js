@@ -171,7 +171,7 @@ const URL = {
     keepEmbedded(url) {
         let parts = '';
         if (this.isEmbedded()) {
-            if (url?.indexOf('embedded=true') > 0) {
+            if (typeof url === 'string' && url?.indexOf('embedded=true') > 0) {
                 return url;
             }
             parts = url.split('?');
