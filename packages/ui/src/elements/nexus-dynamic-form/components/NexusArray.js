@@ -58,7 +58,8 @@ const NexusArray = ({
     };
 
     const onRemove = index => {
-        const editedData = allData.filter((obj, i) => i !== index);
+        const values = getValues();
+        const editedData = values[path].filter((obj, i) => i !== index);
         setAllData(editedData);
         setFieldValue(path, editedData);
         closeModal && closeModal();
