@@ -29,7 +29,7 @@ export const configFields = {
 };
 
 const isTextEnglish = testString => {
-    const englishChars = /^[A-Za-z0-9]*$/;
+    const englishChars = /^[A-Za-z0-9 ]*$/;
     return englishChars.test(testString);
 };
 
