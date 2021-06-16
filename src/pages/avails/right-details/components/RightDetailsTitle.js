@@ -7,10 +7,10 @@ import './RightDetailsTitle.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const RightDetailsTitle = ({title}) => {
+const RightDetailsTitle = ({title, backUrl}) => {
     return (
         <div className="nexus-c-right-details-title">
-            <Link to={URL.keepEmbedded(`/avails/v2`)}>
+            <Link to={URL.keepEmbedded(backUrl)}>
                 <ArrowLeftIcon size="large" primaryColor={ARROW_COLOR} />
             </Link>
             {title}
@@ -20,10 +20,12 @@ const RightDetailsTitle = ({title}) => {
 
 RightDetailsTitle.propTypes = {
     title: PropTypes.string,
+    backUrl: PropTypes.string,
 };
 
 RightDetailsTitle.defaultProps = {
     title: null,
+    backUrl: '/avails/v2',
 };
 
 export default RightDetailsTitle;

@@ -140,7 +140,13 @@ const RightDetailsHeader = ({title, right, containerRef}) => {
             })}
         >
             <div className="nexus-c-right-details-header__top">
-                <RightDetailsTitle title={title} />
+                <RightDetailsTitle
+                    title={title}
+                    backUrl={
+                        URL.getParamIfExists('back') === 'manual-rights-entry' &&
+                        `/avails/history/${URL.getParamIfExists('availHistoryId')}/manual-rights-entry`
+                    }
+                />
                 <RightDetailsTags right={right} />
             </div>
             <div
