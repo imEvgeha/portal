@@ -107,6 +107,11 @@ const RightToMatchView = ({
         );
     };
 
+    const onDeclareNewRight = () => {
+        removeToast();
+        history.push(URL.keepEmbedded('/avails/rights/create'));
+    };
+
     const onNewRightClick = () => {
         addToast({
             title: WARNING_TITLE,
@@ -114,7 +119,7 @@ const RightToMatchView = ({
             icon: WARNING_ICON,
             actions: [
                 {content: 'Cancel', onClick: () => removeToast()},
-                {content: 'OK', onClick: () => history.push(URL.keepEmbedded('/avails/rights/create'))},
+                {content: 'OK', onClick: onDeclareNewRight},
             ],
             isWithOverlay: true,
         });
