@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
-import {Checkbox} from '@atlaskit/checkbox';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';

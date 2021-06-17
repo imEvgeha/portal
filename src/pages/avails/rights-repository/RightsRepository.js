@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions, no-magic-numbers */
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
@@ -291,6 +292,7 @@ const RightsRepository = ({
 
     const columnsValidationDefsClone = columnDefsClone.map(col => {
         if (['id'].includes(col.field) || ['icon'].includes(col.colId)) {
+            // eslint-disable-next-line no-param-reassign
             col = {
                 ...col,
                 lockPinned: true,
@@ -325,6 +327,7 @@ const RightsRepository = ({
                                     severityType === '' ||
                                     (validation.severityType === 'Error' && severityType === 'Warning')
                                 ) {
+                                    // eslint-disable-next-line prefer-destructuring
                                     severityType = validation.severityType;
                                 }
                             }
@@ -371,6 +374,7 @@ const RightsRepository = ({
                     ? validation.fieldName.split('[')[0]
                     : validation.fieldName;
                 if (column.field === fieldName && severityType !== 'Error') {
+                    // eslint-disable-next-line prefer-destructuring
                     severityType = validation.severityType;
                 }
             });

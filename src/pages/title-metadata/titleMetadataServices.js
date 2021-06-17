@@ -66,13 +66,6 @@ export const generateMsvIds = (id, licensor, licensee) => {
 };
 
 export const regenerateAutoDecoratedMetadata = async masterEmet => {
-    const body = [
-        {
-            itemIndex: null,
-            body: masterEmet,
-        },
-    ];
-
     try {
         const response = await titleService.regenerateAutoDecoratedMetadata(masterEmet.id);
         const failed = get(response, ['data', '0', 'response', 'failed'], []);
@@ -88,19 +81,16 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
             };
             store.dispatch(addToast(errorToast));
             return false;
-        } 
-            const successToast = {
-                title: 'Success',
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: 'Editorial Metadata Successfully Regenerated!',
-            };
-            store.dispatch(addToast(successToast));
-            return true;
-        
-    } catch (err) {
-        console.error(err);
-    }
+        }
+        const successToast = {
+            title: 'Success',
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            description: 'Editorial Metadata Successfully Regenerated!',
+        };
+        store.dispatch(addToast(successToast));
+        return true;
+    } catch (err) {}
 };
 
 export const syncTitle = payload => {
@@ -209,8 +199,9 @@ export const titleService = {
         });
     },
     regenerateAutoDecoratedMetadata: masterEmetId => {
-        const url =
-            `${config.get('gateway.titleUrl') + config.get('gateway.service.titleV2')  }/regenerateEmets/${  masterEmetId}`;
+        const url = `${
+            config.get('gateway.titleUrl') + config.get('gateway.service.titleV2')
+        }/regenerateEmets/${masterEmetId}`;
         return nexusFetch(url, {
             method: 'put',
         });

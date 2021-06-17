@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Spinner from '@atlaskit/spinner';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {REPORT} from '../../constants';
 import {servicingOrdersService} from '../../servicingOrdersService';
 import './ServicingOrdersTableStatusTooltip.scss';
