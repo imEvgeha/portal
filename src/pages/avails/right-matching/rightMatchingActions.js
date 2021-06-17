@@ -34,11 +34,6 @@ export const saveCombinedRight = payload => ({
     payload,
 });
 
-export const createNewRight = payload => ({
-    type: actionTypes.CREATE_NEW_RIGHT,
-    payload,
-});
-
 export const storeMatchedRights = payload => ({
     type: actionTypes.STORE_MATCHED_RIGHTS,
     payload,
