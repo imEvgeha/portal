@@ -117,6 +117,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
             case 'rowDataChanged' : {
                 if(!data && api.getRowNode(0)) {
                     api.getRowNode(0).setSelected(true);
+                    api.setDomLayout('autoHeight');
                     setSelectedRow({rowIndex:0})
                 }
                 break;
