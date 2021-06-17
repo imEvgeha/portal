@@ -23,7 +23,6 @@ import {prepareRight} from '../../../legacy/containers/avail/service/RightsServi
 import {AVAILS_PATH} from '../../availsRoutes';
 import {
     createRightMatchingColumnDefs,
-    createNewRight,
     fetchAndStoreFocusedRight,
     storeMatchedRights,
     validateConflictingRights,
@@ -58,7 +57,6 @@ const RightToMatchView = ({
     focusedRight,
     history,
     location,
-    createNewRight,
     addToast,
     removeToast,
     pendingRight,
@@ -109,11 +107,6 @@ const RightToMatchView = ({
         );
     };
 
-    const onDeclareNewRight = () => {
-        removeToast();
-        createNewRight({rightId, redirectPath: previousPageRoute});
-    };
-
     const onNewRightClick = () => {
         addToast({
             title: WARNING_TITLE,
@@ -121,7 +114,7 @@ const RightToMatchView = ({
             icon: WARNING_ICON,
             actions: [
                 {content: 'Cancel', onClick: () => removeToast()},
-                {content: 'OK', onClick: onDeclareNewRight},
+                {content: 'OK', onClick: () => history.push(URL.keepEmbedded('/avails/rights/create'))},
             ],
             isWithOverlay: true,
         });
@@ -326,7 +319,6 @@ RightToMatchView.propTypes = {
     focusedRight: PropTypes.object,
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     fetchFocusedRight: PropTypes.func,
-    createNewRight: PropTypes.func,
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
     columnDefs: PropTypes.array,
@@ -344,7 +336,6 @@ RightToMatchView.propTypes = {
 RightToMatchView.defaultProps = {
     focusedRight: null,
     fetchFocusedRight: null,
-    createNewRight: null,
     addToast: () => null,
     removeToast: () => null,
     columnDefs: [],
@@ -376,7 +367,6 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
-    createNewRight: payload => dispatch(createNewRight(payload)),
     storeMatchedRights: payload => dispatch(storeMatchedRights(payload)),
     validateRights: payload => dispatch(validateConflictingRights(payload)),
 });
