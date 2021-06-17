@@ -37,6 +37,10 @@ const RightDetailsHeader = ({title, right, containerRef}) => {
 
     const [isShrinked, setIsShrinked] = useState(false);
     const [selectedTab, setSelectedTab] = useState(tabs[0].title);
+    const previousUrl =
+        URL.getParamIfExists('back') === 'manual-rights-entry'
+            ? `/avails/history/${URL.getParamIfExists('availHistoryId')}/manual-rights-entry`
+            : '/avails/v2';
 
     useEffect(() => {
         const sectionIDs = tabs.map((_, index) => document.getElementById(`tab-${index}`));
@@ -140,13 +144,7 @@ const RightDetailsHeader = ({title, right, containerRef}) => {
             })}
         >
             <div className="nexus-c-right-details-header__top">
-                <RightDetailsTitle
-                    title={title}
-                    backUrl={
-                        URL.getParamIfExists('back') === 'manual-rights-entry' &&
-                        `/avails/history/${URL.getParamIfExists('availHistoryId')}/manual-rights-entry`
-                    }
-                />
+                <RightDetailsTitle title={title} previousUrl={URL.keepEmbedded(previousUrl)} />
                 <RightDetailsTags right={right} />
             </div>
             <div

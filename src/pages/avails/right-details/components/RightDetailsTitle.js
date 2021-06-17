@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
 import './RightDetailsTitle.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const RightDetailsTitle = ({title, backUrl}) => {
+const RightDetailsTitle = ({title, previousUrl}) => {
     return (
         <div className="nexus-c-right-details-title">
-            <Link to={URL.keepEmbedded(backUrl)}>
+            <Link to={previousUrl}>
                 <ArrowLeftIcon size="large" primaryColor={ARROW_COLOR} />
             </Link>
             {title}
@@ -20,12 +19,11 @@ const RightDetailsTitle = ({title, backUrl}) => {
 
 RightDetailsTitle.propTypes = {
     title: PropTypes.string,
-    backUrl: PropTypes.string,
+    previousUrl: PropTypes.string.isRequired,
 };
 
 RightDetailsTitle.defaultProps = {
     title: null,
-    backUrl: '/avails/v2',
 };
 
 export default RightDetailsTitle;

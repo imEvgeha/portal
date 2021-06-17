@@ -81,7 +81,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
     const createTooltipTag = key => (
         <NexusTooltip
             key={key}
-            content={`Original Value: ${reportFields[key].label} (${reportValues[key].toString()})`}
+            content={`Original Value: ${reportFields[key].label} (${reportValues[key]?.toString()})`}
         >
             {createTag(key)}
         </NexusTooltip>
