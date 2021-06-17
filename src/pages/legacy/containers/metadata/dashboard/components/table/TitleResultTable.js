@@ -3,11 +3,10 @@ import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {AgGridReact} from 'ag-grid-react';
 import PropTypes from 'prop-types';
-import {get, uniqBy} from 'lodash';
+import {get} from 'lodash';
 import config from 'react-global-configuration';
 // image import
 import './TitleResultTable.scss';
-import LoadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {
     resultPageSelect,
     resultPageSort,
@@ -18,8 +17,7 @@ import {titleServiceManager} from '../../../service/TitleServiceManager';
 import {Link} from 'react-router-dom';
 import {titleMapping} from '../../../service/Profile';
 import {titleSearchHelper} from '../../TitleSearchHelper';
-import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../../constants/metadata/contentType';
-import {titleService} from '../../../service/TitleService';
+import {EPISODE, SEASON, toPrettyContentTypeIfExist} from '../../../../../constants/metadata/contentType';
 import {formatNumberTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {defineColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
@@ -281,11 +279,10 @@ class TitleResultTable extends React.Component {
 
         const rows = data.data.map(row => {
             const contentType = row.contentType.toUpperCase();
-            row.concatenatedTitle = row.title;
             if (contentType === SEASON.apiName) {
                 row.title = this.getFormatTitle(row, SEASON.apiName);
             } else if (contentType === EPISODE.apiName) {
-                row.concatenatedTitle = this.getFormatTitle(row, EPISODE.apiName);
+                row.title = this.getFormatTitle(row, EPISODE.apiName);
             }
             return row;
         });
@@ -349,7 +346,7 @@ class TitleResultTable extends React.Component {
 
     refreshColumns() {
         const newCols = [];
-        const columnsOrder = ['title', 'concatenatedTitle', 'contentType', 'releaseYear'];
+        const columnsOrder = ['title', 'contentType', 'releaseYear'];
         columnsOrder.map(acc => {
             if (colDef.hasOwnProperty(acc)) {
                 newCols.push(colDef[acc]);

@@ -40,19 +40,6 @@
         "required": true
     },
     {
-        "colId": "concatenatedTitle",
-        "javaVariableName": "title",
-        "field": "concatenatedTitle",
-        "headerName": "Concatenated Title",
-        "dataType": "string",
-        "queryParamName": "concatenatedTitle",
-        "readOnly": false,
-        "enableSearch": false,
-        "enableEdit": false,
-        "required": true,
-        "cellRenderer": "concatenatedTitleCellRenderer"
-    },
-    {
         "colId": "releaseYear",
         "javaVariableName": "releaseYear",
         "field": "releaseYear",
