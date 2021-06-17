@@ -64,7 +64,7 @@ const RightToMatchView = ({
     storeMatchedRights,
     validateRights,
 }) => {
-    const [matchingCandidates, setMatchingCandidates] = useState([]);
+    const [matchingCandidates, setMatchingCandidates] = useState(null);
     const [newPendingRight, setNewPendingRight] = useState([]);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {};
@@ -80,7 +80,7 @@ const RightToMatchView = ({
     useEffect(() => {
         (focusedRight.id || newPendingRight.length) &&
             getMatchingCandidates(rightId, getTpr(), get(newPendingRight, '[0]', '')).then(response => {
-                const rights = response.filter(r => r.id !== rightId); // as candidates API returns pending right in response
+                const rights = response.filter(r => r.id !== rightId) || []; // as candidates API returns pending right in response
                 setMatchingCandidates(rights);
             });
     }, [focusedRight.id, newPendingRight]);
@@ -107,6 +107,11 @@ const RightToMatchView = ({
         );
     };
 
+    const onDeclareNewRight = () => {
+        removeToast();
+        history.push(URL.keepEmbedded('/avails/rights/create'));
+    };
+
     const onNewRightClick = () => {
         addToast({
             title: WARNING_TITLE,
@@ -114,7 +119,7 @@ const RightToMatchView = ({
             icon: WARNING_ICON,
             actions: [
                 {content: 'Cancel', onClick: () => removeToast()},
-                {content: 'OK', onClick: () => history.push(URL.keepEmbedded('/avails/rights/create'))},
+                {content: 'OK', onClick: onDeclareNewRight},
             ],
             isWithOverlay: true,
         });
@@ -136,7 +141,7 @@ const RightToMatchView = ({
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
     const handleMatchClick = () => {
-        if (Array.isArray(matchingCandidates) && matchingCandidates.length > 0) {
+        if (matchingCandidates?.length > 0) {
             const matchedRightIds = matchingCandidates.map(el => el.id);
             validateRights({
                 rightId,
@@ -217,14 +222,27 @@ const RightToMatchView = ({
 
     const reorderConflictingRightsHeaders = tableName => {
         if (columnDefs.length === 1) return [];
+        if (matchingCandidates === null) return;
 
         const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
-        const {RIGHT_ID, REMOVED_CATALOG, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
+        const {
+            ACTIONS,
+            RIGHT_ID,
+            REMOVED_CATALOG,
+            TITLE,
+            TERRITORY,
+            FORMAT,
+            AVAIL_START,
+            AVAIL_END,
+            START,
+            END,
+        } = TABLE_HEADERS;
         const headerNames = [RIGHT_ID, REMOVED_CATALOG, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
 
         let columnDefinitions = columnDefs;
         if (tableName === PENDING_RIGHT) {
             if (matchingCandidates.length === 0 && get(focusedRight, 'id')) {
+                headerNames.unshift(ACTIONS);
                 columnDefinitions = [actionNewButtonColumnDef, ...columnDefs];
             } else {
                 columnDefinitions = [...columnDefs];
@@ -275,26 +293,28 @@ const RightToMatchView = ({
                     </SectionMessage>
                     <div className="nexus-c-right-to-match-view__rights-to-match">
                         <NexusTitle isSubTitle>
-                            {CONFLICTING_RIGHTS} {`(${matchingCandidates.length})`}
+                            {CONFLICTING_RIGHTS} {`(${matchingCandidates?.length})`}
                         </NexusTitle>
-                        <RightRepositoryNexusGrid
-                            id="rightsMatchingRepo"
-                            columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
-                            mapping={mapping}
-                            rowSelection="multiple"
-                            rowData={matchingCandidates}
-                            suppressRowClickSelection={true}
-                            floatingFilter={true}
-                            defaultColDef={{
-                                filter: AG_GRID_COLUMN_FILTER.TEXT,
-                                sortable: true,
-                            }}
-                            columnTypes={{
-                                dateColumn: {
-                                    filter: false,
-                                },
-                            }}
-                        />
+                        {matchingCandidates && (
+                            <RightRepositoryNexusGrid
+                                id="rightsMatchingRepo"
+                                columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
+                                mapping={mapping}
+                                rowSelection="multiple"
+                                rowData={matchingCandidates}
+                                suppressRowClickSelection={true}
+                                floatingFilter={true}
+                                defaultColDef={{
+                                    filter: AG_GRID_COLUMN_FILTER.TEXT,
+                                    sortable: true,
+                                }}
+                                columnTypes={{
+                                    dateColumn: {
+                                        filter: false,
+                                    },
+                                }}
+                            />
+                        )}
                     </div>
                     <div className="nexus-c-right-to-match-view__buttons">
                         <ButtonGroup>
