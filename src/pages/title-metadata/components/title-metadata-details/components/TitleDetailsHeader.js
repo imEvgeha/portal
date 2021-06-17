@@ -22,8 +22,20 @@ const TitleDetailsHeader = ({
     isVZPublishing,
     isMOVSyncing,
     isMOVPublishing,
+    initialData,
 }) => {
     const [isShrinked, setIsShrinked] = useState(false);
+    const [isVZdisabled, setIsVZdisabled] = useState(false);
+
+    const checkVZdisabled = emet => {
+        const res = emet.metadataStatus === 'complete' && emet.genres && emet.genres.length > 0;
+        return res;
+    };
+
+    useEffect(() => {
+        const VZdisabled = !initialData.editorialMetadata.every(e => checkVZdisabled(e));
+        setIsVZdisabled(VZdisabled);
+    }, [initialData]);
 
     useEffect(() => {
         window.addEventListener('scroll', onScroll, true);
@@ -83,6 +95,7 @@ const TitleDetailsHeader = ({
                             onSyncPublish={onSyncPublish}
                             isSyncing={isVZSyncing}
                             isPublishing={isVZPublishing}
+                            disabled={isVZdisabled}
                         />
                         <SyncPublish
                             externalSystem={MOVIDA}
@@ -90,6 +103,7 @@ const TitleDetailsHeader = ({
                             onSyncPublish={onSyncPublish}
                             isSyncing={isMOVSyncing}
                             isPublishing={isMOVPublishing}
+                            disabled={false}
                         />
                     </div>
                 )}
@@ -112,6 +126,7 @@ const TitleDetailsHeader = ({
 };
 
 TitleDetailsHeader.propTypes = {
+    initialData: PropTypes.object,
     history: PropTypes.object,
     title: PropTypes.object,
     containerRef: PropTypes.any,
@@ -125,6 +140,7 @@ TitleDetailsHeader.propTypes = {
 };
 
 TitleDetailsHeader.defaultProps = {
+    initialData: {},
     history: {},
     title: {},
     containerRef: null,

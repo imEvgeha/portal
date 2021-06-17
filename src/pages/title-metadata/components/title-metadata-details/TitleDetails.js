@@ -156,6 +156,7 @@ const TitleDetails = ({
                 isMOVSyncing={isMOVTitleSyncing}
                 isVZPublishing={isVZTitlePublishing}
                 isMOVPublishing={isMOVTitlePublishing}
+                initialData={extendTitleWithExternalIds()}
             />
             <NexusDynamicForm
                 castCrewConfig={castCrewConfig}
