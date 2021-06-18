@@ -900,7 +900,7 @@
                                 },
                                 "editorial.synopsis.description": {
                                     "name": "Short Synopsis",
-                                    "isRequiredVZ": true,
+                                    "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
                                     "path": "synopsis.description",
                                     "type": "textarea",
@@ -929,7 +929,7 @@
                                 },
                                 "editorial.synopsis.shortDescription": {
                                     "name": "Medium Synopsis",
-                                    "isRequiredVZ": true,
+                                    "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
                                     "path": "synopsis.shortDescription",
                                     "type": "textarea",
@@ -958,7 +958,7 @@
                                 },
                                 "editorial.synopsis.longDescription": {
                                     "name": "Long Synopsis",
-                                    "isRequiredVZ": true,
+                                    "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
                                     "path": "synopsis.longDescription",
                                     "type": "textarea"
