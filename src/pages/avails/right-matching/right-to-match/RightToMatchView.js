@@ -295,24 +295,26 @@ const RightToMatchView = ({
                         <NexusTitle isSubTitle>
                             {CONFLICTING_RIGHTS} {`(${matchingCandidates?.length})`}
                         </NexusTitle>
-                        <RightRepositoryNexusGrid
-                            id="rightsMatchingRepo"
-                            columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
-                            mapping={mapping}
-                            rowSelection="multiple"
-                            rowData={matchingCandidates}
-                            suppressRowClickSelection={true}
-                            floatingFilter={true}
-                            defaultColDef={{
-                                filter: AG_GRID_COLUMN_FILTER.TEXT,
-                                sortable: true,
-                            }}
-                            columnTypes={{
-                                dateColumn: {
-                                    filter: false,
-                                },
-                            }}
-                        />
+                        {matchingCandidates && (
+                            <RightRepositoryNexusGrid
+                                id="rightsMatchingRepo"
+                                columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
+                                mapping={mapping}
+                                rowSelection="multiple"
+                                rowData={matchingCandidates}
+                                suppressRowClickSelection={true}
+                                floatingFilter={true}
+                                defaultColDef={{
+                                    filter: AG_GRID_COLUMN_FILTER.TEXT,
+                                    sortable: true,
+                                }}
+                                columnTypes={{
+                                    dateColumn: {
+                                        filter: false,
+                                    },
+                                }}
+                            />
+                        )}
                     </div>
                     <div className="nexus-c-right-to-match-view__buttons">
                         <ButtonGroup>
