@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';

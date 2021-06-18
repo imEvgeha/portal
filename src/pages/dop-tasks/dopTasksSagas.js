@@ -48,6 +48,7 @@ function* assignTasks({payload}) {
     const {userId, taskIds, closeModal, action = TASK_ACTIONS_ASSIGN} = payload;
     try {
         const service = action === TASK_ACTIONS_ASSIGN ? DopTasksService.assignTask : DopTasksService.forwardTask;
+        // eslint-disable-next-line no-unused-vars
         const [response, headers] = yield call(service, taskIds, userId);
         const location = headers.get('Location') || headers.get('location') || '';
         const batchJobId = location?.split('/').pop();

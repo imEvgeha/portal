@@ -189,6 +189,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
     const data = values.territorialMetadata || [];
     const {catalogOwner: tenantCode} = values;
     try {
+        // eslint-disable-next-line init-declarations
         let response;
         await Promise.all(
             data.map(async tmet => {

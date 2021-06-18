@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 import {cloneDeep} from 'lodash';
 import moment from 'moment';
 import {ELIGIBLE_RIGHT_STATUS, ELIGIBLE_STATUS} from '../pre-plan-actions/constants';

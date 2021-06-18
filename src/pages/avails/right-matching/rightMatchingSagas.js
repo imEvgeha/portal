@@ -1,5 +1,4 @@
 import {
-    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
     WARNING_ICON,
@@ -17,13 +16,7 @@ import {rightsService} from '../../legacy/containers/avail/service/RightsService
 import {createColumnDefs} from '../utils';
 import * as actionTypes from './rightMatchingActionTypes';
 import {WARNING_CONFLICTING_RIGHTS} from './rightMatchingConstants';
-import {
-    createRightById,
-    getCombinedRight,
-    getRightMatchingList,
-    putCombinedRight,
-    getMatchingCandidates,
-} from './rightMatchingService';
+import {getCombinedRight, getRightMatchingList, putCombinedRight, getMatchingCandidates} from './rightMatchingService';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {

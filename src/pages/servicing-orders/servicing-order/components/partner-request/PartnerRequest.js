@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import 'ag-grid-enterprise';
 import NexusJsonView from '@vubiquity-nexus/portal-ui/lib/elements/nexus-json-view/NexusJsonView';
-import {get} from 'lodash';
 import {getServiceRequest} from '../../../servicingOrdersService';
-import {STUDIO,} from '../filter-section/constants';
+import {STUDIO} from '../filter-section/constants';
 import './PartnerRequest.scss';
 
 const PartnerRequest = ({externalId, configuredPrId}) => {
@@ -15,10 +14,10 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
             // eslint-disable-next-line prefer-destructuring
             const partnerRequest = res.filter(req => req.id === configuredPrId)[0];
             const {tenant, createdBy, createdAt, definition} = partnerRequest;
-            const def = typeof definition === "string" ? JSON.parse(definition) : definition;
-            
+            const def = typeof definition === 'string' ? JSON.parse(definition) : definition;
+
             setData({
-                definition:def,
+                definition: def,
                 tenant,
                 createdBy,
                 createdAt,
