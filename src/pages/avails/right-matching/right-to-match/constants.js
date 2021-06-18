@@ -1,4 +1,5 @@
 export const TABLE_HEADERS = {
+    ACTIONS: 'Actions',
     RIGHT_ID: 'Right ID',
     TITLE: 'Title',
     TERRITORY: 'Territory',
