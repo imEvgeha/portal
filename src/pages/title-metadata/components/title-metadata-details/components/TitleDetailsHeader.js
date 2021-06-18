@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
+import {get} from 'lodash';
 import {VZ, MOVIDA, MGM} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import ShrinkedHeader from './ShrinkedHeader';
@@ -23,12 +24,19 @@ const TitleDetailsHeader = ({
     isMOVSyncing,
     isMOVPublishing,
     initialData,
+    fieldsVZ,
 }) => {
     const [isShrinked, setIsShrinked] = useState(false);
     const [isVZdisabled, setIsVZdisabled] = useState(false);
 
     const checkVZdisabled = emet => {
-        const res = emet.metadataStatus === 'complete' && emet.genres && emet.genres.length > 0;
+        // get each field that is required in schema
+        // emet.locale && emet.language && emet.title.title && emet.title.shortTitle && emet.title.longTitle && emet.title.sortTitle &&
+        // const res =   emet.metadataStatus === 'complete' && emet.genres && emet.genres.length > 0;
+        const res =
+            emet.metadataStatus === 'complete' &&
+            fieldsVZ.filter(f => f.isRequiredVZ).every(v => get(emet, v.path)) &&
+            fieldsVZ.filter(f => f.oneIsRequiredVZ).some(v => get(emet, v.path));
         return res;
     };
 
@@ -120,6 +128,7 @@ const TitleDetailsHeader = ({
                 isVZPublishing={isVZPublishing}
                 isMOVSyncing={isMOVSyncing}
                 isMOVPublishing={isMOVPublishing}
+                isVZdisabled={isVZdisabled}
             />
         </div>
     );
@@ -137,6 +146,7 @@ TitleDetailsHeader.propTypes = {
     isVZPublishing: PropTypes.bool,
     isMOVSyncing: PropTypes.bool,
     isMOVPublishing: PropTypes.bool,
+    fieldsVZ: PropTypes.object,
 };
 
 TitleDetailsHeader.defaultProps = {
@@ -151,6 +161,7 @@ TitleDetailsHeader.defaultProps = {
     isVZPublishing: false,
     isMOVSyncing: false,
     isMOVPublishing: false,
+    fieldsVZ: {},
 };
 
 export default TitleDetailsHeader;

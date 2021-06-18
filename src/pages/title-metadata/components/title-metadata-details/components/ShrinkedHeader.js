@@ -18,6 +18,7 @@ const ShrinkedHeader = ({
     isVZPublishing,
     isMOVSyncing,
     isMOVPublishing,
+    isVZdisabled,
 }) => {
     const [vzExternalData] = externalIds.filter(id => id.externalSystem === VZ.toLowerCase());
     const vzButtonType = vzExternalData ? 'sync' : 'publish';
@@ -39,6 +40,7 @@ const ShrinkedHeader = ({
             {catalogueOwner !== MGM && isNexusTitle(titleId) && !isEditView && (
                 <div className="nexus-c-shrinked-header__sync-publish">
                     <Button
+                        isDisabled={isVZdisabled}
                         appearance="default"
                         isLoading={isVZSyncing || isVZPublishing}
                         onClick={() => onSyncPublish(VZ, vzButtonType)}
@@ -70,6 +72,7 @@ ShrinkedHeader.propTypes = {
     isVZPublishing: PropTypes.bool,
     isMOVSyncing: PropTypes.bool,
     isMOVPublishing: PropTypes.bool,
+    isVZdisabled: PropTypes.bool,
 };
 
 ShrinkedHeader.defaultProps = {
@@ -84,6 +87,7 @@ ShrinkedHeader.defaultProps = {
     isVZPublishing: false,
     isMOVSyncing: false,
     isMOVPublishing: false,
+    isVZdisabled: false,
 };
 
 export default ShrinkedHeader;
