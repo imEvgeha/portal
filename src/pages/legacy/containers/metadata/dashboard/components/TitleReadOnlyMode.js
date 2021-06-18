@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
-import {EPISODE, toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
+import {toPrettyContentTypeIfExist} from '../../../../constants/metadata/contentType';
 import Spinner from '@atlaskit/spinner';
 import {renderTitleName} from './utils/utils';
 
@@ -71,7 +71,7 @@ class TitleReadOnlyMode extends Component {
                             <Col>
                                 <Alert color="light" id="titleName">
                                     <h2>
-                                        <b>{contentType === EPISODE.apiName ? 'Concatenated Title' : 'Title'} </b>
+                                        <b>Title: </b>
                                         {title ? (
                                             renderTitleName(
                                                 title,
@@ -87,16 +87,6 @@ class TitleReadOnlyMode extends Component {
                                 </Alert>
                             </Col>
                         </Row>
-                        {seasonNumber && episodeNumber && (
-                            <Row>
-                                <Col>
-                                    <Alert color="light" id="titleContentType">
-                                        <b>Title:</b>
-                                        {title ? title : <span style={{color: '#999'}}>Empty</span>}
-                                    </Alert>
-                                </Col>
-                            </Row>
-                        )}
                         <Row>
                             <Col>
                                 <Alert color="light" id="titleContentType">

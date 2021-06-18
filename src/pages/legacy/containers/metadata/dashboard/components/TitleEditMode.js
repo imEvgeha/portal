@@ -94,25 +94,6 @@ class TitleEditMode extends Component {
                         />
                     </Col>
                     <Col>
-                        {contentType === EPISODE.apiName && (
-                            <Row>
-                                <Col>
-                                    <Label for="title">Concatenated Title</Label>
-                                    <AvField
-                                        readOnly
-                                        name="concatenatedTitle"
-                                        id="concatenatedTitle"
-                                        value={renderTitleName(
-                                            title,
-                                            contentType,
-                                            episodic.seasonNumber,
-                                            episodic.episodeNumber,
-                                            episodic.seriesTitleName
-                                        )}
-                                    />
-                                </Col>
-                            </Row>
-                        )}
                         <Row>
                             <Col>
                                 <Label for="title">
