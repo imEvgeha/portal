@@ -19,7 +19,7 @@ import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
-import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
+import {prepareRight, rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import {AVAILS_PATH} from '../../availsRoutes';
 import {
     createRightMatchingColumnDefs,
@@ -107,19 +107,21 @@ const RightToMatchView = ({
         );
     };
 
-    const onDeclareNewRight = () => {
+    const onUpdateRight = () => {
         removeToast();
-        history.push(URL.keepEmbedded('/avails/rights/create'));
+        rightsService
+            .updateRightWithFullData({...focusedRight, status: 'Ready'}, focusedRight.id, true)
+            .then(() => history.push(URL.keepEmbedded(`/avails/rights/${focusedRight.id}`)));
     };
 
-    const onNewRightClick = () => {
+    const onUpdateRightClick = () => {
         addToast({
             title: WARNING_TITLE,
             description: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
             icon: WARNING_ICON,
             actions: [
                 {content: 'Cancel', onClick: () => removeToast()},
-                {content: 'OK', onClick: onDeclareNewRight},
+                {content: 'OK', onClick: onUpdateRight},
             ],
             isWithOverlay: true,
         });
@@ -130,7 +132,7 @@ const RightToMatchView = ({
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id || '0'}>
-                <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
+                <Button onClick={onUpdateRightClick}>{NEW_BUTTON}</Button>
             </CustomActionsCellRenderer>
         );
     };
