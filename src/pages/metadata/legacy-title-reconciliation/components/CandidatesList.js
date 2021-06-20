@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -53,6 +53,12 @@ const CandidatesList = ({
             gridApi.setFilterModel();
         }
     };
+
+    useEffect(() => {
+        // temp fix for aggrid not refreshing matching column when row count = 1
+        setTotalCount('One');
+        gridApi && gridApi.refreshCells({force: true});
+    }, [totalCount === 1]);
 
     return (
         <div className="nexus-c-candidates-list">
