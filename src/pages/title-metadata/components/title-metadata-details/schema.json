@@ -831,6 +831,7 @@
                                     "name": "Genres",
                                     "path": "genres",
                                     "type": "multiselect",
+                                    "isRequiredVZ": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "name",
                                         "defaultLabelPath": "name"
@@ -845,6 +846,7 @@
                                     "name": "Display Title",
                                     "maxLength": 2000,
                                     "path": "title.title",
+                                    "isRequiredVZ": true,
                                     "type": "string",
                                     "dependencies": [
                                         {
@@ -871,6 +873,7 @@
                                 },
                                 "editorial.title.shortTitle": {
                                     "name": "Short Title",
+                                    "isRequiredVZ": true,
                                     "maxLength": 500,
                                     "path": "title.shortTitle",
                                     "type": "string"
@@ -883,18 +886,21 @@
                                 },
                                 "editorial.title.longTitle": {
                                     "name": "Long Title",
+                                    "isRequiredVZ": true,
                                     "maxLength": 2000,
                                     "path": "title.longTitle",
                                     "type": "string"
                                 },
                                 "editorial.title.sortTitle": {
                                     "name": "Sort Title",
+                                    "isRequiredVZ": true,
                                     "maxLength": 500,
                                     "path": "title.sortTitle",
                                     "type": "string"
                                 },
                                 "editorial.synopsis.description": {
                                     "name": "Short Synopsis",
+                                    "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
                                     "path": "synopsis.description",
                                     "type": "textarea",
@@ -923,6 +929,7 @@
                                 },
                                 "editorial.synopsis.shortDescription": {
                                     "name": "Medium Synopsis",
+                                    "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
                                     "path": "synopsis.shortDescription",
                                     "type": "textarea",
@@ -951,6 +958,7 @@
                                 },
                                 "editorial.synopsis.longDescription": {
                                     "name": "Long Synopsis",
+                                    "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
                                     "path": "synopsis.longDescription",
                                     "type": "textarea"

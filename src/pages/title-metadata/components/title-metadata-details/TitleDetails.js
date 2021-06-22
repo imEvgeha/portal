@@ -64,6 +64,8 @@ const TitleDetails = ({
     const [isEditView, setIsEditView] = useState(false);
     const [refresh, setRefresh] = useState(false);
 
+    const {fields} = schema;
+
     useEffect(() => {
         fetchConfigApiEndpoints();
         const {params} = match || {};
@@ -83,7 +85,6 @@ const TitleDetails = ({
         const {params} = match || {};
         const {id} = params;
         // remove fields under arrayWithTabs
-        const {fields} = schema;
         const innerFields = getAllFields(fields, true);
         const allFields = getAllFields(fields, false);
         const valuesNoInnerFields = [];
@@ -156,6 +157,8 @@ const TitleDetails = ({
                 isMOVSyncing={isMOVTitleSyncing}
                 isVZPublishing={isVZTitlePublishing}
                 isMOVPublishing={isMOVTitlePublishing}
+                initialData={extendTitleWithExternalIds()}
+                fieldsVZ={Object.values(getAllFields(fields, false)).filter(f => f.isRequiredVZ || f.oneIsRequiredVZ)}
             />
             <NexusDynamicForm
                 castCrewConfig={castCrewConfig}

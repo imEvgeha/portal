@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import Tooltip from '@atlaskit/tooltip';
 import classnames from 'classnames';
-import {VZ, MOVIDA, MGM} from '../../../constants';
+import {VZ, MOVIDA, MGM, UNABLE_PUBLISH} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import './ShrinkedHeader.scss';
 
@@ -18,6 +19,7 @@ const ShrinkedHeader = ({
     isVZPublishing,
     isMOVSyncing,
     isMOVPublishing,
+    isVZdisabled,
 }) => {
     const [vzExternalData] = externalIds.filter(id => id.externalSystem === VZ.toLowerCase());
     const vzButtonType = vzExternalData ? 'sync' : 'publish';
@@ -27,6 +29,18 @@ const ShrinkedHeader = ({
     const getButtonLabel = externalSystem => {
         const externalData = externalSystem === VZ ? vzExternalData : movidaExternalData;
         return externalData && externalData.publishedAt ? `Sync to ${externalSystem}` : `Publish to ${externalSystem}`;
+    };
+    const buildButton = () => {
+        return (
+            <Button
+                isDisabled={isVZdisabled}
+                appearance="default"
+                isLoading={isVZSyncing || isVZPublishing}
+                onClick={() => onSyncPublish(VZ, vzButtonType)}
+            >
+                {getButtonLabel(VZ)}
+            </Button>
+        );
     };
 
     return (
@@ -38,13 +52,7 @@ const ShrinkedHeader = ({
             <div>{title}</div>
             {catalogueOwner !== MGM && isNexusTitle(titleId) && !isEditView && (
                 <div className="nexus-c-shrinked-header__sync-publish">
-                    <Button
-                        appearance="default"
-                        isLoading={isVZSyncing || isVZPublishing}
-                        onClick={() => onSyncPublish(VZ, vzButtonType)}
-                    >
-                        {getButtonLabel(VZ)}
-                    </Button>
+                    {isVZdisabled ? <Tooltip content={UNABLE_PUBLISH}>{buildButton()}</Tooltip> : buildButton()}
                     <Button
                         appearance="default"
                         isLoading={isMOVSyncing || isMOVPublishing}
@@ -70,6 +78,7 @@ ShrinkedHeader.propTypes = {
     isVZPublishing: PropTypes.bool,
     isMOVSyncing: PropTypes.bool,
     isMOVPublishing: PropTypes.bool,
+    isVZdisabled: PropTypes.bool,
 };
 
 ShrinkedHeader.defaultProps = {
@@ -84,6 +93,7 @@ ShrinkedHeader.defaultProps = {
     isVZPublishing: false,
     isMOVSyncing: false,
     isMOVPublishing: false,
+    isVZdisabled: false,
 };
 
 export default ShrinkedHeader;
