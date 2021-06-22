@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import Tooltip from '@atlaskit/tooltip';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import moment from 'moment';
 import {SUCCESS, ERROR, SYNC, PUBLISH, UNABLE_PUBLISH} from '../../../constants';
