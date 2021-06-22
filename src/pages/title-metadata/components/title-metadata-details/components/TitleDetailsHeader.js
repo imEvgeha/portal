@@ -30,12 +30,10 @@ const TitleDetailsHeader = ({
     const [isVZdisabled, setIsVZdisabled] = useState(false);
 
     const checkVZdisabled = emet => {
-        // get each field that is required in schema
-        // emet.locale && emet.language && emet.title.title && emet.title.shortTitle && emet.title.longTitle && emet.title.sortTitle &&
-        // const res =   emet.metadataStatus === 'complete' && emet.genres && emet.genres.length > 0;
+        // get each field that is required for VZ in schema
         const res =
             emet.metadataStatus === 'complete' &&
-            fieldsVZ.filter(f => f.isRequiredVZ).every(v => get(emet, v.path)) &&
+            fieldsVZ.filter(f => f.isRequiredVZ).every(v => !!get(emet, v.path)) &&
             fieldsVZ.filter(f => f.oneIsRequiredVZ).some(v => get(emet, v.path));
         return res;
     };

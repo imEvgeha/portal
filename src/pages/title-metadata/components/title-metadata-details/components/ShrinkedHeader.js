@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import Tooltip from '@atlaskit/tooltip';
 import classnames from 'classnames';
-import {VZ, MOVIDA, MGM} from '../../../constants';
+import {VZ, MOVIDA, MGM, UNABLE_PUBLISH} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import './ShrinkedHeader.scss';
 
@@ -29,6 +30,18 @@ const ShrinkedHeader = ({
         const externalData = externalSystem === VZ ? vzExternalData : movidaExternalData;
         return externalData && externalData.publishedAt ? `Sync to ${externalSystem}` : `Publish to ${externalSystem}`;
     };
+    const buildButton = () => {
+        return (
+            <Button
+                isDisabled={isVZdisabled}
+                appearance="default"
+                isLoading={isVZSyncing || isVZPublishing}
+                onClick={() => onSyncPublish(VZ, vzButtonType)}
+            >
+                {getButtonLabel(VZ)}
+            </Button>
+        );
+    };
 
     return (
         <div
@@ -39,14 +52,7 @@ const ShrinkedHeader = ({
             <div>{title}</div>
             {catalogueOwner !== MGM && isNexusTitle(titleId) && !isEditView && (
                 <div className="nexus-c-shrinked-header__sync-publish">
-                    <Button
-                        isDisabled={isVZdisabled}
-                        appearance="default"
-                        isLoading={isVZSyncing || isVZPublishing}
-                        onClick={() => onSyncPublish(VZ, vzButtonType)}
-                    >
-                        {getButtonLabel(VZ)}
-                    </Button>
+                    {isVZdisabled ? <Tooltip content={UNABLE_PUBLISH}>{buildButton()}</Tooltip> : buildButton()}
                     <Button
                         appearance="default"
                         isLoading={isMOVSyncing || isMOVPublishing}
