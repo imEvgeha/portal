@@ -31,7 +31,7 @@ const SyncPublish = ({externalSystem, externalIds, onSyncPublish, isSyncing, isP
 
     return (
         <div className="nexus-c-sync-publish">
-            {disabled ? <Tooltip content={UNABLE_PUBLISH}>{buildButton()}</Tooltip> : buildButton()}
+            {disabled ? <span title={UNABLE_PUBLISH}>{buildButton()}</span> : buildButton()}
             <div className="nexus-c-sync-publish__msg">
                 <span className={`nexus-c-sync-publish__status--${statusIndicator}`} />
                 {publishedDate}

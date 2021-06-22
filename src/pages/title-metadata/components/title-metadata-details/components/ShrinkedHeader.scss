@@ -18,7 +18,11 @@
 }
 
 .nexus-c-shrinked-header__sync-publish {
+    display: flex;
     > button:first-child {
+        @include margin(0, 3, 0, 0);
+    }
+    > div:first-child {
         @include margin(0, 3, 0, 0);
     }
 }
