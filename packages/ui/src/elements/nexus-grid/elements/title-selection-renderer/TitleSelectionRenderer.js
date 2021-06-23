@@ -14,7 +14,7 @@ const TitleSelectionRenderer = ({value, column, node, isNexusDisabled, selection
         <input
             type={selectionType}
             className={`title-selection-${selectionType}__${value ? 'selected' : 'unselected'}`}
-            onChange={checkedHandler}
+            onClick={checkedHandler}
             checked={value}
         />
     );
