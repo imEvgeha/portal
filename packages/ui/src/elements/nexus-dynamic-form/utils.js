@@ -446,7 +446,7 @@ export const getProperValues = (schema, values) => {
 };
 
 export const getLabel = (label, isRequired, isRequiredVZ) => {
-    return `${label}${isRequired ? '*' : ''}${isRequiredVZ ? '**' : ''}: `;
+    return `${label}${isRequired ? '*' : isRequiredVZ ? '**' : ''}: `;
 };
 
 export const renderLabel = (label, isRequired, tooltip, isGridLayout, isRequiredVZ, oneIsRequiredVZ) => {
