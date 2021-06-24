@@ -25,6 +25,7 @@ const TitlesTable = compose(
 
 const RightsMatchingTitlesTable = ({
     setTotalCount,
+    setGridApi,
     contentType,
     setTitlesTableIsReady,
     isDisabled,
@@ -57,8 +58,9 @@ const RightsMatchingTitlesTable = ({
     };
     const updatedColumns = updateColumnDefs(mappings);
 
-    const onGridReady = ({type}) => {
+    const onGridReady = ({type, api}) => {
         if (type === GRID_EVENTS.READY) {
+            setGridApi(api);
             setTitlesTableIsReady(true);
         }
     };
@@ -88,6 +90,7 @@ const RightsMatchingTitlesTable = ({
 
 RightsMatchingTitlesTable.propTypes = {
     setTotalCount: PropTypes.func,
+    setGridApi: PropTypes.func,
     contentType: PropTypes.string,
     setTitlesTableIsReady: PropTypes.func,
     onCellValueChanged: PropTypes.func,
@@ -98,6 +101,7 @@ RightsMatchingTitlesTable.propTypes = {
 
 RightsMatchingTitlesTable.defaultProps = {
     setTotalCount: () => null,
+    setGridApi: () => null,
     contentType: null,
     setTitlesTableIsReady: () => null,
     onCellValueChanged: () => null,

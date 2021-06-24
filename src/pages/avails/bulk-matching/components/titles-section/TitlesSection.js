@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import Spinner from '@atlaskit/spinner';
@@ -21,8 +21,15 @@ const TitlesSection = ({
     const [titlesTableIsReady, setTitlesTableIsReady] = useState(false);
     const [totalCount, setTotalCount] = useState(0);
     const [selectedActive, setSelectedActive] = useState(false);
+    const [gridApi, setGridApi] = useState();
 
     const {matchList, onCellValueChanged, selectedItems, duplicateButton, matchButton} = selectionList;
+
+    useEffect(() => {
+        // temp fix for aggrid not refreshing matching column when row count = 1
+        setTotalCount('One');
+        gridApi && gridApi.refreshCells({force: true});
+    }, [totalCount === 1]);
 
     return (
         <>
@@ -34,7 +41,9 @@ const TitlesSection = ({
                     )}
                 >
                     <div className="nexus-c-bulk-matching__titles-table-header">
-                        <div className="nexus-c-bulk-matching__titles-table-header-title">Titles ({totalCount})</div>
+                        <div className="nexus-c-bulk-matching__titles-table-header-title">
+                            Titles ({totalCount === 'One' ? 1 : totalCount})
+                        </div>
                         <Button
                             className="nexus-c-bulk-matching__titles-table-selected-btn"
                             onClick={() => setSelectedActive(!selectedActive)}
@@ -52,6 +61,7 @@ const TitlesSection = ({
                     >
                         <RightsMatchingTitlesTable
                             setTotalCount={setTotalCount}
+                            setGridApi={setGridApi}
                             contentType={contentType}
                             setTitlesTableIsReady={setTitlesTableIsReady}
                             isDisabled={isMatchAndCreateLoading || isMatchLoading}
