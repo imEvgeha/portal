@@ -39,7 +39,7 @@ const withOptionalCheckbox = () => WrappedComponent => {
         };
 
         const getDateValue = value => {
-            return useCurrentDate ? new Date() : value || '';
+            return useCurrentDate && !value ? new Date() : value || '';
         };
 
         return isOptional ? (
