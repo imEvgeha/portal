@@ -529,6 +529,7 @@
                                     "type": "select",
                                     "isReadOnlyInEdit": true,
                                     "isRequired": true,
+                                    "isRequiredVZ": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "countryCode",
                                         "defaultLabelPath": "countryName"
@@ -540,6 +541,7 @@
                                     "type": "select",
                                     "isReadOnlyInEdit": true,
                                     "isRequired": true,
+                                    "isRequiredVZ": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "languageCode",
                                         "defaultLabelPath": "languageName"
@@ -588,6 +590,7 @@
                                     "type": "select",
                                     "path": "metadataStatus",
                                     "isRequired": true,
+                                    "isRequiredVZ": true,
                                     "optionsConfig": {
                                         "options": [
                                             {
