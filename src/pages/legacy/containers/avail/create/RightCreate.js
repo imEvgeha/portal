@@ -1097,7 +1097,7 @@ class RightCreate extends React.Component {
                             case 'select':
                                 // set contentType state
                                 if(mapping.javaVariableName === 'contentType') {
-                                    if(value && value.value && this.state.contentType !== value.value) {
+                                    if(value?.value && this.state.contentType !== value.value) {
                                         this.setState(prev => ({...prev, contentType: value.value}));
                                     }
                                 }
