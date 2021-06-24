@@ -3,10 +3,12 @@ export const MY_PREDEFINED_VIEWS_LABEL = 'Predefined Views';
 export const SAVED_TABLE_DROPDOWN_LABEL = 'Saved Table Views:';
 export const ERROR_VIEW = 'in-error';
 export const READY_PENDING_VIEW = 'ready-or-pending';
+export const WITHDRAWN_VIEW = 'Withdrawn';
 export const SAVED_TABLE_SELECT_OPTIONS = [
     {label: 'All', value: 'all'},
     {label: 'In Error', value: ERROR_VIEW},
     {label: 'Ready/Pending', value: READY_PENDING_VIEW},
+    {label: 'Withdrawn', value: WITHDRAWN_VIEW},
 ];
 export const GROUPED_OPTIONS = [
     {
