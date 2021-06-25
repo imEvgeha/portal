@@ -22,6 +22,7 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
 import usePrevious from '../../../util/hooks/usePrevious';
+import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridApiFix';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {
@@ -87,8 +88,6 @@ const RightsRepository = ({
     username,
 }) => {
     const isMounted = useRef(true);
-    const [totalCount, setTotalCount] = useState(0);
-    const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
     const [selectedColumnApi, setSelectedColumnApi] = useState(null);
     const [prePlanGridApi, setPrePlanGridApi] = useState();
@@ -98,7 +97,6 @@ const RightsRepository = ({
     const [selectedForPlanningGridApi, setSelectedForPlanningGridApi] = useState(null);
     const [selectedForPlanningColumnApi, setSelectedForPlanningColumnApi] = useState(null);
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
-    const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
     const {search} = location;
     const [selectedFilter, setSelectedFilter] = useState({});
@@ -108,6 +106,8 @@ const RightsRepository = ({
     const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
     const [singleRightMatch, setSingleRightMatch] = useState([]);
+    const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
+    const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
 
     useEffect(() => {
         return () => {
@@ -252,12 +252,6 @@ const RightsRepository = ({
             setCurrentUserSelectedRights(Object.values(usersSelectedRights));
         }
     }, [Object.values(get(selectedRights, username, {})).length, username]);
-
-    useEffect(() => {
-        // temp fix for aggrid not refreshing matching column when row count = 1
-        setTotalCount('One');
-        gridApi && gridApi.refreshCells({force: true});
-    }, [totalCount === 1]);
 
     const columnDefsClone = columnDefs.map(columnDef => {
         const updatedColumnDef = {
