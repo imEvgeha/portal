@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
+import useRowCountWithGridApiFix from '../../../../../util/hooks/useRowCountWithGridApiFix';
 import MatchedCombinedTitlesTable from '../../../matched-combined-titles-table/MatchedCombinedTitlesTable';
 import RightsMatchingTitlesTable from '../../../rights-matching-titles-table/RightsMatchingTitlesTable';
 import BulkMatchingActionsBar from '../actions-bar/BulkMatchingActionsBar';
@@ -19,17 +20,10 @@ const TitlesSection = ({
     selectionList,
 }) => {
     const [titlesTableIsReady, setTitlesTableIsReady] = useState(false);
-    const [totalCount, setTotalCount] = useState(0);
     const [selectedActive, setSelectedActive] = useState(false);
-    const [gridApi, setGridApi] = useState();
+    const {count: totalCount, setCount: setTotalCount, setApi: setGridApi} = useRowCountWithGridApiFix();
 
     const {matchList, onCellValueChanged, selectedItems, duplicateButton, matchButton} = selectionList;
-
-    useEffect(() => {
-        // temp fix for aggrid not refreshing matching column when row count = 1
-        setTotalCount('One');
-        gridApi && gridApi.refreshCells({force: true});
-    }, [totalCount === 1]);
 
     return (
         <>
