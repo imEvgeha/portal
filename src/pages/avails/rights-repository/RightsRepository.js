@@ -400,7 +400,7 @@ const RightsRepository = ({
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
         : columnDefsClone;
 
-    const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
+    const onRightsRepositoryGridEvent = debounce(({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
             case READY:
@@ -490,7 +490,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    };
+    }, 1000);
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
