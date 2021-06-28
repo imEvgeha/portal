@@ -1041,14 +1041,12 @@ class RightCreate extends React.Component {
                                         req = false;
                                         mapping.required = false;
                                     }
-                                    else if(mapping.javaVariableName === 'episodic.seriesTitle' ||
-                                        (mapping.javaVariableName === 'episodic.seasonTitle' && this.state.contentType === 'Season') ||
-                                        (mapping.javaVariableName === 'episodic.episodeTitle' && this.state.contentType === 'Episode')) {
+                                    else if(mapping.javaVariableName === 'episodic.seriesTitle' && ['Season', "Episode", "Series"].includes(this.state.contentType))
+                                    {
                                         req = true;
                                         mapping.required = true;
                                     }
-                                    if((mapping.javaVariableName === 'episodic.seasonTitle' && this.state.contentType !== 'Season') ||
-                                        (mapping.javaVariableName === 'episodic.episodeTitle' && this.state.contentType !== 'Episode')) {
+                                    else {
                                         req = false;
                                         mapping.required = false;
                                     }
@@ -1069,8 +1067,8 @@ class RightCreate extends React.Component {
                                 break;
                             case 'integer':
                                 req = required;
-                                if(mapping.javaVariableName === 'episodic.episodeNumber') {
-                                    if(this.state.contentType === 'Episode') {
+                                if(this.state.contentType === 'Episode') {
+                                    if(mapping.javaVariableName === 'episodic.episodeNumber' || mapping.javaVariableName === 'episodic.seasonNumber') {
                                         req = true;
                                         mapping.required = true;
                                     }
@@ -1078,6 +1076,20 @@ class RightCreate extends React.Component {
                                         req = false;
                                         mapping.required = false;
                                     }
+                                }
+                                else if(this.state.contentType === 'Season') {
+                                    if(mapping.javaVariableName === 'episodic.seasonNumber') {
+                                        req = true;
+                                        mapping.required = true;
+                                    }
+                                    else {
+                                        req = false;
+                                        mapping.required = false;
+                                    }
+                                }
+                                else {
+                                    req = false;
+                                    mapping.required = false;
                                 }
 
                                 renderFields.push(
