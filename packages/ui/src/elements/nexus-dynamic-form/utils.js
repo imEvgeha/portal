@@ -398,7 +398,6 @@ export const renderNexusField = (
         setDisableSubmit,
     }
 ) => {
-   // console.log('path, initialData ',path, initialData, field);
     return toShow(field, initialData) ? (
         <NexusField
             {...field}

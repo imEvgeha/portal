@@ -35,7 +35,6 @@
                         "title": {
                             "name": "Title",
                             "type": "string",
-                            "isRequired": true,
                             "path": "title",
                             "tooltip": "Read Only when coreTitleId exists",
                             "dependencies": [
@@ -51,6 +50,39 @@
                                             "name": "territory",
                                             "value": true,
                                             "subfield": "selected"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode",
+                                            "operator": "ne"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Season",
+                                            "operator": "ne"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Series",
+                                            "operator": "ne"
                                         }
                                     ]
                                 }
@@ -679,24 +711,12 @@
                                     "fields": [
                                         {
                                             "name": "contentType",
-                                            "value": "Season"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "view": "EDIT",
-                                    "type": "required",
-                                    "fields": [
+                                            "value": "Episode"
+                                        },
                                         {
                                             "name": "contentType",
-                                            "value": "Episode"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "view": "EDIT",
-                                    "type": "required",
-                                    "fields": [
+                                            "value": "Season"
+                                        },
                                         {
                                             "name": "contentType",
                                             "value": "Series"
@@ -728,6 +748,22 @@
                                 {
                                     "name": "isInteger"
                                 }
+                            ],
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Season"
+                                        }
+                                    ]
+                                }
                             ]
                         },
                         "episodeTitle": {
@@ -747,6 +783,18 @@
                             "validation": [
                                 {
                                     "name": "isInteger"
+                                }
+                            ],
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode"
+                                        }
+                                    ]
                                 }
                             ]
                         },
