@@ -1041,13 +1041,12 @@ class RightCreate extends React.Component {
                                         req = false;
                                         mapping.required = false;
                                     }
-                                    else if(mapping.javaVariableName === 'episodic.seriesTitle' && ['Season', "Episode"].includes(this.state.contentType))
+                                    else if(mapping.javaVariableName === 'episodic.seriesTitle' && ['Season', "Episode", "Series"].includes(this.state.contentType))
                                     {
                                         req = true;
                                         mapping.required = true;
                                     }
-                                    if((mapping.javaVariableName === 'episodic.seasonTitle' && this.state.contentType !== 'Season') ||
-                                        (mapping.javaVariableName === 'episodic.episodeTitle' && this.state.contentType !== 'Episode')) {
+                                    else {
                                         req = false;
                                         mapping.required = false;
                                     }
