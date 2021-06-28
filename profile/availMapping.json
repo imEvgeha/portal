@@ -62,6 +62,17 @@
             ]
         },
         {
+            "javaVariableName": "updatedCatalogReceived",
+            "displayName": "Removed from Catalogue",
+            "dataType": "boolean",
+            "searchDataType": "boolean",
+            "queryParamName": "updatedCatalogReceived",
+            "readOnly": true,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": false
+        },
+        {
             "javaVariableName": "licensor",
             "displayName": "Licensor",
             "dataType": "select",
@@ -1881,18 +1892,6 @@
             "queryParamName": "originallyReceivedAt",
             "readOnly": false,
             "readOnlyInDetails": true,
-            "enableSearch": true,
-            "enableEdit": true,
-            "required": false
-        },
-        {
-            "javaVariableName": "updatedCatalogReceivedAt",
-            "displayName": "Removed from Catalogue Date",
-            "dataType": "timestamp",
-            "searchDataType": "timestamp",
-            "queryParamName": "updatedCatalogReceivedAt",
-            "readOnly": true,
-            "readOnlyInDetails": false,
             "enableSearch": true,
             "enableEdit": true,
             "required": false
