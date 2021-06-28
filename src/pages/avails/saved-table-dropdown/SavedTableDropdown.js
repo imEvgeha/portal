@@ -61,7 +61,6 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
                     break;
                 }
                 case REMOVED_FROM_CATALOG_VIEW: {
-                    // const filterInstance = gridApi.getFilterInstance('updatedCatalogReceived');
                     gridApi.setFilterModel({
                         updatedCatalogReceived: {
                             filterType: 'set',
