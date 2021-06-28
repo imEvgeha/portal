@@ -26,6 +26,18 @@
             "tooltip": "Removed from Catalog"
         },
         {
+            "javaVariableName": "updatedCatalogReceivedAt",
+            "displayName": "Removed from Catalogue Date",
+            "dataType": "timestamp",
+            "searchDataType": "timestamp",
+            "queryParamName": "updatedCatalogReceivedAt",
+            "readOnly": true,
+            "readOnlyInDetails": false,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": false
+        },
+        {
             "javaVariableName": "rightStatus",
             "searchDataType": "icon",
             "displayName": "Withdrawn",
