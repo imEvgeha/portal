@@ -36,7 +36,7 @@
                             "name": "Title",
                             "type": "string",
                             "path": "title",
-                            "tooltip": "Read Only when coreTitleId exists",
+                            "tooltip": "Disabled for coreTitleId and episodic rights",
                             "dependencies": [
                                 {
                                     "view": "EDIT",
@@ -50,6 +50,18 @@
                                             "name": "territory",
                                             "value": true,
                                             "subfield": "selected"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Season"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Series"
                                         }
                                     ]
                                 },
