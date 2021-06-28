@@ -65,6 +65,7 @@ class TitleCreate extends React.Component {
                     seriesTitleName: '',
                     episodeNumber: '',
                     seasonNumber: '',
+                    copyCastCrewFromSeason: false,
                 },
             },
         };
@@ -227,6 +228,7 @@ class TitleCreate extends React.Component {
                     seriesTitleName: '',
                     episodeNumber: '',
                     seasonNumber: '',
+                    copyCastCrewFromSeason: false,
                 },
             },
             seasonChecked: true,
@@ -278,6 +280,7 @@ class TitleCreate extends React.Component {
                     episodic: {
                         ...this.state.titleForm.episodic,
                         episodeNumber: '',
+                        copyCastCrewFromSeason: false,
                     },
                 },
             });
@@ -308,6 +311,7 @@ class TitleCreate extends React.Component {
                         ...this.state.titleForm.episodic,
                         seasonNumber: '',
                         episodeNumber: '',
+                        copyCastCrewFromSeason: false,
                     },
                 },
             });
@@ -339,6 +343,7 @@ class TitleCreate extends React.Component {
                         seriesTitleName: '',
                         episodeNumber: '',
                         seasonNumber: '',
+                        copyCastCrewFromSeason: false,
                     },
                 },
             });
@@ -516,6 +521,28 @@ class TitleCreate extends React.Component {
                                             ) : null}
                                         </Row>
                                     ) : null}
+                                    {!this.state.episodeChecked && (
+                                        <Row>
+                                            <Col>
+                                                <Checkbox
+                                                    id="addCrew"
+                                                    label="Add Cast Crew from Season to episode"
+                                                    onChange={event =>
+                                                        this.setState({
+                                                            titleForm: {
+                                                                ...this.state.titleForm,
+                                                                episodic: {
+                                                                    ...this.state.titleForm.episodic,
+                                                                    copyCastCrewFromSeason: event.target.checked,
+                                                                },
+                                                            },
+                                                        })
+                                                    }
+                                                    isChecked={this.state.titleForm.episodic.copyCastCrewFromSeason}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    )}
                                     <Row style={{marginTop: '15px'}}>
                                         <Col>
                                             <Label for="titleReleaseYear">
