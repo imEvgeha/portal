@@ -338,18 +338,6 @@ const withFilterableColumns = ({
                                 };
                                 break;
                             }
-                            case ICON:
-                                const searchQuery = {};
-                                searchQuery[queryParamKey] = queryParamValue;
-                                columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
-                                // columnDef.filter = CUSTOM_ICON;
-                                // columnDef.filterParams = {
-                                //     // TODO; check is this necessary
-                                //     ...DEFAULT_FILTER_PARAMS,
-                                //     searchQuery,
-                                //     icon,
-                                // };
-                                break;
                             default:
                                 columnDef.filter = TEXT;
                                 columnDef.filterParams = DEFAULT_FILTER_PARAMS;
