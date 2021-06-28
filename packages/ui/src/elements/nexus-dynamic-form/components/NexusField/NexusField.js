@@ -74,6 +74,10 @@ const NexusField = ({
         return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, getCurrentValues});
     };
 
+    if(path === "episodic.seriesTitle") {
+         console.log(' seriesTitle required ',checkDependencies('required'));
+    }
+
     const addedProps = {
         isOptional,
         setFieldValue,

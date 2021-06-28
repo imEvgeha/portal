@@ -398,6 +398,7 @@ export const renderNexusField = (
         setDisableSubmit,
     }
 ) => {
+   // console.log('path, initialData ',path, initialData, field);
     return toShow(field, initialData) ? (
         <NexusField
             {...field}
@@ -406,7 +407,7 @@ export const renderNexusField = (
             name={key}
             label={field.name}
             view={view}
-            formData={inTabs ? {[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]: initialData} : getValues()}
+            formData={inTabs ? {[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]: initialData} : initialData}
             validationError={getValidationError(initialData.validationErrors, field)}
             defaultValue={getDefaultValue(field, view, initialData)}
             selectValues={selectValues}

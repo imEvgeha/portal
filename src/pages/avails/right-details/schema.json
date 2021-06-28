@@ -671,7 +671,39 @@
                         "seriesTitle": {
                             "name": "Series Title",
                             "type": "string",
-                            "path": "episodic.seriesTitle"
+                            "path": "episodic.seriesTitle",
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Season"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Series"
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         "seriesDisplayTitle": {
                             "name": "Series Display Title",
