@@ -178,7 +178,7 @@ class TitleResultTable extends React.Component {
 
         const selectedRows = e?.api.getSelectedRows();
         let selected = [];
-        selectedRows.map(row => {
+        selectedRows?.map(row => {
             selected.push(row.id);
         });
 

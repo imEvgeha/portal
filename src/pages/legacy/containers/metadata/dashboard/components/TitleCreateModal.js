@@ -56,6 +56,7 @@ class TitleCreate extends React.Component {
             isSeasonNumberRequired: false,
             isEpisodeNumberRequired: false,
             isSyncVZ: false,
+            copyCastCrewFromSeason: false,
             isSyncMovida: false,
             titleForm: {
                 title: '',
@@ -145,7 +146,7 @@ class TitleCreate extends React.Component {
         const title = this.getTitleWithoutEmptyField();
         const {isSyncVZ, isSyncMovida} = this.state;
         titleService
-            .createTitle(title, this.props.tenantCode)
+            .createTitle(title, this.props.tenantCode, this.state.copyCastCrewFromSeason)
             .then(response => {
                 if (isSyncVZ || isSyncMovida) {
                     // call registerTitle API
@@ -272,6 +273,7 @@ class TitleCreate extends React.Component {
                 isReleaseYearRequired: true,
                 isSeriesCompleted: true,
                 isSeasonNumberRequired: true,
+                copyCastCrewFromSeason: false,
                 titleForm: {
                     ...this.state.titleForm,
                     contentType: e.target.value,
@@ -301,6 +303,7 @@ class TitleCreate extends React.Component {
                 episodeChecked: true,
                 seriesChecked: true,
                 isReleaseYearRequired: false,
+                copyCastCrewFromSeason: false,
                 titleForm: {
                     ...this.state.titleForm,
                     contentType: e.target.value,
@@ -318,6 +321,7 @@ class TitleCreate extends React.Component {
                 isSeriesCompleted: false,
                 seriesChecked: false,
                 isReleaseYearRequired: true,
+                copyCastCrewFromSeason: false,
                 isEpisodeNumberRequired: false,
                 isSeasonNumberRequired: false,
                 titleForm: {
@@ -331,6 +335,7 @@ class TitleCreate extends React.Component {
                 episodeChecked: true,
                 seriesChecked: true,
                 isReleaseYearRequired: true,
+                copyCastCrewFromSeason: false,
                 isSeriesCompleted: true,
                 titleForm: {
                     ...this.state.titleForm,
@@ -516,6 +521,22 @@ class TitleCreate extends React.Component {
                                             ) : null}
                                         </Row>
                                     ) : null}
+                                    {!this.state.episodeChecked && (
+                                        <Row>
+                                            <Col>
+                                                <Checkbox
+                                                    id="addCrew"
+                                                    label="Add Cast Crew from Season to episode"
+                                                    onChange={event =>
+                                                        this.setState({
+                                                            copyCastCrewFromSeason: event.currentTarget.checked,
+                                                        })
+                                                    }
+                                                    isChecked={this.state.copyCastCrewFromSeason}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    )}
                                     <Row style={{marginTop: '15px'}}>
                                         <Col>
                                             <Label for="titleReleaseYear">
