@@ -48,7 +48,6 @@ const FILTER_TYPE = {
     REGIONAL_MIDNIGHT: DATETIME_FIELDS.REGIONAL_MIDNIGHT,
 };
 const FILTERABLE_DATA_TYPES = [
-    'icon',
     'string',
     'stringToArray',
     'integer',
