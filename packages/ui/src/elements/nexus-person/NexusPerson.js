@@ -12,6 +12,13 @@ import EditPerson from './elements/EditPerson/EditPerson';
 import './NexusPerson.scss';
 
 const NexusPerson = ({person, index, onRemove, onEditPerson}) => {
+
+    const localizedName = () => {
+        if(person?.language === 'en')
+            return person.displayNameEn;
+        return person.displayName === person.displayNameEn ? '(Needs translation)' : person.displayName;
+    }
+
     return (
         <Draggable draggableId={uid(person.id, index)} index={index}>
             {(provided, snapshot) => (
@@ -21,14 +28,15 @@ const NexusPerson = ({person, index, onRemove, onEditPerson}) => {
                             <div className="nexus-c-nexus-person__info">
                                 <div>
                                     <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
-                                    {person.displayName}
+                                    {localizedName()}
                                 </div>
+                                {person?.language !== 'en' && <div>{person?.displayNameEn}</div>}
                                 <Lozenge appearance="default">{person.personType}</Lozenge>
                             </div>
                             <div className="nexus-c-nexus-person__buttons">
-                                <EditPerson onClick={onEditPerson} />
-                                <RemovePerson onClick={onRemove} />
-                                <DragButton {...provided.dragHandleProps} />
+                                <span title="Edit"><EditPerson onClick={onEditPerson} /></span>
+                                <span title="Remove"><RemovePerson onClick={onRemove} /></span>
+                                <span title="Drag this item"><DragButton {...provided.dragHandleProps} /></span>
                             </div>
                         </div>
                     </DraggableContent>
