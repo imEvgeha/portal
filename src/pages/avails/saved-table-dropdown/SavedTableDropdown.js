@@ -15,6 +15,8 @@ import {
     SAVED_TABLE_SELECT_OPTIONS,
     READY_PENDING_VIEW,
     ERROR_VIEW,
+    WITHDRAWN_VIEW,
+    REMOVED_FROM_CATALOG_VIEW,
 } from './constants';
 import './SavedTableDropdown.scss';
 
@@ -33,20 +35,40 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
             gridApi.destroyFilter('icon');
             gridApi.destroyFilter('icon_1');
 
-            const filterInstance = gridApi.getFilterInstance('status');
             switch (filter) {
-                case ERROR_VIEW:
+                case ERROR_VIEW: {
+                    const filterInstance = gridApi.getFilterInstance('status');
                     filterInstance.setModel({
                         filterType: 'set',
                         values: ['Error'],
                     });
                     break;
-                case READY_PENDING_VIEW:
+                }
+                case READY_PENDING_VIEW: {
+                    const filterInstance = gridApi.getFilterInstance('status');
                     filterInstance.setModel({
                         filterType: 'set',
                         values: ['Pending', 'ReadyNew', 'Ready'],
                     });
                     break;
+                }
+                case WITHDRAWN_VIEW: {
+                    const filterInstance = gridApi.getFilterInstance('rightStatus');
+                    filterInstance.setModel({
+                        filterType: 'set',
+                        values: ['Withdrawn'],
+                    });
+                    break;
+                }
+                case REMOVED_FROM_CATALOG_VIEW: {
+                    gridApi.setFilterModel({
+                        updatedCatalogReceived: {
+                            filterType: 'set',
+                            values: ['true'],
+                        },
+                    });
+                    break;
+                }
                 default:
                     break;
             }
@@ -61,8 +83,6 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
         if (SAVED_TABLE_SELECT_OPTIONS.map(o => o.value).includes(item.value)) {
             applyPredefinedTableView(item.value);
         } else if (!isEmpty(gridApi) && !isEmpty(columnApi) && item.value) {
-            gridApi.destroyFilter('icon');
-            gridApi.destroyFilter('icon_1');
             const selectedModel = get(gridState, username, []).filter(i => i.id === item.value);
             const {columnState, filterModel, sortModel} = selectedModel[0] || {};
             gridApi.setFilterModel(filterModel);

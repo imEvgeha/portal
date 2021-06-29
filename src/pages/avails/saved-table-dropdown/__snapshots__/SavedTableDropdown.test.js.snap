@@ -38,6 +38,14 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
               "label": "Ready/Pending",
               "value": "ready-or-pending",
             },
+            Object {
+              "label": "Withdrawn",
+              "value": "Withdrawn",
+            },
+            Object {
+              "label": "Removed from Catalog",
+              "value": "Removed from Catalog",
+            },
           ],
         },
         Object {

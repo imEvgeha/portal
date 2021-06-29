@@ -144,9 +144,10 @@ class TitleCreate extends React.Component {
     onSubmit = () => {
         this.setState({errorMessage: ''});
         const title = this.getTitleWithoutEmptyField();
-        const {isSyncVZ, isSyncMovida} = this.state;
+        const {isSyncVZ, isSyncMovida, copyCastCrewFromSeason} = this.state;
+        const params = {tenantCode: this.props.tenantCode, copyCastCrewFromSeason: copyCastCrewFromSeason};
         titleService
-            .createTitle(title, this.props.tenantCode, this.state.copyCastCrewFromSeason)
+            .createTitle(title, params)
             .then(response => {
                 if (isSyncVZ || isSyncMovida) {
                     // call registerTitle API

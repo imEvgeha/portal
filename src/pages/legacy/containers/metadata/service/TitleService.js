@@ -90,13 +90,13 @@ export const titleService = {
         return nexusFetch(url, {params});
     },
 
-    createTitle: (title, tenantCode) => {
+    createTitle: (title, params) => {
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles';
-        const params = tenantCode ? {tenantCode} : {};
+        const queryParams = params ? params : {};
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(title),
-            params: encodedSerialize(params),
+            params: encodedSerialize(queryParams),
             isWithErrorHandling: false,
         });
     },
