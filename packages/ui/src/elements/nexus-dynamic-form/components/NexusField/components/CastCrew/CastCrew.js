@@ -55,8 +55,6 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
         }
     };
 
-    console.log('persons, language ', persons, language)
-
     return (
         <div
             className={classnames('nexus-c-cast-crew', {
