@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Draggable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
+import Badge from '@atlaskit/badge';
 import Lozenge from '@atlaskit/lozenge';
 import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
 import DragButton from './elements/DragButton/DragButton';
@@ -11,12 +12,12 @@ import RemovePerson from './elements/RemovePerson/RemovePerson';
 import EditPerson from './elements/EditPerson/EditPerson';
 import './NexusPerson.scss';
 
-const NexusPerson = ({person, index, onRemove, onEditPerson}) => {
+const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
 
     const localizedName = () => {
-        if(person?.language === 'en')
+        if(person?.language === 'en' && emetLanguage === 'en')
             return person.displayNameEn;
-        return person.displayName === person.displayNameEn ? '(Needs translation)' : person.displayName;
+        return person.displayName === person.displayNameEn &&  emetLanguage !== person?.language ? '(Needs translation)' : person.displayName;
     }
 
     return (
@@ -30,8 +31,13 @@ const NexusPerson = ({person, index, onRemove, onEditPerson}) => {
                                     <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
                                     {localizedName()}
                                 </div>
-                                {person?.language !== 'en' && <div>{person?.displayNameEn}</div>}
-                                <Lozenge appearance="default">{person.personType}</Lozenge>
+                                {emetLanguage !== 'en' && <div>{person?.displayNameEn}</div>}
+                                <div>
+                                    {person.displayName === person.displayNameEn &&  emetLanguage !== person?.language &&
+                                    <span title="Localized name not found"><Badge appearance="removed">!</Badge></span>}{" "}
+                                    <Lozenge appearance="default">{person.personType}</Lozenge>
+                                </div>
+
                             </div>
                             <div className="nexus-c-nexus-person__buttons">
                                 <span title="Edit"><EditPerson onClick={onEditPerson} /></span>
@@ -51,11 +57,13 @@ NexusPerson.propTypes = {
     index: PropTypes.number.isRequired,
     onRemove: PropTypes.func,
     onEditPerson: PropTypes.func,
+    emetLanguage: PropTypes.string,
 };
 
 NexusPerson.defaultProps = {
     onRemove: () => null,
     onEditPerson: () => null,
+    emetLanguage: "en",
 };
 
 export default NexusPerson;

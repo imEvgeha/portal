@@ -9,7 +9,7 @@ import {
 import classnames from 'classnames';
 import './CastCrew.scss';
 
-const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, castCrewConfig}) => {
+const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, castCrewConfig, language}) => {
     const [cast, setCast] = useState(
         persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
     );
@@ -55,6 +55,8 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
         }
     };
 
+    console.log('persons, language ', persons, language)
+
     return (
         <div
             className={classnames('nexus-c-cast-crew', {
@@ -74,6 +76,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
                     hasCharacter={isEdit}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
+                    emetLanguage={language}
                 />
             </div>
             <div
@@ -89,6 +92,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
                     hasCharacter={false}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
+                    emetLanguage={language}
                 />
             </div>
         </div>
@@ -102,6 +106,7 @@ CastCrew.propTypes = {
     isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
     castCrewConfig: PropTypes.object,
+    language: PropTypes.string,
 };
 
 CastCrew.defaultProps = {
@@ -111,6 +116,7 @@ CastCrew.defaultProps = {
     isVerticalLayout: false,
     searchPerson: undefined,
     castCrewConfig: {},
+    language: "en",
 };
 
 export default CastCrew;
