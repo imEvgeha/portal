@@ -4,7 +4,6 @@ import {
     ModalFooter,
     ModalHeader,
     Modal,
-    Button,
     ModalBody,
     Alert,
     Row,
@@ -14,6 +13,7 @@ import {
     Progress,
     FormGroup,
 } from 'reactstrap';
+import Button from '@atlaskit/button';
 import {AvForm, AvField} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
@@ -56,6 +56,7 @@ class TitleCreate extends React.Component {
             isSeasonNumberRequired: false,
             isEpisodeNumberRequired: false,
             isSyncVZ: false,
+            isCreatingTitle: false,
             copyCastCrewFromSeason: false,
             isSyncMovida: false,
             titleForm: {
@@ -146,6 +147,7 @@ class TitleCreate extends React.Component {
         const title = this.getTitleWithoutEmptyField();
         const {isSyncVZ, isSyncMovida, copyCastCrewFromSeason} = this.state;
         const params = {tenantCode: this.props.tenantCode, copyCastCrewFromSeason: copyCastCrewFromSeason};
+        this.setState({isCreatingTitle: true});
         titleService
             .createTitle(title, params)
             .then(response => {
@@ -172,6 +174,7 @@ class TitleCreate extends React.Component {
                         });
                 }
                 this.form && this.form.reset();
+                this.setState({isCreatingTitle: false});
                 this.cleanFields();
                 this.toggle();
                 this.props.addToast({
@@ -597,10 +600,20 @@ class TitleCreate extends React.Component {
                                 <Alert color="danger">{this.state.errorMessage}</Alert>
                             </div>
                         )}
-                        <Button id="titleCancelBtn" onClick={this.toggle} color="primary">
+                        <Button
+                            id="titleCancelBtn"
+                            onClick={this.toggle}
+                            appearance="primary"
+                            isDisabled={this.state.isCreatingTitle}
+                        >
                             Cancel
                         </Button>
-                        <Button id="titleSaveBtn" color="primary">
+                        <Button
+                            id="titleSaveBtn"
+                            onClick={this.onSubmit}
+                            appearance="primary"
+                            isLoading={this.state.isCreatingTitle}
+                        >
                             Save
                         </Button>
                     </ModalFooter>
