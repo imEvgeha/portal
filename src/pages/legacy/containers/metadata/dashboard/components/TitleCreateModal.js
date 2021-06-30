@@ -56,6 +56,7 @@ class TitleCreate extends React.Component {
             isSeasonNumberRequired: false,
             isEpisodeNumberRequired: false,
             isSyncVZ: false,
+            copyCastCrewFromSeason: false,
             isSyncMovida: false,
             titleForm: {
                 title: '',
@@ -65,7 +66,6 @@ class TitleCreate extends React.Component {
                     seriesTitleName: '',
                     episodeNumber: '',
                     seasonNumber: '',
-                    copyCastCrewFromSeason: false,
                 },
             },
         };
@@ -144,9 +144,10 @@ class TitleCreate extends React.Component {
     onSubmit = () => {
         this.setState({errorMessage: ''});
         const title = this.getTitleWithoutEmptyField();
-        const {isSyncVZ, isSyncMovida} = this.state;
+        const {isSyncVZ, isSyncMovida, copyCastCrewFromSeason} = this.state;
+        const params = {tenantCode: this.props.tenantCode, copyCastCrewFromSeason: copyCastCrewFromSeason};
         titleService
-            .createTitle(title, this.props.tenantCode)
+            .createTitle(title, params)
             .then(response => {
                 if (isSyncVZ || isSyncMovida) {
                     // call registerTitle API
@@ -228,7 +229,6 @@ class TitleCreate extends React.Component {
                     seriesTitleName: '',
                     episodeNumber: '',
                     seasonNumber: '',
-                    copyCastCrewFromSeason: false,
                 },
             },
             seasonChecked: true,
@@ -274,13 +274,13 @@ class TitleCreate extends React.Component {
                 isReleaseYearRequired: true,
                 isSeriesCompleted: true,
                 isSeasonNumberRequired: true,
+                copyCastCrewFromSeason: false,
                 titleForm: {
                     ...this.state.titleForm,
                     contentType: e.target.value,
                     episodic: {
                         ...this.state.titleForm.episodic,
                         episodeNumber: '',
-                        copyCastCrewFromSeason: false,
                     },
                 },
             });
@@ -304,6 +304,7 @@ class TitleCreate extends React.Component {
                 episodeChecked: true,
                 seriesChecked: true,
                 isReleaseYearRequired: false,
+                copyCastCrewFromSeason: false,
                 titleForm: {
                     ...this.state.titleForm,
                     contentType: e.target.value,
@@ -311,7 +312,6 @@ class TitleCreate extends React.Component {
                         ...this.state.titleForm.episodic,
                         seasonNumber: '',
                         episodeNumber: '',
-                        copyCastCrewFromSeason: false,
                     },
                 },
             });
@@ -322,6 +322,7 @@ class TitleCreate extends React.Component {
                 isSeriesCompleted: false,
                 seriesChecked: false,
                 isReleaseYearRequired: true,
+                copyCastCrewFromSeason: false,
                 isEpisodeNumberRequired: false,
                 isSeasonNumberRequired: false,
                 titleForm: {
@@ -335,6 +336,7 @@ class TitleCreate extends React.Component {
                 episodeChecked: true,
                 seriesChecked: true,
                 isReleaseYearRequired: true,
+                copyCastCrewFromSeason: false,
                 isSeriesCompleted: true,
                 titleForm: {
                     ...this.state.titleForm,
@@ -343,7 +345,6 @@ class TitleCreate extends React.Component {
                         seriesTitleName: '',
                         episodeNumber: '',
                         seasonNumber: '',
-                        copyCastCrewFromSeason: false,
                     },
                 },
             });
@@ -529,16 +530,10 @@ class TitleCreate extends React.Component {
                                                     label="Add Cast Crew from Season to episode"
                                                     onChange={event =>
                                                         this.setState({
-                                                            titleForm: {
-                                                                ...this.state.titleForm,
-                                                                episodic: {
-                                                                    ...this.state.titleForm.episodic,
-                                                                    copyCastCrewFromSeason: event.target.checked,
-                                                                },
-                                                            },
+                                                            copyCastCrewFromSeason: event.currentTarget.checked,
                                                         })
                                                     }
-                                                    isChecked={this.state.titleForm.episodic.copyCastCrewFromSeason}
+                                                    isChecked={this.state.copyCastCrewFromSeason}
                                                 />
                                             </Col>
                                         </Row>
