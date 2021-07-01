@@ -229,12 +229,14 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
-                        {...fieldProps}
+                       {...fieldProps}
                         persons={fieldProps.value ? fieldProps.value : []}
                         isEdit={true}
                         isVerticalLayout={isVerticalLayout}
                         searchPerson={searchPerson}
                         castCrewConfig={castCrewConfig}
+                        // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
+                        language={isVerticalLayout? get(formData, 'editorial.language', 'en'): 'en'}
                         {...fieldProps}
                     />
                 );
@@ -308,6 +310,8 @@ const NexusField = ({
                         isVerticalLayout={isVerticalLayout}
                         searchPerson={searchPerson}
                         castCrewConfig={castCrewConfig}
+                        // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
+                        language={isVerticalLayout? get(formData, 'editorial.language', 'en'): 'en'}
                     />
                 );
             case 'licensors':

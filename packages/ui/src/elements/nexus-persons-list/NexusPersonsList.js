@@ -25,6 +25,7 @@ const NexusPersonsList = ({
     updateCastCrew,
     searchPerson,
     castCrewConfig,
+    emetLanguage
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
 
@@ -210,6 +211,7 @@ const NexusPersonsList = ({
                     hasCharacter={hasCharacter}
                     onRemove={() => removePerson(person)}
                     onEditPerson={() => onEditPerson(person)}
+                    emetLanguage={emetLanguage}
                 />
             );
         });
@@ -217,7 +219,7 @@ const NexusPersonsList = ({
 
     const renderPersonsRO = () => {
         return persons.map((person, i) => {
-            return <NexusPersonRO key={uid(person.id, i)} person={person} />;
+            return <NexusPersonRO key={uid(person.id, i)} person={person} emetLanguage={emetLanguage} />;
         });
     };
 
@@ -304,6 +306,7 @@ NexusPersonsList.propTypes = {
     updateCastCrew: PropTypes.func,
     searchPerson: PropTypes.func,
     castCrewConfig: PropTypes.object,
+    emetLanguage: PropTypes.string,
 };
 
 NexusPersonsList.defaultProps = {
@@ -314,6 +317,7 @@ NexusPersonsList.defaultProps = {
     updateCastCrew: () => null,
     searchPerson: () => null,
     castCrewConfig: {},
+    emetLanguage: "en",
 };
 
 export default NexusPersonsList;
