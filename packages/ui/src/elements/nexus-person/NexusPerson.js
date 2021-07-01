@@ -3,8 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Draggable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
-import Badge from '@atlaskit/badge';
-import Lozenge from '@atlaskit/lozenge';
+import Tooltip from '@atlaskit/tooltip';
 import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
 import DragButton from './elements/DragButton/DragButton';
 import DraggableContent from './elements/DraggableContent/DraggableContent';
@@ -29,13 +28,18 @@ const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
                             <div className="nexus-c-nexus-person__info">
                                 <div>
                                     <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
-                                    {localizedName()}
+                                    <span className={person.displayNameEn &&  emetLanguage !== person?.language ? "nexus-c-nexus-person-italic": ""}>
+                                        {localizedName()}
+                                    </span>
                                 </div>
-                                {emetLanguage !== 'en' && <div>{person?.displayNameEn}</div>}
+                                {emetLanguage !== 'en' &&
+                                <div className={person.displayNameEn &&  emetLanguage !== person?.language ? "nexus-c-nexus-person-fade": ""}>
+                                    {person?.displayNameEn}
+                                </div>
+                                }
                                 <div>
                                     {person.displayName === person.displayNameEn &&  emetLanguage !== person?.language &&
-                                    <span title="Localized name not found"><Badge appearance="removed">!</Badge></span>}{" "}
-                                    <Lozenge appearance="default">{person.personType}</Lozenge>
+                                    <Tooltip content="Localized name not defined"><div className="nexus-c-nexus-person-warning"/></Tooltip>}
                                 </div>
 
                             </div>
