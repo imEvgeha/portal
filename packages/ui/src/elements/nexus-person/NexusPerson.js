@@ -9,6 +9,7 @@ import DragButton from './elements/DragButton/DragButton';
 import DraggableContent from './elements/DraggableContent/DraggableContent';
 import RemovePerson from './elements/RemovePerson/RemovePerson';
 import EditPerson from './elements/EditPerson/EditPerson';
+import { NEEDS_TRANSLATION, LOCALIZED_NOT_DEFINED } from '../nexus-persons-list/constants';
 import './NexusPerson.scss';
 
 const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
@@ -16,7 +17,7 @@ const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
     const localizedName = () => {
         if(person?.language === 'en' && emetLanguage === 'en')
             return person.displayNameEn;
-        return person.displayName === person.displayNameEn &&  emetLanguage !== person?.language ? '(Needs translation)' : person.displayName;
+        return person.displayName === person.displayNameEn &&  emetLanguage !== person?.language ? NEEDS_TRANSLATION : person.displayName;
     }
 
     return (
@@ -39,7 +40,7 @@ const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
                                 }
                                 <div>
                                     {person.displayName === person.displayNameEn &&  emetLanguage !== person?.language &&
-                                    <Tooltip content="Localized name not defined"><div className="nexus-c-nexus-person-warning"/></Tooltip>}
+                                    <Tooltip content={LOCALIZED_NOT_DEFINED}><div className="nexus-c-nexus-person-warning"/></Tooltip>}
                                 </div>
 
                             </div>
