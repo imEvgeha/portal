@@ -1,9 +1,9 @@
 /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Badge from '@atlaskit/badge';
-import Lozenge from '@atlaskit/lozenge';
+import Tooltip from '@atlaskit/tooltip';
 import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
+import { NEEDS_TRANSLATION, LOCALIZED_NOT_DEFINED } from '../nexus-persons-list/constants';
 import './NexusPersonRO.scss';
 
 const NexusPersonRO = ({person, emetLanguage}) => {
@@ -11,21 +11,25 @@ const NexusPersonRO = ({person, emetLanguage}) => {
     const localizedName = () => {
         if(person?.language === 'en' && emetLanguage === 'en')
             return person.displayNameEn;
-        return person.displayName === person.displayNameEn &&  emetLanguage !== person?.language ? '(Needs translation)' : person.displayName;
+        return person.displayName === person.displayNameEn &&  emetLanguage !== person?.language ? NEEDS_TRANSLATION : person.displayName;
     }
 
     return (
         <div className="nexus-c-nexus-person-ro">
             <div>
                 <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person-ro__img" />
-                {localizedName()}
+                <span className={person.displayNameEn &&  emetLanguage !== person?.language ? "nexus-c-nexus-person-italic": ""}>
+                    {localizedName()}
+                </span>
             </div>
-                {emetLanguage !== 'en' && <div>{person?.displayNameEn}</div>}{" "}
+                {emetLanguage !== 'en' &&
+                <div className={person.displayNameEn &&  emetLanguage !== person?.language ? "nexus-c-nexus-person-fade": ""}>
+                    {person?.displayNameEn}
+                </div>}{" "}
 
             <div className="nexus-c-nexus-person-ro__tag">
                 {person.displayName === person.displayNameEn &&  emetLanguage !== person?.language &&
-                <span title="Localized name not found"><Badge appearance="removed">!</Badge></span>}
-                <Lozenge appearance="default">{person.personType}</Lozenge>
+                <Tooltip content={LOCALIZED_NOT_DEFINED}><div className="nexus-c-nexus-person-warning"/></Tooltip>}
             </div>
         </div>
     );
