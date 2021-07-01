@@ -167,7 +167,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                             <div style={{display: 'flex', flex: 1}}>
                                 <u>
                                     <b>
-                                        {ingestReport.total > 0 ? (
+                                        {ingestReport?.total > 0 ? (
                                             <Link
                                                 to={{
                                                     pathname: RightsURL.getRightsSearchUrl(data.id).split('?')[0],
@@ -184,7 +184,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                 </u>
                             </div>
                             <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
-                                {ingestReport.total > 0 ? (
+                                {ingestReport?.total > 0 ? (
                                     <Link
                                         to={{
                                             pathname: RightsURL.getRightsSearchUrl(data.id).split('?')[0],
@@ -192,10 +192,10 @@ class AvailHistoryRecordRenderer extends React.Component {
                                             state: data,
                                         }}
                                     >
-                                        {ingestReport.total}
+                                        {ingestReport?.total}
                                     </Link>
                                 ) : (
-                                    <div>{ingestReport.total}</div>
+                                    <div>{ingestReport?.total}</div>
                                 )}
                             </div>
                         </div>
@@ -212,7 +212,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                             <div style={{display: 'flex', flex: 1}}>
                                 <u>
                                     <b>
-                                        {ingestReport.success > 0 ? (
+                                        {ingestReport?.success > 0 ? (
                                             <Link
                                                 to={{
                                                     pathname: RightsURL.getSuccessRightsSearchUrl(data.id).split(
@@ -231,7 +231,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                 </u>
                             </div>
                             <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
-                                {ingestReport.success > 0 ? (
+                                {ingestReport?.success > 0 ? (
                                     <Link
                                         to={{
                                             pathname: RightsURL.getSuccessRightsSearchUrl(data.id).split('?')[0],
@@ -239,10 +239,10 @@ class AvailHistoryRecordRenderer extends React.Component {
                                             state: data,
                                         }}
                                     >
-                                        {ingestReport.success}
+                                        {ingestReport?.success}
                                     </Link>
                                 ) : (
-                                    <div>{ingestReport.success}</div>
+                                    <div>{ingestReport?.success}</div>
                                 )}
                             </div>
                         </div>
@@ -259,7 +259,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                             <div style={{display: 'flex', flex: 1}}>
                                 <u>
                                     <b>
-                                        {ingestReport.errors > 0 ? (
+                                        {ingestReport?.errors > 0 ? (
                                             <Link
                                                 className="error-link"
                                                 to={{
@@ -277,7 +277,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                 </u>
                             </div>
                             <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
-                                {ingestReport.errors > 0 ? (
+                                {ingestReport?.errors > 0 ? (
                                     <Link
                                         className="error-link"
                                         to={{
@@ -286,10 +286,10 @@ class AvailHistoryRecordRenderer extends React.Component {
                                             state: data,
                                         }}
                                     >
-                                        {ingestReport.errors}
+                                        {ingestReport?.errors}
                                     </Link>
                                 ) : (
-                                    <div>{ingestReport.errors}</div>
+                                    <div>{ingestReport?.errors}</div>
                                 )}
                             </div>
                         </div>
@@ -308,7 +308,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                     <b>
                                         <Link
                                             target="_blank"
-                                            className={ingestReport.fatal > 0 ? 'error-link' : ''}
+                                            className={ingestReport?.fatal > 0 ? 'error-link' : ''}
                                             to={{
                                                 pathname: RightsURL.getFatalsRightsSearchUrl(data.id),
                                             }}
@@ -321,12 +321,12 @@ class AvailHistoryRecordRenderer extends React.Component {
                             <div style={{display: 'flex', flex: 1, fontSize: '25px', fontWeight: 'bolder'}}>
                                 <Link
                                     target="_blank"
-                                    className={ingestReport.fatal > 0 ? 'error-link' : ''}
+                                    className={ingestReport?.fatal > 0 ? 'error-link' : ''}
                                     to={{
                                         pathname: RightsURL.getFatalsRightsSearchUrl(data.id),
                                     }}
                                 >
-                                    {ingestReport.fatal}
+                                    {ingestReport?.fatal}
                                 </Link>
                             </div>
                         </div>
