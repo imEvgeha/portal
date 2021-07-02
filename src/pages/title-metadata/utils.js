@@ -224,7 +224,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
     }
 };
 
-export const formatEditorialBody = (data, titleId, isCreate) => {
+export const formatEditorialBody = (data, titleId, isCreate, genresConfigValues = []) => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined || data[key] === '') body[key] = null;
@@ -236,7 +236,9 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                     if (isObjectLike(genre) && get(genre, 'value')) {
                         genreValue = get(genre, 'value');
                     }
+                    const genreObj = genresConfigValues.find(item => item.name === genreValue);
                     return {
+                        id: get(genreObj, 'id'),
                         genre: genreValue,
                         order: i,
                     };
@@ -303,7 +305,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
           ];
 };
 
-export const updateEditorialMetadata = async (values, titleId) => {
+export const updateEditorialMetadata = async (values, titleId, genresConfigValues =[]) => {
     let response = [];
     const errorToast = {
         title: ERROR_TITLE,
@@ -317,10 +319,10 @@ export const updateEditorialMetadata = async (values, titleId) => {
         await Promise.all(
             data.map(async emet => {
                 if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-                    const body = formatEditorialBody(emet, titleId);
+                    const body = formatEditorialBody(emet, titleId, false, genresConfigValues);
                     response = await titleService.updateEditorialMetadata(body, tenantCode);
                 } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-                    const body = formatEditorialBody(emet, titleId, true);
+                    const body = formatEditorialBody(emet, titleId, true, genresConfigValues);
                     response = await titleService.addEditorialMetadata(body, tenantCode);
                 }
             })
