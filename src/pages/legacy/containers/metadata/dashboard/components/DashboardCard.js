@@ -2,13 +2,14 @@ import React from 'react';
 import './DashboardCard.scss';
 
 import TitleCreate from './TitleCreateModal';
+import {DEFAULT_CATALOGUE_OWNER} from '../../../../../title-metadata/constants';
 import PropTypes from 'prop-types';
 export default class DashboardDropableCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             modalBox: false,
-            tenantCode: 'vu',
+            tenantCode: DEFAULT_CATALOGUE_OWNER,
         };
     }
     toggle = () => {
