@@ -106,7 +106,7 @@ const TitleDetails = ({
         prepareCategoryField(updatedValues);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
-        updateEditorialMetadata(values, id);
+        updateEditorialMetadata(values, id, selectValues?.genres);
     };
 
     const getExternaIds = repo => {
