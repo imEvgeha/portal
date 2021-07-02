@@ -8,6 +8,7 @@ export default class DashboardDropableCard extends React.Component {
         super(props);
         this.state = {
             modalBox: false,
+            tenantCode: 'vu',
         };
     }
     toggle = () => {
@@ -32,7 +33,7 @@ export default class DashboardDropableCard extends React.Component {
                         {this.props.actionName}
                     </button>
                 )}
-                <TitleCreate display={this.state.modalBox} toggle={this.toggle} />
+                <TitleCreate display={this.state.modalBox} toggle={this.toggle} tenantCode={this.state.tenantCode} />
             </div>
         );
     }
