@@ -229,7 +229,6 @@ export const formatEditorialBody = (data, titleId, isCreate, genresConfigValues 
     Object.keys(data).forEach(key => {
         if (data[key] === undefined || data[key] === '') body[key] = null;
         else if (key === 'genres') {
-            console.log('genre now: ', data[key])
             body[key] =
                 data[key] &&
                 data[key].map((genre, i) => {
