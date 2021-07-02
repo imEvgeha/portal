@@ -2,12 +2,14 @@ import React from 'react';
 import './DashboardCard.scss';
 
 import TitleCreate from './TitleCreateModal';
+import {DEFAULT_CATALOGUE_OWNER} from '../../../../../title-metadata/constants';
 import PropTypes from 'prop-types';
 export default class DashboardDropableCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             modalBox: false,
+            tenantCode: DEFAULT_CATALOGUE_OWNER,
         };
     }
     toggle = () => {
@@ -32,7 +34,7 @@ export default class DashboardDropableCard extends React.Component {
                         {this.props.actionName}
                     </button>
                 )}
-                <TitleCreate display={this.state.modalBox} toggle={this.toggle} />
+                <TitleCreate display={this.state.modalBox} toggle={this.toggle} tenantCode={this.state.tenantCode} />
             </div>
         );
     }
