@@ -182,6 +182,8 @@ const NexusField = ({
                     />
                 );
             case 'multiselect':
+                let selectValuesWithLocalizedGenres = null;
+                let newOptionsConfig = null;
                 if (
                     fieldProps.value &&
                     fieldProps.value.length &&
@@ -189,12 +191,32 @@ const NexusField = ({
                 ) {
                     multiselectFieldProps.value = fieldProps.value.map(val => ({label: val, value: val}));
                 }
+                const emetLanguage = get(formData,'editorial.language');
+                if(path == 'genres' && emetLanguage !== 'en' && !selectValuesWithLocalizedGenres) {
+                    selectValuesWithLocalizedGenres = Object.assign({}, selectValues);
+                    const newGenres = selectValuesWithLocalizedGenres.genres.map(item => {
+                        const localLang = item.localizations.find(local => local.language === emetLanguage);
+                        const enName = item.name; // name field in gerne object
+                        if(localLang) {
+                            item.displayName = `${localLang.language}(${enName})`
+                        }
+                        else {
+                            item.displayName = `(${enName})*`
+                        }
+                        return item;
+                    });
+                    selectValuesWithLocalizedGenres.genres = newGenres;
+                    // displayName is used in dropdown for display purpose only.
+                    newOptionsConfig = { defaultLabelPath: "displayName", defaultValuePath: "name"}
+
+                }
+
                 return (
                     <NexusSelect
                         fieldProps={multiselectFieldProps}
                         type={type}
-                        optionsConfig={optionsConfig}
-                        selectValues={selectValues}
+                        optionsConfig={path == 'genres' && emetLanguage !== 'en' ? newOptionsConfig : optionsConfig}
+                        selectValues={path == 'genres' && emetLanguage !== 'en' ? selectValuesWithLocalizedGenres : selectValues}
                         path={path}
                         isRequired={isRequired}
                         isMultiselect={true}
