@@ -80,8 +80,8 @@ const TitleDetails = ({
         }
     }, [refresh]);
 
-    const onSubmit = values => {
-        handleDirtyValues(values);
+    const onSubmit = (initialValues, values) => {
+        handleDirtyValues(initialValues, values);
         const {params} = match || {};
         const {id} = params;
         // remove fields under arrayWithTabs
@@ -170,7 +170,7 @@ const TitleDetails = ({
                 isTitlePage={true}
                 containerRef={containerRef}
                 selectValues={selectValues}
-                onSubmit={values => onSubmit(values)}
+                onSubmit={(initialValues, values) => onSubmit(initialValues, values)}
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                 hasButtons={isNexusTitle(title.id)}
