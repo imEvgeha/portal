@@ -99,6 +99,12 @@ const columnDefinitions = [
         width: 120,
     },
     {
+        colId: 'seriesTitle',
+        field: 'seriesTitle',
+        headerName: 'Series Title',
+        width: 120,
+    },
+    {
         colId: 'seasonNumber',
         field: 'seasonNumber',
         headerName: 'Season Number',
