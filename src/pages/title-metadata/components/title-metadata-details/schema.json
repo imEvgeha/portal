@@ -321,7 +321,7 @@
                             "path": "awards",
                             "type": "multiselect",
                             "optionsConfig": {
-                                "defaultValuePath": "name",
+                                "defaultValuePath": "id",
                                 "defaultLabelPath": "name"
                             }
                         }

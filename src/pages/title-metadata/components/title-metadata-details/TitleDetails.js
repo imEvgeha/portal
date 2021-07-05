@@ -27,6 +27,7 @@ import {
     isNexusTitle,
     isMgmTitle,
     prepareCategoryField,
+    prepareAwardsField,
     handleDirtyValues,
 } from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
@@ -97,7 +98,9 @@ const TitleDetails = ({
                 updatedValues[key] = values[key];
             }
         });
+
         prepareCategoryField(updatedValues);
+        updatedValues['awards'] = prepareAwardsField(updatedValues);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
         updateEditorialMetadata(values, id);
@@ -107,13 +110,12 @@ const TitleDetails = ({
         if (isNexusTitle(title.id)) {
             return externalIds.filter(ids => ids.externalSystem === repo);
         }
-            return [
-                {
-                    externalTitleId: get(title.legacyIds, `${repo}.${repo}TitleId`, ''),
-                    externalId: get(title.legacyIds, `${repo}.${repo}Id`, ''),
-                },
-            ];
-
+        return [
+            {
+                externalTitleId: get(title.legacyIds, `${repo}.${repo}TitleId`, ''),
+                externalId: get(title.legacyIds, `${repo}.${repo}Id`, ''),
+            },
+        ];
     };
     const extendTitleWithExternalIds = repo => {
         const [vzExternalIds] = getExternaIds('vz');

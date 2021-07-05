@@ -153,6 +153,14 @@ export const prepareCategoryField = data => {
     }
 };
 
+export const prepareAwardsField = data => {
+    if (get(data, 'awards')) {
+        return data.awards.map(award => ({
+            id: award,
+        }));
+    }
+};
+
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     const newData = cloneDeep(data);
     return newData.map(record => {
@@ -272,10 +280,9 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
             } else {
                 body[key] = null;
             }
-        } else if(key === 'metadataStatus') {
+        } else if (key === 'metadataStatus') {
             body[key] = data[key]?.value || null;
-        }
-        else body[key] = data[key];
+        } else body[key] = data[key];
     });
     if (body.isDeleted) {
         body.metadataStatus = 'deleted';
