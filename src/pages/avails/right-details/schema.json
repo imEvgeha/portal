@@ -734,6 +734,21 @@
                                             "value": "Series"
                                         }
                                     ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "fields": [
+                                        {
+                                            "name": "coreTitleId",
+                                            "value": "any"
+                                        },
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -775,6 +790,21 @@
                                             "value": "Season"
                                         }
                                     ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "fields": [
+                                        {
+                                            "name": "coreTitleId",
+                                            "value": "any"
+                                        },
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -805,6 +835,21 @@
                                         {
                                             "name": "contentType",
                                             "value": "Episode"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "fields": [
+                                        {
+                                            "name": "coreTitleId",
+                                            "value": "any"
+                                        },
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
                                         }
                                     ]
                                 }
