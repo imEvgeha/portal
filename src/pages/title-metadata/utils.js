@@ -5,7 +5,7 @@ import {
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
-import {cloneDeep, get, isObjectLike} from 'lodash';
+import {cloneDeep, get, isObjectLike, isEqual} from 'lodash';
 import {store} from '../../index';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
 import {titleService} from './titleMetadataServices';
@@ -344,9 +344,9 @@ export const updateEditorialMetadata = async (values, titleId) => {
     }
 };
 
-export const handleDirtyValues = values => {
+export const handleDirtyValues = (initialValues, values) => {
     handleDirtyRatingsValues(values);
-    handleDirtyEMETValues(values);
+    handleDirtyEMETValues(initialValues, values);
     handleDirtyTMETValues(values);
 };
 
@@ -367,7 +367,7 @@ const handleDirtyRatingsValues = values => {
     }
 };
 
-const handleDirtyEMETValues = values => {
+const handleDirtyEMETValues = (initialValues, values) => {
     const editorial = get(values, 'editorial');
     if (editorial) {
         const index =
@@ -392,6 +392,12 @@ const handleDirtyEMETValues = values => {
             };
             values.editorialMetadata[index] = updatedEmetRecord;
         }
+
+        values.editorialMetadata.forEach((emet, i) => {
+            if (!emet.isDeleted && i !== index && !isEqual(emet, initialValues.editorialMetadata[i])) {
+                values.editorialMetadata[i] = {...emet, isUpdated: true};
+            }
+        });
     }
 };
 
