@@ -868,6 +868,8 @@
                                     "name": "Awards",
                                     "path": "awards",
                                     "type": "multiselect",
+                                    "hideInCreate": true,
+                                    "isReadOnlyInEdit": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "name",
                                         "defaultLabelPath": "name"

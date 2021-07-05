@@ -308,7 +308,7 @@ class AvailHistoryRecordRenderer extends React.Component {
                                     <b>
                                         <Link
                                             target="_blank"
-                                            className={ingestReport.fatal > 0 ? 'error-link' : ''}
+                                            className={ingestReport?.fatal > 0 ? 'error-link' : ''}
                                             to={{
                                                 pathname: RightsURL.getFatalsRightsSearchUrl(data.id),
                                             }}

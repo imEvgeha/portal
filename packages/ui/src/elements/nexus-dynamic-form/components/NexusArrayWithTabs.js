@@ -27,7 +27,7 @@ const NexusArrayWithTabs = ({
     generateMsvIds,
     searchPerson,
     regenerateAutoDecoratedMetadata,
-    setRefresh
+    setRefresh,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -298,6 +298,17 @@ const NexusArrayWithTabs = ({
         closeModal();
     };
 
+    const getVisibleFields = allFields => {
+        const updateFields = {...allFields};
+        const f = Object.keys(allFields).filter((key, index) => {
+            const hide = get(allFields[key], 'hideInCreate');
+            if (hide && updateFields[key]) {
+                delete updateFields[key];
+            }
+        });
+        return updateFields;
+    };
+
     const modalContent = () => {
         return (
             <div>
@@ -305,7 +316,7 @@ const NexusArrayWithTabs = ({
                     {({formProps, reset, getValues}) => (
                         <form {...formProps}>
                             <div>
-                                {Object.keys(fields).map((key, index) => {
+                                {Object.keys(getVisibleFields(fields)).map((key, index) => {
                                     return (
                                         <div key={index} className="nexus-c-nexus-array-with-tabs__field">
                                             {renderNexusField(key, VIEWS.CREATE, getValues, generateMsvIds, {
@@ -417,7 +428,11 @@ const NexusArrayWithTabs = ({
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                     {showRegenerateAutoDecoratedMetadata() && (
-                        <Button appearance="primary" onClick={handleRegenerateAutoDecoratedMetadata} isLoading={regenerateLoading}>
+                        <Button
+                            appearance="primary"
+                            onClick={handleRegenerateAutoDecoratedMetadata}
+                            isLoading={regenerateLoading}
+                        >
                             Regenerate Auto-Decorated Metadata
                         </Button>
                     )}
