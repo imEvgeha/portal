@@ -239,6 +239,7 @@ export const formatEditorialBody = (data, titleId, isCreate, genresConfigValues 
                     if (isObjectLike(genre) && get(genre, 'value')) {
                         genreValue = get(genre, 'value');
                     }
+                    genreValue = genreValue.split('(').join('').split(')')[0]; // extract en genre from i.e. "(Abstract)*"
                     const genreObj = genresConfigValues.find(item => item.name === genreValue);
                     return {
                         id: get(genreObj, 'id'),

@@ -196,17 +196,20 @@ const NexusField = ({
                     selectValuesWithLocalizedGenres = Object.assign({}, selectValues);
                     const newGenres = selectValuesWithLocalizedGenres.genres.map(item => {
                         const localLang = item.localizations.find(local => local.language === emetLanguage);
-                        const enName = item.name; // name field in gerne object
+                        const enName = item.name; // name field in genre object
                         if(localLang) {
                             item.displayName = `${localLang.language}(${enName})`
                         }
                         else {
-                            item.displayName = `(${enName})*`
+                            if(emetLanguage)
+                                item.displayName = `(${enName})*`
+                            else
+                                item.displayName = enName;
                         }
                         return item;
                     });
                     selectValuesWithLocalizedGenres.genres = newGenres;
-                    // displayName is used in dropdown for display purpose only.
+                    // displayName is used in dropdown for display purpose only. to send to api, use "name"
                     newOptionsConfig = { defaultLabelPath: "displayName", defaultValuePath: "name"}
 
                 }
@@ -228,7 +231,6 @@ const NexusField = ({
                                   })
                                 : undefined
                         }
-                        styles
                     />
                 );
             case 'dateRange':
@@ -294,7 +296,7 @@ const NexusField = ({
     };
 
     const hasLocalizedValue = value => {
-        if(value.includes('(') && value.includes(')*'))
+        if(value?.includes('(') && value?.includes(')*'))
             return false;
         return true;
     }
