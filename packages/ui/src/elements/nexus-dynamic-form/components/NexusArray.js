@@ -102,6 +102,7 @@ const NexusArray = ({
     };
 
     const buildObject = (fields = {}, initialData, index) => {
+        console.log('fields in buildObject ', fields);
         return (
             <>
                 {Object.keys(fields).map(key => {

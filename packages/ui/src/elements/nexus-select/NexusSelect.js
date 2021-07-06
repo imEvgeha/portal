@@ -4,6 +4,7 @@ import Select from '@atlaskit/select';
 import {cloneDeep} from 'lodash';
 import {compose} from 'redux';
 import withOptionalCheckbox from '../nexus-dynamic-form/hoc/withOptionalCheckbox';
+import {LOCALIZED_GENRE_NOT_DEFINED} from '../nexus-dynamic-form/constants';
 import {formatOptions} from '../nexus-dynamic-form/utils';
 import './NexusSelect.scss';
 
@@ -57,6 +58,21 @@ const NexusSelect = ({
         return fetchedOptions;
     };
 
+    const formatOptionLabel = option => {
+        const notLocalized = option.label.includes('(') && option.label.includes(')*')? true: false;
+          return (
+            <div
+              style={notLocalized ? {
+                fontStyle: "italic"
+              }: null}
+            >
+              <span title={notLocalized? {LOCALIZED_GENRE_NOT_DEFINED}: null}>
+                {option.label}
+              </span>
+            </div>
+          );
+      };
+
     return isMultiselect ? (
         <SelectWithOptional
             {...fieldProps}
@@ -64,6 +80,7 @@ const NexusSelect = ({
             isMulti
             defaultValue={defaultValue}
             {...addedProps}
+            formatOptionLabel={path==='genres'? formatOptionLabel: null}
         />
     ) : (
         <SelectWithOptional

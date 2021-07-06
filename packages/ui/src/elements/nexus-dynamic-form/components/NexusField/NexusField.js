@@ -8,7 +8,7 @@ import {get} from 'lodash';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
-import {VIEWS, FIELDS_WITHOUT_LABEL} from '../../constants';
+import {VIEWS, FIELDS_WITHOUT_LABEL, LOCALIZED_GENRE_NOT_DEFINED} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {
     checkFieldDependencies,
@@ -228,6 +228,7 @@ const NexusField = ({
                                   })
                                 : undefined
                         }
+                        styles
                     />
                 );
             case 'dateRange':
@@ -292,9 +293,29 @@ const NexusField = ({
         return option?.[`${field}Name`] || value;
     };
 
+    const hasLocalizedValue = value => {
+        if(value.includes('(') && value.includes(')*'))
+            return false;
+        return true;
+    }
+
     const getValue = fieldProps => {
         if (Array.isArray(fieldProps.value)) {
             if (fieldProps.value.length) {
+                if(path === 'genres') {
+                    return <div>
+                        {fieldProps?.value?.map((item,index) =>{
+                            if(!hasLocalizedValue(item)) {
+                                return (
+                                <span key={index} title={LOCALIZED_GENRE_NOT_DEFINED} className="italic">
+                                    {item}{index !== fieldProps?.value?.length -1 && ", "}
+                                </span>
+                                )
+                            }
+                            return <span>{item}{index !== fieldProps?.value?.length -1 && ", "} </span>
+                        })}
+                    </div>
+                }
                 return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
             }
             return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
