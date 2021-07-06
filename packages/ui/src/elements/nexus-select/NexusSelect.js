@@ -62,11 +62,9 @@ const NexusSelect = ({
         const notLocalized = option.label.includes('(') && option.label.includes(')*')? true: false;
           return (
             <div
-              style={notLocalized ? {
-                fontStyle: "italic"
-              }: null}
+              className={notLocalized ? "italic": null}
             >
-              <span title={notLocalized? {LOCALIZED_GENRE_NOT_DEFINED}: null}>
+              <span title={notLocalized? LOCALIZED_GENRE_NOT_DEFINED: null}>
                 {option.label}
               </span>
             </div>
