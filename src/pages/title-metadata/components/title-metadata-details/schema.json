@@ -839,6 +839,10 @@
                                     "optionsConfig": {
                                         "defaultValuePath": "name",
                                         "defaultLabelPath": "name"
+                                    },
+                                    "localizationConfig": {
+                                        "default": "genreEn",
+                                        "localized": "genre"
                                     }
                                 },
                                 "editorial.category": {

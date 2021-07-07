@@ -8,7 +8,7 @@ import {get} from 'lodash';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
-import {VIEWS, FIELDS_WITHOUT_LABEL, LOCALIZED_GENRE_NOT_DEFINED} from '../../constants';
+import {VIEWS, FIELDS_WITHOUT_LABEL, LOCALIZED_VALUE_NOT_DEFINED} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {
     checkFieldDependencies,
@@ -69,6 +69,7 @@ const NexusField = ({
     initialData,
     linkConfig,
     showLocalized,
+    localizationConfig,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -180,6 +181,7 @@ const NexusField = ({
                         defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
                         optionsFilterParameter={checkDependencies('values')}
                         isCreateMode={view === VIEWS.CREATE}
+                        showLocalized={showLocalized}
                     />
                 );
             case 'multiselect':
@@ -195,8 +197,7 @@ const NexusField = ({
                 const emetLanguage = get(formData,'editorial.language');
                 if(showLocalized === true && emetLanguage !== 'en' && !selectLocalizedValues) {
                     selectLocalizedValues = Object.assign({}, selectValues);
-                    if(path === 'genres') { // for other paths, check and assign new value (genres property is specific to gernes field)
-                        const newGenres = selectLocalizedValues.genres.map(item => {
+                        const newValues = selectLocalizedValues[path].map(item => {
                             const localLang = item.localizations.find(local => local.language === emetLanguage);
                             const enName = item.name; // name field in genre object
                             if(localLang) {
@@ -210,10 +211,10 @@ const NexusField = ({
                             }
                             return item;
                         });
-                        selectLocalizedValues.genres = newGenres;
+                        selectLocalizedValues[path] = newValues;
                         // displayName is used in dropdown for display purpose only. to send to api, use "name"
                         newOptionsConfig = { defaultLabelPath: "displayName", defaultValuePath: "name"}
-                    }
+
                 }
 
                 return (
@@ -226,6 +227,7 @@ const NexusField = ({
                         isRequired={isRequired}
                         isMultiselect={true}
                         addedProps={addedProps}
+                        showLocalized={showLocalized}
                         defaultValue={
                             fieldProps.value
                                 ? fieldProps.value.map(val => {
@@ -298,7 +300,7 @@ const NexusField = ({
     };
 
     const hasLocalizedValue = value => {
-        if(value?.includes('(') && value?.includes(')*'))
+        if(typeof value === 'string' && value.includes('(') && value.includes(')*'))
             return false;
         return true;
     }
@@ -310,10 +312,8 @@ const NexusField = ({
                     return <div>
                         {fieldProps?.value?.map((item,index) =>{
                             if(!hasLocalizedValue(item)) {
-                                let spantitle = null;
-                                if(path === 'genres') spantitle = LOCALIZED_GENRE_NOT_DEFINED;
                                 return (
-                                <span key={index} title={spantitle} className="italic">
+                                <span key={index} title={LOCALIZED_VALUE_NOT_DEFINED} className="italic">
                                     {item}{index !== fieldProps?.value?.length -1 && ", "}
                                 </span>
                                 )
