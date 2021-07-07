@@ -125,7 +125,6 @@ const NexusDynamicForm = ({
             const correctValues = {};
             Object.keys(properValues).forEach(key => set(correctValues, key, properValues[key]));
             onSubmit(
-                initialData,
                 mergeWith({}, initialData, correctValues, (obj, src) => {
                     if (Array.isArray(src)) {
                         return src;
@@ -147,7 +146,8 @@ const NexusDynamicForm = ({
                         )
                             return null;
                     }
-                })
+                }),
+                initialData
             );
         }
     };
