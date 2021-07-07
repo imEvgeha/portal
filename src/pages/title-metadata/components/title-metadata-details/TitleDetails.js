@@ -80,7 +80,7 @@ const TitleDetails = ({
         }
     }, [refresh]);
 
-    const onSubmit = (initialValues, values) => {
+    const onSubmit = (values, initialValues) => {
         handleDirtyValues(initialValues, values);
         const {params} = match || {};
         const {id} = params;
@@ -170,7 +170,7 @@ const TitleDetails = ({
                 isTitlePage={true}
                 containerRef={containerRef}
                 selectValues={selectValues}
-                onSubmit={(initialValues, values) => onSubmit(initialValues, values)}
+                onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                 hasButtons={isNexusTitle(title.id)}
