@@ -60,11 +60,13 @@ const NexusSelect = ({
 
     const formatOptionLabel = option => {
         const notLocalized = option.label.includes('(') && option.label.includes(')*')? true: false;
+        let spantitle = null;
+        if(path === 'genres') spantitle = LOCALIZED_GENRE_NOT_DEFINED;
           return (
             <div
               className={notLocalized ? "italic": null}
             >
-              <span title={notLocalized? LOCALIZED_GENRE_NOT_DEFINED: null}>
+              <span title={notLocalized? spantitle: null}>
                 {option.label}
               </span>
             </div>

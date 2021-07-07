@@ -68,6 +68,7 @@ const NexusField = ({
     setDisableSubmit,
     initialData,
     linkConfig,
+    showLocalized,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -182,7 +183,7 @@ const NexusField = ({
                     />
                 );
             case 'multiselect':
-                let selectValuesWithLocalizedGenres = null;
+                let selectLocalizedValues = null;
                 let newOptionsConfig = null;
                 if (
                     fieldProps.value &&
@@ -192,34 +193,35 @@ const NexusField = ({
                     multiselectFieldProps.value = fieldProps.value.map(val => ({label: val, value: val}));
                 }
                 const emetLanguage = get(formData,'editorial.language');
-                if(path == 'genres' && emetLanguage !== 'en' && !selectValuesWithLocalizedGenres) {
-                    selectValuesWithLocalizedGenres = Object.assign({}, selectValues);
-                    const newGenres = selectValuesWithLocalizedGenres.genres.map(item => {
-                        const localLang = item.localizations.find(local => local.language === emetLanguage);
-                        const enName = item.name; // name field in genre object
-                        if(localLang) {
-                            item.displayName = `${localLang.language}(${enName})`
-                        }
-                        else {
-                            if(emetLanguage)
-                                item.displayName = `(${enName})*`
-                            else
-                                item.displayName = enName;
-                        }
-                        return item;
-                    });
-                    selectValuesWithLocalizedGenres.genres = newGenres;
-                    // displayName is used in dropdown for display purpose only. to send to api, use "name"
-                    newOptionsConfig = { defaultLabelPath: "displayName", defaultValuePath: "name"}
-
+                if(showLocalized === true && emetLanguage !== 'en' && !selectLocalizedValues) {
+                    selectLocalizedValues = Object.assign({}, selectValues);
+                    if(path === 'genres') { // for other paths, check and assign new value (genres property is specific to gernes field)
+                        const newGenres = selectLocalizedValues.genres.map(item => {
+                            const localLang = item.localizations.find(local => local.language === emetLanguage);
+                            const enName = item.name; // name field in genre object
+                            if(localLang) {
+                                item.displayName = `${localLang.language}(${enName})`
+                            }
+                            else {
+                                if(emetLanguage)
+                                    item.displayName = `(${enName})*`
+                                else
+                                    item.displayName = enName;
+                            }
+                            return item;
+                        });
+                        selectLocalizedValues.genres = newGenres;
+                        // displayName is used in dropdown for display purpose only. to send to api, use "name"
+                        newOptionsConfig = { defaultLabelPath: "displayName", defaultValuePath: "name"}
+                    }
                 }
 
                 return (
                     <NexusSelect
                         fieldProps={multiselectFieldProps}
                         type={type}
-                        optionsConfig={path == 'genres' && emetLanguage !== 'en' ? newOptionsConfig : optionsConfig}
-                        selectValues={path == 'genres' && emetLanguage !== 'en' ? selectValuesWithLocalizedGenres : selectValues}
+                        optionsConfig={showLocalized === true && emetLanguage !== 'en' ? newOptionsConfig : optionsConfig}
+                        selectValues={showLocalized === true && emetLanguage !== 'en' ? selectLocalizedValues : selectValues}
                         path={path}
                         isRequired={isRequired}
                         isMultiselect={true}
@@ -304,17 +306,19 @@ const NexusField = ({
     const getValue = fieldProps => {
         if (Array.isArray(fieldProps.value)) {
             if (fieldProps.value.length) {
-                if(path === 'genres') {
+                if(showLocalized) {
                     return <div>
                         {fieldProps?.value?.map((item,index) =>{
                             if(!hasLocalizedValue(item)) {
+                                let spantitle = null;
+                                if(path === 'genres') spantitle = LOCALIZED_GENRE_NOT_DEFINED;
                                 return (
-                                <span key={index} title={LOCALIZED_GENRE_NOT_DEFINED} className="italic">
+                                <span key={index} title={spantitle} className="italic">
                                     {item}{index !== fieldProps?.value?.length -1 && ", "}
                                 </span>
                                 )
                             }
-                            return <span>{item}{index !== fieldProps?.value?.length -1 && ", "} </span>
+                            return <span key={index}>{item}{index !== fieldProps?.value?.length -1 && ", "} </span>
                         })}
                     </div>
                 }

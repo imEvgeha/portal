@@ -835,6 +835,7 @@
                                     "path": "genres",
                                     "type": "multiselect",
                                     "isRequiredVZ": true,
+                                    "showLocalized": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "name",
                                         "defaultLabelPath": "name"
