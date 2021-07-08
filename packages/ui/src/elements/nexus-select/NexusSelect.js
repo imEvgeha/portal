@@ -105,6 +105,7 @@ NexusSelect.propTypes = {
     addedProps: PropTypes.object.isRequired,
     optionsFilterParameter: PropTypes.array,
     isCreateMode: PropTypes.bool,
+    showLocalized: PropTypes.bool
 };
 
 NexusSelect.defaultProps = {
@@ -116,6 +117,7 @@ NexusSelect.defaultProps = {
     isMultiselect: false,
     optionsFilterParameter: [],
     isCreateMode: false,
+    showLocalized: false,
 };
 
 export default NexusSelect;

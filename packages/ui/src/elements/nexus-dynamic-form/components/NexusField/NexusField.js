@@ -483,6 +483,8 @@ NexusField.propTypes = {
     castCrewConfig: PropTypes.object,
     isRequiredVZ: PropTypes.bool,
     oneIsRequiredVZ: PropTypes.bool,
+    showLocalized: PropTypes.bool,
+    localizationConfig: PropTypes.object
 };
 
 NexusField.defaultProps = {
@@ -519,6 +521,9 @@ NexusField.defaultProps = {
     maxLength: undefined,
     isRequiredVZ: false,
     oneIsRequiredVZ: false,
+    showLocalized: false,
+    localizationConfig: {}
+
 };
 
 export default NexusField;
