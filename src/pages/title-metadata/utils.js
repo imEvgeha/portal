@@ -243,7 +243,6 @@ export const formatEditorialBody = (data, titleId, isCreate, genresConfigValues 
                     const genreObj = genresConfigValues.find(item => item.name === genreValue);
                     return {
                         id: get(genreObj, 'id'),
-                        genre: genreValue,
                         order: i,
                     };
                 });
