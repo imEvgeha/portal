@@ -168,7 +168,10 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
         if (field) {
             const formattedValues = [];
             field.forEach(obj => {
-                formattedValues.push(obj[key]);
+                if(record?.language !== obj?.language && key === 'genre')
+                    formattedValues.push(`(${obj[key]})*`);
+                else
+                    formattedValues.push(obj[key]);
             });
             record[fieldName] = formattedValues;
         }
@@ -244,6 +247,7 @@ export const formatEditorialBody = (data, titleId, isCreate, genresConfigValues 
                     if (isObjectLike(genre) && get(genre, 'value')) {
                         genreValue = get(genre, 'value');
                     }
+                    genreValue = genreValue.split('(').join('').split(')')[0]; // extract en genre from i.e. "(Abstract)*"
                     const genreObj = genresConfigValues.find(item => item.name === genreValue);
                     return {
                         id: get(genreObj, 'id'),
