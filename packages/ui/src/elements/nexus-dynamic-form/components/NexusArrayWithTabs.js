@@ -46,6 +46,12 @@ const NexusArrayWithTabs = ({
         setIsRemoved(false);
     };
 
+    const setTabData = tabIndex => {
+        if (data && view === VIEWS.VIEW) {
+            setCurrentData(data[tabIndex]);
+        }
+    };
+
     const groupBy = values => {
         const keys = tabs;
         if (keys.length === 0) return {};
@@ -394,6 +400,7 @@ const NexusArrayWithTabs = ({
                     data={groupedData}
                     subTabs={subTabs}
                     isRemoved={isRemoved}
+                    setTabData={setTabData}
                     clearIsRemoved={clearIsRemoved}
                 />
             </div>
