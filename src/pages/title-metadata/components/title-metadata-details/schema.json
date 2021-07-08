@@ -323,7 +323,12 @@
                             "optionsConfig": {
                                 "defaultValuePath": "id",
                                 "defaultLabelPath": "name"
-                            }
+                            },
+                            "localizationConfig": {
+                                "default": "nameEn",
+                                "localized": "name"
+                            },
+                            "showLocalized": true
                         }
                     }
                 }
@@ -994,7 +999,12 @@
                                     "optionsConfig": {
                                         "defaultValuePath": "name",
                                         "defaultLabelPath": "name"
-                                    }
+                                    },
+                                    "localizationConfig": {
+                                        "default": "nameEn",
+                                        "localized": "name"
+                                    },
+                                    "showLocalized": true
                                 },
                                 "editorial.sakstelInventoryId": {
                                     "name": "Sakstel Inventory ID",
