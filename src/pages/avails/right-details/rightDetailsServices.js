@@ -26,8 +26,20 @@ const createCrewPersonTypePath = () => {
     return `personTypes=${value}`;
 };
 
+const isTextEnglish = testString => {
+    const englishChars = /^[A-Za-z0-9 ]*$/;
+    return englishChars.test(testString);
+};
+
 export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = false) => {
-    const displayNamePath = inputValue ? `?displayName=${inputValue}&` : '?';
+    let displayNamePath = '?';
+    if (inputValue) {
+        if (isTextEnglish(inputValue)) {
+            displayNamePath += `displayName=${inputValue}&`;
+        } else {
+            displayNamePath += `localization.displayName=${inputValue}&`;
+        }
+    }
     const sortPath = ';displayName=ASC';
     let personTypePath = null;
 

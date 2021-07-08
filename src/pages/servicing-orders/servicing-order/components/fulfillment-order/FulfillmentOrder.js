@@ -15,12 +15,11 @@ import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
 import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
-import { readinessStatus } from '../../../constants';
+import {readinessStatus} from '../../../constants';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
-import {SELECT_VALUES, DETE_SERVICE_TYPE} from '../services-table/Constants';
 import ErrorsList from './ErrorsList';
-import Constants, { READINESS_CHANGE_WARNING, ORDER_REVISION_WARNING } from './constants';
+import Constants, {READINESS_CHANGE_WARNING, ORDER_REVISION_WARNING} from './constants';
 import './FulfillmentOrder.scss';
 
 const modalHeading = 'Warning';
@@ -220,7 +219,7 @@ export const FulfillmentOrder = ({
                 },
             },
         ];
-        if(status === readinessStatus.READY) {
+        if (status === readinessStatus.READY) {
             const ModalContent = (
                 <>
                     <p>{ORDER_REVISION_WARNING}</p>
@@ -228,8 +227,7 @@ export const FulfillmentOrder = ({
                 </>
             );
             openModal(ModalContent, {title: modalHeading, width: 'small', actions});
-        }
-        else {
+        } else {
             const dataToSave = prepareOrderPutData(fulfillmentOrder);
             const payload = {data: dataToSave};
             dispatch(saveFulfillmentOrder(payload));

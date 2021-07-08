@@ -29,10 +29,39 @@
         @include margin(0);
         @include padding(0);
     }
+    margin-left: 3px;
 }
 
 .nexus-c-nexus-person__img {
     height: 35px;
     width: 35px;
     @include margin(0, 2);
+}
+
+.nexus-c-person-action {
+    @include margin(0);
+    @include padding(0);
+    cursor: pointer;
+    > span {
+        &:hover {
+            color: map-get($reds, R400);
+        }
+    }
+}
+
+.nexus-c-nexus-person-italic {
+    font-style: italic;
+    color: gray;
+}
+
+.nexus-c-nexus-person-fade {
+    color: gray;
+}
+
+.nexus-c-nexus-person-warning {
+    margin-right: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #e09010;
 }

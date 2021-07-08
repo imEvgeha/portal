@@ -6,6 +6,8 @@ import {get} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
+import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
+import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
 import {FIELDS_TO_REMOVE, SYNC} from '../../constants';
 import {
     getTitle,
@@ -41,12 +43,14 @@ const TitleDetails = ({
     externalIds,
     territoryMetadata,
     editorialMetadata,
+    fetchConfigApiEndpoints,
     getTitle,
     getExternalIds,
     getTerritoryMetadata,
     getEditorialMetadata,
     updateTitle,
     selectValues,
+    castCrewConfig,
     syncTitle,
     publishTitle,
     isSaving,
@@ -61,7 +65,10 @@ const TitleDetails = ({
     const [isEditView, setIsEditView] = useState(false);
     const [refresh, setRefresh] = useState(false);
 
+    const {fields} = schema;
+
     useEffect(() => {
+        fetchConfigApiEndpoints();
         const {params} = match || {};
         const {id} = params;
         if (id) {
@@ -74,12 +81,11 @@ const TitleDetails = ({
         }
     }, [refresh]);
 
-    const onSubmit = values => {
-        handleDirtyValues(values);
+    const onSubmit = (values, initialValues) => {
+        handleDirtyValues(initialValues, values);
         const {params} = match || {};
         const {id} = params;
         // remove fields under arrayWithTabs
-        const {fields} = schema;
         const innerFields = getAllFields(fields, true);
         const allFields = getAllFields(fields, false);
         const valuesNoInnerFields = [];
@@ -103,7 +109,7 @@ const TitleDetails = ({
         updatedValues['awards'] = prepareAwardsField(updatedValues);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
-        updateEditorialMetadata(values, id);
+        updateEditorialMetadata(values, id, selectValues?.genres);
     };
 
     const getExternaIds = repo => {
@@ -154,8 +160,11 @@ const TitleDetails = ({
                 isMOVSyncing={isMOVTitleSyncing}
                 isVZPublishing={isVZTitlePublishing}
                 isMOVPublishing={isMOVTitlePublishing}
+                initialData={extendTitleWithExternalIds()}
+                fieldsVZ={Object.values(getAllFields(fields, false)).filter(f => f.isRequiredVZ || f.oneIsRequiredVZ)}
             />
             <NexusDynamicForm
+                castCrewConfig={castCrewConfig}
                 searchPerson={searchPerson}
                 schema={schema}
                 initialData={extendTitleWithExternalIds()}
@@ -164,7 +173,7 @@ const TitleDetails = ({
                 isTitlePage={true}
                 containerRef={containerRef}
                 selectValues={selectValues}
-                onSubmit={values => onSubmit(values)}
+                onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                 hasButtons={isNexusTitle(title.id)}
@@ -198,6 +207,8 @@ TitleDetails.propTypes = {
     isMOVTitlePublishing: PropTypes.bool,
     isEditMode: PropTypes.bool,
     setEditTitle: PropTypes.func,
+    fetchConfigApiEndpoints: PropTypes.func,
+    castCrewConfig: PropTypes.object,
 };
 
 TitleDetails.defaultProps = {
@@ -222,6 +233,8 @@ TitleDetails.defaultProps = {
     isMOVTitlePublishing: false,
     isEditMode: false,
     setEditTitle: () => null,
+    fetchConfigApiEndpoints: () => null,
+    castCrewConfig: {},
 };
 
 const mapStateToProps = () => {
@@ -234,6 +247,7 @@ const mapStateToProps = () => {
     const isVZTitlePublishingSelector = selectors.createVZTitleIsPublishingSelector();
     const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
     const isEditModeSelector = selectors.createIsEditModeSelector();
+    const settingsConfigEndpointsSelector = settingsSelectors.createSettingsEndpointsSelector();
 
     return (state, props) => ({
         title: titleSelector(state, props),
@@ -247,6 +261,7 @@ const mapStateToProps = () => {
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
         isEditMode: isEditModeSelector(state, props),
+        castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
     });
 };
 
@@ -259,6 +274,7 @@ const mapDispatchToProps = dispatch => ({
     syncTitle: payload => dispatch(syncTitle(payload)),
     publishTitle: payload => dispatch(publishTitle(payload)),
     setEditTitle: payload => dispatch(editTitle(payload)),
+    fetchConfigApiEndpoints: payload => dispatch(fetchConfigApiEndpoints(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleDetails);

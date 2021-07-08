@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {
-    defineEpisodeAndSeasonNumberColumn,
-    getLinkableColumnDefs,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import {getLinkableColumnDefs} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
@@ -28,6 +25,7 @@ const TitlesTable = compose(
 
 const RightsMatchingTitlesTable = ({
     setTotalCount,
+    setGridApi,
     contentType,
     setTitlesTableIsReady,
     isDisabled,
@@ -60,8 +58,9 @@ const RightsMatchingTitlesTable = ({
     };
     const updatedColumns = updateColumnDefs(mappings);
 
-    const onGridReady = ({type}) => {
+    const onGridReady = ({type, api}) => {
         if (type === GRID_EVENTS.READY) {
+            setGridApi(api);
             setTitlesTableIsReady(true);
         }
     };
@@ -91,6 +90,7 @@ const RightsMatchingTitlesTable = ({
 
 RightsMatchingTitlesTable.propTypes = {
     setTotalCount: PropTypes.func,
+    setGridApi: PropTypes.func,
     contentType: PropTypes.string,
     setTitlesTableIsReady: PropTypes.func,
     onCellValueChanged: PropTypes.func,
@@ -101,6 +101,7 @@ RightsMatchingTitlesTable.propTypes = {
 
 RightsMatchingTitlesTable.defaultProps = {
     setTotalCount: () => null,
+    setGridApi: () => null,
     contentType: null,
     setTitlesTableIsReady: () => null,
     onCellValueChanged: () => null,

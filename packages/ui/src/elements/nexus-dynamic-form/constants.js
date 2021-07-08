@@ -52,3 +52,6 @@ export const SEASON = 'SEASON';
 export const SERIES = 'SERIES';
 export const EPISODE = 'EPISODE';
 export const CORE_TITLE_SECTION = 'Core Title';
+
+export const MANDATORY_VZ = 'Mandatory if title will be published to VZ';
+export const ONE_MANDATORY_VZ = 'At least one synopsis is mandatory if title will be published to VZ';

@@ -90,6 +90,15 @@
         "required": true
     },
     {
+        "javaVariableName": "seriesTitle",
+        "displayName": "Series Title",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "seriesTitle",
+        "readOnly": true,
+        "required": true
+    },
+    {
         "javaVariableName": "seasonNumber",
         "displayName": "Season Number",
         "dataType": "string",

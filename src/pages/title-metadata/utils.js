@@ -5,7 +5,7 @@ import {
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
-import {cloneDeep, get, isObjectLike} from 'lodash';
+import {cloneDeep, get, isObjectLike, isEqual} from 'lodash';
 import {store} from '../../index';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
 import {titleService} from './titleMetadataServices';
@@ -197,6 +197,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
     const data = values.territorialMetadata || [];
     const {catalogOwner: tenantCode} = values;
     try {
+        // eslint-disable-next-line init-declarations
         let response;
         await Promise.all(
             data.map(async tmet => {
@@ -231,7 +232,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
     }
 };
 
-export const formatEditorialBody = (data, titleId, isCreate) => {
+export const formatEditorialBody = (data, titleId, isCreate, genresConfigValues = []) => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined || data[key] === '') body[key] = null;
@@ -243,7 +244,9 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                     if (isObjectLike(genre) && get(genre, 'value')) {
                         genreValue = get(genre, 'value');
                     }
+                    const genreObj = genresConfigValues.find(item => item.name === genreValue);
                     return {
+                        id: get(genreObj, 'id'),
                         genre: genreValue,
                         order: i,
                     };
@@ -281,7 +284,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                 body[key] = null;
             }
         } else if (key === 'metadataStatus') {
-            body[key] = data[key]?.value || null;
+            body[key] = get(data[key], 'value') ? get(data[key], 'value') : data[key];
         } else body[key] = data[key];
     });
     if (body.isDeleted) {
@@ -310,7 +313,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
           ];
 };
 
-export const updateEditorialMetadata = async (values, titleId) => {
+export const updateEditorialMetadata = async (values, titleId, genresConfigValues = []) => {
     let response = [];
     const errorToast = {
         title: ERROR_TITLE,
@@ -324,10 +327,10 @@ export const updateEditorialMetadata = async (values, titleId) => {
         await Promise.all(
             data.map(async emet => {
                 if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-                    const body = formatEditorialBody(emet, titleId);
+                    const body = formatEditorialBody(emet, titleId, false, genresConfigValues);
                     response = await titleService.updateEditorialMetadata(body, tenantCode);
                 } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-                    const body = formatEditorialBody(emet, titleId, true);
+                    const body = formatEditorialBody(emet, titleId, true, genresConfigValues);
                     response = await titleService.addEditorialMetadata(body, tenantCode);
                 }
             })
@@ -351,9 +354,9 @@ export const updateEditorialMetadata = async (values, titleId) => {
     }
 };
 
-export const handleDirtyValues = values => {
+export const handleDirtyValues = (initialValues, values) => {
     handleDirtyRatingsValues(values);
-    handleDirtyEMETValues(values);
+    handleDirtyEMETValues(initialValues, values);
     handleDirtyTMETValues(values);
 };
 
@@ -374,7 +377,7 @@ const handleDirtyRatingsValues = values => {
     }
 };
 
-const handleDirtyEMETValues = values => {
+const handleDirtyEMETValues = (initialValues, values) => {
     const editorial = get(values, 'editorial');
     if (editorial) {
         const index =
@@ -399,6 +402,12 @@ const handleDirtyEMETValues = values => {
             };
             values.editorialMetadata[index] = updatedEmetRecord;
         }
+
+        values.editorialMetadata.forEach((emet, i) => {
+            if (!emet.isDeleted && i !== index && !isEqual(emet, initialValues.editorialMetadata[i])) {
+                values.editorialMetadata[i] = {...emet, isUpdated: true};
+            }
+        });
     }
 };
 

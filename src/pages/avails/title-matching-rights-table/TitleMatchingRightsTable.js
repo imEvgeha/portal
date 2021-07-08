@@ -15,6 +15,7 @@ const TitleMatchingRightsTable = ({data}) => {
                 item.territory = get(item.territory[0], 'country', '');
             }
             if (item.episodic) {
+                item.seriesTitle = item.episodic.seriesTitle;
                 item.episodeNumber = item.episodic.episodeNumber;
                 item.seasonNumber = item.episodic.seasonNumber;
             }

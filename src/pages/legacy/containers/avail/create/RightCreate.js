@@ -50,6 +50,8 @@ const mapDispatchToProps = dispatch => ({
 
 const excludedFields = ['status', 'originalRightIds', 'sourceRightId'];
 
+const episodicContentTypes = ['Series', 'Episode', 'Season'];
+
 class RightCreate extends React.Component {
     constructor(props) {
         super(props);
@@ -66,6 +68,7 @@ class RightCreate extends React.Component {
             isRightTerritoryFormOpen: false,
             isRightAudioLanguageFormOpen: false,
             isSubmitting: false,
+            contentType: '',
         };
     }
 
@@ -74,6 +77,7 @@ class RightCreate extends React.Component {
 
         if (this.props.availsMapping) {
             this.initMappingErrors(this.props.availsMapping.mappings);
+            this.mappings = this.props?.availsMapping?.mappings;
         } else {
             profileService.initAvailsMapping();
         }
@@ -246,7 +250,7 @@ class RightCreate extends React.Component {
     }
 
     validateField(name, value) {
-        const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
+        const map = this.mappings.find(x => x.javaVariableName === name);
         const isOriginRightIdRequired =
             name === 'originalRightId' &&
             this.right.temporaryPriceReduction === true &&
@@ -436,6 +440,7 @@ class RightCreate extends React.Component {
                         id={'right-create-' + name + '-text'}
                         placeholder={'Enter ' + displayName}
                         onChange={this.handleChange}
+                        disabled={name === 'title' && episodicContentTypes.includes(this.state.contentType)}
                     />
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
                         <small className="text-danger m-2">
@@ -1010,8 +1015,11 @@ class RightCreate extends React.Component {
         };
 
         const renderFields = [];
-        if (this.props.availsMapping) {
-            this.props.availsMapping.mappings
+        if (!this.mappings?.length) {
+            this.mappings = this.props.availsMapping?.mappings;
+        }
+        if (this.mappings) {
+            this.mappings
                 .filter(({dataType}) => dataType)
                 .map(mapping => {
                     if (
@@ -1027,13 +1035,64 @@ class RightCreate extends React.Component {
                         }
                         switch (mapping.dataType) {
                             case 'string':
+                                let req = required;
+                                if (episodicContentTypes.includes(this.state.contentType)) {
+                                    if (mapping.javaVariableName === 'title') {
+                                        req = false;
+                                        mapping.required = false;
+                                    } else if (
+                                        mapping.javaVariableName === 'episodic.seriesTitle' &&
+                                        ['Season', 'Episode', 'Series'].includes(this.state.contentType)
+                                    ) {
+                                        req = true;
+                                        mapping.required = true;
+                                    } else {
+                                        req = false;
+                                        mapping.required = false;
+                                    }
+                                } else {
+                                    if (
+                                        mapping.javaVariableName === 'episodic.seriesTitle' ||
+                                        mapping.javaVariableName === 'episodic.seasonTitle' ||
+                                        mapping.javaVariableName === 'episodic.episodeTitle'
+                                    ) {
+                                        req = false;
+                                        mapping.required = false;
+                                    }
+                                }
+
                                 renderFields.push(
-                                    renderStringField(mapping.javaVariableName, mapping.displayName, required, value)
+                                    renderStringField(mapping.javaVariableName, mapping.displayName, req, value)
                                 );
                                 break;
                             case 'integer':
+                                req = required;
+                                if (this.state.contentType === 'Episode') {
+                                    if (
+                                        mapping.javaVariableName === 'episodic.episodeNumber' ||
+                                        mapping.javaVariableName === 'episodic.seasonNumber'
+                                    ) {
+                                        req = true;
+                                        mapping.required = true;
+                                    } else {
+                                        req = false;
+                                        mapping.required = false;
+                                    }
+                                } else if (this.state.contentType === 'Season') {
+                                    if (mapping.javaVariableName === 'episodic.seasonNumber') {
+                                        req = true;
+                                        mapping.required = true;
+                                    } else {
+                                        req = false;
+                                        mapping.required = false;
+                                    }
+                                } else {
+                                    req = false;
+                                    mapping.required = false;
+                                }
+
                                 renderFields.push(
-                                    renderIntegerField(mapping.javaVariableName, mapping.displayName, required, value)
+                                    renderIntegerField(mapping.javaVariableName, mapping.displayName, req, value)
                                 );
                                 break;
                             case 'year':
@@ -1047,6 +1106,13 @@ class RightCreate extends React.Component {
                                 );
                                 break;
                             case 'select':
+                                // set contentType state
+                                if (mapping.javaVariableName === 'contentType') {
+                                    if (value?.value && this.state.contentType !== value.value) {
+                                        this.setState(prev => ({...prev, contentType: value.value}));
+                                    }
+                                }
+
                                 renderFields.push(
                                     renderSelectField(
                                         mapping.javaVariableName,

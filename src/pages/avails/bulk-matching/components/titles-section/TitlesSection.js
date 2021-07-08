@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
+import useRowCountWithGridApiFix from '../../../../../util/hooks/useRowCountWithGridApiFix';
 import MatchedCombinedTitlesTable from '../../../matched-combined-titles-table/MatchedCombinedTitlesTable';
 import RightsMatchingTitlesTable from '../../../rights-matching-titles-table/RightsMatchingTitlesTable';
 import BulkMatchingActionsBar from '../actions-bar/BulkMatchingActionsBar';
@@ -19,8 +20,8 @@ const TitlesSection = ({
     selectionList,
 }) => {
     const [titlesTableIsReady, setTitlesTableIsReady] = useState(false);
-    const [totalCount, setTotalCount] = useState(0);
     const [selectedActive, setSelectedActive] = useState(false);
+    const {count: totalCount, setCount: setTotalCount, setApi: setGridApi} = useRowCountWithGridApiFix();
 
     const {matchList, onCellValueChanged, selectedItems, duplicateButton, matchButton} = selectionList;
 
@@ -34,7 +35,9 @@ const TitlesSection = ({
                     )}
                 >
                     <div className="nexus-c-bulk-matching__titles-table-header">
-                        <div className="nexus-c-bulk-matching__titles-table-header-title">Titles ({totalCount})</div>
+                        <div className="nexus-c-bulk-matching__titles-table-header-title">
+                            Titles ({totalCount === 'One' ? 1 : totalCount})
+                        </div>
                         <Button
                             className="nexus-c-bulk-matching__titles-table-selected-btn"
                             onClick={() => setSelectedActive(!selectedActive)}
@@ -52,6 +55,7 @@ const TitlesSection = ({
                     >
                         <RightsMatchingTitlesTable
                             setTotalCount={setTotalCount}
+                            setGridApi={setGridApi}
                             contentType={contentType}
                             setTitlesTableIsReady={setTitlesTableIsReady}
                             isDisabled={isMatchAndCreateLoading || isMatchLoading}

@@ -4,7 +4,6 @@ import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@vubiquity-nexus/portal-auth/keyc
 import {getValidToken, getTokenDuration, wait} from '@vubiquity-nexus/portal-auth/utils';
 import {updateAbility} from '@vubiquity-nexus/portal-utils/lib/ability';
 import jwtDecode from 'jwt-decode';
-import {isEmpty} from 'lodash';
 import config from 'react-global-configuration';
 import {connect} from 'react-redux';
 import {store} from '../index';

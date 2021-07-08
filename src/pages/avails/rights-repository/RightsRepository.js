@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions, no-magic-numbers */
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
@@ -21,6 +22,7 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
 import usePrevious from '../../../util/hooks/usePrevious';
+import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridApiFix';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {
@@ -86,8 +88,6 @@ const RightsRepository = ({
     username,
 }) => {
     const isMounted = useRef(true);
-    const [totalCount, setTotalCount] = useState(0);
-    const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
     const [selectedColumnApi, setSelectedColumnApi] = useState(null);
     const [prePlanGridApi, setPrePlanGridApi] = useState();
@@ -97,7 +97,6 @@ const RightsRepository = ({
     const [selectedForPlanningGridApi, setSelectedForPlanningGridApi] = useState(null);
     const [selectedForPlanningColumnApi, setSelectedForPlanningColumnApi] = useState(null);
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
-    const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
     const {search} = location;
     const [selectedFilter, setSelectedFilter] = useState({});
@@ -107,6 +106,8 @@ const RightsRepository = ({
     const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
     const [singleRightMatch, setSingleRightMatch] = useState([]);
+    const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
+    const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
 
     useEffect(() => {
         return () => {
@@ -252,12 +253,6 @@ const RightsRepository = ({
         }
     }, [Object.values(get(selectedRights, username, {})).length, username]);
 
-    useEffect(() => {
-        // temp fix for aggrid not refreshing matching column when row count = 1
-        setTotalCount('One');
-        gridApi &&  gridApi.refreshCells({force: true});
-    },[totalCount === 1]);
-
     const columnDefsClone = columnDefs.map(columnDef => {
         const updatedColumnDef = {
             ...columnDef,
@@ -291,6 +286,7 @@ const RightsRepository = ({
 
     const columnsValidationDefsClone = columnDefsClone.map(col => {
         if (['id'].includes(col.field) || ['icon'].includes(col.colId)) {
+            // eslint-disable-next-line no-param-reassign
             col = {
                 ...col,
                 lockPinned: true,
@@ -325,6 +321,7 @@ const RightsRepository = ({
                                     severityType === '' ||
                                     (validation.severityType === 'Error' && severityType === 'Warning')
                                 ) {
+                                    // eslint-disable-next-line prefer-destructuring
                                     severityType = validation.severityType;
                                 }
                             }
@@ -371,6 +368,7 @@ const RightsRepository = ({
                     ? validation.fieldName.split('[')[0]
                     : validation.fieldName;
                 if (column.field === fieldName && severityType !== 'Error') {
+                    // eslint-disable-next-line prefer-destructuring
                     severityType = validation.severityType;
                 }
             });
@@ -441,7 +439,7 @@ const RightsRepository = ({
                         selectedRights[currentRight.id] = currentRight;
                         return selectedRights;
                     }, {});
-                    setSelectedRights({[username]: payload})
+                    setSelectedRights({[username]: payload});
                     break;
                 }
 
@@ -469,7 +467,7 @@ const RightsRepository = ({
                     selectedRights[currentRight.id] = currentRight;
                     return selectedRights;
                 }, {});
-                setSelectedRights({[username]: payload})
+                setSelectedRights({[username]: payload});
                 break;
             }
             case FILTER_CHANGED: {
@@ -486,7 +484,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    }, 500);
+    }, 1000);
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
@@ -564,7 +562,7 @@ const RightsRepository = ({
                 />
             )}
             <AvailsTableToolbar
-                totalRows={totalCount === 'One'? 1 : totalCount}
+                totalRows={totalCount === 'One' ? 1 : totalCount}
                 selectedRightsCount={selectedRepoRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}

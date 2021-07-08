@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
@@ -81,7 +82,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
     const createTooltipTag = key => (
         <NexusTooltip
             key={key}
-            content={`Original Value: ${reportFields[key].label} (${reportValues[key].toString()})`}
+            content={`Original Value: ${reportFields[key].label} (${reportValues[key]?.toString()})`}
         >
             {createTag(key)}
         </NexusTooltip>

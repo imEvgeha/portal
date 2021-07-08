@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -13,6 +13,7 @@ import {compose} from 'redux';
 import './CandidatesList.scss';
 import mappings from '../../../../../profile/titleMatchingMappings.json';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
+import useRowCountWithGridApiFix from '../../../../util/hooks/useRowCountWithGridApiFix';
 import SelectedButton from '../../../avails/avails-table-toolbar/components/SelectedButton';
 import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/constants';
@@ -36,9 +37,8 @@ const CandidatesList = ({
     onCellValueChanged,
     selectedItems,
 }) => {
-    const [totalCount, setTotalCount] = useState(0);
-    const [gridApi, setGridApi] = useState();
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
+    const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
 
     const updatedColumnDefs = getLinkableColumnDefs(columnDefs);
 
@@ -57,7 +57,9 @@ const CandidatesList = ({
     return (
         <div className="nexus-c-candidates-list">
             <div className="nexus-c-candidates-list__header">
-                <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${totalCount})`}</NexusTitle>
+                <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${
+                    totalCount === 'One' ? 1 : totalCount
+                })`}</NexusTitle>
                 <div className="nexus-c-candidates-toolbar">
                     <Button className="nexus-c-button" onClick={handleClearFilterClick} isDisabled={!gridApi}>
                         {CLEAR_FILTER}

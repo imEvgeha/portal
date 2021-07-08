@@ -3,11 +3,10 @@ import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {AgGridReact} from 'ag-grid-react';
 import PropTypes from 'prop-types';
-import {get, uniqBy} from 'lodash';
+import {get} from 'lodash';
 import config from 'react-global-configuration';
 // image import
 import './TitleResultTable.scss';
-import LoadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {
     resultPageSelect,
     resultPageSort,
@@ -18,8 +17,7 @@ import {titleServiceManager} from '../../../service/TitleServiceManager';
 import {Link} from 'react-router-dom';
 import {titleMapping} from '../../../service/Profile';
 import {titleSearchHelper} from '../../TitleSearchHelper';
-import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../../constants/metadata/contentType';
-import {titleService} from '../../../service/TitleService';
+import {EPISODE, SEASON, toPrettyContentTypeIfExist} from '../../../../../constants/metadata/contentType';
 import {formatNumberTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {defineColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
@@ -135,7 +133,7 @@ class TitleResultTable extends React.Component {
             this.props.titleTabPageLoading === true &&
             this.table != null
         ) {
-            this.table.api.setDatasource(this.dataSource);
+            this.table?.api.setDatasource(this.dataSource);
         }
     }
 
@@ -178,15 +176,15 @@ class TitleResultTable extends React.Component {
     onSelectionChangedProcess(e) {
         registeredOnSelect = false;
 
-        const selectedRows = e.api.getSelectedRows();
+        const selectedRows = e?.api.getSelectedRows();
         let selected = [];
-        selectedRows.map(row => {
+        selectedRows?.map(row => {
             selected.push(row.id);
         });
 
-        if (e.api.getDisplayedRowCount() > 0) {
+        if (e?.api.getDisplayedRowCount() > 0) {
             this.props.titleTabPageSelection.selected.map(id => {
-                if (selected.indexOf(id) === -1 && e.api.getRowNode(id) === null) selected.push(id);
+                if (selected.indexOf(id) === -1 && e?.api.getRowNode(id) === null) selected.push(id);
             });
         } else {
             if (this.props.titleTabPageSelection.selection && this.props.titleTabPageSelection.selection.length > 0)
@@ -195,7 +193,7 @@ class TitleResultTable extends React.Component {
 
         let allLoadedSelected = true;
 
-        e.api.forEachNode(node => {
+        e?.api.forEachNode(node => {
             if (!node.isSelected()) allLoadedSelected = false;
         });
         this.props.resultPageSelect({selected: selected, selectAll: allLoadedSelected});
@@ -211,8 +209,8 @@ class TitleResultTable extends React.Component {
     }
 
     onEdit(title) {
-        this.table.api.getRowNode(title.id).setData(title);
-        this.table.api.redrawRows([this.table.api.getRowNode(title.id)]);
+        this.table?.api.getRowNode(title.id).setData(title);
+        this.table?.api.redrawRows([this.table?.api.getRowNode(title.id)]);
         this.props.resultPageUpdate({
             pages: this.props.titleTabPage.pages,
             titles: this.editTitle(title),
@@ -226,8 +224,8 @@ class TitleResultTable extends React.Component {
     }
 
     getRows(params) {
-        if (this.table && this.table.api) {
-            this.table.api.showLoadingOverlay();
+        if (this.table && this.table?.api) {
+            this.table?.api.showLoadingOverlay();
         }
         this.doSearch(
             Math.floor(params.startRow / this.state.pageSize),
@@ -245,7 +243,7 @@ class TitleResultTable extends React.Component {
                     this.addLoadedItems(response);
                     this.addItemToTable(response, params);
                 } else {
-                    this.table && this.table.api && this.table.api.showNoRowsOverlay();
+                    this.table && this.table?.api && this.table?.api.showNoRowsOverlay();
                     params.failCallback();
                 }
             })
@@ -281,11 +279,10 @@ class TitleResultTable extends React.Component {
 
         const rows = data.data.map(row => {
             const contentType = row.contentType.toUpperCase();
-            row.concatenatedTitle = row.title;
             if (contentType === SEASON.apiName) {
                 row.title = this.getFormatTitle(row, SEASON.apiName);
             } else if (contentType === EPISODE.apiName) {
-                row.concatenatedTitle = this.getFormatTitle(row, EPISODE.apiName);
+                row.title = this.getFormatTitle(row, EPISODE.apiName);
             }
             return row;
         });
@@ -293,7 +290,7 @@ class TitleResultTable extends React.Component {
         params.successCallback(rows, lastRow);
 
         if (this.props.titleTabPageSelection.selected.length > 0) {
-            this.table.api.forEachNode(rowNode => {
+            this.table?.api.forEachNode(rowNode => {
                 if (rowNode.data && this.props.titleTabPageSelection.selected.indexOf(rowNode.data.id) > -1) {
                     rowNode.setSelected(true);
                 }
@@ -343,13 +340,13 @@ class TitleResultTable extends React.Component {
     setTable = element => {
         this.table = element;
         if (this.table) {
-            element.api.showLoadingOverlay();
+            element?.api.showLoadingOverlay();
         }
     };
 
     refreshColumns() {
         const newCols = [];
-        const columnsOrder = ['title', 'concatenatedTitle', 'contentType', 'releaseYear'];
+        const columnsOrder = ['title', 'contentType', 'releaseYear'];
         columnsOrder.map(acc => {
             if (colDef.hasOwnProperty(acc)) {
                 newCols.push(colDef[acc]);

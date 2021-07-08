@@ -4,7 +4,6 @@ import {
     ModalFooter,
     ModalHeader,
     Modal,
-    Button,
     ModalBody,
     Alert,
     Row,
@@ -14,6 +13,7 @@ import {
     Progress,
     FormGroup,
 } from 'reactstrap';
+import Button from '@atlaskit/button';
 import {AvForm, AvField} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
@@ -56,6 +56,8 @@ class TitleCreate extends React.Component {
             isSeasonNumberRequired: false,
             isEpisodeNumberRequired: false,
             isSyncVZ: false,
+            isCreatingTitle: false,
+            copyCastCrewFromSeason: false,
             isSyncMovida: false,
             titleForm: {
                 title: '',
@@ -143,9 +145,11 @@ class TitleCreate extends React.Component {
     onSubmit = () => {
         this.setState({errorMessage: ''});
         const title = this.getTitleWithoutEmptyField();
-        const {isSyncVZ, isSyncMovida} = this.state;
+        const {isSyncVZ, isSyncMovida, copyCastCrewFromSeason} = this.state;
+        const params = {tenantCode: this.props.tenantCode, copyCastCrewFromSeason: copyCastCrewFromSeason};
+        this.setState({isCreatingTitle: true});
         titleService
-            .createTitle(title, this.props.tenantCode)
+            .createTitle(title, params)
             .then(response => {
                 if (isSyncVZ || isSyncMovida) {
                     // call registerTitle API
@@ -161,6 +165,7 @@ class TitleCreate extends React.Component {
                         })
                         .catch(() => {
                             this.setState({
+                                isCreatingTitle: false,
                                 errorMessage: get(
                                     e,
                                     'response.data.description',
@@ -170,6 +175,7 @@ class TitleCreate extends React.Component {
                         });
                 }
                 this.form && this.form.reset();
+                this.setState({isCreatingTitle: false});
                 this.cleanFields();
                 this.toggle();
                 this.props.addToast({
@@ -183,7 +189,10 @@ class TitleCreate extends React.Component {
                 });
             })
             .catch(e => {
-                this.setState({errorMessage: get(e, 'response.data.description', 'Title creation failed!')});
+                this.setState({
+                    isCreatingTitle: false,
+                    errorMessage: get(e, 'response.data.description', 'Title creation failed!'),
+                });
             });
     };
 
@@ -272,6 +281,7 @@ class TitleCreate extends React.Component {
                 isReleaseYearRequired: true,
                 isSeriesCompleted: true,
                 isSeasonNumberRequired: true,
+                copyCastCrewFromSeason: false,
                 titleForm: {
                     ...this.state.titleForm,
                     contentType: e.target.value,
@@ -301,6 +311,7 @@ class TitleCreate extends React.Component {
                 episodeChecked: true,
                 seriesChecked: true,
                 isReleaseYearRequired: false,
+                copyCastCrewFromSeason: false,
                 titleForm: {
                     ...this.state.titleForm,
                     contentType: e.target.value,
@@ -318,6 +329,7 @@ class TitleCreate extends React.Component {
                 isSeriesCompleted: false,
                 seriesChecked: false,
                 isReleaseYearRequired: true,
+                copyCastCrewFromSeason: false,
                 isEpisodeNumberRequired: false,
                 isSeasonNumberRequired: false,
                 titleForm: {
@@ -331,6 +343,7 @@ class TitleCreate extends React.Component {
                 episodeChecked: true,
                 seriesChecked: true,
                 isReleaseYearRequired: true,
+                copyCastCrewFromSeason: false,
                 isSeriesCompleted: true,
                 titleForm: {
                     ...this.state.titleForm,
@@ -516,6 +529,22 @@ class TitleCreate extends React.Component {
                                             ) : null}
                                         </Row>
                                     ) : null}
+                                    {!this.state.episodeChecked && (
+                                        <Row>
+                                            <Col>
+                                                <Checkbox
+                                                    id="addCrew"
+                                                    label="Add Cast Crew from Season to episode"
+                                                    onChange={event =>
+                                                        this.setState({
+                                                            copyCastCrewFromSeason: event.currentTarget.checked,
+                                                        })
+                                                    }
+                                                    isChecked={this.state.copyCastCrewFromSeason}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    )}
                                     <Row style={{marginTop: '15px'}}>
                                         <Col>
                                             <Label for="titleReleaseYear">
@@ -575,10 +604,20 @@ class TitleCreate extends React.Component {
                                 <Alert color="danger">{this.state.errorMessage}</Alert>
                             </div>
                         )}
-                        <Button id="titleCancelBtn" onClick={this.toggle} color="primary">
+                        <Button
+                            id="titleCancelBtn"
+                            onClick={this.toggle}
+                            appearance="primary"
+                            isDisabled={this.state.isCreatingTitle}
+                        >
                             Cancel
                         </Button>
-                        <Button id="titleSaveBtn" color="primary">
+                        <Button
+                            id="titleSaveBtn"
+                            onClick={this.onSubmit}
+                            appearance="primary"
+                            isLoading={this.state.isCreatingTitle}
+                        >
                             Save
                         </Button>
                     </ModalFooter>

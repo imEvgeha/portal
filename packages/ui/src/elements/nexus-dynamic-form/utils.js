@@ -3,6 +3,7 @@ import {ErrorMessage} from '@atlaskit/form';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
 import {get, isObjectLike} from 'lodash';
+import NexusTooltip from '../../../lib/elements/nexus-tooltip/NexusTooltip';
 import NexusArray from './components/NexusArray';
 import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
@@ -14,7 +15,7 @@ import {isInteger} from './valdationUtils/isInteger';
 import {isTime} from './valdationUtils/isTime';
 import {isYear} from './valdationUtils/isYear';
 import {lengthEqual} from './valdationUtils/lengthEqual';
-import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS} from './constants';
+import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, MANDATORY_VZ, ONE_MANDATORY_VZ} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
     const viewConfig =
@@ -36,6 +37,7 @@ export const getDefaultValue = (field = {}, view, data) => {
     if ((view === VIEWS.CREATE || get(field, 'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
     }
+
     return value;
 };
 
@@ -310,6 +312,7 @@ export const buildSection = (
         config,
         isGridLayout,
         searchPerson,
+        castCrewConfig,
         tabs,
         subTabs,
         setDisableSubmit,
@@ -350,8 +353,10 @@ export const buildSection = (
                             generateMsvIds={generateMsvIds}
                             regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                             searchPerson={searchPerson}
+                            castCrewConfig={castCrewConfig}
                             {...fields[key]}
                             setRefresh={setRefresh}
+                            initialData={initialData}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
@@ -363,6 +368,7 @@ export const buildSection = (
                                 config,
                                 isGridLayout,
                                 searchPerson,
+                                castCrewConfig,
                                 setDisableSubmit,
                             })}
                         </div>
@@ -386,12 +392,13 @@ export const renderNexusField = (
         config,
         isGridLayout,
         searchPerson,
+        castCrewConfig,
         inTabs,
         path,
         setDisableSubmit,
     }
 ) => {
-    return (
+    return toShow(field, initialData) ? (
         <NexusField
             {...field}
             id={key}
@@ -408,11 +415,12 @@ export const renderNexusField = (
             config={config}
             isGridLayout={isGridLayout}
             searchPerson={searchPerson}
+            castCrewConfig={castCrewConfig}
             generateMsvIds={generateMsvIds}
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
         />
-    );
+    ) : null;
 };
 
 export const getProperValues = (schema, values) => {
@@ -437,14 +445,23 @@ export const getProperValues = (schema, values) => {
     return properValues;
 };
 
-export const renderLabel = (label, isRequired, tooltip, isGridLayout) => {
+export const getLabel = (label, isRequired, isRequiredVZ) => {
+    return `${label}${isRequired ? '*' : isRequiredVZ ? '**' : ''}: `;
+};
+
+export const renderLabel = (label, isRequired, tooltip, isGridLayout, isRequiredVZ, oneIsRequiredVZ) => {
+    const tooltipText = isRequiredVZ ? MANDATORY_VZ : oneIsRequiredVZ ? ONE_MANDATORY_VZ : undefined;
     return (
         <div
             className={classnames('nexus-c-field__label', {
                 'nexus-c-field__label--grid': isGridLayout,
             })}
         >
-            {`${label}${isRequired ? '*' : ''}: `}
+            {tooltipText ? (
+                <span title={tooltipText}>{getLabel(label, isRequired, isRequiredVZ || oneIsRequiredVZ)}</span>
+            ) : (
+                getLabel(label, isRequired, isRequiredVZ || oneIsRequiredVZ)
+            )}
             {tooltip && (
                 <span title={tooltip} style={{color: 'grey'}}>
                     <i className="far fa-question-circle" />

@@ -19,11 +19,10 @@ import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
-import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
+import {prepareRight, rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import {AVAILS_PATH} from '../../availsRoutes';
 import {
     createRightMatchingColumnDefs,
-    createNewRight,
     fetchAndStoreFocusedRight,
     storeMatchedRights,
     validateConflictingRights,
@@ -58,7 +57,6 @@ const RightToMatchView = ({
     focusedRight,
     history,
     location,
-    createNewRight,
     addToast,
     removeToast,
     pendingRight,
@@ -66,7 +64,7 @@ const RightToMatchView = ({
     storeMatchedRights,
     validateRights,
 }) => {
-    const [matchingCandidates, setMatchingCandidates] = useState([]);
+    const [matchingCandidates, setMatchingCandidates] = useState(null);
     const [newPendingRight, setNewPendingRight] = useState([]);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {};
@@ -82,7 +80,7 @@ const RightToMatchView = ({
     useEffect(() => {
         (focusedRight.id || newPendingRight.length) &&
             getMatchingCandidates(rightId, getTpr(), get(newPendingRight, '[0]', '')).then(response => {
-                const rights = response.filter(r => r.id !== rightId); // as candidates API returns pending right in response
+                const rights = response.filter(r => r.id !== rightId) || []; // as candidates API returns pending right in response
                 setMatchingCandidates(rights);
             });
     }, [focusedRight.id, newPendingRight]);
@@ -109,19 +107,21 @@ const RightToMatchView = ({
         );
     };
 
-    const onDeclareNewRight = () => {
+    const onUpdateRight = () => {
         removeToast();
-        createNewRight({rightId, redirectPath: previousPageRoute});
+        rightsService
+            .updateRightWithFullData({...focusedRight, status: 'Ready'}, focusedRight.id, true)
+            .then(() => history.push(URL.keepEmbedded(`/avails/rights/${focusedRight.id}`)));
     };
 
-    const onNewRightClick = () => {
+    const onUpdateRightClick = () => {
         addToast({
             title: WARNING_TITLE,
             description: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
             icon: WARNING_ICON,
             actions: [
                 {content: 'Cancel', onClick: () => removeToast()},
-                {content: 'OK', onClick: onDeclareNewRight},
+                {content: 'OK', onClick: onUpdateRight},
             ],
             isWithOverlay: true,
         });
@@ -132,7 +132,7 @@ const RightToMatchView = ({
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id || '0'}>
-                <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
+                <Button onClick={onUpdateRightClick}>{NEW_BUTTON}</Button>
             </CustomActionsCellRenderer>
         );
     };
@@ -143,7 +143,7 @@ const RightToMatchView = ({
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
     const handleMatchClick = () => {
-        if (Array.isArray(matchingCandidates) && matchingCandidates.length > 0) {
+        if (matchingCandidates?.length > 0) {
             const matchedRightIds = matchingCandidates.map(el => el.id);
             validateRights({
                 rightId,
@@ -224,14 +224,27 @@ const RightToMatchView = ({
 
     const reorderConflictingRightsHeaders = tableName => {
         if (columnDefs.length === 1) return [];
+        if (matchingCandidates === null) return;
 
         const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
-        const {RIGHT_ID, REMOVED_CATALOG, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
+        const {
+            ACTIONS,
+            RIGHT_ID,
+            REMOVED_CATALOG,
+            TITLE,
+            TERRITORY,
+            FORMAT,
+            AVAIL_START,
+            AVAIL_END,
+            START,
+            END,
+        } = TABLE_HEADERS;
         const headerNames = [RIGHT_ID, REMOVED_CATALOG, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
 
         let columnDefinitions = columnDefs;
         if (tableName === PENDING_RIGHT) {
             if (matchingCandidates.length === 0 && get(focusedRight, 'id')) {
+                headerNames.unshift(ACTIONS);
                 columnDefinitions = [actionNewButtonColumnDef, ...columnDefs];
             } else {
                 columnDefinitions = [...columnDefs];
@@ -282,26 +295,28 @@ const RightToMatchView = ({
                     </SectionMessage>
                     <div className="nexus-c-right-to-match-view__rights-to-match">
                         <NexusTitle isSubTitle>
-                            {CONFLICTING_RIGHTS} {`(${matchingCandidates.length})`}
+                            {CONFLICTING_RIGHTS} {`(${matchingCandidates?.length})`}
                         </NexusTitle>
-                        <RightRepositoryNexusGrid
-                            id="rightsMatchingRepo"
-                            columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
-                            mapping={mapping}
-                            rowSelection="multiple"
-                            rowData={matchingCandidates}
-                            suppressRowClickSelection={true}
-                            floatingFilter={true}
-                            defaultColDef={{
-                                filter: AG_GRID_COLUMN_FILTER.TEXT,
-                                sortable: true,
-                            }}
-                            columnTypes={{
-                                dateColumn: {
-                                    filter: false,
-                                },
-                            }}
-                        />
+                        {matchingCandidates && (
+                            <RightRepositoryNexusGrid
+                                id="rightsMatchingRepo"
+                                columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
+                                mapping={mapping}
+                                rowSelection="multiple"
+                                rowData={matchingCandidates}
+                                suppressRowClickSelection={true}
+                                floatingFilter={true}
+                                defaultColDef={{
+                                    filter: AG_GRID_COLUMN_FILTER.TEXT,
+                                    sortable: true,
+                                }}
+                                columnTypes={{
+                                    dateColumn: {
+                                        filter: false,
+                                    },
+                                }}
+                            />
+                        )}
                     </div>
                     <div className="nexus-c-right-to-match-view__buttons">
                         <ButtonGroup>
@@ -326,7 +341,6 @@ RightToMatchView.propTypes = {
     focusedRight: PropTypes.object,
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     fetchFocusedRight: PropTypes.func,
-    createNewRight: PropTypes.func,
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
     columnDefs: PropTypes.array,
@@ -344,7 +358,6 @@ RightToMatchView.propTypes = {
 RightToMatchView.defaultProps = {
     focusedRight: null,
     fetchFocusedRight: null,
-    createNewRight: null,
     addToast: () => null,
     removeToast: () => null,
     columnDefs: [],
@@ -376,7 +389,6 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
-    createNewRight: payload => dispatch(createNewRight(payload)),
     storeMatchedRights: payload => dispatch(storeMatchedRights(payload)),
     validateRights: payload => dispatch(validateConflictingRights(payload)),
 });

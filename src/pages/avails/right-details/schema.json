@@ -35,9 +35,8 @@
                         "title": {
                             "name": "Title",
                             "type": "string",
-                            "isRequired": true,
                             "path": "title",
-                            "tooltip": "Read Only when coreTitleId exists",
+                            "tooltip": "Disabled for coreTitleId and episodic rights",
                             "dependencies": [
                                 {
                                     "view": "EDIT",
@@ -51,6 +50,51 @@
                                             "name": "territory",
                                             "value": true,
                                             "subfield": "selected"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Season"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Series"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode",
+                                            "operator": "ne"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Season",
+                                            "operator": "ne"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Series",
+                                            "operator": "ne"
                                         }
                                     ]
                                 }
@@ -671,7 +715,42 @@
                         "seriesTitle": {
                             "name": "Series Title",
                             "type": "string",
-                            "path": "episodic.seriesTitle"
+                            "path": "episodic.seriesTitle",
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Season"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Series"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "fields": [
+                                        {
+                                            "name": "coreTitleId",
+                                            "value": "any"
+                                        },
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         "seriesDisplayTitle": {
                             "name": "Series Display Title",
@@ -696,6 +775,37 @@
                                 {
                                     "name": "isInteger"
                                 }
+                            ],
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode"
+                                        },
+                                        {
+                                            "name": "contentType",
+                                            "value": "Season"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "fields": [
+                                        {
+                                            "name": "coreTitleId",
+                                            "value": "any"
+                                        },
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
+                                }
                             ]
                         },
                         "episodeTitle": {
@@ -715,6 +825,33 @@
                             "validation": [
                                 {
                                     "name": "isInteger"
+                                }
+                            ],
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "Episode"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "fields": [
+                                        {
+                                            "name": "coreTitleId",
+                                            "value": "any"
+                                        },
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
                                 }
                             ]
                         },

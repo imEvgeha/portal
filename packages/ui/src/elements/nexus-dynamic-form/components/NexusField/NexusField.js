@@ -39,6 +39,8 @@ const NexusField = ({
     type,
     view,
     tooltip,
+    isRequiredVZ,
+    oneIsRequiredVZ,
     formData,
     isReadOnly,
     isReadOnlyInEdit,
@@ -61,6 +63,7 @@ const NexusField = ({
     isGridLayout,
     isVerticalLayout,
     searchPerson,
+    castCrewConfig,
     generateMsvIds,
     setDisableSubmit,
     initialData,
@@ -207,15 +210,22 @@ const NexusField = ({
                 );
             case 'dateRange':
                 return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
-            case 'datetime':
+            case 'datetime': {
                 // withdrawn date is readOnly when populated (when empty, user can populate it using checkbox)
-                const isWithDrawnReadOnly =
-                    fieldProps?.name.includes('dateWithdrawn') && fieldProps?.value ? true : dateProps?.isReadOnly;
+                const hasWithDrawnDate = fieldProps?.name.includes('dateWithdrawn');
+                const isWithDrawnReadOnly = hasWithDrawnDate && fieldProps?.value ? true : dateProps?.isReadOnly;
+
                 return fieldProps.value || !dateProps.isReadOnly ? (
-                    <DateTimeWithOptional {...fieldProps} {...dateProps} isReadOnly={isWithDrawnReadOnly} />
+                    <DateTimeWithOptional
+                        {...fieldProps}
+                        {...dateProps}
+                        isReadOnly={isWithDrawnReadOnly}
+                        territoryLenght={hasWithDrawnDate && formData?.territory?.length}
+                    />
                 ) : (
                     ''
                 );
+            }
             case 'castCrew':
                 return (
                     <CastCrew
@@ -224,6 +234,9 @@ const NexusField = ({
                         isEdit={true}
                         isVerticalLayout={isVerticalLayout}
                         searchPerson={searchPerson}
+                        castCrewConfig={castCrewConfig}
+                        // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
+                        language={isVerticalLayout ? get(formData, 'editorial.language', 'en') : 'en'}
                         {...fieldProps}
                     />
                 );
@@ -296,6 +309,9 @@ const NexusField = ({
                         isEdit={false}
                         isVerticalLayout={isVerticalLayout}
                         searchPerson={searchPerson}
+                        castCrewConfig={castCrewConfig}
+                        // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
+                        language={isVerticalLayout ? get(formData, 'editorial.language', 'en') : 'en'}
                     />
                 );
             case 'licensors':
@@ -359,7 +375,9 @@ const NexusField = ({
                                     label,
                                     !!(checkDependencies('required') || isRequired),
                                     tooltip,
-                                    isGridLayout
+                                    isGridLayout,
+                                    isRequiredVZ,
+                                    oneIsRequiredVZ
                                 )}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
@@ -412,6 +430,9 @@ NexusField.propTypes = {
     initialData: PropTypes.object,
     linkConfig: PropTypes.object,
     maxLength: PropTypes.number,
+    castCrewConfig: PropTypes.object,
+    isRequiredVZ: PropTypes.bool,
+    oneIsRequiredVZ: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -444,7 +465,10 @@ NexusField.defaultProps = {
     setDisableSubmit: undefined,
     initialData: {},
     linkConfig: {},
+    castCrewConfig: {},
     maxLength: undefined,
+    isRequiredVZ: false,
+    oneIsRequiredVZ: false,
 };
 
 export default NexusField;

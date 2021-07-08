@@ -9,23 +9,13 @@ import {
 import classnames from 'classnames';
 import './CastCrew.scss';
 
-const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) => {
+const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, castCrewConfig, language}) => {
     const [cast, setCast] = useState(
-        persons
-            .filter(person => !CREW_LIST.includes(person.personType))
-            .map((e, index) => {
-                return {...e, id: index};
-            })
-            .sort((a, b) => a.creditsOrder - b.creditsOrder)
+        persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
     );
 
     const [crew, setCrew] = useState(
-        persons
-            .filter(person => CREW_LIST.includes(person.personType))
-            .map((e, index) => {
-                return {...e, id: index};
-            })
-            .sort((a, b) => a.creditsOrder - b.creditsOrder)
+        persons.filter(person => CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
     );
 
     useEffect(() => {
@@ -36,17 +26,11 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
         setCast(
             persons
                 .filter(person => !CREW_LIST.includes(person.personType))
-                .map((e, index) => {
-                    return {...e, id: index};
-                })
                 .sort((a, b) => a.creditsOrder - b.creditsOrder)
         );
         setCrew(
             persons
                 .filter(person => CREW_LIST.includes(person.personType))
-                .map((e, index) => {
-                    return {...e, id: index};
-                })
                 .sort((a, b) => a.creditsOrder - b.creditsOrder)
         );
     };
@@ -58,6 +42,16 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
         } else {
             setCrew(value);
             onChange([...value, ...cast]);
+        }
+    };
+
+    const updateCastCrewConfig = () => {
+        if (castCrewConfig && castCrewConfig.uiSchema) {
+            const updatedCastCrewConfig = castCrewConfig;
+            updatedCastCrewConfig.uiSchema = castCrewConfig.uiSchema.map(c =>
+                c.id === 'personTypes' ? {...c, required: true} : c
+            );
+            return updatedCastCrewConfig;
         }
     };
 
@@ -74,11 +68,13 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
             >
                 <NexusPersonsList
                     searchPerson={searchPerson}
+                    castCrewConfig={updateCastCrewConfig()}
                     personsList={cast}
                     uiConfig={CAST_CONFIG}
                     hasCharacter={isEdit}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
+                    emetLanguage={language}
                 />
             </div>
             <div
@@ -88,11 +84,13 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
             >
                 <NexusPersonsList
                     searchPerson={searchPerson}
+                    castCrewConfig={updateCastCrewConfig()}
                     personsList={crew}
                     uiConfig={CREW_CONFIG}
                     hasCharacter={false}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
+                    emetLanguage={language}
                 />
             </div>
         </div>
@@ -105,6 +103,8 @@ CastCrew.propTypes = {
     onChange: PropTypes.func,
     isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
+    castCrewConfig: PropTypes.object,
+    language: PropTypes.string,
 };
 
 CastCrew.defaultProps = {
@@ -113,6 +113,8 @@ CastCrew.defaultProps = {
     onChange: () => null,
     isVerticalLayout: false,
     searchPerson: undefined,
+    castCrewConfig: {},
+    language: 'en',
 };
 
 export default CastCrew;

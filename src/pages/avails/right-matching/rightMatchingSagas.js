@@ -1,5 +1,4 @@
 import {
-    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
     WARNING_ICON,
@@ -17,13 +16,7 @@ import {rightsService} from '../../legacy/containers/avail/service/RightsService
 import {createColumnDefs} from '../utils';
 import * as actionTypes from './rightMatchingActionTypes';
 import {WARNING_CONFLICTING_RIGHTS} from './rightMatchingConstants';
-import {
-    createRightById,
-    getCombinedRight,
-    getRightMatchingList,
-    putCombinedRight,
-    getMatchingCandidates,
-} from './rightMatchingService';
+import {getCombinedRight, getRightMatchingList, putCombinedRight, getMatchingCandidates} from './rightMatchingService';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {
@@ -254,46 +247,6 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
     }
 }
 
-export function* createNewRight(requestMethod, {payload}) {
-    const {rightId, redirectPath} = payload || {};
-    try {
-        yield put({
-            type: actionTypes.CREATE_NEW_RIGHT_REQUEST,
-            payload: {},
-        });
-        const response = yield call(requestMethod, rightId);
-
-        yield put({
-            type: actionTypes.CREATE_NEW_RIGHT_SUCCESS,
-        });
-
-        if (redirectPath) {
-            yield put(push(URL.keepEmbedded(redirectPath)));
-        }
-
-        yield put({
-            type: ADD_TOAST,
-            payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-                actions: [
-                    {
-                        content: 'View Right',
-                        onClick: () => window.open(`/avails/rights/${response.id}`, '_blank'),
-                    },
-                ],
-            },
-        });
-    } catch (error) {
-        yield put({
-            type: actionTypes.CREATE_NEW_RIGHT_ERROR,
-            payload: error,
-        });
-    }
-}
-
 export function* validateConflictingRights({payload}) {
     const {rightId, tpr, rightData, selectedRights, callback, setMatchingCandidates} = payload || {};
     try {
@@ -338,7 +291,6 @@ export function* rightMatchingWatcher() {
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
         takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList),
-        takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById),
         takeEvery(actionTypes.VALIDATE_CONFLICTING_RIGHTS, validateConflictingRights),
     ]);
 }

@@ -105,6 +105,12 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
           "width": 120,
         },
         Object {
+          "colId": "seriesTitle",
+          "field": "seriesTitle",
+          "headerName": "Series Title",
+          "width": 120,
+        },
+        Object {
           "colId": "seasonNumber",
           "field": "seasonNumber",
           "headerName": "Season Number",
@@ -216,6 +222,15 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
           "displayName": "Content Type",
           "javaVariableName": "contentType",
           "queryParamName": "contentType",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Series Title",
+          "javaVariableName": "seriesTitle",
+          "queryParamName": "seriesTitle",
           "readOnly": true,
           "required": true,
           "searchDataType": "string",

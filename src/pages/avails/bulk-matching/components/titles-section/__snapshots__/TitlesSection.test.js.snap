@@ -35,6 +35,7 @@ exports[`TitlesSection should match snapshot 1`] = `
         isDisabled={false}
         matchButton={Object {}}
         onCellValueChanged={[Function]}
+        setGridApi={[Function]}
         setTitlesTableIsReady={[Function]}
         setTotalCount={[Function]}
       />

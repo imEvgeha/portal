@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import CrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import DownloadIcon from '@vubiquity-nexus/portal-assets/action-download.svg';
 import Email from '@vubiquity-nexus/portal-assets/email.svg';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import config from 'react-global-configuration';
 import {NexusTooltip} from '../../../../../ui/elements';
 import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';

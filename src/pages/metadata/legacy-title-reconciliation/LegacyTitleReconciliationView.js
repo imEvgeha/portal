@@ -2,8 +2,6 @@ import React, {useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
-import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {defineEpisodeAndSeasonNumberColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
@@ -66,10 +64,7 @@ const LegacyTitleReconciliationView = ({
         return columnDefs;
     };
 
-    const updatedColumnDefs = [
-        getRepositoryCell({headerName: 'Repository'}),
-        ...colDefsWithTitleLink(),
-    ];
+    const updatedColumnDefs = [getRepositoryCell({headerName: 'Repository'}), ...colDefsWithTitleLink()];
 
     return (
         <div className="nexus-c-legacy-title-reconciliation-view">

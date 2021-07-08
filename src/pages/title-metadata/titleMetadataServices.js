@@ -1,4 +1,4 @@
-import { WARNING_ICON,SUCCESS_ICON } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {WARNING_ICON, SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
@@ -66,13 +66,6 @@ export const generateMsvIds = (id, licensor, licensee) => {
 };
 
 export const regenerateAutoDecoratedMetadata = async masterEmet => {
-    const body = [
-        {
-            itemIndex: null,
-            body: masterEmet,
-        },
-    ];
-
     try {
         const response = await titleService.regenerateAutoDecoratedMetadata(masterEmet.id);
         const failed = get(response, ['data', '0', 'response', 'failed'], []);
@@ -88,21 +81,16 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
             };
             store.dispatch(addToast(errorToast));
             return false;
-        } else {
-            const successToast = {
-                title: 'Success',
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: 'Editorial Metadata Successfully Regenerated!',
-            };
-            store.dispatch(addToast(successToast));
-            return true;
         }
-    }
-    catch(err) {
-        console.error(err)
-    }
-
+        const successToast = {
+            title: 'Success',
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            description: 'Editorial Metadata Successfully Regenerated!',
+        };
+        store.dispatch(addToast(successToast));
+        return true;
+    } catch (err) {}
 };
 
 export const syncTitle = payload => {
@@ -211,10 +199,11 @@ export const titleService = {
         });
     },
     regenerateAutoDecoratedMetadata: masterEmetId => {
-        const url =
-            config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/regenerateEmets/' + masterEmetId;
-                return nexusFetch(url, {
-                method: 'put',
-            });
+        const url = `${
+            config.get('gateway.titleUrl') + config.get('gateway.service.titleV2')
+        }/regenerateEmets/${masterEmetId}`;
+        return nexusFetch(url, {
+            method: 'put',
+        });
     },
 };

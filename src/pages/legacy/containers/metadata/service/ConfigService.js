@@ -28,10 +28,19 @@ export const configFields = {
     LICENSEES: 'licensees',
 };
 
+const isTextEnglish = testString => {
+    const englishChars = /^[A-Za-z0-9 ]*$/;
+    return englishChars.test(testString);
+};
+
 export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = false) => {
     let displayNamePath = '?';
     if (inputValue) {
-        displayNamePath += `displayName=${inputValue}&`;
+        if (isTextEnglish(inputValue)) {
+            displayNamePath += `displayName=${inputValue}&`;
+        } else {
+            displayNamePath += `localization.displayName=${inputValue}&`;
+        }
     }
     const sortPath = ';' + 'displayName' + '=ASC';
     let personTypePath;

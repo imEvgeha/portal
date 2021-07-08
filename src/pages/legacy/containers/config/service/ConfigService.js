@@ -7,6 +7,12 @@ export const loadConfigAPIEndPoints = () => {
 };
 
 export const configService = {
+    get: (endpoint, id) => {
+        const url =
+            config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`;
+        return nexusFetch(url);
+    },
+
     create: (endpoint, data) => {
         const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/' + endpoint;
         return nexusFetch(url, {
