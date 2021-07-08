@@ -308,17 +308,18 @@ const NexusField = ({
     const getValue = fieldProps => {
         if (Array.isArray(fieldProps.value)) {
             if (fieldProps.value.length) {
+                const arrayValues = fieldProps?.value?.map(item => typeof item === 'object'? item.label : item);
                 if(showLocalized) {
                     return <div>
-                        {fieldProps?.value?.map((item,index) =>{
+                        {arrayValues.map((item,index) =>{
                             if(!hasLocalizedValue(item)) {
                                 return (
                                 <span key={index} title={LOCALIZED_VALUE_NOT_DEFINED} className="italic">
-                                    {item}{index !== fieldProps?.value?.length -1 && ", "}
+                                    {item}{index !== arrayValues.length -1 && ", "}
                                 </span>
                                 )
                             }
-                            return <span key={index}>{item}{index !== fieldProps?.value?.length -1 && ", "} </span>
+                            return <span key={index}>{item}{index !== arrayValues.length -1 && ", "} </span>
                         })}
                     </div>
                 }
@@ -482,6 +483,8 @@ NexusField.propTypes = {
     castCrewConfig: PropTypes.object,
     isRequiredVZ: PropTypes.bool,
     oneIsRequiredVZ: PropTypes.bool,
+    showLocalized: PropTypes.bool,
+    localizationConfig: PropTypes.object
 };
 
 NexusField.defaultProps = {
@@ -518,6 +521,9 @@ NexusField.defaultProps = {
     maxLength: undefined,
     isRequiredVZ: false,
     oneIsRequiredVZ: false,
+    showLocalized: false,
+    localizationConfig: {}
+
 };
 
 export default NexusField;
