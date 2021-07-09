@@ -24,7 +24,9 @@ const SideTabs = ({data, onChange, setTabData, subTabs, isRemoved, clearIsRemove
     }, [isRemoved]);
 
     useEffect(() => {
-        setTabData(currentTab.tabIndex);
+        if (currentTab?.tabIndex) {
+            setTabData(currentTab?.tabIndex);
+        }
     }, [data]);
 
     const handleTabChanged = (key, tabIndex, subTabIndex = 0) => {
