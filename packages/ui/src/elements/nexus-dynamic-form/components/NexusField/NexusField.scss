@@ -22,3 +22,12 @@
         color: map-get($neutrals, N50);
     }
 }
+
+.italic {
+    font-style: italic;
+    color: gray;
+}
+
+.italic[title]:hover {
+    color: red;
+}

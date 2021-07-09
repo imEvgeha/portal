@@ -4,6 +4,7 @@ import Select from '@atlaskit/select';
 import {cloneDeep} from 'lodash';
 import {compose} from 'redux';
 import withOptionalCheckbox from '../nexus-dynamic-form/hoc/withOptionalCheckbox';
+import {LOCALIZED_VALUE_NOT_DEFINED} from '../nexus-dynamic-form/constants';
 import {formatOptions} from '../nexus-dynamic-form/utils';
 import './NexusSelect.scss';
 
@@ -20,6 +21,7 @@ const NexusSelect = ({
     isMultiselect,
     addedProps,
     optionsFilterParameter,
+    showLocalized,
     isCreateMode,
 }) => {
     const [fetchedOptions, setFetchedOptions] = useState([]);
@@ -57,6 +59,19 @@ const NexusSelect = ({
         return fetchedOptions;
     };
 
+    const formatOptionLabel = option => {
+        const notLocalized = option?.label?.includes('(') && option?.label?.includes(')*')? true: false;
+          return (
+            <div
+              className={notLocalized ? "italic": null}
+            >
+              <span title={notLocalized? LOCALIZED_VALUE_NOT_DEFINED: null}>
+                {option.label}
+              </span>
+            </div>
+          );
+      };
+
     return isMultiselect ? (
         <SelectWithOptional
             {...fieldProps}
@@ -64,6 +79,7 @@ const NexusSelect = ({
             isMulti
             defaultValue={defaultValue}
             {...addedProps}
+            formatOptionLabel={showLocalized? formatOptionLabel: null}
         />
     ) : (
         <SelectWithOptional
@@ -89,6 +105,7 @@ NexusSelect.propTypes = {
     addedProps: PropTypes.object.isRequired,
     optionsFilterParameter: PropTypes.array,
     isCreateMode: PropTypes.bool,
+    showLocalized: PropTypes.bool
 };
 
 NexusSelect.defaultProps = {
@@ -100,6 +117,7 @@ NexusSelect.defaultProps = {
     isMultiselect: false,
     optionsFilterParameter: [],
     isCreateMode: false,
+    showLocalized: false,
 };
 
 export default NexusSelect;

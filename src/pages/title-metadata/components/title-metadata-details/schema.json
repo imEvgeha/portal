@@ -835,9 +835,14 @@
                                     "path": "genres",
                                     "type": "multiselect",
                                     "isRequiredVZ": true,
+                                    "showLocalized": true,
                                     "optionsConfig": {
-                                        "defaultValuePath": "name",
+                                        "defaultValuePath": "id",
                                         "defaultLabelPath": "name"
+                                    },
+                                    "localizationConfig": {
+                                        "default": "genreEn",
+                                        "localized": "genre"
                                     }
                                 },
                                 "editorial.category": {
