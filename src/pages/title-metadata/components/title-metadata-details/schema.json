@@ -837,7 +837,7 @@
                                     "isRequiredVZ": true,
                                     "showLocalized": true,
                                     "optionsConfig": {
-                                        "defaultValuePath": "name",
+                                        "defaultValuePath": "id",
                                         "defaultLabelPath": "name"
                                     },
                                     "localizationConfig": {

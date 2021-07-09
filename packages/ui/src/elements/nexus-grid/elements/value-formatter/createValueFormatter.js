@@ -179,7 +179,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip
                 return params => {
                     const {data = {}} = params || {};
                     if (data && data[javaVariableName]) {
-                        return data[javaVariableName].map(({genre}) => genre).join(', ');
+                        return data[javaVariableName].map(({genre, id}) => ({genre, id}));
                     }
                 };
             }

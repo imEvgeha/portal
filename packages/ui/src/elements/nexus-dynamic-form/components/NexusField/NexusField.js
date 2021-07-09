@@ -196,10 +196,16 @@ const NexusField = ({
                 }
                 const emetLanguage = get(formData,'editorial.language');
                 if(showLocalized === true && emetLanguage !== 'en' && !selectLocalizedValues) {
+                    // for localized values, save id in value field for existing entries (genres, awards)
+                    multiselectFieldProps.value = multiselectFieldProps.value.map(item => {
+                        const genreLabel = item.label.split('(').join('').split(')')[0];
+                        const genreId = get(selectValues[path].find(item => item.name === genreLabel),'id');
+                        return {...item, value: genreId }
+                    })
                     selectLocalizedValues = Object.assign({}, selectValues);
                         const newValues = selectLocalizedValues[path].map(item => {
                             const localLang = item.localizations.find(local => local.language === emetLanguage);
-                            const enName = item.name; // name field in genre object
+                            const enName = item.name;
                             if(localLang) {
                                 item.displayName = `${localLang.language}(${enName})`
                             }
@@ -213,7 +219,7 @@ const NexusField = ({
                         });
                         selectLocalizedValues[path] = newValues;
                         // displayName is used in dropdown for display purpose only. to send to api, use "name"
-                        newOptionsConfig = { defaultLabelPath: "displayName", defaultValuePath: "name"}
+                        newOptionsConfig = { ...optionsConfig, defaultLabelPath: "displayName"}
 
                 }
 

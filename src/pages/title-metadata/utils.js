@@ -227,7 +227,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
     }
 };
 
-export const formatEditorialBody = (data, titleId, isCreate, genresConfigValues = []) => {
+export const formatEditorialBody = (data, titleId, isCreate) => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined || data[key] === '') body[key] = null;
@@ -235,14 +235,8 @@ export const formatEditorialBody = (data, titleId, isCreate, genresConfigValues 
             body[key] =
                 data[key] &&
                 data[key].map((genre, i) => {
-                    let genreValue = genre;
-                    if (isObjectLike(genre) && get(genre, 'value')) {
-                        genreValue = get(genre, 'value');
-                    }
-                    genreValue = genreValue.split('(').join('').split(')')[0]; // extract en genre from i.e. "(Abstract)*"
-                    const genreObj = genresConfigValues.find(item => item.name === genreValue);
                     return {
-                        id: get(genreObj, 'id'),
+                        id: get(genre, 'value'), // id is configured in value for genre
                         order: i,
                     };
                 });
@@ -308,7 +302,7 @@ export const formatEditorialBody = (data, titleId, isCreate, genresConfigValues 
           ];
 };
 
-export const updateEditorialMetadata = async (values, titleId, genresConfigValues =[]) => {
+export const updateEditorialMetadata = async (values, titleId) => {
     let response = [];
     const errorToast = {
         title: ERROR_TITLE,
@@ -322,10 +316,10 @@ export const updateEditorialMetadata = async (values, titleId, genresConfigValue
         await Promise.all(
             data.map(async emet => {
                 if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-                    const body = formatEditorialBody(emet, titleId, false, genresConfigValues);
+                    const body = formatEditorialBody(emet, titleId, false);
                     response = await titleService.updateEditorialMetadata(body, tenantCode);
                 } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-                    const body = formatEditorialBody(emet, titleId, true, genresConfigValues);
+                    const body = formatEditorialBody(emet, titleId, true);
                     response = await titleService.addEditorialMetadata(body, tenantCode);
                 }
             })
