@@ -106,7 +106,7 @@ const TitleDetails = ({
         });
 
         prepareCategoryField(updatedValues);
-        updatedValues['awards'] = prepareAwardsField(updatedValues);
+        updatedValues['awards'] = prepareAwardsField(updatedValues, selectValues?.awards);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
         updateEditorialMetadata(values, id, selectValues?.genres);

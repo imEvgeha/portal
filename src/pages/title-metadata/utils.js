@@ -153,11 +153,14 @@ export const prepareCategoryField = data => {
     }
 };
 
-export const prepareAwardsField = data => {
+export const prepareAwardsField = (data, selectValues) => {
     if (get(data, 'awards')) {
-        return data.awards.map(award => ({
-            id: award,
-        }));
+        return data.awards.map(award => {
+            const selectedValue = selectValues.find(x => x.name === award);
+            return {
+                id: selectedValue?.id,
+            };
+        });
     }
 };
 

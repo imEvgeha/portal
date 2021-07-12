@@ -200,7 +200,8 @@ const NexusField = ({
                 if (showLocalized === true && emetLanguage !== 'en' && !selectLocalizedValues) {
                     // for localized values, save id in value field for existing entries (genres, awards)
                     multiselectFieldProps.value = multiselectFieldProps?.value?.map(item => {
-                        const genreLabel = item.label.split('(').join('').split(')')[0];
+                        const label = getLabel(item);
+                        const genreLabel = label?.split('(').join('').split(')')[0];
                         const genreId = get(
                             selectValues[path].find(item => item.name === genreLabel),
                             'id'
@@ -214,7 +215,7 @@ const NexusField = ({
                         if (localLang) {
                             item.displayName = `${localLang.language}(${enName})`;
                         } else if (emetLanguage) item.displayName = `(${enName})*`;
-                            else item.displayName = enName;
+                        else item.displayName = enName;
                         return item;
                     });
                     selectLocalizedValues[path] = newValues;
@@ -315,7 +316,11 @@ const NexusField = ({
 
     const getLabel = item => {
         if (typeof item === 'object' && localizationConfig) {
-            return emetLanguage === 'en' ? item[localizationConfig.default] : item[localizationConfig.localized];
+            return item?.label
+                ? item.label
+                : !emetLanguage || emetLanguage === 'en'
+                ? item[localizationConfig.default]
+                : item[localizationConfig.localized];
         }
         return typeof item === 'object' ? item.label : item;
     };
@@ -545,7 +550,7 @@ NexusField.defaultProps = {
     isRequiredVZ: false,
     oneIsRequiredVZ: false,
     showLocalized: false,
-    localizationConfig: {},
+    localizationConfig: undefined,
 };
 
 export default NexusField;

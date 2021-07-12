@@ -321,14 +321,13 @@
                             "path": "awards",
                             "type": "multiselect",
                             "optionsConfig": {
-                                "defaultValuePath": "id",
+                                "defaultValuePath": "name",
                                 "defaultLabelPath": "name"
                             },
-                            "localizationConfig": {
-                                "default": "nameEn",
-                                "localized": "name"
-                            },
-                            "showLocalized": true
+                            "selectConfig": {
+                                "defaultValuePath": "id",
+                                "defaultLabelPath": "name"
+                            }
                         }
                     }
                 }
