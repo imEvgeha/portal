@@ -39,7 +39,7 @@ export const getDefaultValue = (field = {}, view, data) => {
     }
 
     if (field.selectConfig) {
-        return value.map(x => x[field.selectConfig.defaultLabelPath]);
+        return value?.map(x => x[field.selectConfig.defaultLabelPath]);
     }
     return value;
 };

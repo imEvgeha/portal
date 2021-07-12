@@ -325,7 +325,6 @@
                                 "defaultLabelPath": "name"
                             },
                             "selectConfig": {
-                                "defaultValuePath": "id",
                                 "defaultLabelPath": "name"
                             }
                         }

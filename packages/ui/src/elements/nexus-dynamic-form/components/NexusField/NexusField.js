@@ -459,7 +459,7 @@ const NexusField = ({
                                 )}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
-                                    {view === VIEWS.EDIT || view === VIEWS.CREATE
+                                    {!getIsReadOnly() && (view === VIEWS.EDIT || view === VIEWS.CREATE)
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
