@@ -109,7 +109,7 @@ const TitleDetails = ({
         updatedValues['awards'] = prepareAwardsField(updatedValues, selectValues?.awards);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
-        updateEditorialMetadata(values, id, selectValues?.genres);
+        updateEditorialMetadata(values, id);
     };
 
     const getExternaIds = repo => {

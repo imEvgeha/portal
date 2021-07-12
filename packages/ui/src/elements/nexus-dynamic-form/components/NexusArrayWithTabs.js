@@ -256,7 +256,12 @@ const NexusArrayWithTabs = ({
             } else if (obj && typeof obj === 'object' && Array.isArray(obj)) {
                 obj.forEach((val, index) => {
                     if (val.hasOwnProperty('label') && val.hasOwnProperty('value')) {
-                        obj[index] = val.value;
+                        if(['genres'].includes(key)) {
+                            obj[index] = val;
+                        }
+                        else {
+                            obj[index] = val.value;
+                        }
                     }
                 });
             }

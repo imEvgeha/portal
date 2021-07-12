@@ -196,18 +196,9 @@ const NexusField = ({
                 ) {
                     multiselectFieldProps.value = fieldProps?.value.map(val => ({label: val, value: val}));
                 }
-                const emetLanguage = get(formData, 'editorial.language');
-                if (showLocalized === true && emetLanguage !== 'en' && !selectLocalizedValues) {
-                    // for localized values, save id in value field for existing entries (genres, awards)
-                    multiselectFieldProps.value = multiselectFieldProps?.value?.map(item => {
-                        const label = getLabel(item);
-                        const genreLabel = label?.split('(').join('').split(')')[0];
-                        const genreId = get(
-                            selectValues[path].find(item => item.name === genreLabel),
-                            'id'
-                        );
-                        return {...item, value: genreId};
-                    });
+                const emetLanguage = get(formData,'editorial.language');
+                if(showLocalized === true) {
+                    multiselectFieldProps.value = fieldProps.value;
                     selectLocalizedValues = Object.assign({}, selectValues);
                     const newValues = selectLocalizedValues[path].map(item => {
                         const localLang = item.localizations.find(local => local.language === emetLanguage);
