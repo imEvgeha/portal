@@ -114,7 +114,7 @@ CastCrew.defaultProps = {
     isVerticalLayout: false,
     searchPerson: undefined,
     castCrewConfig: {},
-    language: "en",
+    language: 'en',
 };
 
 export default CastCrew;

@@ -153,6 +153,17 @@ export const prepareCategoryField = data => {
     }
 };
 
+export const prepareAwardsField = (data, selectValues) => {
+    if (get(data, 'awards')) {
+        return data.awards.map(award => {
+            const selectedValue = selectValues.find(x => x.name === award);
+            return {
+                id: selectedValue?.id,
+            };
+        });
+    }
+};
+
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     const newData = cloneDeep(data);
     return newData.map(record => {
@@ -160,10 +171,8 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
         if (field) {
             const formattedValues = [];
             field.forEach(obj => {
-                if(record?.language !== obj?.language && key === 'genre')
-                    formattedValues.push(`(${obj[key]})*`);
-                else
-                    formattedValues.push(obj[key]);
+                if (record?.language !== obj?.language && key === 'genre') formattedValues.push(`(${obj[key]})*`);
+                else formattedValues.push(obj[key]);
             });
             record[fieldName] = formattedValues;
         }

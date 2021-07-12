@@ -29,6 +29,7 @@ import {
     isNexusTitle,
     isMgmTitle,
     prepareCategoryField,
+    prepareAwardsField,
     handleDirtyValues,
 } from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
@@ -103,7 +104,9 @@ const TitleDetails = ({
                 updatedValues[key] = values[key];
             }
         });
+
         prepareCategoryField(updatedValues);
+        updatedValues['awards'] = prepareAwardsField(updatedValues, selectValues?.awards);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
         updateEditorialMetadata(values, id, selectValues?.genres);

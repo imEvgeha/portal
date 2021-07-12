@@ -315,6 +315,18 @@
                                     }
                                 ]
                             ]
+                        },
+                        "awards": {
+                            "name": "Awards",
+                            "path": "awards",
+                            "type": "multiselect",
+                            "optionsConfig": {
+                                "defaultValuePath": "name",
+                                "defaultLabelPath": "name"
+                            },
+                            "selectConfig": {
+                                "defaultLabelPath": "name"
+                            }
                         }
                     }
                 }
@@ -979,7 +991,18 @@
                                 "editorial.awards": {
                                     "name": "Awards",
                                     "path": "awards",
-                                    "type": "string"
+                                    "type": "multiselect",
+                                    "hideInCreate": true,
+                                    "isReadOnlyInEdit": true,
+                                    "optionsConfig": {
+                                        "defaultValuePath": "name",
+                                        "defaultLabelPath": "name"
+                                    },
+                                    "localizationConfig": {
+                                        "default": "nameEn",
+                                        "localized": "name"
+                                    },
+                                    "showLocalized": true
                                 },
                                 "editorial.sakstelInventoryId": {
                                     "name": "Sakstel Inventory ID",

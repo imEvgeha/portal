@@ -1015,7 +1015,7 @@ class RightCreate extends React.Component {
         };
 
         const renderFields = [];
-        if(!this.mappings?.length) {
+        if (!this.mappings?.length) {
             this.mappings = this.props.availsMapping?.mappings;
         }
         if (this.mappings) {
@@ -1037,25 +1037,25 @@ class RightCreate extends React.Component {
                             case 'string':
                                 let req = required;
                                 if (episodicContentTypes.includes(this.state.contentType)) {
-                                    if(mapping.javaVariableName === 'title') {
+                                    if (mapping.javaVariableName === 'title') {
                                         req = false;
                                         mapping.required = false;
-                                    }
-                                    else if(mapping.javaVariableName === 'episodic.seriesTitle' && ['Season', "Episode", "Series"].includes(this.state.contentType))
-                                    {
+                                    } else if (
+                                        mapping.javaVariableName === 'episodic.seriesTitle' &&
+                                        ['Season', 'Episode', 'Series'].includes(this.state.contentType)
+                                    ) {
                                         req = true;
                                         mapping.required = true;
-                                    }
-                                    else {
+                                    } else {
                                         req = false;
                                         mapping.required = false;
                                     }
-
-                                }
-                                else {
-                                    if(mapping.javaVariableName === 'episodic.seriesTitle' ||
-                                    mapping.javaVariableName === 'episodic.seasonTitle' ||
-                                    mapping.javaVariableName === 'episodic.episodeTitle') {
+                                } else {
+                                    if (
+                                        mapping.javaVariableName === 'episodic.seriesTitle' ||
+                                        mapping.javaVariableName === 'episodic.seasonTitle' ||
+                                        mapping.javaVariableName === 'episodic.episodeTitle'
+                                    ) {
                                         req = false;
                                         mapping.required = false;
                                     }
@@ -1067,27 +1067,26 @@ class RightCreate extends React.Component {
                                 break;
                             case 'integer':
                                 req = required;
-                                if(this.state.contentType === 'Episode') {
-                                    if(mapping.javaVariableName === 'episodic.episodeNumber' || mapping.javaVariableName === 'episodic.seasonNumber') {
+                                if (this.state.contentType === 'Episode') {
+                                    if (
+                                        mapping.javaVariableName === 'episodic.episodeNumber' ||
+                                        mapping.javaVariableName === 'episodic.seasonNumber'
+                                    ) {
                                         req = true;
                                         mapping.required = true;
-                                    }
-                                    else {
+                                    } else {
                                         req = false;
                                         mapping.required = false;
                                     }
-                                }
-                                else if(this.state.contentType === 'Season') {
-                                    if(mapping.javaVariableName === 'episodic.seasonNumber') {
+                                } else if (this.state.contentType === 'Season') {
+                                    if (mapping.javaVariableName === 'episodic.seasonNumber') {
                                         req = true;
                                         mapping.required = true;
-                                    }
-                                    else {
+                                    } else {
                                         req = false;
                                         mapping.required = false;
                                     }
-                                }
-                                else {
+                                } else {
                                     req = false;
                                     mapping.required = false;
                                 }
@@ -1108,8 +1107,8 @@ class RightCreate extends React.Component {
                                 break;
                             case 'select':
                                 // set contentType state
-                                if(mapping.javaVariableName === 'contentType') {
-                                    if(value?.value && this.state.contentType !== value.value) {
+                                if (mapping.javaVariableName === 'contentType') {
+                                    if (value?.value && this.state.contentType !== value.value) {
                                         this.setState(prev => ({...prev, contentType: value.value}));
                                     }
                                 }

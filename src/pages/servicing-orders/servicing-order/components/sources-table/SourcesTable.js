@@ -32,19 +32,16 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
 
-    const barcodes = useMemo(() => dataArray.map(item => item.barcode.trim()),[dataArray]);
+    const barcodes = useMemo(() => dataArray.map(item => item.barcode.trim()), [dataArray]);
 
     const isRestrictedTenant = RESTRICTED_TENANTS.includes(dataArray[0] && dataArray[0].tenant);
 
-    useEffect(
-        () => {
-            if ((!isEqual(dataArray, previousData) || !selectedSource) && dataArray && dataArray.length > 0) {
-                setSelectedSource(dataArray[0]);
-            }
-            populateRowData();
-        },
-        [dataArray]
-    );
+    useEffect(() => {
+        if ((!isEqual(dataArray, previousData) || !selectedSource) && dataArray && dataArray.length > 0) {
+            setSelectedSource(dataArray[0]);
+        }
+        populateRowData();
+    }, [dataArray]);
 
     useEffect(
         () => {
@@ -54,11 +51,11 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         [selectedSource]
     );
 
-    const setSelectedRow = ({column={}, rowIndex, node}) => {
-        if(column && column.colId !== 'delete' && get(node,'selected',true)) {
+    const setSelectedRow = ({column = {}, rowIndex, node}) => {
+        if (column && column.colId !== 'delete' && get(node, 'selected', true)) {
             setSelectedSource(dataArray[rowIndex]);
         }
-    }
+    };
 
     const radioButtonColumn = defineColumn({
         width: 35,
@@ -114,11 +111,11 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         switch (type) {
-            case 'rowDataChanged' : {
-                if(!data && api.getRowNode(0)) {
+            case 'rowDataChanged': {
+                if (!data && api.getRowNode(0)) {
                     api.getRowNode(0).setSelected(true);
                     api.setDomLayout('autoHeight');
-                    setSelectedRow({rowIndex:0})
+                    setSelectedRow({rowIndex: 0});
                 }
                 break;
             }
@@ -211,12 +208,10 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const removeSourceRow = barcode => {
         const newSources = cloneDeep(dataArray[0]);
-        const newSourceArray = dataArray[0].deteServices[0].deteSources.filter(
-            item => item.barcode !== barcode
-        )
+        const newSourceArray = dataArray[0].deteServices[0].deteSources.filter(item => item.barcode !== barcode);
         // delete source row from each services object
         // eslint-disable-next-line no-return-assign
-        newSources.deteServices.forEach(item => item.deteSources = newSourceArray);
+        newSources.deteServices.forEach(item => (item.deteSources = newSourceArray));
         setSources(prev => prev.filter(item => item.barcode !== barcode));
         setUpdatedServices(newSources);
     };
@@ -262,7 +257,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 onCellClicked={setSelectedRow}
                 onRowSelected={setSelectedRow}
                 rowSelection="single"
-                rowStyle={{ zIndex: '0' }}
+                rowStyle={{zIndex: '0'}}
             />
         </div>
     );
