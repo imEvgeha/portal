@@ -25,7 +25,7 @@ const NexusPersonsList = ({
     updateCastCrew,
     searchPerson,
     castCrewConfig,
-    emetLanguage
+    emetLanguage,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
 
@@ -317,7 +317,7 @@ NexusPersonsList.defaultProps = {
     updateCastCrew: () => null,
     searchPerson: () => null,
     castCrewConfig: {},
-    emetLanguage: "en",
+    emetLanguage: 'en',
 };
 
 export default NexusPersonsList;

@@ -29,6 +29,7 @@ import {
     isNexusTitle,
     isMgmTitle,
     prepareCategoryField,
+    prepareAwardsField,
     handleDirtyValues,
 } from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
@@ -80,7 +81,7 @@ const TitleDetails = ({
         }
     }, [refresh]);
 
-    const onSubmit = (initialValues, values) => {
+    const onSubmit = (values, initialValues) => {
         handleDirtyValues(initialValues, values);
         const {params} = match || {};
         const {id} = params;
@@ -103,7 +104,9 @@ const TitleDetails = ({
                 updatedValues[key] = values[key];
             }
         });
+
         prepareCategoryField(updatedValues);
+        updatedValues['awards'] = prepareAwardsField(updatedValues, selectValues?.awards);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
         updateEditorialMetadata(values, id);
@@ -170,7 +173,7 @@ const TitleDetails = ({
                 isTitlePage={true}
                 containerRef={containerRef}
                 selectValues={selectValues}
-                onSubmit={(initialValues, values) => onSubmit(initialValues, values)}
+                onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                 hasButtons={isNexusTitle(title.id)}

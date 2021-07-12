@@ -40,10 +40,20 @@ const NexusArrayWithTabs = ({
     useEffect(() => {
         const groupedObj = data ? groupBy(data) : {};
         setGroupedData(groupedObj);
-    }, [data]);
+    }, [data, initialData]);
+
+    useEffect(() => {
+        setCurrentData(initialData[0]);
+    }, [initialData]);
 
     const clearIsRemoved = () => {
         setIsRemoved(false);
+    };
+
+    const setTabData = tabIndex => {
+        if (data && view === VIEWS.VIEW) {
+            setCurrentData(data[tabIndex]);
+        }
     };
 
     const groupBy = values => {
@@ -290,6 +300,17 @@ const NexusArrayWithTabs = ({
         closeModal();
     };
 
+    const getVisibleFields = allFields => {
+        const updateFields = {...allFields};
+        const f = Object.keys(allFields).filter((key, index) => {
+            const hide = get(allFields[key], 'hideInCreate');
+            if (hide && updateFields[key]) {
+                delete updateFields[key];
+            }
+        });
+        return updateFields;
+    };
+
     const modalContent = () => {
         return (
             <div>
@@ -297,7 +318,7 @@ const NexusArrayWithTabs = ({
                     {({formProps, reset, getValues}) => (
                         <form {...formProps}>
                             <div>
-                                {Object.keys(fields).map(key => {
+                                {Object.keys(getVisibleFields(fields)).map((key, index) => {
                                     return (
                                         <div key={`${data.id}_${key}`} className="nexus-c-nexus-array-with-tabs__field">
                                             {renderNexusField(key, VIEWS.CREATE, getValues, generateMsvIds, {
@@ -399,6 +420,7 @@ const NexusArrayWithTabs = ({
                     data={groupedData}
                     subTabs={subTabs}
                     isRemoved={isRemoved}
+                    setTabData={setTabData}
                     clearIsRemoved={clearIsRemoved}
                 />
             </div>

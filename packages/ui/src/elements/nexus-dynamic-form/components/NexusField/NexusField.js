@@ -84,6 +84,8 @@ const NexusField = ({
         maxLength,
     };
 
+    const emetLanguage = get(formData, 'editorial.language');
+
     const getIsReadOnly = () => {
         return (isReadOnlyInEdit && view === VIEWS.EDIT) || isReadOnly;
     };
@@ -198,32 +200,30 @@ const NexusField = ({
                 if(showLocalized === true) {
                     multiselectFieldProps.value = fieldProps.value;
                     selectLocalizedValues = Object.assign({}, selectValues);
-                        const newValues = selectLocalizedValues[path].map(item => {
-                            const localLang = item.localizations.find(local => local.language === emetLanguage);
-                            const enName = item.name;
-                            if(localLang) {
-                                item.displayName = `${localLang.language}(${enName})`
-                            }
-                            else {
-                                if(emetLanguage)
-                                    item.displayName = `(${enName})*`
-                                else
-                                    item.displayName = enName;
-                            }
-                            return item;
-                        });
-                        selectLocalizedValues[path] = newValues;
-                        // displayName is used in dropdown for display purpose only. to send to api, use "name"
-                        newOptionsConfig = { ...optionsConfig, defaultLabelPath: "displayName"}
-
+                    const newValues = selectLocalizedValues[path].map(item => {
+                        const localLang = item.localizations.find(local => local.language === emetLanguage);
+                        const enName = item.name;
+                        if (localLang) {
+                            item.displayName = `${localLang.language}(${enName})`;
+                        } else if (emetLanguage) item.displayName = `(${enName})*`;
+                        else item.displayName = enName;
+                        return item;
+                    });
+                    selectLocalizedValues[path] = newValues;
+                    // displayName is used in dropdown for display purpose only. to send to api, use "name"
+                    newOptionsConfig = {...optionsConfig, defaultLabelPath: 'displayName'};
                 }
 
                 return (
                     <NexusSelect
                         fieldProps={multiselectFieldProps}
                         type={type}
-                        optionsConfig={showLocalized === true && emetLanguage !== 'en' ? newOptionsConfig : optionsConfig}
-                        selectValues={showLocalized === true && emetLanguage !== 'en' ? selectLocalizedValues : selectValues}
+                        optionsConfig={
+                            showLocalized === true && emetLanguage !== 'en' ? newOptionsConfig : optionsConfig
+                        }
+                        selectValues={
+                            showLocalized === true && emetLanguage !== 'en' ? selectLocalizedValues : selectValues
+                        }
                         path={path}
                         isRequired={isRequired}
                         isMultiselect={true}
@@ -259,14 +259,14 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
-                       {...fieldProps}
+                        {...fieldProps}
                         persons={fieldProps.value ? fieldProps.value : []}
                         isEdit={true}
                         isVerticalLayout={isVerticalLayout}
                         searchPerson={searchPerson}
                         castCrewConfig={castCrewConfig}
                         // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
-                        language={isVerticalLayout? get(formData, 'editorial.language', 'en'): 'en'}
+                        language={isVerticalLayout ? get(formData, 'editorial.language', 'en') : 'en'}
                         {...fieldProps}
                     />
                 );
@@ -301,28 +301,46 @@ const NexusField = ({
     };
 
     const hasLocalizedValue = value => {
-        if(typeof value === 'string' && value.includes('(') && value.includes(')*'))
-            return false;
+        if (typeof value === 'string' && value.includes('(') && value.includes(')*')) return false;
         return true;
-    }
+    };
+
+    const getLabel = item => {
+        if (typeof item === 'object' && localizationConfig) {
+            return item?.label
+                ? item.label
+                : !emetLanguage || emetLanguage === 'en'
+                ? item[localizationConfig.default]
+                : item[localizationConfig.localized];
+        }
+        return typeof item === 'object' ? item.label : item;
+    };
 
     const getValue = fieldProps => {
         if (Array.isArray(fieldProps.value)) {
             if (fieldProps.value.length) {
-                const arrayValues = fieldProps?.value?.map(item => typeof item === 'object'? item.label : item);
-                if(showLocalized) {
-                    return <div>
-                        {arrayValues.map((item,index) =>{
-                            if(!hasLocalizedValue(item)) {
+                const arrayValues = fieldProps?.value?.map(item => getLabel(item));
+                if (showLocalized) {
+                    return (
+                        <div>
+                            {arrayValues.map((item, index) => {
+                                if (!hasLocalizedValue(item)) {
+                                    return (
+                                        <span key={index} title={LOCALIZED_VALUE_NOT_DEFINED} className="italic">
+                                            {item}
+                                            {index !== arrayValues.length - 1 && ', '}
+                                        </span>
+                                    );
+                                }
                                 return (
-                                <span key={index} title={LOCALIZED_VALUE_NOT_DEFINED} className="italic">
-                                    {item}{index !== arrayValues.length -1 && ", "}
-                                </span>
-                                )
-                            }
-                            return <span key={index}>{item}{index !== arrayValues.length -1 && ", "} </span>
-                        })}
-                    </div>
+                                    <span key={index}>
+                                        {item}
+                                        {index !== arrayValues.length - 1 && ', '}{' '}
+                                    </span>
+                                );
+                            })}
+                        </div>
+                    );
                 }
                 return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
             }
@@ -362,7 +380,7 @@ const NexusField = ({
                         searchPerson={searchPerson}
                         castCrewConfig={castCrewConfig}
                         // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
-                        language={isVerticalLayout? get(formData, 'editorial.language', 'en'): 'en'}
+                        language={isVerticalLayout ? get(formData, 'editorial.language', 'en') : 'en'}
                     />
                 );
             case 'licensors':
@@ -432,7 +450,7 @@ const NexusField = ({
                                 )}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
-                                    {view === VIEWS.EDIT || view === VIEWS.CREATE
+                                    {!getIsReadOnly() && (view === VIEWS.EDIT || view === VIEWS.CREATE)
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
@@ -485,7 +503,7 @@ NexusField.propTypes = {
     isRequiredVZ: PropTypes.bool,
     oneIsRequiredVZ: PropTypes.bool,
     showLocalized: PropTypes.bool,
-    localizationConfig: PropTypes.object
+    localizationConfig: PropTypes.object,
 };
 
 NexusField.defaultProps = {
@@ -523,8 +541,7 @@ NexusField.defaultProps = {
     isRequiredVZ: false,
     oneIsRequiredVZ: false,
     showLocalized: false,
-    localizationConfig: {}
-
+    localizationConfig: undefined,
 };
 
 export default NexusField;
