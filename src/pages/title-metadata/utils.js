@@ -160,8 +160,12 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
         if (field) {
             const formattedValues = [];
             field.forEach(obj => {
-                if(record?.language !== obj?.language && key === 'genre')
-                    formattedValues.push(`(${obj[key]})*`);
+                if(key === 'genre') {
+                    if(record?.language !== obj?.language) {
+                        formattedValues.push({label: `(${obj[key]})*`, value: obj.id} );
+                    }
+                    else formattedValues.push({label: obj[key], value: obj.id} );
+                }
                 else
                     formattedValues.push(obj[key]);
             });
