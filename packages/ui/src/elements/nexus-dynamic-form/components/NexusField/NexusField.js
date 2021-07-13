@@ -198,13 +198,13 @@ const NexusField = ({
                 }
                 const emetLanguage = get(formData,'editorial.language');
                 if(showLocalized === true) {
-                    multiselectFieldProps.value = fieldProps.value;
+                    multiselectFieldProps.value = fieldProps?.value;
                     selectLocalizedValues = Object.assign({}, selectValues);
                     const newValues = selectLocalizedValues[path].map(item => {
-                        const localLang = item.localizations.find(local => local.language === emetLanguage);
-                        const enName = item.name;
+                        const localLang = item.localizations.find(local => local?.language === emetLanguage);
+                        const enName = item?.name;
                         if (localLang) {
-                            item.displayName = `${localLang.language}(${enName})`;
+                            item.displayName = `${localLang?.name}(${enName})`;
                         } else if (emetLanguage) item.displayName = `(${enName})*`;
                         else item.displayName = enName;
                         return item;
