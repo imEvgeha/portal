@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
 import InlineEdit from '@atlaskit/inline-edit';
-import {
-    getDateFormatBasedOnLocale,
-    parseSimulcast,
-} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import classnames from 'classnames';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
@@ -60,9 +57,7 @@ const NexusDatePicker = ({
                 onChange(
                     isTimestamp
                         ? moment(date).utc().toISOString()
-                        : `${moment(date)
-                              .utc()
-                              .format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
+                        : `${moment.utc(date).format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
                 );
         } else {
             setDate('');
