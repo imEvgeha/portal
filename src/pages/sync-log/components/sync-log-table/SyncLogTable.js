@@ -96,7 +96,7 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
                             isReturningTime={false}
                             isRequired
                         />
-                        <div className="nexus-c-sync-log-table__date-field--error">
+                        <div id="dateFromError" className="nexus-c-sync-log-table__date-field--error">
                             {dateError === 'from' && FROM_DATE_ERROR}
                         </div>
                     </div>
@@ -108,7 +108,7 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
                             value={dateTo}
                             isReturningTime={false}
                         />
-                        <div className="nexus-c-sync-log-table__date-field--error">
+                        <div id="dateToError" className="nexus-c-sync-log-table__date-field--error">
                             {dateError === 'to' && TO_DATE_ERROR}
                         </div>
                     </div>
