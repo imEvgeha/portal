@@ -22,13 +22,14 @@ import TitleNameCellRenderer from '../TitleNamecCellRenderer/TitleNameCellRender
 import './SyncLogTable.scss';
 
 const SyncLogGrid = compose(withColumnsResizing(), withInfiniteScrolling({fetchData: getSyncLog}))(NexusGrid);
-const FUTURE_DATE_ERROR = 'FUTURE DATES ARE NOT ALLOWED!';
+const FROM_DATE_ERROR = 'FUTURE DATES ARE NOT ALLOWED!';
+const TO_DATE_ERROR = 'THIS DATE MUST BE AFTER YOUR FROM DATE';
 
 const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
     const [gridApi, setGridApi] = useState(null);
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
-    const [dateFromError, setDateFromError] = useState(false);
+    const [dateError, setDateError] = useState(null);
 
     const setErrors = data => {
         setErrorsData(data);
@@ -58,13 +59,20 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
 
     const onDateFromChange = dateFrom => {
         if (moment().isBefore(dateFrom)) {
-            setDateFromError(true);
+            setDateError('from');
         } else {
-            setDateFromError(false);
+            setDateError(null);
         }
         setDateFrom(dateFrom);
     };
-    const onDateToChange = dateTo => setDateTo(dateTo);
+    const onDateToChange = dateTo => {
+        if (moment(dateFrom).isAfter(dateTo)) {
+            setDateError('to');
+        } else {
+            setDateError(null);
+            setDateTo(dateTo);
+        }
+    };
 
     const closeDrawer = () => setShowDrawer(false);
 
@@ -87,10 +95,9 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
                             value={dateFrom}
                             isReturningTime={false}
                             isRequired
-                            isInvalid={dateFromError}
                         />
-                        <div className="nexus-c-sync-log-table__date-field--error">
-                            {dateFromError && FUTURE_DATE_ERROR}
+                        <div id="dateFromError" className="nexus-c-sync-log-table__date-field--error">
+                            {dateError === 'from' && FROM_DATE_ERROR}
                         </div>
                     </div>
                     <div className="nexus-c-sync-log-table__date-field">
@@ -101,6 +108,9 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
                             value={dateTo}
                             isReturningTime={false}
                         />
+                        <div id="dateToError" className="nexus-c-sync-log-table__date-field--error">
+                            {dateError === 'to' && TO_DATE_ERROR}
+                        </div>
                     </div>
                 </div>
                 <Button onClick={() => exportSyncLog(dateFrom, dateTo)} isDisabled={!gridApi}>
