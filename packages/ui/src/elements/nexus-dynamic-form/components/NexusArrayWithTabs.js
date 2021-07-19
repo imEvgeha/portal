@@ -51,7 +51,7 @@ const NexusArrayWithTabs = ({
     };
 
     const setTabData = tabIndex => {
-        if (data && view === VIEWS.VIEW) {
+        if (data) {
             setCurrentData(data[tabIndex]);
         }
     };
@@ -256,10 +256,9 @@ const NexusArrayWithTabs = ({
             } else if (obj && typeof obj === 'object' && Array.isArray(obj)) {
                 obj.forEach((val, index) => {
                     if (val.hasOwnProperty('label') && val.hasOwnProperty('value')) {
-                        if(['genres'].includes(key)) {
+                        if (['genres'].includes(key)) {
                             obj[index] = val;
-                        }
-                        else {
+                        } else {
                             obj[index] = val.value;
                         }
                     }
