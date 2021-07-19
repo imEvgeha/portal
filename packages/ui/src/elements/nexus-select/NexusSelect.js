@@ -32,10 +32,16 @@ const NexusSelect = ({
                 let options = cloneDeep(selectValues[path]);
                 options = formatOptions(options, optionsConfig);
                 addDeselectOption(options);
-                setFetchedOptions(options);
+                setFetchedOptions(options.sort(selectCompare));
             }
         }
     }, [selectValues]);
+
+    // function to compare localized values in English
+    const selectCompare = (a, b) => {
+        // extract english text in brackets
+        return a.label.split('(')[1] > b.label.split('(')[1] ? 1 : b.label.split('(')[1] > a.label.split('(')[1] ? -1 : 0;
+    }
 
     const addDeselectOption = options => {
         if (type === 'select' && !isRequired) {
@@ -75,7 +81,7 @@ const NexusSelect = ({
     return isMultiselect ? (
         <SelectWithOptional
             {...fieldProps}
-            options={optionsConfig.options !== undefined ? optionsConfig.options : fetchedOptions}
+            options={optionsConfig.options !== undefined ? optionsConfig.options.sort(selectCompare) : fetchedOptions}
             isMulti
             defaultValue={defaultValue}
             {...addedProps}
