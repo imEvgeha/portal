@@ -313,4 +313,5 @@ export const COLUMN_MAPPINGS = [
 ];
 
 export const FIELDS_TO_REMOVE = ['editorial', 'territorial', 'movidaExternalIds', 'vzExternalIds'];
-export const UNABLE_PUBLISH = 'Unable to Publish: Additional fields required';
+export const UNABLE_PUBLISH =
+    'Unable to Publish: Additional information required in EMets or some of the EMets are not in complete status';
