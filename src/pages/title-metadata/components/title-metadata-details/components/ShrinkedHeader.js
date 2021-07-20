@@ -33,7 +33,7 @@ const ShrinkedHeader = ({
     const buildButton = () => {
         return (
             <Button
-                isDisabled={isVZdisabled}
+                // isDisabled={isVZdisabled}
                 appearance="default"
                 isLoading={isVZSyncing || isVZPublishing}
                 onClick={() => onSyncPublish(VZ, vzButtonType)}
