@@ -385,6 +385,13 @@ const RightsRepository = ({
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnsValidationDefsClone]
         : columnsValidationDefsClone;
 
+    // new column 'selected at' has type date in filter but should show 'selected' column values
+    const selectedAtCol = updatedColumnDefs.find(item => item.headerName === "Selected At");
+    const selectedCol = updatedColumnDefs.find(item => item.headerName === "Selected");
+    if(selectedAtCol && selectedCol) {
+        selectedAtCol.valueFormatter = selectedCol.valueFormatter
+    }
+
     const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
         headerCheckboxSelection: true,
         headerCheckboxSelectionFilteredOnly: true,
