@@ -198,17 +198,17 @@ const NexusField = ({
                 }
                 const emetLanguage = get(formData,'editorial.language');
                 if(showLocalized === true) {
-                    if(localizationConfig?.localized === 'genre') {
+
                         multiselectFieldProps.value = fieldProps?.value?.map(val => {
-                            const genre = selectValues?.genres?.find(g => g.id === val.value);
+                            console.log('path: ', path)
+                            const item = selectValues?.[path]?.find(g => g.id === val.value);
                             // show english genre version for localized
                             if(emetLanguage !== 'en' && !(val?.label.split(')')[1] === '*' || val?.label.includes('('))) {
-                                return {label: `${val.label} (${genre.name})`, value: val.value}
+                                return {label: `${val.label} (${item.name})`, value: val.value}
                             }
                             return {label: val.label, value: val.value}
                         });
-                    }
-                    else multiselectFieldProps.value = fieldProps?.value;
+
 
                     selectLocalizedValues = Object.assign({}, selectValues);
                     const newValues = selectLocalizedValues[path].map(item => {
@@ -318,11 +318,11 @@ const NexusField = ({
 
     const getLabel = item => {
         if (typeof item === 'object' && localizationConfig) {
-            if(showLocalized && localizationConfig?.localized === 'genre') {
-                const genre = selectValues?.genres?.find(g => g.id === item.value);
-                const local = genre?.localizations?.find(g => g?.language === emetLanguage);
+            if(showLocalized) {
+                const obj = selectValues?.[path]?.find(g => g.id === item.value);
+                const local = obj?.localizations?.find(g => g?.language === emetLanguage);
                 if(local) {
-                    return `${item.label} (${genre.name})`
+                    return `${item.label} (${obj.name})`
                 }
             }
             return item?.label
