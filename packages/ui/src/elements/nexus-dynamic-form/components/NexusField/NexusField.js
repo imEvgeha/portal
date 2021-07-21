@@ -200,7 +200,6 @@ const NexusField = ({
                 if(showLocalized === true) {
 
                         multiselectFieldProps.value = fieldProps?.value?.map(val => {
-                            console.log('path: ', path)
                             const item = selectValues?.[path]?.find(g => g.id === val.value);
                             // show english genre version for localized
                             if(emetLanguage !== 'en' && !(val?.label.split(')')[1] === '*' || val?.label.includes('('))) {
