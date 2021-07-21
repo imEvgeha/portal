@@ -198,7 +198,17 @@ const NexusField = ({
                 }
                 const emetLanguage = get(formData,'editorial.language');
                 if(showLocalized === true) {
-                    multiselectFieldProps.value = fieldProps?.value;
+
+                        multiselectFieldProps.value = fieldProps?.value?.map(val => {
+                            const item = selectValues?.[path]?.find(g => g.id === val.value);
+                            // show english genre version for localized
+                            if(emetLanguage !== 'en' && !(val?.label.split(')')[1] === '*' || val?.label.includes('('))) {
+                                return {label: `${val.label} (${item.name})`, value: val.value}
+                            }
+                            return {label: val.label, value: val.value}
+                        });
+
+
                     selectLocalizedValues = Object.assign({}, selectValues);
                     const newValues = selectLocalizedValues[path].map(item => {
                         const localLang = item.localizations.find(local => local?.language === emetLanguage);
@@ -307,6 +317,13 @@ const NexusField = ({
 
     const getLabel = item => {
         if (typeof item === 'object' && localizationConfig) {
+            if(showLocalized) {
+                const obj = selectValues?.[path]?.find(g => g.id === item.value);
+                const local = obj?.localizations?.find(g => g?.language === emetLanguage);
+                if(local && emetLanguage !== 'en') {
+                    return `${item.label} (${obj.name})`
+                }
+            }
             return item?.label
                 ? item.label
                 : !emetLanguage || emetLanguage === 'en'
