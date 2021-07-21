@@ -29,7 +29,7 @@ const AG_GRID_LICENSE_KEY =
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
 // setEnvConfiguration('qa')
-setEnvConfiguration('qa')
+setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
         // eslint-disable-next-line
