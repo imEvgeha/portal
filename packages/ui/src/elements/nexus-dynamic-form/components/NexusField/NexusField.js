@@ -320,7 +320,7 @@ const NexusField = ({
             if(showLocalized) {
                 const obj = selectValues?.[path]?.find(g => g.id === item.value);
                 const local = obj?.localizations?.find(g => g?.language === emetLanguage);
-                if(local) {
+                if(local && emetLanguage !== 'en') {
                     return `${item.label} (${obj.name})`
                 }
             }
