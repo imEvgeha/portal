@@ -40,7 +40,7 @@
     "keycloak": {
         "clientId": "portalapp-public",
         "realm": "Vubiquity",
-        "url": "https://auth.dev.vubiquity.com/auth"
+        "url": "https://identity.dev.vubiquity.com/auth"
     },
     "googleAnalytics": {
         "propertyId": "UA-165264495-2"
