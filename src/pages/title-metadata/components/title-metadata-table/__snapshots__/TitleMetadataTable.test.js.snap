@@ -72,9 +72,9 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "field": "seasonNumber",
           "headerName": "Season Number",
           "javaVariableName": "seasonNumber",
+          "minWidth": 100,
           "searchDataType": "integer",
           "valueFormatter": [Function],
-          "width": 50,
         },
         Object {
           "colId": "episodeNumber",
@@ -83,9 +83,9 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "field": "episodeNumber",
           "headerName": "Episode Number",
           "javaVariableName": "episodeNumber",
+          "minWidth": 100,
           "searchDataType": "integer",
           "valueFormatter": [Function],
-          "width": 50,
         },
         Object {
           "colId": "releaseYear",
@@ -94,9 +94,9 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "field": "releaseYear",
           "headerName": "Release Year",
           "javaVariableName": "releaseYear",
+          "minWidth": 100,
           "searchDataType": "string",
           "valueFormatter": undefined,
-          "width": 50,
         },
         Object {
           "colId": "contentSubType",
@@ -379,8 +379,8 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "field": "seasonNumber",
           "headerName": "Season Number",
           "javaVariableName": "seasonNumber",
+          "minWidth": 100,
           "searchDataType": "integer",
-          "width": 50,
         },
         Object {
           "colId": "episodeNumber",
@@ -389,8 +389,8 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "field": "episodeNumber",
           "headerName": "Episode Number",
           "javaVariableName": "episodeNumber",
+          "minWidth": 100,
           "searchDataType": "integer",
-          "width": 50,
         },
         Object {
           "colId": "releaseYear",
@@ -399,8 +399,8 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "field": "releaseYear",
           "headerName": "Release Year",
           "javaVariableName": "releaseYear",
+          "minWidth": 100,
           "searchDataType": "string",
-          "width": 50,
         },
         Object {
           "colId": "contentSubType",
