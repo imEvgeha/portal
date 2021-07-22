@@ -91,7 +91,7 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         dataType: 'integer',
         searchDataType: 'integer',
-        width: 50,
+        minWidth: 100,
     },
     {
         colId: 'episodeNumber',
@@ -101,7 +101,7 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         dataType: 'integer',
         searchDataType: 'integer',
-        width: 50,
+        minWidth: 100,
     },
     {
         colId: 'releaseYear',
@@ -111,7 +111,7 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         dataType: 'string',
         searchDataType: 'string',
-        width: 50,
+        minWidth: 100,
     },
     {
         colId: 'contentSubType',
