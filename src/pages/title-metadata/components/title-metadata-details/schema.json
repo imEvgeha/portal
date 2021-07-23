@@ -793,6 +793,28 @@
                                             "view": "CREATE",
                                             "defaultValue": false
                                         }
+                                    ],
+                                    "showWhen": [
+                                        [
+                                            {
+                                                "field": "editorial.locale.value",
+                                                "hasValue": "US"
+                                            },
+                                            {
+                                                "field": "editorial.language.value",
+                                                "hasValue": "en"
+                                            }
+                                        ],
+                                        [
+                                            {
+                                                "field": "locale",
+                                                "hasValue": "US"
+                                            },
+                                            {
+                                                "field": "language",
+                                                "hasValue": "en"
+                                            }
+                                        ]
                                     ]
                                 },
                                 "editorial.shortTitleTemplate": {
@@ -801,16 +823,6 @@
                                     "type": "string",
                                     "dependencies": [
                                         {
-                                            "view": "CREATE",
-                                            "type": "readOnly",
-                                            "fields": [
-                                                {
-                                                    "name": "editorial.hasGeneratedChildren",
-                                                    "value": false
-                                                }
-                                            ]
-                                        },
-                                        {
                                             "view": "EDIT",
                                             "type": "readOnly",
                                             "fields": [
@@ -839,6 +851,16 @@
                                                     "value": true
                                                 }
                                             ]
+                                        }
+                                    ],
+                                    "showWhen": [
+                                        {
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "hasValue": true
+                                        },
+                                        {
+                                            "field": "hasGeneratedChildren",
+                                            "hasValue": true
                                         }
                                     ]
                                 },

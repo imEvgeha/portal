@@ -143,7 +143,6 @@ const NexusField = ({
             case 'boolean':
                 return (
                     <CheckboxField
-                        onChange={setUpdatedValues(getCurrentValues())}
                         isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                         name={fieldProps.name}
                         label={fieldProps.label}
@@ -151,6 +150,7 @@ const NexusField = ({
                     >
                         {({fieldProps}) => (
                             <CheckboxWithOptional
+                                onChange={setUpdatedValues(getCurrentValues())}
                                 isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                                 {...addedProps}
                                 {...fieldProps}
