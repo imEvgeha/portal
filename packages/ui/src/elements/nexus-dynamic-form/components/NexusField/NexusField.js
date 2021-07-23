@@ -70,6 +70,7 @@ const NexusField = ({
     linkConfig,
     showLocalized,
     localizationConfig,
+    setUpdatedValues,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -112,12 +113,27 @@ const NexusField = ({
             case 'string':
             case 'stringInArray':
             case 'link':
-                return <TextFieldWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
+                return (
+                    <TextFieldWithOptional
+                        onChange={setUpdatedValues(getCurrentValues())}
+                        {...fieldProps}
+                        placeholder={`Enter ${label}`}
+                        {...addedProps}
+                    />
+                );
             case 'textarea':
-                return <NexusTextAreaWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
+                return (
+                    <NexusTextAreaWithOptional
+                        onChange={setUpdatedValues(getCurrentValues())}
+                        {...fieldProps}
+                        placeholder={`Enter ${label}`}
+                        {...addedProps}
+                    />
+                );
             case 'number':
                 return (
                     <TextFieldWithOptional
+                        onChange={setUpdatedValues(getCurrentValues())}
                         {...fieldProps}
                         type="Number"
                         placeholder={`Enter ${label}`}
@@ -134,6 +150,7 @@ const NexusField = ({
                     >
                         {({fieldProps}) => (
                             <CheckboxWithOptional
+                                onChange={setUpdatedValues(getCurrentValues())}
                                 isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                                 {...addedProps}
                                 {...fieldProps}
@@ -172,6 +189,7 @@ const NexusField = ({
 
                 return (
                     <NexusSelect
+                        onChange={setUpdatedValues(getCurrentValues())}
                         fieldProps={selectFieldProps}
                         type={type}
                         optionsConfig={optionsConfig}
@@ -196,18 +214,16 @@ const NexusField = ({
                 ) {
                     multiselectFieldProps.value = fieldProps?.value.map(val => ({label: val, value: val}));
                 }
-                const emetLanguage = get(formData,'editorial.language');
-                if(showLocalized === true) {
-
-                        multiselectFieldProps.value = fieldProps?.value?.map(val => {
-                            const item = selectValues?.[path]?.find(g => g.id === val.value);
-                            // show english genre version for localized
-                            if(emetLanguage !== 'en' && !(val?.label.split(')')[1] === '*' || val?.label.includes('('))) {
-                                return {label: `${val.label} (${item.name})`, value: val.value}
-                            }
-                            return {label: val.label, value: val.value}
-                        });
-
+                const emetLanguage = get(formData, 'editorial.language');
+                if (showLocalized === true) {
+                    multiselectFieldProps.value = fieldProps?.value?.map(val => {
+                        const item = selectValues?.[path]?.find(g => g.id === val.value);
+                        // show english genre version for localized
+                        if (emetLanguage !== 'en' && !(val?.label.split(')')[1] === '*' || val?.label.includes('('))) {
+                            return {label: `${val.label} (${item.name})`, value: val.value};
+                        }
+                        return {label: val.label, value: val.value};
+                    });
 
                     selectLocalizedValues = Object.assign({}, selectValues);
                     const newValues = selectLocalizedValues[path].map(item => {
@@ -226,6 +242,7 @@ const NexusField = ({
 
                 return (
                     <NexusSelect
+                        onChange={setUpdatedValues(getCurrentValues())}
                         fieldProps={multiselectFieldProps}
                         type={type}
                         optionsConfig={
@@ -249,7 +266,13 @@ const NexusField = ({
                     />
                 );
             case 'dateRange':
-                return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
+                return (
+                    <DateTimeWithOptional
+                        onChange={setUpdatedValues(getCurrentValues())}
+                        {...fieldProps}
+                        {...dateProps}
+                    />
+                );
             case 'datetime': {
                 // withdrawn date is readOnly when populated (when empty, user can populate it using checkbox)
                 const hasWithDrawnDate = fieldProps?.name.includes('dateWithdrawn');
@@ -257,6 +280,7 @@ const NexusField = ({
 
                 return fieldProps.value || !dateProps.isReadOnly ? (
                     <DateTimeWithOptional
+                        onChange={setUpdatedValues(getCurrentValues())}
                         {...fieldProps}
                         {...dateProps}
                         isReadOnly={isWithDrawnReadOnly}
@@ -269,6 +293,7 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
+                        onChange={setUpdatedValues(getCurrentValues())}
                         {...fieldProps}
                         persons={fieldProps.value ? fieldProps.value : []}
                         isEdit={true}
@@ -317,11 +342,11 @@ const NexusField = ({
 
     const getLabel = item => {
         if (typeof item === 'object' && localizationConfig) {
-            if(showLocalized) {
+            if (showLocalized) {
                 const obj = selectValues?.[path]?.find(g => g.id === item.value);
                 const local = obj?.localizations?.find(g => g?.language === emetLanguage);
-                if(local && emetLanguage !== 'en') {
-                    return `${item.label} (${obj.name})`
+                if (local && emetLanguage !== 'en') {
+                    return `${item.label} (${obj.name})`;
                 }
             }
             return item?.label
@@ -521,6 +546,7 @@ NexusField.propTypes = {
     oneIsRequiredVZ: PropTypes.bool,
     showLocalized: PropTypes.bool,
     localizationConfig: PropTypes.object,
+    setUpdatedValues: PropTypes.func,
 };
 
 NexusField.defaultProps = {
@@ -559,6 +585,7 @@ NexusField.defaultProps = {
     oneIsRequiredVZ: false,
     showLocalized: false,
     localizationConfig: undefined,
+    setUpdatedValues: () => {},
 };
 
 export default NexusField;

@@ -399,9 +399,11 @@ export const renderNexusField = (
         inTabs,
         path,
         setDisableSubmit,
+        setUpdatedValues,
+        updatedValues,
     }
 ) => {
-    return toShow(field, initialData) ? (
+    return toShow(field, updatedValues || initialData) ? (
         <NexusField
             {...field}
             id={key}
@@ -422,6 +424,7 @@ export const renderNexusField = (
             generateMsvIds={generateMsvIds}
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
+            setUpdatedValues={setUpdatedValues}
         />
     ) : null;
 };

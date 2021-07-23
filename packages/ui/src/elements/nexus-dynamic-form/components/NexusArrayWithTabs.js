@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {Field as AKField, FormFooter} from '@atlaskit/form';
-import {default as AKForm} from '@atlaskit/form/Form';
+import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
 import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
+import NexusArrayCreateModal from './NexusArrayCreateModal';
 import SideTabs from './SideTabs/SideTabs';
 import {MASTER_EMET_MESSAGE, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, VIEWS} from '../constants';
 import './NexusArrayWithTabs.scss';
@@ -299,58 +299,20 @@ const NexusArrayWithTabs = ({
         closeModal();
     };
 
-    const getVisibleFields = allFields => {
-        const updateFields = {...allFields};
-        const f = Object.keys(allFields).filter((key, index) => {
-            const hide = get(allFields[key], 'hideInCreate');
-            if (hide && updateFields[key]) {
-                delete updateFields[key];
-            }
-        });
-        return updateFields;
-    };
-
     const modalContent = () => {
         return (
-            <div>
-                <AKForm onSubmit={values => handleModalSubmit(values)}>
-                    {({formProps, reset, getValues}) => (
-                        <form {...formProps}>
-                            <div>
-                                {Object.keys(getVisibleFields(fields)).map((key, index) => {
-                                    return (
-                                        <div key={`${data.id}_${key}`} className="nexus-c-nexus-array-with-tabs__field">
-                                            {renderNexusField(key, VIEWS.CREATE, getValues, generateMsvIds, {
-                                                field: fields[key],
-                                                selectValues,
-                                                setFieldValue,
-                                                searchPerson,
-                                                castCrewConfig,
-                                                initialData: {contentType: initialData.contentType},
-                                            })}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                            <FormFooter>
-                                <Button type="submit" appearance="primary">
-                                    Submit
-                                </Button>
-                                <Button
-                                    className="nexus-c-modal__cancel-button"
-                                    appearance="danger"
-                                    onClick={() => {
-                                        reset();
-                                        closeModal();
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
-                            </FormFooter>
-                        </form>
-                    )}
-                </AKForm>
-            </div>
+            <NexusArrayCreateModal
+                handleModalSubmit={handleModalSubmit}
+                fields={fields}
+                selectValues={selectValues}
+                data={data}
+                setFieldValue={setFieldValue}
+                generateMsvIds={generateMsvIds}
+                searchPerson={searchPerson}
+                castCrewConfig={castCrewConfig}
+                initialData={initialData}
+                closeModal={closeModal}
+            />
         );
     };
 
