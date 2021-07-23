@@ -132,11 +132,7 @@ const withInfiniteScrolling = ({
                     }
 
                     if (total > 0) {
-                        let lastRow = -1;
-                        if ((page + 1) * size >= total) {
-                            lastRow = total;
-                        }
-                        successCallback(data, lastRow);
+                        successCallback(data, total);
 
                         // selected rows
                         if (context && context.selectedRows) {
