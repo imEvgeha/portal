@@ -281,7 +281,7 @@ const NexusPersonsList = ({
                         <UserPicker
                             fieldId={uiConfig.htmlFor}
                             width="100%"
-                            loadOptions={() => loadOptions(uiConfig, searchText, searchPerson)}
+                            loadOptions={() => loadOptions(uiConfig, searchText, searchPerson, emetLanguage)}
                             value={searchText}
                             onInputChange={searchInputChanged}
                             onSelection={validateAndAddPerson}
