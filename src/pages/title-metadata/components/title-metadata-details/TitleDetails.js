@@ -68,6 +68,10 @@ const TitleDetails = ({
     const {fields} = schema;
 
     useEffect(() => {
+        setEditTitle(false);
+    }, []);
+
+    useEffect(() => {
         fetchConfigApiEndpoints();
         const {params} = match || {};
         const {id} = params;
