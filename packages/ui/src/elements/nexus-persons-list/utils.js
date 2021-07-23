@@ -4,9 +4,11 @@ import {CAST, PERSONS_PER_REQUEST, MIN_CHARS_FOR_SEARCHING} from './constants';
 const handleResponse = (resTable, searchText) => {
     if (resTable && resTable.length > 0) {
         return resTable.map(e => {
+            const [localization] = e.localization;
+
             return {
                 id: e.id,
-                name: e.displayName,
+                name: localization ? localization.displayName : e.displayName,
                 byline: e.personType.toString().toUpperCase(),
                 original: JSON.stringify(e),
             };
@@ -19,7 +21,7 @@ const handleResponse = (resTable, searchText) => {
     };
 };
 
-export const loadOptions = (uiConfig, searchText, searchPerson) => {
+export const loadOptions = (uiConfig, searchText, searchPerson, language) => {
     const {type} = uiConfig;
     if (searchText.length < MIN_CHARS_FOR_SEARCHING) return [];
     if (type === CAST) {
