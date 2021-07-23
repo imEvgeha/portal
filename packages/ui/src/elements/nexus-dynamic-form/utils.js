@@ -400,9 +400,10 @@ export const renderNexusField = (
         path,
         setDisableSubmit,
         setUpdatedValues,
+        updatedValues,
     }
 ) => {
-    return toShow(field, initialData) ? (
+    return toShow(field, updatedValues || initialData) ? (
         <NexusField
             {...field}
             id={key}
