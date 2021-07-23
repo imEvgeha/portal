@@ -19,7 +19,7 @@ const NexusArrayCreateModal = ({
     initialData,
     closeModal,
 }) => {
-    const [currentData, setCurrentData] = useState(null);
+    const [updatedValues, setUpdatedValues] = useState(null);
 
     const getVisibleFields = allFields => {
         const updateFields = {...allFields};
@@ -48,6 +48,7 @@ const NexusArrayCreateModal = ({
                                             searchPerson,
                                             castCrewConfig,
                                             initialData: {contentType: initialData.contentType},
+                                            setUpdatedValues,
                                         })}
                                     </div>
                                 );
