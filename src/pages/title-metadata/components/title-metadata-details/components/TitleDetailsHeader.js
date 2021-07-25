@@ -101,7 +101,8 @@ const TitleDetailsHeader = ({
                             onSyncPublish={onSyncPublish}
                             isSyncing={isVZSyncing}
                             isPublishing={isVZPublishing}
-                            disabled={isVZdisabled}
+                            // disabled={isVZdisabled}
+                            disabled={false}
                         />
                         <SyncPublish
                             externalSystem={MOVIDA}
