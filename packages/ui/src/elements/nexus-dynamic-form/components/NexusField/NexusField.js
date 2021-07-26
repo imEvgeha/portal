@@ -87,6 +87,10 @@ const NexusField = ({
 
     const emetLanguage = get(formData, 'editorial.language');
 
+    const getLanguage = () => {
+        const language = get(formData, 'editorial.language', 'en');
+        return get(language, 'value') ? get(language, 'value') : language;
+    };
     const getIsReadOnly = () => {
         return (isReadOnlyInEdit && view === VIEWS.EDIT) || isReadOnly;
     };
@@ -301,7 +305,7 @@ const NexusField = ({
                         searchPerson={searchPerson}
                         castCrewConfig={castCrewConfig}
                         // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
-                        language={isVerticalLayout ? get(formData, 'editorial.language', 'en') : 'en'}
+                        language={isVerticalLayout ? getLanguage() : 'en'}
                         {...fieldProps}
                     />
                 );

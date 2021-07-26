@@ -11,13 +11,28 @@ import RemovePerson from './elements/RemovePerson/RemovePerson';
 import EditPerson from './elements/EditPerson/EditPerson';
 import {NEEDS_TRANSLATION, LOCALIZED_NOT_DEFINED} from '../nexus-persons-list/constants';
 import './NexusPerson.scss';
+import {get} from 'lodash';
 
 const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
+    const localization = get(person, 'localization');
+    const getEnName = () => {
+        return localization ? person.displayName : person.displayNameEn;
+    };
+
+    const getNameFromLocalization = () => {
+        const local = localization.find(l => l.language === emetLanguage);
+        return local ? local.displayName : person.displayName;
+    };
+
+    const getLocalizedName = () => {
+        return localization ? getNameFromLocalization() : person.displayName;
+    };
+
     const localizedName = () => {
-        if (person?.language === 'en' && emetLanguage === 'en') return person.displayNameEn;
-        return person.displayName === person.displayNameEn && emetLanguage !== person?.language
+        if (person?.language === 'en' && emetLanguage === 'en') return getEnName();
+        return getLocalizedName() === getEnName() && emetLanguage !== person?.language
             ? NEEDS_TRANSLATION
-            : person.displayName;
+            : getLocalizedName();
     };
 
     return (
