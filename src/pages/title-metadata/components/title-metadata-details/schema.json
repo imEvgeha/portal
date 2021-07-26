@@ -595,6 +595,16 @@
                                                 }
                                             ]
                                         }
+                                    ],
+                                    "showWhen": [
+                                        {
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "hasValue": false
+                                        },
+                                        {
+                                            "field": "hasGeneratedChildren",
+                                            "hasValue": false
+                                        }
                                     ]
                                 },
                                 "editorial.metadataStatus": {
@@ -726,6 +736,16 @@
                                     "type": "select",
                                     "path": "service",
                                     "isReadOnlyInEdit": true,
+                                    "showWhen": [
+                                        {
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "hasValue": false
+                                        },
+                                        {
+                                            "field": "hasGeneratedChildren",
+                                            "hasValue": false
+                                        }
+                                    ],
                                     "dependencies": [
                                         {
                                             "view": "CREATE",
