@@ -289,9 +289,7 @@ const RightsRepository = ({
             // eslint-disable-next-line no-param-reassign
             col = {
                 ...col,
-                lockPinned: true,
-                lockPosition: true,
-                sortable: !!['id'].includes(col.field),
+                sortable: false,
             };
         }
 
