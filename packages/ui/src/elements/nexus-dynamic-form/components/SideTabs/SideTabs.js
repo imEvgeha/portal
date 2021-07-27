@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import './SideTabs.scss';
 
-const SideTabs = ({data, onChange, setTabData, subTabs, isRemoved, clearIsRemoved}) => {
+const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved}) => {
     const [currentTab, setCurrentTab] = useState({
         tabIndex: 0,
         subTabIndex: 0,
@@ -22,12 +22,6 @@ const SideTabs = ({data, onChange, setTabData, subTabs, isRemoved, clearIsRemove
             clearIsRemoved();
         }
     }, [isRemoved]);
-
-    useEffect(() => {
-        if (currentTab?.tabIndex) {
-            setTabData(currentTab?.tabIndex);
-        }
-    }, [data]);
 
     const handleTabChanged = (key, tabIndex, subTabIndex = 0) => {
         const oldSubTab = currentTab.subTabIndex;
