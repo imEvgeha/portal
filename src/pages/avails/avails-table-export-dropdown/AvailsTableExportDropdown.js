@@ -117,14 +117,14 @@ const AvailsTableExportDropdown = ({
     const onVisibleColumnsExportClick = () => {
         switch (activeTab) {
             case RIGHTS_SELECTED_TAB: {
-                const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
+                const visibleColumns = getDownloadableColumns(selectedRightColumnApi?.getAllDisplayedColumns());
                 exportService
                     .exportAvails(getSelectedRightIds(selectedRightGridApi), visibleColumns)
                     .then(response => downloadFile(response));
                 break;
             }
             case RIGHTS_TAB: {
-                const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
+                const visibleColumns = getDownloadableColumns(rightColumnApi?.getAllDisplayedColumns());
                 const {external, column} = rightsFilter;
                 exportService
                     .bulkExportAvails({...external, ...column}, visibleColumns)
@@ -199,7 +199,11 @@ const AvailsTableExportDropdown = ({
             if (mappingColumnNames.includes(field)) {
                 if (colId === 'selected' || colId === 'withdrawn') {
                     headerFields.add(colId);
-                } else {
+                }
+                else if (colId === 'territoryDateSelected') {
+                    headerFields.add('selectedAt');
+                }
+                else {
                     headerFields.add(field);
                 }
             }

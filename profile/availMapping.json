@@ -187,6 +187,17 @@
             "required": true
         },
         {
+            "javaVariableName": "territoryDateSelected",
+            "displayName": "Selected At",
+            "dataType": "territory.selected",
+            "searchDataType": "regionalMidnight",
+            "queryParamName": "territoryDateSelected",
+            "readOnly": false,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": false
+        },
+        {
             "javaVariableName": "territory",
             "displayName": "Withdrawn",
             "dataType": "territory.withdrawn",
