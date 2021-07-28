@@ -1,12 +1,14 @@
 import {getFilteredCastList, getFilteredCrewList} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
+import {get} from 'lodash';
 import {CAST, PERSONS_PER_REQUEST, MIN_CHARS_FOR_SEARCHING} from './constants';
 
 const handleResponse = (resTable, searchText, language) => {
+    const lang = get(language, 'value') ? get(language, 'value') : language;
     if (resTable && resTable.length > 0) {
         return resTable.map(e => {
             let name;
             e.localization.forEach(local => {
-                if (local.language === language) name = local.displayName;
+                if (local.language === lang) name = local.displayName;
             });
 
             return {
