@@ -51,8 +51,8 @@ const NexusArrayWithTabs = ({
     };
 
     const setTabData = tabIndex => {
-        if (data) {
-            setCurrentData(data[tabIndex]);
+        if (groupedData) {
+            setCurrentData(groupedData[tabIndex]);
         }
     };
 
