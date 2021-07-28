@@ -171,14 +171,11 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
         if (field) {
             const formattedValues = [];
             field.forEach(obj => {
-                if(key === 'genre') {
-                    if(record?.language !== obj?.language) {
-                        formattedValues.push({label: `(${obj[key]})*`, value: obj.id} );
-                    }
-                    else formattedValues.push({label: obj[key], value: obj.id} );
-                }
-                else
-                    formattedValues.push(obj[key]);
+                if (key === 'genre') {
+                    if (record?.language !== obj?.language) {
+                        formattedValues.push({label: `(${obj[key]})*`, value: obj.id});
+                    } else formattedValues.push({label: obj[key], value: obj.id});
+                } else formattedValues.push(obj[key]);
             });
             record[fieldName] = formattedValues;
         }
@@ -300,21 +297,17 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
     if (titleId) body.parentId = titleId;
     const hasGeneratedChildren = get(body, 'hasGeneratedChildren', false);
     return isCreate
-        ? [
-              {
-                  itemIndex: '1',
-                  body: {
-                      decorateEditorialMetadata: hasGeneratedChildren,
-                      editorialMetadata: body,
-                  },
+        ? {
+              itemIndex: '1',
+              body: {
+                  decorateEditorialMetadata: hasGeneratedChildren,
+                  editorialMetadata: body,
               },
-          ]
-        : [
-              {
-                  itemIndex: null,
-                  body,
-              },
-          ];
+          }
+        : {
+              itemIndex: null,
+              body,
+          };
 };
 
 export const updateEditorialMetadata = async (values, titleId) => {
@@ -327,18 +320,19 @@ export const updateEditorialMetadata = async (values, titleId) => {
     };
     const data = values.editorialMetadata || [];
     const {catalogOwner: tenantCode} = values;
+    const updatedEmets = [];
+    const newEmets = [];
+    data.forEach(emet => {
+        if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
+            updatedEmets.push(formatEditorialBody(emet, titleId, false));
+        } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
+            newEmets.push(formatEditorialBody(emet, titleId, true));
+        }
+    });
+
     try {
-        await Promise.all(
-            data.map(async emet => {
-                if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-                    const body = formatEditorialBody(emet, titleId, false);
-                    response = await titleService.updateEditorialMetadata(body, tenantCode);
-                } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-                    const body = formatEditorialBody(emet, titleId, true);
-                    response = await titleService.addEditorialMetadata(body, tenantCode);
-                }
-            })
-        );
+        if (updatedEmets.length > 0) response = await titleService.updateEditorialMetadata(updatedEmets, tenantCode);
+        if (newEmets.length > 0) response = await titleService.addEditorialMetadata(newEmets, tenantCode);
         if (response && response.length > 0) {
             let toast = errorToast;
             if (!get(response[0], 'response.failed') || get(response[0], 'response.failed').length === 0) {
