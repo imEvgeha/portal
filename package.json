@@ -32,7 +32,7 @@
         "@atlaskit/checkbox": "^9.0.9",
         "@atlaskit/code": "^11.1.5",
         "@atlaskit/css-reset": "^5.0.12",
-        "@atlaskit/datetime-picker": "^9.0.1",
+        "@atlaskit/datetime-picker": "^10.4.0",
         "@atlaskit/dropdown-menu": "^8.1.1",
         "@atlaskit/dynamic-table": "^14.0.1",
         "@atlaskit/field-base": "^13.0.6",
