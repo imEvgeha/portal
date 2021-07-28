@@ -285,13 +285,11 @@ const RightsRepository = ({
     });
 
     const columnsValidationDefsClone = columnDefsClone.map(col => {
-        if (['id'].includes(col.field) || ['icon'].includes(col.colId)) {
+        if (['icon'].includes(col.colId)) {
             // eslint-disable-next-line no-param-reassign
             col = {
                 ...col,
-                lockPinned: true,
-                lockPosition: true,
-                sortable: !!['id'].includes(col.field),
+                sortable: false,
             };
         }
 
