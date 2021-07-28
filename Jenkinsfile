@@ -1,5 +1,5 @@
 pipeline {
-     agent { label 'usla-jknd-p002' }
+     agent { label 'usla-jknd-p003' }
 
      stages {
       stage('init') {
