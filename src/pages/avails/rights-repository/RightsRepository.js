@@ -295,7 +295,7 @@ const RightsRepository = ({
             };
         }
 
-        if (!['buttons', 'title', 'id', 'action'].includes(col.field)) {
+        if (!['buttons', 'title', 'id', 'action', 'territoryDateSelected'].includes(col.field)) {
             return {
                 ...col,
                 cellStyle: params => cellStyling(params, col),
@@ -353,6 +353,13 @@ const RightsRepository = ({
             };
         }
 
+        if (['territoryDateSelected'].includes(col.field)) {
+            return {
+                ...col,
+                cellRenderer: 'selectedAtCellRenderer',
+            };
+        }
+
         return {
             ...col,
         };
@@ -386,34 +393,35 @@ const RightsRepository = ({
         : columnsValidationDefsClone;
 
     // new column 'selected at' has type date in filter but should show 'selected' column values
-    const selectedAtCol = updatedColumnDefs.find(item => item.headerName === "Selected At");
-    const selectedCol = updatedColumnDefs.find(item => item.headerName === "Selected");
-    if(selectedAtCol && selectedCol) {
-        selectedAtCol.valueFormatter = selectedCol.valueFormatter;
-        if(gridApi) {
-            // selectedAt col - filter and display territories that are in date range
-            const filters = filterBy(gridApi.getFilterModel());
-            if(filters.territoryDateSelected.territoryDateSelectedFrom || filters.territoryDateSelected.territoryDateSelectedTo) {
-                selectedAtCol.valueFormatter = params => {
-                    let selectedAt = "";
-                    params?.data?.territory?.forEach(t => {
-                        const fromOnlyCheck = filters.territoryDateSelected.territoryDateSelectedFrom && !filters.territoryDateSelected.territoryDateSelectedTo
-                        && t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom;
-                        const toOnlyCheck = filters.territoryDateSelected.territoryDateSelectedTo && !filters.territoryDateSelected.territoryDateSelectedFrom
-                        && t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
-                        const fromToCheck = filters.territoryDateSelected.territoryDateSelectedFrom && filters.territoryDateSelected.territoryDateSelectedTo
-                        && t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom
-                        && t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
-
-                        if(fromToCheck || toOnlyCheck || fromOnlyCheck) {
-                            selectedAt = selectedAt + t.country + ", ";
-                        }
-                    });
-                    return selectedAt.slice(0,-2); // remove last comma
-                }
-            }
-        }
-    }
+    const selectedAtCol = updatedColumnDefs.find(item => item.headerName === 'Selected At');
+    const selectedCol = updatedColumnDefs.find(item => item.headerName === 'Selected');
+    // if(selectedAtCol && selectedCol) {
+    //     selectedAtCol.valueFormatter = selectedCol.valueFormatter;
+    //     if(gridApi) {
+    //         // selectedAt col - filter and display territories that are in date range
+    //         const filters = filterBy(gridApi.getFilterModel());
+    //         if(filters.territoryDateSelected.territoryDateSelectedFrom || filters.territoryDateSelected.territoryDateSelectedTo) {
+    //             gridApi.redrawRows();
+    //             selectedAtCol.valueFormatter = params => {
+    //                 let selectedAt = "";
+    //                 params?.data?.territory?.forEach(t => {
+    //                     const fromOnlyCheck = filters.territoryDateSelected.territoryDateSelectedFrom && !filters.territoryDateSelected.territoryDateSelectedTo
+    //                     && t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom;
+    //                     const toOnlyCheck = filters.territoryDateSelected.territoryDateSelectedTo && !filters.territoryDateSelected.territoryDateSelectedFrom
+    //                     && t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
+    //                     const fromToCheck = filters.territoryDateSelected.territoryDateSelectedFrom && filters.territoryDateSelected.territoryDateSelectedTo
+    //                     && t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom
+    //                     && t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
+    //
+    //                     if(fromToCheck || toOnlyCheck || fromOnlyCheck) {
+    //                         selectedAt = selectedAt + t.country + ", ";
+    //                     }
+    //                 });
+    //                 return selectedAt.slice(0,-2); // remove last comma
+    //             }
+    //         }
+    //     }
+    // }
 
     const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
         headerCheckboxSelection: true,
