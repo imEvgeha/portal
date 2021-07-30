@@ -1,14 +1,10 @@
 import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
-import {getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {get} from 'lodash';
 
 const SelectedAtCellRenderer = params => {
-    const {
-        data,
-        colDef: {field},
-        api,
-    } = params;
+    const {data, api} = params;
     if (!data) {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
@@ -18,30 +14,36 @@ const SelectedAtCellRenderer = params => {
         // selectedAt col - filter and display territories that are in date range
         const filters = filterBy(api.getFilterModel());
         if (
-            filters.territoryDateSelected.territoryDateSelectedFrom ||
-            filters.territoryDateSelected.territoryDateSelectedTo
+            get(filters, 'territoryDateSelected.territoryDateSelectedFrom') ||
+            get(filters, 'territoryDateSelected.territoryDateSelectedTo')
         ) {
             let selectedAt = '';
             data?.territory?.forEach(t => {
                 const fromOnlyCheck =
+                    filters &&
+                    filters.territoryDateSelected &&
                     filters.territoryDateSelected.territoryDateSelectedFrom &&
                     !filters.territoryDateSelected.territoryDateSelectedTo &&
                     t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom;
                 const toOnlyCheck =
+                    filters &&
+                    filters.territoryDateSelected &&
                     filters.territoryDateSelected.territoryDateSelectedTo &&
                     !filters.territoryDateSelected.territoryDateSelectedFrom &&
                     t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
                 const fromToCheck =
+                    filters &&
+                    filters.territoryDateSelected &&
                     filters.territoryDateSelected.territoryDateSelectedFrom &&
                     filters.territoryDateSelected.territoryDateSelectedTo &&
                     t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom &&
                     t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
 
                 if (fromToCheck || toOnlyCheck || fromOnlyCheck) {
-                    selectedAt = `${selectedAt + t.country  }, `;
+                    selectedAt = `${selectedAt + t.country}, `;
                 }
             });
-            return selectedAt.slice(0, -2); // remove last comma
+            return selectedAt ? selectedAt.slice(0, -2) : ''; // remove last comma
         }
     }
     return '';
