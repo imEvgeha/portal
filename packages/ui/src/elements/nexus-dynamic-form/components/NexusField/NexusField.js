@@ -110,8 +110,23 @@ const NexusField = ({
         typeof setDisableSubmit === 'function' && setDisableSubmit(false);
     };
 
+    const [dir, setDir] = React.useState('ltr');
+
+    const handleOnChange = (e, cb) => {
+        //  right to left input for hebrew
+        if (/[\u0590-\u05FF]/.test(e.target.value)) {
+            setDir('rtl');
+        } else {
+            setDir('ltr');
+        }
+
+        setUpdatedValues(getCurrentValues());
+        cb(e);
+    };
+
     const renderFieldEditMode = fieldProps => {
         const selectFieldProps = {...fieldProps};
+        const fieldOnChange = selectFieldProps.onChange;
         const multiselectFieldProps = {...fieldProps};
         switch (type) {
             case 'string':
@@ -119,29 +134,32 @@ const NexusField = ({
             case 'link':
                 return (
                     <TextFieldWithOptional
-                        onChange={setUpdatedValues(getCurrentValues())}
                         {...fieldProps}
-                        placeholder={`Enter ${label}`}
                         {...addedProps}
+                        onChange={e => handleOnChange(e, fieldOnChange)}
+                        placeholder={`Enter ${label}`}
+                        dir={dir}
                     />
                 );
             case 'textarea':
                 return (
                     <NexusTextAreaWithOptional
-                        onChange={setUpdatedValues(getCurrentValues())}
                         {...fieldProps}
-                        placeholder={`Enter ${label}`}
                         {...addedProps}
+                        onChange={e => handleOnChange(e, fieldOnChange)}
+                        placeholder={`Enter ${label}`}
+                        dir={dir}
                     />
                 );
             case 'number':
                 return (
                     <TextFieldWithOptional
-                        onChange={setUpdatedValues(getCurrentValues())}
                         {...fieldProps}
+                        {...addedProps}
+                        onChange={e => handleOnChange(e, fieldOnChange)}
                         type="Number"
                         placeholder={`Enter ${label}`}
-                        {...addedProps}
+                        dir={dir}
                     />
                 );
             case 'boolean':
