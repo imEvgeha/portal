@@ -25,6 +25,7 @@ const TitleDetailsHeader = ({
     isMOVPublishing,
     initialData,
     fieldsVZ,
+    isEditMode,
 }) => {
     const [isShrinked, setIsShrinked] = useState(false);
     const [isVZdisabled, setIsVZdisabled] = useState(false);
@@ -102,7 +103,7 @@ const TitleDetailsHeader = ({
                             isSyncing={isVZSyncing}
                             isPublishing={isVZPublishing}
                             // disabled={isVZdisabled}
-                            disabled={false}
+                            disabled={isEditMode}
                         />
                         <SyncPublish
                             externalSystem={MOVIDA}
@@ -110,7 +111,7 @@ const TitleDetailsHeader = ({
                             onSyncPublish={onSyncPublish}
                             isSyncing={isMOVSyncing}
                             isPublishing={isMOVPublishing}
-                            disabled={false}
+                            disabled={isEditMode}
                         />
                     </div>
                 )}
@@ -122,6 +123,7 @@ const TitleDetailsHeader = ({
                 onSyncPublish={onSyncPublish}
                 titleId={title.id}
                 isEditView={isEditView}
+                isEditMode={isEditMode}
                 catalogueOwner={title.catalogOwner}
                 isVZSyncing={isVZSyncing}
                 isVZPublishing={isVZPublishing}
@@ -146,6 +148,7 @@ TitleDetailsHeader.propTypes = {
     isMOVSyncing: PropTypes.bool,
     isMOVPublishing: PropTypes.bool,
     fieldsVZ: PropTypes.object,
+    isEditMode: PropTypes.bool,
 };
 
 TitleDetailsHeader.defaultProps = {
@@ -161,6 +164,7 @@ TitleDetailsHeader.defaultProps = {
     isMOVSyncing: false,
     isMOVPublishing: false,
     fieldsVZ: {},
+    isEditMode: false,
 };
 
 export default TitleDetailsHeader;
