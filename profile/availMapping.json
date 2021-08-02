@@ -195,7 +195,8 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "cellRenderer": "selectedAtCellRenderer"
         },
         {
             "javaVariableName": "territory",
