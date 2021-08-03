@@ -227,7 +227,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
                 content="Not sure what is this field"
               >
-                <Memo(Textfield)
+                <WithAnalyticsContext(WithAnalyticsEvents(undefined))
                   css={
                     Object {
                       "height": "auto",
@@ -291,7 +291,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                   />
                 </div>
               </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
-              <Memo(Textfield)
+              <WithAnalyticsContext(WithAnalyticsEvents(undefined))
                 isDisabled={true}
                 name="fulfillment-status"
                 value=""

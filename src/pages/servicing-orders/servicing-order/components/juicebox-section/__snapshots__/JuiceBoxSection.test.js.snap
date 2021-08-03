@@ -17,7 +17,7 @@ exports[`JuiceBoxSection Language Only test Should match snapshot 1`] = `
     <div
       className="nexus-jb-lang-input"
     >
-      <Memo(Textfield)
+      <WithAnalyticsContext(WithAnalyticsEvents(undefined))
         className="nexus-jb-lang-input_textfield"
         id="jb-lang"
         maxLength={50}
@@ -50,7 +50,7 @@ exports[`JuiceBoxSection with Language Should match snapshot 1`] = `
     <div
       className="nexus-jb-lang-input"
     >
-      <Memo(Textfield)
+      <WithAnalyticsContext(WithAnalyticsEvents(undefined))
         className="nexus-jb-lang-input_textfield"
         id="jb-lang"
         maxLength={50}
