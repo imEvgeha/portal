@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions, no-magic-numbers */
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
@@ -88,6 +88,7 @@ const RightsRepository = ({
     username,
 }) => {
     const isMounted = useRef(true);
+    const [updatedMapping, setUpdatedMapping] = useState(mapping);
     const [columnApi, setColumnApi] = useState(null);
     const [selectedColumnApi, setSelectedColumnApi] = useState(null);
     const [prePlanGridApi, setPrePlanGridApi] = useState();
@@ -155,6 +156,7 @@ const RightsRepository = ({
                 const {options = []} =
                     (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === 'status')) ||
                     {};
+
                 values = options;
             } else {
                 values = [rightsFilter.external.status];
@@ -399,6 +401,14 @@ const RightsRepository = ({
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
         : columnDefsClone;
 
+    const updateMapping = useMemo(() => {
+        return mapping?.map(item => {
+            const isHiddenFilters = item.displayName === 'Territory' || item.displayName === 'Selected';
+            if (isHiddenFilters) return {...item, searchDataType: null};
+            return item;
+        });
+    }, [mapping]);
+
     const onRightsRepositoryGridEvent = debounce(({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
@@ -476,13 +486,26 @@ const RightsRepository = ({
                 break;
             }
             case FILTER_CHANGED: {
+                const isActiveSelectedAt = api.getFilterInstance('territoryDateSelected').isFilterActive();
                 const column = filterBy(api.getFilterModel());
+
+                const selected = api.getFilterInstance('selected');
+                const territory = api.getFilterInstance('territoryCountry');
+
                 if (Object.keys(column || {}).length === 0) {
                     const filter = {...rightsFilter};
                     delete filter.column;
                     setRightsFilter(filter);
                     break;
                 }
+
+                if (isActiveSelectedAt) {
+                    [selected, territory].forEach(filter => filter.setModel(null));
+                    setUpdatedMapping(updateMapping);
+                } else {
+                    setUpdatedMapping(mapping);
+                }
+
                 setRightsFilter({...rightsFilter, column});
                 break;
             }
@@ -603,7 +626,7 @@ const RightsRepository = ({
                 suppressRowClickSelection={true}
                 singleClickEdit
                 context={{selectedRows: currentUserSelectedRights}}
-                mapping={mapping}
+                mapping={updatedMapping}
                 setTotalCount={setTotalCount}
                 onGridEvent={type => onRightsRepositoryGridEvent(type, gridApi, columnApi)}
                 isGridHidden={activeTab !== RIGHTS_TAB}
