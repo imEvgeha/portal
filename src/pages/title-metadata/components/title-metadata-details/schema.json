@@ -229,6 +229,18 @@
                                         "hasValue": "any"
                                     }
                                 ]
+                            ],
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "fields": [
+                                        {
+                                            "name": "contentType",
+                                            "value": "EPISODE"
+                                        }
+                                    ]
+                                }
                             ]
                         },
                         "seasonId": {
