@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions, no-magic-numbers */
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
@@ -88,6 +88,7 @@ const RightsRepository = ({
     username,
 }) => {
     const isMounted = useRef(true);
+    const [updatedMapping, setUpdatedMapping] = useState(mapping);
     const [columnApi, setColumnApi] = useState(null);
     const [selectedColumnApi, setSelectedColumnApi] = useState(null);
     const [prePlanGridApi, setPrePlanGridApi] = useState();
@@ -155,6 +156,7 @@ const RightsRepository = ({
                 const {options = []} =
                     (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === 'status')) ||
                     {};
+
                 values = options;
             } else {
                 values = [rightsFilter.external.status];
@@ -384,31 +386,42 @@ const RightsRepository = ({
         : columnsValidationDefsClone;
 
     // new column 'selected at' has type date in filter but should show 'selected' column values
-    const selectedAtCol = updatedColumnDefs.find(item => item.headerName === "Selected At");
-    const selectedCol = updatedColumnDefs.find(item => item.headerName === "Selected");
-    if(selectedAtCol && selectedCol) {
+    const selectedAtCol = updatedColumnDefs.find(item => item.headerName === 'Selected At');
+    const selectedCol = updatedColumnDefs.find(item => item.headerName === 'Selected');
+
+    if (selectedAtCol && selectedCol) {
         selectedAtCol.valueFormatter = selectedCol.valueFormatter;
-        if(gridApi) {
+        if (gridApi) {
             // selectedAt col - filter and display territories that are in date range
             const filters = filterBy(gridApi.getFilterModel());
-            if(filters.territoryDateSelected.territoryDateSelectedFrom || filters.territoryDateSelected.territoryDateSelectedTo) {
-                selectedAtCol.valueFormatter = params => {
-                    let selectedAt = "";
-                    params?.data?.territory?.forEach(t => {
-                        const fromOnlyCheck = filters.territoryDateSelected.territoryDateSelectedFrom && !filters.territoryDateSelected.territoryDateSelectedTo
-                        && t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom;
-                        const toOnlyCheck = filters.territoryDateSelected.territoryDateSelectedTo && !filters.territoryDateSelected.territoryDateSelectedFrom
-                        && t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
-                        const fromToCheck = filters.territoryDateSelected.territoryDateSelectedFrom && filters.territoryDateSelected.territoryDateSelectedTo
-                        && t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom
-                        && t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
 
-                        if(fromToCheck || toOnlyCheck || fromOnlyCheck) {
-                            selectedAt = selectedAt + t.country + ", ";
+            if (
+                filters.territoryDateSelected.territoryDateSelectedFrom ||
+                filters.territoryDateSelected.territoryDateSelectedTo
+            ) {
+                selectedAtCol.valueFormatter = params => {
+                    let selectedAt = '';
+                    params?.data?.territory?.forEach(t => {
+                        const fromOnlyCheck =
+                            filters.territoryDateSelected.territoryDateSelectedFrom &&
+                            !filters.territoryDateSelected.territoryDateSelectedTo &&
+                            t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom;
+                        const toOnlyCheck =
+                            filters.territoryDateSelected.territoryDateSelectedTo &&
+                            !filters.territoryDateSelected.territoryDateSelectedFrom &&
+                            t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
+                        const fromToCheck =
+                            filters.territoryDateSelected.territoryDateSelectedFrom &&
+                            filters.territoryDateSelected.territoryDateSelectedTo &&
+                            t.dateSelected >= filters.territoryDateSelected?.territoryDateSelectedFrom &&
+                            t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
+
+                        if (fromToCheck || toOnlyCheck || fromOnlyCheck) {
+                            selectedAt = `${selectedAt + t.country  }, `;
                         }
                     });
-                    return selectedAt.slice(0,-2); // remove last comma
-                }
+                    return selectedAt.slice(0, -2); // remove last comma
+                };
             }
         }
     }
@@ -421,6 +434,14 @@ const RightsRepository = ({
     const updatedColumnDefsCheckBoxHeader = columnDefsClone.length
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
         : columnDefsClone;
+
+    const updateMapping = useMemo(() => {
+        return mapping?.map(item => {
+            const isHiddenFilters = item.displayName === 'Territory' || item.displayName === 'Selected';
+            if (isHiddenFilters) return {...item, searchDataType: null};
+            return item;
+        });
+    }, [mapping]);
 
     const onRightsRepositoryGridEvent = debounce(({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
@@ -499,13 +520,26 @@ const RightsRepository = ({
                 break;
             }
             case FILTER_CHANGED: {
+                const isActiveSelectedAt = api.getFilterInstance('territoryDateSelected').isFilterActive();
                 const column = filterBy(api.getFilterModel());
+
+                const selected = api.getFilterInstance('selected');
+                const territory = api.getFilterInstance('territoryCountry');
+
                 if (Object.keys(column || {}).length === 0) {
                     const filter = {...rightsFilter};
                     delete filter.column;
                     setRightsFilter(filter);
                     break;
                 }
+
+                if (isActiveSelectedAt) {
+                    [selected, territory].forEach(filter => filter.setModel(null));
+                    setUpdatedMapping(updateMapping);
+                } else {
+                    setUpdatedMapping(mapping);
+                }
+
                 setRightsFilter({...rightsFilter, column});
                 break;
             }
@@ -626,7 +660,7 @@ const RightsRepository = ({
                 suppressRowClickSelection={true}
                 singleClickEdit
                 context={{selectedRows: currentUserSelectedRights}}
-                mapping={mapping}
+                mapping={updatedMapping}
                 setTotalCount={setTotalCount}
                 onGridEvent={type => onRightsRepositoryGridEvent(type, gridApi, columnApi)}
                 isGridHidden={activeTab !== RIGHTS_TAB}
