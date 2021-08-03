@@ -152,7 +152,6 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
     return (
         <div className="nexus-c-title-metadata-table">
             <TitleMetadataTableGrid
-                id="TitleMetadataTable"
                 columnDefs={columnDefs}
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection

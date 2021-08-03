@@ -160,6 +160,7 @@ const TitleDetails = ({
                 externalIds={externalIds}
                 onSyncPublish={syncPublishHandler}
                 isEditView={isEditView}
+                isEditMode={isEditMode}
                 isVZSyncing={isVZTitleSyncing}
                 isMOVSyncing={isMOVTitleSyncing}
                 isVZPublishing={isVZTitlePublishing}

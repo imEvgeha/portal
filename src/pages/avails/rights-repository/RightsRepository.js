@@ -295,7 +295,7 @@ const RightsRepository = ({
             };
         }
 
-        if (!['buttons', 'title', 'id', 'action'].includes(col.field)) {
+        if (!['buttons', 'title', 'id', 'action', 'territoryDateSelected'].includes(col.field)) {
             return {
                 ...col,
                 cellStyle: params => cellStyling(params, col),
@@ -350,6 +350,13 @@ const RightsRepository = ({
 
                     return <span>{cellValue}</span>;
                 },
+            };
+        }
+
+        if (['territoryDateSelected'].includes(col.field)) {
+            return {
+                ...col,
+                cellRenderer: 'selectedAtCellRenderer',
             };
         }
 
@@ -417,7 +424,7 @@ const RightsRepository = ({
                             t.dateSelected <= filters.territoryDateSelected?.territoryDateSelectedTo;
 
                         if (fromToCheck || toOnlyCheck || fromOnlyCheck) {
-                            selectedAt = `${selectedAt + t.country  }, `;
+                            selectedAt = `${selectedAt + t.country}, `;
                         }
                     });
                     return selectedAt.slice(0, -2); // remove last comma
