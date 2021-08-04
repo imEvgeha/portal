@@ -5,10 +5,17 @@ import BundleTitle from '../bundle-title/BundleTitle';
 import IngestStatus from '../ingest-status/IngestStatus';
 import Ingest from '../ingest/Ingest';
 import './Bundle.scss';
+import moment from "moment";
 
 const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttachmentId, ingestClick, emailSubject}) => {
     const [showIngests, setShowIngests] = useState(false);
     const onBundleClick = () => setShowIngests(!showIngests);
+
+    // Sorted by updatedAt
+    const attachmentsSortedByUpdatedAt =
+        attachments.sort(
+            (a, b) => b && a && moment.utc(b.updatedAt ? b.updatedAt : received).diff(moment.utc(a.updatedAt ? a.updatedAt : received))
+        ) || [];
 
     return (
         <div className="nexus-c-avail-bundle">
@@ -28,7 +35,7 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
             </div>
             {showIngests && (
                 <div className="nexus-c-avail-bundle__ingests">
-                    {attachments.map(attachment => (
+                    {attachmentsSortedByUpdatedAt.map(attachment => (
                         <Ingest
                             key={attachment.id}
                             attachment={attachment}
