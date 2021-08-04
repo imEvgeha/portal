@@ -411,15 +411,17 @@ const RightsRepository = ({
 
     const updateMapping = api => {
         const isActiveSelectedAt = api.getFilterInstance('territoryDateSelected').isFilterActive();
-        const selected = api.getFilterInstance('selected');
-        const territory = api.getFilterInstance('territoryCountry');
+        const selectedFilter = api.getFilterInstance('selected');
+        const territoryFilter = api.getFilterInstance('territoryCountry');
 
         if (isActiveSelectedAt) {
-            [selected, territory].forEach(filter => filter.setModel(null));
+            [selectedFilter, territoryFilter].forEach(filter => filter.setModel(null));
             setUpdatedMapping(mappingWithHiddenFilters);
         } else {
             setUpdatedMapping(mapping);
         }
+
+        api.refreshHeader();
     };
 
     const onRightsRepositoryGridEvent = debounce(({type, api, columnApi}) => {
