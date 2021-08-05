@@ -526,6 +526,7 @@
             "sections": [
                 {
                     "title": "Editorial Metadata",
+                    "prefix": "editorial",
                     "fields": {
                         "editorialMetadata": {
                             "name": "Editorial Metadata",
@@ -598,12 +599,12 @@
                                     ],
                                     "showWhen": [
                                         {
-                                            "field": "editorial.hasGeneratedChildren",
+                                            "field": "hasGeneratedChildren",
                                             "hasValue": false
                                         },
                                         {
                                             "field": "hasGeneratedChildren",
-                                            "hasValue": false
+                                            "hasValue": ""
                                         }
                                     ]
                                 },
@@ -633,12 +634,12 @@
                                     "isReadOnlyInEdit": true,
                                     "showWhen": [
                                         {
-                                            "field": "editorial.hasGeneratedChildren",
+                                            "field": "hasGeneratedChildren",
                                             "hasValue": false
                                         },
                                         {
                                             "field": "hasGeneratedChildren",
-                                            "hasValue": false
+                                            "hasValue": ""
                                         }
                                     ],
                                     "dependencies": [
@@ -712,16 +713,6 @@
                                     "showWhen": [
                                         [
                                             {
-                                                "field": "editorial.locale.value",
-                                                "hasValue": "US"
-                                            },
-                                            {
-                                                "field": "editorial.language.value",
-                                                "hasValue": "en"
-                                            }
-                                        ],
-                                        [
-                                            {
                                                 "field": "locale",
                                                 "hasValue": "US"
                                             },
@@ -769,10 +760,6 @@
                                         }
                                     ],
                                     "showWhen": [
-                                        {
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "hasValue": true
-                                        },
                                         {
                                             "field": "hasGeneratedChildren",
                                             "hasValue": true

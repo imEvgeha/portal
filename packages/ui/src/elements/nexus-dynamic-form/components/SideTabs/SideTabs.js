@@ -50,7 +50,7 @@ const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved}) => {
 
     const renderSideSubTabs = (data, key, index) => {
         const toReturn = [];
-        const masterTitle = data[key].find(emet => emet['hasGeneratedChildren']);
+        const masterTitle = data[key].find(emet => emet && emet['hasGeneratedChildren']);
         data[key].forEach((obj, subIndex) => {
             const duration = moment.duration(moment.utc(masterTitle?.updatedAt).diff(moment.utc(obj?.updatedAt)));
             const secs = Math.abs(duration.asSeconds());
