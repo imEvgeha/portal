@@ -401,22 +401,40 @@ const RightsRepository = ({
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
         : columnDefsClone;
 
-    const mappingWithHiddenFilters = useMemo(() => {
+    const setHiddenFilters = isSelectedAt => {
         return mapping?.map(item => {
-            const isHiddenFilters = item.displayName === 'Territory' || item.displayName === 'Selected';
+            const isHiddenFilters = isSelectedAt
+                ? item.displayName === 'Territory' || item.displayName === 'Selected'
+                : item.displayName === 'Selected At';
             if (isHiddenFilters) return {...item, required: false, searchDataType: null};
             return item;
         });
-    }, [mapping]);
+    };
+
+    const hiddenSelectedAndTerritoryFilters = useMemo(() => setHiddenFilters(true), [mapping]);
+    const hiddenSelectedAtFilter = useMemo(() => setHiddenFilters(false), [mapping]);
 
     const updateMapping = api => {
-        const isActiveSelectedAt = api.getFilterInstance('territoryDateSelected').isFilterActive();
-        const selectedFilter = api.getFilterInstance('selected');
-        const territoryFilter = api.getFilterInstance('territoryCountry');
+        const checkActiveFilter = filter => Boolean(api.getFilterInstance(filter).isFilterActive());
+        const resetFilters = filters => {
+            filters.forEach(filterName => {
+                const filterInstance = api.getFilterInstance(filterName);
+                filterInstance.setModel(null);
+            });
+        };
 
-        if (isActiveSelectedAt) {
-            [selectedFilter, territoryFilter].forEach(filter => filter.setModel(null));
-            setUpdatedMapping(mappingWithHiddenFilters);
+        const checkActiveFilters = {
+            territoryDateSelected: checkActiveFilter('territoryDateSelected'),
+            territory: checkActiveFilter('territoryCountry'),
+            selected: checkActiveFilter('selected'),
+        };
+
+        if (checkActiveFilters.territoryDateSelected) {
+            resetFilters(['territoryCountry', 'selected']);
+            setUpdatedMapping(hiddenSelectedAndTerritoryFilters);
+        } else if (checkActiveFilters.territory || checkActiveFilters.selected) {
+            resetFilters(['territoryDateSelected']);
+            setUpdatedMapping(hiddenSelectedAtFilter);
         } else {
             setUpdatedMapping(mapping);
         }
@@ -514,8 +532,8 @@ const RightsRepository = ({
                     break;
                 }
 
-                updateMapping(api);
                 setRightsFilter({...rightsFilter, column});
+                updateMapping(api);
                 break;
             }
             default:
