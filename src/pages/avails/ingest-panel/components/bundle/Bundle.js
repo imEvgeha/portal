@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Chevron from '@vubiquity-nexus/portal-assets/chevron-right.svg';
+import moment from 'moment';
 import BundleTitle from '../bundle-title/BundleTitle';
 import IngestStatus from '../ingest-status/IngestStatus';
 import Ingest from '../ingest/Ingest';
 import './Bundle.scss';
-import moment from "moment";
 
 const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttachmentId, ingestClick, emailSubject}) => {
     const [showIngests, setShowIngests] = useState(false);
@@ -14,7 +14,10 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
     // Sorted by updatedAt
     const attachmentsSortedByUpdatedAt =
         attachments.sort(
-            (a, b) => b && a && moment.utc(b.updatedAt ? b.updatedAt : received).diff(moment.utc(a.updatedAt ? a.updatedAt : received))
+            (a, b) =>
+                b &&
+                a &&
+                moment.utc(b.updatedAt ? b.updatedAt : received).diff(moment.utc(a.updatedAt ? a.updatedAt : received))
         ) || [];
 
     return (
