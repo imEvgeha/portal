@@ -2,8 +2,7 @@ import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
-import {get, isObjectLike} from 'lodash';
-import NexusTooltip from '../../../lib/elements/nexus-tooltip/NexusTooltip';
+import {get, isObjectLike, isObject} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
@@ -272,8 +271,20 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
-const toShow = (field, initialData) => {
+const getFieldCurrentValue = (initialData, fieldName) => {
+    const v = get(initialData, fieldName, '');
+    if (v && isObject(v)) {
+        const value = get(initialData, `${fieldName}.value`, '');
+        if (value !== '') {
+            return value;
+        }
+    }
+    return v;
+};
+
+const toShow = (field, initialData, prefix) => {
     const showWhen = get(field, 'showWhen', []);
+    const preString = prefix ? `${prefix}.` : '';
     if (showWhen.length) {
         let retValue = false;
         field.showWhen.forEach(conditionObj => {
@@ -282,7 +293,7 @@ const toShow = (field, initialData) => {
                 // AND condition
                 let areAllTrue = true;
                 conditionObj.forEach(obj => {
-                    const value = get(initialData, obj.field, '');
+                    const value = getFieldCurrentValue(initialData, `${preString}${obj.field}`);
                     if (obj.hasValue === 'any') {
                         areAllTrue = !value ? false : areAllTrue;
                     } else if (value !== obj.hasValue) {
@@ -291,7 +302,7 @@ const toShow = (field, initialData) => {
                 });
                 retValue = areAllTrue ? true : retValue;
             } else {
-                const value = get(initialData, conditionObj.field, '');
+                const value = getFieldCurrentValue(initialData, `${preString}${conditionObj.field}`);
                 if (value === conditionObj.hasValue) retValue = true;
             }
         });
@@ -319,6 +330,7 @@ export const buildSection = (
         tabs,
         subTabs,
         setDisableSubmit,
+        prefix,
     }
 ) => {
     return (
@@ -360,6 +372,7 @@ export const buildSection = (
                             {...fields[key]}
                             setRefresh={setRefresh}
                             initialData={initialData}
+                            prefix={prefix}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
@@ -401,9 +414,10 @@ export const renderNexusField = (
         setDisableSubmit,
         setUpdatedValues,
         updatedValues,
+        prefix,
     }
 ) => {
-    return toShow(field, updatedValues || initialData) ? (
+    return toShow(field, updatedValues || initialData, prefix) ? (
         <NexusField
             {...field}
             id={key}

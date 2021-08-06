@@ -30,6 +30,7 @@ const NexusArrayWithTabs = ({
     setRefresh,
     castCrewConfig,
     initialData,
+    prefix,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -312,6 +313,7 @@ const NexusArrayWithTabs = ({
                 castCrewConfig={castCrewConfig}
                 initialData={initialData}
                 closeModal={closeModal}
+                prefix={prefix}
             />
         );
     };
@@ -444,6 +446,7 @@ NexusArrayWithTabs.propTypes = {
     castCrewConfig: PropTypes.object,
     setRefresh: PropTypes.func,
     initialData: PropTypes.object,
+    prefix: PropTypes.string,
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -463,6 +466,7 @@ NexusArrayWithTabs.defaultProps = {
     castCrewConfig: {},
     setRefresh: undefined,
     initialData: {},
+    prefix: undefined,
 };
 
 export default NexusArrayWithTabs;

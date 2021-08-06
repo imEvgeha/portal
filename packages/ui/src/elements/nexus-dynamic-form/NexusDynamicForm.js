@@ -203,6 +203,7 @@ const NexusDynamicForm = ({
                                             isGridLayout = false,
                                             tabs,
                                             subTabs,
+                                            prefix,
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
@@ -226,6 +227,7 @@ const NexusDynamicForm = ({
                                                         tabs,
                                                         subTabs,
                                                         setDisableSubmit,
+                                                        prefix,
                                                     }
                                                 )}
                                             </Fragment>
