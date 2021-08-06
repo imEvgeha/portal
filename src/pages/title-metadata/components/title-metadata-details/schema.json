@@ -410,7 +410,27 @@
                                     "optionsConfig": {
                                         "defaultValuePath": "code",
                                         "defaultLabelPath": "name"
-                                    }
+                                    },
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "values",
+                                            "fields": [
+                                                {
+                                                    "name": "ratingSystem"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "values",
+                                            "fields": [
+                                                {
+                                                    "name": "ratingSystem"
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 "advisoriesFreeText": {
                                     "name": "Advisories",

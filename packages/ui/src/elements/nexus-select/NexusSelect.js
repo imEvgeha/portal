@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import Select from '@atlaskit/select';
 import {cloneDeep} from 'lodash';
 import {compose} from 'redux';
-import withOptionalCheckbox from '../nexus-dynamic-form/hoc/withOptionalCheckbox';
 import {LOCALIZED_VALUE_NOT_DEFINED} from '../nexus-dynamic-form/constants';
+import withOptionalCheckbox from '../nexus-dynamic-form/hoc/withOptionalCheckbox';
 import {formatOptions} from '../nexus-dynamic-form/utils';
 import './NexusSelect.scss';
 
@@ -40,8 +40,12 @@ const NexusSelect = ({
     // function to compare localized values in English
     const selectCompare = (a, b) => {
         // extract english text in brackets
-        return a.label.split('(')[1] > b.label.split('(')[1] ? 1 : b.label.split('(')[1] > a.label.split('(')[1] ? -1 : 0;
-    }
+        return a.label.split('(')[1] > b.label.split('(')[1]
+            ? 1
+            : b.label.split('(')[1] > a.label.split('(')[1]
+            ? -1
+            : 0;
+    };
 
     const addDeselectOption = options => {
         if (type === 'select' && !isRequired) {
@@ -66,26 +70,22 @@ const NexusSelect = ({
     };
 
     const formatOptionLabel = option => {
-        const notLocalized = option?.label?.includes('(') && option?.label?.includes(')*')? true: false;
-          return (
-            <div
-              className={notLocalized ? "italic": null}
-            >
-              <span title={notLocalized? LOCALIZED_VALUE_NOT_DEFINED: null}>
-                {option.label}
-              </span>
+        const notLocalized = !!(option?.label?.includes('(') && option?.label?.includes(')*'));
+        return (
+            <div className={notLocalized ? 'italic' : null}>
+                <span title={notLocalized ? LOCALIZED_VALUE_NOT_DEFINED : null}>{option.label}</span>
             </div>
-          );
-      };
+        );
+    };
 
     return isMultiselect ? (
         <SelectWithOptional
             {...fieldProps}
-            options={optionsConfig.options !== undefined ? optionsConfig.options.sort(selectCompare) : fetchedOptions}
+            options={optionsConfig.options !== undefined ? optionsConfig.options.sort(selectCompare) : filterOptions()}
             isMulti
             defaultValue={defaultValue}
             {...addedProps}
-            formatOptionLabel={showLocalized? formatOptionLabel: null}
+            formatOptionLabel={showLocalized ? formatOptionLabel : null}
         />
     ) : (
         <SelectWithOptional
@@ -111,7 +111,7 @@ NexusSelect.propTypes = {
     addedProps: PropTypes.object.isRequired,
     optionsFilterParameter: PropTypes.array,
     isCreateMode: PropTypes.bool,
-    showLocalized: PropTypes.bool
+    showLocalized: PropTypes.bool,
 };
 
 NexusSelect.defaultProps = {
