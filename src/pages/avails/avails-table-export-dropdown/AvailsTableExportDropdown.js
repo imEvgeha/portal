@@ -150,11 +150,13 @@ const AvailsTableExportDropdown = ({
     };
 
     const getAllDisplayedColumns = columnApi => {
-        const allDisplayedColumns = getDownloadableColumns(columnApi.getAllDisplayedColumns());
+        const allDisplayedColumns = getDownloadableColumns(columnApi?.getAllDisplayedColumns());
+
         mappingColumnNames.forEach(mapCol => {
-            if (!allDisplayedColumns.includes(mapCol)) {
-                allDisplayedColumns.push(mapCol);
-            }
+            let col = mapCol;
+
+            if (mapCol === 'territoryDateSelected') col = 'reportingOnly.selectedAt';
+            if (!allDisplayedColumns.includes(col)) allDisplayedColumns.push(col);
         });
 
         return allDisplayedColumns;
