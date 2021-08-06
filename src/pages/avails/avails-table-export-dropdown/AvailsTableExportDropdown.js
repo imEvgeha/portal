@@ -199,11 +199,9 @@ const AvailsTableExportDropdown = ({
             if (mappingColumnNames.includes(field)) {
                 if (colId === 'selected' || colId === 'withdrawn') {
                     headerFields.add(colId);
-                }
-                else if (colId === 'territoryDateSelected') {
-                    headerFields.add('selectedAt');
-                }
-                else {
+                } else if (colId === 'territoryDateSelected') {
+                    headerFields.add('reportingOnly.selectedAt');
+                } else {
                     headerFields.add(field);
                 }
             }
