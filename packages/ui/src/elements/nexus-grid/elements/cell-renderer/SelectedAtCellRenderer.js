@@ -44,7 +44,15 @@ const SelectedAtCellRenderer = params => {
                 }
             });
             return selectedAt ? selectedAt.slice(0, -2) : ''; // remove last comma
-        }
+        } 
+            if (data && Array.isArray(data['territory'])) {
+                const items = data['territory']
+                    .filter(item => item.selected)
+                    .map(item => item.country)
+                    .join(', ');
+                return [items];
+            }
+        
     }
     return '';
 };
