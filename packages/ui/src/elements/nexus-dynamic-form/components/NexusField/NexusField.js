@@ -285,6 +285,7 @@ const NexusField = ({
                                   })
                                 : undefined
                         }
+                        optionsFilterParameter={checkDependencies('values')}
                     />
                 );
             case 'dateRange':
