@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {defineEpisodeAndSeasonNumberColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
 import './LegacyTitleReconciliationReview.scss';
@@ -46,10 +45,8 @@ const LegacyTitleReconciliationReview = ({createColumnDefs, columnDefs, titles, 
         }
     };
 
-    const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
     const updatedColumnDefs = [
         getRepositoryCell({headerName: 'Repository'}),
-        episodeAndSeasonNumberColumnDef,
         ...columnDefs,
     ];
 

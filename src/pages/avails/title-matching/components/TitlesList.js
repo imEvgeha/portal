@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
-    defineEpisodeAndSeasonNumberColumn,
     getLinkableColumnDefs,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
@@ -54,8 +53,7 @@ const TitlesList = ({
         }
     };
 
-    const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
-    const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...columnDefs]);
+    const updatedColumnDefs = getLinkableColumnDefs([...columnDefs]);
     const repository = getRepositoryCell();
     const columnDefsClone = updatedColumnDefs.map(columnDef => {
         if (!['releaseYear', 'contentType', 'title'].includes(columnDef.colId)) {
