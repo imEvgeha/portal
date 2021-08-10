@@ -5,6 +5,9 @@ import Tooltip from '@atlaskit/tooltip';
 import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
 import {NEEDS_TRANSLATION, LOCALIZED_NOT_DEFINED} from '../nexus-persons-list/constants';
 import './NexusPersonRO.scss';
+import Lozenge from '@atlaskit/lozenge';
+import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
+import {PersonListFlag} from '../../../../../src/pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
 const NexusPersonRO = ({person, emetLanguage}) => {
     const localizedName = () => {
@@ -18,6 +21,9 @@ const NexusPersonRO = ({person, emetLanguage}) => {
         <div className="nexus-c-nexus-person-ro">
             <div>
                 <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person-ro__img" />
+                <div className="nexus-c-nexus-person-type">
+                    <Lozenge appearance="default">{getFormatTypeName(person.personType)}</Lozenge>
+                </div>
                 <span
                     className={
                         person.displayNameEn && emetLanguage !== person?.language ? 'nexus-c-nexus-person-italic' : ''
