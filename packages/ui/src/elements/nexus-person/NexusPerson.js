@@ -12,6 +12,8 @@ import EditPerson from './elements/EditPerson/EditPerson';
 import {NEEDS_TRANSLATION, LOCALIZED_NOT_DEFINED} from '../nexus-persons-list/constants';
 import './NexusPerson.scss';
 import {get} from 'lodash';
+import Lozenge from '@atlaskit/lozenge';
+import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 
 const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
     const localization = get(person, 'localization');
@@ -44,6 +46,9 @@ const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
                             <div className="nexus-c-nexus-person__info">
                                 <div>
                                     <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
+                                    <div className="nexus-c-nexus-person-type">
+                                        <Lozenge appearance="default">{getFormatTypeName(person.personType)}</Lozenge>
+                                    </div>
                                     <span
                                         className={
                                             person.displayNameEn && emetLanguage !== person?.language
