@@ -106,8 +106,9 @@ const NexusPersonsList = ({
 
     const removePerson = person => {
         const updatedPersons = persons.filter(entry => {
-            return entry.id !== person.id;
+            return entry.id !== person.id || entry.personType !== person.personType;
         });
+
         const isCast = uiConfig.type === CAST;
         updatedPersons.forEach((person, index) => {
             person.creditsOrder = index;
