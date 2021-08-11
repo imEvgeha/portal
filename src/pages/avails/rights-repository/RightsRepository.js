@@ -448,17 +448,17 @@ const RightsRepository = ({
         api.refreshHeader();
     };
 
-    const onRightsRepositoryGridEvent = debounce(({type, api, columnApi}) => {
+    const onRightsRepositoryGridEvent = debounce(({type, api, columnApi: gridColumnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
 
         switch (type) {
             case FIRST_DATA_RENDERED:
                 updateMapping(api);
-                setColumnApi(columnApi);
+                !columnApi && setColumnApi(gridColumnApi);
                 break;
             case READY:
                 setGridApi(api);
-                setColumnApi(columnApi);
+                !columnApi && setColumnApi(gridColumnApi);
                 break;
             case SELECTION_CHANGED: {
                 let clonedSelectedRights = currentUserSelectedRights;
@@ -551,15 +551,22 @@ const RightsRepository = ({
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
         const newSelectedRights = rights.filter(right => !prePlanIds.includes(right.id));
-        setPreplanRights({[username]: [...(currentUserPrePlanRights || []), ...newSelectedRights]});
+        setPreplanRights({
+            [username]: [...(currentUserPrePlanRights || []), ...newSelectedRights],
+        });
     };
 
     const onSelectedRightsRepositoryGridEvent = debounce(({type, api, columnApi}) => {
-        const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
+        const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
+
         switch (type) {
+            case FIRST_DATA_RENDERED:
+                !selectedGridApi && setSelectedGridApi(api);
+                !selectedColumnApi && setSelectedColumnApi(columnApi);
+                break;
             case READY:
-                setSelectedGridApi(api);
-                setSelectedColumnApi(columnApi);
+                !selectedGridApi && setSelectedGridApi(api);
+                !selectedColumnApi && setSelectedColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED: {
                 // Get IDs from all selected rights from selectedRights ag-grid table
@@ -579,7 +586,9 @@ const RightsRepository = ({
                 // onRightsRepositoryGridEvent handler
 
                 if (api.getSelectedRows()?.length < selectedRepoRights.length) {
-                    setSelectedRights({[username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id))});
+                    setSelectedRights({
+                        [username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id)),
+                    });
                 } else {
                     nodesToDeselect?.forEach(node => node?.setSelected(false));
                 }
@@ -591,6 +600,7 @@ const RightsRepository = ({
                 break;
             case FILTER_CHANGED:
                 setSelectedFilter(api.getFilterModel());
+                !selectedGridApi && setSelectedGridApi(api);
                 break;
             default:
                 break;
