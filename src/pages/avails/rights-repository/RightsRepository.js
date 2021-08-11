@@ -401,6 +401,12 @@ const RightsRepository = ({
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
         : columnDefsClone;
 
+    const selectedAtCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected At');
+    const selectedCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected');
+    if (selectedAtCol && selectedCol) {
+        selectedAtCol.valueFormatter = selectedCol.valueFormatter;
+    }
+
     const setHiddenFilters = isSelectedAt => {
         return mapping?.map(item => {
             const isHiddenFilters = isSelectedAt
