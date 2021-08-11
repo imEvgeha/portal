@@ -32,7 +32,7 @@ const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
 
     const localizedName = () => {
         if (person?.language === 'en' && emetLanguage === 'en') return getEnName();
-        return getLocalizedName() === getEnName() && emetLanguage !== person?.language
+        return getLocalizedName() === getEnName() && person?.language !== undefined && emetLanguage !== person?.language
             ? NEEDS_TRANSLATION
             : getLocalizedName();
     };
