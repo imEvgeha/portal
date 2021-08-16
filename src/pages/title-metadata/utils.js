@@ -23,6 +23,10 @@ export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
 };
 
+export const isStateEditable = state => {
+    return state !== 'deleted';
+};
+
 export const isMgmTitle = titleId => {
     return titleId && (titleId.startsWith('titl_mgm') || titleId.startsWith('titl_MGM'));
 };

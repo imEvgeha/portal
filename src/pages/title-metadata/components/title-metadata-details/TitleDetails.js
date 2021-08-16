@@ -27,6 +27,7 @@ import {
     updateTerritoryMetadata,
     updateEditorialMetadata,
     isNexusTitle,
+    isStateEditable,
     isMgmTitle,
     prepareCategoryField,
     prepareAwardsField,
@@ -181,7 +182,7 @@ const TitleDetails = ({
                 onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
-                hasButtons={isNexusTitle(title.id)}
+                hasButtons={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
                 setIsEditView={setIsEditView}
                 isSaving={isSaving}
                 setRefresh={setRefresh}
