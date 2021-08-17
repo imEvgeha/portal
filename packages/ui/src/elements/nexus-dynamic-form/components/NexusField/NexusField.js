@@ -111,15 +111,25 @@ const NexusField = ({
     };
 
     const [dir, setDir] = React.useState('ltr');
+    const [textFieldVal, setTextFieldVal] = React.useState(undefined);
 
     const handleOnChange = (e, cb) => {
         //  right to left input for hebrew
-        if (/[\u0590-\u05FF]/.test(e.target.value)) {
+        const {value} = e.target;
+        let newVal = value;
+
+        if (/[\u0590-\u05FF]/.test(value)) {
+            if (dir === 'ltr') {
+                // Edge case for when user inputs nonletters at the start.
+                const reverseCurVal = textFieldVal.split('').reverse().join('');
+                newVal = reverseCurVal + value.slice(-1);
+            }
             setDir('rtl');
         } else {
             setDir('ltr');
         }
 
+        setTextFieldVal(newVal);
         setUpdatedValues(getCurrentValues());
         cb(e);
     };
@@ -128,6 +138,7 @@ const NexusField = ({
         const selectFieldProps = {...fieldProps};
         const fieldOnChange = selectFieldProps.onChange;
         const multiselectFieldProps = {...fieldProps};
+
         switch (type) {
             case 'string':
             case 'stringInArray':
@@ -138,6 +149,7 @@ const NexusField = ({
                         {...addedProps}
                         onChange={e => handleOnChange(e, fieldOnChange)}
                         placeholder={`Enter ${label}`}
+                        value={textFieldVal || fieldProps.value}
                         dir={dir}
                     />
                 );
