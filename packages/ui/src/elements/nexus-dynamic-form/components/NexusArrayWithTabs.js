@@ -383,6 +383,7 @@ const NexusArrayWithTabs = ({
                     data={groupedData}
                     subTabs={subTabs}
                     isRemoved={isRemoved}
+                    isEdit={view === VIEWS.EDIT}
                     setTabData={setTabData}
                     clearIsRemoved={clearIsRemoved}
                 />

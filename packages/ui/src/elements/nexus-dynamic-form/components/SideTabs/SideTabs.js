@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import './SideTabs.scss';
 
-const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved}) => {
+const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved, isEdit, setTabData}) => {
     const [currentTab, setCurrentTab] = useState({
         tabIndex: 0,
         subTabIndex: 0,
@@ -22,6 +22,16 @@ const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved}) => {
             clearIsRemoved();
         }
     }, [isRemoved]);
+
+    useEffect(() => {
+        if (data && !isEdit) {
+            setCurrentTab({
+                tabIndex: 0,
+                subTabIndex: 0,
+            });
+            setTabData(0);
+        }
+    }, [isEdit]);
 
     const handleTabChanged = (key, tabIndex, subTabIndex = 0) => {
         const oldSubTab = currentTab.subTabIndex;
@@ -139,12 +149,14 @@ SideTabs.propTypes = {
     isRemoved: PropTypes.bool,
     setTabData: PropTypes.func.isRequired,
     clearIsRemoved: PropTypes.func.isRequired,
+    isEdit: PropTypes.bool,
 };
 
 SideTabs.defaultProps = {
     data: {},
     subTabs: [],
     isRemoved: false,
+    isEdit: false,
 };
 
 export default SideTabs;
