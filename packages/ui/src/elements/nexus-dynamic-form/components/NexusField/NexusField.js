@@ -112,21 +112,24 @@ const NexusField = ({
 
     const [dir, setDir] = React.useState('ltr');
     const [textFieldVal, setTextFieldVal] = React.useState(undefined);
+    const hebrew = /[\u0590-\u05FF]/;
+    const LEFT_TO_RIGHT = 'ltr';
+    const RIGHT_TO_LEFT = 'rtl';
 
     const handleOnChange = (e, cb) => {
-        //  right to left input for hebrew
         const {value} = e.target;
         let newVal = value;
 
-        if (/[\u0590-\u05FF]/.test(value)) {
-            if (dir === 'ltr') {
-                // Edge case for when user inputs nonletters at the start.
-                const reverseCurVal = textFieldVal.split('').reverse().join('');
+        if (hebrew.test(value)) {
+            if (dir === LEFT_TO_RIGHT) {
+                // Edge case for when user inputs nonletters at the start
+                // Reverses alphanumerics, ignores special characters
+                const reverseCurVal = textFieldVal.replace(/[a-zA-Z0-9_]+/gi, s => s.split('').reverse().join(''));
                 newVal = reverseCurVal + value.slice(-1);
             }
-            setDir('rtl');
+            setDir(RIGHT_TO_LEFT);
         } else {
-            setDir('ltr');
+            setDir(LEFT_TO_RIGHT);
         }
 
         setTextFieldVal(newVal);
