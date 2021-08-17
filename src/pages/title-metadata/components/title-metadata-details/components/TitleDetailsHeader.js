@@ -130,6 +130,7 @@ const TitleDetailsHeader = ({
                 isMOVSyncing={isMOVSyncing}
                 isMOVPublishing={isMOVPublishing}
                 isVZdisabled={isVZdisabled}
+                isEditDisabled={!isStateEditable(title.metadataStatus)}
             />
         </div>
     );
