@@ -4,7 +4,7 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
 import {get} from 'lodash';
 import {VZ, MOVIDA, MGM} from '../../../constants';
-import {isNexusTitle} from '../../../utils';
+import {isNexusTitle, isStateEditable} from '../../../utils';
 import ShrinkedHeader from './ShrinkedHeader';
 import SyncPublish from './SyncPublish';
 import TitleInfo from './TitleInfo';
@@ -103,7 +103,7 @@ const TitleDetailsHeader = ({
                             isSyncing={isVZSyncing}
                             isPublishing={isVZPublishing}
                             // disabled={isVZdisabled}
-                            disabled={isEditMode}
+                            disabled={isEditMode || !isStateEditable(title.metadataStatus)}
                         />
                         <SyncPublish
                             externalSystem={MOVIDA}
@@ -111,7 +111,7 @@ const TitleDetailsHeader = ({
                             onSyncPublish={onSyncPublish}
                             isSyncing={isMOVSyncing}
                             isPublishing={isMOVPublishing}
-                            disabled={isEditMode}
+                            disabled={isEditMode || !isStateEditable(title.metadataStatus)}
                         />
                     </div>
                 )}

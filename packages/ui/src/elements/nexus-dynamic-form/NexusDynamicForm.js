@@ -25,6 +25,7 @@ const NexusDynamicForm = ({
     setEditMode,
     setRefresh,
     castCrewConfig,
+    isEditDisabled,
 }) => {
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
@@ -98,6 +99,7 @@ const NexusDynamicForm = ({
                 })}
                 appearance="primary"
                 onClick={() => setEditMode(true)}
+                isDisabled={isEditDisabled}
             >
                 Edit
             </Button>
@@ -260,6 +262,7 @@ NexusDynamicForm.propTypes = {
     setEditMode: PropTypes.func,
     setRefresh: PropTypes.func,
     castCrewConfig: PropTypes.object,
+    isEditDisabled: PropTypes.bool,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -278,6 +281,7 @@ NexusDynamicForm.defaultProps = {
     setEditMode: () => null,
     setRefresh: () => null,
     castCrewConfig: {},
+    isEditDisabled: false,
 };
 
 export default NexusDynamicForm;

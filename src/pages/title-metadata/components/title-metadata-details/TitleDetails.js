@@ -182,10 +182,11 @@ const TitleDetails = ({
                 onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
-                hasButtons={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
+                hasButtons={isNexusTitle(title.id)}
                 setIsEditView={setIsEditView}
                 isSaving={isSaving}
                 setRefresh={setRefresh}
+                isEditDisabled={!isStateEditable(title.metadataStatus)}
             />
         </div>
     );
