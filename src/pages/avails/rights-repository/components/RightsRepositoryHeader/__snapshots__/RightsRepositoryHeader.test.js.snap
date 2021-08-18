@@ -16,6 +16,9 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
       Rights
     </h1>
   </div>
+  <Loading
+    spinnerSize="large"
+  />
   <WithAnalyticsContext(WithAnalyticsEvents(Button))
     appearance="primary"
     onClick={[Function]}
