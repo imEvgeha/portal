@@ -43,10 +43,6 @@ const NexusArrayWithTabs = ({
         setGroupedData(groupedObj);
     }, [data, initialData]);
 
-    useEffect(() => {
-        setCurrentData(initialData[0]);
-    }, [initialData]);
-
     const clearIsRemoved = () => {
         setIsRemoved(false);
     };
