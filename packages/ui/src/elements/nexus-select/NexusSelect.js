@@ -19,6 +19,7 @@ const NexusSelect = ({
     path,
     isRequired,
     isMultiselect,
+    language,
     addedProps,
     optionsFilterParameter,
     showLocalized,
@@ -71,9 +72,26 @@ const NexusSelect = ({
 
     const formatOptionLabel = option => {
         const notLocalized = !!(option?.label?.includes('(') && option?.label?.includes(')*'));
+        const genresArray = selectValues.genres;
+        let singleGenre;
+            let localisedGenreName;
+            let localisedCheck = false;
+        const foundOption = genresArray.find(o => o.name === option.label.substring(1, option.label.length - 2));
+        if (foundOption) {
+            singleGenre = foundOption;
+            const foundLocalization = singleGenre.localizations.find(
+                o => o.language === language && o.language !== 'en'
+            );
+            foundLocalization
+                ? ((localisedGenreName = `${foundLocalization.name} (${singleGenre.name})`), (localisedCheck = true))
+                : ((localisedGenreName = language === 'en' ? singleGenre.name : `(${singleGenre.name})*`),
+                  (localisedCheck = false));
+        }
         return (
-            <div className={`${notLocalized ? 'italic' : 'bold'}`}>
-                <span title={notLocalized ? LOCALIZED_VALUE_NOT_DEFINED : null}>{option.label}</span>
+            <div className={`${localisedCheck || language === 'en' || !notLocalized ? 'bold' : 'italic'}`}>
+                <span title={localisedGenreName ? LOCALIZED_VALUE_NOT_DEFINED : null}>
+                    {localisedGenreName || option.label}
+                </span>
             </div>
         );
     };
@@ -112,6 +130,7 @@ NexusSelect.propTypes = {
     optionsFilterParameter: PropTypes.array,
     isCreateMode: PropTypes.bool,
     showLocalized: PropTypes.bool,
+    language: PropTypes.string,
 };
 
 NexusSelect.defaultProps = {
@@ -124,6 +143,7 @@ NexusSelect.defaultProps = {
     optionsFilterParameter: [],
     isCreateMode: false,
     showLocalized: false,
+    language: 'en',
 };
 
 export default NexusSelect;

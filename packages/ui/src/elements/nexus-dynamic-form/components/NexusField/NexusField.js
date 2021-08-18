@@ -239,6 +239,7 @@ const NexusField = ({
                         optionsFilterParameter={checkDependencies('values')}
                         isCreateMode={view === VIEWS.CREATE}
                         showLocalized={showLocalized}
+                        language={getLanguage()}
                     />
                 );
             case 'multiselect':
@@ -293,6 +294,7 @@ const NexusField = ({
                         isMultiselect={true}
                         addedProps={addedProps}
                         showLocalized={showLocalized}
+                        language={getLanguage()}
                         defaultValue={
                             fieldProps.value
                                 ? fieldProps.value.map(val => {
