@@ -74,8 +74,8 @@ const NexusSelect = ({
         const notLocalized = !!(option?.label?.includes('(') && option?.label?.includes(')*'));
         const genresArray = selectValues.genres;
         let singleGenre;
-            let localisedGenreName;
-            let localisedCheck = false;
+        let localisedGenreName;
+        let localisedCheck = false;
         const foundOption = genresArray.find(o => o.name === option.label.substring(1, option.label.length - 2));
         if (foundOption) {
             singleGenre = foundOption;
@@ -89,7 +89,7 @@ const NexusSelect = ({
         }
         return (
             <div className={`${localisedCheck || language === 'en' || !notLocalized ? 'bold' : 'italic'}`}>
-                <span title={localisedGenreName ? LOCALIZED_VALUE_NOT_DEFINED : null}>
+                <span title={!localisedCheck && language !== 'en' ? LOCALIZED_VALUE_NOT_DEFINED : null}>
                     {localisedGenreName || option.label}
                 </span>
             </div>
