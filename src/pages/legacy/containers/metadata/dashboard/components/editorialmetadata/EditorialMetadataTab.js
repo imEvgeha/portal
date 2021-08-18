@@ -154,17 +154,17 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
                     </Col>
                 </Row>
             )}
-            {description && (
-                <Row>
-                    <Col className="wrap-value">
-                        <b>Short Synopsis:</b> {description}
-                    </Col>
-                </Row>
-            )}
             {shortDescription && (
                 <Row>
                     <Col className="wrap-value">
-                        <b>Med Synopsis:</b> {shortDescription}
+                        <b>Short Synopsis:</b> {shortDescription}
+                    </Col>
+                </Row>
+            )}
+            {description && (
+                <Row>
+                    <Col className="wrap-value">
+                        <b>Med Synopsis:</b> {description}
                     </Col>
                 </Row>
             )}
