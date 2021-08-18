@@ -104,7 +104,7 @@ const NexusDateTimeWindowPicker = ({
         } else {
             // .utc(false) makes sure that moment doesn't try to convert our date to local date
             endDateWithFilledTime = isSimulcast
-                ? moment(endDateWithFilledTime).utc(false).format(SIMULCAST_DATE_FORMAT)
+                ? moment.utc(endDateWithFilledTime).format(RELATIVE_FORMAT)
                 : moment(endDateWithFilledTime).utc(true).format(RELATIVE_FORMAT);
         }
 
