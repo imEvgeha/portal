@@ -281,7 +281,7 @@ const NexusArrayWithTabs = ({
         updatedGroupedData[key].push(properValues);
         setGroupedData(updatedGroupedData);
 
-        if (!currentData) {
+        if (!currentData && !Object.keys(groupedData).length) {
             setCurrentData(properValues);
         }
 
