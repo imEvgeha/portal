@@ -118,21 +118,14 @@ const NexusField = ({
 
     const handleOnChange = (e, cb) => {
         const {value} = e.target;
-        let newVal = value;
 
         if (hebrew.test(value)) {
-            if (dir === LEFT_TO_RIGHT) {
-                // Edge case for when user inputs nonletters at the start
-                // Reverses alphanumerics, ignores special characters
-                const reverseCurVal = textFieldVal.replace(/[a-zA-Z0-9_]+/gi, s => s.split('').reverse().join(''));
-                newVal = reverseCurVal + value.slice(-1);
-            }
             setDir(RIGHT_TO_LEFT);
         } else {
             setDir(LEFT_TO_RIGHT);
         }
 
-        setTextFieldVal(newVal);
+        setTextFieldVal(value);
         setUpdatedValues(getCurrentValues());
         cb(e);
     };
