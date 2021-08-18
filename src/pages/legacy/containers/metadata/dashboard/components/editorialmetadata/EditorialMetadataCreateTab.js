@@ -714,49 +714,12 @@ class EditorialMetadataCreateTab extends Component {
                         <AvField
                             type="text"
                             id="editorialShortSynopsis"
-                            name={this.getNameWithPrefix('description')}
+                            name={this.getNameWithPrefix('shortDescription')}
                             onChange={e => this.handleChange(e, this.props.handleSynopsisChange)}
                             validate={{
                                 maxLength: {
                                     value: MAX_SYNOPSIS_LENGTH,
                                     errorMessage: `Too long Short Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.`,
-                                },
-                            }}
-                            required={this.state.autoDecorate}
-                            errorMessage="Field cannot be empty!"
-                        />
-                        <span
-                            style={{
-                                float: 'right',
-                                color: synopsis
-                                    ? this.handleFieldLength(synopsis.description) === MAX_SYNOPSIS_LENGTH
-                                        ? 'red'
-                                        : '#111'
-                                    : '#111',
-                                fontSize: '13px',
-                            }}
-                        >
-                            {synopsis ? this.handleFieldLength(synopsis.description) : 0}/{MAX_SYNOPSIS_LENGTH} char
-                        </span>
-                    </Col>
-                </Row>
-                <Row style={{padding: '15px'}}>
-                    <Col md={2}>
-                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Medium Synopsis</b>
-                    </Col>
-                    <Col>
-                        <AvField
-                            type="textarea"
-                            id="editorialMediumSynopsis"
-                            name={this.getNameWithPrefix('shortDescription')}
-                            cols={20}
-                            rows={5}
-                            style={{resize: 'none'}}
-                            onChange={e => this.handleChange(e, this.props.handleSynopsisChange)}
-                            validate={{
-                                maxLength: {
-                                    value: MAX_SYNOPSIS_LENGTH,
-                                    errorMessage: `Too long Medium Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.`,
                                 },
                             }}
                             required={this.state.autoDecorate}
@@ -775,6 +738,43 @@ class EditorialMetadataCreateTab extends Component {
                         >
                             {synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/{MAX_SYNOPSIS_LENGTH}{' '}
                             char
+                        </span>
+                    </Col>
+                </Row>
+                <Row style={{padding: '15px'}}>
+                    <Col md={2}>
+                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Medium Synopsis</b>
+                    </Col>
+                    <Col>
+                        <AvField
+                            type="textarea"
+                            id="editorialMediumSynopsis"
+                            name={this.getNameWithPrefix('description')}
+                            cols={20}
+                            rows={5}
+                            style={{resize: 'none'}}
+                            onChange={e => this.handleChange(e, this.props.handleSynopsisChange)}
+                            validate={{
+                                maxLength: {
+                                    value: MAX_SYNOPSIS_LENGTH,
+                                    errorMessage: `Too long Medium Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.`,
+                                },
+                            }}
+                            required={this.state.autoDecorate}
+                            errorMessage="Field cannot be empty!"
+                        />
+                        <span
+                            style={{
+                                float: 'right',
+                                color: synopsis
+                                    ? this.handleFieldLength(synopsis.description) === MAX_SYNOPSIS_LENGTH
+                                        ? 'red'
+                                        : '#111'
+                                    : '#111',
+                                fontSize: '13px',
+                            }}
+                        >
+                            {synopsis ? this.handleFieldLength(synopsis.description) : 0}/{MAX_SYNOPSIS_LENGTH} char
                         </span>
                     </Col>
                 </Row>
