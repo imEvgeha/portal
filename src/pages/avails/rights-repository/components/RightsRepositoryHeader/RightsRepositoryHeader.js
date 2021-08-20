@@ -16,10 +16,8 @@ export const RightsRepositoryHeader = ({title, history, gridApi, columnApi, user
                 <RightsIcon fill="#42526E" />
                 <h1 className="nexus-c-rights-repository-header__title-text">{title}</h1>
             </div>
-            {gridApi && columnApi && activeTab === RIGHTS_TAB ? (
+            {activeTab === RIGHTS_TAB && (
                 <SavedTableDropdown gridApi={gridApi} columnApi={columnApi} username={username} />
-            ) : (
-                <Loading />
             )}
             <Button appearance="primary" onClick={() => history.push(URL.keepEmbedded('/avails/rights/create'))}>
                 {CREATE_NEW_RIGHT}
