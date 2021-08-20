@@ -874,11 +874,11 @@
                                     "path": "title.sortTitle",
                                     "type": "string"
                                 },
-                                "editorial.synopsis.shortDescription": {
+                                "editorial.synopsis.description": {
                                     "name": "Short Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.shortDescription",
+                                    "path": "synopsis.description",
                                     "type": "textarea",
                                     "dependencies": [
                                         {
@@ -903,11 +903,11 @@
                                         }
                                     ]
                                 },
-                                "editorial.synopsis.description": {
+                                "editorial.synopsis.shortDescription": {
                                     "name": "Medium Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.description",
+                                    "path": "synopsis.shortDescription",
                                     "type": "textarea",
                                     "dependencies": [
                                         {
