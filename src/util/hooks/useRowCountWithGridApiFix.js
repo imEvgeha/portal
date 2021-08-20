@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 
 const useRowCountWithGridApiFix = () => {
     const [count, setCount] = useState(0);
-    const [api, setApi] = useState();
+    const [api, setApi] = useState(undefined);
 
     useEffect(() => {
         // temp fix for aggrid not refreshing matching column when row count = 1

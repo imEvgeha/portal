@@ -30,59 +30,57 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
     }, [get(gridState, username, []).length !== groupedOptions[1]?.options?.length]);
 
     const applyPredefinedTableView = filter => {
-        if (gridApi) {
-            gridApi.setFilterModel(null);
-            gridApi.destroyFilter('icon');
-            gridApi.destroyFilter('icon_1');
+        gridApi.setFilterModel(null);
+        gridApi.destroyFilter('icon');
+        gridApi.destroyFilter('icon_1');
 
-            switch (filter) {
-                case ERROR_VIEW: {
-                    const filterInstance = gridApi.getFilterInstance('status');
-                    filterInstance.setModel({
-                        filterType: 'set',
-                        values: ['Error'],
-                    });
-                    break;
-                }
-                case READY_PENDING_VIEW: {
-                    const filterInstance = gridApi.getFilterInstance('status');
-                    filterInstance.setModel({
-                        filterType: 'set',
-                        values: ['Pending', 'ReadyNew', 'Ready'],
-                    });
-                    break;
-                }
-                case WITHDRAWN_VIEW: {
-                    const filterInstance = gridApi.getFilterInstance('rightStatus');
-                    filterInstance.setModel({
-                        filterType: 'set',
-                        values: ['Withdrawn'],
-                    });
-                    break;
-                }
-                case REMOVED_FROM_CATALOG_VIEW: {
-                    gridApi.setFilterModel({
-                        updatedCatalogReceived: {
-                            filterType: 'set',
-                            values: ['true'],
-                        },
-                    });
-                    break;
-                }
-                default:
-                    break;
+        switch (filter) {
+            case ERROR_VIEW: {
+                const filterInstance = gridApi.getFilterInstance('status');
+                filterInstance.setModel({
+                    filterType: 'set',
+                    values: ['Error'],
+                });
+                break;
             }
-            gridApi.onFilterChanged();
-            setSorting({colId: 'updatedAt', sort: 'desc'}, columnApi);
-            columnApi.resetColumnState();
+            case READY_PENDING_VIEW: {
+                const filterInstance = gridApi.getFilterInstance('status');
+                filterInstance.setModel({
+                    filterType: 'set',
+                    values: ['Pending', 'ReadyNew', 'Ready'],
+                });
+                break;
+            }
+            case WITHDRAWN_VIEW: {
+                const filterInstance = gridApi.getFilterInstance('rightStatus');
+                filterInstance.setModel({
+                    filterType: 'set',
+                    values: ['Withdrawn'],
+                });
+                break;
+            }
+            case REMOVED_FROM_CATALOG_VIEW: {
+                gridApi.setFilterModel({
+                    updatedCatalogReceived: {
+                        filterType: 'set',
+                        values: ['true'],
+                    },
+                });
+                break;
+            }
+            default:
+                break;
         }
+        gridApi.onFilterChanged();
+        setSorting({colId: 'updatedAt', sort: 'desc'}, columnApi);
+        columnApi.resetColumnState();
     };
 
     const handleChange = item => {
         setSelectedItem(item);
         if (SAVED_TABLE_SELECT_OPTIONS.map(o => o.value).includes(item.value)) {
             applyPredefinedTableView(item.value);
-        } else if (!isEmpty(gridApi) && !isEmpty(columnApi) && item.value) {
+        } else if (item.value) {
             const selectedModel = get(gridState, username, []).filter(i => i.id === item.value);
             const {columnState, filterModel, sortModel} = selectedModel[0] || {};
             gridApi.setFilterModel(filterModel);
@@ -103,7 +101,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
 
     const onCreateOption = value => {
         setSelectedItem({label: value, value});
-        if (!isEmpty(gridApi) && !isEmpty(columnApi) && value) {
+        if (value) {
             let filterModel = gridApi.getFilterModel();
             if (get(filterModel, 'icon_1.filter.rightStatusList', null)) {
                 filterModel = {...filterModel, ...{rightStatusList: {filterType: 'set', values: ['Withdrawn']}}};
@@ -168,16 +166,14 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
 };
 
 SavedTableDropdown.propTypes = {
-    gridApi: PropTypes.object,
-    columnApi: PropTypes.object,
+    gridApi: PropTypes.object.isRequired,
+    columnApi: PropTypes.object.isRequired,
     username: PropTypes.string,
     gridState: PropTypes.object,
     setUserDefinedGridState: PropTypes.func.isRequired,
 };
 
 SavedTableDropdown.defaultProps = {
-    gridApi: {},
-    columnApi: {},
     gridState: {},
     username: '',
 };
