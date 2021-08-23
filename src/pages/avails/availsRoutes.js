@@ -56,85 +56,68 @@ const TitleMatchReviewImport = import(
 );
 const TitleMatchReview = React.lazy(() => TitleMatchReviewImport);
 
-const BASE_PATH = '/avails';
-export const AVAILS_PATH = '/avails/v2';
+export const AVAILS_PATH = '/avails';
 
 // TODO: create nested structure of routes
 const routes = [
     {
-        path: BASE_PATH,
-        component: canRender(RightDashboardContainer, 'read', 'Avail'),
+        path: AVAILS_PATH,
+        component: canRender(AvailsView, 'read', 'Avail'),
     },
     {
-        path: `${AVAILS_PATH}`,
-        component: AvailsView,
-    },
-    {
-        path: `${BASE_PATH}/rights`,
-        component: canRender(RightDashboardContainer, 'read', 'Avail'),
-    },
-    {
-        path: `${BASE_PATH}/rights/`,
-        component: canRender(RightDetails, 'read', 'Avail'),
-    },
-    {
-        path: `${BASE_PATH}/rights/create`,
+        path: `${AVAILS_PATH}/rights/create`,
         component: canRender(RightCreate, 'create', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/rights/:id`,
+        path: `${AVAILS_PATH}/rights/:id`,
         component: canRender(RightDetails, 'update', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/rights/:rightId/title-matching`,
+        path: `${AVAILS_PATH}/rights/:rightId/title-matching`,
         component: canRender(TitleMatchView, 'update', 'Metadata'),
     },
     {
-        path: `${BASE_PATH}/rights/:rightId/title-matching/review`,
+        path: `${AVAILS_PATH}/rights/:rightId/title-matching/review`,
         component: canRender(TitleMatchReview, 'update', 'Metadata'),
     },
     {
-        path: `${BASE_PATH}/history`,
-        component: canRender(AvailIngestHistoryContainer, 'read', 'Avail'),
-    },
-    {
-        path: `${BASE_PATH}/history/manual-rights-entry`,
+        path: `${AVAILS_PATH}/history/manual-rights-entry`,
         component: canRender(RightsCreateFromAttachment, 'create', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/history/:availHistoryIds/manual-rights-entry`,
+        path: `${AVAILS_PATH}/history/:availHistoryIds/manual-rights-entry`,
         component: canRender(RightsCreateFromAttachment, 'create', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/history/:availHistoryId/rights/create`,
+        path: `${AVAILS_PATH}/history/:availHistoryId/rights/create`,
         component: canRender(RightCreate, 'create', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/history/:availHistoryIds`,
+        path: `${AVAILS_PATH}/history/:availHistoryIds`,
         component: canRender(RightDashboardContainer, 'read', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/history/:availHistoryIds/right-matching`,
+        path: `${AVAILS_PATH}/history/:availHistoryIds/right-matching`,
         component: canRender(RightMatchingView, 'update', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/history/:availHistoryIds/right-matching/:rightId`,
+        path: `${AVAILS_PATH}/history/:availHistoryIds/right-matching/:rightId`,
         component: canRender(RightToMatchView, 'update', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/history/:availHistoryIds/right-matching/:rightId/match/:matchedRightIds`,
+        path: `${AVAILS_PATH}/history/:availHistoryIds/right-matching/:rightId/match/:matchedRightIds`,
         component: canRender(MatchRightView, 'update', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/right-matching`,
+        path: `${AVAILS_PATH}/right-matching`,
         component: canRender(RightToRightMatchMerge, 'update', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/right-matching/preview`,
+        path: `${AVAILS_PATH}/right-matching/preview`,
         component: canRender(MatchRightViewMerge, 'update', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/select-rights-planning`,
+        path: `${AVAILS_PATH}/select-rights-planning`,
         component: canRender(SelectRightsPlanning, 'update', 'Avail'),
     },
 ];
