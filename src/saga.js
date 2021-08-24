@@ -6,6 +6,7 @@ import dopTasksWatcher from './pages/dop-tasks/dopTasksSagas';
 import {eventManagementWatcher} from './pages/event-management/eventManagementSagas';
 import {availWatcher} from './pages/legacy/containers/avail/availSagas';
 import {settingsWatcher} from './pages/legacy/containers/settings/settingsSagas';
+import {assetManagementWatcher} from './pages/manual-tasks/asset-management/assetManagementSagas';
 import {metadataWatcher} from './pages/metadata/metadataSagas';
 import {servicingOrdersWatcher} from './pages/servicing-orders/servicingOrdersSaga';
 import {titleMetadataWatcher} from './pages/title-metadata/TitleMetadataSagas';
@@ -22,5 +23,6 @@ export default function* rootSaga() {
         fork(servicingOrdersWatcher),
         fork(titleMetadataWatcher),
         fork(dopTasksWatcher),
+        fork(assetManagementWatcher),
     ]);
 }

@@ -15,6 +15,7 @@ import root from './pages/legacy/stores/reducers/index';
 import localeReducer from './pages/legacy/stores/reducers/localization/localeReducer';
 import media from './pages/legacy/stores/reducers/media/search';
 import titleReducer from './pages/legacy/stores/reducers/metadata/titleReducer';
+import manualTasksReducer from './pages/manual-tasks/manualTasksReducer';
 import metadataReducer from './pages/metadata/metadataReducer';
 import servicingOrdersReducer from './pages/servicing-orders/servicingOrdersReducer';
 import syncLogReducer from './pages/sync-log/syncLogReducer';
@@ -50,6 +51,7 @@ const createRootReducer = routerHistory =>
         eventManagement: eventManagementReducer,
         servicingOrders: servicingOrdersReducer,
         syncLog: syncLogReducer,
+        manualTasks: manualTasksReducer,
         dopTasks: createPersistReducer(dopTasksPersistConfig, dopTasksReducer),
         ui: uiReducer,
         auth: createPersistReducer(authPersistConfig, authReducer),
