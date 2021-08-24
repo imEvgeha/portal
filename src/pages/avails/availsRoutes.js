@@ -20,11 +20,6 @@ const SelectRightsPlanning = React.lazy(() =>
         /* webpackPrefetch: true, webpackChunkName: "SelectRightPlanning" */ '../legacy/containers/avail/DOP/SelectRightsPlanning'
     )
 );
-const AvailIngestHistoryContainer = React.lazy(() =>
-    import(
-        /* webpackPrefetch: true, webpackChunkName: "AvailIngestHistoryContainer" */ '../legacy/containers/avail/ingest-history/AvailIngestHistoryContainer'
-    )
-);
 const RightMatchingViewImport = import(
     /* webpackChunkName: "RightMatchingView" */ './right-matching/RightMatchingView'
 );
