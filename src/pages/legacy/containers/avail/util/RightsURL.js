@@ -187,7 +187,7 @@ class RightsURL extends React.Component {
     }
 
     static getFatalsRightsSearchUrl(availHistoryIds) {
-        return URL.keepEmbedded(`history/${availHistoryIds}/manual-rights-entry`);
+        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, null, true));
     }
 
     static getSuccessRightsSearchUrl(availHistoryIds) {
@@ -198,12 +198,15 @@ class RightsURL extends React.Component {
         return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds));
     }
 
-    static createRightsSearchUrl(availHistoryIds, status = null) {
+    static createRightsSearchUrl(availHistoryIds, status = null, isManualRightsEntry = false) {
         let toReturn = '/avails';
         if (availHistoryIds) {
             toReturn += '/history/' + availHistoryIds;
             if (status !== null) {
                 toReturn += `?status=${status}`;
+            }
+            if (isManualRightsEntry) {
+                toReturn += `/manual-rights-entry`;
             }
         } else {
             toReturn += '/rights';
