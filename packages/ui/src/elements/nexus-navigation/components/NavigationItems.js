@@ -9,7 +9,7 @@ import TrayIcon from '@atlaskit/icon/glyph/tray';
 import NexusNavIcon from '@vubiquity-nexus/portal-assets/nexus-nav-icon.svg';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
-import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS, TITLE_METADATA} from '../constants';
+import {AVAILS, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS, TITLE_METADATA} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => {
     const canReadEventManager = can('read', 'EventManagement');
@@ -25,13 +25,6 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: AVAILS,
             isSelected: selectedItem === AVAILS,
             onClick: () => handleClick(AVAILS),
-        },
-        {
-            icon: EditorMediaWrapLeftIcon,
-            id: METADATA,
-            tooltip: METADATA,
-            isSelected: selectedItem === METADATA,
-            onClick: () => handleClick(METADATA),
         },
         {
             icon: EditorSearchIcon,
@@ -77,7 +70,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             id: TITLE_METADATA,
             tooltip: 'Title Metadata',
             isSelected: selectedItem === TITLE_METADATA,
-            onClick: () => handleClick('metadata/v2'),
+            onClick: () => handleClick('metadata'),
         },
     ];
 };

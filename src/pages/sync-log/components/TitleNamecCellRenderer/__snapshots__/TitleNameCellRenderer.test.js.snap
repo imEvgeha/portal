@@ -3,7 +3,7 @@
 exports[`TitleNameCellRenderer should match snapshot 1`] = `
 <Link
   replace={false}
-  to="/metadata/v2/detail/coreTitleId"
+  to="/metadata/detail/coreTitleId"
 >
   TitleName
 </Link>

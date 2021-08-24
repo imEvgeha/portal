@@ -3,7 +3,6 @@ import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
 import eventManagementRoutes from './pages/event-management/eventManagementRoutes';
-import metadataRoutes from './pages/metadata/metadataRoutes';
 import servicingOrdersRoutes from './pages/servicing-orders/servicingOrdersRoutes';
 import staticPagesRoutes from './pages/static/staticPagesRoutes';
 import syncLogRoutes from './pages/sync-log/syncLogRoutes';
@@ -58,7 +57,6 @@ const restRoutes = [
 
 export const routes = [
     ...availsRoutes,
-    ...metadataRoutes,
     ...titleMetadataRoutes,
     ...servicingOrdersRoutes,
     ...eventManagementRoutes,
