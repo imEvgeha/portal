@@ -6,12 +6,16 @@ import ChooseArtwork from './ChooseArtwork';
 describe('ChooseArtwork', () => {
     let wrapper = null;
     const mockStore = configureStore();
-    const props = {
-        store: mockStore({assetManagement: {posterList: []}}),
-    };
+    const store = mockStore({
+        manualTasks: {
+            assets: {
+                posterList: ['abc'],
+            },
+        },
+    });
 
     beforeAll(() => {
-        wrapper = shallow(<ChooseArtwork {...props} />)
+        wrapper = shallow(<ChooseArtwork store={store} />)
             .find('ChooseArtwork')
             .shallow();
     });
@@ -24,14 +28,7 @@ describe('ChooseArtwork', () => {
         expect(wrapper.find('ArtworkActions').length).toEqual(1);
     });
 
-    it('should render 0 items', () => {
-        expect(wrapper.find('ArtworkItem').length).toEqual(0);
-    });
-
     it('should render 1 item', () => {
-        wrapper = shallow(<ChooseArtwork {...props} store={mockStore({assetManagement: {posterList: ['abc']}})} />)
-            .find('ChooseArtwork')
-            .shallow();
         expect(wrapper.find('ArtworkItem').length).toEqual(1);
     });
 });

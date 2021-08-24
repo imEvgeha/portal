@@ -23,7 +23,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
             setSelectedItems([...selectedItems, id]);
         }
 
-        if (selectedItems.length === 1) {
+        if (selectedItems.length > 0) {
             DOP.setErrorsCount(0);
             DOP.setData({
                 selected: selectedItems,
@@ -31,10 +31,6 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
         } else {
             DOP.setErrorsCount(1);
         }
-    };
-
-    const setItems = () => {
-        selectedItems.length ? setSelectedItems([]) : setSelectedItems(posterList.map(item => item.id));
     };
 
     let timing = '';
@@ -45,7 +41,11 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
                 <span>Title: </span>
                 <span>{URL.getParamIfExists('title', '')}</span>
             </div>
-            <ArtworkActions selectedItems={selectedItems.length} totalItems={posterList.length} setItems={setItems} />
+            <ArtworkActions
+                selectedItems={selectedItems.length}
+                posterList={posterList}
+                setSelectedItems={setSelectedItems}
+            />
             <div className="choose-artwork__list">
                 {posterList.map(poster => {
                     timing = poster.split('/');

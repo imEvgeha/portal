@@ -4,15 +4,26 @@ import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import './ArtworkActions.scss';
 
-const ArtworkActions = ({selectedItems, totalItems, setItems}) => {
+const ArtworkActions = ({selectedItems, posterList, setSelectedItems}) => {
     const [isChecked, setIsChecked] = useState(false);
+
     useEffect(() => {
         setIsChecked(!!selectedItems);
     }, [selectedItems]);
 
     const handleSelectAll = () => {
+        if (isChecked) {
+            setSelectedItems([]);
+        } else {
+            setSelectedItems(posterList.map(item => item.id));
+        }
+
         setIsChecked(!isChecked);
-        setItems(setItems);
+    };
+
+    const handleRejectAll = () => {
+        setIsChecked(false);
+        setSelectedItems([]);
     };
 
     return (
@@ -20,25 +31,29 @@ const ArtworkActions = ({selectedItems, totalItems, setItems}) => {
             <Checkbox
                 onChange={handleSelectAll}
                 isChecked={isChecked}
-                isIndeterminate={selectedItems && selectedItems !== totalItems}
+                isIndeterminate={selectedItems && selectedItems !== posterList.length}
             />
             <span className="artwork-actions__selected-count">
                 {`${selectedItems} ${selectedItems === 1 ? 'image' : 'images'} selected`}
             </span>
-            {!!selectedItems && <Button appearance="danger">Reject Selected</Button>}
+            {!!selectedItems && (
+                <Button onClick={handleRejectAll} appearance="danger">
+                    Reject Selected
+                </Button>
+            )}
         </div>
     );
 };
 
 ArtworkActions.propTypes = {
     selectedItems: PropTypes.number,
-    totalItems: PropTypes.number,
-    setItems: PropTypes.func.isRequired,
+    posterList: PropTypes.array,
+    setSelectedItems: PropTypes.func.isRequired,
 };
 
 ArtworkActions.defaultProps = {
     selectedItems: 0,
-    totalItems: 0,
+    posterList: [],
 };
 
 export default ArtworkActions;

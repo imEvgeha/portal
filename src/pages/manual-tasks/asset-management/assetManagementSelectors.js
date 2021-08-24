@@ -5,6 +5,9 @@ const getManualTasks = state => {
     return manualTasks;
 };
 
-const getAssetManagementReducer = createSelector(getManualTasks, tasks => tasks.assets);
+const getAssetManagementReducer = createSelector(getManualTasks, tasks => {
+    const {assets = {}} = tasks || {};
+    return assets;
+});
 
-export const getPosterList = createSelector(getAssetManagementReducer, assets => assets.posterList);
+export const getPosterList = createSelector(getAssetManagementReducer, assets => assets?.posterList);

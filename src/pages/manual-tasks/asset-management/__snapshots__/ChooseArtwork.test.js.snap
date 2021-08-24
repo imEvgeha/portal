@@ -1,3 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChooseArtwork should match snapshot 1`] = `null`;
+exports[`ChooseArtwork should match snapshot 1`] = `
+<div
+  className="choose-artwork"
+>
+  <div
+    className="choose-artwork__header"
+  >
+    <span>
+      Title: 
+    </span>
+    <span />
+  </div>
+  <ArtworkActions
+    posterList={
+      Array [
+        "abc",
+      ]
+    }
+    selectedItems={0}
+    setSelectedItems={[Function]}
+  />
+  <div
+    className="choose-artwork__list"
+  >
+    <ArtworkItem
+      isSelected={false}
+      key="abc"
+      onClick={[Function]}
+      poster="abc"
+      timing="abc"
+    />
+  </div>
+</div>
+`;
