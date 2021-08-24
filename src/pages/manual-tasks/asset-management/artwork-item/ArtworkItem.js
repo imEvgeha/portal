@@ -4,10 +4,12 @@ import {POSTER_RESOLUTION} from '../constants';
 import './AtrworkItem.scss';
 
 const ArtworkItem = ({poster, timing, onClick, isSelected}) => {
+    const parsedPoster = poster.split('?url=true/')[1];
+
     return (
         <div className={`artwork-item ${isSelected ? 'artwork-item--selected' : ''}`}>
             <img
-                src={poster.replace('http://', 'http://admin:admin@')}
+                src={parsedPoster.replace('http://', 'http://admin:admin@')}
                 alt={timing}
                 className="artwork-item__image"
                 onClick={() => onClick(timing)}
