@@ -5,21 +5,11 @@ import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 // currently, scss for particular component (RightsResultTable) is using for global ag grid style override
 import RightsCreateFromAttachment from '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment';
 // use webpack prefetch for legacy routes
-const RightDashboardContainer = React.lazy(() =>
-    import(
-        /* webpackPrefetch: true, webpackChunkName: "DashboardContainer" */ '../legacy/containers/avail/dashboard/DashboardContainer'
-    )
-);
 const RightCreate = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate')
 );
 const RightDetails = React.lazy(() => RightDetailsImport);
 const RightDetailsImport = import(/* webpackChunkName: "RightCreateV2" */ './right-details/RightDetails');
-const SelectRightsPlanning = React.lazy(() =>
-    import(
-        /* webpackPrefetch: true, webpackChunkName: "SelectRightPlanning" */ '../legacy/containers/avail/DOP/SelectRightsPlanning'
-    )
-);
 const RightMatchingViewImport = import(
     /* webpackChunkName: "RightMatchingView" */ './right-matching/RightMatchingView'
 );
@@ -88,10 +78,6 @@ const routes = [
         component: canRender(RightCreate, 'create', 'Avail'),
     },
     {
-        path: `${AVAILS_PATH}/history/:availHistoryIds`,
-        component: canRender(RightDashboardContainer, 'read', 'Avail'),
-    },
-    {
         path: `${AVAILS_PATH}/history/:availHistoryIds/right-matching`,
         component: canRender(RightMatchingView, 'update', 'Avail'),
     },
@@ -110,10 +96,6 @@ const routes = [
     {
         path: `${AVAILS_PATH}/right-matching/preview`,
         component: canRender(MatchRightViewMerge, 'update', 'Avail'),
-    },
-    {
-        path: `${AVAILS_PATH}/select-rights-planning`,
-        component: canRender(SelectRightsPlanning, 'update', 'Avail'),
     },
 ];
 
