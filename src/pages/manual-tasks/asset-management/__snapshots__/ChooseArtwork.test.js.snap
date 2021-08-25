@@ -12,15 +12,6 @@ exports[`ChooseArtwork should match snapshot 1`] = `
     </span>
     <span />
   </div>
-  <ArtworkActions
-    posterList={
-      Array [
-        "abc",
-      ]
-    }
-    selectedItems={0}
-    setSelectedItems={[Function]}
-  />
   <div
     className="choose-artwork__list"
   >

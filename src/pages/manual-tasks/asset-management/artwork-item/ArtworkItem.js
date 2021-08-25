@@ -8,12 +8,7 @@ const ArtworkItem = ({poster, timing, onClick, isSelected}) => {
 
     return (
         <div className={`artwork-item ${isSelected ? 'artwork-item--selected' : ''}`}>
-            <img
-                src={parsedPoster.replace('http://', 'http://admin:admin@')}
-                alt={timing}
-                className="artwork-item__image"
-                onClick={() => onClick(timing)}
-            />
+            <img src={parsedPoster} alt={timing} className="artwork-item__image" onClick={() => onClick(timing)} />
             <div className="artwork-item__details">
                 <div>{POSTER_RESOLUTION}</div>
                 <div>{timing}</div>
