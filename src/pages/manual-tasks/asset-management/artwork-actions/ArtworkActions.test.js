@@ -8,7 +8,7 @@ describe('ArtworkActions', () => {
     const props = {
         selectedItems: 3,
         totalItems: 5,
-        setItems: setItemMock,
+        setSelectedItems: setItemMock,
     };
     beforeAll(() => {
         wrapper = shallow(<ArtworkActions {...props} />);
@@ -16,17 +16,6 @@ describe('ArtworkActions', () => {
 
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('should handle Checkbox select all', () => {
-        wrapper.find('Checkbox').props().onChange();
-        expect(setItemMock).toHaveBeenCalled();
-    });
-
-    it('should display Reject all button when few items are selected', () => {
-        wrapper.setProps({selectedItems: 2});
-        wrapper.update();
-        expect(wrapper.find('Button').length).toEqual(1);
     });
 
     it('should not display Reject all button when no items are selected', () => {

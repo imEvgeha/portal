@@ -7,7 +7,7 @@ function* resourcePosters({payload}) {
     try {
         const url = `http://vidispine-stg.misc.odg.ondemand.co.uk/API/item/${payload}/posterresource`;
         const resource = yield call(fetchPosters, url);
-        const resourceURL = get(resource, 'uri[0]', '');
+        const resourceURL = `${get(resource, 'uri[0]', '')}?url=true`;
         const timeFrames = yield call(fetchPosters, resourceURL);
         const posters = [];
         get(timeFrames, 'uri', []).map(frame => {

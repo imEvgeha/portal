@@ -4,6 +4,7 @@ import {Checkbox} from '@atlaskit/checkbox';
 import {Field as AKField, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
+import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
@@ -134,6 +135,8 @@ const NexusField = ({
         const selectFieldProps = {...fieldProps};
         const fieldOnChange = selectFieldProps.onChange;
         const multiselectFieldProps = {...fieldProps};
+        let selectLocalizedValues = null;
+        let newOptionsConfig = null;
 
         switch (type) {
             case 'string':
@@ -236,8 +239,6 @@ const NexusField = ({
                     />
                 );
             case 'multiselect':
-                let selectLocalizedValues = null;
-                let newOptionsConfig = null;
                 if (
                     fieldProps.value &&
                     fieldProps.value.length &&
@@ -245,7 +246,7 @@ const NexusField = ({
                 ) {
                     multiselectFieldProps.value = fieldProps?.value.map(val => ({label: val, value: val}));
                 }
-                const emetLanguage = get(formData, 'editorial.language');
+
                 if (showLocalized === true) {
                     multiselectFieldProps.value = fieldProps?.value?.map(val => {
                         const item = selectValues?.[path]?.find(g => g.id === val.value);
@@ -258,7 +259,14 @@ const NexusField = ({
 
                     selectLocalizedValues = Object.assign({}, selectValues);
                     const newValues = selectLocalizedValues[path].map(item => {
-                        const localLang = item.localizations.find(local => local?.language === emetLanguage);
+                        const localLang = item.localizations.find(local => {
+                            const isEmetLanguageObject = isObject(emetLanguage) && path === 'genres';
+                            const initialEmetLanguage = isEmetLanguageObject ? emetLanguage.value : emetLanguage;
+                            // path === "genres" - so that there are no errors on other similar selections
+
+                            return local?.language === initialEmetLanguage;
+                        });
+
                         const enName = item?.name;
                         if (localLang) {
                             item.displayName = `${localLang?.name}(${enName})`;

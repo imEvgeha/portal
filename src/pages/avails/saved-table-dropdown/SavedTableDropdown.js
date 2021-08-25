@@ -30,7 +30,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
     }, [get(gridState, username, []).length !== groupedOptions[1]?.options?.length]);
 
     const applyPredefinedTableView = filter => {
-        if (gridApi) {
+        if (!isEmpty(gridApi)) {
             gridApi.setFilterModel(null);
             gridApi.destroyFilter('icon');
             gridApi.destroyFilter('icon_1');

@@ -36,7 +36,6 @@ const NexusDateTimePicker = ({
     // set isSimulcast as computed property (fix for 3825)
     const isSimulcast = isUtc(value || '');
 
-
     // Get locale provided by intl
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
@@ -54,7 +53,7 @@ const NexusDateTimePicker = ({
             );
     }, [isSimulcast, isTimestamp]);
 
-    const onFormatChange = (isSimulcast) =>
+    const onFormatChange = isSimulcast =>
         setDate(
             moment
                 .utc(date)
@@ -132,7 +131,7 @@ const NexusDateTimePicker = ({
                         // where Simulcast(UTC) dates are with 'Z' at the end
                         if (isTimestamp) {
                             onConfirm(moment(date).toISOString()); // YYYY-MM-DD[T]HH:mm:ss.SSS[Z]
-                        } else if (date.endsWith('Z')) {
+                        } else if (date && date.endsWith('Z')) {
                             onConfirm(isSimulcast ? date : date.slice(0, -1)); // YYYY-MM-DD[T]HH:mm:ss(Z)
                         } else {
                             onConfirm(isSimulcast ? `${date}Z` : date); // YYYY-MM-DD[T]HH:mm:ss(Z)

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {connect} from 'react-redux';
 import ArtworkActions from './artwork-actions/ArtworkActions';
 import ArtworkItem from './artwork-item/ArtworkItem';
@@ -21,18 +22,15 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
         } else {
             setSelectedItems([...selectedItems, id]);
         }
-        /*        if (selectedItems.length === 1) {
+
+        if (selectedItems.length > 0) {
             DOP.setErrorsCount(0);
             DOP.setData({
-                selected: 1,
+                selected: selectedItems,
             });
         } else {
             DOP.setErrorsCount(1);
-        } */
-    };
-
-    const setItems = () => {
-        selectedItems.length ? setSelectedItems([]) : setSelectedItems(posterList.map(item => item.id));
+        }
     };
 
     let timing = '';
@@ -43,7 +41,11 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
                 <span>Title: </span>
                 <span>{URL.getParamIfExists('title', '')}</span>
             </div>
-            <ArtworkActions selectedItems={selectedItems.length} totalItems={posterList.length} setItems={setItems} />
+            <ArtworkActions
+                selectedItems={selectedItems.length}
+                posterList={posterList}
+                setSelectedItems={setSelectedItems}
+            />
             <div className="choose-artwork__list">
                 {posterList.map(poster => {
                     timing = poster.split('/');
