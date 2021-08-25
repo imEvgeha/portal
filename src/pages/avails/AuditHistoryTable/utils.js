@@ -1,8 +1,8 @@
-import Constants from './Constants';
-import * as jsonpatch from 'fast-json-patch';
-import {get, isEqual, cloneDeep} from 'lodash';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
+import * as jsonpatch from 'fast-json-patch';
+import {get, isEqual, cloneDeep} from 'lodash';
+import Constants from './Constants';
 
 const {
     dataTypes: {DATE, AUDIO, RATING, METHOD, YES_OR_NO, TERRITORY, TERRITORY_SELECTED, TERRITORY_WITHDRAWN},
@@ -24,7 +24,7 @@ const withdrawnCountryMapper = territoryObj => [
 export const valueFormatter = ({colId, field, dataType}) => {
     return params => {
         const {data = {}} = params || {};
-        if (!!data) {
+        if (data) {
             switch (dataType) {
                 case DATE:
                     const {[field]: date = ''} = data || {};
@@ -81,14 +81,14 @@ export const valueFormatter = ({colId, field, dataType}) => {
 
 const valueCompare = (diffValue, currentValue, column) => {
     const {colId, dataType} = column;
-    let diff, current;
+    let diff; let current;
     if (currentValue) {
         switch (dataType) {
             case RATING:
                 diff = get(diffValue, [RATING_SUBFIELD, colId], null);
                 current = get(currentValue, [colId], null);
                 return (
-                    diff && diff === current //returns null value to prevent coloring
+                    diff && diff === current // returns null value to prevent coloring
                 );
             case AUDIO:
                 return isEqual(languageMapper(diffValue), languageMapper(currentValue));
@@ -113,7 +113,7 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
         if (equalityCheck) {
             styling.background = CURRENT_VALUE;
         } else if (equalityCheck === false) {
-            //for null valued rating field we dont need to color the cell
+            // for null valued rating field we dont need to color the cell
             styling.background = STALE_VALUE;
         }
     } else if (typeof value === 'boolean' && !data.headerRow && !noStyles) {
@@ -121,7 +121,7 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
         if (equalityCheck) {
             styling.background = CURRENT_VALUE;
         } else if (equalityCheck === false) {
-            //for null valued rating field we dont need to color the cell
+            // for null valued rating field we dont need to color the cell
             styling.background = STALE_VALUE;
         }
     }

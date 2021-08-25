@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {getRightsHistory} from '../../../../avails/availsService';
-import AuditHistoryTable from '../../../components/AuditHistoryTable/AuditHistoryTable';
+import AuditHistoryTable from '../../../../avails/AuditHistoryTable/AuditHistoryTable';
 
 const AuditHistory = ({selectedRights}) => {
     const [eventsHistory, setEventsHistory] = useState({});

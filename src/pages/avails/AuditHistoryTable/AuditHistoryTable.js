@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {compose} from 'redux';
-import {NexusGrid} from '../../../../ui/elements/';
+import {NexusGrid} from '../../../ui/elements';
 import Constants from './Constants';
 import {cellStyling, formatData, valueFormatter} from './utils';
 import './AuditHistoryTable.scss';
@@ -45,7 +45,7 @@ const AuditHistoryTable = ({data, focusedRight}) => {
                     width: 155,
                     valueFormatter: valueFormatter(col),
                     cellStyle: params => cellStyling(params, focusedRight, col),
-                    hide: hide,
+                    hide,
                 };
             });
             setColumnDefs(cols);
