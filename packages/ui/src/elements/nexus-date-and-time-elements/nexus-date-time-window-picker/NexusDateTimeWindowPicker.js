@@ -120,7 +120,7 @@ const NexusDateTimeWindowPicker = ({
                     startDate: moment(startDate).toISOString(),
                     endDate: moment(endDate).toISOString(),
                 });
-            } else if (startDate.endsWith('Z')) {
+            } else if (startDate && startDate.endsWith('Z')) {
                 // YYYY-MM-DD[T]HH:mm:ss(Z)
                 onChange({
                     startDate: simulcast ? startDate : startDate.slice(0, -1),
