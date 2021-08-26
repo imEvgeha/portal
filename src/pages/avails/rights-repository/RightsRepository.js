@@ -455,11 +455,11 @@ const RightsRepository = ({
             case FIRST_DATA_RENDERED:
                 setGridApi(api);
                 updateMapping(api);
-                !columnApi && setColumnApi(gridColumnApi);
+                setColumnApi(gridColumnApi);
                 break;
             case READY:
                 setGridApi(api);
-                !columnApi && setColumnApi(gridColumnApi);
+                setColumnApi(gridColumnApi);
                 break;
             case SELECTION_CHANGED: {
                 let clonedSelectedRights = currentUserSelectedRights;
