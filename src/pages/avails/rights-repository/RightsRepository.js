@@ -453,7 +453,7 @@ const RightsRepository = ({
 
         switch (type) {
             case FIRST_DATA_RENDERED:
-                gridApi && setGridApi(api);
+                setGridApi(api);
                 updateMapping(api);
                 !columnApi && setColumnApi(gridColumnApi);
                 break;
