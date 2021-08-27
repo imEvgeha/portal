@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {connect} from 'react-redux';
@@ -8,24 +9,45 @@ import './ChooseArtwork.scss';
 import {fetchPosters} from './assetManagementActions';
 import {getPosterList} from './assetManagementSelectors';
 import {loginAssets} from './assetManagementService';
-import useDOPIntegration from './util/hooks/useDOPIntegration';
-import {ARTWORK_DOP_STORAGE} from './constants';
+
+const DOP_POP_UP_TITLE = 'Choose Artwork';
+const DOP_POP_UP_MESSAGE = 'Please, select atleast one thumbnail!';
 
 const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
     const [selectedArtwork, setSelectedArtwork] = useState();
-    // DOP integration
-    useDOPIntegration(selectedArtwork ? 1 : 0, ARTWORK_DOP_STORAGE);
+    const {openModal, closeModal} = useContext(NexusModalContext);
+    const assetID = URL.getParamIfExists('assetID', '');
+
+    const openDOPPopUp = useCallback(() => {
+        const handlePopUpClick = () => {
+            DOP.sendInfoToDOP(1, null);
+            closeModal();
+        };
+        const actions = [
+            {
+                text: 'OK',
+                onClick: handlePopUpClick,
+                appearance: 'primary',
+            },
+        ];
+        openModal(DOP_POP_UP_MESSAGE, {title: DOP_POP_UP_TITLE, width: 'medium', actions});
+    }, []);
 
     useEffect(() => {
-        loginAssets().then(() => fetchResourcePosters(URL.getParamIfExists('assetID', '')));
+        loginAssets().then(() => fetchResourcePosters(assetID));
     }, []);
+
+    useEffect(() => {
+        DOP.setDOPMessageCallback(selectedArtwork ? null : () => openDOPPopUp());
+    }, [selectedArtwork, openDOPPopUp]);
 
     const artworkClick = (id, uri) => {
         setSelectedArtwork(id);
         DOP.setErrorsCount(0);
+
         DOP.setData({
             chooseArtwork: {
-                assetID: id,
+                assetID,
                 selectedArtworkUri: uri,
             },
         });

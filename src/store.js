@@ -12,12 +12,9 @@ import createRootReducer from './reducer';
 // eslint-disable-next-line no-unused-vars
 const configureStore = (initialState = {}, history) => {
     const sagaMiddleware = createSagaMiddleware();
-    let middleware = [routerMiddleware(history), sagaMiddleware];
+    const middleware = [routerMiddleware(history), sagaMiddleware];
 
     // log redux actions
-    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-        middleware = [...middleware, createLogger()];
-    }
 
     // switch to root redux persist
     // const rootReducer = createPersistReducer(persistConfig, createRootReducer(history));

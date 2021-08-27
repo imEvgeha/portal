@@ -27,7 +27,7 @@ const ArtworkItem = ({poster, timing, onClick, isSelected}) => {
                 id="myImg"
                 alt={timing}
                 className="artwork-item__image"
-                onClick={() => onClick(timing)}
+                onClick={() => onClick(timing, parsedPoster)}
             />
             <div className="artwork-item__details">
                 <div>{POSTER_RESOLUTION}</div>
