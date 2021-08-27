@@ -7,10 +7,8 @@ import dopTasksReducer from './pages/dop-tasks/dopTasksReducer';
 import eventManagementReducer from './pages/event-management/eventManagementReducer';
 import settings from './pages/legacy/containers/settings/settingsReducer';
 import dopReducer from './pages/legacy/stores/reducers/DOP/dopReducer';
-import createright from './pages/legacy/stores/reducers/avail/createright';
 import dashboard from './pages/legacy/stores/reducers/avail/dashboard';
 import manualRightsEntry from './pages/legacy/stores/reducers/avail/manualRightsEntry';
-import history from './pages/legacy/stores/reducers/history';
 import root from './pages/legacy/stores/reducers/index';
 import localeReducer from './pages/legacy/stores/reducers/localization/localeReducer';
 import media from './pages/legacy/stores/reducers/media/search';
@@ -40,8 +38,6 @@ const createRootReducer = routerHistory =>
 
         titleReducer, // remove it
         dashboard, // remove it
-        history, // remove it
-        createright, // remove it
         manualRightsEntry, // remove it
 
         // new structure

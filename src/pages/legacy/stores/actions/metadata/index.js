@@ -12,7 +12,6 @@ import {
     METADATA_TITLE_SEARCH_FORM__SHOW_SEARCH_RESULTS,
     METADATA_TITLE_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
     METADATA_TITLE_LOAD_PROFILE_INFO,
-    METADATA_TITLE_LOAD_TITLE_MAPPING,
     METADATA_TITLE_LOAD_REPORTS,
     METADATA_TITLE_SET_REPORT_NAME,
     METADATA_TITLE_UPDATE_BREADCRUMB,
@@ -58,7 +57,6 @@ export const resultPageLoading = loading => ({type: METADATA_TITLE_RESULT_PAGE__
 
 export const loadTitleSession = state => ({type: METADATA_TITLE_LOAD_SESSION, payload: state});
 export const loadProfileInfo = profileInfo => ({type: METADATA_TITLE_LOAD_PROFILE_INFO, payload: profileInfo});
-export const loadTitleMapping = titleMapping => ({type: METADATA_TITLE_LOAD_TITLE_MAPPING, payload: titleMapping});
 export const loadReports = reports => ({type: METADATA_TITLE_LOAD_REPORTS, payload: reports});
 export const setReportName = reportName => ({type: METADATA_TITLE_SET_REPORT_NAME, payload: reportName});
 export const updateBreadcrumb = payload => ({type: METADATA_TITLE_UPDATE_BREADCRUMB, payload: payload});

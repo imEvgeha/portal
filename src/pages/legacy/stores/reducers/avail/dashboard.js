@@ -8,12 +8,9 @@ import {
     DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER,
     DASHBOARD_RESULT_PAGE__SELECT_ROW,
     SET_REPORT_NAME,
-    LOAD_DASHBOARD_SESSION,
     DASHBOARD_SEARCH_FORM__SHOW_SEARCH_RESULTS,
     DASHBOARD_SEARCH_FORM__SHOW_ADVANCED_SEARCH,
     DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
-    AVAIL__RESULTS_PAGE__SHOW_SELECTED,
-    AVAIL__SET_HISTORY_CACHE,
     AVAIL__SET_BULK_EXPORT,
 } from '../../../constants/action-types';
 import {saveDashboardState} from '../../index';
@@ -52,20 +49,13 @@ const initialState = {
 
 const dashboard = (state = initialState, action) => {
     switch (action.type) {
-        case LOAD_DASHBOARD_SESSION:
-            return {...state, session: {...state.session, ...action.payload}};
         case DASHBOARD_RESULT_PAGE__UPDATE:
             return {...state, availTabPage: {...state.availTabPage, ...action.payload}};
         case DASHBOARD_RESULT_PAGE__LOADING:
             return {...state, availTabPageLoading: action.payload};
-        case AVAIL__RESULTS_PAGE__SHOW_SELECTED:
-            return {...state, showSelectedAvails: action.payload};
         case AVAIL__SET_BULK_EXPORT:
             return {...state, bulkExportAvailable: action.payload};
         //  ------------   SESSION Actions   ----------------------------
-        case AVAIL__SET_HISTORY_CACHE:
-            saveDashboardState();
-            return {...state, session: {...state.session, historyCache: action.payload}};
         case DASHBOARD_SEARCH_FORM__UPDATE_TEXT_SEARCH:
             saveDashboardState();
             return {...state, session: {...state.session, freeTextSearch: action.payload}};
