@@ -8,12 +8,16 @@ import './ChooseArtwork.scss';
 import {fetchPosters} from './assetManagementActions';
 import {getPosterList} from './assetManagementSelectors';
 import {loginAssets} from './assetManagementService';
+import useDOPIntegration from './util/hooks/useDOPIntegration';
+import {ARTWORK_DOP_STORAGE} from './constants';
 
 const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
-    const [selectedArtwork, setSelectedArtwork] = useState([]);
+    const [selectedArtwork, setSelectedArtwork] = useState();
+    // DOP integration
+    useDOPIntegration(selectedArtwork ? 1 : 0, ARTWORK_DOP_STORAGE);
 
     useEffect(() => {
-        loginAssets().then(() => fetchResourcePosters(URL.getParamIfExists('itemId', '')));
+        loginAssets().then(() => fetchResourcePosters(URL.getParamIfExists('assetID', '')));
     }, []);
 
     const artworkClick = (id, uri) => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {convertMsToTime} from '../util/time';
 import {POSTER_RESOLUTION} from '../constants';
 import './AtrworkItem.scss';
 
@@ -30,7 +31,7 @@ const ArtworkItem = ({poster, timing, onClick, isSelected}) => {
             />
             <div className="artwork-item__details">
                 <div>{POSTER_RESOLUTION}</div>
-                <div>{timing}</div>
+                <div>{convertMsToTime(timing.split('@')[0])}</div>
             </div>
         </div>
     );
