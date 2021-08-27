@@ -20,6 +20,7 @@ import {get} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import '../Title.scss';
 import {titleService} from '../../service/TitleService';
+import {publisherService} from '../../service/PublisherService';
 import {
     ADVERTISEMENT,
     EPISODE,
@@ -34,8 +35,6 @@ import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {publisherService} from '../../service/PublisherService';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 const onViewTitleClick = (response, redirectToV2) => {
     const {id} = response || {};
