@@ -81,7 +81,8 @@ export const valueFormatter = ({colId, field, dataType}) => {
 
 const valueCompare = (diffValue, currentValue, column) => {
     const {colId, dataType} = column;
-    let diff; let current;
+    let diff;
+    let current;
     if (currentValue) {
         switch (dataType) {
             case RATING:
