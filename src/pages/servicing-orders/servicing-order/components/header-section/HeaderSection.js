@@ -7,7 +7,7 @@ import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/Icon
 import {SERVICING_ORDERS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-navigation/constants';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
-import {backArrowColor} from '../../../../legacy/constants/avails/constants';
+import {backArrowColor} from '../../../../../../packages/styles/constants';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
 import {SORT_DIRECTION} from '../filter-section/constants';
 import FulfillmentOrderPanels from '../fulfillment-order-panels/FulfillmentOrderPanels';
