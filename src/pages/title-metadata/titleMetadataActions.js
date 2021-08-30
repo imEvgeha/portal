@@ -39,3 +39,7 @@ export const editTitle = payload => ({
     type: actionTypes.EDITING,
     payload,
 });
+
+export const clearTitle = () => ({
+    type: actionTypes.CLEAR_TITLE,
+});

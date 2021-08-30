@@ -11,6 +11,7 @@ import * as settingsSelectors from '../../../legacy/containers/settings/settings
 import {FIELDS_TO_REMOVE, SYNC} from '../../constants';
 import {
     getTitle,
+    clearTitle,
     getExternalIds,
     getTerritoryMetadata,
     getEditorialMetadata,
@@ -46,6 +47,7 @@ const TitleDetails = ({
     editorialMetadata,
     fetchConfigApiEndpoints,
     getTitle,
+    clearTitle,
     getExternalIds,
     getTerritoryMetadata,
     getEditorialMetadata,
@@ -70,6 +72,12 @@ const TitleDetails = ({
 
     useEffect(() => {
         setEditTitle(false);
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            clearTitle();
+        };
     }, []);
 
     useEffect(() => {
@@ -200,6 +208,7 @@ TitleDetails.propTypes = {
     territoryMetadata: PropTypes.array,
     editorialMetadata: PropTypes.array,
     getTitle: PropTypes.func,
+    clearTitle: PropTypes.func,
     getExternalIds: PropTypes.func,
     getTerritoryMetadata: PropTypes.func,
     getEditorialMetadata: PropTypes.func,
@@ -226,6 +235,7 @@ TitleDetails.defaultProps = {
     territoryMetadata: [],
     editorialMetadata: [],
     getTitle: () => null,
+    clearTitle: () => null,
     getExternalIds: () => null,
     getTerritoryMetadata: () => null,
     getEditorialMetadata: () => null,
@@ -274,6 +284,7 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => ({
     getTitle: payload => dispatch(getTitle(payload)),
+    clearTitle: () => dispatch(clearTitle()),
     getExternalIds: payload => dispatch(getExternalIds(payload)),
     getTerritoryMetadata: payload => dispatch(getTerritoryMetadata(payload)),
     getEditorialMetadata: payload => dispatch(getEditorialMetadata(payload)),
