@@ -2,7 +2,7 @@ import {uniqBy} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
-import TitleSystems from '../../../constants/metadata/systems';
+import TitleSystems from '../../../../metadata/constants/systems';
 
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ || syncToMovida) {

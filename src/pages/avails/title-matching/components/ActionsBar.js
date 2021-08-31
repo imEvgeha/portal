@@ -14,8 +14,8 @@ import {
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
-import TitleSystems from '../../../legacy/constants/metadata/systems';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
+import TitleSystems from '../../../metadata/constants/systems';
 
 const {NEXUS, MOVIDA, VZ} = TitleSystems;
 

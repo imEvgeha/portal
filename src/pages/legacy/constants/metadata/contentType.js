@@ -30,5 +30,3 @@ export const SPECIAL = {
     name: 'Special',
     apiName: 'SPECIAL',
 };
-
-const allTypes = [MOVIE, SERIES, SEASON, EPISODE, EVENT, SPORTS, ADVERTISEMENT];
