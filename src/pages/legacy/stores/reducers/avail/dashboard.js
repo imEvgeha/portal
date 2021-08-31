@@ -3,7 +3,6 @@ import {
     DASHBOARD_SEARCH_FORM__SET_SEARCH_CRITERIA,
     DASHBOARD_RESULT_PAGE__SORT,
     DASHBOARD_RESULT_PAGE__LOADING,
-    DASHBOARD_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA,
     DASHBOARD_RESULT_PAGE__UPDATE_COLUMNS_ORDER,
     SET_REPORT_NAME,
     DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA,
@@ -59,15 +58,6 @@ const dashboard = (state = initialState, action) => {
         case DASHBOARD_SEARCH_FORM__SET_ADVANCED_SEARCH_CRITERIA:
             saveDashboardState();
             return {...state, session: {...state.session, advancedSearchCriteria: action.payload}};
-        case DASHBOARD_SEARCH_FORM__UPDATE_ADVANCED_SEARCH_CRITERIA:
-            saveDashboardState();
-            return {
-                ...state,
-                session: {
-                    ...state.session,
-                    advancedSearchCriteria: {...state.session.advancedSearchCriteria, ...action.payload},
-                },
-            };
         case DASHBOARD_SEARCH_FORM__SET_SEARCH_CRITERIA:
             saveDashboardState();
             return {...state, session: {...state.session, searchCriteria: {...action.payload}}};
