@@ -369,6 +369,7 @@
                             "type": "arrayWithTabs",
                             "path": "ratings",
                             "tabs": ["ratingSystem"],
+                            "subTabs": ["rating"],
                             "fields": {
                                 "ratingSystem": {
                                     "name": "Rating System",
