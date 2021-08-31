@@ -97,7 +97,7 @@ const DOPService = {
     logout: () => {
         const timestamp = moment().utc().unix();
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPLogout')}`;
-        return nexusFetch(`${url}?_=${timestamp}`, {method: 'get'});
+        return nexusFetch(`${url}?_=${timestamp}`, {method: 'get', credentials: 'include'});
     },
 };
 
