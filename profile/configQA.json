@@ -29,6 +29,7 @@
             "DOPProjectManagementBase": "/dop/be-services/projectManagement",
             "DOPProjectManagementProject": "/dop/be-services/projectManagement/project",
             "DOPLoginWithKeycloak": "/AmdocsOSS/Portal/services/LoginWithKeycloak",
+            "DOPLogout": "AmdocsOSS/Portal/services/PortalLogout",
             "DOPTasksPotentialOwners": "/dop/be-services/taskManagement/taskPotentialOwner",
             "DOPTasksAssign": "/dop/be-services/taskManagement/task/assign",
             "DOPTasksForward": "/dop/be-services/taskManagement/task/forward",

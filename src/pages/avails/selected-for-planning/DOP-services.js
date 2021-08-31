@@ -93,6 +93,12 @@ const DOPService = {
         // TODO: Error handling if necessary
         return nexusFetch(`${url}/${projectId}/start`, {method: 'post', credentials: 'include'});
     },
+
+    logout: () => {
+        const timestamp = moment().utc().unix();
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPLogout')}`;
+        return nexusFetch(`${url}?_=${timestamp}`, {method: 'get'});
+    },
 };
 
 export default DOPService;
