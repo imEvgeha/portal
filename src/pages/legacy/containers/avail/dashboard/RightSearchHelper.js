@@ -6,7 +6,6 @@ import {
 
 import {rightServiceManager} from '../service/RightServiceManager';
 import {safeTrim} from '@vubiquity-nexus/portal-utils/lib/Common';
-import moment from 'moment';
 import RightsURL from '../util/RightsURL';
 
 export const rightSearchHelper = {

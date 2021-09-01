@@ -16,6 +16,11 @@ const initialState = {
 const titleMetadataReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
     switch (type) {
+        case actionTypes.CLEAR_TITLE:
+            return {
+                ...state,
+                title: {},
+            };
         case actionTypes.GET_TITLE_SUCCESS:
             return {
                 ...state,

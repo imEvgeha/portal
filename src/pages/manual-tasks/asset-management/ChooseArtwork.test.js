@@ -24,10 +24,6 @@ describe('ChooseArtwork', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should render ArtworkActions', () => {
-        expect(wrapper.find('ArtworkActions').length).toEqual(1);
-    });
-
     it('should render 1 item', () => {
         expect(wrapper.find('ArtworkItem').length).toEqual(1);
     });

@@ -17,8 +17,8 @@ import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
+import {backArrowColor} from '../../../../../packages/styles/constants';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
-import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight, rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import {AVAILS_PATH} from '../../availsRoutes';
 import {

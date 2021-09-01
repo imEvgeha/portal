@@ -1,38 +1,57 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {connect} from 'react-redux';
-import ArtworkActions from './artwork-actions/ArtworkActions';
 import ArtworkItem from './artwork-item/ArtworkItem';
 import './ChooseArtwork.scss';
 import {fetchPosters} from './assetManagementActions';
 import {getPosterList} from './assetManagementSelectors';
+import {loginAssets} from './assetManagementService';
+
+const DOP_POP_UP_TITLE = 'Choose Artwork';
+const DOP_POP_UP_MESSAGE = 'Please, select atleast one thumbnail!';
 
 const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedArtwork, setSelectedArtwork] = useState();
+    const {openModal, closeModal} = useContext(NexusModalContext);
+    const assetID = URL.getParamIfExists('assetID', '');
 
-    useEffect(() => {
-        fetchResourcePosters(URL.getParamIfExists('itemId', ''));
+    const openDOPPopUp = useCallback(() => {
+        const handlePopUpClick = () => {
+            DOP.sendInfoToDOP(1, null);
+            closeModal();
+        };
+        const actions = [
+            {
+                text: 'OK',
+                onClick: handlePopUpClick,
+                appearance: 'primary',
+            },
+        ];
+        openModal(DOP_POP_UP_MESSAGE, {title: DOP_POP_UP_TITLE, width: 'medium', actions});
     }, []);
 
-    const itemClick = id => {
-        if (selectedItems.includes(id)) {
-            setSelectedItems(selectedItems.filter(value => value !== id));
-        } else {
-            setSelectedItems([...selectedItems, id]);
-        }
+    useEffect(() => {
+        loginAssets().then(() => fetchResourcePosters(assetID));
+    }, []);
 
-        if (selectedItems.length > 0) {
-            DOP.setErrorsCount(0);
-            DOP.setData({
-                selected: selectedItems,
-            });
-        } else {
-            DOP.setErrorsCount(1);
-        }
+    useEffect(() => {
+        DOP.setDOPMessageCallback(selectedArtwork ? null : () => openDOPPopUp());
+    }, [selectedArtwork, openDOPPopUp]);
+
+    const artworkClick = (id, uri) => {
+        setSelectedArtwork(id);
+        DOP.setErrorsCount(0);
+
+        DOP.setData({
+            chooseArtwork: {
+                assetID,
+                selectedArtworkUri: uri,
+            },
+        });
     };
-
     let timing = '';
 
     return (
@@ -41,11 +60,6 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
                 <span>Title: </span>
                 <span>{URL.getParamIfExists('title', '')}</span>
             </div>
-            <ArtworkActions
-                selectedItems={selectedItems.length}
-                posterList={posterList}
-                setSelectedItems={setSelectedItems}
-            />
             <div className="choose-artwork__list">
                 {posterList.map(poster => {
                     timing = poster.split('/');
@@ -55,8 +69,8 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
                             key={timing}
                             poster={poster}
                             timing={timing}
-                            onClick={itemClick}
-                            isSelected={selectedItems.includes(timing)}
+                            onClick={artworkClick}
+                            isSelected={selectedArtwork === timing}
                         />
                     );
                 })}

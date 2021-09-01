@@ -191,7 +191,9 @@ const formatTerritoryBody = (data, titleId) => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined) body[key] = null;
-        else body[key] = data[key];
+        else if (key === 'metadataStatus') {
+            body[key] = get(data[key], 'value') ? get(data[key], 'value') : data[key];
+        } else body[key] = data[key];
     });
     body.territoryType = 'country';
     if (titleId) body.parentId = titleId;

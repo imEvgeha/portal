@@ -139,7 +139,12 @@
                             "name": "Start Lag",
                             "type": "string",
                             "path": "startLag",
-                            "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)"
+                            "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)",
+                            "validation": [
+                                {
+                                    "name": "isDuration"
+                                }
+                            ]
                         },
                         "licensed": {
                             "name": "Licensed",

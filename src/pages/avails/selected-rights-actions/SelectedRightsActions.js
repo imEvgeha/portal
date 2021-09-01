@@ -11,7 +11,7 @@ import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import classNames from 'classnames';
 import {get, uniqBy, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
-import AuditHistory from '../../legacy/containers/avail/dashboard/AuditHistory';
+import AuditHistory from '../audit-history/AuditHistory';
 import NexusBulkDelete from '../bulk-delete/NexusBulkDelete';
 import BulkDeleteConfirmation from '../bulk-delete/components/bulk-delete-confirmation/BulkDeleteConfirmation';
 import BulkMatching from '../bulk-matching/BulkMatching';
@@ -295,6 +295,7 @@ export const SelectedRightsActions = ({
 
     const onCloseStatusCheckModal = () => {
         gridApi && gridApi.deselectAll();
+        setSelectedRights([]);
         toggleRefreshGridData(true);
         closeModal();
     };

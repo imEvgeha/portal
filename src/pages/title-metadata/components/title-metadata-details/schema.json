@@ -369,6 +369,7 @@
                             "type": "arrayWithTabs",
                             "path": "ratings",
                             "tabs": ["ratingSystem"],
+                            "subTabs": ["rating"],
                             "fields": {
                                 "ratingSystem": {
                                     "name": "Rating System",
@@ -874,11 +875,11 @@
                                     "path": "title.sortTitle",
                                     "type": "string"
                                 },
-                                "editorial.synopsis.description": {
+                                "editorial.synopsis.shortDescription": {
                                     "name": "Short Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.description",
+                                    "path": "synopsis.shortDescription",
                                     "type": "textarea",
                                     "dependencies": [
                                         {
@@ -903,11 +904,11 @@
                                         }
                                     ]
                                 },
-                                "editorial.synopsis.shortDescription": {
+                                "editorial.synopsis.description": {
                                     "name": "Medium Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.shortDescription",
+                                    "path": "synopsis.description",
                                     "type": "textarea",
                                     "dependencies": [
                                         {
