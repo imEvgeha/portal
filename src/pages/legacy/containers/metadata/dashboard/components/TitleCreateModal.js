@@ -30,7 +30,7 @@ import {
     SERIES,
     SPORTS,
     SPECIAL,
-} from '../../../../constants/metadata/contentType';
+} from '../../../../../metadata/constants/contentType';
 import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';

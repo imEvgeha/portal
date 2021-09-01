@@ -9,9 +9,9 @@ import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {Form, FormFragment} from 'react-forms-processor';
 import {renderer} from 'react-forms-processor-atlaskit';
 import './CreateTitleForm.scss';
-import {EPISODE, EVENT, SEASON, SPORTS, SPECIAL} from '../../../../legacy/constants/metadata/contentType';
 import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
 import {titleService} from '../../../../legacy/containers/metadata/service/TitleService';
+import {EPISODE, EVENT, SEASON, SPORTS, SPECIAL} from '../../../../metadata/constants/contentType';
 import constants from './CreateTitleFormConstants';
 
 const {NEW_TITLE_LABEL_CANCEL, NEW_TITLE_LABEL_SUBMIT, getTitleFormSchema} = constants;
