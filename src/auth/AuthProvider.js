@@ -11,7 +11,6 @@ import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
 import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
-import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from '../pages/legacy/stores/index';
 import Loading from '../pages/static/Loading';
 
 const MIN_VALIDITY_SEC = 30;
@@ -53,10 +52,6 @@ const AuthProvider = ({
                     updateAbility(roles);
                     addUser({token, refreshToken});
                     loadUserAccount();
-                    loadDashboardState(); // TODO: to remove
-                    loadCreateRightState(); // TODO: to remove
-                    loadHistoryState(); // TODO: to remove
-                    loadDopState(); // TODO: to remove
                     loadProfileInfo();
                     // get config options for app
                     getAppOptions();

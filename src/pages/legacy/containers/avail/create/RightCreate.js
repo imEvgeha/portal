@@ -32,7 +32,7 @@ import TerritoryField from '../components/TerritoryField';
 import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
-import {PLATFORM_INFORM_MSG} from '../details/RightConstants';
+import {PLATFORM_INFORM_MSG} from './RightConstants';
 import {handleMatchingRightsAction} from '../availActions';
 import {createAliasValue} from '../util/ProcessSelectOptions';
 

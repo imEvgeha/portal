@@ -1,7 +1,6 @@
 import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {isObjectEmpty} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {isObjectEmpty, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {store} from '../../../../../index';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -182,28 +181,19 @@ class RightsURL extends React.Component {
         return RightsURL.instance.context.router.route.match.params;
     }
 
-    static getErrorRightsSearchUrl(availHistoryIds) {
-        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, 'Error'));
-    }
-
     static getFatalsRightsSearchUrl(availHistoryIds) {
-        return URL.keepEmbedded(`history/${availHistoryIds}/manual-rights-entry`);
+        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, null, true));
     }
 
-    static getSuccessRightsSearchUrl(availHistoryIds) {
-        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, 'ReadyNew,Ready'));
-    }
-
-    static getRightsSearchUrl(availHistoryIds) {
-        return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds));
-    }
-
-    static createRightsSearchUrl(availHistoryIds, status = null) {
+    static createRightsSearchUrl(availHistoryIds, status = null, isManualRightsEntry = false) {
         let toReturn = '/avails';
         if (availHistoryIds) {
             toReturn += '/history/' + availHistoryIds;
             if (status !== null) {
                 toReturn += `?status=${status}`;
+            }
+            if (isManualRightsEntry) {
+                toReturn += `/manual-rights-entry`;
             }
         } else {
             toReturn += '/rights';
@@ -254,10 +244,6 @@ class RightsURL extends React.Component {
         return beforeID + search;
     }
 
-    static get availsDashboardUrl() {
-        return '/avails';
-    }
-
     static get search() {
         let url = window.location.pathname;
         const searchP = window.location.search;
@@ -279,6 +265,7 @@ class RightsURL extends React.Component {
         }
     }
 }
+
 RightsURL.contextTypes = {
     router: PropTypes.object,
 };

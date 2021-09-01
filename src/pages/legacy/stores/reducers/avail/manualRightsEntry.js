@@ -1,7 +1,6 @@
 import {TOTAL_RIGHTS} from '../../../constants/avails/manualRightsEntryTabs';
 import {
     MANUAL_RIGHT_ENTRY__SELECT_ROW,
-    LOAD_MANUAL_RIGHT_ENTRY_SESSION,
     MANUAL_RIGHT_ENTRY__SET_SELECTED_TAB,
     MANUAL_RIGHT_ENTRY__UPDATE_COLUMNS,
     MANUAL_RIGHT_ENTRY__UPDATE,
@@ -33,8 +32,6 @@ const initialState = {
 
 const manualRightsEntry = (state = initialState, action) => {
     switch (action.type) {
-        case LOAD_MANUAL_RIGHT_ENTRY_SESSION:
-            return {...state, session: {...state.session, ...action.payload}};
         case MANUAL_RIGHT_ENTRY__UPDATE:
             return {...state, tabPage: {...state.tabPage, ...action.payload}};
         case MANUAL_RIGHT_ENTRY__LOADING:

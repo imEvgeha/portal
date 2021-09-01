@@ -20,13 +20,6 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             id: 'logo',
         },
         {
-            icon: TrayIcon,
-            id: AVAILS,
-            tooltip: AVAILS,
-            isSelected: selectedItem === AVAILS,
-            onClick: () => handleClick(AVAILS),
-        },
-        {
             icon: EditorMediaWrapLeftIcon,
             id: METADATA,
             tooltip: METADATA,
@@ -42,10 +35,10 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
         },
         {
             icon: TrayIcon,
-            id: `${AVAILS}/v2`,
-            tooltip: `${AVAILS}/v2`,
-            isSelected: selectedItem === `${AVAILS}/v2`,
-            onClick: () => handleClick(`${AVAILS}/v2`),
+            id: `${AVAILS}`,
+            tooltip: `${AVAILS}`,
+            isSelected: selectedItem === `${AVAILS}`,
+            onClick: () => handleClick(`${AVAILS}`),
         },
         {
             icon: DetailViewIcon,
