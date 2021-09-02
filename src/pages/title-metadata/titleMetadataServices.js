@@ -1,10 +1,15 @@
-import {WARNING_ICON, SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {
+    ERROR_ICON,
+    WARNING_ICON,
+    SUCCESS_ICON,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
-import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {prepareSortMatrixParamTitles, encodedSerialize, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
 import config from 'react-global-configuration';
 import {store} from '../../index';
 import {nexusFetch} from '../../util/http-client/index';
+import {BASE_PATH} from './titleMetadataRoutes';
 import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';
 
@@ -89,6 +94,31 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
             description: 'Editorial Metadata Successfully Regenerated!',
         };
         store.dispatch(addToast(successToast));
+        return true;
+    } catch (err) {}
+};
+
+export const unmergeTitle = async id => {
+    try {
+        const response = await titleService.unmerge(id);
+        const internalErrorCode = 500;
+        const authorizationErrorCode = 401;
+        const unmergeFailed =
+            response.statusCodeValue === internalErrorCode || response.statusCodeValue === authorizationErrorCode;
+        if (unmergeFailed) {
+            const errorToast = {
+                title: 'Title unmerge failed',
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: response.body.description,
+            };
+            store.dispatch(addToast(errorToast));
+            return false;
+        }
+
+        window.sessionStorage.setItem('unmerge', '1');
+        window.location.href = `${getDomainName()}${BASE_PATH}`;
+
         return true;
     } catch (err) {}
 };
@@ -204,6 +234,15 @@ export const titleService = {
         }/regenerateEmets/${masterEmetId}`;
         return nexusFetch(url, {
             method: 'put',
+        });
+    },
+
+    unmerge: id => {
+        const url = `${config.get('gateway.titleUrl')}${config.get(
+            'gateway.service.title'
+        )}/titles/unmerge?titleId=${id}`;
+        return nexusFetch(url, {
+            method: 'post',
         });
     },
 };

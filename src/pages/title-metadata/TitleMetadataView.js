@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
+import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // replace with new component
 import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
@@ -20,6 +23,18 @@ export const TitleMetadataView = ({history, toggleRefreshGridData, resetTitleId}
 
     useEffect(() => {
         resetTitleId();
+
+        if (window.sessionStorage.getItem('unmerge')) {
+            const successToast = {
+                title: 'Success',
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: 'Title succesfully unmerged!',
+            };
+
+            window.sessionStorage.removeItem('unmerge');
+            store.dispatch(addToast(successToast));
+        }
     }, []);
 
     const closeModalAndRefreshTable = () => {

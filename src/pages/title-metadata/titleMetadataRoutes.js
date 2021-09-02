@@ -10,7 +10,7 @@ const TitleDetailsImport = import(
 );
 const TitleDetails = React.lazy(() => TitleDetailsImport);
 
-const BASE_PATH = '/metadata';
+export const BASE_PATH = '/metadata';
 
 const routes = [
     {

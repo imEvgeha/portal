@@ -1,9 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import NexusDropdown, {
+    DropdownOptions,
+    DropdownOption,
+    DropdownToggle,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import classnames from 'classnames';
 import {get} from 'lodash';
 import {VZ, MOVIDA, MGM} from '../../../constants';
+import {unmergeTitle} from '../../../titleMetadataServices';
 import {isNexusTitle, isStateEditable} from '../../../utils';
 import ShrinkedHeader from './ShrinkedHeader';
 import SyncPublish from './SyncPublish';
@@ -93,6 +99,16 @@ const TitleDetailsHeader = ({
                         titleImages={title.images}
                         catalogueOwner={title.catalogOwner}
                     />
+                    <div className="dropdown">
+                        <NexusDropdown>
+                            <DropdownToggle label="Actions" isMobile />
+                            <DropdownOptions isMobile>
+                                <DropdownOption value="unmerge" onSelect={() => unmergeTitle(title.id)}>
+                                    Unmerge
+                                </DropdownOption>
+                            </DropdownOptions>
+                        </NexusDropdown>
+                    </div>
                 </div>
                 {title.catalogOwner !== MGM && isNexusTitle(title.id) && !isEditView && (
                     <div className="nexus-c-title-details-header__publish-info-container">
