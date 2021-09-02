@@ -11,7 +11,7 @@ import {store} from '../../index';
 import {nexusFetch} from '../../util/http-client/index';
 import {BASE_PATH} from './titleMetadataRoutes';
 import {getSyncQueryParams} from './utils';
-import {CONTENT_TYPE} from './constants';
+import {CONTENT_TYPE, UNMERGE_TITLE_ERROR} from './constants';
 
 export const getTitleById = payload => {
     const {id, isMgm} = payload;
@@ -107,10 +107,10 @@ export const unmergeTitle = async id => {
             response.statusCodeValue === internalErrorCode || response.statusCodeValue === authorizationErrorCode;
         if (unmergeFailed) {
             const errorToast = {
-                title: 'Title unmerge failed',
+                title: 'Unmerge not available',
                 icon: ERROR_ICON,
                 isAutoDismiss: true,
-                description: response.body.description,
+                description: UNMERGE_TITLE_ERROR,
             };
             store.dispatch(addToast(errorToast));
             return false;

@@ -12,7 +12,7 @@ import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
-import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER} from './constants';
+import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS} from './constants';
 import './TitleMetadataView.scss';
 
 export const TitleMetadataView = ({history, toggleRefreshGridData, resetTitleId}) => {
@@ -29,7 +29,7 @@ export const TitleMetadataView = ({history, toggleRefreshGridData, resetTitleId}
                 title: 'Success',
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
-                description: 'Title succesfully unmerged!',
+                description: UNMERGE_TITLE_SUCCESS,
             };
 
             window.sessionStorage.removeItem('unmerge');

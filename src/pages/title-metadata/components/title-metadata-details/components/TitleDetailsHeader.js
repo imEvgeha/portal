@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import NexusDropdown, {
@@ -6,6 +6,7 @@ import NexusDropdown, {
     DropdownOption,
     DropdownToggle,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import classnames from 'classnames';
 import {get} from 'lodash';
 import {VZ, MOVIDA, MGM} from '../../../constants';
@@ -17,6 +18,8 @@ import TitleInfo from './TitleInfo';
 import './TitleDetailsHeader.scss';
 
 const ARROW_COLOR = '#42526e';
+const UNMERGE_TITLE = 'Unmerge';
+const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
 const TitleDetailsHeader = ({
     history,
@@ -35,6 +38,7 @@ const TitleDetailsHeader = ({
 }) => {
     const [isShrinked, setIsShrinked] = useState(false);
     const [isVZdisabled, setIsVZdisabled] = useState(false);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     const checkVZdisabled = emet => {
         // get each field that is required for VZ in schema
@@ -76,6 +80,27 @@ const TitleDetailsHeader = ({
         setIsShrinked(toShrink);
     };
 
+    const openUnmergeDialog = useCallback(() => {
+        const confirmUnmerge = () => {
+            unmergeTitle(title.id);
+            closeModal();
+        };
+
+        const actions = [
+            {
+                text: 'Cancel',
+                onClick: () => closeModal(),
+                appearance: 'secondary',
+            },
+            {
+                text: 'Unmerge',
+                onClick: confirmUnmerge,
+                appearance: 'primary',
+            },
+        ];
+        openModal(UNMERGE_MESSAGE, {title: UNMERGE_TITLE, width: 'medium', actions});
+    }, [title.id]);
+
     return (
         <div className="nexus-c-title-details-header">
             <span onClick={onBackArrowClicked}>
@@ -99,16 +124,18 @@ const TitleDetailsHeader = ({
                         titleImages={title.images}
                         catalogueOwner={title.catalogOwner}
                     />
-                    <div className="dropdown">
-                        <NexusDropdown>
-                            <DropdownToggle label="Actions" isMobile />
-                            <DropdownOptions isMobile>
-                                <DropdownOption value="unmerge" onSelect={() => unmergeTitle(title.id)}>
-                                    Unmerge
-                                </DropdownOption>
-                            </DropdownOptions>
-                        </NexusDropdown>
-                    </div>
+                    {title.id && (
+                        <div className="dropdown">
+                            <NexusDropdown>
+                                <DropdownToggle label="Actions" isMobile />
+                                <DropdownOptions isMobile>
+                                    <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
+                                        Unmerge
+                                    </DropdownOption>
+                                </DropdownOptions>
+                            </NexusDropdown>
+                        </div>
+                    )}
                 </div>
                 {title.catalogOwner !== MGM && isNexusTitle(title.id) && !isEditView && (
                     <div className="nexus-c-title-details-header__publish-info-container">
