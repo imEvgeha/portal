@@ -1,21 +1,11 @@
 import {store} from '../../../index';
 
 const DASHBOARD_SESSION_VERSION = '0.5';
-const CREATERIGHT_SESSION_VERSION = '0.2';
-const HISTORY_SESSION_VERSION = '0.3';
 const DOP_SESSION_VERSION = '0.1';
 const MANUAL_RIGHT_ENTRY_SESSION_VERSION = '0.1';
 
-export const saveHistoryState = () => {
-    saveToWebLocalStorage('history', HISTORY_SESSION_VERSION);
-};
-
 export const saveDashboardState = () => {
     saveToWebLocalStorage('dashboard', DASHBOARD_SESSION_VERSION);
-};
-
-export const saveCreateRightState = () => {
-    saveToWebLocalStorage('createright', CREATERIGHT_SESSION_VERSION);
 };
 
 export const saveDopState = () => {
