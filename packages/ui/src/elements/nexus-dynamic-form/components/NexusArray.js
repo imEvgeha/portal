@@ -61,7 +61,8 @@ const NexusArray = ({
         const values = getValues();
         const editedData = values[path].filter((obj, i) => i !== index);
         setAllData(editedData);
-        setFieldValue(path, editedData);
+        setTimeout(() => () => setFieldValue(path, editedData), 0);
+        // Use setTimeout as setFieldValue uses setState and is asynchronous so directly calling handleSubmitForm would result in submit without new value
         closeModal && closeModal();
     };
 
