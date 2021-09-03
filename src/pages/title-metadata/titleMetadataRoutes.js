@@ -1,7 +1,14 @@
 import React from 'react';
 import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
-import LegacyTitleReconciliationView from '../metadata/legacy-title-reconciliation/LegacyTitleReconciliationView';
-import LegacyTitleReconciliationReview from '../metadata/legacy-title-reconciliation/review/LegacyTitleReconciliationReview';
+
+const LegacyTitleReconciliationViewImport = import(
+    '../metadata/legacy-title-reconciliation/LegacyTitleReconciliationView'
+);
+const LegacyTitleReconciliationView = React.lazy(() => LegacyTitleReconciliationViewImport);
+const LegacyTitleReconciliationReviewImport = import(
+    '../metadata/legacy-title-reconciliation/review/LegacyTitleReconciliationReview'
+);
+const LegacyTitleReconciliationReview = React.lazy(() => LegacyTitleReconciliationReviewImport);
 
 const TitleMetadataViewImport = import(/* webpackChunkName: "TitleMetadata" */ './TitleMetadataView');
 const TitleMetadataView = React.lazy(() => TitleMetadataViewImport);
