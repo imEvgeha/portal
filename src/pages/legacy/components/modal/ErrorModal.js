@@ -51,7 +51,7 @@ class ErrorModal extends React.Component {
                 </ModalHeader>
                 {modalBody}
                 <ModalFooter>
-                    {!this.props.closable ? (
+                    {!this.props.closable && !this.props.status === 403 ? (
                         <Button color="danger" onClick={this.refresh}>
                             Refresh
                         </Button>

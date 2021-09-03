@@ -29,7 +29,7 @@ const showErrorModal = error => {
 
     if (ACCESS_DENIED.codes.includes(status)) {
         const description = `Status: ${status},\nURI: ${url},\nMethod: ${method.toUpperCase()}`;
-        errorModal.open(ACCESS_DENIED.title, () => null, {description});
+        errorModal.open(ACCESS_DENIED.title, () => null, {description, status});
         return true;
     }
 };
