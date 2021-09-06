@@ -23,9 +23,14 @@ const DropdownToggle = ({label, isMobile, ...otherProps}) => {
             {...otherProps}
         >
             <Wrapper>
-                <Label isMobile={isMobile}>{label}</Label>
-                <DotsIcon isMobile={isMobile} />
-                <PointDownIcon open={+isOpen} isMobile={isMobile} />
+                {isMobile ? (
+                    <DotsIcon />
+                ): (
+                    <>
+                        <Label>{label}</Label>
+                        <PointDownIcon open={+isOpen} />
+                    </>
+                )}
             </Wrapper>
         </ExtendedButton>
     );

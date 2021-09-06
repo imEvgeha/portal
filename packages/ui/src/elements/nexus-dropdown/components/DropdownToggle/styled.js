@@ -8,27 +8,15 @@ import styled, {css} from 'styled-components';
 export const DotsIcon = styled(Dots)`
     display: block;
     width: 16px;
-
-    ${({isMobile}) =>
-        !isMobile &&
-        css`
-            ${media.desktop`
-      dispaly: none;
-      width: 0px;
-    `}
-        `}
 `;
 
 export const Label = styled.span`
     display: none;
+    color: black;
 
-    ${({isMobile}) =>
-        !isMobile &&
-        css`
-            ${media.desktop`
-                 display: inline;
-            `}
-        `}
+    ${media.desktop`
+        display: inline;
+    `}
 `;
 
 export const ExtendedButton = styled(Button)`
@@ -42,25 +30,20 @@ export const Wrapper = styled.div`
 `;
 
 export const PointDownIcon = styled(PointDown)`
-    display: none;
+  display: none;
+  color: black;
 
-    ${({isMobile}) =>
-        !isMobile &&
-        css`
-            ${media.desktop`
-            display: block;
-            transition: transform 0.3s;
-            transform: rotate(0deg);
-            width: 18px;
-            margin-left: 16px;
+  ${media.desktop`
+    display: block;
+    transition: transform 0.3s;
+    transform: rotate(0deg);
+    width: 18px;
+    margin-left: 16px;
 
-            ${props =>
-                props.open &&
-                css`
-                    transform: rotate(-180deg);
-                `}
-        `}
-        `}
+    ${(props) => props.open && css`
+      transform: rotate(-180deg);
+    `}
+  `}
 `;
 
 PointDownIcon.propTypes = {

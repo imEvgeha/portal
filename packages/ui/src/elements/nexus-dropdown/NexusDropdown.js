@@ -62,7 +62,9 @@ const NexusDropdown = ({children, initialSelected, onToggle, onSelect, rememberS
 
     return (
         <DropdownContext.Provider value={value} {...otherProps}>
-            <Container ref={containerRef}>{children}</Container>
+            <div ref={containerRef}>
+                <Container >{children}</Container>
+            </div>
         </DropdownContext.Provider>
     );
 };
