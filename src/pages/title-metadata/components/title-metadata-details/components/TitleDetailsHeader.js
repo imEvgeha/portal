@@ -124,7 +124,7 @@ const TitleDetailsHeader = ({
                         titleImages={title.images}
                         catalogueOwner={title.catalogOwner}
                     />
-                    {title.id && (
+                    {title.id && !isEditMode && (
                         <div className="dropdown">
                             <NexusDropdown>
                                 <DropdownToggle label="Actions" isMobile />
@@ -191,7 +191,7 @@ TitleDetailsHeader.propTypes = {
     isVZPublishing: PropTypes.bool,
     isMOVSyncing: PropTypes.bool,
     isMOVPublishing: PropTypes.bool,
-    fieldsVZ: PropTypes.object,
+    fieldsVZ: PropTypes.any,
     isEditMode: PropTypes.bool,
 };
 

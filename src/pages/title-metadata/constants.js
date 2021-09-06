@@ -30,7 +30,6 @@ export const UPDATE_TERRITORY_METADATA_ERROR = 'Error while updating Territorial
 export const UPDATE_EDITORIAL_METADATA_SUCCESS = 'Editorial Metadata updated successfully';
 export const UPDATE_EDITORIAL_METADATA_ERROR = 'Error while updating Editorial Metadata';
 
-export const UNMERGE_TITLE_ERROR = 'This title is not merged; it cannot be Unmerged';
 export const UNMERGE_TITLE_SUCCESS = 'Title succesfully unmerged!';
 
 export const COLUMN_MAPPINGS = [
