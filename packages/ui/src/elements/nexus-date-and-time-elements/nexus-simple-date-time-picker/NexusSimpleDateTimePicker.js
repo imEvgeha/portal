@@ -7,7 +7,14 @@ import moment from 'moment';
 import {useIntl} from 'react-intl';
 import styled from 'styled-components';
 import ClearButton from '../clear-button/ClearButton';
-import {TIME_PLACEHOLDER, ATLASKIT_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT, TIMES} from '../constants';
+import {
+    TIME_PLACEHOLDER,
+    ATLASKIT_DATE_FORMAT,
+    SIMULCAST_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT,
+    TIMES,
+    DISPLAY_DATE_FORMAT,
+} from '../constants';
 
 const MIN_DATE_LENGTH = 10;
 
@@ -96,6 +103,7 @@ const NexusSimpleDateTimePicker = ({
                                     ? onChange(convertToRequiredFormat(newValue))
                                     : onChange(convertToRequiredFormat(newValue + date.slice(MIN_DATE_LENGTH)));
                             },
+                            formatDisplayLabel: date => `${moment(date).format(DISPLAY_DATE_FORMAT)}`,
                         }}
                         timePickerProps={{
                             placeholder: TIME_PLACEHOLDER,
