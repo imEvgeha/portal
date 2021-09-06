@@ -18,9 +18,9 @@ export const RightsRepositoryHeader = ({title, history, gridApi, columnApi, user
             </div>
             {activeTab === RIGHTS_TAB && gridApi && columnApi ? (
                 <SavedTableDropdown gridApi={gridApi} columnApi={columnApi} username={username} />
-            ) : (
+            ) : activeTab === RIGHTS_TAB ? (
                 <Loading />
-            )}
+            ) : null}
             <Button appearance="primary" onClick={() => history.push(URL.keepEmbedded('/avails/rights/create'))}>
                 {CREATE_NEW_RIGHT}
             </Button>
