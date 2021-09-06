@@ -13,6 +13,7 @@ export const TIMESTAMP_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
 export const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss[Z]';
 export const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss';
 export const RELATIVE_DATE_FORMAT_WITHOUT_TIME = 'YYYY-MM-DD';
+export const DISPLAY_DATE_FORMAT = 'MM/DD/YYYY';
 export const FILL_DATE_TIME = 59999; // 59 seconds and 999 milliseconds
 export const FILL_DATE = 86399999; // 23 hours 59 minutes 59 seconds and 999 milliseconds
 export const TIMES = [

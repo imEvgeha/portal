@@ -26,7 +26,7 @@ export const valueFormatter = ({colId, field, dataType}) => {
         const {data = {}} = params || {};
         if (data) {
             switch (dataType) {
-                case DATE:
+                case DATE: {
                     const {[field]: date = ''} = data || {};
 
                     if (data.separationRow) {
@@ -34,18 +34,22 @@ export const valueFormatter = ({colId, field, dataType}) => {
                     }
 
                     return ISODateToView(date, DATETIME_FIELDS.BUSINESS_DATETIME);
+                }
                 case RATING:
                     return get(data, [field, RATING_SUBFIELD, colId]) || get(data, [field, colId]) || '';
-                case AUDIO:
+                case AUDIO: {
                     const languages = data[field] && languageMapper(data[field]);
                     return (languages && languages.join(', ').toUpperCase()) || '';
-                case METHOD:
+                }
+                case METHOD: {
                     const {data: {headerRow, updatedBy} = {}} = params || {};
                     return headerRow ? data[field] : INGEST_ACCOUNTS.includes(updatedBy) ? INGEST : MANUAL;
-                case YES_OR_NO:
+                }
+                case YES_OR_NO: {
                     const value = typeof data[field] === 'boolean' ? data[field] : null;
                     if (value === null) return '';
                     return value ? 'Yes' : 'No';
+                }
                 case TERRITORY:
                     if (Array.isArray(data[field])) {
                         return data[field]

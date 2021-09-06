@@ -1,5 +1,5 @@
 import {get} from 'lodash';
-import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
+import {call, put, all, takeEvery} from 'redux-saga/effects';
 import {FETCH_POSTERS, STORE_POSTERS} from './assetManagementActionTypes';
 import {fetchPosters} from './assetManagementService';
 
@@ -10,7 +10,7 @@ function* resourcePosters({payload}) {
         const resourceURL = `${get(resource, 'uri[0]', '')}?url=true`;
         const timeFrames = yield call(fetchPosters, resourceURL);
         const posters = [];
-        get(timeFrames, 'uri', []).map(frame => {
+        get(timeFrames, 'uri', []).forEach(frame => {
             posters.push(`${resourceURL}/${frame}`);
         });
         yield put({

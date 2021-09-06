@@ -8,7 +8,12 @@ import classnames from 'classnames';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
 import ClearButton from '../clear-button/ClearButton';
-import {RELATIVE_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT_WITHOUT_TIME} from '../constants';
+import {
+    RELATIVE_DATE_FORMAT,
+    SIMULCAST_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT_WITHOUT_TIME,
+    DISPLAY_DATE_FORMAT,
+} from '../constants';
 import './NexusDatePicker.scss';
 
 const NexusDatePicker = ({
@@ -84,6 +89,7 @@ const NexusDatePicker = ({
                             placeholder={dateFormat}
                             onChange={onDateChange}
                             defaultValue={moment(value).isValid() ? value : ''}
+                            formatDisplayLabel={date => `${moment(date).format(DISPLAY_DATE_FORMAT)}`}
                             value={date}
                             {...restProps}
                         />
