@@ -87,17 +87,3 @@ const getAllConfigValuesByField = (field, sortBy) => {
             console.error('Can not fetch data from config api', err);
         });
 };
-
-export const configService = {
-    initConfigMapping: () => {
-        Object.values(configFields).forEach(configField => {
-            if (configField === configFields.LANGUAGE) {
-                getAllConfigValuesByField(configField, 'languageName');
-            } else if (configField === configFields.LOCALE) {
-                getAllConfigValuesByField(configField, 'countryName');
-            } else {
-                getAllConfigValuesByField(configField);
-            }
-        });
-    },
-};

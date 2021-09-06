@@ -1,3 +1,4 @@
+import MetadataConstants from '../../../../legacy/containers/metadata/MetadataConstants';
 import {
     ADVERTISEMENT,
     EPISODE,
@@ -7,8 +8,7 @@ import {
     SERIES,
     SPORTS,
     SPECIAL,
-} from '../../../../legacy/constants/metadata/contentType';
-import MetadataConstants from '../../../../legacy/containers/metadata/MetadataConstants';
+} from '../../../../metadata/constants/contentType';
 
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
 const NEW_TITLE_TOAST_SUCCESS_MESSAGE = 'You successfully created a new title!';

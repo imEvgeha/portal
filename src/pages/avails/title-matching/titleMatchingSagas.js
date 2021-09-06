@@ -104,7 +104,7 @@ function* mergeAndStoreTitles({payload}) {
             const updatedRight = {coreTitleId: response.id};
             yield call(rightsService.update, updatedRight, rightId);
         }
-        const url = `/metadata/v2/detail/${response.id}`;
+        const url = `/metadata/detail/${response.id}`;
         yield put({
             type: ADD_TOAST,
             payload: {

@@ -3,7 +3,7 @@ import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/n
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {get, isEqual, cloneDeep} from 'lodash';
-import TitleSystems from '../legacy/constants/metadata/systems';
+import TitleSystems from '../metadata/constants/systems';
 import Constants from './title-matching/titleMatchingConstants';
 
 const COLUMN_WIDTH_ICON = 40;

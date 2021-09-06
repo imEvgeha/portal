@@ -1,3 +1,4 @@
+import {formatNumberTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {
     CAST,
     CREW,
@@ -5,9 +6,8 @@ import {
     getFilteredCrewList,
     PERSONS_PER_REQUEST,
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
-import {searchPerson} from '../../../service/ConfigService';
-import {formatNumberTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {EPISODE} from '../../../../../constants/metadata/contentType';
+import {searchPerson} from '../../../../../../../../src/pages/legacy/containers/metadata/service/ConfigService';
+import {EPISODE} from '../../../../../../../../src/pages/metadata/constants/contentType';
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
@@ -25,18 +25,17 @@ export const loadOptionsPerson = (searchPersonText, type) => {
                 };
             })
         );
-    } else {
-        return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW).then(res =>
-            getFilteredCrewList(res.data, true).map(e => {
-                return {
-                    id: e.id,
-                    name: e.displayName,
-                    byline: e.personType.toString().toUpperCase(),
-                    original: JSON.stringify(e),
-                };
-            })
-        );
     }
+    return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW).then(res =>
+        getFilteredCrewList(res.data, true).map(e => {
+            return {
+                id: e.id,
+                name: e.displayName,
+                byline: e.personType.toString().toUpperCase(),
+                original: JSON.stringify(e),
+            };
+        })
+    );
 };
 
 export const renderTitleName = (title, contentType, seasonNumber, episodeNumber, seriesTitleName) => {

@@ -14,8 +14,8 @@ import {
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
-import TitleSystems from '../../../legacy/constants/metadata/systems';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
+import TitleSystems from '../../../metadata/constants/systems';
 
 const {NEXUS, MOVIDA, VZ} = TitleSystems;
 
@@ -37,7 +37,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
     };
 
     const onMatch = () => {
-        const url = `${getDomainName()}/metadata/v2/detail/${matchList[NEXUS].id}`;
+        const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
         const onViewTitleClick = () => window.open(url, '_blank');
 
         if (URL.isEmbedded()) {

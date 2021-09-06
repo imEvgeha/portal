@@ -40,7 +40,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
                 cellRendererParams: ({data = {}}) => {
                     const {id} = data;
                     return {
-                        link: `/metadata/v2/detail/`,
+                        link: `/metadata/detail/`,
                         linkId: id,
                         newTab: false,
                     };
@@ -159,7 +159,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
                 externalFilter={externalFilter}
-                link="/metadata/v2/detail"
+                link="/metadata/detail"
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>

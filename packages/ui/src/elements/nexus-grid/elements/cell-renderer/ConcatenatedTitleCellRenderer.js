@@ -2,7 +2,7 @@ import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
-import {renderTitleName} from '../../../../../../../src/pages/legacy/containers/metadata/dashboard/components/utils/utils';
+import {renderTitleName} from './utils/utils';
 
 const ConcatenatedTitleCellRenderer = params => {
     const {
@@ -13,7 +13,7 @@ const ConcatenatedTitleCellRenderer = params => {
     if (!data) {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
-    const linkTo = URL.keepEmbedded(`/metadata/v2/detail/${data.id}`);
+    const linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
 
     let value = getDeepValue(data, javaVariableName);
     if (isObject(value)) {

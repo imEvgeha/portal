@@ -20,11 +20,11 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             id: 'logo',
         },
         {
-            icon: EditorMediaWrapLeftIcon,
-            id: METADATA,
-            tooltip: METADATA,
-            isSelected: selectedItem === METADATA,
-            onClick: () => handleClick(METADATA),
+            icon: TrayIcon,
+            id: AVAILS,
+            tooltip: AVAILS,
+            isSelected: selectedItem === AVAILS,
+            onClick: () => handleClick(AVAILS),
         },
         {
             icon: EditorSearchIcon,
@@ -32,13 +32,6 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: MEDIA,
             isSelected: selectedItem === MEDIA,
             onClick: () => handleClick(MEDIA),
-        },
-        {
-            icon: TrayIcon,
-            id: `${AVAILS}`,
-            tooltip: `${AVAILS}`,
-            isSelected: selectedItem === `${AVAILS}`,
-            onClick: () => handleClick(`${AVAILS}`),
         },
         {
             icon: DetailViewIcon,
@@ -70,7 +63,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             id: TITLE_METADATA,
             tooltip: 'Title Metadata',
             isSelected: selectedItem === TITLE_METADATA,
-            onClick: () => handleClick('metadata/v2'),
+            onClick: () => handleClick('metadata'),
         },
     ];
 };

@@ -1,6 +1,15 @@
 import React from 'react';
 import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 
+const LegacyTitleReconciliationViewImport = import(
+    '../metadata/legacy-title-reconciliation/LegacyTitleReconciliationView'
+);
+const LegacyTitleReconciliationView = React.lazy(() => LegacyTitleReconciliationViewImport);
+const LegacyTitleReconciliationReviewImport = import(
+    '../metadata/legacy-title-reconciliation/review/LegacyTitleReconciliationReview'
+);
+const LegacyTitleReconciliationReview = React.lazy(() => LegacyTitleReconciliationReviewImport);
+
 const TitleMetadataViewImport = import(/* webpackChunkName: "TitleMetadata" */ './TitleMetadataView');
 const TitleMetadataView = React.lazy(() => TitleMetadataViewImport);
 const TitleDetailsImport = import(
@@ -8,7 +17,7 @@ const TitleDetailsImport = import(
 );
 const TitleDetails = React.lazy(() => TitleDetailsImport);
 
-export const BASE_PATH = '/metadata/v2';
+export const BASE_PATH = '/metadata';
 
 const routes = [
     {
@@ -18,6 +27,15 @@ const routes = [
     {
         path: `${BASE_PATH}/detail/:id`,
         component: canRender(TitleDetails, 'update', 'Metadata'),
+    },
+
+    {
+        path: `${BASE_PATH}/detail/:id/legacy-title-reconciliation`,
+        component: canRender(LegacyTitleReconciliationView, 'update', 'Metadata'),
+    },
+    {
+        path: `${BASE_PATH}/detail/:id/legacy-title-reconciliation/review`,
+        component: canRender(LegacyTitleReconciliationReview, 'update', 'Metadata'),
     },
 ];
 

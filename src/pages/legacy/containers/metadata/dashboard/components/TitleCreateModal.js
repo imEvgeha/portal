@@ -20,6 +20,7 @@ import {get} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import '../Title.scss';
 import {titleService} from '../../service/TitleService';
+import {publisherService} from '../../service/PublisherService';
 import {
     ADVERTISEMENT,
     EPISODE,
@@ -29,17 +30,15 @@ import {
     SERIES,
     SPORTS,
     SPECIAL,
-} from '../../../../constants/metadata/contentType';
+} from '../../../../../metadata/constants/contentType';
 import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {publisherService} from '../../service/PublisherService';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
-const onViewTitleClick = (response, redirectToV2) => {
+const onViewTitleClick = response => {
     const {id} = response || {};
-    const url = `${getDomainName()}/metadata${redirectToV2 ? '/v2' : ''}/detail/${id}`;
+    const url = `${getDomainName()}/metadata/detail/${id}`;
     window.open(url, '_blank');
 };
 
@@ -183,9 +182,7 @@ class TitleCreate extends React.Component {
                     icon: SUCCESS_ICON,
                     isAutoDismiss: true,
                     description: titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                    actions: [
-                        {content: 'View title', onClick: () => onViewTitleClick(response, this.props.redirectToV2)},
-                    ],
+                    actions: [{content: 'View title', onClick: () => onViewTitleClick(response)}],
                 });
             })
             .catch(e => {
@@ -632,12 +629,10 @@ TitleCreate.propTypes = {
     display: PropTypes.bool.isRequired,
     className: PropTypes.string,
     tenantCode: PropTypes.string,
-    redirectToV2: PropTypes.bool,
 };
 
 TitleCreate.defaultProps = {
     tenantCode: undefined,
-    redirectToV2: false,
 };
 
 export default withToasts(TitleCreate);

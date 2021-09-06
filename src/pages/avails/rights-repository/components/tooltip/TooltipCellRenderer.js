@@ -42,7 +42,7 @@ const TooltipCellRenderer = ({data = {}, isTooltipEnabled, setSingleRightMatch})
                         <Button
                             appearance="link"
                             onClick={() =>
-                                window.open(`${getDomainName()}/metadata/v2/detail/${data.coreTitleId}`, '_blank')
+                                window.open(`${getDomainName()}/metadata/detail/${data.coreTitleId}`, '_blank')
                             }
                         >
                             {VIEW_TITLE}
