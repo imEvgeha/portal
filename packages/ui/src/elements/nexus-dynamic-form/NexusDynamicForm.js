@@ -5,7 +5,7 @@ import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import classnames from 'classnames';
 import {mergeWith, set, get} from 'lodash';
 import moment from 'moment';
-import {buildSection, getProperValues, getAllFields} from './utils';
+import {buildSection, getProperValues, getProperValue, getAllFields} from './utils';
 import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION} from './constants';
 import './NexusDynamicForm.scss';
 
@@ -123,8 +123,13 @@ const NexusDynamicForm = ({
     const handleOnSubmit = (values, initialData) => {
         setValidationErrorCount(0);
         if (validDateRange(values)) {
+            let correctValues = {};
+            const allValues = getAllFields(fields);
             const properValues = getProperValues(fields, values);
-            const correctValues = {};
+            Object.values(allValues).forEach(({type, path}) => {
+                const defaultValue = getProperValue(type, null, path, fields);
+                correctValues = {...correctValues, ...defaultValue};
+            });
             Object.keys(properValues).forEach(key => set(correctValues, key, properValues[key]));
             onSubmit(
                 mergeWith({}, initialData, correctValues, (obj, src) => {
