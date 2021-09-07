@@ -246,8 +246,8 @@ export const getProperValue = (type, value, path, schema) => {
             break;
         case 'dateRange':
             val = {
-                [path[0]]: value.startDate,
-                [path[1]]: value.endDate,
+                [path[0]]: value?.startDate ? value.startDate : null,
+                [path[1]]: value?.endDate ? value.endDate : null,
             };
             break;
         case 'stringInArray':
