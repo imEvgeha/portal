@@ -279,6 +279,16 @@ export const COLUMN_MAPPINGS = [
         hide: true,
     },
     {
+        colId: 'series',
+        field: 'series',
+        javaVariableName: 'series',
+        headerName: 'Series Title',
+        width: 120,
+        enableSearch: true,
+        searchDataType: 'string',
+        hide: true,
+    },
+    {
         colId: 'seasonNumber',
         field: 'seasonNumber',
         javaVariableName: 'seasonNumber',
@@ -327,6 +337,7 @@ export const STRING_FIELDS = [
     'potentialOwners',
     'coreTitleID',
     'title',
+    'series',
     'seasonNumber',
     'episodeNumber',
 ];
