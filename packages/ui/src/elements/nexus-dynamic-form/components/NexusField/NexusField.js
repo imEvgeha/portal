@@ -496,7 +496,7 @@ const NexusField = ({
                 );
             default:
                 return fieldProps.value ? (
-                    <div>{getValue(fieldProps)}</div>
+                    <div className="nexus-c-field__wrap-text">{getValue(fieldProps)}</div>
                 ) : (
                     <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
                 );
