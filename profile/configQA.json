@@ -10,6 +10,7 @@
         "servicingOrdersUrl": "https://servicing-order-manager.qa.vubiquity.com",
         "DOPUrl": "https://dop.qa.vubiquity.com:8045",
         "publisher": "https://titlespublishermovida.qa.vubiquity.com",
+        "kongURL": "https://vuapi.qa.vubiquity.com/vubiquity",
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
         "service": {
             "avails": "/avails-api/v1",
@@ -34,7 +35,9 @@
             "DOPTasksAssign": "/dop/be-services/taskManagement/task/assign",
             "DOPTasksForward": "/dop/be-services/taskManagement/task/forward",
             "DOPTasksBatchJob": "/dop/be-services/taskManagement/taskBatchJob",
-            "publisher": "/publisher/v1"
+            "publisher": "/publisher/v1",
+            "kongMediaCatalog": "/mediacatalog/catalog/v1",
+            "kongMediaStorage": "/mediastorage/media-storage/v1"
         }
     },
     "DOP_base": "https://dop.qa.vubiquity.com:8045",

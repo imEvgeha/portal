@@ -1,0 +1,29 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
+.nexus-c-propagate-button {
+    @include margin(0);
+    @include padding(0);
+    cursor: pointer;
+    > span {
+        &:hover {
+            color: map-get($blues, B200);
+        }
+    }
+}
+
+.nexus-c-propagate-button__wrapper {
+    height: 24px;
+    width: 24px;
+    color: currentColor;
+    display: inline-block;
+    fill: #ffffff;
+    flex-shrink: 0;
+    line-height: 1;
+    > svg {
+        max-height: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+}

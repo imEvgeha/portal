@@ -8,6 +8,9 @@ const getTitleMetadataReducer = state => {
 export const createTitleSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.title || {});
 
+export const createTitleLoadingSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.loading || false);
+
 export const createExternalIdsSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.externalIds || {});
 
@@ -29,7 +32,5 @@ export const createVZTitleIsPublishingSelector = () =>
 export const createMOVTitleIsPublishingSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isPublishingMOV || false);
 
-export const createIsEditModeSelector = () => createSelector(
-    getTitleMetadataReducer,
-    titleMetadata => titleMetadata.isEditMode || false
-);
+export const createIsEditModeSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isEditMode || false);

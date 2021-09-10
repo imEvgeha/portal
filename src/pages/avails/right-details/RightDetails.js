@@ -36,7 +36,7 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, isSavi
             <NexusDynamicForm
                 schema={schema}
                 initialData={right}
-                isEdit={isEditMode}
+                isEdit={true}
                 onSubmit={values => onSubmit(values)}
                 selectValues={selectValues}
                 isSaving={isSaving}

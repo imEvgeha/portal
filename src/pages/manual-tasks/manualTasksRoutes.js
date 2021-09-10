@@ -6,7 +6,7 @@ const AssetManagementViewImport = import(
 );
 const AssetManagementView = React.lazy(() => AssetManagementViewImport);
 
-const BASE_PATH = '/manual-tasks';
+export const BASE_PATH = '/manual-tasks';
 
 const routes = [
     {

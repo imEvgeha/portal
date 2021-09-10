@@ -1,12 +1,15 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import classnames from 'classnames';
 import {mergeWith, set, get} from 'lodash';
 import moment from 'moment';
-import {buildSection, getProperValues, getAllFields} from './utils';
-import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION} from './constants';
+import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
+import PropagateButton from '../nexus-person/elements/PropagateButton/PropagateButton';
+import {buildSection, getProperValues, getProperValue, getAllFields} from './utils';
+import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION, CAST_AND_CREW_TITLE, PROPAGATE_TITLE} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({
@@ -27,6 +30,7 @@ const NexusDynamicForm = ({
     castCrewConfig,
     isEditDisabled,
 }) => {
+    const {openModal, closeModal} = useContext(NexusModalContext);
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
@@ -175,6 +179,13 @@ const NexusDynamicForm = ({
         return null;
     };
 
+    const showPropagateModal = useCallback((getValues, setFieldValue) => {
+        openModal(<PropagateForm getValues={getValues} setFieldValue={setFieldValue} onClose={closeModal} />, {
+            title: PROPAGATE_TITLE,
+            width: 'small',
+        });
+    }, []);
+
     return (
         <div className="nexus-c-dynamic-form">
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
@@ -208,7 +219,20 @@ const NexusDynamicForm = ({
                                             prefix,
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
-                                                <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
+                                                <h3 className="nexus-c-dynamic-form__section-title">
+                                                    {sectionTitle === CAST_AND_CREW_TITLE && isEdit ? (
+                                                        <div className="nexus-c-dynamic-form__additional-option">
+                                                            {sectionTitle}
+                                                            <PropagateButton
+                                                                onClick={() =>
+                                                                    showPropagateModal(getValues, setFieldValue)
+                                                                }
+                                                            />
+                                                        </div>
+                                                    ) : (
+                                                        sectionTitle
+                                                    )}
+                                                </h3>
                                                 {sectionTitle === CORE_TITLE_SECTION && showAll()}
                                                 {buildSection(
                                                     fields,

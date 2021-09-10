@@ -425,6 +425,7 @@ export const renderNexusField = (
             name={key}
             label={field.name}
             view={view}
+            getValues={getValues}
             formData={inTabs ? {[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]: initialData} : getValues()}
             validationError={getValidationError(initialData.validationErrors, field)}
             defaultValue={getDefaultValue(field, view, initialData)}

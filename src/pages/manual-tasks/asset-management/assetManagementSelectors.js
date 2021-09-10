@@ -10,4 +10,5 @@ const getAssetManagementReducer = createSelector(getManualTasks, tasks => {
     return assets;
 });
 
-export const getPosterList = createSelector(getAssetManagementReducer, assets => assets?.posterList);
+export const posterListSelector = createSelector(getAssetManagementReducer, assets => assets?.posterList);
+export const assetDetailsSelector = createSelector(getAssetManagementReducer, assets => assets?.details);

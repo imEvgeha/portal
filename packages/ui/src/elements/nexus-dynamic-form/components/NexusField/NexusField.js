@@ -43,6 +43,7 @@ const NexusField = ({
     isRequiredVZ,
     oneIsRequiredVZ,
     formData,
+    getValues,
     isReadOnly,
     isReadOnlyInEdit,
     isRequired,
@@ -338,6 +339,8 @@ const NexusField = ({
                         {...fieldProps}
                         persons={fieldProps.value ? fieldProps.value : []}
                         isEdit={true}
+                        getValues={getValues}
+                        setFieldValue={setFieldValue}
                         isVerticalLayout={isVerticalLayout}
                         searchPerson={searchPerson}
                         castCrewConfig={castCrewConfig}
@@ -459,6 +462,8 @@ const NexusField = ({
                     <CastCrew
                         persons={fieldProps.value ? fieldProps.value : []}
                         isEdit={false}
+                        getValues={getValues}
+                        setFieldValue={setFieldValue}
                         isVerticalLayout={isVerticalLayout}
                         searchPerson={searchPerson}
                         castCrewConfig={castCrewConfig}
@@ -587,6 +592,7 @@ NexusField.propTypes = {
     oneIsRequiredVZ: PropTypes.bool,
     showLocalized: PropTypes.bool,
     localizationConfig: PropTypes.object,
+    getValues: PropTypes.func,
     setUpdatedValues: PropTypes.func,
 };
 
@@ -626,6 +632,7 @@ NexusField.defaultProps = {
     oneIsRequiredVZ: false,
     showLocalized: false,
     localizationConfig: undefined,
+    getValues: () => null,
     setUpdatedValues: () => {},
 };
 

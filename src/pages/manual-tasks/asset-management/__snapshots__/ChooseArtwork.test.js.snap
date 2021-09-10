@@ -13,6 +13,13 @@ exports[`ChooseArtwork should match snapshot 1`] = `
     <span />
   </div>
   <div
+    className="artwork-actions"
+  >
+    <Loading
+      spinnerSize="large"
+    />
+  </div>
+  <div
     className="choose-artwork__list"
   >
     <ArtworkItem

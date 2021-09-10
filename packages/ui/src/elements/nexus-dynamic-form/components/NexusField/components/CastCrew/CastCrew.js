@@ -9,7 +9,17 @@ import {
 import classnames from 'classnames';
 import './CastCrew.scss';
 
-const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, castCrewConfig, language}) => {
+const CastCrew = ({
+    persons,
+    isEdit,
+    onChange,
+    getValues,
+    searchPerson,
+    isVerticalLayout,
+    castCrewConfig,
+    language,
+    setFieldValue,
+}) => {
     const [cast, setCast] = useState(
         persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
     );
@@ -72,6 +82,8 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
                     personsList={cast}
                     uiConfig={CAST_CONFIG}
                     hasCharacter={isEdit}
+                    getValues={getValues}
+                    setFieldValue={setFieldValue}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                     emetLanguage={language}
@@ -87,6 +99,8 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout, ca
                     castCrewConfig={updateCastCrewConfig()}
                     personsList={crew}
                     uiConfig={CREW_CONFIG}
+                    getValues={getValues}
+                    setFieldValue={setFieldValue}
                     hasCharacter={false}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
@@ -101,6 +115,8 @@ CastCrew.propTypes = {
     isEdit: PropTypes.bool,
     persons: PropTypes.array,
     onChange: PropTypes.func,
+    getValues: PropTypes.func,
+    setFieldValue: PropTypes.func,
     isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
     castCrewConfig: PropTypes.object,
@@ -111,6 +127,8 @@ CastCrew.defaultProps = {
     isEdit: false,
     persons: [],
     onChange: () => null,
+    getValues: () => null,
+    setFieldValue: () => null,
     isVerticalLayout: false,
     searchPerson: undefined,
     castCrewConfig: {},

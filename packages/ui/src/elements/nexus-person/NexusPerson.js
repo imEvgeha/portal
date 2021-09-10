@@ -5,6 +5,7 @@ import {Draggable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
 import Tooltip from '@atlaskit/tooltip';
 import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
+import PropagateButton from './elements/PropagateButton/PropagateButton';
 import DragButton from './elements/DragButton/DragButton';
 import DraggableContent from './elements/DraggableContent/DraggableContent';
 import RemovePerson from './elements/RemovePerson/RemovePerson';
@@ -15,7 +16,7 @@ import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
 import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 
-const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
+const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLanguage}) => {
     const localization = get(person, 'localization');
     const getEnName = () => {
         return localization ? person.displayName : person.displayNameEn;
@@ -79,6 +80,9 @@ const NexusPerson = ({person, index, onRemove, onEditPerson, emetLanguage}) => {
                                 </div>
                             </div>
                             <div className="nexus-c-nexus-person__buttons">
+                                <span title="Propagate">
+                                    <PropagateButton onClick={onPropagate} />
+                                </span>
                                 <span title="Edit">
                                     <EditPerson onClick={onEditPerson} />
                                 </span>
@@ -101,12 +105,14 @@ NexusPerson.propTypes = {
     person: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     onRemove: PropTypes.func,
+    onPropagate: PropTypes.func,
     onEditPerson: PropTypes.func,
     emetLanguage: PropTypes.string,
 };
 
 NexusPerson.defaultProps = {
     onRemove: () => null,
+    onPropagate: () => null,
     onEditPerson: () => null,
     emetLanguage: 'en',
 };

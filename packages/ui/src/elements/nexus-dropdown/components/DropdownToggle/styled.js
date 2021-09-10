@@ -30,19 +30,21 @@ export const Wrapper = styled.div`
 `;
 
 export const PointDownIcon = styled(PointDown)`
-  display: none;
-  color: black;
+    display: none;
+    color: black;
 
-  ${media.desktop`
+    ${media.desktop`
     display: block;
     transition: transform 0.3s;
     transform: rotate(0deg);
     width: 18px;
     margin-left: 16px;
 
-    ${(props) => props.open && css`
-      transform: rotate(-180deg);
-    `}
+    ${props =>
+        props.open &&
+        css`
+            transform: rotate(-180deg);
+        `}
   `}
 `;
 

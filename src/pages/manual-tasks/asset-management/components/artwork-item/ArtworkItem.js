@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {convertMsToTime} from '../util/time';
-import {POSTER_RESOLUTION} from '../constants';
+import {POSTER_RESOLUTION} from '../../constants';
+import {convertMsToTime} from '../../util/time';
 import './AtrworkItem.scss';
 
 const ArtworkItem = ({poster, timing, onClick, isSelected}) => {

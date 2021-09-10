@@ -25,7 +25,7 @@ const DropdownToggle = ({label, isMobile, ...otherProps}) => {
             <Wrapper>
                 {isMobile ? (
                     <DotsIcon />
-                ): (
+                ) : (
                     <>
                         <Label>{label}</Label>
                         <PointDownIcon open={+isOpen} />

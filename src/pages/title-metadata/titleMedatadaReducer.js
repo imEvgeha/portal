@@ -15,6 +15,7 @@ const initialState = {
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
+
     switch (type) {
         case actionTypes.CLEAR_TITLE:
             return {
@@ -29,6 +30,11 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
         case actionTypes.GET_TITLE_ERROR:
             return {
                 ...state,
+            };
+        case actionTypes.GET_TITLE_LOADING:
+            return {
+                ...state,
+                loading: payload,
             };
         case actionTypes.EDITING:
             return {

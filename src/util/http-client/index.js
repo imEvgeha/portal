@@ -11,7 +11,7 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT, fetchHe
 
     const allOptions = {
         headers: {
-            'Content-Type': 'application/json',
+            ...(!options.file ? {'Content-type': 'application/json'} : {}),
             ...(token ? {Authorization: `Bearer ${token}`} : {}),
         },
         signal,

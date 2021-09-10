@@ -49,6 +49,10 @@ export function* loadTitle({payload}) {
     if (!payload.id) {
         return;
     }
+    yield put({
+        type: actionTypes.GET_TITLE_LOADING,
+        payload: true,
+    });
     try {
         const response = yield call(getTitleById, {id: payload.id, isMgm: payload.isMgm});
         const updatedResponse = yield call(loadParentTitle, response);
@@ -56,10 +60,18 @@ export function* loadTitle({payload}) {
             type: actionTypes.GET_TITLE_SUCCESS,
             payload: updatedResponse,
         });
+        yield put({
+            type: actionTypes.GET_TITLE_LOADING,
+            payload: false,
+        });
     } catch (error) {
         yield put({
             type: actionTypes.GET_TITLE_ERROR,
             payload: error,
+        });
+        yield put({
+            type: actionTypes.GET_TITLE_LOADING,
+            payload: false,
         });
     }
 }

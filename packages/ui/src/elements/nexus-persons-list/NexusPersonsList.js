@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import UserPicker from '@atlaskit/user-picker';
@@ -7,6 +7,8 @@ import classnames from 'classnames';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
+import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import CharacterModal from './components/CharacterModal';
@@ -20,6 +22,8 @@ import {configService} from '../../../../../src/pages/legacy/containers/config/s
 const NexusPersonsList = ({
     personsList,
     uiConfig,
+    getValues,
+    setFieldValue,
     hasCharacter,
     isEdit,
     updateCastCrew,
@@ -28,7 +32,6 @@ const NexusPersonsList = ({
     emetLanguage,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
-
     const [openPersonModal, setOpenPersonModal] = useState(false);
     const [currentRecord, setCurrentRecord] = useState({});
     const [persons, setPersons] = useState(personsList || []);
@@ -121,6 +124,16 @@ const NexusPersonsList = ({
         closeModal();
     };
 
+    const openPropagateModal = useCallback(person => {
+        openModal(
+            <PropagateForm person={person} getValues={getValues} setFieldValue={setFieldValue} onClose={closeModal} />,
+            {
+                title: PROPAGATE_TITLE,
+                width: 'small',
+            }
+        );
+    }, []);
+
     const openCharacterModal = id => {
         const selectedPerson = persons && persons[id];
         const data = {
@@ -211,6 +224,7 @@ const NexusPersonsList = ({
                     index={i}
                     hasCharacter={hasCharacter}
                     onRemove={() => removePerson(person)}
+                    onPropagate={() => openPropagateModal(person)}
                     onEditPerson={() => onEditPerson(person)}
                     emetLanguage={emetLanguage}
                 />
@@ -305,6 +319,8 @@ NexusPersonsList.propTypes = {
     hasCharacter: PropTypes.bool,
     isEdit: PropTypes.bool,
     updateCastCrew: PropTypes.func,
+    setFieldValue: PropTypes.func,
+    getValues: PropTypes.func,
     searchPerson: PropTypes.func,
     castCrewConfig: PropTypes.object,
     emetLanguage: PropTypes.string,
@@ -316,6 +332,8 @@ NexusPersonsList.defaultProps = {
     hasCharacter: false,
     isEdit: false,
     updateCastCrew: () => null,
+    setFieldValue: () => null,
+    getValues: () => null,
     searchPerson: () => null,
     castCrewConfig: {},
     emetLanguage: 'en',

@@ -53,6 +53,11 @@
     border-bottom: 2px solid map-get($neutrals, N40);
 }
 
+.nexus-c-dynamic-form__additional-option {
+    display: flex;
+    justify-content: space-between;
+}
+
 .nexus-c-dynamic-form__show-all {
     width: 20%;
     @include margin(4, auto);

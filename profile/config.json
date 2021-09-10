@@ -5,6 +5,7 @@
         "configuration": "https://configapi.dev.vubiquity.com",
         "DOPUrl": "http://dops.dev.vubiquity.com:8040",
         "eventApiUrl": "https://eventapi.dev.vubiquity.com",
+        "kongUrl ": "https://vuapi.dev.vubiquity.com/vubiquity",
         "deteBaseUrl": "https://vuapi.dev.vubiquity.com/vubiquity/dete/rest",
         "publisher": "https://titlespublishermovida.dev.vubiquity.com",
         "service": {
@@ -30,7 +31,9 @@
             "DOPTasksAssign": "/dop/be-services/taskManagement/task/assign",
             "DOPTasksForward": "/dop/be-services/taskManagement/task/forward",
             "DOPTasksBatchJob": "/dop/be-services/taskManagement/taskBatchJob",
-            "publisher": "/publisher/v1"
+            "publisher": "/publisher/v1",
+            "kongMediaCatalog": "/mediacatalog/catalog/v1",
+            "kongMediaStorage": "/mediastorage/media-storage/v1"
         },
         "servicingOrdersUrl": "https://servicing-order-manager.dev.vubiquity.com",
         "titleUrl": "https://titlesapi.dev.vubiquity.com",

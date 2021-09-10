@@ -8,6 +8,7 @@ import * as detailsSelectors from '../../../avails/right-details/rightDetailsSel
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
+import Loading from '../../../static/Loading';
 import {FIELDS_TO_REMOVE, SYNC} from '../../constants';
 import {
     getTitle,
@@ -39,6 +40,7 @@ import './TitleDetails.scss';
 import schema from './schema.json';
 
 const TitleDetails = ({
+    titleLoading,
     history,
     match,
     title,
@@ -162,45 +164,54 @@ const TitleDetails = ({
 
     return (
         <div className="nexus-c-title-details">
-            <TitleDetailsHeader
-                title={title}
-                history={history}
-                containerRef={containerRef}
-                externalIds={externalIds}
-                onSyncPublish={syncPublishHandler}
-                isEditView={isEditView}
-                isEditMode={isEditMode}
-                isVZSyncing={isVZTitleSyncing}
-                isMOVSyncing={isMOVTitleSyncing}
-                isVZPublishing={isVZTitlePublishing}
-                isMOVPublishing={isMOVTitlePublishing}
-                initialData={extendTitleWithExternalIds()}
-                fieldsVZ={Object.values(getAllFields(fields, false)).filter(f => f.isRequiredVZ || f.oneIsRequiredVZ)}
-            />
-            <NexusDynamicForm
-                castCrewConfig={castCrewConfig}
-                searchPerson={searchPerson}
-                schema={schema}
-                initialData={extendTitleWithExternalIds()}
-                isEdit={isEditMode}
-                setEditMode={setEditTitle}
-                isTitlePage={true}
-                containerRef={containerRef}
-                selectValues={selectValues}
-                onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
-                generateMsvIds={generateMsvIds}
-                regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
-                hasButtons={isNexusTitle(title.id)}
-                setIsEditView={setIsEditView}
-                isSaving={isSaving}
-                setRefresh={setRefresh}
-                isEditDisabled={!isStateEditable(title.metadataStatus)}
-            />
+            {titleLoading ? (
+                <Loading />
+            ) : (
+                <>
+                    <TitleDetailsHeader
+                        title={title}
+                        history={history}
+                        containerRef={containerRef}
+                        externalIds={externalIds}
+                        onSyncPublish={syncPublishHandler}
+                        isEditView={isEditView}
+                        isEditMode={isEditMode}
+                        isVZSyncing={isVZTitleSyncing}
+                        isMOVSyncing={isMOVTitleSyncing}
+                        isVZPublishing={isVZTitlePublishing}
+                        isMOVPublishing={isMOVTitlePublishing}
+                        initialData={extendTitleWithExternalIds()}
+                        fieldsVZ={Object.values(getAllFields(fields, false)).filter(
+                            f => f.isRequiredVZ || f.oneIsRequiredVZ
+                        )}
+                    />
+                    <NexusDynamicForm
+                        castCrewConfig={castCrewConfig}
+                        searchPerson={searchPerson}
+                        schema={schema}
+                        initialData={extendTitleWithExternalIds()}
+                        isEdit={isNexusTitle(title.id)}
+                        setEditMode={setEditTitle}
+                        isTitlePage={true}
+                        containerRef={containerRef}
+                        selectValues={selectValues}
+                        onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
+                        generateMsvIds={generateMsvIds}
+                        regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
+                        hasButtons={isNexusTitle(title.id)}
+                        setIsEditView={setIsEditView}
+                        isSaving={isSaving}
+                        setRefresh={setRefresh}
+                        isEditDisabled={!isStateEditable(title.metadataStatus)}
+                    />
+                </>
+            )}
         </div>
     );
 };
 
 TitleDetails.propTypes = {
+    titleLoading: PropTypes.bool,
     history: PropTypes.object,
     match: PropTypes.object,
     title: PropTypes.object,
@@ -228,6 +239,7 @@ TitleDetails.propTypes = {
 };
 
 TitleDetails.defaultProps = {
+    titleLoading: false,
     history: {},
     match: {},
     title: {},
@@ -256,6 +268,7 @@ TitleDetails.defaultProps = {
 
 const mapStateToProps = () => {
     const titleSelector = selectors.createTitleSelector();
+    const titleLoadingSelector = selectors.createTitleLoadingSelector();
     const externalIdsSelector = selectors.createExternalIdsSelector();
     const territoryMetadataSelector = selectors.createTerritoryMetadataSelector();
     const editorialMetadataSelector = selectors.createEditorialMetadataSelector();
@@ -268,6 +281,7 @@ const mapStateToProps = () => {
 
     return (state, props) => ({
         title: titleSelector(state, props),
+        titleLoading: titleLoadingSelector(state, props),
         externalIds: externalIdsSelector(state, props),
         territoryMetadata: territoryMetadataSelector(state, props),
         editorialMetadata: editorialMetadataSelector(state, props),

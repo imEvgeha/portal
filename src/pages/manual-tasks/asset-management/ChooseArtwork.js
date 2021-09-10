@@ -1,22 +1,27 @@
 import React, {useEffect, useState, useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {connect} from 'react-redux';
-import ArtworkItem from './artwork-item/ArtworkItem';
+import Loading from '../../static/Loading';
 import './ChooseArtwork.scss';
-import {fetchPosters} from './assetManagementActions';
-import {getPosterList} from './assetManagementSelectors';
+import {fetchPosters, fetchAsset} from './assetManagementReducer';
+import {posterListSelector, assetDetailsSelector} from './assetManagementSelectors';
 import {loginAssets} from './assetManagementService';
+import UploadArtworkForm from './components/UploadArtworkForm';
+import ArtworkItem from './components/artwork-item/ArtworkItem';
 
+const UPLOAD_ARTWORK_TITLE = 'Upload Artwork';
 const DOP_POP_UP_TITLE = 'Choose Artwork';
 const DOP_POP_UP_MESSAGE = 'Please, select atleast one thumbnail!';
 
-const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
+const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) => {
     const [selectedArtwork, setSelectedArtwork] = useState();
     const {openModal, closeModal} = useContext(NexusModalContext);
-    const assetID = URL.getParamIfExists('assetID', '');
+    const sourceMediaAssetID = URL.getParamIfExists('sourceMediaAssetID', '');
+    const artworkAssetID = URL.getParamIfExists('artworkAssetID', '');
 
     const openDOPPopUp = useCallback(() => {
         const handlePopUpClick = () => {
@@ -33,8 +38,17 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
         openModal(DOP_POP_UP_MESSAGE, {title: DOP_POP_UP_TITLE, width: 'medium', actions});
     }, []);
 
+    const openUploadModal = () => {
+        openModal(<UploadArtworkForm closeModal={closeModal} tenantId={asset.tenantId} asset={asset} />, {
+            title: UPLOAD_ARTWORK_TITLE,
+            width: 'medium',
+            shouldCloseOnOverlayClick: false,
+        });
+    };
+
     useEffect(() => {
-        loginAssets().then(() => fetchResourcePosters(assetID));
+        fetchAsset(artworkAssetID);
+        loginAssets().then(() => fetchResourcePosters(sourceMediaAssetID));
     }, []);
 
     useEffect(() => {
@@ -47,11 +61,12 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
 
         DOP.setData({
             chooseArtwork: {
-                assetID,
+                sourceMediaAssetID,
                 selectedArtworkUri: uri,
             },
         });
     };
+
     let timing = '';
 
     return (
@@ -59,6 +74,15 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
             <div className="choose-artwork__header">
                 <span>Title: </span>
                 <span>{URL.getParamIfExists('title', '')}</span>
+            </div>
+            <div className="artwork-actions">
+                {asset ? (
+                    <Button onClick={openUploadModal} appearance="primary">
+                        Upload
+                    </Button>
+                ) : (
+                    <Loading />
+                )}
             </div>
             <div className="choose-artwork__list">
                 {posterList.map(poster => {
@@ -81,19 +105,24 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
 
 ChooseArtwork.propTypes = {
     fetchResourcePosters: PropTypes.func.isRequired,
+    fetchAsset: PropTypes.func.isRequired,
+    asset: PropTypes.object,
     posterList: PropTypes.array,
 };
 
 ChooseArtwork.defaultProps = {
     posterList: [],
+    asset: null,
 };
 
 const mapStateToProps = state => ({
-    posterList: getPosterList(state),
+    posterList: posterListSelector(state),
+    asset: assetDetailsSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchResourcePosters: itemId => dispatch(fetchPosters(itemId)),
+    fetchResourcePosters: sourceMediaAssetID => dispatch(fetchPosters(sourceMediaAssetID)),
+    fetchAsset: sourceMediaAssetID => dispatch(fetchAsset(sourceMediaAssetID)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseArtwork);
