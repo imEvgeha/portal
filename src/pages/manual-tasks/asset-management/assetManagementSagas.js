@@ -41,6 +41,7 @@ function* fetchAsset({payload}) {
         const url = `${config.get('gateway.kongUrl')}${config.get(
             'gateway.service.kongMediaCatalog'
         )}/AE/assets/${payload}?returnMetadataGroups=all`;
+
         const resource = yield call(() => nexusFetch(url));
 
         yield put({

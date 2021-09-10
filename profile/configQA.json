@@ -10,7 +10,7 @@
         "servicingOrdersUrl": "https://servicing-order-manager.qa.vubiquity.com",
         "DOPUrl": "https://dop.qa.vubiquity.com:8045",
         "publisher": "https://titlespublishermovida.qa.vubiquity.com",
-        "kongURL": "https://vuapi.qa.vubiquity.com/vubiquity",
+        "kongUrl": "https://vuapi.qa.vubiquity.com/vubiquity",
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
         "service": {
             "avails": "/avails-api/v1",
