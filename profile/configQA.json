@@ -37,7 +37,8 @@
             "DOPTasksBatchJob": "/dop/be-services/taskManagement/taskBatchJob",
             "publisher": "/publisher/v1",
             "kongMediaCatalog": "/mediacatalog/catalog/v1",
-            "kongMediaStorage": "/mediastorage/media-storage/v1"
+            "kongMediaStorage": "/mediastorage/media-storage/v1",
+            "kongVidispine": "/vidispine-api/API"
         }
     },
     "DOP_base": "https://dop.qa.vubiquity.com:8045",
