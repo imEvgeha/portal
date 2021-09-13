@@ -33,7 +33,8 @@
             "DOPTasksBatchJob": "/dop/be-services/taskManagement/taskBatchJob",
             "publisher": "/publisher/v1",
             "kongMediaCatalog": "/mediacatalog/catalog/v1",
-            "kongMediaStorage": "/mediastorage/media-storage/v1"
+            "kongMediaStorage": "/mediastorage/media-storage/v1",
+            "kongVidispine": "/vidispine-api/API"
         },
         "servicingOrdersUrl": "https://servicing-order-manager.dev.vubiquity.com",
         "titleUrl": "https://titlesapi.dev.vubiquity.com",

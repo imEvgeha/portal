@@ -20,7 +20,9 @@ const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded Artwork.';
 
 function* resourcePosters({payload}) {
     try {
-        const url = `http://vidispine-stg.misc.odg.ondemand.co.uk/API/item/${payload}/posterresource`;
+        const url = `${config.get('gateway.kongUrl')}${config.get(
+            'gateway.service.kongVidispine'
+        )}/item/${payload}/posterresource`;
         const resource = yield call(fetchPosters, url);
         const resourceURL = `${get(resource, 'uri[0]', '')}?url=true`;
         const timeFrames = yield call(fetchPosters, resourceURL);
@@ -63,6 +65,7 @@ function* uploadArtwork({payload}) {
             payload: {},
         });
 
+        // Kong implementation still pending. Move to config once completed.
         const url = `https://mediastorage.dev.vubiquity.com/media-storage/v1/${tenantId}/files/upload`;
         const data = new FormData();
         data.append('file', file, file.name);
