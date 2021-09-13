@@ -1,5 +1,6 @@
 .propagate-form__message,
 .propagate-form__error {
+    margin-left: 4px;
     margin-bottom: 20px;
 }
 
@@ -7,6 +8,7 @@
     display: flex;
     justify-content: end;
     margin-bottom: 20px;
+
     > button {
         margin: 0 5px;
     }
