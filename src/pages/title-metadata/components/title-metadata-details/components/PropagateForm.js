@@ -4,12 +4,22 @@ import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
 import {isEmpty} from 'lodash';
-import {CAST_CREW, CANCEL_BUTTON, ADD_BUTTON, EDITORIAL, EDITORIAL_METADATA, EMPTY, EMETS} from './propagateConstants';
+import {
+    CAST_CREW,
+    CANCEL_BUTTON,
+    ADD_BUTTON,
+    EDITORIAL,
+    EDITORIAL_METADATA,
+    EMPTY_CAST_CREW,
+    EMPTY_EMETS,
+    EMETS,
+} from './propagateConstants';
 import './PropagateForm.scss';
 
 const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     const {castCrew, editorial, editorialMetadata} = getValues();
-    const isEMetsButtonsDisabled = !(castCrew.length && editorialMetadata.length);
+    const isCastCrewEmpty = !castCrew?.length;
+    const isEMetsEmpty = !editorialMetadata?.length;
     const [checkedEmet, setCheckedEmet] = useState(false);
     const [error, setError] = useState(null);
 
@@ -55,10 +65,11 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                 value={EMETS}
                 isChecked={checkedEmet}
                 onChange={() => setCheckedEmet(!checkedEmet)}
-                isDisabled={isEMetsButtonsDisabled}
+                isDisabled={isCastCrewEmpty || isEMetsEmpty}
             />
             <div className="propagate-form__error">
-                {isEMetsButtonsDisabled && !error ? <ErrorMessage>{EMPTY}</ErrorMessage> : null}
+                {isCastCrewEmpty && !error && !isEMetsEmpty ? <ErrorMessage>{EMPTY_CAST_CREW}</ErrorMessage> : null}
+                {isEMetsEmpty && !error ? <ErrorMessage>{EMPTY_EMETS}</ErrorMessage> : null}
                 {error && <ErrorMessage>{error}</ErrorMessage>}
             </div>
             <div className="propagate-form__actions">

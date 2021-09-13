@@ -6,5 +6,6 @@ export const ADD_BUTTON = 'Add';
 export const EDITORIAL = 'editorial';
 export const EDITORIAL_METADATA = 'editorialMetadata';
 
-export const EMPTY = 'There are no EMets';
+export const EMPTY_CAST_CREW = 'There are no CastCrew';
+export const EMPTY_EMETS = 'There are no EMets';
 export const EMETS = 'EMets';
