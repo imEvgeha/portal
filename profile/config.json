@@ -8,6 +8,7 @@
         "kongUrl": "https://vuapi.dev.vubiquity.com/vubiquity",
         "deteBaseUrl": "https://vuapi.dev.vubiquity.com/vubiquity/dete/rest",
         "publisher": "https://titlespublishermovida.dev.vubiquity.com",
+        "mediaStorageUrl": "https://mediastorage.dev.vubiquity.com/media-storage/v1",
         "service": {
             "avails": "/avails-api/v1",
             "availsParser": "/avails-parser/v1",

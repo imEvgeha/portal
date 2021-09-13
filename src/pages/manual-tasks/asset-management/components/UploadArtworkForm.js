@@ -37,7 +37,7 @@ const UploadArtworkForm = ({asset, closeModal, uploadArtwork, isUploading, tenan
     };
 
     const {providerAssetId, tenantId: assetTenantId, metadataGroups, type, renditions} = asset;
-    const {value: titleName} = metadataGroups[0].metadata[4];
+    const {value: titleName} = metadataGroups[0].metadata.find(met => met.name === 'title');
     const {type: renditionType, name: renditionName} = renditions[0];
 
     return (

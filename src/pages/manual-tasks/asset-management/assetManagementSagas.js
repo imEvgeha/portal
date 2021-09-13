@@ -65,8 +65,7 @@ function* uploadArtwork({payload}) {
             payload: {},
         });
 
-        // Kong implementation still pending. Move to config once completed.
-        const url = `https://mediastorage.dev.vubiquity.com/media-storage/v1/${tenantId}/files/upload`;
+        const url = `${config.get('gateway.kongUrl')}/${tenantId}/files/upload`;
         const data = new FormData();
         data.append('file', file, file.name);
 

@@ -12,6 +12,7 @@
         "publisher": "https://titlespublishermovida.qa.vubiquity.com",
         "kongUrl": "https://vuapi.qa.vubiquity.com/vubiquity",
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
+        "mediaStorageUrl": "https://mediastorage.qa.vubiquity.com/media-storage/v1",
         "service": {
             "avails": "/avails-api/v1",
             "availsInjest": "/avails-ingest/v1",
