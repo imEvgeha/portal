@@ -36,8 +36,8 @@ const UploadArtworkForm = ({asset, closeModal, uploadArtwork, isUploading, tenan
         uploadArtwork({file, closeModal, tenantId});
     };
 
-    const {providerId, tenantId: assetTenantId, metadataGroups, type, renditions} = asset;
-    const {value: titleName} = metadataGroups[0].metadata[2];
+    const {providerAssetId, tenantId: assetTenantId, metadataGroups, type, renditions} = asset;
+    const {value: titleName} = metadataGroups[0].metadata[4];
     const {type: renditionType, name: renditionName} = renditions[0];
 
     return (
@@ -51,7 +51,7 @@ const UploadArtworkForm = ({asset, closeModal, uploadArtwork, isUploading, tenan
 
                         <h5>Asset information</h5>
 
-                        <Field label="Provider asset ID" name="provider" defaultValue={providerId} isDisabled>
+                        <Field label="Provider asset ID" name="provider" defaultValue={providerAssetId} isDisabled>
                             {({fieldProps}) => <Textfield placeholder="Enter provider asset ID..." {...fieldProps} />}
                         </Field>
                         <Field label="Tenant" name="tenant" defaultValue={assetTenantId} isDisabled>
