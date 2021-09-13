@@ -8,12 +8,9 @@ import NexusDropdown, {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import classnames from 'classnames';
-import {get} from 'lodash';
-import {VZ, MOVIDA, MGM} from '../../../constants';
+import {MGM} from '../../../constants';
 import {unmergeTitle} from '../../../titleMetadataServices';
-import {isNexusTitle, isStateEditable} from '../../../utils';
-import ShrinkedHeader from './ShrinkedHeader';
-import SyncPublish from './SyncPublish';
+import {isNexusTitle} from '../../../utils';
 import TitleInfo from './TitleInfo';
 import './TitleDetailsHeader.scss';
 
@@ -21,38 +18,9 @@ const ARROW_COLOR = '#42526e';
 const UNMERGE_TITLE = 'Unmerge';
 const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
-const TitleDetailsHeader = ({
-    history,
-    title,
-    containerRef,
-    externalIds,
-    onSyncPublish,
-    isEditView,
-    isVZSyncing,
-    isVZPublishing,
-    isMOVSyncing,
-    isMOVPublishing,
-    initialData,
-    fieldsVZ,
-    isEditMode,
-}) => {
+const TitleDetailsHeader = ({history, title, containerRef, canEdit}) => {
     const [isShrinked, setIsShrinked] = useState(false);
-    const [isVZdisabled, setIsVZdisabled] = useState(false);
     const {openModal, closeModal} = useContext(NexusModalContext);
-
-    const checkVZdisabled = emet => {
-        // get each field that is required for VZ in schema
-        const res =
-            emet.metadataStatus === 'complete' &&
-            fieldsVZ.filter(f => f.isRequiredVZ).every(v => !!get(emet, v.path)) &&
-            fieldsVZ.filter(f => f.oneIsRequiredVZ).some(v => get(emet, v.path));
-        return res;
-    };
-
-    useEffect(() => {
-        const VZdisabled = !initialData.editorialMetadata.every(e => checkVZdisabled(e));
-        setIsVZdisabled(VZdisabled);
-    }, [initialData]);
 
     useEffect(() => {
         window.addEventListener('scroll', onScroll, true);
@@ -114,7 +82,7 @@ const TitleDetailsHeader = ({
                 <div
                     className={classnames('nexus-c-title-details-header__title-info-container', {
                         'nexus-c-title-details-header__title-info-container--no-border':
-                            title.catalogOwner === MGM || !isNexusTitle(title.id) || isEditView,
+                            title.catalogOwner === MGM || !isNexusTitle(title.id) || canEdit,
                     })}
                 >
                     <TitleInfo
@@ -124,91 +92,43 @@ const TitleDetailsHeader = ({
                         titleImages={title.images}
                         catalogueOwner={title.catalogOwner}
                     />
-                    {title.id && !isEditMode && (
-                        <div className="dropdown">
-                            <NexusDropdown>
-                                <DropdownToggle label="Actions" isMobile />
-                                <DropdownOptions isMobile>
-                                    <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
-                                        Unmerge
-                                    </DropdownOption>
-                                </DropdownOptions>
-                            </NexusDropdown>
-                        </div>
-                    )}
                 </div>
-                {title.catalogOwner !== MGM && isNexusTitle(title.id) && !isEditView && (
-                    <div className="nexus-c-title-details-header__publish-info-container">
-                        <SyncPublish
-                            externalSystem={VZ}
-                            externalIds={externalIds}
-                            onSyncPublish={onSyncPublish}
-                            isSyncing={isVZSyncing}
-                            isPublishing={isVZPublishing}
-                            // disabled={isVZdisabled}
-                            disabled={isEditMode || !isStateEditable(title.metadataStatus)}
-                        />
-                        <SyncPublish
-                            externalSystem={MOVIDA}
-                            externalIds={externalIds}
-                            onSyncPublish={onSyncPublish}
-                            isSyncing={isMOVSyncing}
-                            isPublishing={isMOVPublishing}
-                            disabled={isEditMode || !isStateEditable(title.metadataStatus)}
-                        />
+                {title.id && (
+                    <div className="nexus-c-title-details-header__action-dropdown">
+                        <NexusDropdown>
+                            <DropdownToggle label="Actions" isMobile />
+                            <DropdownOptions isMobile>
+                                <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
+                                    Unmerge
+                                </DropdownOption>
+                            </DropdownOptions>
+                        </NexusDropdown>
                     </div>
                 )}
             </div>
-            <ShrinkedHeader
-                isShrinked={isShrinked}
-                title={title.title}
-                externalIds={externalIds}
-                onSyncPublish={onSyncPublish}
-                titleId={title.id}
-                isEditView={isEditView}
-                isEditMode={isEditMode}
-                catalogueOwner={title.catalogOwner}
-                isVZSyncing={isVZSyncing}
-                isVZPublishing={isVZPublishing}
-                isMOVSyncing={isMOVSyncing}
-                isMOVPublishing={isMOVPublishing}
-                isVZdisabled={isVZdisabled}
-                isEditDisabled={!isStateEditable(title.metadataStatus)}
-            />
+            <div
+                className={classnames('nexus-c-shrinked-header', {
+                    'nexus-c-shrinked-header--visible': isShrinked,
+                })}
+            >
+                <div>{title.title}</div>
+            </div>
         </div>
     );
 };
 
 TitleDetailsHeader.propTypes = {
-    initialData: PropTypes.object,
     history: PropTypes.object,
     title: PropTypes.object,
     containerRef: PropTypes.any,
-    externalIds: PropTypes.array,
-    onSyncPublish: PropTypes.func,
-    isEditView: PropTypes.bool,
-    isVZSyncing: PropTypes.bool,
-    isVZPublishing: PropTypes.bool,
-    isMOVSyncing: PropTypes.bool,
-    isMOVPublishing: PropTypes.bool,
-    fieldsVZ: PropTypes.any,
-    isEditMode: PropTypes.bool,
+    canEdit: PropTypes.bool,
 };
 
 TitleDetailsHeader.defaultProps = {
-    initialData: {},
     history: {},
     title: {},
     containerRef: null,
-    externalIds: [],
-    onSyncPublish: () => null,
-    isEditView: false,
-    isVZSyncing: false,
-    isVZPublishing: false,
-    isMOVSyncing: false,
-    isMOVPublishing: false,
-    fieldsVZ: {},
-    isEditMode: false,
+    canEdit: false,
 };
 
 export default TitleDetailsHeader;

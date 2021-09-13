@@ -63,17 +63,36 @@
     @include margin(4, auto);
 }
 
-.nexus-c-dynamic-form__cancel-button,
-.nexus-c-dynamic-form__submit-button,
-.nexus-c-dynamic-form__edit-button {
+.nexus-c-dynamic-form__actions-container {
+    display: flex;
+    align-items: center;
     position: absolute;
-    top: 24px;
-    right: 24px;
-    z-index: 1;
+    bottom: 10px;
+    right: 10%;
+    z-index: 2;
+}
+.nexus-c-dynamic-form__discard-button,
+.nexus-c-dynamic-form__submit-button {
+    border: 1px solid lightgray;
 }
 
-.nexus-c-dynamic-form__submit-button {
-    right: 100px;
+.nexus-c-dynamic-form__status {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    @include margin(0, 5, 0, 5);
+}
+
+.success {
+    background-color: map-get($greens, G400);
+}
+
+.updated {
+    background-color: map-get($yellows, Y200);
+}
+
+.error {
+    background-color: map-get($reds, R400);
 }
 
 .nexus-c-dynamic-form__validation-msg {
@@ -90,19 +109,6 @@
     z-index: 1;
     font-size: 1.3rem;
     right: 35%;
-}
-
-.nexus-c-dynamic-form__cancel-button--title,
-.nexus-c-dynamic-form__submit-button--title,
-.nexus-c-dynamic-form__edit-button--title {
-    position: absolute;
-    top: 24px;
-    right: 31.5%;
-    z-index: 1;
-}
-
-.nexus-c-dynamic-form__submit-button--title {
-    right: calc(31.5% + 80px);
 }
 
 .nexus-c-dynamic-form__field {

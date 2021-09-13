@@ -85,7 +85,6 @@ NexusArrayCreateModal.propTypes = {
     getValues: PropTypes.func,
     setFieldValue: PropTypes.func,
     selectValues: PropTypes.object,
-    name: PropTypes.string.isRequired,
     generateMsvIds: PropTypes.func,
     searchPerson: PropTypes.func,
     regenerateAutoDecoratedMetadata: PropTypes.func,

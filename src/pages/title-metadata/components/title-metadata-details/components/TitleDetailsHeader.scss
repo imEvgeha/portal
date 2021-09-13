@@ -40,14 +40,24 @@
     border-right: none;
 }
 
-.nexus-c-title-details-header__publish-info-container {
+.nexus-c-title-details-header__action-dropdown {
     width: 25%;
-    @include margin(0, 0, 0, 6);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nexus-c-shrinked-header {
+    width: 80%;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    @include margin(0, auto);
     > div:first-child {
-        @include margin(0, 0, 4.2, 0);
+        font-size: 24px;
+        color: map-get($neutrals, N900);
     }
 }
 
-.dropdown {
-    margin-right: 100px;
+.nexus-c-shrinked-header--visible {
+    display: flex;
 }

@@ -2,14 +2,14 @@ import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
+import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {get} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
-import Loading from '../../../static/Loading';
-import {FIELDS_TO_REMOVE, SYNC} from '../../constants';
+import {FIELDS_TO_REMOVE, SYNC, VZ, MOVIDA} from '../../constants';
 import {
     getTitle,
     clearTitle,
@@ -19,7 +19,6 @@ import {
     updateTitle,
     syncTitle,
     publishTitle,
-    editTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
@@ -35,12 +34,12 @@ import {
     prepareAwardsField,
     handleDirtyValues,
 } from '../../utils';
+import SyncPublish from './components/SyncPublish';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
 
 const TitleDetails = ({
-    titleLoading,
     history,
     match,
     title,
@@ -63,18 +62,11 @@ const TitleDetails = ({
     isMOVTitleSyncing,
     isVZTitlePublishing,
     isMOVTitlePublishing,
-    isEditMode,
-    setEditTitle,
 }) => {
     const containerRef = useRef();
-    const [isEditView, setIsEditView] = useState(false);
     const [refresh, setRefresh] = useState(false);
 
     const {fields} = schema;
-
-    useEffect(() => {
-        setEditTitle(false);
-    }, []);
 
     useEffect(() => {
         return () => {
@@ -162,56 +154,50 @@ const TitleDetails = ({
         }
     };
 
+    const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
+
     return (
         <div className="nexus-c-title-details">
-            {titleLoading ? (
-                <Loading />
-            ) : (
-                <>
-                    <TitleDetailsHeader
-                        title={title}
-                        history={history}
-                        containerRef={containerRef}
+            <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
+            <NexusDynamicForm
+                castCrewConfig={castCrewConfig}
+                searchPerson={searchPerson}
+                schema={schema}
+                initialData={extendTitleWithExternalIds()}
+                canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
+                containerRef={containerRef}
+                selectValues={selectValues}
+                onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
+                generateMsvIds={generateMsvIds}
+                regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
+                hasButtons={isNexusTitle(title.id)}
+                isSaving={isSaving}
+                setRefresh={setRefresh}
+                isTitlePage
+            />
+            <NexusStickyFooter>
+                <NexusStickyFooter.LeftActions>
+                    <SyncPublish
+                        externalSystem={VZ}
                         externalIds={externalIds}
                         onSyncPublish={syncPublishHandler}
-                        isEditView={isEditView}
-                        isEditMode={isEditMode}
-                        isVZSyncing={isVZTitleSyncing}
-                        isMOVSyncing={isMOVTitleSyncing}
-                        isVZPublishing={isVZTitlePublishing}
-                        isMOVPublishing={isMOVTitlePublishing}
-                        initialData={extendTitleWithExternalIds()}
-                        fieldsVZ={Object.values(getAllFields(fields, false)).filter(
-                            f => f.isRequiredVZ || f.oneIsRequiredVZ
-                        )}
+                        isSyncing={isVZTitleSyncing}
+                        isPublishing={isVZTitlePublishing}
                     />
-                    <NexusDynamicForm
-                        castCrewConfig={castCrewConfig}
-                        searchPerson={searchPerson}
-                        schema={schema}
-                        initialData={extendTitleWithExternalIds()}
-                        isEdit={isNexusTitle(title.id)}
-                        setEditMode={setEditTitle}
-                        isTitlePage={true}
-                        containerRef={containerRef}
-                        selectValues={selectValues}
-                        onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
-                        generateMsvIds={generateMsvIds}
-                        regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
-                        hasButtons={isNexusTitle(title.id)}
-                        setIsEditView={setIsEditView}
-                        isSaving={isSaving}
-                        setRefresh={setRefresh}
-                        isEditDisabled={!isStateEditable(title.metadataStatus)}
+                    <SyncPublish
+                        externalSystem={MOVIDA}
+                        externalIds={externalIds}
+                        onSyncPublish={syncPublishHandler}
+                        isSyncing={isMOVTitleSyncing}
+                        isPublishing={isMOVTitlePublishing}
                     />
-                </>
-            )}
+                </NexusStickyFooter.LeftActions>
+            </NexusStickyFooter>
         </div>
     );
 };
 
 TitleDetails.propTypes = {
-    titleLoading: PropTypes.bool,
     history: PropTypes.object,
     match: PropTypes.object,
     title: PropTypes.object,
@@ -232,14 +218,11 @@ TitleDetails.propTypes = {
     isMOVTitleSyncing: PropTypes.bool,
     isVZTitlePublishing: PropTypes.bool,
     isMOVTitlePublishing: PropTypes.bool,
-    isEditMode: PropTypes.bool,
-    setEditTitle: PropTypes.func,
     fetchConfigApiEndpoints: PropTypes.func,
     castCrewConfig: PropTypes.object,
 };
 
 TitleDetails.defaultProps = {
-    titleLoading: false,
     history: {},
     match: {},
     title: {},
@@ -260,15 +243,12 @@ TitleDetails.defaultProps = {
     isMOVTitleSyncing: false,
     isVZTitlePublishing: false,
     isMOVTitlePublishing: false,
-    isEditMode: false,
-    setEditTitle: () => null,
     fetchConfigApiEndpoints: () => null,
     castCrewConfig: {},
 };
 
 const mapStateToProps = () => {
     const titleSelector = selectors.createTitleSelector();
-    const titleLoadingSelector = selectors.createTitleLoadingSelector();
     const externalIdsSelector = selectors.createExternalIdsSelector();
     const territoryMetadataSelector = selectors.createTerritoryMetadataSelector();
     const editorialMetadataSelector = selectors.createEditorialMetadataSelector();
@@ -276,12 +256,10 @@ const mapStateToProps = () => {
     const isMOVTitleSyncingSelector = selectors.createMOVTitleIsSyncingSelector();
     const isVZTitlePublishingSelector = selectors.createVZTitleIsPublishingSelector();
     const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
-    const isEditModeSelector = selectors.createIsEditModeSelector();
     const settingsConfigEndpointsSelector = settingsSelectors.createSettingsEndpointsSelector();
 
     return (state, props) => ({
         title: titleSelector(state, props),
-        titleLoading: titleLoadingSelector(state, props),
         externalIds: externalIdsSelector(state, props),
         territoryMetadata: territoryMetadataSelector(state, props),
         editorialMetadata: editorialMetadataSelector(state, props),
@@ -291,7 +269,6 @@ const mapStateToProps = () => {
         isMOVTitleSyncing: isMOVTitleSyncingSelector(state, props),
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
-        isEditMode: isEditModeSelector(state, props),
         castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
     });
 };
@@ -305,7 +282,6 @@ const mapDispatchToProps = dispatch => ({
     updateTitle: payload => dispatch(updateTitle(payload)),
     syncTitle: payload => dispatch(syncTitle(payload)),
     publishTitle: payload => dispatch(publishTitle(payload)),
-    setEditTitle: payload => dispatch(editTitle(payload)),
     fetchConfigApiEndpoints: payload => dispatch(fetchConfigApiEndpoints(payload)),
 });
 

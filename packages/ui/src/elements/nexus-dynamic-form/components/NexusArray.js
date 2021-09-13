@@ -45,7 +45,6 @@ const NexusArray = ({
     const [allData, setAllData] = useState(data);
 
     useEffect(() => {
-        isUpdate && setFieldValue(path, data);
         setAllData(data);
     }, [data, isUpdate]);
 
@@ -201,6 +200,7 @@ const NexusArray = ({
             <AKField
                 name={path}
                 isRequired={required}
+                defaultValue={data}
                 validate={value => getValidationFunction(value, validation, {type: 'array', isRequired: required})}
             >
                 {({fieldProps, error}) => (

@@ -39,11 +39,6 @@ export const updateRight = payload => ({
     payload,
 });
 
-export const editRight = payload => ({
-    type: actionTypes.EDITING,
-    payload,
-});
-
 export const setUserDefinedGrid = payload => ({
     type: actionTypes.SET_USER_DEFINED_GRID,
     payload,

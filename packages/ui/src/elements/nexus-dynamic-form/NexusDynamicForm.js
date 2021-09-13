@@ -16,7 +16,7 @@ const NexusDynamicForm = ({
     schema = {},
     initialData,
     onSubmit,
-    isEdit,
+    canEdit,
     selectValues,
     isSaving,
     containerRef,
@@ -25,17 +25,15 @@ const NexusDynamicForm = ({
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
     hasButtons,
-    setEditMode,
     setRefresh,
     castCrewConfig,
-    isEditDisabled,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
 
-    const view = isEdit ? VIEWS.EDIT : VIEWS.VIEW;
+    const view = canEdit ? VIEWS.EDIT : VIEWS.VIEW;
 
     const {fields} = schema;
     useEffect(() => {
@@ -56,59 +54,46 @@ const NexusDynamicForm = ({
     const onCancel = reset => {
         reset();
         setUpdate(true);
-        setEditMode(false);
         setValidationErrorCount(0);
     };
 
-    const buildButtons = (dirty, reset, errors) => {
-        return view !== VIEWS.VIEW ? (
-            <>
-                {errors > 0 && (
-                    <div
-                        className={
-                            isTitlePage
-                                ? 'nexus-c-dynamic-form__title-validation-msg'
-                                : 'nexus-c-dynamic-form__validation-msg'
-                        }
-                    >
-                        <ErrorMessage>{errors} errors on page</ErrorMessage>
-                    </div>
-                )}
+    const formStatus = (dirty, errors) => {
+        if (errors > 0) return 'error';
+        if (dirty) return 'updated';
+        return 'success';
+    };
+
+    const buildButtons = (dirty, reset, errors) => (
+        <>
+            {errors > 0 && (
+                <div className="nexus-c-dynamic-form__validation-msg">
+                    <ErrorMessage>
+                        {errors} {errors === 1 ? 'error' : 'errors'} on page
+                    </ErrorMessage>
+                </div>
+            )}
+            <div className="nexus-c-dynamic-form__actions-container">
                 <Button
                     type="submit"
-                    className={classnames('nexus-c-dynamic-form__submit-button', {
-                        'nexus-c-dynamic-form__submit-button--title': isTitlePage,
-                    })}
-                    appearance="primary"
-                    isDisabled={!dirty && disableSubmit}
+                    className="nexus-c-dynamic-form__submit-button"
+                    isDisabled={(!dirty && disableSubmit) || !canEdit}
                     // this is a form submit button and hence validation check will not work on submit function
                     onClick={showValidationError}
                     isLoading={isSaving}
                 >
-                    Save changes
+                    Save
                 </Button>
+                <div className={`nexus-c-dynamic-form__status ${formStatus(dirty, errors)}`} />
                 <Button
-                    className={classnames('nexus-c-dynamic-form__cancel-button', {
-                        'nexus-c-dynamic-form__cancel-button--title': isTitlePage,
-                    })}
+                    className="nexus-c-dynamic-form__discard-button"
                     onClick={() => onCancel(reset)}
+                    isDisabled={!dirty || isSaving || !canEdit}
                 >
-                    Cancel
+                    Discard
                 </Button>
-            </>
-        ) : (
-            <Button
-                className={classnames('nexus-c-dynamic-form__edit-button', {
-                    'nexus-c-dynamic-form__edit-button--title': isTitlePage,
-                })}
-                appearance="primary"
-                onClick={() => setEditMode(true)}
-                isDisabled={isEditDisabled}
-            >
-                Edit
-            </Button>
-        );
-    };
+            </div>
+        </>
+    );
 
     const validDateRange = values => {
         let areValid = true;
@@ -220,7 +205,7 @@ const NexusDynamicForm = ({
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">
-                                                    {sectionTitle === CAST_AND_CREW_TITLE && isEdit ? (
+                                                    {sectionTitle === CAST_AND_CREW_TITLE && canEdit ? (
                                                         <div className="nexus-c-dynamic-form__additional-option">
                                                             {sectionTitle}
                                                             <PropagateButton
@@ -273,7 +258,7 @@ NexusDynamicForm.propTypes = {
     schema: PropTypes.object.isRequired,
     initialData: PropTypes.object,
     onSubmit: PropTypes.func,
-    isEdit: PropTypes.bool,
+    canEdit: PropTypes.bool,
     selectValues: PropTypes.object,
     containerRef: PropTypes.any,
     isTitlePage: PropTypes.bool,
@@ -282,17 +267,14 @@ NexusDynamicForm.propTypes = {
     isSaving: PropTypes.bool,
     regenerateAutoDecoratedMetadata: PropTypes.func,
     hasButtons: PropTypes.bool,
-    setIsEditView: PropTypes.func,
-    setEditMode: PropTypes.func,
     setRefresh: PropTypes.func,
     castCrewConfig: PropTypes.object,
-    isEditDisabled: PropTypes.bool,
 };
 
 NexusDynamicForm.defaultProps = {
     initialData: {},
     onSubmit: undefined,
-    isEdit: false,
+    canEdit: false,
     selectValues: {},
     containerRef: null,
     isTitlePage: false,
@@ -301,11 +283,8 @@ NexusDynamicForm.defaultProps = {
     isSaving: false,
     regenerateAutoDecoratedMetadata: undefined,
     hasButtons: true,
-    setIsEditView: () => null,
-    setEditMode: () => null,
     setRefresh: () => null,
     castCrewConfig: {},
-    isEditDisabled: false,
 };
 
 export default NexusDynamicForm;

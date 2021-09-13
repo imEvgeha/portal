@@ -6,7 +6,6 @@ exports[`RightDetails should match snapshot 1`] = `
 >
   <Memo(RightDetails)
     getRight={[Function]}
-    isEditMode={false}
     isSaving={false}
     match={
       Object {
@@ -25,7 +24,6 @@ exports[`RightDetails should match snapshot 1`] = `
         ],
       }
     }
-    setEditRight={[Function]}
     store={
       Object {
         "clearActions": [Function],

@@ -4,7 +4,7 @@ import AddIcon from '@atlaskit/icon/glyph/add';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import {components, CreatableSelect} from '@atlaskit/select';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {isEmpty, get} from 'lodash';
+import {get} from 'lodash';
 import {connect} from 'react-redux';
 import {insertNewGridModel} from '../../dop-tasks/utils';
 import {setUserDefinedGrid} from '../rights-repository/rightsActions';

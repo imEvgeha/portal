@@ -4,7 +4,9 @@ import NexusDateTimeProvider from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import CustomIntlProvider from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/CustomIntlProvider';
 import {NexusModalProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-overlay/NexusOverlay';
+import theme from '@vubiquity-nexus/portal-ui/lib/styled/theme';
 import {PersistGate} from 'redux-persist/integration/react';
+import {ThemeProvider} from 'styled-components';
 import AuthProvider from './auth/AuthProvider';
 
 const AppProviders = ({children, persistor}) => (
@@ -13,7 +15,9 @@ const AppProviders = ({children, persistor}) => (
             <NexusOverlayProvider>
                 <NexusModalProvider>
                     <PersistGate loading={null} persistor={persistor}>
-                        <AuthProvider>{children}</AuthProvider>
+                        <ThemeProvider theme={theme}>
+                            <AuthProvider>{children}</AuthProvider>
+                        </ThemeProvider>
                     </PersistGate>
                 </NexusModalProvider>
             </NexusOverlayProvider>

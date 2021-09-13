@@ -138,6 +138,7 @@ const NexusField = ({
         const multiselectFieldProps = {...fieldProps};
         let selectLocalizedValues = null;
         let newOptionsConfig = null;
+        setTextFieldVal(fieldProps.value);
 
         switch (type) {
             case 'string':
