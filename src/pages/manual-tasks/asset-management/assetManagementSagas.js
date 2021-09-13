@@ -12,6 +12,7 @@ import {
     UPLOAD_ARTWORK,
     UPLOAD_ARTWORK_REQUEST,
     UPLOAD_ARTWORK_ERROR,
+    UPLOAD_ARTWORK_SUCCESS,
 } from './assetManagementReducer';
 import {fetchPosters} from './assetManagementService';
 
@@ -77,6 +78,11 @@ function* uploadArtwork({payload}) {
                 isAutoDismiss: true,
                 description: `${UPLOAD_SUCCESS_MESSAGE} ${resource.name}`,
             },
+        });
+
+        yield put({
+            type: UPLOAD_ARTWORK_SUCCESS,
+            payload: {},
         });
     } catch (error) {
         yield put({

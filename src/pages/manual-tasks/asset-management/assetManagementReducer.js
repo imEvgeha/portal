@@ -9,6 +9,7 @@ export const FETCH_ASSET_SUCCESS = 'FETCH_ASSET_SUCCESS';
 export const UPLOAD_ARTWORK = 'UPLOAD_ARTWORK';
 export const UPLOAD_ARTWORK_REQUEST = 'UPLOAD_ARTWORK_REQUEST';
 export const UPLOAD_ARTWORK_ERROR = 'UPLOAD_ARTWORK_ERROR';
+export const UPLOAD_ARTWORK_SUCCESS = 'UPLOAD_ARTWORK_SUCCESS';
 
 export const fetchPosters = createAction(FETCH_POSTERS);
 export const fetchAsset = createAction(FETCH_ASSET);
