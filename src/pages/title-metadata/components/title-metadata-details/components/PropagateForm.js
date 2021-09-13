@@ -58,9 +58,9 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                 isDisabled={isEMetsButtonsDisabled}
             />
             <div className="propagate-form__error">
-                {isEMetsButtonsDisabled ? <ErrorMessage>{EMPTY}</ErrorMessage> : null}
+                {isEMetsButtonsDisabled && !error ? <ErrorMessage>{EMPTY}</ErrorMessage> : null}
+                {error && <ErrorMessage>{error}</ErrorMessage>}
             </div>
-            <div className="propagate-form__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>
             <div className="propagate-form__actions">
                 <Button onClick={() => onClose()}>{CANCEL_BUTTON}</Button>
                 <Button onClick={handleAdd} isDisabled={error || !checkedEmet} appearance="primary">
