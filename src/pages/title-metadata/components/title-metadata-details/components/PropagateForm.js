@@ -25,10 +25,9 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
 
     const getPropagateMessage = () => `Propagate ${isEmpty(person) ? CAST_CREW : person.displayName} to...`;
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         if (castCrew.length && editorialMetadata.length) {
             const updatedCastCrew = isEmpty(person) ? castCrew : [person];
-
             const pushUpdatedCastCrew = emet => {
                 if (emet.castCrew) {
                     const uniquePersons = updatedCastCrew.filter(
@@ -48,6 +47,9 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
 
             const updateEditorialMetadata = editorialMetadata.map(emet => pushUpdatedCastCrew(emet));
             const updatedEditorial = pushUpdatedCastCrew(editorial);
+            await setFieldValue(EDITORIAL, {});
+            await setFieldValue(EDITORIAL_METADATA, {});
+
             setFieldValue(EDITORIAL, updatedEditorial);
             setFieldValue(EDITORIAL_METADATA, updateEditorialMetadata);
             setError(null);
