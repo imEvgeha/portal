@@ -20,3 +20,4 @@ export const UPDATE_RIGHT_ERROR = 'UPDATE_RIGHT_ERROR';
 export const SAVING = 'SAVING';
 export const EDITING = 'EDIT_RIGHT';
 export const SET_USER_DEFINED_GRID = 'SET_USER_DEFINED_GRID';
+export const CLEAR_RIGHT = 'CLEAR_RIGHT';

@@ -5,6 +5,7 @@ exports[`RightDetails should match snapshot 1`] = `
   value={null}
 >
   <Memo(RightDetails)
+    clearRight={[Function]}
     getRight={[Function]}
     isSaving={false}
     match={

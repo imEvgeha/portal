@@ -43,3 +43,7 @@ export const setUserDefinedGrid = payload => ({
     type: actionTypes.SET_USER_DEFINED_GRID,
     payload,
 });
+
+export const clearRight = () => ({
+    type: actionTypes.CLEAR_RIGHT,
+});

@@ -1,6 +1,7 @@
 import * as actionTypes from './rightsActionTypes';
 
 const initialState = {
+    right: {},
     list: {},
     total: 0,
     selected: {},
@@ -27,6 +28,11 @@ const rightsReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
 
     switch (type) {
+        case actionTypes.CLEAR_RIGHT:
+            return {
+                ...state,
+                right: {},
+            };
         case actionTypes.SET_SELECTED_RIGHTS: {
             const {selected = {}} = state;
             return {

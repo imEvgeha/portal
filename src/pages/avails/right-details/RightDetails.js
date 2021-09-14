@@ -1,9 +1,9 @@
-import React, {useState, memo, useEffect, useRef} from 'react';
+import React, {memo, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {connect} from 'react-redux';
-import {getRight, updateRight} from '../rights-repository/rightsActions';
+import {getRight, updateRight, clearRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
@@ -11,16 +11,19 @@ import {searchPerson} from './rightDetailsServices';
 import schema from './schema.json';
 import './RightDetails.scss';
 
-const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving}) => {
+const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving, clearRight}) => {
     const containerRef = useRef();
-    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         const {params} = match || {};
         if (params.id) {
             getRight({id: params.id});
         }
-    }, [refresh]);
+
+        return () => {
+            clearRight();
+        };
+    }, []);
 
     const onSubmit = values => {
         updateRight(values);
@@ -37,8 +40,7 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, isSavi
                 isSaving={isSaving}
                 containerRef={containerRef}
                 searchPerson={searchPerson}
-                setRefresh={setRefresh}
-                canEdit
+                canEdit={!!right?.id}
             />
             <NexusStickyFooter />
         </div>
@@ -50,6 +52,7 @@ RightDetails.propTypes = {
     updateRight: PropTypes.func,
     right: PropTypes.object,
     match: PropTypes.object,
+    clearRight: PropTypes.func,
     selectValues: PropTypes.object,
     isSaving: PropTypes.bool,
 };
@@ -57,6 +60,7 @@ RightDetails.propTypes = {
 RightDetails.defaultProps = {
     getRight: () => null,
     updateRight: () => null,
+    clearRight: () => null,
     right: {},
     match: {},
     selectValues: {},
@@ -75,6 +79,7 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => ({
     getRight: payload => dispatch(getRight(payload)),
+    clearRight: () => dispatch(clearRight()),
     updateRight: payload => dispatch(updateRight(payload)),
 });
 
