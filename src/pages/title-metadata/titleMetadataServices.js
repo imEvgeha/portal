@@ -131,7 +131,25 @@ export const syncTitle = payload => {
     return nexusFetch(url, {
         method: 'post',
         params: encodedSerialize(params),
-    });
+    })
+        .catch(error => {
+            const errorToast = {
+                title: 'Unmerge not available',
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: error.message,
+            };
+            store.dispatch(addToast(errorToast));
+        })
+        .then(() => {
+            const successToast = {
+                title: 'Title Sync',
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: `Successfully synced with ${externalSystem}!`,
+            };
+            store.dispatch(addToast(successToast));
+        });
 };
 
 export const registerTitle = payload => {

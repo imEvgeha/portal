@@ -235,11 +235,29 @@ export function* publishTitle({payload}) {
         const newPayload = {id: response.titleId};
         yield call(loadExternalIds, {payload: newPayload});
     } catch (err) {
-        // todo: add toast
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: 'Publish title',
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: err.message,
+            },
+        });
     } finally {
         yield put({
             type: actionTypes.TITLE_IS_PUBLISHING_END,
             payload: payload.externalSystem,
+        });
+
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: 'Publish title',
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: `Successfully published to ${payload.externalSystem}!`,
+            },
         });
     }
 }
