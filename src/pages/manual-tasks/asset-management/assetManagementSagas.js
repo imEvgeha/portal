@@ -65,7 +65,7 @@ function* uploadArtwork({payload}) {
             payload: {},
         });
 
-        const url = `${config.get('gateway.kongUrl')}/${tenantId}/files/upload`;
+        const url = `${config.get('gateway.mediaStorageUrl')}/${tenantId}/files/upload`;
         const data = new FormData();
         data.append('file', file, file.name);
 

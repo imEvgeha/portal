@@ -65,6 +65,8 @@ const TitleDetails = ({
 }) => {
     const containerRef = useRef();
     const [refresh, setRefresh] = useState(false);
+    const [VZDisabled, setVZDisabled] = useState(true);
+    const [MOVDisabled, setMOVDisabled] = useState(true);
 
     const {fields} = schema;
 
@@ -114,9 +116,14 @@ const TitleDetails = ({
 
         prepareCategoryField(updatedValues);
         updatedValues['awards'] = prepareAwardsField(updatedValues, selectValues?.awards);
-        updateTitle({...updatedValues, id: title.id});
-        updateTerritoryMetadata(values, id);
-        updateEditorialMetadata(values, id);
+        Promise.all([
+            updateTitle({...updatedValues, id: title.id}),
+            updateTerritoryMetadata(values, id),
+            updateEditorialMetadata(values, id),
+        ]).then(() => {
+            setVZDisabled(false);
+            setMOVDisabled(false);
+        });
     };
 
     const getExternaIds = repo => {
@@ -152,6 +159,8 @@ const TitleDetails = ({
         } else {
             publishTitle({id, externalSystem});
         }
+
+        externalSystem === VZ ? setVZDisabled(true) : setMOVDisabled(true);
     };
 
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
@@ -183,6 +192,7 @@ const TitleDetails = ({
                         onSyncPublish={syncPublishHandler}
                         isSyncing={isVZTitleSyncing}
                         isPublishing={isVZTitlePublishing}
+                        isDisabled={VZDisabled}
                     />
                     <SyncPublish
                         externalSystem={MOVIDA}
@@ -190,6 +200,7 @@ const TitleDetails = ({
                         onSyncPublish={syncPublishHandler}
                         isSyncing={isMOVTitleSyncing}
                         isPublishing={isMOVTitlePublishing}
+                        isDisabled={MOVDisabled}
                     />
                 </NexusStickyFooter.LeftActions>
             </NexusStickyFooter>

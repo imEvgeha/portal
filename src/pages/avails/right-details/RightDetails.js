@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useRef} from 'react';
+import React, {useState, memo, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
@@ -13,13 +13,14 @@ import './RightDetails.scss';
 
 const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving}) => {
     const containerRef = useRef();
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         const {params} = match || {};
         if (params.id) {
             getRight({id: params.id});
         }
-    }, []);
+    }, [refresh]);
 
     const onSubmit = values => {
         updateRight(values);
@@ -36,6 +37,7 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, isSavi
                 isSaving={isSaving}
                 containerRef={containerRef}
                 searchPerson={searchPerson}
+                setRefresh={setRefresh}
                 canEdit
             />
             <NexusStickyFooter />
