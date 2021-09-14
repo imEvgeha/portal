@@ -112,8 +112,13 @@ const NexusDynamicForm = ({
     const handleOnSubmit = (values, initialData) => {
         setValidationErrorCount(0);
         if (validDateRange(values)) {
+            let correctValues = {};
+            const allValues = getAllFields(fields);
             const properValues = getProperValues(fields, values);
-            const correctValues = {};
+            Object.values(allValues).forEach(({type, path}) => {
+                const defaultValue = getProperValue(type, null, path, fields);
+                correctValues = {...(type === 'array' && defaultValue), ...correctValues};
+            });
             Object.keys(properValues).forEach(key => set(correctValues, key, properValues[key]));
             onSubmit(
                 mergeWith({}, initialData, correctValues, (obj, src) => {
