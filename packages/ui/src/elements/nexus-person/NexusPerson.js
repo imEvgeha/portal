@@ -16,8 +16,10 @@ import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
 import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 
-const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLanguage}) => {
+const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLanguage, name}) => {
     const localization = get(person, 'localization');
+    const isCastCrewField = name === 'castCrew';
+
     const getEnName = () => {
         return localization ? person.displayName : person.displayNameEn;
     };
@@ -80,9 +82,11 @@ const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLa
                                 </div>
                             </div>
                             <div className="nexus-c-nexus-person__buttons">
-                                <span title="Propagate">
-                                    <PropagateButton onClick={onPropagate} />
-                                </span>
+                                {isCastCrewField && (
+                                    <span title="Propagate">
+                                        <PropagateButton onClick={onPropagate} />
+                                    </span>
+                                )}
                                 <span title="Edit">
                                     <EditPerson onClick={onEditPerson} />
                                 </span>
@@ -108,6 +112,7 @@ NexusPerson.propTypes = {
     onPropagate: PropTypes.func,
     onEditPerson: PropTypes.func,
     emetLanguage: PropTypes.string,
+    name: PropTypes.string,
 };
 
 NexusPerson.defaultProps = {
@@ -115,6 +120,7 @@ NexusPerson.defaultProps = {
     onPropagate: () => null,
     onEditPerson: () => null,
     emetLanguage: 'en',
+    name: null,
 };
 
 export default NexusPerson;

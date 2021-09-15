@@ -19,6 +19,7 @@ const CastCrew = ({
     castCrewConfig,
     language,
     setFieldValue,
+    ...props
 }) => {
     const [cast, setCast] = useState(
         persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
@@ -87,6 +88,7 @@ const CastCrew = ({
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                     emetLanguage={language}
+                    {...props}
                 />
             </div>
             <div
@@ -105,6 +107,7 @@ const CastCrew = ({
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                     emetLanguage={language}
+                    {...props}
                 />
             </div>
         </div>

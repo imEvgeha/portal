@@ -30,6 +30,7 @@ const NexusPersonsList = ({
     searchPerson,
     castCrewConfig,
     emetLanguage,
+    ...props
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [openPersonModal, setOpenPersonModal] = useState(false);
@@ -227,6 +228,7 @@ const NexusPersonsList = ({
                     onPropagate={() => openPropagateModal(person)}
                     onEditPerson={() => onEditPerson(person)}
                     emetLanguage={emetLanguage}
+                    {...props}
                 />
             );
         });
