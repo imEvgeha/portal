@@ -135,6 +135,11 @@ export function* getRight({payload}) {
     }
 
     try {
+        yield put({
+            type: actionTypes.GET_RIGHT_REQUEST,
+            payload: {},
+        });
+
         const response = yield rightsService.get(payload.id, {});
         yield put({
             type: actionTypes.GET_RIGHT_SUCCESS,
