@@ -8,6 +8,7 @@ export const VU = 'vu';
 export const MGM = 'MGM';
 export const SUCCESS = 'success';
 export const ERROR = 'error';
+export const EMPTY = 'empty';
 export const SYNC = 'sync';
 export const PUBLISH = 'publish';
 export const CONTENT_TYPE = ['MOVIE', 'EPISODE', 'EVENT', 'SERIES', 'SEASON', 'SPORTS', 'AD', 'SPECIAL'];

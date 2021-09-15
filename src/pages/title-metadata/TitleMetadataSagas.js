@@ -208,10 +208,29 @@ export function* syncTitle({payload}) {
     try {
         const [response] = yield call(syncTitleService, payload);
         const newPayload = {id: response.titleId};
+        if (response.status === 'failure') throw Error();
+
         yield call(loadExternalIds, {payload: newPayload});
-        // todo: add toast
+
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: 'Publish title',
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: `Successfully synced to ${payload.externalSystem}!`,
+            },
+        });
     } catch (err) {
-        // todo: add toast
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: 'Title Sync',
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: err.message,
+            },
+        });
     } finally {
         yield put({
             type: actionTypes.TITLE_IS_SYNCING_END,
@@ -233,22 +252,9 @@ export function* publishTitle({payload}) {
     try {
         const [response] = yield call(registerTitle, payload);
         const newPayload = {id: response.titleId};
+
         yield call(loadExternalIds, {payload: newPayload});
-    } catch (err) {
-        yield put({
-            type: ADD_TOAST,
-            payload: {
-                title: 'Publish title',
-                icon: ERROR_ICON,
-                isAutoDismiss: true,
-                description: err.message,
-            },
-        });
-    } finally {
-        yield put({
-            type: actionTypes.TITLE_IS_PUBLISHING_END,
-            payload: payload.externalSystem,
-        });
+        if (response.status === 'failure') throw Error();
 
         yield put({
             type: ADD_TOAST,
@@ -258,6 +264,21 @@ export function* publishTitle({payload}) {
                 isAutoDismiss: true,
                 description: `Successfully published to ${payload.externalSystem}!`,
             },
+        });
+    } catch (err) {
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: 'Publish title',
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: 'Unable to publish',
+            },
+        });
+    } finally {
+        yield put({
+            type: actionTypes.TITLE_IS_PUBLISHING_END,
+            payload: payload.externalSystem,
         });
     }
 }

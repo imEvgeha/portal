@@ -3,11 +3,10 @@ import styled from 'styled-components';
 
 const LeftActionsContainer = styled.div`
     display: flex;
-    padding-right: 16px;
     align-items: flex-start;
 
-    > * {
-        margin-right: 60px;
+    & > * {
+        margin-right: 48px;
     }
 `;
 

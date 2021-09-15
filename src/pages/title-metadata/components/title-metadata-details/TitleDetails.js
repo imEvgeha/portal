@@ -1,7 +1,13 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
+import NexusDropdown, {
+    DropdownOptions,
+    DropdownOption,
+    DropdownToggle,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {get} from 'lodash';
 import {connect} from 'react-redux';
@@ -21,7 +27,7 @@ import {
     publishTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
-import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
+import {generateMsvIds, regenerateAutoDecoratedMetadata, unmergeTitle} from '../../titleMetadataServices';
 import {
     handleEditorialGenresAndCategory,
     handleTitleCategory,
@@ -38,6 +44,9 @@ import SyncPublish from './components/SyncPublish';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
+
+const UNMERGE_TITLE = 'Unmerge';
+const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
 const TitleDetails = ({
     history,
@@ -67,6 +76,7 @@ const TitleDetails = ({
     const [refresh, setRefresh] = useState(false);
     const [VZDisabled, setVZDisabled] = useState(true);
     const [MOVDisabled, setMOVDisabled] = useState(true);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     const {fields} = schema;
 
@@ -163,6 +173,27 @@ const TitleDetails = ({
         externalSystem === VZ ? setVZDisabled(true) : setMOVDisabled(true);
     };
 
+    const openUnmergeDialog = useCallback(() => {
+        const confirmUnmerge = () => {
+            unmergeTitle(title.id);
+            closeModal();
+        };
+
+        const actions = [
+            {
+                text: 'Cancel',
+                onClick: () => closeModal(),
+                appearance: 'secondary',
+            },
+            {
+                text: 'Unmerge',
+                onClick: confirmUnmerge,
+                appearance: 'primary',
+            },
+        ];
+        openModal(UNMERGE_MESSAGE, {title: UNMERGE_TITLE, width: 'medium', actions});
+    }, [title.id]);
+
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
 
     return (
@@ -186,22 +217,38 @@ const TitleDetails = ({
             />
             <NexusStickyFooter>
                 <NexusStickyFooter.LeftActions>
-                    <SyncPublish
-                        externalSystem={VZ}
-                        externalIds={externalIds}
-                        onSyncPublish={syncPublishHandler}
-                        isSyncing={isVZTitleSyncing}
-                        isPublishing={isVZTitlePublishing}
-                        isDisabled={VZDisabled}
-                    />
-                    <SyncPublish
-                        externalSystem={MOVIDA}
-                        externalIds={externalIds}
-                        onSyncPublish={syncPublishHandler}
-                        isSyncing={isMOVTitleSyncing}
-                        isPublishing={isMOVTitlePublishing}
-                        isDisabled={MOVDisabled}
-                    />
+                    {title.id && externalIds && (
+                        <>
+                            <SyncPublish
+                                externalSystem={VZ}
+                                externalIds={externalIds}
+                                onSyncPublish={syncPublishHandler}
+                                isSyncing={isVZTitleSyncing}
+                                isPublishing={isVZTitlePublishing}
+                                isDisabled={VZDisabled}
+                                titleUpdatedAt={title.updatedAt}
+                            />
+                            <SyncPublish
+                                externalSystem={MOVIDA}
+                                externalIds={externalIds}
+                                onSyncPublish={syncPublishHandler}
+                                isSyncing={isMOVTitleSyncing}
+                                isPublishing={isMOVTitlePublishing}
+                                isDisabled={MOVDisabled}
+                                titleUpdatedAt={title.updatedAt}
+                            />
+                            <div className="nexus-c-title-details-__action-dropdown">
+                                <NexusDropdown>
+                                    <DropdownToggle label="Actions" isMobile />
+                                    <DropdownOptions isMobile align="top">
+                                        <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
+                                            Unmerge
+                                        </DropdownOption>
+                                    </DropdownOptions>
+                                </NexusDropdown>
+                            </div>
+                        </>
+                    )}
                 </NexusStickyFooter.LeftActions>
             </NexusStickyFooter>
         </div>

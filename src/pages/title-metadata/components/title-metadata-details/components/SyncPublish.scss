@@ -14,13 +14,22 @@
     }
 }
 
+.nexus-c-sync-publish__status--sync {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    background-color: map-get($yellows, Y14);
+}
+
 .nexus-c-sync-publish__status--success {
     height: 10px;
     width: 10px;
     border-radius: 50%;
     display: inline-block;
-    @include margin(0, 10, 0, 0);
-    background-color: map-get($greens, G400);
+    margin-right: 8px;
+    background-color: map-get($greens, G14);
 }
 
 .nexus-c-sync-publish__status--error {
@@ -28,6 +37,6 @@
     width: 10px;
     border-radius: 50%;
     display: inline-block;
-    @include margin(0, 10, 0, 0);
-    background-color: map-get($reds, R400);
+    margin-right: 8px;
+    background-color: map-get($reds, R14);
 }

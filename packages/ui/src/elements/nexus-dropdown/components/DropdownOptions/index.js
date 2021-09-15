@@ -14,7 +14,7 @@ DropdownOptions.defaultProps = {
 };
 
 DropdownOptions.propTypes = {
-    align: PT.oneOf(['right', 'left']),
+    align: PT.oneOf(['right', 'left', 'top']),
 };
 
 export default DropdownOptions;

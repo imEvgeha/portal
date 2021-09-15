@@ -4,3 +4,10 @@
     width: 100%;
     background-color: map-get($neutrals, N0);
 }
+
+.nexus-c-title-details-__action-dropdown {
+    padding-left: 48px;
+    display: flex;
+    justify-content: flex-end;
+    border-left: 1px solid rgba(black, 0.2);
+}

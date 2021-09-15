@@ -1,22 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {SUCCESS, ERROR, SYNC, PUBLISH} from '../../../constants';
+import moment from 'moment';
+import {SUCCESS, ERROR, EMPTY, SYNC, PUBLISH} from '../../../constants';
 import './SyncPublish.scss';
 
-const SyncPublish = ({externalSystem, externalIds, onSyncPublish, isSyncing, isPublishing, isDisabled}) => {
+const SyncPublish = ({
+    externalSystem,
+    externalIds,
+    onSyncPublish,
+    isSyncing,
+    isPublishing,
+    isDisabled,
+    titleUpdatedAt,
+}) => {
     const [externalData] = externalIds.filter(id => id.externalSystem === externalSystem.toLowerCase());
-    const statusIndicator = externalData && externalData.status === SUCCESS ? SUCCESS : ERROR;
     const buttonType = externalData ? SYNC : PUBLISH;
+    let publishedDate = externalData && externalData.publishedAt ? externalData.publishedAt : null;
+    publishedDate = moment(publishedDate).isValid() ? moment(publishedDate) : null;
+    const needsSyncing = moment(publishedDate).isBefore(moment(titleUpdatedAt));
+
+    const getStatus = () => {
+        if (needsSyncing) return SYNC;
+        if (externalData === undefined) return EMPTY;
+        if (externalData.status === SUCCESS) return SUCCESS;
+        return ERROR;
+    };
+
     return (
         <div className="nexus-c-sync-publish">
             <Button
-                isDisabled={isDisabled}
-                appearance="default"
+                isDisabled={isDisabled && publishedDate && !needsSyncing}
+                appearance="subtle"
                 isLoading={isSyncing || isPublishing}
                 onClick={() => onSyncPublish(externalSystem, buttonType)}
             >
-                <span className={`nexus-c-sync-publish__status--${statusIndicator}`} />
+                <span className={`nexus-c-sync-publish__status--${getStatus()}`} />
                 {externalSystem}
             </Button>
         </div>
@@ -30,6 +49,7 @@ SyncPublish.propTypes = {
     isSyncing: PropTypes.bool,
     isPublishing: PropTypes.bool,
     isDisabled: PropTypes.bool,
+    titleUpdatedAt: PropTypes.string,
 };
 
 SyncPublish.defaultProps = {
@@ -38,6 +58,7 @@ SyncPublish.defaultProps = {
     isSyncing: false,
     isPublishing: false,
     isDisabled: false,
+    titleUpdatedAt: null,
 };
 
 export default SyncPublish;

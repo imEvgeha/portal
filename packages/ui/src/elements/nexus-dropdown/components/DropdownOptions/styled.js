@@ -7,7 +7,7 @@ export const Options = styled.ul`
     opacity: 0;
     width: 160px;
     border-radius: 9px;
-    background-color: 'white';
+    background-color: white;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     pointer-events: none;
     list-style: none;
@@ -29,9 +29,16 @@ export const Options = styled.ul`
             left: 0;
             right: auto;
         `}
+
+    ${props =>
+        props.align === 'top' &&
+        css`
+            top: -50px;
+            left: 0;
+        `}
 `;
 
 Options.propTypes = {
     isOpen: PT.bool,
-    align: PT.oneOf(['right', 'left']),
+    align: PT.oneOf(['right', 'left', 'top']),
 };
