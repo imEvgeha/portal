@@ -55,7 +55,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             setError(null);
             onClose();
         } else {
-            setError(EMPTY);
+            setError(isCastCrewEmpty ? EMPTY_CAST_CREW : EMPTY_EMETS);
         }
     };
 
