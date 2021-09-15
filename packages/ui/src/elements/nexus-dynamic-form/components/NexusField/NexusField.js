@@ -246,7 +246,7 @@ const NexusField = ({
                     fieldProps.value.length &&
                     fieldProps.value[fieldProps.value.length - 1].value === undefined
                 ) {
-                    multiselectFieldProps.value = fieldProps?.value.map(val => ({label: val, value: val}));
+                    multiselectFieldProps.value = fieldProps?.value?.map(val => ({label: val, value: val}));
                 }
 
                 if (showLocalized === true) {
@@ -260,7 +260,7 @@ const NexusField = ({
                     });
 
                     selectLocalizedValues = Object.assign({}, selectValues);
-                    const newValues = selectLocalizedValues[path].map(item => {
+                    const newValues = selectLocalizedValues[path]?.map(item => {
                         const localLang = item.localizations.find(local => {
                             const isEmetLanguageObject = isObject(emetLanguage) && path === 'genres';
                             const initialEmetLanguage = isEmetLanguageObject ? emetLanguage.value : emetLanguage;
@@ -300,7 +300,7 @@ const NexusField = ({
                         language={getLanguage()}
                         defaultValue={
                             fieldProps.value
-                                ? fieldProps.value.map(val => {
+                                ? fieldProps?.value?.map(val => {
                                       return {label: val, value: val};
                                   })
                                 : undefined
@@ -410,7 +410,7 @@ const NexusField = ({
                 if (showLocalized) {
                     return (
                         <div>
-                            {arrayValues.map((item, index) => {
+                            {arrayValues?.map((item, index) => {
                                 if (!hasLocalizedValue(item)) {
                                     return (
                                         <span key={index} title={LOCALIZED_VALUE_NOT_DEFINED} className="italic">
@@ -429,7 +429,7 @@ const NexusField = ({
                         </div>
                     );
                 }
-                return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
+                return fieldProps?.value?.map(x => x && getFieldValue(x)).join(', ');
             }
             return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
         }
