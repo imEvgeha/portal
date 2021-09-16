@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {cloneDeep, get} from 'lodash';
+import {compose} from 'redux';
+import withColumnsResizing from '../../../../packages/ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import {NexusGrid} from '../../../ui/elements';
 import mappings from './TitleMatchingRightsTable.json';
 import columnDefinitions from './columnDefinitions';
@@ -8,6 +10,8 @@ import './TitleMatchingRightsTable.scss';
 
 const TitleMatchingRightsTable = ({data}) => {
     const [tableData, setTableData] = useState([]);
+
+    const TitlesTable = compose(withColumnsResizing())(NexusGrid);
 
     const flattenData = data => {
         return cloneDeep(data).filter(item => {
@@ -37,7 +41,7 @@ const TitleMatchingRightsTable = ({data}) => {
 
     return (
         <div className="nexus-c-title-matching-rights-table">
-            <NexusGrid
+            <TitlesTable
                 columnDefs={columnDefinitions}
                 mapping={mappings}
                 rowData={tableData}
