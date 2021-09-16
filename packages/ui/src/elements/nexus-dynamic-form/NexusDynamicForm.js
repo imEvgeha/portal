@@ -51,8 +51,27 @@ const NexusDynamicForm = ({
         errorsCount && setValidationErrorCount(errorsCount);
     };
 
-    const onCancel = reset => {
-        reset();
+    const getInitialEditorialValues = getValues => {
+        return initialData.editorialMetadata.length
+            ? initialData.editorialMetadata.filter(elem => {
+                  return (
+                      elem.language === getValues().editorial.language &&
+                      elem.locale === getValues().editorial.locale &&
+                      elem.metadataStatus === getValues().editorial.metadataStatus
+                  );
+              })
+            : [];
+    };
+
+    const onCancel = async (reset, getValues) => {
+        const initialDynamicEditorialValue = initialData.editorialMetadata.filter(elem => {
+            return getInitialEditorialValues(getValues).find(initialElem => elem.id === initialElem.id);
+        });
+
+        await reset({
+            ...initialData,
+            editorial: initialDynamicEditorialValue.length ? initialDynamicEditorialValue[0] : undefined,
+        });
         setUpdate(true);
         setValidationErrorCount(0);
     };
@@ -63,7 +82,7 @@ const NexusDynamicForm = ({
         return 'success';
     };
 
-    const buildButtons = (dirty, reset, errors) => (
+    const buildButtons = (dirty, reset, errors, getValues) => (
         <>
             {errors > 0 && (
                 <div className="nexus-c-dynamic-form__validation-msg">
@@ -75,7 +94,7 @@ const NexusDynamicForm = ({
             <div className="nexus-c-dynamic-form__actions-container">
                 <Button
                     className="nexus-c-dynamic-form__discard-button"
-                    onClick={() => onCancel(reset)}
+                    onClick={() => onCancel(reset, getValues)}
                     isDisabled={!dirty || isSaving || !canEdit}
                 >
                     Discard
@@ -181,7 +200,7 @@ const NexusDynamicForm = ({
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
                 {({formProps, dirty, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
-                        {hasButtons && buildButtons(dirty, reset, validationErrorCount)}
+                        {hasButtons && buildButtons(dirty, reset, validationErrorCount, getValues)}
                         <div
                             ref={containerRef}
                             className={classnames('nexus-c-dynamic-form__tab-container', {
