@@ -53,3 +53,9 @@ export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = fal
     const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + path;
     return nexusFetch(url, {isWithErrorHandling: false});
 };
+
+export const searchPersonById = personId => {
+    const path = `/persons/${personId}`;
+    const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + path;
+    return nexusFetch(url, {isWithErrorHandling: false});
+};
