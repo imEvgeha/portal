@@ -222,6 +222,7 @@ const NexusField = ({
                             : selectVal;
                 }
 
+                console.log(selectValues);
                 return (
                     <NexusSelect
                         onChange={setUpdatedValues(getCurrentValues())}

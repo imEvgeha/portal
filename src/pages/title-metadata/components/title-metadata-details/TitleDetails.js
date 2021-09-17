@@ -4,7 +4,7 @@ import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dyna
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
-import {get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
@@ -171,7 +171,7 @@ const TitleDetails = ({
     return (
         <div className="nexus-c-title-details">
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
-            {!isLoadingSelectValues && (
+            {!isLoadingSelectValues && !isEmpty(selectValues) && (
                 <NexusDynamicForm
                     castCrewConfig={castCrewConfig}
                     searchPerson={searchPerson}
