@@ -30,8 +30,8 @@ module.exports = envFile => ({
     ],
     output: {
         path: paths.appBuild,
-        filename: 'js/index.js',
-        chunkFilename: 'js/[id].chunk.js',
+        filename: 'js/[name].[hash].js',
+        chunkFilename: 'js/[name].[chunkhash].chunk.js',
         publicPath: '/',
         pathinfo: false,
         hotUpdateChunkFilename: 'hot/[id].[hash].hot-update.js',

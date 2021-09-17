@@ -109,7 +109,7 @@ module.exports = envFile => ({
     ],
     output: {
         path: paths.appBuild,
-        filename: 'js/[name].bundle.js',
+        filename: 'js/[name].[hash].bundle.js',
         chunkFilename: 'js/[name].[chunkhash].chunk.js',
         publicPath: '/',
     },

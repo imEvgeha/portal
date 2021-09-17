@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     output: {
         path: __dirname + '/dist',
-        filename: 'app/[name].bundle.js',
+        filename: 'app/[name].[hash].bundle.js',
         chunkFilename: 'app/[name].[chunkhash].chunk.js',
     },
     entry: {
