@@ -59,13 +59,14 @@ export const defineActionButtonColumn = ({cellRendererFramework}) => {
 
 export const defineButtonColumn = ({
     headerName = '',
+    field = 'buttons',
     cellRendererFramework,
     cellEditorFramework,
     editable = false,
     ...rest
 }) => {
     return defineColumn({
-        field: 'buttons',
+        field,
         headerName,
         colId: headerName.toLowerCase(),
         cellRendererFramework,
