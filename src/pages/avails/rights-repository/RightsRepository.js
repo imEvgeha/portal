@@ -284,6 +284,8 @@ const RightsRepository = ({
         cellRendererParams: {isTooltipEnabled: true, setSingleRightMatch},
         lockVisible: true,
         cellStyle: {overflow: 'visible'},
+        field: 'id',
+        // The AgGridReact tracks changes in this field and provides new data for components
     });
 
     const columnsValidationDefsClone = columnDefsClone.map(col => {

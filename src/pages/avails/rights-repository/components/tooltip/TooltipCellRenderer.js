@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
+import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {useDateTimeContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-time-context/NexusDateTimeProvider';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getDomainName, isObjectEmpty} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import classnames from 'classnames';
 import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from '../../util/indicator';
@@ -18,6 +19,10 @@ const TooltipCellRenderer = ({data = {}, isTooltipEnabled, setSingleRightMatch})
     const notificationClass = indicator !== INDICATOR_RED ? '--success' : '--error';
     const toggleTooltip = () => setIsTitleMatchTooltipOpen(!isTitleMatchTooltipOpen);
     const {renderDateTime} = useDateTimeContext();
+
+    if (isObjectEmpty(data)) {
+        return <img src={loadingGif} alt="loadingSpinner" />;
+    }
 
     const renderContent = () => {
         switch (calculateIndicatorType(data)) {
