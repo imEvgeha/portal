@@ -4,11 +4,11 @@ import TitleMatchingRightsTable from './TitleMatchingRightsTable';
 
 describe('TitleMatchingRightsTable', () => {
     let wrapper = null;
-    let NexusGrid = null;
+    let TitlesTable = null;
 
     beforeEach(() => {
         wrapper = shallow(<TitleMatchingRightsTable data={[]} />);
-        NexusGrid = wrapper.find('NexusGrid');
+        TitlesTable = wrapper.find('.titleTableForMatching');
     });
 
     it('should match snapshot', () => {
@@ -19,12 +19,12 @@ describe('TitleMatchingRightsTable', () => {
         expect(wrapper.find('.nexus-c-title-matching-rights-table')).toHaveLength(1);
     });
 
-    it('renders Nexus Grid', () => {
-        expect(wrapper.find('NexusGrid')).toHaveLength(1);
+    it('renders Titles Table', () => {
+        expect(wrapper.find('.titleTableForMatching')).toHaveLength(1);
     });
 
     it('should pass rowSelection prop to NexusGrid', () => {
-        expect(NexusGrid.props().rowSelection).toEqual('single');
-        expect(NexusGrid.props().onSelectionChanged).toBeInstanceOf(Function);
+        expect(TitlesTable.props().rowSelection).toEqual('single');
+        expect(TitlesTable.props().onSelectionChanged).toBeInstanceOf(Function);
     });
 });

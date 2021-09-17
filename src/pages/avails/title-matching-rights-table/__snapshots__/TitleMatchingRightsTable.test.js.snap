@@ -4,7 +4,8 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
 <div
   className="nexus-c-title-matching-rights-table"
 >
-  <NexusGrid
+  <Connect(ComposedComponent)
+    className="titleTableForMatching"
     columnDefs={
       Array [
         Object {
@@ -130,10 +131,6 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
         },
       ]
     }
-    dragStopped={null}
-    frameworkComponents={Object {}}
-    isGridHidden={false}
-    link={null}
     mapping={
       Array [
         Object {
@@ -264,12 +261,9 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
         },
       ]
     }
-    onGridEvent={null}
-    onGridReady={null}
     onSelectionChanged={[Function]}
     rowData={Array []}
     rowSelection="single"
-    setRowData={null}
   />
 </div>
 `;

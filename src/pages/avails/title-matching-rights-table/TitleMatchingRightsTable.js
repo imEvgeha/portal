@@ -11,7 +11,7 @@ import './TitleMatchingRightsTable.scss';
 const TitleMatchingRightsTable = ({data}) => {
     const [tableData, setTableData] = useState([]);
 
-    const TitlesTable = compose(withColumnsResizing())(NexusGrid);
+    const TitleTable = compose(withColumnsResizing())(NexusGrid);
 
     const flattenData = data => {
         return cloneDeep(data).filter(item => {
@@ -41,7 +41,8 @@ const TitleMatchingRightsTable = ({data}) => {
 
     return (
         <div className="nexus-c-title-matching-rights-table">
-            <TitlesTable
+            <TitleTable
+                className="titleTableForMatching"
                 columnDefs={columnDefinitions}
                 mapping={mappings}
                 rowData={tableData}
