@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
-import {get} from 'lodash';
+import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
+import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
@@ -55,6 +56,7 @@ const TitleDetails = ({
     getEditorialMetadata,
     updateTitle,
     selectValues,
+    isLoadingSelectValues,
     castCrewConfig,
     syncTitle,
     publishTitle,
@@ -169,22 +171,24 @@ const TitleDetails = ({
     return (
         <div className="nexus-c-title-details">
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
-            <NexusDynamicForm
-                castCrewConfig={castCrewConfig}
-                searchPerson={searchPerson}
-                schema={schema}
-                initialData={extendTitleWithExternalIds()}
-                canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
-                containerRef={containerRef}
-                selectValues={selectValues}
-                onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
-                generateMsvIds={generateMsvIds}
-                regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
-                hasButtons={isNexusTitle(title.id)}
-                isSaving={isSaving}
-                setRefresh={setRefresh}
-                isTitlePage
-            />
+            {!isLoadingSelectValues && !isEmpty(selectValues) && (
+                <NexusDynamicForm
+                    castCrewConfig={castCrewConfig}
+                    searchPerson={searchPerson}
+                    schema={schema}
+                    initialData={extendTitleWithExternalIds()}
+                    canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
+                    containerRef={containerRef}
+                    selectValues={selectValues}
+                    onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
+                    generateMsvIds={generateMsvIds}
+                    regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
+                    hasButtons={isNexusTitle(title.id)}
+                    isSaving={isSaving}
+                    setRefresh={setRefresh}
+                    isTitlePage
+                />
+            )}
             <NexusStickyFooter>
                 <NexusStickyFooter.LeftActions>
                     {title.id && externalIds && (
@@ -230,6 +234,7 @@ TitleDetails.propTypes = {
     getEditorialMetadata: PropTypes.func,
     updateTitle: PropTypes.func,
     selectValues: PropTypes.object,
+    isLoadingSelectValues: PropTypes.bool,
     syncTitle: PropTypes.func,
     publishTitle: PropTypes.func,
     isSaving: PropTypes.bool,
@@ -246,6 +251,7 @@ TitleDetails.defaultProps = {
     match: {},
     title: {},
     externalIds: [],
+    isLoadingSelectValues: true,
     territoryMetadata: [],
     editorialMetadata: [],
     getTitle: () => null,
@@ -268,6 +274,7 @@ TitleDetails.defaultProps = {
 
 const mapStateToProps = () => {
     const titleSelector = selectors.createTitleSelector();
+    const selectValuesLoadingSelector = createLoadingSelector(['FETCH_SELECT_VALUES']);
     const externalIdsSelector = selectors.createExternalIdsSelector();
     const territoryMetadataSelector = selectors.createTerritoryMetadataSelector();
     const editorialMetadataSelector = selectors.createEditorialMetadataSelector();
@@ -283,6 +290,7 @@ const mapStateToProps = () => {
         territoryMetadata: territoryMetadataSelector(state, props),
         editorialMetadata: editorialMetadataSelector(state, props),
         selectValues: detailsSelectors.selectValuesSelector(state, props),
+        isLoadingSelectValues: selectValuesLoadingSelector(state),
         isSaving: detailsSelectors.isSavingSelector(state),
         isVZTitleSyncing: isVZTitleSyncingSelector(state, props),
         isMOVTitleSyncing: isMOVTitleSyncingSelector(state, props),
