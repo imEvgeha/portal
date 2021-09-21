@@ -228,6 +228,13 @@ export const titleService = {
             params: encodedSerialize(params),
         });
     },
+    propagateSeasonsPersonsToEpisodes: seasonPersons => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/seasonsPersonsToEpisodes`;
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(seasonPersons),
+        });
+    },
     regenerateAutoDecoratedMetadata: masterEmetId => {
         const url = `${
             config.get('gateway.titleUrl') + config.get('gateway.service.titleV2')

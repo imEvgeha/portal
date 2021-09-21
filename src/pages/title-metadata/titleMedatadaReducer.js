@@ -6,6 +6,7 @@ const initialState = {
     externalIds: [],
     territoryMetadata: [],
     editorialMetadata: [],
+    seasonPersons: undefined,
     isSyncingVZ: false,
     isPublishingVZ: false,
     isSyncingMOV: false,
@@ -16,6 +17,11 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
 
     switch (type) {
+        case actionTypes.UPDATE_SEASON_PERSONS:
+            return {
+                ...state,
+                seasonPersons: payload,
+            };
         case actionTypes.CLEAR_TITLE:
             return {
                 ...state,

@@ -4,8 +4,10 @@ import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
 import {isEmpty} from 'lodash';
+import {useDispatch} from 'react-redux';
 import {searchPersonById} from '../../../../avails/right-details/rightDetailsServices';
 import Loading from '../../../../static/Loading';
+import {UPDATE_SEASON_PERSONS} from '../../../titleMetadataActionTypes';
 import {
     CAST_CREW,
     CANCEL_BUTTON,
@@ -15,15 +17,21 @@ import {
     EMPTY_CAST_CREW,
     EMPTY_EMETS,
     EMETS,
+    CORE,
+    SEASON,
+    EPISODE,
 } from './propagateConstants';
 import './PropagateForm.scss';
 
 const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
-    const {castCrew, editorial, editorialMetadata} = getValues();
+    const {castCrew, contentType, editorial, editorialMetadata} = getValues();
     const persons = isEmpty(person) ? castCrew : [person];
     const isCastCrewEmpty = !castCrew?.length;
     const isEMetsEmpty = !editorialMetadata?.length;
+    const dispatch = useDispatch();
     const [checkedEmet, setCheckedEmet] = useState(false);
+    const [seasonCheckedCore, setSeasonCheckedCore] = useState(false);
+    const [seasonCheckedEmet, setSeasonCheckedEmet] = useState(false);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [localizationCastCrew, setLocalizationCastCrew] = useState([]);
@@ -32,21 +40,25 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
         async function fetchLocalizationPersons() {
             setIsLoading(true);
             const allLocalizationsPersons = persons.map(async ({id}) => {
-                const localizationPerson = await searchPersonById(id);
-                return localizationPerson;
+                try {
+                    const localizationPerson = await searchPersonById(id);
+                    return localizationPerson;
+                } catch (err) {
+                    return;
+                }
             });
 
             const localizationPersons = await Promise.all(allLocalizationsPersons);
             setLocalizationCastCrew(localizationPersons);
             setIsLoading(false);
         }
-        fetchLocalizationPersons();
+        !isEmpty(persons) && fetchLocalizationPersons();
     }, [castCrew]);
 
     const getPropagateMessage = () => `Propagate ${isEmpty(person) ? CAST_CREW : person.displayName} to...`;
 
     const handleAdd = async () => {
-        if (castCrew.length && editorialMetadata.length) {
+        if (persons.length && editorialMetadata.length) {
             const pushUpdatedCastCrew = emet => {
                 persons.forEach(person => {
                     const localization = localizationCastCrew.find(({id}) => id === person.id)?.localization;
@@ -61,6 +73,25 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                                     emetPerson.id === person.id && emetPerson.creditsOrder === person.creditsOrder
                             )
                     );
+
+                    if (seasonCheckedCore) {
+                        const seasonCastCrewPropagateData = {
+                            addPersons: persons.map(person => {
+                                const {id, personType, creditsOrder} = person;
+                                return {
+                                    id,
+                                    personType,
+                                    creditsOrder,
+                                    propagateToEmet: seasonCheckedEmet,
+                                };
+                            }),
+                        };
+
+                        dispatch({
+                            type: UPDATE_SEASON_PERSONS,
+                            payload: seasonCastCrewPropagateData,
+                        });
+                    }
 
                     emet.castCrew.push(...uniquePersons);
                 } else {
@@ -89,13 +120,41 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <Checkbox
-                    label={EMETS}
-                    value={EMETS}
-                    isChecked={checkedEmet}
-                    onChange={() => setCheckedEmet(!checkedEmet)}
-                    isDisabled={isCastCrewEmpty || isEMetsEmpty}
-                />
+                <>
+                    <div className="propagate-form__section">
+                        <h5>{contentType}</h5>
+                        <Checkbox
+                            id="emets"
+                            label={EMETS}
+                            isChecked={checkedEmet}
+                            onChange={() => setCheckedEmet(!checkedEmet)}
+                            isDisabled={isCastCrewEmpty || isEMetsEmpty}
+                        />
+                    </div>
+
+                    {contentType === SEASON && (
+                        <div className="propagate-form__season">
+                            <div className="propagate-form__section">
+                                <h5>{EPISODE}</h5>
+
+                                <Checkbox
+                                    id="episodeCore"
+                                    label={CORE}
+                                    isChecked={seasonCheckedCore}
+                                    onChange={() => setSeasonCheckedCore(!seasonCheckedCore)}
+                                    isDisabled={isCastCrewEmpty || isEMetsEmpty}
+                                />
+                                <Checkbox
+                                    id="episodeEmets"
+                                    label={EMETS}
+                                    isChecked={seasonCheckedEmet}
+                                    onChange={() => setSeasonCheckedEmet(!seasonCheckedEmet)}
+                                    isDisabled={isCastCrewEmpty || isEMetsEmpty}
+                                />
+                            </div>
+                        </div>
+                    )}
+                </>
             )}
 
             <div className="propagate-form__error">

@@ -1,12 +1,11 @@
 .propagate-form__message,
 .propagate-form__error {
-    margin-left: 4px;
     margin-bottom: 20px;
 }
 
 .propagate-form__actions {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     margin-bottom: 20px;
 
     > button {
@@ -14,6 +13,15 @@
     }
 }
 
-.propagate-form__season-options {
+.propagate-form__season {
     display: flex;
+}
+
+.propagate-form__section {
+    display: flex;
+    align-items: center;
+    > h5 {
+        width: 90px;
+        margin-bottom: 8px;
+    }
 }

@@ -15,6 +15,11 @@ export const getTerritoryMetadata = payload => ({
     payload,
 });
 
+export const updateSeasonPersonsPropagate = payload => ({
+    type: actionTypes.UPDATE_SEASON_PERSONS,
+    payload,
+});
+
 export const getEditorialMetadata = payload => ({
     type: actionTypes.GET_EDITORIAL_METADATA,
     payload,

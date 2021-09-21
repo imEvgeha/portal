@@ -17,6 +17,7 @@ import {
     UPDATE_EDITORIAL_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_ERROR,
+    PROPAGATE_SEASON_PERSONS_SUCCESS,
 } from './constants';
 
 export const isNexusTitle = titleId => {
@@ -355,6 +356,33 @@ export const updateEditorialMetadata = async (values, titleId) => {
         }
     } catch (error) {
         store.dispatch(addToast(errorToast));
+    }
+};
+
+export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
+    const response = await titleService.propagateSeasonsPersonsToEpisodes({
+        ...data,
+        seasonId: id,
+    });
+
+    if (response.error) {
+        store.dispatch(
+            addToast({
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: response.error,
+            })
+        );
+    } else {
+        store.dispatch(
+            addToast({
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: PROPAGATE_SEASON_PERSONS_SUCCESS,
+            })
+        );
     }
 };
 

@@ -31,6 +31,7 @@ export const UPDATE_TERRITORY_METADATA_ERROR = 'Error while updating Territorial
 export const UPDATE_EDITORIAL_METADATA_SUCCESS = 'Editorial Metadata updated successfully';
 export const UPDATE_EDITORIAL_METADATA_ERROR = 'Error while updating Editorial Metadata';
 
+export const PROPAGATE_SEASON_PERSONS_SUCCESS = 'Season cast and crew propagated successfully';
 export const UNMERGE_TITLE_SUCCESS = 'Title succesfully unmerged!';
 
 export const COLUMN_MAPPINGS = [

@@ -34,6 +34,7 @@ import {
     prepareCategoryField,
     prepareAwardsField,
     handleDirtyValues,
+    propagateSeasonsPersonsToEpisodes,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
@@ -65,6 +66,7 @@ const TitleDetails = ({
     isMOVTitleSyncing,
     isVZTitlePublishing,
     isMOVTitlePublishing,
+    seasonPersons,
 }) => {
     const containerRef = useRef();
     const [refresh, setRefresh] = useState(false);
@@ -123,6 +125,7 @@ const TitleDetails = ({
             updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
+            seasonPersons && propagateSeasonsPersonsToEpisodes(seasonPersons, id),
         ]).then(() => {
             setVZDisabled(false);
             setMOVDisabled(false);
@@ -244,6 +247,7 @@ TitleDetails.propTypes = {
     isMOVTitlePublishing: PropTypes.bool,
     fetchConfigApiEndpoints: PropTypes.func,
     castCrewConfig: PropTypes.object,
+    seasonPersons: PropTypes.object,
 };
 
 TitleDetails.defaultProps = {
@@ -270,6 +274,7 @@ TitleDetails.defaultProps = {
     isMOVTitlePublishing: false,
     fetchConfigApiEndpoints: () => null,
     castCrewConfig: {},
+    seasonPersons: {},
 };
 
 const mapStateToProps = () => {
@@ -282,6 +287,7 @@ const mapStateToProps = () => {
     const isMOVTitleSyncingSelector = selectors.createMOVTitleIsSyncingSelector();
     const isVZTitlePublishingSelector = selectors.createVZTitleIsPublishingSelector();
     const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
+    const seasonPersonsSelector = selectors.seasonPersonsSelector();
     const settingsConfigEndpointsSelector = settingsSelectors.createSettingsEndpointsSelector();
 
     return (state, props) => ({
@@ -296,6 +302,7 @@ const mapStateToProps = () => {
         isMOVTitleSyncing: isMOVTitleSyncingSelector(state, props),
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
+        seasonPersons: seasonPersonsSelector(state),
         castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
     });
 };

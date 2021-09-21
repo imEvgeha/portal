@@ -9,3 +9,6 @@ export const EDITORIAL_METADATA = 'editorialMetadata';
 export const EMPTY_CAST_CREW = 'There are no CastCrew';
 export const EMPTY_EMETS = 'There are no EMets';
 export const EMETS = 'EMets';
+export const CORE = 'CORE';
+export const SEASON = 'SEASON';
+export const EPISODE = 'EPISODE';
