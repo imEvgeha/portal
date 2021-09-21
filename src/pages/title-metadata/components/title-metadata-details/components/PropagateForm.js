@@ -29,10 +29,9 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     const isCastCrewEmpty = !castCrew?.length;
     const isEMetsEmpty = !editorialMetadata?.length;
     const dispatch = useDispatch();
-    const [checkedEmet, setCheckedEmet] = useState(false);
-    const [seasonCheckedCore, setSeasonCheckedCore] = useState(false);
-    const [seasonCheckedEmet, setSeasonCheckedEmet] = useState(false);
-    const [error, setError] = useState(null);
+    const [checkedEmet, setCheckedEmet] = useState(true);
+    const [seasonCheckedCore, setSeasonCheckedCore] = useState(true);
+    const [seasonCheckedEmet, setSeasonCheckedEmet] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [localizationCastCrew, setLocalizationCastCrew] = useState([]);
 
@@ -57,61 +56,61 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
 
     const getPropagateMessage = () => `Propagate ${isEmpty(person) ? CAST_CREW : person.displayName} to...`;
 
+    const handleAddEmetOption = async () => {
+        const pushUpdatedCastCrew = emet => {
+            persons.forEach(person => {
+                const localization = localizationCastCrew.find(({id}) => id === person.id)?.localization;
+                localization && (person.localization = localization);
+            });
+
+            if (emet.castCrew) {
+                const uniquePersons = persons.filter(
+                    person =>
+                        !emet.castCrew.some(
+                            emetPerson => emetPerson.id === person.id && emetPerson.creditsOrder === person.creditsOrder
+                        )
+                );
+                emet.castCrew.push(...uniquePersons);
+            } else {
+                emet.castCrew = persons;
+            }
+            return emet;
+        };
+
+        const updateEditorialMetadata = editorialMetadata.map(emet => pushUpdatedCastCrew(emet));
+        const updatedEditorial = pushUpdatedCastCrew(editorial);
+
+        await setFieldValue(EDITORIAL, {});
+        await setFieldValue(EDITORIAL_METADATA, {});
+
+        setFieldValue(EDITORIAL, updatedEditorial);
+        setFieldValue(EDITORIAL_METADATA, updateEditorialMetadata);
+    };
+
+    const handleAddSeasonOption = () => {
+        const seasonCastCrewPropagateData = {
+            addPersons: persons.map(person => {
+                const {id, personType, creditsOrder} = person;
+                return {
+                    id,
+                    personType,
+                    creditsOrder,
+                    propagateToEmet: seasonCheckedEmet,
+                };
+            }),
+        };
+
+        dispatch({
+            type: UPDATE_SEASON_PERSONS,
+            payload: seasonCastCrewPropagateData,
+        });
+    };
+
     const handleAdd = async () => {
-        if (persons.length && editorialMetadata.length) {
-            const pushUpdatedCastCrew = emet => {
-                persons.forEach(person => {
-                    const localization = localizationCastCrew.find(({id}) => id === person.id)?.localization;
-                    localization && (person.localization = localization);
-                });
+        checkedEmet && handleAddEmetOption();
+        (seasonCheckedCore || seasonCheckedEmet) && handleAddSeasonOption();
 
-                if (emet.castCrew) {
-                    const uniquePersons = persons.filter(
-                        person =>
-                            !emet.castCrew.some(
-                                emetPerson =>
-                                    emetPerson.id === person.id && emetPerson.creditsOrder === person.creditsOrder
-                            )
-                    );
-
-                    if (seasonCheckedCore) {
-                        const seasonCastCrewPropagateData = {
-                            addPersons: persons.map(person => {
-                                const {id, personType, creditsOrder} = person;
-                                return {
-                                    id,
-                                    personType,
-                                    creditsOrder,
-                                    propagateToEmet: seasonCheckedEmet,
-                                };
-                            }),
-                        };
-
-                        dispatch({
-                            type: UPDATE_SEASON_PERSONS,
-                            payload: seasonCastCrewPropagateData,
-                        });
-                    }
-
-                    emet.castCrew.push(...uniquePersons);
-                } else {
-                    emet.castCrew = persons;
-                }
-                return emet;
-            };
-
-            const updateEditorialMetadata = editorialMetadata.map(emet => pushUpdatedCastCrew(emet));
-            const updatedEditorial = pushUpdatedCastCrew(editorial);
-            await setFieldValue(EDITORIAL, {});
-            await setFieldValue(EDITORIAL_METADATA, {});
-
-            setFieldValue(EDITORIAL, updatedEditorial);
-            setFieldValue(EDITORIAL_METADATA, updateEditorialMetadata);
-            setError(null);
-            onClose();
-        } else {
-            setError(isCastCrewEmpty ? EMPTY_CAST_CREW : EMPTY_EMETS);
-        }
+        onClose();
     };
 
     return (
@@ -158,13 +157,21 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             )}
 
             <div className="propagate-form__error">
-                {isCastCrewEmpty && !error && !isEMetsEmpty ? <ErrorMessage>{EMPTY_CAST_CREW}</ErrorMessage> : null}
-                {isEMetsEmpty && !error ? <ErrorMessage>{EMPTY_EMETS}</ErrorMessage> : null}
-                {error && <ErrorMessage>{error}</ErrorMessage>}
+                {isCastCrewEmpty && <ErrorMessage>{EMPTY_CAST_CREW}</ErrorMessage>}
+                {isEMetsEmpty && <ErrorMessage>{EMPTY_EMETS}</ErrorMessage>}
             </div>
             <div className="propagate-form__actions">
                 <Button onClick={() => onClose()}>{CANCEL_BUTTON}</Button>
-                <Button onClick={handleAdd} isDisabled={error || !checkedEmet || isLoading} appearance="primary">
+                <Button
+                    onClick={handleAdd}
+                    isDisabled={
+                        (!checkedEmet && !seasonCheckedEmet && !seasonCheckedCore) ||
+                        isCastCrewEmpty ||
+                        isEMetsEmpty ||
+                        isLoading
+                    }
+                    appearance="primary"
+                >
                     {ADD_BUTTON}
                 </Button>
             </div>

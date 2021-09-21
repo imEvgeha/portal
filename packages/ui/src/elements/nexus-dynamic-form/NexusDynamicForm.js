@@ -51,26 +51,9 @@ const NexusDynamicForm = ({
         errorsCount && setValidationErrorCount(errorsCount);
     };
 
-    const getInitialEditorialValues = getValues => {
-        return initialData.editorialMetadata.length
-            ? initialData.editorialMetadata.filter(elem => {
-                  return (
-                      elem.language === getValues().editorial.language &&
-                      elem.locale === getValues().editorial.locale &&
-                      elem.metadataStatus === getValues().editorial.metadataStatus
-                  );
-              })
-            : [];
-    };
-
-    const onCancel = async (reset, getValues) => {
-        const initialDynamicEditorialValue = initialData.editorialMetadata.filter(elem => {
-            return getInitialEditorialValues(getValues).find(initialElem => elem.id === initialElem.id);
-        });
-
+    const onCancel = async reset => {
         await reset({
             ...initialData,
-            editorial: initialDynamicEditorialValue.length ? initialDynamicEditorialValue[0] : undefined,
         });
         setUpdate(true);
         setValidationErrorCount(0);
@@ -94,7 +77,7 @@ const NexusDynamicForm = ({
             <div className="nexus-c-dynamic-form__actions-container">
                 <Button
                     className="nexus-c-dynamic-form__discard-button"
-                    onClick={() => onCancel(reset, getValues)}
+                    onClick={() => onCancel(reset)}
                     isDisabled={!dirty || isSaving || !canEdit}
                 >
                     Discard
