@@ -29,10 +29,12 @@ import {
     deselectIngest,
     downloadEmailAttachment,
     downloadFileAttachment,
+    fetchIngests,
     filterRightsByStatus,
     selectIngest,
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import {getFiltersToSend} from '../ingest-panel/utils';
 import PreplanRightsTable from '../preplan-rights-table/PreplanRightsTable';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {
@@ -86,6 +88,7 @@ const RightsRepository = ({
     isTableDataLoading,
     setIsTableDataLoading,
     username,
+    onFiltersChange,
 }) => {
     const isMounted = useRef(true);
     const [updatedMapping, setUpdatedMapping] = useState(null);
@@ -115,6 +118,17 @@ const RightsRepository = ({
             isMounted.current = false;
         };
     }, []);
+
+    useEffect(() => {
+        const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
+        const timer = setInterval(() => {
+            if (updatedAttachment?.status === 'PENDING' && attachment?.status === 'PENDING')
+                onFiltersChange(getFiltersToSend());
+            else clearInterval(timer);
+        }, 3000);
+
+        return () => clearInterval(timer);
+    }, [selectedIngest, attachment]);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -745,6 +759,7 @@ RightsRepository.propTypes = {
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
+    onFiltersChange: PropTypes.func,
 };
 
 RightsRepository.defaultProps = {
@@ -756,6 +771,7 @@ RightsRepository.defaultProps = {
     rightsFilter: {},
     isTableDataLoading: false,
     setIsTableDataLoading: () => null,
+    onFiltersChange: PropTypes.func,
 };
 
 const mapStateToProps = () => {
@@ -787,6 +803,7 @@ const mapDispatchToProps = dispatch => ({
     downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
+    onFiltersChange: payload => dispatch(fetchIngests(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
