@@ -33,11 +33,12 @@ const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLa
         return localization ? getNameFromLocalization() : person.displayName;
     };
 
+    const isNeedTranslation =
+        getLocalizedName() === getEnName() && person?.language !== undefined && emetLanguage !== person?.language;
+
     const localizedName = () => {
         if (person?.language === 'en' && emetLanguage === 'en') return getEnName();
-        return getLocalizedName() === getEnName() && person?.language !== undefined && emetLanguage !== person?.language
-            ? NEEDS_TRANSLATION
-            : getLocalizedName();
+        return isNeedTranslation ? NEEDS_TRANSLATION : getLocalizedName();
     };
 
     return (
@@ -74,7 +75,7 @@ const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLa
                                     </div>
                                 )}
                                 <div>
-                                    {person.displayName === person.displayNameEn && emetLanguage !== person?.language && (
+                                    {isNeedTranslation && (
                                         <Tooltip content={LOCALIZED_NOT_DEFINED}>
                                             <div className="nexus-c-nexus-person-warning" />
                                         </Tooltip>
