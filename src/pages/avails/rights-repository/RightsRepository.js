@@ -203,11 +203,11 @@ const RightsRepository = ({
 
             gridApi.forEachNode(node => {
                 const {data = {}} = node;
-                if (selectedIds.includes(data.id)) node.setSelected(true);
-                else data.id && node.setSelected(false);
+
+                selectedIds.includes(data.id) && node.setSelected(true);
             });
         }
-        if (isMounted.current) {
+        if (isMounted.current && selectedGridApi) {
             setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
         }
     }, [search, currentUserSelectedRights, selectedIngest, gridApi, isTableDataLoading]);
@@ -563,7 +563,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    }, 1000);
+    }, 200);
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
@@ -622,7 +622,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    }, 500);
+    }, 100);
 
     // Returns only selected rights that are also included in the selected ingest
     const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
