@@ -1,5 +1,6 @@
 import React, {useRef, useState} from 'react';
 import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.svg';
+import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import config from 'react-global-configuration';
 import './CloudUploadButton.scss';
 
@@ -18,11 +19,9 @@ const CloudUploadButton = () => {
     };
 
     return (
-        <div onClick={inputClick} className="cloud-upload-button">
+        <div className="cloud-upload-button">
             <input type="file" accept={config.get('avails.upload.extensions')} ref={inputRef} onInput={handleUpload} />
-            <span className="cloud-upload-button__wrapper">
-                <CloudUploadIcon />
-            </span>
+            <IconButton icon={CloudUploadIcon} onClick={inputClick} label="Upload Emmet" />
         </div>
     );
 };

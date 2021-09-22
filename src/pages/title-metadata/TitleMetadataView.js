@@ -11,7 +11,8 @@ import TitleCreate from '../legacy/containers/metadata/dashboard/components/Titl
 import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
-import CloudUploadButton from './components/title-metadata-header/components/CloudUploadButton';
+import CloudDownloadButton from './components/title-metadata-header/components/CloudDownloadButton/CloudDownloadButton';
+import CloudUploadButton from './components/title-metadata-header/components/CloudUploadButton/CloudUploadButton';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS} from './constants';
 import './TitleMetadataView.scss';
@@ -56,6 +57,7 @@ export const TitleMetadataView = ({history, toggleRefreshGridData, resetTitleId}
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
                 <CloudUploadButton />
+                <CloudDownloadButton />
                 <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 <Button
                     className="nexus-c-title-metadata__create-btn"

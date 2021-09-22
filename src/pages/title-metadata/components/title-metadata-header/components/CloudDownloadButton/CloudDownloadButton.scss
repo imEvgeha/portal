@@ -1,0 +1,6 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+
+.cloud-download-button {
+    @include margin(0, 8, 0, 3);
+    @include padding(0);
+}
