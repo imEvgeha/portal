@@ -141,14 +141,14 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                                     label={CORE}
                                     isChecked={seasonCheckedCore}
                                     onChange={() => setSeasonCheckedCore(!seasonCheckedCore)}
-                                    isDisabled={isCastCrewEmpty}
+                                    isDisabled={isCastCrewEmpty || isEMetsEmpty}
                                 />
                                 <Checkbox
                                     id="episodeEmets"
                                     label={EMETS}
                                     isChecked={seasonCheckedEmet}
                                     onChange={() => setSeasonCheckedEmet(!seasonCheckedEmet)}
-                                    isDisabled={isCastCrewEmpty}
+                                    isDisabled={isCastCrewEmpty || isEMetsEmpty}
                                 />
                             </div>
                         </div>
@@ -167,7 +167,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                     isDisabled={
                         (!checkedEmet && !seasonCheckedEmet && !seasonCheckedCore) ||
                         isCastCrewEmpty ||
-                        (isEMetsEmpty && !seasonCheckedEmet && !seasonCheckedCore) ||
+                        isEMetsEmpty ||
                         isLoading
                     }
                     appearance="primary"
