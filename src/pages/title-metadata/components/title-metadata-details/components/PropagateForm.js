@@ -30,8 +30,8 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     const isEMetsEmpty = !editorialMetadata?.length;
     const dispatch = useDispatch();
     const [checkedEmet, setCheckedEmet] = useState(true);
-    const [seasonCheckedCore, setSeasonCheckedCore] = useState(contentType === SEASON || false);
-    const [seasonCheckedEmet, setSeasonCheckedEmet] = useState(contentType === SEASON || false);
+    const [seasonCheckedCore, setSeasonCheckedCore] = useState(contentType === SEASON);
+    const [seasonCheckedEmet, setSeasonCheckedEmet] = useState(contentType === SEASON);
     const [isLoading, setIsLoading] = useState(false);
     const [localizationCastCrew, setLocalizationCastCrew] = useState([]);
 
