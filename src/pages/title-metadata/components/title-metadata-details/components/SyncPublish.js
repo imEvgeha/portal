@@ -29,13 +29,13 @@ const SyncPublish = ({
 
     return (
         <div className="nexus-c-sync-publish">
+            <div className={`nexus-c-sync-publish__status--${getStatus()}`} />
             <Button
                 isDisabled={isDisabled && publishedDate && !needsSyncing}
                 appearance="subtle"
                 isLoading={isSyncing || isPublishing}
                 onClick={() => onSyncPublish(externalSystem, buttonType)}
             >
-                <span className={`nexus-c-sync-publish__status--${getStatus()}`} />
                 {externalSystem}
             </Button>
         </div>

@@ -2,16 +2,9 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 
 .nexus-c-sync-publish {
-    > div {
-        width: 100%;
-        text-align: center;
-    }
-    button {
-        width: 100%;
-        > span {
-            width: 100%;
-        }
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .nexus-c-sync-publish__status--sync {
