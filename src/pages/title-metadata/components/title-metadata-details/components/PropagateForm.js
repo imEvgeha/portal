@@ -11,7 +11,7 @@ import {UPDATE_SEASON_PERSONS} from '../../../titleMetadataActionTypes';
 import {
     CAST_CREW,
     CANCEL_BUTTON,
-    ADD_BUTTON,
+    PROPAGATE,
     EDITORIAL,
     EDITORIAL_METADATA,
     EMPTY_CAST_CREW,
@@ -30,8 +30,8 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     const isEMetsEmpty = !editorialMetadata?.length;
     const dispatch = useDispatch();
     const [checkedEmet, setCheckedEmet] = useState(true);
-    const [seasonCheckedCore, setSeasonCheckedCore] = useState(true);
-    const [seasonCheckedEmet, setSeasonCheckedEmet] = useState(true);
+    const [seasonCheckedCore, setSeasonCheckedCore] = useState(contentType === SEASON);
+    const [seasonCheckedEmet, setSeasonCheckedEmet] = useState(contentType === SEASON);
     const [isLoading, setIsLoading] = useState(false);
     const [localizationCastCrew, setLocalizationCastCrew] = useState([]);
 
@@ -121,7 +121,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             ) : (
                 <>
                     <div className="propagate-form__section">
-                        <h5>{contentType}</h5>
+                        <h5>{contentType !== 'AD' ? contentType : 'ADVERTISMENT'}</h5>
                         <Checkbox
                             id="emets"
                             label={EMETS}
@@ -172,7 +172,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                     }
                     appearance="primary"
                 >
-                    {ADD_BUTTON}
+                    {PROPAGATE}
                 </Button>
             </div>
         </>
