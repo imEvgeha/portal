@@ -166,7 +166,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                     onClick={handleAdd}
                     isDisabled={
                         (!checkedEmet && !seasonCheckedEmet && !seasonCheckedCore) ||
-                        (isCastCrewEmpty && !checkedEmet) ||
+                        isCastCrewEmpty ||
                         isEMetsEmpty ||
                         isLoading
                     }
