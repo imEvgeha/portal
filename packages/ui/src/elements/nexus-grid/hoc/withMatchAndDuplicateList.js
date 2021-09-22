@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getRepositoryName, TitleSystems} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {PINNED_COLUMN_DEF} from '../constants';
@@ -8,28 +8,45 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
         const [matchList, setMatchList] = useState({});
         const [duplicateList, setDuplicateList] = useState({});
         const [restrictedIds, setRestrictedIds] = useState([]);
+        const selectedItems = [...Object.values(matchList), ...Object.values(duplicateList)];
 
         // inform parent component about match, duplicate list change
         useEffect(() => {
             onCandidatesChange({matchList, duplicateList});
         }, [matchList, duplicateList, onCandidatesChange]);
 
-        const matchButton = {
-            ...PINNED_COLUMN_DEF,
-            colId: 'matchButton',
-            field: 'matchButton',
-            headerName: 'Master',
-            cellRendererParams: {isNexusDisabled, selectionType: 'radio', restrictedIds},
-            cellRenderer: 'titleSelectionRenderer',
-        };
-        const duplicateButton = {
-            ...PINNED_COLUMN_DEF,
-            colId: 'duplicateButton',
-            field: 'duplicateButton',
-            headerName: 'Duplicate',
-            cellRendererParams: {isNexusDisabled: true, restrictedIds},
-            cellRenderer: 'titleSelectionRenderer',
-        };
+        const matchButton = useMemo(
+            () => ({
+                ...PINNED_COLUMN_DEF,
+                colId: 'matchButton',
+                field: 'matchButton',
+                headerName: 'Master',
+                cellRendererParams: {
+                    isNexusDisabled,
+                    selectionType: 'radio',
+                    restrictedIds,
+                    selectedItems: [...Object.values(matchList)],
+                },
+                cellRenderer: 'titleSelectionRenderer',
+            }),
+            [isNexusDisabled, matchList, restrictedIds]
+        );
+
+        const duplicateButton = useMemo(
+            () => ({
+                ...PINNED_COLUMN_DEF,
+                colId: 'duplicateButton',
+                field: 'duplicateButton',
+                headerName: 'Duplicate',
+                cellRendererParams: {
+                    isNexusDisabled: true,
+                    restrictedIds,
+                    selectedItems: [...Object.values(duplicateList)],
+                },
+                cellRenderer: 'titleSelectionRenderer',
+            }),
+            [isNexusDisabled, duplicateList, restrictedIds]
+        );
 
         const onCellValueChanged = (params = {}) => {
             const {
@@ -95,7 +112,7 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
                 onCellValueChanged={onCellValueChanged}
                 matchButton={matchButton}
                 duplicateButton={duplicateButton}
-                selectedItems={[...Object.values(matchList), ...Object.values(duplicateList)]}
+                selectedItems={selectedItems}
                 matchList={matchList}
                 duplicateList={duplicateList}
                 getRestrictedIds={getRestrictedIds}

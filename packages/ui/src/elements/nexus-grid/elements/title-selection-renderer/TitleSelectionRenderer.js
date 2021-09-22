@@ -3,7 +3,18 @@ import PropTypes from 'prop-types';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import './TitleSelectionRenderer.scss';
 
-const TitleSelectionRenderer = ({value, column, node, isNexusDisabled, selectionType, restrictedIds}) => {
+const TitleSelectionRenderer = ({
+    value,
+    column,
+    node,
+    isNexusDisabled,
+    selectionType,
+    restrictedIds,
+    selectedItems,
+}) => {
+    const columnId = node?.data?.id;
+    const isSelected = selectedItems.find(elem => elem.id === columnId);
+
     const checkedHandler = event => {
         node.setDataValue(column.colId, event.target.checked);
     };
@@ -15,7 +26,7 @@ const TitleSelectionRenderer = ({value, column, node, isNexusDisabled, selection
             type={selectionType}
             className={`title-selection-${selectionType}__${value ? 'selected' : 'unselected'}`}
             onChange={checkedHandler}
-            checked={value}
+            checked={isSelected ? true : value}
         />
     );
 };
@@ -27,6 +38,7 @@ TitleSelectionRenderer.propTypes = {
     isNexusDisabled: PropTypes.bool,
     selectionType: PropTypes.string,
     restrictedIds: PropTypes.array,
+    selectedItems: PropTypes.array,
 };
 
 TitleSelectionRenderer.defaultProps = {
@@ -36,6 +48,7 @@ TitleSelectionRenderer.defaultProps = {
     isNexusDisabled: false,
     selectionType: 'checkbox',
     restrictedIds: [],
+    selectedItems: [],
 };
 
 export default TitleSelectionRenderer;
