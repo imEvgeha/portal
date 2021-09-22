@@ -35,13 +35,21 @@ const NexusArrayWithTabs = ({
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
     const [currentData, setCurrentData] = useState(null);
+    const [latestData, setLatestData] = useState(null);
     const [isRemoved, setIsRemoved] = useState(false);
     const [regenerateLoading, setRegenerateLoading] = useState(false);
 
+    const {editorialMetadata} = getValues();
+    const updatedData = latestData || data;
+
     useEffect(() => {
-        const groupedObj = data ? groupBy(data) : {};
+        if (data && editorialMetadata) setLatestData(editorialMetadata);
+    }, [data]);
+
+    useEffect(() => {
+        const groupedObj = updatedData ? groupBy(updatedData) : {};
         setGroupedData(groupedObj);
-    }, [data, initialData, isUpdate]);
+    }, [updatedData, initialData, isUpdate]);
 
     const clearIsRemoved = () => {
         setIsRemoved(false);
@@ -192,7 +200,7 @@ const NexusArrayWithTabs = ({
     };
 
     const handleDeleteRecord = () => {
-        const current = currentData || data[0];
+        const current = currentData || updatedData[0];
         const groupedCurrent = groupBy([current]);
         const [key] = Object.keys(groupedCurrent);
         const updatedGroupedData = {...groupedData};
@@ -302,7 +310,7 @@ const NexusArrayWithTabs = ({
                 handleModalSubmit={handleModalSubmit}
                 fields={fields}
                 selectValues={selectValues}
-                data={data}
+                data={updatedData}
                 setFieldValue={setFieldValue}
                 generateMsvIds={generateMsvIds}
                 searchPerson={searchPerson}
@@ -316,7 +324,7 @@ const NexusArrayWithTabs = ({
 
     const isMasterEditorialRecord = () => {
         if (path === 'editorialMetadata' && view === VIEWS.EDIT) {
-            const current = currentData || data[0];
+            const current = currentData || updatedData[0];
             return current && get(current, 'hasGeneratedChildren');
         }
         return false;
@@ -326,7 +334,7 @@ const NexusArrayWithTabs = ({
         if (path === 'editorialMetadata' && view === VIEWS.VIEW) {
             const usEnData = get(groupedData, 'US en');
             const hasGeneratedChildren = usEnData && usEnData.some(obj => obj.hasGeneratedChildren);
-            const current = currentData || data[0];
+            const current = currentData || updatedData[0];
             const isUsEn = current && get(current, 'locale') === 'US' && get(current, 'language') === 'en';
             return isUsEn && hasGeneratedChildren;
         }
@@ -350,7 +358,7 @@ const NexusArrayWithTabs = ({
         return Object.keys(fields).map(key => {
             const initData = currentData
                 ? {...currentData, contentType: initialData.contentType}
-                : {...data[0], contentType: initialData.contentType};
+                : {...updatedData[0], contentType: initialData.contentType};
             const tabId = initData.id ? initData.id : initData.ratingSystem;
 
             return (
@@ -415,7 +423,7 @@ const NexusArrayWithTabs = ({
                         </SectionMessage>
                     </div>
                 )}
-                <AKField name={path} defaultValue={data}>
+                <AKField name={path} defaultValue={updatedData}>
                     {({fieldProps, error}) => <></>}
                 </AKField>
                 {Object.keys(groupedData).length ? renderFields() : <div>{`No ${name} Exists`}</div>}
