@@ -27,6 +27,13 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             onClick: () => handleClick(AVAILS),
         },
         {
+            icon: EditorMediaWrapRightIcon,
+            id: TITLE_METADATA,
+            tooltip: 'Title Metadata',
+            isSelected: selectedItem === TITLE_METADATA,
+            onClick: () => handleClick('metadata'),
+        },
+        {
             icon: EditorSearchIcon,
             id: MEDIA,
             tooltip: MEDIA,
@@ -57,13 +64,6 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: 'DOP Tasks',
             isSelected: selectedItem === DOP_TASKS,
             onClick: () => handleClick(DOP_TASKS),
-        },
-        {
-            icon: EditorMediaWrapRightIcon,
-            id: TITLE_METADATA,
-            tooltip: 'Title Metadata',
-            isSelected: selectedItem === TITLE_METADATA,
-            onClick: () => handleClick('metadata'),
         },
     ];
 };
