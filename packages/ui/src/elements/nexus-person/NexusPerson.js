@@ -16,7 +16,7 @@ import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
 import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 
-const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLanguage, name}) => {
+const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLanguage, name, customKey}) => {
     const localization = get(person, 'localization');
     const isCastCrewField = name === 'castCrew';
 
@@ -42,7 +42,7 @@ const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLa
     };
 
     return (
-        <Draggable draggableId={uid(person.id, index)} index={index}>
+        <Draggable draggableId={customKey} index={index}>
             {(provided, snapshot) => (
                 <div ref={provided.innerRef} {...provided.draggableProps}>
                     <DraggableContent isDragging={snapshot.isDragging}>
@@ -114,6 +114,7 @@ NexusPerson.propTypes = {
     onEditPerson: PropTypes.func,
     emetLanguage: PropTypes.string,
     name: PropTypes.string,
+    customKey: PropTypes.string,
 };
 
 NexusPerson.defaultProps = {
@@ -122,6 +123,7 @@ NexusPerson.defaultProps = {
     onEditPerson: () => null,
     emetLanguage: 'en',
     name: null,
+    customKey: '',
 };
 
 export default NexusPerson;
