@@ -20,6 +20,7 @@ import {
     updateTitle,
     syncTitle,
     publishTitle,
+    storeInitialTitleData,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
@@ -67,6 +68,8 @@ const TitleDetails = ({
     isVZTitlePublishing,
     isMOVTitlePublishing,
     seasonPersons,
+    initialTitleData,
+    storeInitialTitleData,
 }) => {
     const containerRef = useRef();
     const [refresh, setRefresh] = useState(false);
@@ -148,13 +151,16 @@ const TitleDetails = ({
         const [movidaExternalIds] = getExternaIds('movida');
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
-        return {
+        const initialData = {
             ...updatedTitle,
             vzExternalIds,
             movidaExternalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
             territorialMetadata: territoryMetadata,
         };
+
+        if (isEmpty(initialTitleData?.id)) storeInitialTitleData(initialData);
+        return initialData;
     };
 
     const syncPublishHandler = (externalSystem, buttonType) => {
@@ -180,6 +186,7 @@ const TitleDetails = ({
                     searchPerson={searchPerson}
                     schema={schema}
                     initialData={extendTitleWithExternalIds()}
+                    storedInitialData={initialTitleData}
                     canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
                     containerRef={containerRef}
                     selectValues={selectValues}
@@ -248,6 +255,8 @@ TitleDetails.propTypes = {
     fetchConfigApiEndpoints: PropTypes.func,
     castCrewConfig: PropTypes.object,
     seasonPersons: PropTypes.object,
+    initialTitleData: PropTypes.object,
+    storeInitialTitleData: PropTypes.func,
 };
 
 TitleDetails.defaultProps = {
@@ -273,6 +282,8 @@ TitleDetails.defaultProps = {
     isVZTitlePublishing: false,
     isMOVTitlePublishing: false,
     fetchConfigApiEndpoints: () => null,
+    initialTitleData: {},
+    storeInitialTitleData: () => null,
     castCrewConfig: {},
     seasonPersons: {},
 };
@@ -281,6 +292,7 @@ const mapStateToProps = () => {
     const titleSelector = selectors.createTitleSelector();
     const selectValuesLoadingSelector = createLoadingSelector(['FETCH_SELECT_VALUES']);
     const externalIdsSelector = selectors.createExternalIdsSelector();
+    const initialTitleDataSelector = selectors.createInitialTitleDataSelector();
     const territoryMetadataSelector = selectors.createTerritoryMetadataSelector();
     const editorialMetadataSelector = selectors.createEditorialMetadataSelector();
     const isVZTitleSyncingSelector = selectors.createVZTitleIsSyncingSelector();
@@ -303,12 +315,14 @@ const mapStateToProps = () => {
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
         seasonPersons: seasonPersonsSelector(state),
+        initialTitleData: initialTitleDataSelector(state),
         castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
     });
 };
 
 const mapDispatchToProps = dispatch => ({
     getTitle: payload => dispatch(getTitle(payload)),
+    storeInitialTitleData: payload => dispatch(storeInitialTitleData(payload)),
     clearTitle: () => dispatch(clearTitle()),
     getExternalIds: payload => dispatch(getExternalIds(payload)),
     getTerritoryMetadata: payload => dispatch(getTerritoryMetadata(payload)),

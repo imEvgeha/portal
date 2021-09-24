@@ -64,14 +64,8 @@ const NexusPerson = ({person, index, onPropagate, onRemove, onEditPerson, emetLa
                                     </span>
                                 </div>
                                 {emetLanguage !== 'en' && (
-                                    <div
-                                        className={
-                                            person.displayNameEn && emetLanguage !== person?.language
-                                                ? 'nexus-c-nexus-person-fade'
-                                                : ''
-                                        }
-                                    >
-                                        {person?.displayNameEn}
+                                    <div className="nexus-c-nexus-person-fade">
+                                        {person?.displayNameEn ? person?.displayNameEn : person?.displayName}
                                     </div>
                                 )}
                                 <div>

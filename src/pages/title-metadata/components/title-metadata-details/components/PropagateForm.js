@@ -67,10 +67,17 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                 const uniquePersons = persons.filter(
                     person =>
                         !emet.castCrew.some(
-                            emetPerson => emetPerson.id === person.id && emetPerson.creditsOrder === person.creditsOrder
+                            emetPerson => emetPerson.id === person.id && emetPerson.personType === person.personType
                         )
                 );
-                emet.castCrew.push(...uniquePersons);
+
+                const uniquePersonsWithCreditsOrder = uniquePersons.map((person, i) => {
+                    return {
+                        ...person,
+                        creditsOrder: emet.castCrew.length + i,
+                    };
+                });
+                emet.castCrew.push(...uniquePersonsWithCreditsOrder);
             } else {
                 emet.castCrew = persons;
             }

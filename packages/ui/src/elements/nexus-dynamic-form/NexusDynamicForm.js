@@ -27,6 +27,7 @@ const NexusDynamicForm = ({
     hasButtons,
     setRefresh,
     castCrewConfig,
+    storedInitialData,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [disableSubmit, setDisableSubmit] = useState(true);
@@ -51,9 +52,26 @@ const NexusDynamicForm = ({
         errorsCount && setValidationErrorCount(errorsCount);
     };
 
-    const onCancel = async reset => {
+    const getInitialEditorialValues = getValues => {
+        return storedInitialData.editorialMetadata.length
+            ? storedInitialData.editorialMetadata.filter(elem => {
+                  return (
+                      elem.language === getValues().editorial.language &&
+                      elem.locale === getValues().editorial.locale &&
+                      elem.metadataStatus === getValues().editorial.metadataStatus
+                  );
+              })
+            : [];
+    };
+
+    const onCancel = async (reset, getValues) => {
+        const initialDynamicEditorialValue = storedInitialData.editorialMetadata.filter(elem => {
+            return getInitialEditorialValues(getValues).find(initialElem => elem.id === initialElem.id);
+        });
+
         await reset({
-            ...initialData,
+            ...(isTitlePage ? storedInitialData : initialData),
+            editorial: initialDynamicEditorialValue.length ? initialDynamicEditorialValue[0] : undefined,
         });
         setUpdate(true);
         setValidationErrorCount(0);
@@ -77,7 +95,7 @@ const NexusDynamicForm = ({
             <div className="nexus-c-dynamic-form__actions-container">
                 <Button
                     className="nexus-c-dynamic-form__discard-button"
-                    onClick={() => onCancel(reset)}
+                    onClick={() => onCancel(reset, getValues)}
                     isDisabled={!dirty || isSaving || !canEdit}
                 >
                     Discard
@@ -276,6 +294,7 @@ NexusDynamicForm.propTypes = {
     hasButtons: PropTypes.bool,
     setRefresh: PropTypes.func,
     castCrewConfig: PropTypes.object,
+    storedInitialData: PropTypes.object,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -292,6 +311,7 @@ NexusDynamicForm.defaultProps = {
     hasButtons: true,
     setRefresh: () => null,
     castCrewConfig: {},
+    storedInitialData: null,
 };
 
 export default NexusDynamicForm;
