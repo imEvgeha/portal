@@ -80,6 +80,12 @@ const rightsReducer = (state = initialState, action = {}) => {
                 right: payload,
             };
         }
+        case actionTypes.GET_RIGHT_ERROR: {
+            return {
+                ...state,
+                right: {},
+            };
+        }
         case actionTypes.REMOVE_RIGHTS_FILTER: {
             const criteria = filter => filter !== payload.filter;
             const updatedColumn = filteringObject(state.filter && state.filter.column, criteria);

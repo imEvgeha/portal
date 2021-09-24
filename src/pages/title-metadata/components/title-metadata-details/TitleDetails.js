@@ -10,6 +10,7 @@ import * as detailsSelectors from '../../../avails/right-details/rightDetailsSel
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
+import Loading from '../../../static/Loading';
 import {FIELDS_TO_REMOVE, SYNC, VZ, MOVIDA} from '../../constants';
 import {
     getTitle,
@@ -62,6 +63,7 @@ const TitleDetails = ({
     syncTitle,
     publishTitle,
     isSaving,
+    isLoading,
     isVZTitleSyncing,
     isMOVTitleSyncing,
     isVZTitlePublishing,
@@ -171,6 +173,10 @@ const TitleDetails = ({
 
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
 
+    if (isLoading) {
+        return <Loading />;
+    }
+
     return (
         <div className="nexus-c-title-details">
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
@@ -241,6 +247,7 @@ TitleDetails.propTypes = {
     syncTitle: PropTypes.func,
     publishTitle: PropTypes.func,
     isSaving: PropTypes.bool,
+    isLoading: PropTypes.bool,
     isVZTitleSyncing: PropTypes.bool,
     isMOVTitleSyncing: PropTypes.bool,
     isVZTitlePublishing: PropTypes.bool,
@@ -268,6 +275,7 @@ TitleDetails.defaultProps = {
     syncTitle: () => null,
     publishTitle: () => null,
     isSaving: false,
+    isLoading: false,
     isVZTitleSyncing: false,
     isMOVTitleSyncing: false,
     isVZTitlePublishing: false,
@@ -280,6 +288,7 @@ TitleDetails.defaultProps = {
 const mapStateToProps = () => {
     const titleSelector = selectors.createTitleSelector();
     const selectValuesLoadingSelector = createLoadingSelector(['FETCH_SELECT_VALUES']);
+    const loadingSelector = selectors.createTitleLoadingSelector();
     const externalIdsSelector = selectors.createExternalIdsSelector();
     const territoryMetadataSelector = selectors.createTerritoryMetadataSelector();
     const editorialMetadataSelector = selectors.createEditorialMetadataSelector();
@@ -303,6 +312,7 @@ const mapStateToProps = () => {
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
         seasonPersons: seasonPersonsSelector(state),
+        isLoading: loadingSelector(state, props),
         castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
     });
 };
