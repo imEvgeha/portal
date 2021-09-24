@@ -96,6 +96,16 @@ const NexusSelect = ({
         );
     };
 
+    if (path === 'metadataStatus') {
+        const fieldValue = fieldProps.value;
+        const selectLabel = fieldValue.label;
+
+        if (selectLabel) {
+            const upperLabel = selectLabel[0].toUpperCase() + selectLabel.substr(1);
+            fieldValue.label = upperLabel;
+        }
+    }
+
     return isMultiselect ? (
         <SelectWithOptional
             {...fieldProps}
