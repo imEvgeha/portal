@@ -2,12 +2,12 @@
     "gateway": {
         "assetManagementURL": "https://asset-management-api.dev.vubiquity.com",
         "availsParserUrl": "https://avails-parser.dev.vubiquity.com",
-        "configuration": "https://configapi.dev.vubiquity.com",
-        "DOPUrl": "http://dops.dev.vubiquity.com:8040",
-        "eventApiUrl": "https://eventapi.dev.vubiquity.com",
+        "configuration": "https://vuapi.dev.vubiquity.com/vubiquity/configuration",
+        "DOPUrl": "https://vuapi.dev.vubiquity.com/vubiquity/dop",
+        "eventApiUrl": "https://vuapi.dev.vubiquity.com/vubiquity/events",
         "kongUrl": "https://vuapi.dev.vubiquity.com/vubiquity",
         "deteBaseUrl": "https://vuapi.dev.vubiquity.com/vubiquity/dete/rest",
-        "publisher": "https://titlespublishermovida.dev.vubiquity.com",
+        "publisher": "https://vuapi.dev.vubiquity.com/vubiquity/titlespublishermovida",
         "mediaStorageUrl": "https://mediastorage.dev.vubiquity.com/media-storage/v1",
         "service": {
             "avails": "/avails-api/v1",
@@ -37,10 +37,10 @@
             "kongMediaStorage": "/mediastorage/media-storage/v1",
             "kongVidispine": "/vidispine-api/API"
         },
-        "servicingOrdersUrl": "https://servicing-order-manager.dev.vubiquity.com",
-        "titleUrl": "https://titlesapi.dev.vubiquity.com",
-        "url": "https://availsapi.dev.vubiquity.com",
-        "injestUrl": "https://avails-ingest.dev.vubiquity.com"
+        "servicingOrdersUrl": "https://vuapi.dev.vubiquity.com/vubiquity/servicing-orders",
+        "titleUrl": "https://vuapi.dev.vubiquity.com/vubiquity/titles",
+        "url": "https://vuapi.dev.vubiquity.com/vubiquity/avails",
+        "injestUrl": "https://vuapi.dev.vubiquity.com/vubiquity/avails-ingest"
     },
     "DOP_base": "http://dops.dev.vubiquity.com:8040",
     "keycloak": {
