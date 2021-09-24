@@ -218,10 +218,12 @@ const NexusPersonsList = ({
 
     const renderPersons = () => {
         return persons.map((person, i) => {
+            const customKey = person.id ? uid(person.id, i) : `${person.displayName}-${i}`;
             return (
                 <NexusPerson
-                    key={uid(person.id, i)}
+                    key={customKey}
                     person={person}
+                    customKey={customKey}
                     index={i}
                     hasCharacter={hasCharacter}
                     onRemove={() => removePerson(person)}

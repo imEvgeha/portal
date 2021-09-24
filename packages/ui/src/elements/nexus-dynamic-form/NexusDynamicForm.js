@@ -212,7 +212,7 @@ const NexusDynamicForm = ({
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">
-                                                    {sectionTitle === CAST_AND_CREW_TITLE && canEdit ? (
+                                                    {sectionTitle === CAST_AND_CREW_TITLE && isTitlePage && canEdit ? (
                                                         <div className="nexus-c-dynamic-form__additional-option">
                                                             {sectionTitle}
                                                             <PropagateButton
