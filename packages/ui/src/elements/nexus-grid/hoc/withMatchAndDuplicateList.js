@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {getRepositoryName, TitleSystems} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {PINNED_COLUMN_DEF} from '../constants';
 
+export const MatchAndDuplicateListContext = React.createContext();
+
 const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent => {
     const ComposedComponent = ({onCandidatesChange, ...rest}) => {
         const [matchList, setMatchList] = useState({});
@@ -25,9 +27,8 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
                     isNexusDisabled,
                     selectionType: 'radio',
                     restrictedIds,
-                    selectedItems: [...Object.values(matchList)],
                 },
-                cellRenderer: 'titleSelectionRenderer',
+                cellRenderer: 'masterTitleSelectionRenderer',
             }),
             [isNexusDisabled, matchList, restrictedIds]
         );
@@ -41,9 +42,8 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
                 cellRendererParams: {
                     isNexusDisabled: true,
                     restrictedIds,
-                    selectedItems: [...Object.values(duplicateList)],
                 },
-                cellRenderer: 'titleSelectionRenderer',
+                cellRenderer: 'duplicateTitleSelectionRenderer',
             }),
             [isNexusDisabled, duplicateList, restrictedIds]
         );
@@ -107,16 +107,23 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
         };
 
         return (
-            <WrappedComponent
-                {...rest}
-                onCellValueChanged={onCellValueChanged}
-                matchButton={matchButton}
-                duplicateButton={duplicateButton}
-                selectedItems={selectedItems}
-                matchList={matchList}
-                duplicateList={duplicateList}
-                getRestrictedIds={getRestrictedIds}
-            />
+            <MatchAndDuplicateListContext.Provider
+                value={{
+                    matchList: [...Object.values(matchList)],
+                    duplicateList: [...Object.values(duplicateList)],
+                }}
+            >
+                <WrappedComponent
+                    {...rest}
+                    onCellValueChanged={onCellValueChanged}
+                    matchButton={matchButton}
+                    duplicateButton={duplicateButton}
+                    selectedItems={selectedItems}
+                    matchList={matchList}
+                    duplicateList={duplicateList}
+                    getRestrictedIds={getRestrictedIds}
+                />
+            </MatchAndDuplicateListContext.Provider>
         );
     };
     ComposedComponent.propTypes = {
