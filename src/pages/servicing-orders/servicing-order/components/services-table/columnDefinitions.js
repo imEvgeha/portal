@@ -67,6 +67,14 @@ const columnDefinitions = [
         sortable: false,
     },
     {
+        colId: 'sourceStandard',
+        field: 'sourceStandard',
+        dataSource: 'sourceStandard',
+        headerName: 'Standard',
+        width: 170,
+        sortable: false,
+    },
+    {
         colId: 'operationalStatus',
         field: 'operationalStatus',
         headerName: 'Status',
