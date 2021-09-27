@@ -15,9 +15,26 @@ export const SELECT_VALUES = {
     componentId: ['LOL-123'],
     spec: ['M-DBS-2396 SCC', 'TBD'],
     addRecipient: ['MGM', 'Vubiquity'],
-    sourceStandard: ['_1080_23_976'],
     serviceType: 'Process & Deliver',
     assetType: ['', 'Audio', 'Video', 'Subtitles', 'Closed Captioning'],
+    sourceStandard: [
+        '24P',
+        'PAL',
+        'NTSC',
+        '_1080_25',
+        '_1080_29_97',
+        '_1080_23_976',
+        '_4K_UHD_SDR_23_976',
+        '_4K_UHD_HDR_23_976',
+        '_4K_UHD_HDR_29_97',
+        '_4K_UHD_SDR_29_97',
+        '_4K_UHD_HDR_25',
+        '_4K_UHD_SDR_25',
+        '_4K_UHD_SDR_30',
+        '_4K_UHD_HDR_30',
+        '_4K_UHD_SDR_60',
+        '_4K_UHD_HDR_60]',
+    ],
 };
 
 export const TABLE_ROW = {
@@ -27,6 +44,7 @@ export const TABLE_ROW = {
     priority: '10',
     deliverToVu: false,
     operationalStatus: 'Ready',
+    sourceStandard: '',
 };
 
 export const SERVICE_SCHEMA = {

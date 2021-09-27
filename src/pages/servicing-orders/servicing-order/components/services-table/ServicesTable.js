@@ -79,6 +79,7 @@ const ServicesTable = ({
                     operationalStatus: service.foiStatus || '',
                     rowIndex: index,
                     rowHeight: 50,
+                    sourceStandard: service.externalServices.sourceStandard,
                 }));
 
                 setTableData(flattenedObject);
@@ -311,6 +312,7 @@ const ServicesTable = ({
                 currentService.externalServices.assetType = data.assetType;
                 currentService.externalServices.formatType = data.spec;
                 currentService.overrideStartDate = data.doNotStartBefore || '';
+                currentService.externalServices.sourceStandard = data.sourceStandard;
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
                 // watermark will not arrive for old orders, hence need to check
