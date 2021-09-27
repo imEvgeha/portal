@@ -34,3 +34,6 @@ export const createMOVTitleIsPublishingSelector = () =>
 
 export const seasonPersonsSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.seasonPersons || null);
+
+export const createInitialTitleDataSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.initialData || null);

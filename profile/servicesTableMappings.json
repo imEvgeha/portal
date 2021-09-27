@@ -59,6 +59,16 @@
         "required": true
     },
     {
+        "javaVariableName": "sourceStandard",
+        "displayName": "Standard",
+        "dataType": "select",
+        "queryParamName": "sourceStandard",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
         "javaVariableName": "operationalStatus",
         "displayName": "Operational Status",
         "dataType": "string",

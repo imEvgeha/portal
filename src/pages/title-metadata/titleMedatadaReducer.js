@@ -3,6 +3,7 @@ import {VZ, MOVIDA} from './constants';
 
 const initialState = {
     title: {},
+    initialData: {},
     externalIds: [],
     territoryMetadata: [],
     editorialMetadata: [],
@@ -22,10 +23,14 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 ...state,
                 seasonPersons: payload,
             };
-        case actionTypes.CLEAR_TITLE:
+        case actionTypes.SAVE_INITIAL_FORM_DATA:
             return {
                 ...state,
-                title: {},
+                initialData: payload,
+            };
+        case actionTypes.CLEAR_TITLE:
+            return {
+                ...initialState,
             };
         case actionTypes.GET_TITLE_SUCCESS:
             return {

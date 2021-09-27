@@ -73,6 +73,7 @@ const NexusField = ({
     showLocalized,
     localizationConfig,
     setUpdatedValues,
+    isTitlePage,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -343,6 +344,7 @@ const NexusField = ({
                         getValues={getValues}
                         setFieldValue={setFieldValue}
                         isVerticalLayout={isVerticalLayout}
+                        isTitlePage={isTitlePage}
                         searchPerson={searchPerson}
                         castCrewConfig={castCrewConfig}
                         // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
@@ -466,6 +468,7 @@ const NexusField = ({
                         getValues={getValues}
                         setFieldValue={setFieldValue}
                         isVerticalLayout={isVerticalLayout}
+                        isTitlePage={isTitlePage}
                         searchPerson={searchPerson}
                         castCrewConfig={castCrewConfig}
                         // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
@@ -502,7 +505,7 @@ const NexusField = ({
                 );
             default:
                 return fieldProps.value ? (
-                    <div>{getValue(fieldProps)}</div>
+                    <div className="nexus-c-field__wrap-text">{getValue(fieldProps)}</div>
                 ) : (
                     <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
                 );
@@ -576,6 +579,7 @@ NexusField.propTypes = {
     // eslint-disable-next-line react/boolean-prop-naming
     useCurrentDate: PropTypes.bool,
     isHighlighted: PropTypes.bool,
+    isTitlePage: PropTypes.bool,
     getCurrentValues: PropTypes.func.isRequired,
     isReturningTime: PropTypes.bool,
     config: PropTypes.array,
@@ -619,6 +623,7 @@ NexusField.defaultProps = {
     useCurrentDate: false,
     isHighlighted: false,
     isReturningTime: true,
+    isTitlePage: false,
     config: [],
     isGridLayout: false,
     isVerticalLayout: false,

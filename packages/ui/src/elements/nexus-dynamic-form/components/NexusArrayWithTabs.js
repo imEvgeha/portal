@@ -35,21 +35,13 @@ const NexusArrayWithTabs = ({
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
     const [currentData, setCurrentData] = useState(null);
-    const [latestData, setLatestData] = useState(null);
     const [isRemoved, setIsRemoved] = useState(false);
     const [regenerateLoading, setRegenerateLoading] = useState(false);
 
-    const {editorialMetadata} = getValues();
-    const updatedData = latestData || data;
-
     useEffect(() => {
-        if (data && editorialMetadata) setLatestData(editorialMetadata);
-    }, [data]);
-
-    useEffect(() => {
-        const groupedObj = updatedData ? groupBy(updatedData) : {};
+        const groupedObj = data ? groupBy(data) : {};
         setGroupedData(groupedObj);
-    }, [updatedData, initialData, isUpdate]);
+    }, [data, isUpdate]);
 
     const clearIsRemoved = () => {
         setIsRemoved(false);
@@ -94,19 +86,24 @@ const NexusArrayWithTabs = ({
         }
     };
 
+    const groupedDataWithUpdatedValues = () => {
+        const updatedData = getValues();
+        return groupBy(updatedData[path]);
+    };
+
     const replaceRecordInGroupedData = (currentFormData, current, subTabIndex, indexTo, keyTo) => {
         if (subTabs.length) {
             let key = '';
             tabs.forEach(property => {
                 key += key.length > 1 ? ` ${current[property]}` : current[property];
             });
-            const updatedArray = [...groupedData[key]];
+            const updatedArray = [...groupedDataWithUpdatedValues()[key]];
             updatedArray[subTabIndex] = {
                 ...updatedArray[subTabIndex],
                 ...currentFormData,
             };
 
-            const updatedGroupedData = {...groupedData};
+            const updatedGroupedData = {...groupedDataWithUpdatedValues()};
             updatedGroupedData[key][subTabIndex] = {
                 ...updatedGroupedData[key][subTabIndex],
                 ...currentFormData,
@@ -124,7 +121,7 @@ const NexusArrayWithTabs = ({
             const [property] = tabs;
             const key = current[property];
 
-            const updatedGroupedData = {...groupedData};
+            const updatedGroupedData = {...groupedDataWithUpdatedValues()};
             updatedGroupedData[key][0] = {
                 ...updatedGroupedData[key][0],
                 ...currentFormData,
@@ -194,7 +191,7 @@ const NexusArrayWithTabs = ({
     };
 
     const handleDeleteRecord = () => {
-        const current = currentData || updatedData[0];
+        const current = currentData || data[0];
         const groupedCurrent = groupBy([current]);
         const [key] = Object.keys(groupedCurrent);
         const updatedGroupedData = {...groupedData};
@@ -304,7 +301,7 @@ const NexusArrayWithTabs = ({
                 handleModalSubmit={handleModalSubmit}
                 fields={fields}
                 selectValues={selectValues}
-                data={updatedData}
+                data={data}
                 setFieldValue={setFieldValue}
                 generateMsvIds={generateMsvIds}
                 searchPerson={searchPerson}
@@ -318,7 +315,7 @@ const NexusArrayWithTabs = ({
 
     const isMasterEditorialRecord = () => {
         if (path === 'editorialMetadata' && view === VIEWS.EDIT) {
-            const current = currentData || updatedData[0];
+            const current = currentData || data[0];
             return current && get(current, 'hasGeneratedChildren');
         }
         return false;
@@ -328,7 +325,7 @@ const NexusArrayWithTabs = ({
         if (path === 'editorialMetadata' && view === VIEWS.VIEW) {
             const usEnData = get(groupedData, 'US en');
             const hasGeneratedChildren = usEnData && usEnData.some(obj => obj.hasGeneratedChildren);
-            const current = currentData || updatedData[0];
+            const current = currentData || data[0];
             const isUsEn = current && get(current, 'locale') === 'US' && get(current, 'language') === 'en';
             return isUsEn && hasGeneratedChildren;
         }
@@ -352,7 +349,7 @@ const NexusArrayWithTabs = ({
         return Object.keys(fields).map(key => {
             const initData = currentData
                 ? {...currentData, contentType: initialData.contentType}
-                : {...updatedData[0], contentType: initialData.contentType};
+                : {...data[0], contentType: initialData.contentType};
             const tabId = initData.id ? initData.id : initData.ratingSystem;
 
             return (
@@ -415,7 +412,7 @@ const NexusArrayWithTabs = ({
                         </SectionMessage>
                     </div>
                 )}
-                <AKField name={path} defaultValue={updatedData}>
+                <AKField name={path} defaultValue={data}>
                     {({fieldProps, error}) => <></>}
                 </AKField>
                 {Object.keys(groupedData).length ? renderFields() : <div>{`No ${name} Exists`}</div>}
