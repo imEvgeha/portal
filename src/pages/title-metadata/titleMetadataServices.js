@@ -19,6 +19,7 @@ export const getTitleById = payload => {
     const params = isMgm ? {tenantCode: 'mgm'} : {};
     return nexusFetch(url, {
         params: encodedSerialize(params),
+        isWithErrorHandling: false,
     });
 };
 

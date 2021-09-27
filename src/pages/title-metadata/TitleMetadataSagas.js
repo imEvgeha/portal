@@ -7,6 +7,7 @@ import {
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {history} from '../../index';
+import {showToastForErrors} from '../../util/http-client/handleError';
 import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
 import * as actionTypes from './titleMetadataActionTypes';
 import {
@@ -71,6 +72,8 @@ export function* loadTitle({payload}) {
             payload: false,
         });
     } catch (error) {
+        const {bindingResult} = error.message;
+
         yield put({
             type: actionTypes.GET_TITLE_ERROR,
             payload: error,
@@ -78,6 +81,12 @@ export function* loadTitle({payload}) {
         yield put({
             type: actionTypes.GET_TITLE_LOADING,
             payload: false,
+        });
+
+        showToastForErrors({
+            errorToast: {
+                description: bindingResult,
+            },
         });
 
         history.push('/metadata');
