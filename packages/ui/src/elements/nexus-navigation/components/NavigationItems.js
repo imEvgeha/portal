@@ -34,6 +34,13 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             onClick: () => handleClick('metadata'),
         },
         {
+            icon: () => <EditorBulletListIcon size="large" />,
+            id: DOP_TASKS,
+            tooltip: 'DOP Tasks',
+            isSelected: selectedItem === DOP_TASKS,
+            onClick: () => handleClick(DOP_TASKS),
+        },
+        {
             icon: EditorSearchIcon,
             id: MEDIA,
             tooltip: MEDIA,
@@ -58,12 +65,5 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
                   },
               ]
             : []),
-        {
-            icon: () => <EditorBulletListIcon size="large" />,
-            id: DOP_TASKS,
-            tooltip: 'DOP Tasks',
-            isSelected: selectedItem === DOP_TASKS,
-            onClick: () => handleClick(DOP_TASKS),
-        },
     ];
 };
