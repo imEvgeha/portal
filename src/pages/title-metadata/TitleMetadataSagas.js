@@ -118,6 +118,10 @@ export function* loadEditorialMetadata({payload}) {
     if (!payload.id) {
         return;
     }
+    yield put({
+        type: actionTypes.GET_EDITORIAL_METADATA_LOADING,
+        payload: true,
+    });
 
     try {
         const response = yield call(getEditorialMetadataByTitleId, {id: payload.id, isMgm: payload.isMgm});
@@ -125,10 +129,18 @@ export function* loadEditorialMetadata({payload}) {
             type: actionTypes.GET_EDITORIAL_METADATA_SUCCESS,
             payload: response,
         });
+        yield put({
+            type: actionTypes.GET_EDITORIAL_METADATA_LOADING,
+            payload: false,
+        });
     } catch (error) {
         yield put({
             type: actionTypes.GET_EDITORIAL_METADATA_ERROR,
             payload: error,
+        });
+        yield put({
+            type: actionTypes.GET_EDITORIAL_METADATA_LOADING,
+            payload: false,
         });
     }
 }

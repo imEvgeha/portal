@@ -27,7 +27,8 @@ const NexusDynamicForm = ({
     hasButtons,
     setRefresh,
     castCrewConfig,
-    storedInitialData,
+    // eslint-disable-next-line react/prop-types
+    seasonPersons,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [disableSubmit, setDisableSubmit] = useState(true);
@@ -52,34 +53,15 @@ const NexusDynamicForm = ({
         errorsCount && setValidationErrorCount(errorsCount);
     };
 
-    const getInitialEditorialValues = getValues => {
-        return storedInitialData.editorialMetadata.length
-            ? storedInitialData.editorialMetadata.filter(elem => {
-                  return (
-                      elem.language === getValues().editorial.language &&
-                      elem.locale === getValues().editorial.locale &&
-                      elem.metadataStatus === getValues().editorial.metadataStatus
-                  );
-              })
-            : [];
-    };
-
-    const onCancel = async (reset, getValues) => {
-        const initialDynamicEditorialValue = storedInitialData.editorialMetadata.filter(elem => {
-            return getInitialEditorialValues(getValues).find(initialElem => elem.id === initialElem.id);
-        });
-
-        await reset({
-            ...(isTitlePage ? storedInitialData : initialData),
-            editorial: initialDynamicEditorialValue.length ? initialDynamicEditorialValue[0] : undefined,
-        });
+    const onCancel = () => {
+        setRefresh(prev => !prev);
         setUpdate(true);
         setValidationErrorCount(0);
     };
 
     const formStatus = (dirty, errors) => {
         if (errors > 0) return 'error';
-        if (dirty) return 'updated';
+        if (dirty || seasonPersons) return 'updated';
         return 'success';
     };
 
@@ -96,7 +78,7 @@ const NexusDynamicForm = ({
                 <Button
                     className="nexus-c-dynamic-form__discard-button"
                     onClick={() => onCancel(reset, getValues)}
-                    isDisabled={!dirty || isSaving || !canEdit}
+                    isDisabled={(!dirty || isSaving || !canEdit) && !seasonPersons}
                 >
                     Discard
                 </Button>
@@ -104,7 +86,7 @@ const NexusDynamicForm = ({
                 <Button
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"
-                    isDisabled={(!dirty && disableSubmit) || !canEdit}
+                    isDisabled={((!dirty && disableSubmit) || !canEdit) && !seasonPersons}
                     // this is a form submit button and hence validation check will not work on submit function
                     onClick={showValidationError}
                     isLoading={isSaving}
