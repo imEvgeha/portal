@@ -56,6 +56,7 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
 
     return nexusFetch(`${url}${paramString}`).then(response => {
         const {data = []} = response || {};
+        console.log('%cdata', 'color: aqua; font-size: 14px;', data);
 
         // Re-pack data to be more suitable for ag-grid consumption
         const prettyData = data.map(datum => {
@@ -63,9 +64,22 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
             const eventMessage = get(datum, 'event.message', {});
             const docId = get(datum, 'id', '');
 
+            // prevents infinite loaders if missing fields
+            if (!eventHeaders.correlationId) {
+                eventHeaders.correlationId = '';
+            }
+            if (!eventHeaders.tenantId) {
+                eventHeaders.tenantId = '';
+            }
+            if (!eventHeaders.objectId) {
+                eventHeaders.objectId = '';
+            }
+
             // Include `id` for ag-grid functionality and `message` for the EventDrawer
             return {...eventHeaders, id: docId, message: eventMessage};
         });
+        console.log('%cprettyData', 'color: lawngreen; font-size: 14px;', prettyData);
+
         return {...response, data: prettyData};
     });
 };
