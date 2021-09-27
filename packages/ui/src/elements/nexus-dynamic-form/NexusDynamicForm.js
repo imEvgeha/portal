@@ -264,6 +264,7 @@ const NexusDynamicForm = ({
                                                         subTabs,
                                                         setDisableSubmit,
                                                         prefix,
+                                                        isTitlePage,
                                                     }
                                                 )}
                                             </Fragment>

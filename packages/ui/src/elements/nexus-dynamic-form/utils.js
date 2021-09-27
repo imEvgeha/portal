@@ -331,6 +331,7 @@ export const buildSection = (
         subTabs,
         setDisableSubmit,
         prefix,
+        isTitlePage,
     }
 ) => {
     return (
@@ -386,6 +387,7 @@ export const buildSection = (
                                 searchPerson,
                                 castCrewConfig,
                                 setDisableSubmit,
+                                isTitlePage,
                             })}
                         </div>
                     ))
@@ -415,6 +417,7 @@ export const renderNexusField = (
         setUpdatedValues,
         updatedValues,
         prefix,
+        isTitlePage,
     }
 ) => {
     return toShow(field, updatedValues || initialData, prefix) ? (
@@ -440,6 +443,7 @@ export const renderNexusField = (
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
             setUpdatedValues={setUpdatedValues}
+            isTitlePage={isTitlePage}
         />
     ) : null;
 };
