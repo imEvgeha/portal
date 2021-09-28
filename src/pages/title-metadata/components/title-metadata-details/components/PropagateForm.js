@@ -184,7 +184,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                 <Button onClick={() => onClose()}>{CANCEL_BUTTON}</Button>
                 <Button
                     onClick={handleAdd}
-                    isDisabled={isEMetsEmpty || isCastCrewEmpty || isLoading}
+                    isDisabled={isEMetsEmpty || isCastCrewEmpty || isLoading || (radioValue === 'none' && !checkedEmet)}
                     appearance="primary"
                 >
                     {PROPAGATE}
