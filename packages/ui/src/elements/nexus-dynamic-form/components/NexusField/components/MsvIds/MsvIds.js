@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
-import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import Select from '@atlaskit/select';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {cloneDeep} from 'lodash';
 import {withRouter} from 'react-router-dom';
+import NexusTagsContainer from '../../../../../../../lib/elements/nexus-tags-container/NexusTagsContainer';
 import {sortOptions} from '../../../../utils';
 import './MsvIds.scss';
 
@@ -41,11 +41,9 @@ const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) =
         return sortOptions(formattedOptions);
     };
 
-    const removeMsvId = index => {
-        const updatedMsvIds = [...msvIds];
-        updatedMsvIds.splice(index, 1);
-        setMsvIds(updatedMsvIds);
-        onChange([...updatedMsvIds]);
+    const saveIdsData = ids => {
+        setMsvIds(ids);
+        onChange(ids);
     };
 
     const openAddMsvIdModal = () => {
@@ -119,20 +117,9 @@ const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) =
 
     return (
         <div>
-            {data.map((msvId, index) => {
-                return (
-                    <span key={index} className="nexus-c-msv-ids-tag">
-                        <span>{msvId}</span>
-                        {isEdit && (
-                            <span className="nexus-c-msv-ids-tag__button" onClick={() => removeMsvId(index)}>
-                                <EditorCloseIcon size="small" label="" />
-                            </span>
-                        )}
-                    </span>
-                );
-            })}
+            <NexusTagsContainer data={data} saveData={saveIdsData} isEdit={isEdit} />
             {isEdit && (
-                <div>
+                <div className="nexus-c-msv-ids-add-button">
                     <Button onClick={openAddMsvIdModal}>+ Add MSV Association ID</Button>
                 </div>
             )}
