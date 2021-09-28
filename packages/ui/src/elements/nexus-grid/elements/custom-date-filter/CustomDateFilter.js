@@ -123,7 +123,7 @@ export class CustomDateFilter extends React.Component {
             <div className="nexus-c-custom-date-range-filter">
                 <NexusDateTimeWindowPicker
                     isUsingTime={isUsingTime}
-                    isTimestamp={true}
+                    isTimestamp={field === 'createdTimeStamp'}
                     isReturningTime={false}
                     startDateTimePickerProps={{
                         id: `${field}-filter__from`,
