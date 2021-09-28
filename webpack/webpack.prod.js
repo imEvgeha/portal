@@ -87,7 +87,7 @@ module.exports = envFile => ({
         new HtmlWebpackPlugin({
             template: paths.appHtml,
             inject: true,
-            favicon: 'public/favicon.ico',
+            favicon: 'public/favicon.svg',
             minify: {
                 removeComments: true,
                 collapseWhitespace: true,
