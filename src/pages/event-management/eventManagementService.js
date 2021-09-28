@@ -1,8 +1,11 @@
-import {get, isEmpty, isObject} from 'lodash';
+import {get, isEmpty, isObject, merge} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client';
 
 const FETCH_PAGE_SIZE = 100;
+
+// Storing values for infinite loader fix
+let allKeys = [];
 
 export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams) => {
     let paramString = '';
@@ -58,27 +61,26 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
         const {data = []} = response || {};
 
         // Re-pack data to be more suitable for ag-grid consumption
-        const prettyData = data.map(datum => {
+        const formatedData = data.map((datum, i) => {
             const eventHeaders = get(datum, 'event.headers', {});
             const eventMessage = get(datum, 'event.message', {});
             const docId = get(datum, 'id', '');
 
-            // prevents infinite loaders if missing fields
-            if (!eventHeaders.correlationId) {
-                eventHeaders.correlationId = '';
-            }
-            if (!eventHeaders.tenantId) {
-                eventHeaders.tenantId = '';
-            }
-            if (!eventHeaders.objectId) {
-                eventHeaders.objectId = '';
-            }
+            // Extracts keys from all incoming objects used for prevention ag-grid infinite loader in fields
+            Object.keys(eventHeaders).length > allKeys.length && allKeys.push(Object.keys(eventHeaders));
 
             // Include `id` for ag-grid functionality and `message` for the EventDrawer
             return {...eventHeaders, id: docId, message: eventMessage};
         });
 
-        return {...response, data: prettyData};
+        // Format, convert and inject empty valued keys to prevent ag-grid infinite loader
+        allKeys = allKeys.flat();
+        allKeys = [...new Set(allKeys)];
+
+        const allKeysObject = allKeys.reduce((o, key) => ({...o, [key]: ''}), {});
+        const mergedData = formatedData.map(entry => merge({...allKeysObject, ...entry}));
+
+        return {...response, data: mergedData};
     });
 };
 
