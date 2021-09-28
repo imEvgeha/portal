@@ -7,9 +7,12 @@
     }
 }
 .nexus-edit-tag {
-    height: 20px;
+    height: 32px;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 3px;
-    line-height: 1;
     background-color: map-get($colors, nexus-tag-default);
     overflow: scroll;
     margin: 6px;
@@ -23,7 +26,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     font-size: 0.8em;
-    display: inline-block;
+    display: flex;
 }
 
 .nexus-edit-tag__remove-button {
