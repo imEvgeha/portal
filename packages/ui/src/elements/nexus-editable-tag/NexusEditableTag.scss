@@ -18,7 +18,7 @@
     align-items: center;
     border-radius: 3px;
     background-color: map-get($colors, nexus-tag-default);
-    overflow: scroll;
+    overflow: auto;
     margin: 6px;
     padding: 3px 3px 0;
 }
