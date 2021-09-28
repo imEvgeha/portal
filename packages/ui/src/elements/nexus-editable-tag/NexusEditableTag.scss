@@ -2,9 +2,13 @@
 .nexus-edit-tag-input {
     color: rgb(37, 56, 88);
     font-size: 0.9rem;
-    &:focus {
+    &:focus-visible {
         border: none;
     }
+    outline: none !important;
+    margin: 6px;
+    padding: 3px 3px 0;
+    background-color: map-get($colors, nexus-tag-default);
 }
 .nexus-edit-tag {
     height: 32px;

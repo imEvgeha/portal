@@ -21,16 +21,18 @@ const NexusEditableTag = ({text, remove, save, index, inputWidth, isEdit}) => {
         setEditing(prev => !prev);
     };
 
-    return isEditing ? (
-        <input
-            className="nexus-edit-tag-input"
-            style={{width: inputWidth}}
-            value={value}
-            onChange={e => setValue(e.target.value)}
-            onBlur={onBlur}
-            onKeyDown={handleKeyDown}
-            autoFocus
-        />
+    return isEditing && isEdit ? (
+        <span className="nexus-edit-tag">
+            <input
+                className="nexus-edit-tag-input"
+                style={{width: inputWidth}}
+                value={value}
+                onChange={e => setValue(e.target.value)}
+                onBlur={onBlur}
+                onKeyDown={handleKeyDown}
+                autoFocus
+            />
+        </span>
     ) : (
         <span className="nexus-edit-tag">
             <span onClick={() => setEditing(prev => !prev)} className="nexus-edit-tag__label">
