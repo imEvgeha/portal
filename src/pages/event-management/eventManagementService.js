@@ -61,7 +61,7 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
         const {data = []} = response || {};
 
         // Re-pack data to be more suitable for ag-grid consumption
-        const formatedData = data.map((datum, i) => {
+        const formatedData = data.map(datum => {
             const eventHeaders = get(datum, 'event.headers', {});
             const eventMessage = get(datum, 'event.message', {});
             const docId = get(datum, 'id', '');
