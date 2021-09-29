@@ -12,6 +12,7 @@ import {
     DEFAULT_HOC_PROPS,
     ROW_BUFFER,
     PAGINATION_PAGE_SIZE,
+    PAGINATION_SIZE_STEP,
     CACHE_OVERFLOW_SIZE,
     MAX_CONCURRENT_DATASOURCE_REQUEST,
     MAX_BLOCKS_IN_CACHE,
@@ -118,6 +119,7 @@ const withInfiniteScrolling = ({
             if (typeof props.setDataLoading === 'function' && isMounted.current) {
                 props.setDataLoading(true);
             }
+
             fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
                 .then(response => {
                     const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
@@ -132,7 +134,8 @@ const withInfiniteScrolling = ({
                     }
 
                     if (total > 0) {
-                        successCallback(data, total);
+                        const updatedTotal = size * page + PAGINATION_SIZE_STEP;
+                        successCallback(data, updatedTotal > total ? total : updatedTotal);
 
                         // selected rows
                         if (context && context.selectedRows) {
@@ -152,6 +155,7 @@ const withInfiniteScrolling = ({
                         gridApi.hideOverlay();
                         return;
                     }
+
                     successCallback(data, 0);
                     gridApi.showNoRowsOverlay();
                 })
