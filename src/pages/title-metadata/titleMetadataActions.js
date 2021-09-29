@@ -20,11 +20,6 @@ export const updateSeasonPersonsPropagate = payload => ({
     payload,
 });
 
-export const storeInitialTitleData = payload => ({
-    type: actionTypes.SAVE_INITIAL_FORM_DATA,
-    payload,
-});
-
 export const getEditorialMetadata = payload => ({
     type: actionTypes.GET_EDITORIAL_METADATA,
     payload,
@@ -47,4 +42,8 @@ export const publishTitle = payload => ({
 
 export const clearTitle = () => ({
     type: actionTypes.CLEAR_TITLE,
+});
+
+export const clearSeasonPersons = () => ({
+    type: actionTypes.CLEAR_SEASON_PERSONS,
 });

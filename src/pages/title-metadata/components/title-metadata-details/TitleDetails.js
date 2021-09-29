@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
+import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
@@ -21,7 +23,7 @@ import {
     updateTitle,
     syncTitle,
     publishTitle,
-    storeInitialTitleData,
+    clearSeasonPersons,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
@@ -64,14 +66,14 @@ const TitleDetails = ({
     syncTitle,
     publishTitle,
     isSaving,
-    isLoading,
     isVZTitleSyncing,
     isMOVTitleSyncing,
     isVZTitlePublishing,
     isMOVTitlePublishing,
     seasonPersons,
-    initialTitleData,
-    storeInitialTitleData,
+    titleLoading,
+    emetLoading,
+    clearSeasonPersons,
 }) => {
     const containerRef = useRef();
     const [refresh, setRefresh] = useState(false);
@@ -97,6 +99,7 @@ const TitleDetails = ({
             nexusTitle && !isMgm && getExternalIds({id});
             getTerritoryMetadata({id, isMgm});
             getEditorialMetadata({id, isMgm});
+            seasonPersons && clearSeasonPersons();
         }
     }, [refresh]);
 
@@ -131,6 +134,7 @@ const TitleDetails = ({
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
             seasonPersons && propagateSeasonsPersonsToEpisodes(seasonPersons, id),
+            seasonPersons && clearSeasonPersons(),
         ]).then(() => {
             setVZDisabled(false);
             setMOVDisabled(false);
@@ -153,16 +157,14 @@ const TitleDetails = ({
         const [movidaExternalIds] = getExternaIds('movida');
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
-        const initialData = {
+
+        return {
             ...updatedTitle,
             vzExternalIds,
             movidaExternalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
             territorialMetadata: territoryMetadata,
         };
-
-        if (isEmpty(initialTitleData?.id)) storeInitialTitleData(initialData);
-        return initialData;
     };
 
     const syncPublishHandler = (externalSystem, buttonType) => {
@@ -178,24 +180,22 @@ const TitleDetails = ({
     };
 
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
-
-    if (isLoading) {
-        return <Loading />;
-    }
-
+    const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading;
     return (
-        <div className="nexus-c-title-details">
+        <div className={classnames(loading ? 'nexus-c-title-details__loading' : 'nexus-c-title-details')}>
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
-            {!isLoadingSelectValues && !isEmpty(selectValues) && (
+            {loading ? (
+                <Loading />
+            ) : (
                 <NexusDynamicForm
                     castCrewConfig={castCrewConfig}
                     searchPerson={searchPerson}
                     schema={schema}
                     initialData={extendTitleWithExternalIds()}
-                    storedInitialData={initialTitleData}
                     canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
                     containerRef={containerRef}
                     selectValues={selectValues}
+                    seasonPersons={seasonPersons}
                     onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
                     generateMsvIds={generateMsvIds}
                     regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
@@ -245,6 +245,7 @@ TitleDetails.propTypes = {
     editorialMetadata: PropTypes.array,
     getTitle: PropTypes.func,
     clearTitle: PropTypes.func,
+    clearSeasonPersons: PropTypes.func,
     getExternalIds: PropTypes.func,
     getTerritoryMetadata: PropTypes.func,
     getEditorialMetadata: PropTypes.func,
@@ -254,7 +255,6 @@ TitleDetails.propTypes = {
     syncTitle: PropTypes.func,
     publishTitle: PropTypes.func,
     isSaving: PropTypes.bool,
-    isLoading: PropTypes.bool,
     isVZTitleSyncing: PropTypes.bool,
     isMOVTitleSyncing: PropTypes.bool,
     isVZTitlePublishing: PropTypes.bool,
@@ -262,8 +262,8 @@ TitleDetails.propTypes = {
     fetchConfigApiEndpoints: PropTypes.func,
     castCrewConfig: PropTypes.object,
     seasonPersons: PropTypes.object,
-    initialTitleData: PropTypes.object,
-    storeInitialTitleData: PropTypes.func,
+    titleLoading: PropTypes.bool,
+    emetLoading: PropTypes.bool,
 };
 
 TitleDetails.defaultProps = {
@@ -284,24 +284,24 @@ TitleDetails.defaultProps = {
     syncTitle: () => null,
     publishTitle: () => null,
     isSaving: false,
-    isLoading: false,
     isVZTitleSyncing: false,
     isMOVTitleSyncing: false,
     isVZTitlePublishing: false,
     isMOVTitlePublishing: false,
     fetchConfigApiEndpoints: () => null,
-    initialTitleData: {},
-    storeInitialTitleData: () => null,
+    clearSeasonPersons: () => null,
+    titleLoading: true,
+    emetLoading: true,
     castCrewConfig: {},
     seasonPersons: {},
 };
 
 const mapStateToProps = () => {
     const titleSelector = selectors.createTitleSelector();
+    const titleLoadingSelector = selectors.createTitleLoadingSelector();
+    const emetLoadingSelector = selectors.createEmetLoadingSelector();
     const selectValuesLoadingSelector = createLoadingSelector(['FETCH_SELECT_VALUES']);
-    const loadingSelector = selectors.createTitleLoadingSelector();
     const externalIdsSelector = selectors.createExternalIdsSelector();
-    const initialTitleDataSelector = selectors.createInitialTitleDataSelector();
     const territoryMetadataSelector = selectors.createTerritoryMetadataSelector();
     const editorialMetadataSelector = selectors.createEditorialMetadataSelector();
     const isVZTitleSyncingSelector = selectors.createVZTitleIsSyncingSelector();
@@ -313,6 +313,8 @@ const mapStateToProps = () => {
 
     return (state, props) => ({
         title: titleSelector(state, props),
+        titleLoading: titleLoadingSelector(state),
+        emetLoading: emetLoadingSelector(state),
         externalIds: externalIdsSelector(state, props),
         territoryMetadata: territoryMetadataSelector(state, props),
         editorialMetadata: editorialMetadataSelector(state, props),
@@ -324,16 +326,14 @@ const mapStateToProps = () => {
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
         seasonPersons: seasonPersonsSelector(state),
-        isLoading: loadingSelector(state, props),
-        initialTitleData: initialTitleDataSelector(state),
         castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
     });
 };
 
 const mapDispatchToProps = dispatch => ({
     getTitle: payload => dispatch(getTitle(payload)),
-    storeInitialTitleData: payload => dispatch(storeInitialTitleData(payload)),
     clearTitle: () => dispatch(clearTitle()),
+    clearSeasonPersons: () => dispatch(clearSeasonPersons()),
     getExternalIds: payload => dispatch(getExternalIds(payload)),
     getTerritoryMetadata: payload => dispatch(getTerritoryMetadata(payload)),
     getEditorialMetadata: payload => dispatch(getEditorialMetadata(payload)),

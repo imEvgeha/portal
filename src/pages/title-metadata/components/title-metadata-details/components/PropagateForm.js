@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
+import {RadioGroup} from '@atlaskit/radio';
 import {isEmpty} from 'lodash';
 import {useDispatch} from 'react-redux';
 import {searchPersonById} from '../../../../avails/right-details/rightDetailsServices';
@@ -17,11 +18,25 @@ import {
     EMPTY_CAST_CREW,
     EMPTY_EMETS,
     EMETS,
-    CORE,
     SEASON,
     EPISODE,
 } from './propagateConstants';
 import './PropagateForm.scss';
+
+const episodePropagateOptions = [
+    {
+        label: 'None',
+        value: 'none',
+    },
+    {
+        label: 'Core',
+        value: 'core',
+    },
+    {
+        label: 'Core & EMets',
+        value: 'emets',
+    },
+];
 
 const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     const {castCrew, contentType, editorial, editorialMetadata} = getValues();
@@ -30,8 +45,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     const isEMetsEmpty = !editorialMetadata?.length;
     const dispatch = useDispatch();
     const [checkedEmet, setCheckedEmet] = useState(true);
-    const [seasonCheckedCore, setSeasonCheckedCore] = useState(contentType === SEASON);
-    const [seasonCheckedEmet, setSeasonCheckedEmet] = useState(contentType === SEASON);
+    const [radioValue, setRadioValue] = useState('none');
     const [isLoading, setIsLoading] = useState(false);
     const [localizationCastCrew, setLocalizationCastCrew] = useState([]);
 
@@ -102,7 +116,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                     id,
                     personType,
                     creditsOrder,
-                    propagateToEmet: seasonCheckedEmet,
+                    propagateToEmet: radioValue === 'emets',
                 };
             }),
         };
@@ -115,10 +129,14 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
 
     const handleAdd = async () => {
         checkedEmet && handleAddEmetOption();
-        (seasonCheckedCore || seasonCheckedEmet) && handleAddSeasonOption();
+        radioValue !== 'none' && handleAddSeasonOption();
 
         onClose();
     };
+
+    const onChange = useCallback(event => {
+        setRadioValue(event.currentTarget.value);
+    }, []);
 
     return (
         <>
@@ -139,26 +157,21 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                     </div>
 
                     {contentType === SEASON && (
-                        <div className="propagate-form__season">
+                        <>
+                            <hr className="solid" />
                             <div className="propagate-form__section">
                                 <h5>{EPISODE}</h5>
-
-                                <Checkbox
-                                    id="episodeCore"
-                                    label={CORE}
-                                    isChecked={seasonCheckedCore}
-                                    onChange={() => setSeasonCheckedCore(!seasonCheckedCore)}
-                                    isDisabled={isCastCrewEmpty}
-                                />
-                                <Checkbox
-                                    id="episodeEmets"
-                                    label={EMETS}
-                                    isChecked={seasonCheckedEmet}
-                                    onChange={() => setSeasonCheckedEmet(!seasonCheckedEmet)}
-                                    isDisabled={isCastCrewEmpty}
-                                />
+                                <div className="propagate-form__radio">
+                                    <RadioGroup
+                                        label={EPISODE}
+                                        value={radioValue}
+                                        options={episodePropagateOptions}
+                                        onChange={onChange}
+                                        isDisabled={isCastCrewEmpty}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                        </>
                     )}
                 </>
             )}
@@ -171,12 +184,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                 <Button onClick={() => onClose()}>{CANCEL_BUTTON}</Button>
                 <Button
                     onClick={handleAdd}
-                    isDisabled={
-                        (!checkedEmet && !seasonCheckedEmet && !seasonCheckedCore) ||
-                        isCastCrewEmpty ||
-                        (isEMetsEmpty && !seasonCheckedEmet && !seasonCheckedCore) ||
-                        isLoading
-                    }
+                    isDisabled={isEMetsEmpty || isCastCrewEmpty || isLoading || (radioValue === 'none' && !checkedEmet)}
                     appearance="primary"
                 >
                     {PROPAGATE}

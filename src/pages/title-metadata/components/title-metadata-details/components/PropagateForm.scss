@@ -19,9 +19,20 @@
 
 .propagate-form__section {
     display: flex;
-    align-items: center;
+    margin-top: 5px;
     > h5 {
         width: 130px;
+        font-size: 11px;
         margin-bottom: 8px;
     }
+}
+
+/* Solid border */
+hr.solid {
+    border-top: 1px solid black;
+  }
+
+.propagate-form__radio {
+    display: flex;
+    flex-direction: column;
 }

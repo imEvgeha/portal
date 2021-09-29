@@ -9,7 +9,10 @@ export const createTitleSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.title || {});
 
 export const createTitleLoadingSelector = () =>
-    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.loading || false);
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.titleLoading || false);
+
+export const createEmetLoadingSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.emetLoading || false);
 
 export const createExternalIdsSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.externalIds || {});

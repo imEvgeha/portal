@@ -5,6 +5,12 @@
     background-color: map-get($neutrals, N0);
 }
 
+.nexus-c-title-details__loading {
+    width: 100%;
+    height: 100%;
+    background-color: map-get($neutrals, N0);
+}
+
 .nexus-c-title-details-__action-dropdown {
     padding-left: 48px;
     display: flex;

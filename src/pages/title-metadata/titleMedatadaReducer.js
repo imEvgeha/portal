@@ -5,6 +5,8 @@ const initialState = {
     title: {},
     initialData: {},
     externalIds: [],
+    emetLoading: false,
+    titleLoading: false,
     territoryMetadata: [],
     editorialMetadata: [],
     seasonPersons: undefined,
@@ -23,14 +25,14 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 ...state,
                 seasonPersons: payload,
             };
-        case actionTypes.SAVE_INITIAL_FORM_DATA:
-            return {
-                ...state,
-                initialData: payload,
-            };
         case actionTypes.CLEAR_TITLE:
             return {
                 ...initialState,
+            };
+        case actionTypes.CLEAR_SEASON_PERSONS:
+            return {
+                ...state,
+                seasonPersons: undefined,
             };
         case actionTypes.GET_TITLE_SUCCESS:
             return {
@@ -44,7 +46,7 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
         case actionTypes.GET_TITLE_LOADING:
             return {
                 ...state,
-                loading: payload,
+                titleLoading: payload,
             };
         case actionTypes.GET_EXTERNAL_IDS_SUCCESS:
             return {
@@ -72,6 +74,11 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
         case actionTypes.GET_EDITORIAL_METADATA_ERROR:
             return {
                 ...state,
+            };
+        case actionTypes.GET_EDITORIAL_METADATA_LOADING:
+            return {
+                ...state,
+                emetLoading: payload,
             };
         case actionTypes.UPDATE_TITLE_SUCCESS:
             return {
