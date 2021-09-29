@@ -6,7 +6,7 @@ import Loading from '../../static/Loading';
 import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
-import JuiceBoxSection from "./components/juicebox-section/JuiceBoxSection";
+import JuiceBoxSection from './components/juicebox-section/JuiceBoxSection';
 import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
 import {
@@ -16,10 +16,8 @@ import {
     getBarCodes,
     populateAssetInfo,
 } from './components/sources-table/util';
-import { SERVICERS, readinessStatus, TENANTS } from '../constants';
+import {SERVICERS, readinessStatus, TENANTS} from '../constants';
 import './ServicingOrder.scss';
-
-
 
 const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
@@ -34,10 +32,10 @@ const ServicingOrder = ({match}) => {
     const [updatedServices, setUpdatedServices] = useState({});
 
     // prepare row data from selected order for source table
-    const sourceRowData = useMemo(() => prepareRowData(selectedOrder),[selectedOrder]);
+    const sourceRowData = useMemo(() => prepareRowData(selectedOrder), [selectedOrder]);
 
     // order origin DETE, JuiceBox etc
-    const orderOrigin = get(selectedOrder,'fs');
+    const orderOrigin = get(selectedOrder, 'fs');
 
     useEffect(() => {
         const order =
@@ -106,6 +104,15 @@ const ServicingOrder = ({match}) => {
                 let recp = {};
                 source.deteServices.forEach(item => {
                     const extId = get(item, 'externalServices.externalId', '');
+                    if (
+                        item.externalServices.sourceStandard === undefined ||
+                        item.externalServices.sourceStandard === ' '
+                    ) {
+                        item.externalServices = {
+                            ...item.externalServices,
+                            sourceStandard: item.deteSources?.[0]?.assetInfo?.standard,
+                        };
+                    }
                     item.foiStatus =
                         (get(serviceOrder, 'fulfillmentOrderItems', []).find(item => item.external_id === extId) || {})
                             .status || '';
@@ -153,52 +160,55 @@ const ServicingOrder = ({match}) => {
                         handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                         selectedFulfillmentOrder={selectedFulfillmentOrderID}
                     />
-                ): <Loading/>}
+                ) : (
+                    <Loading />
+                )}
             </div>
             <div className="servicing-order__right">
-            {Object.keys(serviceOrder).length > 0 ?
-                <FulfillmentOrder
-                    selectedFulfillmentOrder={selectedOrder}
-                    setSelectedOrder={setSelectedOrder}
-                    setSelectedFulfillmentOrderID={setSelectedFulfillmentOrderID}
-                    fetchFulfillmentOrders={fetchFulfillmentOrders}
-                    serviceOrder={serviceOrder}
-                    updatedServices={updatedServices}
-                    cancelEditing={cancelEdit}
-                    lastOrder={lastOrder}
-                    deteErrors={selectedOrder.errors || []}
-                >
-                    {orderOrigin === 'JUICEBOX' ?
-                        <JuiceBoxSection
-                            selectedOrder={selectedOrder}
-                            setSelectedOrder={setSelectedOrder}
-                            isDisabled={isFormDisabled(selectedOrder)}
-                        />
-                        :
-                        <div>
-                            {get(selectedOrder,'definition', null) &&
-                                <SourcesTable
-                                onSelectedSourceChange={handleSelectedSourceChange}
-                                data={sourceRowData}
-                                setUpdatedServices={setUpdatedServices}
+                {Object.keys(serviceOrder).length > 0 ? (
+                    <FulfillmentOrder
+                        selectedFulfillmentOrder={selectedOrder}
+                        setSelectedOrder={setSelectedOrder}
+                        setSelectedFulfillmentOrderID={setSelectedFulfillmentOrderID}
+                        fetchFulfillmentOrders={fetchFulfillmentOrders}
+                        serviceOrder={serviceOrder}
+                        updatedServices={updatedServices}
+                        cancelEditing={cancelEdit}
+                        lastOrder={lastOrder}
+                        deteErrors={selectedOrder.errors || []}
+                    >
+                        {orderOrigin === 'JUICEBOX' ? (
+                            <JuiceBoxSection
+                                selectedOrder={selectedOrder}
+                                setSelectedOrder={setSelectedOrder}
                                 isDisabled={isFormDisabled(selectedOrder)}
-                                />
-                            }
-                            {selectedSource &&
-                                <ServicesTable
-                                data={selectedSource}
-                                recipientsOptions={recipientsOptions}
-                                isDisabled={isFormDisabled(selectedOrder)}
-                                setUpdatedServices={setUpdatedServices}
-                                components={components}
-                                externalId={selectedOrder.external_id}
-                                />
-                            }
-                        </div>
-                    }
-                </FulfillmentOrder>
-                : <Loading/>
-                }
+                            />
+                        ) : (
+                            <div>
+                                {get(selectedOrder, 'definition', null) && (
+                                    <SourcesTable
+                                        onSelectedSourceChange={handleSelectedSourceChange}
+                                        data={sourceRowData}
+                                        setUpdatedServices={setUpdatedServices}
+                                        isDisabled={isFormDisabled(selectedOrder)}
+                                    />
+                                )}
+                                {selectedSource && (
+                                    <ServicesTable
+                                        data={selectedSource}
+                                        recipientsOptions={recipientsOptions}
+                                        isDisabled={isFormDisabled(selectedOrder)}
+                                        setUpdatedServices={setUpdatedServices}
+                                        components={components}
+                                        externalId={selectedOrder.external_id}
+                                    />
+                                )}
+                            </div>
+                        )}
+                    </FulfillmentOrder>
+                ) : (
+                    <Loading />
+                )}
             </div>
         </div>
     );
