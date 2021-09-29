@@ -133,7 +133,13 @@ const TitleDetails = ({
             updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
-            seasonPersons && propagateSeasonsPersonsToEpisodes(seasonPersons, id),
+            seasonPersons &&
+                propagateSeasonsPersonsToEpisodes(
+                    {
+                        addPersons: seasonPersons,
+                    },
+                    id
+                ),
             seasonPersons && clearSeasonPersons(),
         ]).then(() => {
             setVZDisabled(false);
@@ -261,7 +267,7 @@ TitleDetails.propTypes = {
     isMOVTitlePublishing: PropTypes.bool,
     fetchConfigApiEndpoints: PropTypes.func,
     castCrewConfig: PropTypes.object,
-    seasonPersons: PropTypes.object,
+    seasonPersons: PropTypes.array,
     titleLoading: PropTypes.bool,
     emetLoading: PropTypes.bool,
 };
@@ -293,7 +299,7 @@ TitleDetails.defaultProps = {
     titleLoading: true,
     emetLoading: true,
     castCrewConfig: {},
-    seasonPersons: {},
+    seasonPersons: [],
 };
 
 const mapStateToProps = () => {

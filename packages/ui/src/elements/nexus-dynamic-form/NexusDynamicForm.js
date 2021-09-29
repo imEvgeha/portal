@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import classnames from 'classnames';
-import {mergeWith, set, get} from 'lodash';
+import {mergeWith, set, get, isEmpty} from 'lodash';
 import moment from 'moment';
 import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
 import PropagateButton from '../nexus-person/elements/PropagateButton/PropagateButton';
@@ -61,7 +61,7 @@ const NexusDynamicForm = ({
 
     const formStatus = (dirty, errors) => {
         if (errors > 0) return 'error';
-        if (dirty || seasonPersons) return 'updated';
+        if (dirty || !isEmpty(seasonPersons)) return 'updated';
         return 'success';
     };
 
@@ -78,7 +78,7 @@ const NexusDynamicForm = ({
                 <Button
                     className="nexus-c-dynamic-form__discard-button"
                     onClick={() => onCancel(reset, getValues)}
-                    isDisabled={(!dirty || isSaving || !canEdit) && !seasonPersons}
+                    isDisabled={(!dirty || isSaving || !canEdit) && isEmpty(seasonPersons)}
                 >
                     Discard
                 </Button>
@@ -86,7 +86,7 @@ const NexusDynamicForm = ({
                 <Button
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"
-                    isDisabled={((!dirty && disableSubmit) || !canEdit) && !seasonPersons}
+                    isDisabled={((!dirty && disableSubmit) || !canEdit) && isEmpty(seasonPersons)}
                     // this is a form submit button and hence validation check will not work on submit function
                     onClick={showValidationError}
                     isLoading={isSaving}

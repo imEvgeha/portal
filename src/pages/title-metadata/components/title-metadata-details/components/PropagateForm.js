@@ -109,17 +109,15 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     };
 
     const handleAddSeasonOption = () => {
-        const seasonCastCrewPropagateData = {
-            addPersons: persons.map(person => {
-                const {id, personType, creditsOrder} = person;
-                return {
-                    id,
-                    personType,
-                    creditsOrder,
-                    propagateToEmet: radioValue === 'emets',
-                };
-            }),
-        };
+        const seasonCastCrewPropagateData = persons.map(person => {
+            const {id, personType, creditsOrder} = person;
+            return {
+                id,
+                personType,
+                creditsOrder,
+                propagateToEmet: radioValue === 'emets',
+            };
+        });
 
         dispatch({
             type: UPDATE_SEASON_PERSONS,
