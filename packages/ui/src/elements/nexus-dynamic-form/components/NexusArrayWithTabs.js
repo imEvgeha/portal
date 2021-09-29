@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
+import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
@@ -327,7 +328,7 @@ const NexusArrayWithTabs = ({
             const hasGeneratedChildren = usEnData && usEnData.some(obj => obj.hasGeneratedChildren);
             const current = currentData || data[0];
             const isUsEn = current && get(current, 'locale') === 'US' && get(current, 'language') === 'en';
-            return isUsEn && hasGeneratedChildren;
+            return isUsEn && hasGeneratedChildren && isNexusTitle(current?.id);
         }
         return false;
     };
