@@ -4,6 +4,7 @@ import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dyna
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {connect} from 'react-redux';
+import Loading from '../../static/Loading';
 import {getRight, updateRight, clearRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
@@ -30,10 +31,14 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, isSavi
         updateRight(values);
     };
 
+    if (isFetching) {
+        return <Loading />;
+    }
+
     return (
         <div className="nexus-c-right-details">
             <RightDetailsHeader title="Right Details" right={right} containerRef={containerRef} />
-            {right?.id && !isFetching && (
+            {right?.id && (
                 <NexusDynamicForm
                     schema={schema}
                     initialData={right}

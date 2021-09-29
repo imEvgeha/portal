@@ -37,7 +37,7 @@ setEnvConfiguration()
         render(<p>Problem with configuration, application cannot be started</p>, document.querySelector('#app'));
     });
 
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
 
 // temporary export -> we should not export store
 // eslint-disable-next-line no-underscore-dangle

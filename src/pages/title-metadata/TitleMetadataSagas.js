@@ -6,6 +6,8 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
+import {history} from '../../index';
+import {showToastForErrors} from '../../util/http-client/handleError';
 import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
 import * as actionTypes from './titleMetadataActionTypes';
 import {
@@ -53,7 +55,12 @@ export function* loadTitle({payload}) {
         type: actionTypes.GET_TITLE_LOADING,
         payload: true,
     });
+
     try {
+        yield put({
+            type: actionTypes.CLEAR_TITLE,
+        });
+
         const response = yield call(getTitleById, {id: payload.id, isMgm: payload.isMgm});
         const updatedResponse = yield call(loadParentTitle, response);
         yield put({
@@ -65,6 +72,8 @@ export function* loadTitle({payload}) {
             payload: false,
         });
     } catch (error) {
+        const {bindingResult} = error.message;
+
         yield put({
             type: actionTypes.GET_TITLE_ERROR,
             payload: error,
@@ -73,6 +82,14 @@ export function* loadTitle({payload}) {
             type: actionTypes.GET_TITLE_LOADING,
             payload: false,
         });
+
+        showToastForErrors({
+            errorToast: {
+                description: bindingResult,
+            },
+        });
+
+        history.push('/metadata');
     }
 }
 
