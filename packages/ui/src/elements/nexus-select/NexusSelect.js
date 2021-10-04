@@ -25,6 +25,7 @@ const NexusSelect = ({
     showLocalized,
     isCreateMode,
 }) => {
+    const fieldValues = fieldProps?.value;
     const [fetchedOptions, setFetchedOptions] = useState([]);
 
     useEffect(() => {
@@ -97,19 +98,26 @@ const NexusSelect = ({
     };
 
     if (path === 'metadataStatus') {
-        const fieldValue = fieldProps.value;
-        const selectLabel = fieldValue.label;
-
+        const selectLabel = fieldValues?.label;
         if (selectLabel) {
             const upperLabel = selectLabel[0].toUpperCase() + selectLabel.substr(1);
-            fieldValue.label = upperLabel;
+            fieldValues.label = upperLabel;
         }
+    }
+
+    const options = optionsConfig.options !== undefined ? optionsConfig.options.sort(selectCompare) : filterOptions();
+
+    if (path === 'advisoriesCode' && fieldValues) {
+        fieldValues.forEach(fieldValue => {
+            const labelFromOptions = options?.find(option => option.value === fieldValue?.value)?.label;
+            if (labelFromOptions && fieldValue?.label) fieldValue.label = labelFromOptions;
+        });
     }
 
     return isMultiselect ? (
         <SelectWithOptional
             {...fieldProps}
-            options={optionsConfig.options !== undefined ? optionsConfig.options.sort(selectCompare) : filterOptions()}
+            options={options}
             isMulti
             defaultValue={defaultValue}
             {...addedProps}
@@ -118,7 +126,7 @@ const NexusSelect = ({
     ) : (
         <SelectWithOptional
             {...fieldProps}
-            options={optionsConfig.options !== undefined ? optionsConfig.options : filterOptions()}
+            options={options}
             defaultValue={defaultValue}
             {...addedProps}
             className="nexus-c-nexus-select-container"
