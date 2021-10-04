@@ -4,7 +4,7 @@ export default [
         field: 'status',
         headerName: 'Error/Success',
         width: 120,
-        valueFormatter: ({data}) => (data && data.publishErrors.length ? 'Error' : 'Success'),
+        valueFormatter: ({data}) => (data?.publishErrors?.length ? 'Error' : 'Success'),
     },
     {
         colId: 'updatedAt',
