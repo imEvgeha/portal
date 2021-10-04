@@ -397,7 +397,7 @@ const NexusArrayWithTabs = ({
                         )}
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
-                    {showRegenerateAutoDecoratedMetadata() && (
+                    {(showRegenerateAutoDecoratedMetadata() || isMasterEditorialRecord()) && (
                         <Button
                             appearance="primary"
                             onClick={handleRegenerateAutoDecoratedMetadata}
