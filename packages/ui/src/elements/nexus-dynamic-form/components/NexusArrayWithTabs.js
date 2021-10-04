@@ -377,6 +377,7 @@ const NexusArrayWithTabs = ({
                 <SideTabs
                     onChange={changeTabData}
                     data={groupedData}
+                    path={path}
                     subTabs={subTabs}
                     isRemoved={isRemoved}
                     clearIsRemoved={clearIsRemoved}

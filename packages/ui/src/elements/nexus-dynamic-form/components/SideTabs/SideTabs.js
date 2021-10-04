@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import './SideTabs.scss';
 
-const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved}) => {
+const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) => {
     const [currentTab, setCurrentTab] = useState({
         tabIndex: 0,
         subTabIndex: 0,
@@ -55,6 +55,8 @@ const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved}) => {
             const duration = moment.duration(moment.utc(masterTitle?.updatedAt).diff(moment.utc(obj?.updatedAt)));
             const secs = Math.abs(duration.asSeconds());
             const isDecorated = secs < 5;
+            const isRatings = path === 'ratings';
+
             if (checkSubTabValues(obj)) {
                 toReturn.push(
                     <div
@@ -65,7 +67,7 @@ const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved}) => {
                             'nexus-c-side-tabs__subtab-container--open': currentTab.tabIndex === index,
                         })}
                     >
-                        {isDecorated && <StatusLink className="tablinks__status-link" />}
+                        {isDecorated && !isRatings && <StatusLink className="tablinks__status-link" />}
                         <Button onClick={() => handleTabChanged(key, index, subIndex)}>{getSubTabLabel(obj)}</Button>
                     </div>
                 );
@@ -134,6 +136,7 @@ const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved}) => {
 
 SideTabs.propTypes = {
     data: PropTypes.object,
+    path: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     subTabs: PropTypes.array,
     isRemoved: PropTypes.bool,
