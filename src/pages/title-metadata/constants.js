@@ -64,8 +64,7 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'repository',
         enableSearch: false,
         readOnly: true,
-        minWidth: 120,
-        maxWidth: 120,
+        width: 120,
     },
     {
         colId: 'contentType',
@@ -75,7 +74,7 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         dataType: 'string',
         searchDataType: 'string',
-        width: 50,
+        width: 120,
     },
     {
         colId: 'seriesName',
