@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
-import {cloneDeep, isEqual, omit} from 'lodash';
+import {isEqual, omit} from 'lodash';
 import {connect} from 'react-redux';
 import AudioLanguageTypeCellEditor from '../elements/cell-editor/AudioLanguageTypeCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';
@@ -53,7 +53,7 @@ const withEditableColumns = ({
         }, [columnDefs, selectValues]);
 
         const updateColumnDefs = columnDefs => {
-            const copiedColumnDefs = cloneDeep(columnDefs);
+            const copiedColumnDefs = columnDefs;
             const editableColumnDefs = copiedColumnDefs.map(columnDef => {
                 const {field, optionsKey, disabledOptionsKey} = columnDef || {};
                 const {dataType, enableEdit} =
