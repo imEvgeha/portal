@@ -133,7 +133,7 @@ const TitleDetails = ({
             updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
-            seasonPersons &&
+            seasonPersons?.length &&
                 propagateSeasonsPersonsToEpisodes(
                     {
                         addPersons: seasonPersons,
