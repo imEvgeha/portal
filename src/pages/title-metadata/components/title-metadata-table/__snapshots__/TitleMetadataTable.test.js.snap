@@ -39,9 +39,8 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "field": "repository",
           "headerName": "Repository",
           "javaVariableName": "repository",
-          "maxWidth": 120,
-          "minWidth": 120,
           "readOnly": true,
+          "width": 120,
         },
         Object {
           "colId": "contentType",
@@ -52,7 +51,7 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "javaVariableName": "contentType",
           "searchDataType": "string",
           "valueFormatter": undefined,
-          "width": 50,
+          "width": 120,
         },
         Object {
           "colId": "seriesName",
@@ -347,9 +346,8 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "field": "repository",
           "headerName": "Repository",
           "javaVariableName": "repository",
-          "maxWidth": 120,
-          "minWidth": 120,
           "readOnly": true,
+          "width": 120,
         },
         Object {
           "colId": "contentType",
@@ -359,7 +357,7 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "headerName": "Content Type",
           "javaVariableName": "contentType",
           "searchDataType": "string",
-          "width": 50,
+          "width": 120,
         },
         Object {
           "colId": "seriesName",
