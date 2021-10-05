@@ -30,9 +30,19 @@
 /* Solid border */
 hr.solid {
     border-top: 1px solid black;
-  }
+}
 
 .propagate-form__radio {
     display: flex;
     flex-direction: column;
+}
+
+.note {
+    font-size: 12px;
+    color: rgba(black, 0.6);
+    margin: 10px 0 0 16px;
+}
+
+.disabled {
+    color: rgba(black, 0.2);
 }

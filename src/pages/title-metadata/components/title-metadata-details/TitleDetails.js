@@ -215,28 +215,33 @@ const TitleDetails = ({
                     />
                     <NexusStickyFooter>
                         <NexusStickyFooter.LeftActions>
-                            <>
-                                <SyncPublish
-                                    externalSystem={VZ}
-                                    externalIds={externalIds}
-                                    onSyncPublish={syncPublishHandler}
-                                    isSyncing={isVZTitleSyncing}
-                                    isPublishing={isVZTitlePublishing}
-                                    isDisabled={VZDisabled}
-                                    titleUpdatedAt={title.updatedAt}
-                                />
-                                <SyncPublish
-                                    externalSystem={MOVIDA}
-                                    externalIds={externalIds}
-                                    onSyncPublish={syncPublishHandler}
-                                    isSyncing={isMOVTitleSyncing}
-                                    isPublishing={isMOVTitlePublishing}
-                                    isDisabled={MOVDisabled}
-                                    titleUpdatedAt={title.updatedAt}
-                                />
-                                <ActionMenu titleId={title.id} />
-                            </>
+                            <SyncPublish
+                                externalSystem={VZ}
+                                externalIds={externalIds}
+                                onSyncPublish={syncPublishHandler}
+                                isSyncing={isVZTitleSyncing}
+                                isPublishing={isVZTitlePublishing}
+                                isDisabled={VZDisabled}
+                                titleUpdatedAt={title.updatedAt}
+                            />
+                            <SyncPublish
+                                externalSystem={MOVIDA}
+                                externalIds={externalIds}
+                                onSyncPublish={syncPublishHandler}
+                                isSyncing={isMOVTitleSyncing}
+                                isPublishing={isMOVTitlePublishing}
+                                isDisabled={MOVDisabled}
+                                titleUpdatedAt={title.updatedAt}
+                            />
+                            <ActionMenu titleId={title.id} />
                         </NexusStickyFooter.LeftActions>
+                        <NexusStickyFooter.CenterActions>
+                            {!isEmpty(seasonPersons) && (
+                                <div className="note">
+                                    Note: You must save changes before propagating from a season to its episodes
+                                </div>
+                            )}
+                        </NexusStickyFooter.CenterActions>
                     </NexusStickyFooter>
                 </>
             )}
