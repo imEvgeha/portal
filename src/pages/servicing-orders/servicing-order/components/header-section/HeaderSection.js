@@ -13,9 +13,16 @@ import {SORT_DIRECTION} from '../filter-section/constants';
 import FulfillmentOrderPanels from '../fulfillment-order-panels/FulfillmentOrderPanels';
 import './HeaderSection.scss';
 
-const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulfillmentOrder}) => {
+const HeaderSection = ({
+    orderDetails,
+    handleFulfillmentOrderChange,
+    selectedFulfillmentOrder,
+    fetchNewPageForFulfillmentOrders,
+    servicingOrderItemsLength,
+}) => {
     const {fulfillmentOrders} = orderDetails;
     const [showFilter, setShowFilter] = useState(true);
+    const [page, setPage] = useState(1);
     const [filter, setFilter] = useState({value: 'All', label: 'All'});
     const [dueDateSortDirection, setDueDateSortDirection] = useState(SORT_DIRECTION[0]);
 
@@ -30,6 +37,14 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
             }
         }
         return filteredList;
+    };
+
+    const onScroll = e => {
+        const {target: {scrollHeight, scrollTop, clientHeight} = {}} = e || {};
+        if (scrollHeight - scrollTop - clientHeight < 1 && fulfillmentOrders.length < servicingOrderItemsLength) {
+            fetchNewPageForFulfillmentOrders(page);
+            setPage(page + 1);
+        }
     };
 
     const panelHeaderClassNames = classnames('panel-header__title', {
@@ -62,7 +77,7 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
                     setDueDateSortDirection={setDueDateSortDirection}
                 />
             )}
-            <div className="panel-header__list">
+            <div className="panel-header__list" onScroll={onScroll}>
                 <FulfillmentOrderPanels
                     orderDetails={orderDetails}
                     dueDateSortDirection={dueDateSortDirection}
@@ -79,10 +94,14 @@ HeaderSection.propTypes = {
     orderDetails: PropTypes.object.isRequired,
     handleFulfillmentOrderChange: PropTypes.func,
     selectedFulfillmentOrder: PropTypes.string,
+    fetchNewPageForFulfillmentOrders: PropTypes.func,
+    servicingOrderItemsLength: PropTypes.number,
 };
 
 HeaderSection.defaultProps = {
     handleFulfillmentOrderChange: () => null,
+    fetchNewPageForFulfillmentOrders: () => null,
     selectedFulfillmentOrder: '',
+    servicingOrderItemsLength: 0,
 };
 export default HeaderSection;

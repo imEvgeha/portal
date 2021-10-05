@@ -2,6 +2,7 @@ import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {get, cloneDeep} from 'lodash';
+import {PAGE_SIZE} from '../../avails/selected-for-planning/constants';
 import Loading from '../../static/Loading';
 import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
@@ -26,6 +27,7 @@ const ServicingOrder = ({match}) => {
     const [selectedSource, setSelectedSource] = useState();
     const [lastOrder, setLastOrder] = useState({});
     const [components, setComponents] = useState([]);
+    const [servicingOrderItemsLength, setServicingOrderItemsLength] = useState(0);
     const [recipientsOptions, setRecipientsOptions] = useState({});
 
     // this piece of state is used for when a service is updated in the services table
@@ -44,33 +46,41 @@ const ServicingOrder = ({match}) => {
         setLastOrder(order);
     }, [serviceOrder, selectedFulfillmentOrderID]);
 
-    const fetchFulfillmentOrders = async servicingOrder => {
+    const fetchFulfillmentOrders = async (servicingOrder, page = 0) => {
         if (servicingOrder.so_number) {
             try {
                 const {
                     fulfillmentOrders,
                     servicingOrderItems,
                     fulfillmentOrderItems,
-                } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
+                } = await servicingOrdersService.getAdvancedFulfilmentOrdersForServiceOrder(
+                    servicingOrder.so_number,
+                    page,
+                    PAGE_SIZE
+                );
 
                 let fulfillmentOrdersClone = cloneDeep(fulfillmentOrders);
 
                 fulfillmentOrdersClone = sortByDateFn(fulfillmentOrdersClone, 'definition.dueDate');
 
+                const newFulfillmentOrders = serviceOrder?.fulfillmentOrders || [];
+                const newServicingOrderItems = serviceOrder?.servicingOrderItems || [];
+                const newFulfillmentOrderItems = serviceOrder?.fulfillmentOrderItems || [];
+
                 setServiceOrder({
                     ...servicingOrder,
-                    fulfillmentOrders: showLoading(fulfillmentOrdersClone),
-                    servicingOrderItems,
-                    fulfillmentOrderItems,
+                    fulfillmentOrders: [...newFulfillmentOrders, ...showLoading(fulfillmentOrdersClone)],
+                    servicingOrderItems: [...newServicingOrderItems, ...servicingOrderItems],
+                    fulfillmentOrderItems: [...newFulfillmentOrderItems, ...fulfillmentOrderItems],
                 });
                 const barcodes = getBarCodes(fulfillmentOrdersClone);
                 fetchAssetInfo(barcodes).then(assetInfo => {
-                    const newFulfillmentOrders = populateAssetInfo(fulfillmentOrdersClone, assetInfo[0]);
+                    const newUniqueFulfillmentOrders = populateAssetInfo(fulfillmentOrdersClone, assetInfo[0]);
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders: newFulfillmentOrders,
-                        servicingOrderItems,
-                        fulfillmentOrderItems,
+                        fulfillmentOrders: [...newFulfillmentOrders, ...newUniqueFulfillmentOrders],
+                        servicingOrderItems: [...newServicingOrderItems, ...servicingOrderItems],
+                        fulfillmentOrderItems: [...newFulfillmentOrderItems, ...fulfillmentOrderItems],
                     });
                     // Todo remove below comments after nothing is broken in SO page. kbora
                     // setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
@@ -87,10 +97,27 @@ const ServicingOrder = ({match}) => {
         }
     };
 
+    const fetchNewPageForFulfillmentOrders = page =>
+        servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
+            if (servicingOrder) {
+                fetchFulfillmentOrders(servicingOrder, page);
+            } else {
+                setServiceOrder({});
+            }
+        });
+
+    const getAmountOfItems = async servicingOrder => {
+        const totalOrdersForServiceOrder = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
+            servicingOrder.so_number
+        );
+        setServicingOrderItemsLength(totalOrdersForServiceOrder.fulfillmentOrders.length);
+    };
+
     useEffect(() => {
         servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
             if (servicingOrder) {
                 fetchFulfillmentOrders(servicingOrder);
+                getAmountOfItems(servicingOrder);
             } else {
                 setServiceOrder({});
             }
@@ -159,6 +186,8 @@ const ServicingOrder = ({match}) => {
                         orderDetails={serviceOrder}
                         handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                         selectedFulfillmentOrder={selectedFulfillmentOrderID}
+                        fetchNewPageForFulfillmentOrders={fetchNewPageForFulfillmentOrders}
+                        servicingOrderItemsLength={servicingOrderItemsLength}
                     />
                 ) : (
                     <Loading />

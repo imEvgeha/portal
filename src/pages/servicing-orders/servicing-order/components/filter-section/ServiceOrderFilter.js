@@ -17,7 +17,6 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
         external_id: externalId,
         description,
         configured_pr_id: configuredPrId,
-        sr_due_date: srDueDate,
         so_number: soNumber,
         title_manager: titleManager,
         completed_date: completedDate,
@@ -57,23 +56,16 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
             </div>
 
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
-                <NexusDatePicker
-                    id="dueDate"
-                    label="SO Due Date"
-                    value={getValidDate(srDueDate)}
-                    isDisabled
-                    isReturningTime={false}
-                    onChange={() => null}
-                />
-                {completedDate && 
-                <NexusDatePicker
-                    id="completedDate"
-                    label="Completed Date"
-                    value={getValidDate(completedDate)}
-                    isDisabled
-                    isReturningTime={false}
-                    onChange={() => null}
-                />}
+                {completedDate && (
+                    <NexusDatePicker
+                        id="completedDate"
+                        label="Completed Date"
+                        value={getValidDate(completedDate)}
+                        isDisabled
+                        isReturningTime={false}
+                        onChange={() => null}
+                    />
+                )}
             </div>
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
                 <div className="so-panel-filter-detail__dropdown">
