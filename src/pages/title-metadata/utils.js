@@ -268,7 +268,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                         categoryValue = get(category, 'value');
                     }
                     return {
-                        category: categoryValue,
+                        name: categoryValue,
                         order: index,
                     };
                 });
