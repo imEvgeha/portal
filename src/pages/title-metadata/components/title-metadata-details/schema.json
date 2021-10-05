@@ -760,6 +760,7 @@
                                     "name": "Auto - Decorate Title",
                                     "path": "shortTitleTemplate",
                                     "type": "string",
+                                    "maxLength": 2000,
                                     "dependencies": [
                                         {
                                             "view": "EDIT",
