@@ -7,6 +7,7 @@ const initialState = {
     externalIds: [],
     emetLoading: false,
     titleLoading: false,
+    externalIdLoading: false,
     territoryMetadata: [],
     editorialMetadata: [],
     seasonPersons: [],
@@ -48,14 +49,21 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 ...state,
                 titleLoading: payload,
             };
+        case actionTypes.GET_EXTERNAL_IDS_LOADING:
+            return {
+                ...state,
+                externalIdLoading: payload,
+            };
         case actionTypes.GET_EXTERNAL_IDS_SUCCESS:
             return {
                 ...state,
                 externalIds: payload,
+                externalIdLoading: false,
             };
         case actionTypes.GET_EXTERNAL_IDS_ERROR:
             return {
                 ...state,
+                externalIdLoading: false,
             };
         case actionTypes.GET_TERRITORY_METADATA_SUCCESS:
             return {

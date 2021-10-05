@@ -74,6 +74,7 @@ const TitleDetails = ({
     titleLoading,
     emetLoading,
     clearSeasonPersons,
+    externalIdsLoading,
 }) => {
     const containerRef = useRef();
     const [refresh, setRefresh] = useState(false);
@@ -99,7 +100,7 @@ const TitleDetails = ({
             nexusTitle && !isMgm && getExternalIds({id});
             getTerritoryMetadata({id, isMgm});
             getEditorialMetadata({id, isMgm});
-            seasonPersons && clearSeasonPersons();
+            clearSeasonPersons();
         }
     }, [refresh]);
 
@@ -133,15 +134,16 @@ const TitleDetails = ({
             updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
-            seasonPersons?.length &&
+            !isEmpty(seasonPersons) &&
                 propagateSeasonsPersonsToEpisodes(
                     {
                         addPersons: seasonPersons,
                     },
                     id
                 ),
-            seasonPersons && clearSeasonPersons(),
+            clearSeasonPersons(),
         ]).then(() => {
+            setRefresh(prev => !prev);
             setVZDisabled(false);
             setMOVDisabled(false);
         });
@@ -186,58 +188,58 @@ const TitleDetails = ({
     };
 
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
-    const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading;
+    const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
     return (
         <div className={classnames(loading ? 'nexus-c-title-details__loading' : 'nexus-c-title-details')}>
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
             {loading ? (
                 <Loading />
             ) : (
-                <NexusDynamicForm
-                    castCrewConfig={castCrewConfig}
-                    searchPerson={searchPerson}
-                    schema={schema}
-                    initialData={extendTitleWithExternalIds()}
-                    canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
-                    containerRef={containerRef}
-                    selectValues={selectValues}
-                    seasonPersons={seasonPersons}
-                    onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
-                    generateMsvIds={generateMsvIds}
-                    regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
-                    hasButtons={isNexusTitle(title.id)}
-                    isSaving={isSaving}
-                    setRefresh={setRefresh}
-                    isTitlePage
-                />
+                <>
+                    <NexusDynamicForm
+                        castCrewConfig={castCrewConfig}
+                        searchPerson={searchPerson}
+                        schema={schema}
+                        initialData={extendTitleWithExternalIds()}
+                        canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
+                        containerRef={containerRef}
+                        selectValues={selectValues}
+                        seasonPersons={seasonPersons}
+                        onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
+                        generateMsvIds={generateMsvIds}
+                        regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
+                        hasButtons={isNexusTitle(title.id)}
+                        isSaving={isSaving}
+                        setRefresh={setRefresh}
+                        isTitlePage
+                    />
+                    <NexusStickyFooter>
+                        <NexusStickyFooter.LeftActions>
+                            <>
+                                <SyncPublish
+                                    externalSystem={VZ}
+                                    externalIds={externalIds}
+                                    onSyncPublish={syncPublishHandler}
+                                    isSyncing={isVZTitleSyncing}
+                                    isPublishing={isVZTitlePublishing}
+                                    isDisabled={VZDisabled}
+                                    titleUpdatedAt={title.updatedAt}
+                                />
+                                <SyncPublish
+                                    externalSystem={MOVIDA}
+                                    externalIds={externalIds}
+                                    onSyncPublish={syncPublishHandler}
+                                    isSyncing={isMOVTitleSyncing}
+                                    isPublishing={isMOVTitlePublishing}
+                                    isDisabled={MOVDisabled}
+                                    titleUpdatedAt={title.updatedAt}
+                                />
+                                <ActionMenu titleId={title.id} />
+                            </>
+                        </NexusStickyFooter.LeftActions>
+                    </NexusStickyFooter>
+                </>
             )}
-            <NexusStickyFooter>
-                <NexusStickyFooter.LeftActions>
-                    {title.id && externalIds && (
-                        <>
-                            <SyncPublish
-                                externalSystem={VZ}
-                                externalIds={externalIds}
-                                onSyncPublish={syncPublishHandler}
-                                isSyncing={isVZTitleSyncing}
-                                isPublishing={isVZTitlePublishing}
-                                isDisabled={VZDisabled}
-                                titleUpdatedAt={title.updatedAt}
-                            />
-                            <SyncPublish
-                                externalSystem={MOVIDA}
-                                externalIds={externalIds}
-                                onSyncPublish={syncPublishHandler}
-                                isSyncing={isMOVTitleSyncing}
-                                isPublishing={isMOVTitlePublishing}
-                                isDisabled={MOVDisabled}
-                                titleUpdatedAt={title.updatedAt}
-                            />
-                            <ActionMenu titleId={title.id} />
-                        </>
-                    )}
-                </NexusStickyFooter.LeftActions>
-            </NexusStickyFooter>
         </div>
     );
 };
@@ -270,6 +272,7 @@ TitleDetails.propTypes = {
     seasonPersons: PropTypes.array,
     titleLoading: PropTypes.bool,
     emetLoading: PropTypes.bool,
+    externalIdsLoading: PropTypes.bool,
 };
 
 TitleDetails.defaultProps = {
@@ -298,12 +301,14 @@ TitleDetails.defaultProps = {
     clearSeasonPersons: () => null,
     titleLoading: true,
     emetLoading: true,
+    externalIdsLoading: true,
     castCrewConfig: {},
     seasonPersons: [],
 };
 
 const mapStateToProps = () => {
     const titleSelector = selectors.createTitleSelector();
+    const externalIdsLoadingSelector = selectors.createExternalIdsLoadingSelector();
     const titleLoadingSelector = selectors.createTitleLoadingSelector();
     const emetLoadingSelector = selectors.createEmetLoadingSelector();
     const selectValuesLoadingSelector = createLoadingSelector(['FETCH_SELECT_VALUES']);
@@ -320,6 +325,7 @@ const mapStateToProps = () => {
     return (state, props) => ({
         title: titleSelector(state, props),
         titleLoading: titleLoadingSelector(state),
+        externalIdsLoading: externalIdsLoadingSelector(state),
         emetLoading: emetLoadingSelector(state),
         externalIds: externalIdsSelector(state, props),
         territoryMetadata: territoryMetadataSelector(state, props),

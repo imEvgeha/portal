@@ -98,6 +98,11 @@ export function* loadExternalIds({payload}) {
         return;
     }
 
+    yield put({
+        type: actionTypes.GET_EXTERNAL_IDS_LOADING,
+        payload: true,
+    });
+
     try {
         const response = yield call(getExternalIds, payload.id);
         yield put({

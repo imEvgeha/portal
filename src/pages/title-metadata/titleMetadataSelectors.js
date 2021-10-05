@@ -40,3 +40,6 @@ export const seasonPersonsSelector = () =>
 
 export const createInitialTitleDataSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.initialData || null);
+
+export const createExternalIdsLoadingSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.externalIdLoading || false);
