@@ -126,7 +126,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     };
 
     const handleAdd = async () => {
-        checkedEmet && handleAddEmetOption();
+        checkedEmet && isCastCrewEmpty && isEMetsEmpty && handleAddEmetOption();
         radioValue !== 'none' && handleAddSeasonOption();
 
         onClose();
@@ -153,8 +153,6 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                             isDisabled={isCastCrewEmpty || isEMetsEmpty}
                         />
                     </div>
-
-                    <hr className="solid" />
                     {contentType === SEASON && (
                         <>
                             <hr className="solid" />
