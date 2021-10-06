@@ -1,15 +1,12 @@
 import React from 'react';
 import DetailViewIcon from '@atlaskit/icon/glyph/detail-view';
 import EditorBulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
-import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import EditorMediaWrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
-import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
 import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import NexusNavIcon from '@vubiquity-nexus/portal-assets/nexus-nav-icon.svg';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
-import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS, TITLE_METADATA} from '../constants';
+import {AVAILS, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS, TITLE_METADATA} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => {
     const canReadEventManager = can('read', 'EventManagement');
@@ -39,13 +36,6 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: 'DOP Tasks',
             isSelected: selectedItem === DOP_TASKS,
             onClick: () => handleClick(DOP_TASKS),
-        },
-        {
-            icon: EditorSearchIcon,
-            id: MEDIA,
-            tooltip: MEDIA,
-            isSelected: selectedItem === MEDIA,
-            onClick: () => handleClick(MEDIA),
         },
         {
             icon: DetailViewIcon,

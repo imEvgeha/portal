@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const LeftActionsContainer = styled.div`
     display: flex;
+    width: 33.33%;
     align-items: flex-start;
 
     & > * {

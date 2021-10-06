@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import {AbilityBuilder, Ability} from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
 import {withRouter} from 'react-router-dom';
-import {AVAILS, MEDIA, METADATA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS} from './constants';
+import {AVAILS, METADATA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS} from './constants';
 
 const idToAbilityNameMap = {
     [AVAILS]: 'Avail',
     [METADATA]: 'Metadata',
-    [MEDIA]: 'AssetManagement',
     [SERVICING_ORDERS]: 'ServicingOrders',
     [EVENT_MANAGEMENT]: 'EventManagement',
     [DOP_TASKS]: 'DopTasks',
