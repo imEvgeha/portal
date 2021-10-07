@@ -126,7 +126,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     };
 
     const handleAdd = async () => {
-        checkedEmet && isCastCrewEmpty && isEMetsEmpty && handleAddEmetOption();
+        checkedEmet && !isCastCrewEmpty && !isEMetsEmpty && handleAddEmetOption();
         radioValue !== 'none' && handleAddSeasonOption();
 
         onClose();
