@@ -117,13 +117,13 @@ const NexusField = ({
     const [dir, setDir] = React.useState('ltr');
     const [textFieldVal, setTextFieldVal] = React.useState(undefined);
     const hebrew = /[\u0590-\u05FF]/;
+    const punctuation = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
     const LEFT_TO_RIGHT = 'ltr';
     const RIGHT_TO_LEFT = 'rtl';
 
     const handleOnChange = (e, cb) => {
         const {value} = e.target;
-
-        if (hebrew.test(value)) {
+        if (hebrew.test(value) || (dir === RIGHT_TO_LEFT && punctuation.test(value))) {
             setDir(RIGHT_TO_LEFT);
         } else {
             setDir(LEFT_TO_RIGHT);
