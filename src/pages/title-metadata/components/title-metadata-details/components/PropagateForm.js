@@ -136,8 +136,6 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
         setRadioValue(event.currentTarget.value);
     }, []);
 
-    const notSeason = !(contentType === SEASON);
-
     return (
         <>
             <p className="propagate-form__message">{getPropagateMessage()}</p>
@@ -178,11 +176,6 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             <div className="propagate-form__error">
                 {isCastCrewEmpty && <ErrorMessage>{EMPTY_CAST_CREW}</ErrorMessage>}
                 {isEMetsEmpty && <ErrorMessage>{EMPTY_EMETS}</ErrorMessage>}
-                {contentType === SEASON && (
-                    <div className="note">
-                        Note: You must save changes before propagating from a season to its episodes
-                    </div>
-                )}
             </div>
             <div className="propagate-form__actions">
                 <Button onClick={() => onClose()}>{CANCEL_BUTTON}</Button>

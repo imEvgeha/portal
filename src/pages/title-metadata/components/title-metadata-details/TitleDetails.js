@@ -235,13 +235,6 @@ const TitleDetails = ({
                             />
                             <ActionMenu titleId={title.id} />
                         </NexusStickyFooter.LeftActions>
-                        <NexusStickyFooter.CenterActions>
-                            {!isEmpty(seasonPersons) && (
-                                <div className="note">
-                                    Note: You must save changes before propagating from a season to its episodes
-                                </div>
-                            )}
-                        </NexusStickyFooter.CenterActions>
                     </NexusStickyFooter>
                 </>
             )}
