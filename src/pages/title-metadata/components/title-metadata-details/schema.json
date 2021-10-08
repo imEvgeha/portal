@@ -265,7 +265,6 @@
                                 }
                             ]
                         },
-
                         "episodeNumber": {
                             "name": "Episode Number",
                             "path": "episodic.episodeNumber",
@@ -752,6 +751,10 @@
                                             {
                                                 "field": "language",
                                                 "hasValue": "en"
+                                            },
+                                            {
+                                                "field": "hasGeneratedChildren",
+                                                "hasValue": true
                                             }
                                         ]
                                     ]
