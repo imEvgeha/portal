@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
 import InlineEdit from '@atlaskit/inline-edit';
 import {getDateFormatBasedOnLocale, parseSimulcast} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import classnames from 'classnames';
+import {debounce} from 'lodash';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
 import ClearButton from '../clear-button/ClearButton';
@@ -70,6 +71,18 @@ const NexusDatePicker = ({
         }
     };
 
+    const debouncedOnChange = useCallback(
+        debounce((date, callback) => {
+            callback(
+                isTimestamp
+                    ? moment(date).utc(true).toISOString()
+                    : `${moment.utc(date).format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
+            );
+            onConfirm(date);
+        }, 600),
+        []
+    );
+
     const DatePickerComponent = isReadOnly => {
         return (
             <div className="nexus_c_date_picker_filter">
@@ -91,6 +104,15 @@ const NexusDatePicker = ({
                             defaultValue={moment(value).isValid() ? value : ''}
                             formatDisplayLabel={date => `${moment(date).format(DISPLAY_DATE_FORMAT)}`}
                             value={date}
+                            parseInputValue={e => {
+                                if (moment(e).isValid() && e) {
+                                    setDate(e);
+                                    !isWithInlineEdit && debouncedOnChange(e, onChange);
+                                } else {
+                                    setDate('');
+                                    onChange('');
+                                }
+                            }}
                             {...restProps}
                         />
                         {isClearable && <ClearButton onClear={() => onDateChange('')} />}
