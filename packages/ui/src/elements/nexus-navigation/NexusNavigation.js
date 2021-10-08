@@ -14,7 +14,7 @@ import {withRouter} from 'react-router-dom';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
-import {navigationPrimaryItems} from './components/NavigationItems';
+import {ComponentWrapper, navigationPrimaryItems} from './components/NavigationItems';
 import {SETTINGS, FEEDBACK_HEADER, backgroundColor} from './constants';
 
 const customThemeMode = modeGenerator({
@@ -101,6 +101,12 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
                         : []),
                     {
                         icon: EditorSettingsIcon,
+                        component: () => (
+                            <ComponentWrapper handleClick={() => handleClick(SETTINGS)} link={SETTINGS}>
+                                {' '}
+                                <EditorSettingsIcon />{' '}
+                            </ComponentWrapper>
+                        ),
                         id: SETTINGS,
                         tooltip: SETTINGS,
                         isSelected: selectedItem === SETTINGS,

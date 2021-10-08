@@ -89,6 +89,7 @@ const NexusField = ({
     };
 
     const emetLanguage = get(formData, 'editorial.language');
+    const newShowLocalized = emetLanguage?.value === 'en' ? false : showLocalized;
 
     const getLanguage = () => {
         const language = get(formData, 'editorial.language', 'en');
@@ -116,13 +117,13 @@ const NexusField = ({
     const [dir, setDir] = React.useState('ltr');
     const [textFieldVal, setTextFieldVal] = React.useState(undefined);
     const hebrew = /[\u0590-\u05FF]/;
+    const punctuation = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
     const LEFT_TO_RIGHT = 'ltr';
     const RIGHT_TO_LEFT = 'rtl';
 
     const handleOnChange = (e, cb) => {
         const {value} = e.target;
-
-        if (hebrew.test(value)) {
+        if (hebrew.test(value) || (dir === RIGHT_TO_LEFT && punctuation.test(value))) {
             setDir(RIGHT_TO_LEFT);
         } else {
             setDir(LEFT_TO_RIGHT);
@@ -237,7 +238,7 @@ const NexusField = ({
                         defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
                         optionsFilterParameter={checkDependencies('values')}
                         isCreateMode={view === VIEWS.CREATE}
-                        showLocalized={showLocalized}
+                        showLocalized={newShowLocalized}
                         language={getLanguage()}
                     />
                 );
@@ -250,7 +251,7 @@ const NexusField = ({
                     multiselectFieldProps.value = fieldProps?.value?.map(val => ({label: val, value: val}));
                 }
 
-                if (showLocalized === true) {
+                if (newShowLocalized === true) {
                     multiselectFieldProps.value = fieldProps?.value?.map(val => {
                         const item = selectValues?.[path]?.find(g => g.id === val.value);
                         // show english genre version for localized
@@ -288,16 +289,16 @@ const NexusField = ({
                         fieldProps={multiselectFieldProps}
                         type={type}
                         optionsConfig={
-                            showLocalized === true && emetLanguage !== 'en' ? newOptionsConfig : optionsConfig
+                            newShowLocalized === true && emetLanguage !== 'en' ? newOptionsConfig : optionsConfig
                         }
                         selectValues={
-                            showLocalized === true && emetLanguage !== 'en' ? selectLocalizedValues : selectValues
+                            newShowLocalized === true && emetLanguage !== 'en' ? selectLocalizedValues : selectValues
                         }
                         path={path}
                         isRequired={isRequired}
                         isMultiselect={true}
                         addedProps={addedProps}
-                        showLocalized={showLocalized}
+                        showLocalized={newShowLocalized}
                         language={getLanguage()}
                         defaultValue={
                             fieldProps.value
@@ -389,7 +390,7 @@ const NexusField = ({
 
     const getLabel = item => {
         if (typeof item === 'object' && localizationConfig) {
-            if (showLocalized) {
+            if (newShowLocalized) {
                 const obj = selectValues?.[path]?.find(g => g.id === item.value);
                 const local = obj?.localizations?.find(g => g?.language === emetLanguage);
                 if (local && emetLanguage !== 'en') {
@@ -409,7 +410,7 @@ const NexusField = ({
         if (Array.isArray(fieldProps.value)) {
             if (fieldProps.value.length) {
                 const arrayValues = fieldProps?.value?.map(item => getLabel(item));
-                if (showLocalized) {
+                if (newShowLocalized) {
                     return (
                         <div>
                             {arrayValues?.map((item, index) => {

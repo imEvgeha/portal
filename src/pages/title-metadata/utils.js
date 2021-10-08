@@ -170,8 +170,7 @@ export const prepareAwardsField = (data, selectValues) => {
 };
 
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
-    const newData = cloneDeep(data);
-    return newData.map(record => {
+    return data.map(record => {
         const field = record[fieldName];
         if (field) {
             const formattedValues = [];
