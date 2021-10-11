@@ -8,7 +8,18 @@ import './DateTime.scss';
 
 const {BUSINESS_DATETIME, TIMESTAMP} = DATETIME_FIELDS;
 
-const DateTime = ({dateType, type, labels, isReadOnly, isDisabled, value, onChange, id, isReturningTime}) => {
+const DateTime = ({
+    dateType,
+    type,
+    labels,
+    isReadOnly,
+    isDisabled,
+    value,
+    onChange,
+    id,
+    isReturningTime,
+    isClearable,
+}) => {
     const isUsingTime = [BUSINESS_DATETIME, TIMESTAMP].includes(dateType);
     const isTimestamp = dateType === TIMESTAMP;
     if (type === 'dateRange') {
@@ -26,6 +37,7 @@ const DateTime = ({dateType, type, labels, isReadOnly, isDisabled, value, onChan
             labels,
             onChange,
             isReturningTime,
+            isClearable,
         };
         return <NexusDateTimeWindowPicker isReadOnly={isReadOnly || isDisabled} {...dateProps} />;
     }
@@ -35,8 +47,13 @@ const DateTime = ({dateType, type, labels, isReadOnly, isDisabled, value, onChan
         value,
         isTimestamp,
         onChange,
+        isClearable,
     };
-    return isUsingTime ? <NexusDateTimePicker {...props} value={value.toString()} /> : <NexusDatePicker {...props} value={value.toString()} />;
+    return isUsingTime ? (
+        <NexusDateTimePicker {...props} value={value.toString()} />
+    ) : (
+        <NexusDatePicker {...props} value={value.toString()} />
+    );
 };
 
 DateTime.propTypes = {
@@ -47,6 +64,7 @@ DateTime.propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     isReadOnly: PropTypes.bool,
     isDisabled: PropTypes.bool,
+    isClearable: PropTypes.bool,
     onChange: PropTypes.func,
     isReturningTime: PropTypes.bool,
 };
@@ -58,6 +76,7 @@ DateTime.defaultProps = {
     labels: ['', ''],
     value: '',
     isReadOnly: false,
+    isClearable: false,
     isDisabled: false,
     isReturningTime: true,
     onChange: () => null,
