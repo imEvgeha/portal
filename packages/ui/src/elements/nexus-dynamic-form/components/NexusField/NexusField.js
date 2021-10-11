@@ -508,7 +508,7 @@ const NexusField = ({
                 );
             default:
                 return fieldProps.value ? (
-                    <div className="nexus-c-field__wrap-text">{getValue(fieldProps)}</div>
+                    <div><span dir={hebrew.test(getValue(fieldProps)) ? 'rtl' : 'ltr'}>{getValue(fieldProps)}</span></div>
                 ) : (
                     <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
                 );
