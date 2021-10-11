@@ -78,7 +78,6 @@ const NexusDatePicker = ({
                     ? moment(date).utc(true).toISOString()
                     : `${moment.utc(date).format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
             );
-            onConfirm(date);
         }, 600),
         []
     );

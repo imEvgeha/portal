@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form';
 import {getDateFormatBasedOnLocale} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
+import {debounce} from 'lodash';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
 import styled from 'styled-components';
@@ -75,6 +76,17 @@ const NexusSimpleDateTimePicker = ({
         }
     };
 
+    const debouncedOnChange = useCallback(
+        debounce((newValue, callback) => {
+            callback(
+                !moment(value).isValid()
+                    ? convertToRequiredFormat(newValue)
+                    : convertToRequiredFormat(newValue + date.slice(MIN_DATE_LENGTH))
+            );
+        }, 600),
+        []
+    );
+
     return (
         <>
             {label && (
@@ -104,6 +116,15 @@ const NexusSimpleDateTimePicker = ({
                                     : onChange(convertToRequiredFormat(newValue + date.slice(MIN_DATE_LENGTH)));
                             },
                             formatDisplayLabel: date => `${moment(date).format(DISPLAY_DATE_FORMAT)}`,
+                            parseInputValue: e => {
+                                if (moment(e).isValid() && e) {
+                                    setDate(e);
+                                    debouncedOnChange(e, onChange);
+                                } else {
+                                    setDate('');
+                                    onChange('');
+                                }
+                            },
                         }}
                         timePickerProps={{
                             placeholder: TIME_PLACEHOLDER,
