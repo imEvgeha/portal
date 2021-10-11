@@ -73,6 +73,7 @@ const NexusField = ({
     showLocalized,
     localizationConfig,
     setUpdatedValues,
+    isClearable,
     isTitlePage,
     ...props
 }) => {
@@ -107,6 +108,7 @@ const NexusField = ({
         isReadOnly: getIsReadOnly() || checkDependencies('readOnly'),
         useCurrentDate,
         isReturningTime,
+        isClearable,
         ...addedProps,
     };
 
@@ -567,6 +569,7 @@ NexusField.propTypes = {
     isReadOnly: PropTypes.bool,
     isReadOnlyInEdit: PropTypes.bool,
     isRequired: PropTypes.bool,
+    isClearable: PropTypes.bool,
     validationError: PropTypes.string,
     validation: PropTypes.array,
     optionsConfig: PropTypes.object,
@@ -609,6 +612,7 @@ NexusField.defaultProps = {
     formData: {},
     dependencies: [],
     isReadOnly: false,
+    isClearable: false,
     isReadOnlyInEdit: false,
     isRequired: false,
     validationError: null,

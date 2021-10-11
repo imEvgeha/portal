@@ -112,6 +112,7 @@
                             "dateType": "businessDateTime",
                             "labels": ["License Start", "License End"],
                             "path": ["start", "end"],
+                            "isClearable": true,
                             "dependencies": [
                                 {
                                     "view": "EDIT",
@@ -568,13 +569,15 @@
                             "name": "Release History Original",
                             "type": "datetime",
                             "dateType": "businessDateTime",
-                            "path": "releaseHistoryOriginal"
+                            "path": "releaseHistoryOriginal",
+                            "isClearable": true
                         },
                         "releaseHistoryPhysicalHV": {
                             "name": "Release History Physical HV",
                             "type": "datetime",
                             "dateType": "businessDateTime",
-                            "path": "releaseHistoryPhysicalHV"
+                            "path": "releaseHistoryPhysicalHV",
+                            "isClearable": true
                         },
                         "daysFromLVR": {
                             "name": "Days From LVR",
@@ -590,7 +593,8 @@
                             "name": "Suppression Lift Date",
                             "type": "datetime",
                             "dateType": "businessDateTime",
-                            "path": "suppressionLiftDate"
+                            "path": "suppressionLiftDate",
+                            "isClearable": true
                         },
                         "specialPreOrderFulfillDate": {
                             "name": "Special Pre Order Fulfill Date",
@@ -1269,6 +1273,7 @@
                             "dateType": "businessDateTime",
                             "labels": ["Avail Start", "Avail End"],
                             "path": ["availStart", "availEnd"],
+                            "isClearable": true,
                             "dependencies": [
                                 {
                                     "view": "EDIT",
