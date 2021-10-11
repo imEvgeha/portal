@@ -962,14 +962,14 @@
                                     },
                                     "showLocalized": true
                                 },
-                                "editorial.sakstelInventoryId": {
-                                    "name": "Sakstel Inventory ID",
-                                    "path": "sakstelInventoryId",
+                                "editorial.sasktelInventoryId": {
+                                    "name": "Sasktel Inventory ID",
+                                    "path": "sasktelInventoryId",
                                     "type": "string"
                                 },
-                                "editorial.sakstelLineupId": {
-                                    "name": "Sakstel Lineup ID",
-                                    "path": "sakstelLineupId",
+                                "editorial.sasktelLineupId": {
+                                    "name": "Sasktel Lineup ID",
+                                    "path": "sasktelLineupId",
                                     "type": "string"
                                 },
                                 "editorial.castCrew": {
