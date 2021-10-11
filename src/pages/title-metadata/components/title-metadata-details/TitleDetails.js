@@ -233,7 +233,7 @@ const TitleDetails = ({
                                 isDisabled={MOVDisabled}
                                 titleUpdatedAt={title.updatedAt}
                             />
-                            <ActionMenu titleId={title.id} />
+                            {title.id && <ActionMenu titleId={title.id} />}
                         </NexusStickyFooter.LeftActions>
                     </NexusStickyFooter>
                 </>
