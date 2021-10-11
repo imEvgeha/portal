@@ -223,6 +223,7 @@ const TitleDetails = ({
                                 isPublishing={isVZTitlePublishing}
                                 isDisabled={VZDisabled}
                                 titleUpdatedAt={title.updatedAt}
+                                hasButtons={isNexusTitle(title.id)}
                             />
                             <SyncPublish
                                 externalSystem={MOVIDA}
@@ -232,6 +233,7 @@ const TitleDetails = ({
                                 isPublishing={isMOVTitlePublishing}
                                 isDisabled={MOVDisabled}
                                 titleUpdatedAt={title.updatedAt}
+                                hasButtons={isNexusTitle(title.id)}
                             />
                             <ActionMenu titleId={title.id} />
                         </NexusStickyFooter.LeftActions>
