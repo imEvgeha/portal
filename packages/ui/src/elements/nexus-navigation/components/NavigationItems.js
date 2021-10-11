@@ -7,10 +7,12 @@ import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import NexusNavIcon from '@vubiquity-nexus/portal-assets/nexus-nav-icon.svg';
 import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
-import {AVAILS, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS, TITLE_METADATA} from '../constants';
+import {AVAILS, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS, TITLE_METADATA, METADATA} from '../constants';
 import './NavigationItems.scss';
 
-export const ComponentWrapper = ({link, handleClick, children}) => {
+export const ComponentWrapper = ({link, handleClick, children, dataset, id}) => {
+    const itemId = `${id}GlobalItem`;
+
     return (
         <a
             href={link}
@@ -19,15 +21,17 @@ export const ComponentWrapper = ({link, handleClick, children}) => {
                 e.preventDefault();
             }}
         >
-            <button className="navigation-button">{children}</button>
+            <button id={itemId} data-testid={dataset['data-testid']} className="navigation-button">
+                {children}
+            </button>
         </a>
     );
 };
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => {
     const canReadEventManager = can('read', 'EventManagement');
-    const generateComponent = (link, Icon) => (
-        <ComponentWrapper handleClick={handleClick} link={link}>
+    const generateComponent = (link, Icon, props) => (
+        <ComponentWrapper handleClick={handleClick} link={link} {...props}>
             <Icon />
         </ComponentWrapper>
     );
@@ -40,7 +44,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
         },
         {
             icon: TrayIcon,
-            component: () => generateComponent(AVAILS, TrayIcon),
+            component: props => generateComponent(AVAILS, TrayIcon, props),
             id: AVAILS,
             tooltip: AVAILS,
             isSelected: selectedItem === AVAILS,
@@ -48,15 +52,15 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
         },
         {
             icon: EditorMediaWrapRightIcon,
-            component: () => generateComponent('metadata', EditorMediaWrapRightIcon),
+            component: props => generateComponent(METADATA, EditorMediaWrapRightIcon, props),
             id: TITLE_METADATA,
             tooltip: 'Title Metadata',
             isSelected: selectedItem === TITLE_METADATA,
-            onClick: () => handleClick('metadata'),
+            onClick: () => handleClick(METADATA),
         },
         {
-            icon: () => <EditorBulletListIcon size="large" />,
-            component: () => generateComponent(DOP_TASKS, DopIcon),
+            icon: DopIcon,
+            component: props => generateComponent(DOP_TASKS, DopIcon, props),
             id: DOP_TASKS,
             tooltip: 'DOP Tasks',
             isSelected: selectedItem === DOP_TASKS,
@@ -64,7 +68,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
         },
         {
             icon: DetailViewIcon,
-            component: () => generateComponent(SERVICING_ORDERS, DetailViewIcon),
+            component: props => generateComponent(SERVICING_ORDERS, DetailViewIcon, props),
             id: SERVICING_ORDERS,
             tooltip: 'Servicing Orders',
             isSelected: selectedItem === SERVICING_ORDERS,
@@ -74,7 +78,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             ? [
                   {
                       icon: RecentIcon,
-                      component: () => generateComponent(EVENT_MANAGEMENT, RecentIcon),
+                      component: props => generateComponent(EVENT_MANAGEMENT, RecentIcon, props),
                       id: EVENT_MANAGEMENT,
                       tooltip: 'Event Management',
                       isSelected: selectedItem === EVENT_MANAGEMENT,
@@ -87,10 +91,14 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
 
 ComponentWrapper.propTypes = {
     link: PropTypes.string,
+    id: PropTypes.string,
     handleClick: PropTypes.func,
+    dataset: PropTypes.object,
 };
 
 ComponentWrapper.defaultProps = {
     link: '',
+    id: '',
+    dataset: {},
     handleClick: () => null,
 };
