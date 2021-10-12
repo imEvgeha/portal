@@ -235,7 +235,7 @@ const TitleDetails = ({
                                 titleUpdatedAt={title.updatedAt}
                                 hasButtons={isNexusTitle(title.id)}
                             />
-                            <ActionMenu titleId={title.id} />
+                            {title.id && <ActionMenu titleId={title.id} />}
                         </NexusStickyFooter.LeftActions>
                     </NexusStickyFooter>
                 </>
