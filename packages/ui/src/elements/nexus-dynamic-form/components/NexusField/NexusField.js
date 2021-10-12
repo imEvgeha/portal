@@ -136,6 +136,11 @@ const NexusField = ({
         cb(e);
     };
 
+
+    const getDir = (value) => {
+        return dir || hebrew.test(value) ? 'rtl' : 'ltr';
+    }
+
     const renderFieldEditMode = fieldProps => {
         const selectFieldProps = {...fieldProps};
         const fieldOnChange = selectFieldProps.onChange;
@@ -155,7 +160,7 @@ const NexusField = ({
                         onChange={e => handleOnChange(e, fieldOnChange)}
                         placeholder={`Enter ${label}`}
                         value={textFieldVal || fieldProps.value}
-                        dir={dir}
+                        dir={getDir(fieldProps.value)}
                     />
                 );
             case 'textarea':
@@ -165,7 +170,7 @@ const NexusField = ({
                         {...addedProps}
                         onChange={e => handleOnChange(e, fieldOnChange)}
                         placeholder={`Enter ${label}`}
-                        dir={dir}
+                        dir={getDir(fieldProps.value)}
                     />
                 );
             case 'number':
@@ -176,7 +181,7 @@ const NexusField = ({
                         onChange={e => handleOnChange(e, fieldOnChange)}
                         type="Number"
                         placeholder={`Enter ${label}`}
-                        dir={dir}
+                        dir={getDir(fieldProps.value)}
                     />
                 );
             case 'boolean':
