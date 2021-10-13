@@ -466,16 +466,6 @@ class RightCreate extends React.Component {
                     isValid = !isNaN(val.replace(',', '.'));
                 }
 
-                if (this.mappingErrorMessage && this.mappingErrorMessage[name]) {
-                    if (this.mappingErrorMessage[name].inner && isValid) {
-                        this.mappingErrorMessage[name].inner = '';
-                        this.setState({});
-                    }
-                    if (!this.mappingErrorMessage[name].inner && !isValid) {
-                        this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
-                        this.setState({});
-                    }
-                }
                 cb(isValid);
             };
             return renderFieldTemplate(
@@ -1232,15 +1222,14 @@ class RightCreate extends React.Component {
         return (
             <div style={{position: 'relative'}}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
-                    <div
-                        className={
-                            'd-inline-flex justify-content-center w-100 position-absolute' +
-                            (this.state && this.state.errorMessage ? ' alert-danger' : '')
-                        }
-                        style={{top: '-20px', zIndex: '1000', height: '25px'}}
-                    >
-                        <Label id="right-create-error-message">{this.state && this.state.errorMessage}</Label>
-                    </div>
+                    {this.state && this.state.errorMessage ? (
+                        <div
+                            className={'d-inline-flex justify-content-center w-100' + ' alert-danger'}
+                            style={{top: '-20px', zIndex: '1000', height: '25px'}}
+                        >
+                            <Label id="right-create-error-message">{this.state && this.state.errorMessage}</Label>
+                        </div>
+                    ) : null}
                     <div className="nx-stylish row mt-3 mx-5">
                         <div
                             className="nx-stylish list-group col"
