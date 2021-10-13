@@ -136,10 +136,9 @@ const NexusField = ({
         cb(e);
     };
 
-
-    const getDir = (value) => {
+    const getDir = value => {
         return dir || hebrew.test(value) ? 'rtl' : 'ltr';
-    }
+    };
 
     const renderFieldEditMode = fieldProps => {
         const selectFieldProps = {...fieldProps};
@@ -250,11 +249,7 @@ const NexusField = ({
                     />
                 );
             case 'multiselect':
-                if (
-                    fieldProps.value &&
-                    fieldProps.value.length &&
-                    fieldProps.value[fieldProps.value.length - 1].value === undefined
-                ) {
+                if (fieldProps?.value?.length && fieldProps?.value[fieldProps.value.length - 1]?.value === undefined) {
                     multiselectFieldProps.value = fieldProps?.value?.map(val => ({label: val, value: val}));
                 }
 
@@ -513,7 +508,9 @@ const NexusField = ({
                 );
             default:
                 return fieldProps.value ? (
-                    <div><span dir={hebrew.test(getValue(fieldProps)) ? 'rtl' : 'ltr'}>{getValue(fieldProps)}</span></div>
+                    <div>
+                        <span dir={hebrew.test(getValue(fieldProps)) ? 'rtl' : 'ltr'}>{getValue(fieldProps)}</span>
+                    </div>
                 ) : (
                     <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
                 );
