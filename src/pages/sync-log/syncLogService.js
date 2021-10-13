@@ -6,16 +6,15 @@ import {nexusFetch} from '../../util/http-client';
 const PAGESIZE = 100;
 
 export const getSyncLog = (params, page = 0, size = PAGESIZE) => {
+    const queryParams = {startDate: params.dateFrom, page, size};
+
     if (!params.dateFrom.length) {
         return Promise.resolve({data: []});
     }
 
-    const qs = querystring.stringify({
-        startDate: params.dateFrom,
-        endDate: params.dateTo,
-        page,
-        size,
-    });
+    if (params.dateTo.length) queryParams['endDate'] = params.dateTo;
+
+    const qs = querystring.stringify(queryParams);
 
     const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/publishInfo/search`;
 
