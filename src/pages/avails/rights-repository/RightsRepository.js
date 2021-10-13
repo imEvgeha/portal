@@ -130,6 +130,15 @@ const RightsRepository = ({
         return () => clearInterval(timer);
     }, [selectedIngest, attachment]);
 
+    // update periodically the list of ingests
+    useEffect(() => {
+        const timer = setInterval(() => {
+            onFiltersChange(getFiltersToSend());
+        }, 50000);
+
+        return () => clearInterval(timer);
+    }, []);
+
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
     }, [selectedIngest, selectedAttachmentId, gridApi]);
