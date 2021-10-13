@@ -170,21 +170,24 @@ export const prepareAwardsField = (data, selectValues) => {
 };
 
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
-    return data.map(record => {
-        const field = record[fieldName];
-        if (field) {
-            const formattedValues = [];
-            field.forEach(obj => {
-                if (key === 'genre') {
-                    if (record?.language !== obj?.language) {
-                        formattedValues.push({label: `(${obj[key]})*`, value: obj.id});
-                    } else formattedValues.push({label: obj[key], value: obj.id});
-                } else formattedValues.push(obj[key]);
-            });
-            record[fieldName] = formattedValues;
-        }
-        return record;
-    });
+    return (
+        data &&
+        data.map(record => {
+            const field = record[fieldName];
+            if (field) {
+                const formattedValues = [];
+                field.forEach(obj => {
+                    if (key === 'genre') {
+                        if (record?.language !== obj?.language) {
+                            formattedValues.push({label: `(${obj[key]})*`, value: obj.id});
+                        } else formattedValues.push({label: obj[key], value: obj.id});
+                    } else formattedValues.push(obj[key]);
+                });
+                record[fieldName] = formattedValues;
+            }
+            return record;
+        })
+    );
 };
 
 const formatTerritoryBody = (data, titleId) => {
