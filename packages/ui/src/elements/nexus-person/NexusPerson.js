@@ -11,6 +11,7 @@ import DraggableContent from './elements/DraggableContent/DraggableContent';
 import RemovePerson from './elements/RemovePerson/RemovePerson';
 import EditPerson from './elements/EditPerson/EditPerson';
 import {NEEDS_TRANSLATION, LOCALIZED_NOT_DEFINED} from '../nexus-persons-list/constants';
+import {getDir} from '../nexus-dynamic-form/utils';
 import './NexusPerson.scss';
 import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
@@ -51,6 +52,8 @@ const NexusPerson = ({
         return isNeedTranslation ? NEEDS_TRANSLATION : getLocalizedName();
     };
 
+    const displayName = person?.displayNameEn ? person?.displayNameEn : person?.displayName;
+
     return (
         <Draggable draggableId={customKey} index={index}>
             {(provided, snapshot) => (
@@ -64,6 +67,7 @@ const NexusPerson = ({
                                         <Lozenge appearance="default">{getFormatTypeName(person.personType)}</Lozenge>
                                     </div>
                                     <span
+                                        dir={getDir(null, localizedName())}
                                         className={
                                             person.displayNameEn && emetLanguage !== person?.language
                                                 ? 'nexus-c-nexus-person-italic'
@@ -75,7 +79,7 @@ const NexusPerson = ({
                                 </div>
                                 {emetLanguage !== 'en' && (
                                     <div className="nexus-c-nexus-person-fade">
-                                        {person?.displayNameEn ? person?.displayNameEn : person?.displayName}
+                                        <span dir={getDir(null, displayName)}>{displayName}</span>
                                     </div>
                                 )}
                                 <div>

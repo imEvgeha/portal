@@ -391,6 +391,12 @@ export const buildSection = (
     );
 };
 
+export const hebrew = /[\u0590-\u05FF]/;
+
+export const getDir = value => {
+    return hebrew.test(value) ? 'rtl' : 'ltr';
+};
+
 export const renderNexusField = (
     key,
     view,

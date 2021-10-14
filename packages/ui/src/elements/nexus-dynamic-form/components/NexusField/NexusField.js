@@ -18,6 +18,8 @@ import {
     renderLabel,
     renderError,
     createUrl,
+    getDir,
+    hebrew,
 } from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
@@ -116,37 +118,11 @@ const NexusField = ({
         typeof setDisableSubmit === 'function' && setDisableSubmit(false);
     };
 
-    const [dir, setDir] = React.useState('ltr');
-    const [textFieldVal, setTextFieldVal] = React.useState(undefined);
-    const hebrew = /[\u0590-\u05FF]/;
-    const punctuation = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
-    const LEFT_TO_RIGHT = 'ltr';
-    const RIGHT_TO_LEFT = 'rtl';
-
-    const handleOnChange = (e, cb) => {
-        const {value} = e.target;
-        if (hebrew.test(value) || (dir === RIGHT_TO_LEFT && punctuation.test(value))) {
-            setDir(RIGHT_TO_LEFT);
-        } else {
-            setDir(LEFT_TO_RIGHT);
-        }
-
-        setTextFieldVal(value);
-        setUpdatedValues(getCurrentValues());
-        cb(e);
-    };
-
-    const getDir = value => {
-        return dir || hebrew.test(value) ? 'rtl' : 'ltr';
-    };
-
     const renderFieldEditMode = fieldProps => {
         const selectFieldProps = {...fieldProps};
-        const fieldOnChange = selectFieldProps.onChange;
         const multiselectFieldProps = {...fieldProps};
         let selectLocalizedValues = null;
         let newOptionsConfig = null;
-        setTextFieldVal(fieldProps.value);
 
         switch (type) {
             case 'string':
@@ -156,9 +132,7 @@ const NexusField = ({
                     <TextFieldWithOptional
                         {...fieldProps}
                         {...addedProps}
-                        onChange={e => handleOnChange(e, fieldOnChange)}
                         placeholder={`Enter ${label}`}
-                        value={textFieldVal || fieldProps.value}
                         dir={getDir(fieldProps.value)}
                     />
                 );
@@ -167,7 +141,6 @@ const NexusField = ({
                     <NexusTextAreaWithOptional
                         {...fieldProps}
                         {...addedProps}
-                        onChange={e => handleOnChange(e, fieldOnChange)}
                         placeholder={`Enter ${label}`}
                         dir={getDir(fieldProps.value)}
                     />
@@ -177,10 +150,8 @@ const NexusField = ({
                     <TextFieldWithOptional
                         {...fieldProps}
                         {...addedProps}
-                        onChange={e => handleOnChange(e, fieldOnChange)}
                         type="Number"
                         placeholder={`Enter ${label}`}
-                        dir={getDir(fieldProps.value)}
                     />
                 );
             case 'boolean':
