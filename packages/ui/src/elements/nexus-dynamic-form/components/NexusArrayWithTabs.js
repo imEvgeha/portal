@@ -79,8 +79,6 @@ const NexusArrayWithTabs = ({
             const currentFormData = getCurrentFormData();
             const current = currentData || currentFormData;
             replaceRecordInGroupedData(currentFormData, current, oldSubTab, index, key);
-            const newData = replaceRecordInData(currentFormData, current);
-            setFieldValue(path, newData);
         } else {
             const newCurrentData = groupedData[key][index];
             setCurrentData(newCurrentData);
@@ -143,39 +141,6 @@ const NexusArrayWithTabs = ({
                 };
             });
         }
-    };
-
-    const replaceRecordInData = (currentFormData, current) => {
-        const newData = [...getValues()[path]];
-        if (subTabs.length) {
-            const keys = [...tabs, ...subTabs];
-            const index = newData.findIndex(obj => {
-                let isEqual = true;
-                keys.forEach(key => {
-                    if (obj[key] !== current[key]) isEqual = false;
-                });
-                return isEqual;
-            });
-            if (index >= 0) {
-                newData[index] = {
-                    ...newData[index],
-                    ...currentFormData,
-                };
-            }
-        } else {
-            const [key] = tabs;
-            const value = current[key];
-            const index = newData.findIndex(obj => {
-                return obj[key] === value;
-            });
-            if (index >= 0) {
-                newData[index] = {
-                    ...newData[index],
-                    ...currentFormData,
-                };
-            }
-        }
-        return newData;
     };
 
     const removeCurrentRecord = (dataArr, current) => {
