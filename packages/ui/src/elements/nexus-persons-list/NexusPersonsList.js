@@ -13,6 +13,7 @@ import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import CharacterModal from './components/CharacterModal';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getDir} from '../nexus-dynamic-form/utils';
 import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
 import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './constants';
 import {loadOptions} from './utils';
@@ -48,6 +49,8 @@ const NexusPersonsList = ({
 
     const searchInputChanged = val => {
         setSearchText(val);
+        const input = document.getElementById(uiConfig.htmlFor);
+        input.setAttribute('dir', getDir(val));
     };
 
     const isPersonValid = entry => {
@@ -299,6 +302,7 @@ const NexusPersonsList = ({
                     <div className="nexus-c-nexus-persons-list__add">
                         <UserPicker
                             fieldId={uiConfig.htmlFor}
+                            inputId={uiConfig.htmlFor}
                             width="100%"
                             loadOptions={() => loadOptions(uiConfig, searchText, searchPerson, emetLanguage)}
                             value={searchText}

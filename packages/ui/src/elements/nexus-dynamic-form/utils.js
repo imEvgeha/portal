@@ -158,27 +158,21 @@ export const getValidationFunction = (value, validations, {type, isRequired, get
             switch (v.name) {
                 case 'fieldRequired':
                     return fieldRequired(value, v.args, getCurrentValues);
-                    break;
                 case 'areAllWithdrawn':
                     return areAllWithdrawn(value, v.args, getCurrentValues);
-                    break;
                 case 'incorrectValue':
                     return incorrectValue(value, v.args, getCurrentValues);
-                    break;
                 case 'isDuration':
                     return isDuration(value, v.args, getCurrentValues);
-                    break;
                 case 'isInteger':
                     return isInteger(value, v.args, getCurrentValues);
-                    break;
                 case 'isTime':
                     return isTime(value, v.args, getCurrentValues);
-                    break;
                 case 'isYear':
                     return isYear(value, v.args, getCurrentValues);
-                    break;
                 case 'lengthEqual':
                     return lengthEqual(value, v.args, getCurrentValues);
+                default:
                     break;
             }
         });
@@ -395,6 +389,12 @@ export const buildSection = (
             })}
         </div>
     );
+};
+
+export const hebrew = /[\u0590-\u05FF]/;
+
+export const getDir = value => {
+    return hebrew.test(value) ? 'rtl' : 'ltr';
 };
 
 export const renderNexusField = (

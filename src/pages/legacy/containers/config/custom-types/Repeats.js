@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {get, uniqueId} from 'lodash';
 import Button from '@atlaskit/button';
+import {getDir, hebrew} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import {Form, FormContext} from 'react-forms-processor';
 import {Expander} from 'react-forms-processor-atlaskit';
 import {Field as AkField} from '@atlaskit/form';
@@ -18,6 +19,17 @@ const createFormForItem = (field, item, targetIndex, fieldsForForm, formChangeHa
               }))
             : [],
     }));
+
+    const firstName = document.getElementById(mappedFields[1].id)?.getElementsByTagName('input')[0];
+    const middleName = document.getElementById(mappedFields[2].id)?.getElementsByTagName('input')[0];
+    const lastName = document.getElementById(mappedFields[3].id)?.getElementsByTagName('input')[0];
+    const displayName = document.getElementById(mappedFields[4].id)?.getElementsByTagName('input')[0];
+
+    if (hebrew.test(firstName?.value)) firstName?.setAttribute('dir', getDir(firstName.value));
+    if (hebrew.test(middleName?.value)) middleName?.setAttribute('dir', getDir(middleName.value));
+    if (hebrew.test(lastName?.value)) lastName?.setAttribute('dir', getDir(lastName.value));
+    if (hebrew.test(displayName?.value)) displayName?.setAttribute('dir', getDir(displayName.value));
+
     return (
         <FormContext.Consumer>
             {context => {

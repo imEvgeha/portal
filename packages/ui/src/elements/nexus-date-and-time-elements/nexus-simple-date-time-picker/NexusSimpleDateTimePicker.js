@@ -78,14 +78,30 @@ const NexusSimpleDateTimePicker = ({
 
     const debouncedOnChange = useCallback(
         debounce((newValue, callback) => {
-            callback(
-                !moment(value).isValid()
-                    ? convertToRequiredFormat(newValue)
-                    : convertToRequiredFormat(newValue + date.slice(MIN_DATE_LENGTH))
-            );
+            callback(convertToRequiredFormat(newValue));
         }, 600),
         []
     );
+
+    const debouncedOnTimeChange = useCallback(
+        debounce(time => {
+            const [hours, minutes] = moment(time, ['h:mm A']).format('HH:mm').split(':');
+            if (hours && minutes) {
+                const mergedDate = moment(date || undefined)
+                    .hours(Number(hours))
+                    .minutes(Number(minutes));
+                onChange(convertToRequiredFormat(mergedDate));
+            }
+        }, 600),
+        []
+    );
+
+    const input = document.getElementById(`react-select-date-picker-${id}-input`);
+
+    // eslint-disable-next-line no-unused-expressions
+    input?.addEventListener('input', e => {
+        debouncedOnTimeChange(e.target.value);
+    });
 
     return (
         <>
@@ -117,7 +133,7 @@ const NexusSimpleDateTimePicker = ({
                             },
                             formatDisplayLabel: date => `${moment(date).format(DISPLAY_DATE_FORMAT)}`,
                             parseInputValue: e => {
-                                if (moment(e).isValid() && e) {
+                                if (e) {
                                     setDate(e);
                                     debouncedOnChange(e, onChange);
                                 } else {
@@ -137,6 +153,7 @@ const NexusSimpleDateTimePicker = ({
                                     onChange(convertToRequiredFormat(mergedDate));
                                 }
                             },
+                            id: `date-picker-${id}`,
                         }}
                         timeIsEditable
                         times={TIMES}
