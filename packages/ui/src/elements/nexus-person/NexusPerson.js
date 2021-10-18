@@ -52,6 +52,12 @@ const NexusPerson = ({
         return isNeedTranslation ? NEEDS_TRANSLATION : getLocalizedName();
     };
 
+    const hasTranslation = () => {
+        return (
+            localization?.some(translation => translation.language === emetLanguage) || Boolean(person?.displayNameEn)
+        );
+    };
+
     const displayName = person?.displayNameEn ? person?.displayNameEn : person?.displayName;
 
     return (
@@ -67,7 +73,7 @@ const NexusPerson = ({
                                         <Lozenge appearance="default">{getFormatTypeName(person.personType)}</Lozenge>
                                     </div>
                                     <span
-                                        dir={getDir(null, localizedName())}
+                                        dir={getDir(localizedName())}
                                         className={
                                             person.displayNameEn && emetLanguage !== person?.language
                                                 ? 'nexus-c-nexus-person-italic'
@@ -77,25 +83,22 @@ const NexusPerson = ({
                                         {localizedName()}
                                     </span>
                                 </div>
-                                {emetLanguage !== 'en' && (
+                            </div>
+                            <div className="nexus-c-nexus-person__translation">
+                                {hasTranslation() && emetLanguage !== 'en' && (
                                     <div className="nexus-c-nexus-person-fade">
-                                        <span dir={getDir(null, displayName)}>{displayName}</span>
+                                        <span dir={getDir(displayName)}>{displayName}</span>
                                     </div>
                                 )}
-                                <div>
-                                    {isNeedTranslation && (
+                            </div>
+                            <div className="nexus-c-nexus-person__buttons">
+                                <div className="dot">
+                                    {person.displayName === person.displayNameEn && emetLanguage !== person?.language && (
                                         <Tooltip content={LOCALIZED_NOT_DEFINED}>
                                             <div className="nexus-c-nexus-person-warning" />
                                         </Tooltip>
                                     )}
                                 </div>
-                            </div>
-                            <div className="nexus-c-nexus-person__buttons">
-                                {isCastCrewField && isTitlePage && (
-                                    <span title="Propagate">
-                                        <PropagateButton onClick={onPropagate} />
-                                    </span>
-                                )}
                                 <span title="Edit">
                                     <EditPerson onClick={onEditPerson} />
                                 </span>
