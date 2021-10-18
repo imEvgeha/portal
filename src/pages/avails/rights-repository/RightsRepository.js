@@ -312,7 +312,23 @@ const RightsRepository = ({
     const columnsValidationDefsClone = columnDefsClone.map(col => {
         if (['icon'].includes(col.colId)) {
             // eslint-disable-next-line no-param-reassign
-            col = {
+            if (['updatedCatalogReceived'].includes(col.field)) {
+                return {
+                    ...col,
+                    sortable: false,
+                    width: 175,
+                };
+            }
+
+            if (['rightStatus'].includes(col.field)) {
+                return {
+                    ...col,
+                    sortable: false,
+                    width: 150,
+                };
+            }
+
+            return {
                 ...col,
                 sortable: false,
             };
