@@ -35,6 +35,7 @@ export const SELECT_VALUES = {
         '_4K_UHD_SDR_60',
         '_4K_UHD_HDR_60]',
     ],
+    deliveryMethod: ['Aspera Servicing', 'IFT Servicing'],
 };
 
 export const TABLE_ROW = {
@@ -45,6 +46,7 @@ export const TABLE_ROW = {
     deliverToVu: false,
     operationalStatus: 'Ready',
     sourceStandard: '',
+    deliveryMethod: '',
 };
 
 export const SERVICE_SCHEMA = {

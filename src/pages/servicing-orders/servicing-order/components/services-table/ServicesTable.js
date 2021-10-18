@@ -80,6 +80,9 @@ const ServicesTable = ({
                     rowIndex: index,
                     rowHeight: 50,
                     sourceStandard: service.externalServices.sourceStandard,
+                    deliveryMethod: service.deteTasks.deteDeliveries[0]
+                        ? service.deteTasks.deteDeliveries[0].deliveryMethod
+                        : undefined,
                 }));
 
                 setTableData(flattenedObject);
@@ -315,6 +318,7 @@ const ServicesTable = ({
                 currentService.externalServices.sourceStandard = data.sourceStandard;
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
+                currentService.deteTasks.deteDeliveries[0].deliveryMethod = data.deliveryMethod;
                 // watermark will not arrive for old orders, hence need to check
                 const extParamWatermark = currentService.externalServices.parameters.find(
                     param => param.name === 'Watermark'
@@ -345,6 +349,7 @@ const ServicesTable = ({
         blankService.overrideDueDate = blankService.deteTasks.dueDate;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.externalId = newExternalId;
+        blankService.deteTasks.deteDeliveries[0].deliveryMethod = 'Aspera Servicing';
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);
