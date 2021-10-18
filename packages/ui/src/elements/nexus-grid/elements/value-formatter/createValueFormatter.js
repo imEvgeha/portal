@@ -93,11 +93,6 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip
                 }
                 return value;
             };
-        case 'iconBoolean':
-            // eslint-disable-next-line react/prop-types
-            return ({value}) => {
-                return value ? <span>{getIcon('warning', false)}</span> : null;
-            };
         case 'territoryType':
         case 'audioLanguageType':
             return params => {
