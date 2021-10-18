@@ -13,7 +13,7 @@
         {
             "javaVariableName": "rightStatus",
             "searchDataType": "icon",
-            "displayName": "Withdrawn",
+            "displayName": "Withdrawn Status",
             "dataType": "icon",
             "readOnly": true,
             "enableSearch": true,
@@ -23,7 +23,7 @@
             "enableEdit": false,
             "required": false,
             "icon": "block",
-            "tooltip": "Withdrawn",
+            "tooltip": "Withdrawn Status",
             "valueToDisplay": "Withdrawn"
         },
         {
@@ -185,7 +185,7 @@
         },
         {
             "javaVariableName": "territory",
-            "displayName": "Withdrawn",
+            "displayName": "Withdrawn locales",
             "dataType": "territory.withdrawn",
             "searchDataType": "territoryType",
             "queryParamName": "withdrawn",
