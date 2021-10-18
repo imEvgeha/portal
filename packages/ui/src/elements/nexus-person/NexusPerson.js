@@ -99,6 +99,11 @@ const NexusPerson = ({
                                         </Tooltip>
                                     )}
                                 </div>
+                                {isCastCrewField && isTitlePage && (
+                                    <span title="Propagate">
+                                        <PropagateButton onClick={onPropagate} />
+                                    </span>
+                                )}
                                 <span title="Edit">
                                     <EditPerson onClick={onEditPerson} />
                                 </span>
