@@ -20,15 +20,10 @@ const createFormForItem = (field, item, targetIndex, fieldsForForm, formChangeHa
             : [],
     }));
 
-    const firstName = document.getElementById(mappedFields[1].id)?.getElementsByTagName('input')[0];
-    const middleName = document.getElementById(mappedFields[2].id)?.getElementsByTagName('input')[0];
-    const lastName = document.getElementById(mappedFields[3].id)?.getElementsByTagName('input')[0];
-    const displayName = document.getElementById(mappedFields[4].id)?.getElementsByTagName('input')[0];
-
-    firstName?.setAttribute('dir', getDir(firstName.value));
-    middleName?.setAttribute('dir', getDir(middleName.value));
-    lastName?.setAttribute('dir', getDir(lastName.value));
-    displayName?.setAttribute('dir', getDir(displayName.value));
+    mappedFields.forEach(x => {
+        const firstName = document.getElementById(x.id)?.getElementsByTagName('input')[0];
+        firstName?.setAttribute('dir', getDir(firstName.value));
+    });
 
     return (
         <FormContext.Consumer>
