@@ -8,7 +8,13 @@ const handleResponse = (resTable, searchText, language) => {
         return resTable.map(e => {
             let name;
             e.localization.forEach(local => {
-                if (local.language === lang) name = local.displayName;
+                if (local.language === lang) {
+                    if (lang === 'he') {
+                        name = local.displayName.split('').reverse().join('');
+                    } else {
+                        name = local.displayName;
+                    }
+                }
             });
 
             return {

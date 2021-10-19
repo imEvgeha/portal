@@ -1,11 +1,16 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 
 .nexus-c-nexus-person-ro {
-    width: 100%;
     display: flex;
-    justify-content: space-between;
+    width: 100%;
     align-items: center;
-    @include margin(0, 0, 2, 0);
+    justify-content: space-between;
+}
+
+.nexus-c-nexus-person-ro__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     > div:first-child {
         white-space: nowrap;
         overflow: hidden;
@@ -14,16 +19,28 @@
     }
 }
 
+.nexus-c-nexus-person-ro-translation {
+    display: flex;
+}
+
 .nexus-c-nexus-person-ro__img {
     height: 35px;
     width: 35px;
-    @include margin(0, 2, 0, 0);
+    @include margin(0, 2);
 }
 
-.nexus-c-nexus-person-ro__tag {
-    > span {
-        @include padding(0.75, 1.75);
-    }
+.dot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.nexus-c-nexus-person-ro__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: 3px;
 }
 
 .nexus-c-nexus-person-italic {
@@ -33,9 +50,12 @@
 
 .nexus-c-nexus-person-fade {
     color: gray;
+    text-align: left;
 }
 
 .nexus-c-nexus-person-warning {
+    text-align: center;
+    margin-right: 10px;
     width: 8px;
     height: 8px;
     border-radius: 50%;

@@ -11,21 +11,6 @@
             "required": false
         },
         {
-            "javaVariableName": "updatedCatalogReceived",
-            "searchDataType": "icon",
-            "displayName": "Removed from Catalog",
-            "dataType": "icon",
-            "readOnly": true,
-            "enableSearch": true,
-            "queryParamName": "icon",
-            "queryParamKey": "updatedCatalogReceived",
-            "queryParamValue": true,
-            "enableEdit": false,
-            "required": false,
-            "icon": "warning",
-            "tooltip": "Removed from Catalog"
-        },
-        {
             "javaVariableName": "rightStatus",
             "searchDataType": "icon",
             "displayName": "Withdrawn Status",
@@ -1900,7 +1885,7 @@
         {
             "javaVariableName": "updatedCatalogReceived",
             "displayName": "Removed from Catalogue",
-            "dataType": "boolean",
+            "dataType": "iconBoolean",
             "searchDataType": "boolean",
             "queryParamName": "updatedCatalogReceived",
             "readOnly": true,

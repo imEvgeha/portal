@@ -9,7 +9,6 @@
 }
 
 .nexus-c-nexus-person__info {
-    width: 90%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,6 +18,10 @@
         text-overflow: ellipsis;
         @include margin(0, 2, 0, 0);
     }
+}
+
+.nexus-c-nexus-person__translation {
+    display: flex;
 }
 
 .nexus-c-nexus-person__buttons {
@@ -54,11 +57,20 @@
     color: gray;
 }
 
+.dot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+}
+
 .nexus-c-nexus-person-fade {
     color: gray;
+    text-align: left;
 }
 
 .nexus-c-nexus-person-warning {
+    text-align: center;
     margin-right: 10px;
     width: 8px;
     height: 8px;

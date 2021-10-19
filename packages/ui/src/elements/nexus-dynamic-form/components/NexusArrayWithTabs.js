@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {get} from 'lodash';
+import {get, cloneDeep} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import NexusArrayCreateModal from './NexusArrayCreateModal';
@@ -296,11 +296,16 @@ const NexusArrayWithTabs = ({
         closeModal();
     };
 
+    // Cancels Auto-Decorate condition from schema.js when in creating modal
+    const fieldsForModal = fields && cloneDeep(fields);
+    fieldsForModal['editorial.hasGeneratedChildren']?.showWhen[0] &&
+        fieldsForModal['editorial.hasGeneratedChildren'].showWhen[0].splice(2, 1);
+
     const modalContent = () => {
         return (
             <NexusArrayCreateModal
                 handleModalSubmit={handleModalSubmit}
-                fields={fields}
+                fields={fieldsForModal}
                 selectValues={selectValues}
                 data={data}
                 setFieldValue={setFieldValue}
