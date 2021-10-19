@@ -200,7 +200,7 @@
         },
         {
             "javaVariableName": "territory",
-            "displayName": "Withdrawn locales",
+            "displayName": "Withdrawn Locales",
             "dataType": "territory.withdrawn",
             "searchDataType": "territoryType",
             "queryParamName": "withdrawn",
