@@ -7,10 +7,10 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
+import SavedTableDropdown from '../../components-common/saved-table-dropdown/SavedTableDropdown';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
-import SavedTableDropdown from './components/saved-table-dropdown/SavedTableDropdown';
 import {setDopTasksUserDefinedGridState, assignDopTasks, changeDOPPriority} from './dopTasksActions';
 import {createGridStateSelector} from './dopTasksSelectors';
 import {applyPredefinedTableView, insertNewGridModel} from './utils';
@@ -88,6 +88,7 @@ export const DopTasksView = ({
                     removeUserDefinedGridState={removeUserDefinedGridState}
                     selectUserDefinedTableView={selectUserDefinedTableView}
                     userDefinedGridStates={userDefinedGridStates}
+                    dopPage={true}
                 />
                 <div className="nexus-c-dop-tasks-view__refresh-btn">
                     <IconButton

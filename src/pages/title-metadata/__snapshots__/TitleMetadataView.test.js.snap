@@ -7,6 +7,14 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   <TitleMetadataHeader
     label="Title Metadata"
   >
+    <SavedTableDropdown
+      dopPage={false}
+      removeUserDefinedGridState={[Function]}
+      saveUserDefinedGridState={[Function]}
+      selectPredefinedTableView={[Function]}
+      selectUserDefinedTableView={[Function]}
+      userDefinedGridStates={Array []}
+    />
     <CatalogueOwner
       setCatalogueOwner={[Function]}
     />
@@ -31,7 +39,10 @@ exports[`TitleMetadataView should match snapshot 1`] = `
         "tenantCode": "vu",
       }
     }
+    columnApi={null}
     history={Object {}}
+    setColumnApi={[Function]}
+    setGridApi={[Function]}
   />
   <Connect(ComposedComponent)
     display={false}

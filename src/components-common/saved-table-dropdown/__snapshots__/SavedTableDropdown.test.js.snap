@@ -46,40 +46,6 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
           />
         </div>
       </DropdownItemGroup>
-      <DropdownItemGroup
-        title="Predefined Views"
-      >
-        <WithItemClick(WithItemFocus(Item))
-          key="all"
-          onClick={[Function]}
-        >
-          All
-        </WithItemClick(WithItemFocus(Item))>
-        <WithItemClick(WithItemFocus(Item))
-          key="open"
-          onClick={[Function]}
-        >
-          Open
-        </WithItemClick(WithItemFocus(Item))>
-        <WithItemClick(WithItemFocus(Item))
-          key="notStarted"
-          onClick={[Function]}
-        >
-          Not Started
-        </WithItemClick(WithItemFocus(Item))>
-        <WithItemClick(WithItemFocus(Item))
-          key="inProgress"
-          onClick={[Function]}
-        >
-          In Progress
-        </WithItemClick(WithItemFocus(Item))>
-        <WithItemClick(WithItemFocus(Item))
-          key="closed"
-          onClick={[Function]}
-        >
-          Closed
-        </WithItemClick(WithItemFocus(Item))>
-      </DropdownItemGroup>
     </DropdownMenu>
   </div>
 </div>

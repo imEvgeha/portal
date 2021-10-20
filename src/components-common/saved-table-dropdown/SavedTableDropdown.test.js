@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {SAVED_TABLE_DROPDOWN_LABEL} from '../../constants';
+import {SAVED_TABLE_DROPDOWN_LABEL} from '../../pages/dop-tasks/constants';
 import SavedTableDropdown from './SavedTableDropdown';
 
 describe('SavedTableDropdown', () => {

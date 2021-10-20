@@ -15,6 +15,7 @@ const initialState = {
     isPublishingVZ: false,
     isSyncingMOV: false,
     isPublishingMOV: false,
+    gridState: {},
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
@@ -121,6 +122,13 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 isPublishingVZ: payload === VZ ? false : state.isPublishingVZ,
                 isPublishingMOV: payload === MOVIDA ? false : state.isPublishingMOV,
             };
+        case actionTypes.SET_TITLE_USER_DEFINED_GRID_STATE: {
+            const {gridState = {}} = state;
+            return {
+                ...state,
+                gridState: {...gridState, ...payload},
+            };
+        }
         default:
             return state;
     }

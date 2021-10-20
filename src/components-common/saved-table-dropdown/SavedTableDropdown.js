@@ -10,7 +10,7 @@ import {
     MY_PREDEFINED_VIEWS_LABEL,
     SAVED_TABLE_DROPDOWN_LABEL,
     SAVED_TABLE_SELECT_OPTIONS,
-} from '../../constants';
+} from '../../pages/dop-tasks/constants';
 import './SavedTableDropdown.scss';
 
 const SavedTableDropdown = ({
@@ -19,6 +19,7 @@ const SavedTableDropdown = ({
     removeUserDefinedGridState,
     selectUserDefinedTableView,
     userDefinedGridStates,
+    dopPage,
 }) => {
     const [selectedItem, setSelectedItem] = useState(SAVED_TABLE_SELECT_OPTIONS[0]);
     const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
@@ -94,13 +95,15 @@ const SavedTableDropdown = ({
                             </DropdownItem>
                         ))}
                     </DropdownItemGroup>
-                    <DropdownItemGroup title={MY_PREDEFINED_VIEWS_LABEL}>
-                        {SAVED_TABLE_SELECT_OPTIONS.map(item => (
-                            <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
-                                {item.label}
-                            </DropdownItem>
-                        ))}
-                    </DropdownItemGroup>
+                    {dopPage && (
+                        <DropdownItemGroup title={MY_PREDEFINED_VIEWS_LABEL}>
+                            {SAVED_TABLE_SELECT_OPTIONS.map(item => (
+                                <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
+                                    {item.label}
+                                </DropdownItem>
+                            ))}
+                        </DropdownItemGroup>
+                    )}
                 </DropdownMenu>
             </div>
         </div>
@@ -113,6 +116,7 @@ SavedTableDropdown.propTypes = {
     removeUserDefinedGridState: PropTypes.func,
     selectUserDefinedTableView: PropTypes.func,
     userDefinedGridStates: PropTypes.array,
+    dopPage: PropTypes.bool,
 };
 
 SavedTableDropdown.defaultProps = {
@@ -121,6 +125,7 @@ SavedTableDropdown.defaultProps = {
     removeUserDefinedGridState: () => null,
     selectUserDefinedTableView: () => null,
     userDefinedGridStates: [],
+    dopPage: false,
 };
 
 export default SavedTableDropdown;

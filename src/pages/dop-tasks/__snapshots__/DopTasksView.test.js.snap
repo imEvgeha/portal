@@ -11,6 +11,7 @@ exports[`DopTasksView should match snapshot 1`] = `
       setUser={[Function]}
     />
     <SavedTableDropdown
+      dopPage={true}
       removeUserDefinedGridState={[Function]}
       saveUserDefinedGridState={[Function]}
       selectPredefinedTableView={[Function]}

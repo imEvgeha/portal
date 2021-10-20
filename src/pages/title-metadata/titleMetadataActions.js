@@ -47,3 +47,10 @@ export const clearTitle = () => ({
 export const clearSeasonPersons = () => ({
     type: actionTypes.CLEAR_SEASON_PERSONS,
 });
+
+export const storeTitleUserDefinedGridState = payload => {
+    return {
+        type: actionTypes.SET_TITLE_USER_DEFINED_GRID_STATE,
+        payload,
+    };
+};
