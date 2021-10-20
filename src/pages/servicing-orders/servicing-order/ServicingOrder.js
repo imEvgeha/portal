@@ -7,6 +7,7 @@ import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService'
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
 import JuiceBoxSection from './components/juicebox-section/JuiceBoxSection';
+import {SELECT_VALUES} from './components/services-table/Constants';
 import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
 import {
@@ -113,6 +114,8 @@ const ServicingOrder = ({match}) => {
                             sourceStandard: item.deteSources?.[0]?.assetInfo?.standard,
                         };
                     }
+                    if (!item?.deteTasks?.deteDeliveries?.length)
+                        item.deteTasks.deteDeliveries = [{deliveryMethod: SELECT_VALUES.deliveryMethod[0]}];
                     item.foiStatus =
                         (get(serviceOrder, 'fulfillmentOrderItems', []).find(item => item.external_id === extId) || {})
                             .status || '';
