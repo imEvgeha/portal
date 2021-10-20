@@ -1,10 +1,9 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 
 .nexus-c-nexus-person-ro {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-column-gap: 10px;
 }
 
 .nexus-c-nexus-person-ro__info {

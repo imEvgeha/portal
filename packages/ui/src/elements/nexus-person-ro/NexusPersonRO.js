@@ -27,8 +27,6 @@ const NexusPersonRO = ({person, emetLanguage}) => {
 
     const displayName = person?.displayNameEn ? person?.displayNameEn : person?.displayName;
 
-    console.log(hasTranslation(), displayName, 'person');
-
     return (
         <div className="nexus-c-nexus-person-ro">
             <div className="nexus-c-nexus-person-ro__info">
