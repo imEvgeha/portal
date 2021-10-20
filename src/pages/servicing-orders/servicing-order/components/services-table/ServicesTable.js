@@ -320,7 +320,7 @@ const ServicesTable = ({
                     data.priority;
 
                 if (!currentService?.deteTasks?.deteDeliveries?.length) {
-                    currentService.deteTasks.deteDeliveries = [{deliveryMethod: 'Aspera Servicing'}];
+                    currentService.deteTasks.deteDeliveries = [{deliveryMethod: SELECT_VALUES.deliveryMethod[0]}];
                 } else {
                     currentService.deteTasks.deteDeliveries[0].deliveryMethod = data.deliveryMethod;
                 }
@@ -355,7 +355,7 @@ const ServicesTable = ({
         blankService.overrideDueDate = blankService.deteTasks.dueDate;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.externalId = newExternalId;
-        blankService.deteTasks.deteDeliveries[0].deliveryMethod = 'Aspera Servicing';
+        blankService.deteTasks.deteDeliveries[0].deliveryMethod = SELECT_VALUES.deliveryMethod[0];
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);
