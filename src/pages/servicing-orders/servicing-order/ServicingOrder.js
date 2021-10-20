@@ -113,6 +113,8 @@ const ServicingOrder = ({match}) => {
                             sourceStandard: item.deteSources?.[0]?.assetInfo?.standard,
                         };
                     }
+                    if (!item?.deteTasks?.deteDeliveries?.length)
+                        item.deteTasks.deteDeliveries = [{deliveryMethod: 'Aspera Servicing'}];
                     item.foiStatus =
                         (get(serviceOrder, 'fulfillmentOrderItems', []).find(item => item.external_id === extId) || {})
                             .status || '';

@@ -80,7 +80,7 @@ const ServicesTable = ({
                     rowIndex: index,
                     rowHeight: 50,
                     sourceStandard: service.externalServices.sourceStandard,
-                    deliveryMethod: service.deteTasks.deteDeliveries[0]
+                    deliveryMethod: service?.deteTasks?.deteDeliveries?.[0]
                         ? service.deteTasks.deteDeliveries[0].deliveryMethod
                         : undefined,
                 }));
@@ -318,14 +318,20 @@ const ServicesTable = ({
                 currentService.externalServices.sourceStandard = data.sourceStandard;
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
-                currentService.deteTasks.deteDeliveries[0].deliveryMethod = data.deliveryMethod;
+
+                if (!currentService?.deteTasks?.deteDeliveries?.length) {
+                    currentService.deteTasks.deteDeliveries = [{deliveryMethod: 'Aspera Servicing'}];
+                } else {
+                    currentService.deteTasks.deteDeliveries[0].deliveryMethod = data.deliveryMethod;
+                }
+
                 // watermark will not arrive for old orders, hence need to check
                 const extParamWatermark = currentService.externalServices.parameters.find(
                     param => param.name === 'Watermark'
                 );
                 if (extParamWatermark) extParamWatermark.value = data.watermark;
                 if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
-                    currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
+                    currentService.deteTasks.deteDeliveries[0].externalDelivery = {deliverToId: data.recipient};
                 currentService.status = data.operationalStatus;
 
                 const newServices = {...services, [providerServices]: updatedServices};
