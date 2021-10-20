@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
+import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
-import SavedTableDropdown from '../../components-common/saved-table-dropdown/SavedTableDropdown';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
@@ -82,7 +82,7 @@ export const DopTasksView = ({
         <div className="nexus-c-dop-tasks-view">
             <DopTasksHeader>
                 <QueuedTasks setUser={changeUser} />
-                <SavedTableDropdown
+                <NexusSavedTableDropdown
                     selectPredefinedTableView={selectPredefinedTableView}
                     saveUserDefinedGridState={saveUserDefinedGridState}
                     removeUserDefinedGridState={removeUserDefinedGridState}

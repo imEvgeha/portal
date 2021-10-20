@@ -10,7 +10,7 @@ exports[`DopTasksView should match snapshot 1`] = `
     <QueuedTasks
       setUser={[Function]}
     />
-    <SavedTableDropdown
+    <NexusSavedTableDropdown
       dopPage={true}
       removeUserDefinedGridState={[Function]}
       saveUserDefinedGridState={[Function]}

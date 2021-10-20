@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
+import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
@@ -9,7 +10,6 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
-import SavedTableDropdown from '../../components-common/saved-table-dropdown/SavedTableDropdown';
 import {store} from '../../index';
 import {insertNewGridModel} from '../dop-tasks/utils';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // replace with new component
@@ -105,7 +105,7 @@ export const TitleMetadataView = ({
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
-                <SavedTableDropdown
+                <NexusSavedTableDropdown
                     saveUserDefinedGridState={saveUserDefinedGridState}
                     removeUserDefinedGridState={removeUserDefinedGridState}
                     selectUserDefinedTableView={selectUserDefinedTableView}

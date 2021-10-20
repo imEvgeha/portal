@@ -7,7 +7,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   <TitleMetadataHeader
     label="Title Metadata"
   >
-    <SavedTableDropdown
+    <NexusSavedTableDropdown
       dopPage={false}
       removeUserDefinedGridState={[Function]}
       saveUserDefinedGridState={[Function]}

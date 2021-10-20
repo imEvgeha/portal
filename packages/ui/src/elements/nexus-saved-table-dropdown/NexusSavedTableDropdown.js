@@ -10,10 +10,10 @@ import {
     MY_PREDEFINED_VIEWS_LABEL,
     SAVED_TABLE_DROPDOWN_LABEL,
     SAVED_TABLE_SELECT_OPTIONS,
-} from '../../pages/dop-tasks/constants';
-import './SavedTableDropdown.scss';
+} from '../../../../../src/pages/dop-tasks/constants';
+import './NexusSavedTableDropdown.scss';
 
-const SavedTableDropdown = ({
+const NexusSavedTableDropdown = ({
     selectPredefinedTableView,
     saveUserDefinedGridState,
     removeUserDefinedGridState,
@@ -110,7 +110,7 @@ const SavedTableDropdown = ({
     );
 };
 
-SavedTableDropdown.propTypes = {
+NexusSavedTableDropdown.propTypes = {
     selectPredefinedTableView: PropTypes.func,
     saveUserDefinedGridState: PropTypes.func,
     removeUserDefinedGridState: PropTypes.func,
@@ -119,7 +119,7 @@ SavedTableDropdown.propTypes = {
     dopPage: PropTypes.bool,
 };
 
-SavedTableDropdown.defaultProps = {
+NexusSavedTableDropdown.defaultProps = {
     selectPredefinedTableView: () => null,
     saveUserDefinedGridState: () => null,
     removeUserDefinedGridState: () => null,
@@ -128,4 +128,4 @@ SavedTableDropdown.defaultProps = {
     dopPage: false,
 };
 
-export default SavedTableDropdown;
+export default NexusSavedTableDropdown;
