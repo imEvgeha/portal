@@ -11,11 +11,15 @@ exports[`DopTasksView should match snapshot 1`] = `
       setUser={[Function]}
     />
     <NexusSavedTableDropdown
+      applyPredefinedTableView={[Function]}
+      columnApi={null}
       dopPage={true}
+      gridApi={null}
       removeUserDefinedGridState={[Function]}
       saveUserDefinedGridState={[Function]}
       selectPredefinedTableView={[Function]}
       selectUserDefinedTableView={[Function]}
+      setUserDefinedGridState={[Function]}
       userDefinedGridStates={Array []}
     />
     <div

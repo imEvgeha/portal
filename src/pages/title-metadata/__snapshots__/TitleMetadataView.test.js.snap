@@ -8,11 +8,14 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     label="Title Metadata"
   >
     <NexusSavedTableDropdown
+      columnApi={null}
       dopPage={false}
+      gridApi={null}
       removeUserDefinedGridState={[Function]}
       saveUserDefinedGridState={[Function]}
       selectPredefinedTableView={[Function]}
       selectUserDefinedTableView={[Function]}
+      setUserDefinedGridState={[Function]}
       userDefinedGridStates={Array []}
     />
     <CatalogueOwner

@@ -1,26 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RightsRepositoryHeader should match snapshot 1`] = `
-<div
-  className="nexus-c-rights-repository-header"
->
+<Fragment>
   <div
-    className="nexus-c-rights-repository-header__title"
+    className="nexus-c-rights-repository-header"
   >
-    <[object Object]
-      fill="#42526E"
-    />
-    <h1
-      className="nexus-c-rights-repository-header__title-text"
+    <div
+      className="nexus-c-rights-repository-header__title"
     >
-      Rights
-    </h1>
+      <[object Object]
+        fill="#42526E"
+      />
+      <h1
+        className="nexus-c-rights-repository-header__title-text"
+      >
+        Rights
+      </h1>
+    </div>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="primary"
+      onClick={[Function]}
+    >
+      Create New Right
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </div>
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
-    appearance="primary"
-    onClick={[Function]}
-  >
-    Create New Right
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-</div>
+  <div>
+    <hr />
+    <br />
+    <NexusSavedTableDropdown
+      dopPage={false}
+      removeUserDefinedGridState={[Function]}
+      saveUserDefinedGridState={[Function]}
+      selectPredefinedTableView={[Function]}
+      selectUserDefinedTableView={[Function]}
+      userDefinedGridStates={Array []}
+    />
+    <br />
+    <hr />
+  </div>
+</Fragment>
 `;

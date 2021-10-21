@@ -7,11 +7,11 @@ import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
+// import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
 import {store} from '../../index';
-import {insertNewGridModel} from '../dop-tasks/utils';
+// import {insertNewGridModel} from '../dop-tasks/utils';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // replace with new component
 import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
@@ -76,40 +76,15 @@ export const TitleMetadataView = ({
         });
     };
 
-    const saveUserDefinedGridState = viewId => {
-        if (!isEmpty(gridApi) && !isEmpty(columnApi) && username && viewId) {
-            const filterModel = gridApi.getFilterModel();
-            const sortModel = getSortModel(columnApi);
-            const columnState = columnApi.getColumnState();
-            const model = {id: viewId, filterModel, sortModel, columnState};
-            const newUserData = insertNewGridModel(viewId, userDefinedGridStates, model);
-            storeTitleUserDefinedGridState({[username]: newUserData});
-        }
-    };
-
-    const removeUserDefinedGridState = id => {
-        const filteredGridStates = userDefinedGridStates.filter(item => item.id !== id);
-        storeTitleUserDefinedGridState({[username]: filteredGridStates});
-    };
-
-    const selectUserDefinedTableView = id => {
-        if (!isEmpty(gridApi) && !isEmpty(columnApi) && id) {
-            const selectedModel = userDefinedGridStates.filter(item => item.id === id);
-            const {columnState, filterModel, sortModel} = selectedModel[0] || {};
-            gridApi.setFilterModel(filterModel);
-            setSorting(sortModel, columnApi);
-            columnApi.setColumnState(columnState);
-        }
-    };
-
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
                 <NexusSavedTableDropdown
-                    saveUserDefinedGridState={saveUserDefinedGridState}
-                    removeUserDefinedGridState={removeUserDefinedGridState}
-                    selectUserDefinedTableView={selectUserDefinedTableView}
                     userDefinedGridStates={userDefinedGridStates}
+                    setUserDefinedGridState={storeTitleUserDefinedGridState}
+                    gridApi={gridApi}
+                    columnApi={columnApi}
+                    username={username}
                 />
                 <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 <Button
