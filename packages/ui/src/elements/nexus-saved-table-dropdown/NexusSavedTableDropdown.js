@@ -14,11 +14,9 @@ import {
     SAVED_TABLE_SELECT_OPTIONS,
 } from '../../../../../src/pages/dop-tasks/constants';
 import './NexusSavedTableDropdown.scss';
-// import { applyPredefinedTableView, insertNewGridModel } from '../../../../../src/pages/dop-tasks/utils';
 import {insertNewGridModel} from '../../../../../src/pages/dop-tasks/utils';
 
 const NexusSavedTableDropdown = ({
-    //  selectPredefinedTableView,
     userDefinedGridStates,
 
     dopPage,
