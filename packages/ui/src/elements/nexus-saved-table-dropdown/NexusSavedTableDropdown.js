@@ -13,6 +13,15 @@ import {
     SAVED_TABLE_DROPDOWN_LABEL,
     SAVED_TABLE_SELECT_OPTIONS,
 } from '../../../../../src/pages/dop-tasks/constants';
+// import {
+//     GROUPED_OPTIONS,
+//     SAVED_TABLE_DROPDOWN_LABEL,
+//     SAVED_TABLE_SELECT_OPTIONS,
+//     READY_PENDING_VIEW,
+//     ERROR_VIEW,
+//     WITHDRAWN_VIEW,
+//     REMOVED_FROM_CATALOG_VIEW,
+// } from '../../../saved-table-dropdown/constants';
 import './NexusSavedTableDropdown.scss';
 import {insertNewGridModel} from '../../../../../src/pages/dop-tasks/utils';
 
@@ -131,15 +140,15 @@ const NexusSavedTableDropdown = ({
                             </DropdownItem>
                         ))}
                     </DropdownItemGroup>
-                    {dopPage && (
-                        <DropdownItemGroup title={MY_PREDEFINED_VIEWS_LABEL}>
-                            {SAVED_TABLE_SELECT_OPTIONS.map(item => (
-                                <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
-                                    {item.label}
-                                </DropdownItem>
-                            ))}
-                        </DropdownItemGroup>
-                    )}
+                    {/* {dopPage && ( */}
+                    <DropdownItemGroup title={MY_PREDEFINED_VIEWS_LABEL}>
+                        {SAVED_TABLE_SELECT_OPTIONS.map(item => (
+                            <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
+                                {item.label}
+                            </DropdownItem>
+                        ))}
+                    </DropdownItemGroup>
+                    ){/* } */}
                 </DropdownMenu>
             </div>
         </div>

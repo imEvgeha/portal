@@ -12,7 +12,7 @@ import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
 import {setDopTasksUserDefinedGridState, assignDopTasks, changeDOPPriority} from './dopTasksActions';
 import {createGridStateSelector} from './dopTasksSelectors';
-import {applyPredefinedTableView, insertNewGridModel} from './utils';
+import {applyPredefinedTableView} from './utils';
 import {USER} from './constants';
 import './DopTasksView.scss';
 
