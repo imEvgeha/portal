@@ -7,6 +7,11 @@
     grid-column-gap: 10px;
 }
 
+.nexus-c-nexus-person__two-col {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
 .nexus-c-nexus-person__info {
     display: flex;
     align-items: center;
@@ -21,6 +26,7 @@
 
 .nexus-c-nexus-person__translation {
     display: flex;
+    align-items: center;
 }
 
 .nexus-c-nexus-person__buttons {

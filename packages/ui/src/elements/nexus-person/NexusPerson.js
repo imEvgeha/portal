@@ -65,7 +65,13 @@ const NexusPerson = ({
             {(provided, snapshot) => (
                 <div ref={provided.innerRef} {...provided.draggableProps}>
                     <DraggableContent isDragging={snapshot.isDragging}>
-                        <div className="nexus-c-nexus-person">
+                        <div
+                            className={
+                                hasTranslation() && emetLanguage !== 'en' && displayName
+                                    ? 'nexus-c-nexus-person'
+                                    : 'nexus-c-nexus-person__two-col'
+                            }
+                        >
                             <div className="nexus-c-nexus-person__info">
                                 <div>
                                     <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
@@ -84,13 +90,14 @@ const NexusPerson = ({
                                     </span>
                                 </div>
                             </div>
-                            <div className="nexus-c-nexus-person__translation">
-                                {hasTranslation() && emetLanguage !== 'en' && (
+                            {hasTranslation() && emetLanguage !== 'en' && displayName && (
+                                <div className="nexus-c-nexus-person__translation">
                                     <div className="nexus-c-nexus-person-fade">
                                         <span dir={getDir(displayName)}>{displayName}</span>
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
+
                             <div className="nexus-c-nexus-person__buttons">
                                 <div className="dot">
                                     {person.displayName === person.displayNameEn && emetLanguage !== person?.language && (
