@@ -28,7 +28,13 @@ const NexusPersonRO = ({person, emetLanguage}) => {
     const displayName = person?.displayNameEn ? person?.displayNameEn : person?.displayName;
 
     return (
-        <div className="nexus-c-nexus-person-ro">
+        <div
+            className={
+                hasTranslation() && emetLanguage !== 'en' && displayName
+                    ? 'nexus-c-nexus-person-ro'
+                    : 'nexus-c-nexus-person-ro__one-col'
+            }
+        >
             <div className="nexus-c-nexus-person-ro__info">
                 <div>
                     <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person-ro__img" />
@@ -47,22 +53,22 @@ const NexusPersonRO = ({person, emetLanguage}) => {
                     </span>
                 </div>
             </div>
-            <div className="nexus-c-nexus-person-ro-translation">
-                {hasTranslation() && emetLanguage !== 'en' && (
+            {hasTranslation() && emetLanguage !== 'en' && displayName && (
+                <div className="nexus-c-nexus-person-ro-translation">
                     <div className="nexus-c-nexus-person-fade">
                         <span dir={getDir(displayName)}>{displayName}</span>
                     </div>
-                )}
-            </div>
-            <div className="nexus-c-nexus-person-ro__buttons">
-                <div className="dot">
-                    {person.displayName === person.displayNameEn && emetLanguage !== person?.language && (
+                </div>
+            )}
+            {person.displayName === person.displayNameEn && emetLanguage !== person?.language && (
+                <div className="nexus-c-nexus-person-ro__buttons">
+                    <div className="dot">
                         <Tooltip content={LOCALIZED_NOT_DEFINED}>
                             <div className="nexus-c-nexus-person-warning" />
                         </Tooltip>
-                    )}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
