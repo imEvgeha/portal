@@ -74,6 +74,12 @@ export const TitleMetadataView = ({
         });
     };
 
+    const tableLabels = {
+        savedDropdownLabel: 'Saved Table View:',
+        savedViewslabel: 'My Saved Views',
+    };
+    const tableOptions = [{label: 'All', value: 'all'}];
+
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
@@ -83,6 +89,8 @@ export const TitleMetadataView = ({
                     gridApi={gridApi}
                     columnApi={columnApi}
                     username={username}
+                    tableLabels={tableLabels}
+                    tableOptions={tableOptions}
                 />
                 <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 <Button

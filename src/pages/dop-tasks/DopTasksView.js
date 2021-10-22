@@ -13,7 +13,13 @@ import QueuedTasks from './components/queued-tasks/QueuedTasks';
 import {setDopTasksUserDefinedGridState, assignDopTasks, changeDOPPriority} from './dopTasksActions';
 import {createGridStateSelector} from './dopTasksSelectors';
 import {applyPredefinedTableView} from './utils';
-import {USER} from './constants';
+import {
+    USER,
+    MY_SAVED_VIEWS_LABEL,
+    MY_PREDEFINED_VIEWS_LABEL,
+    SAVED_TABLE_DROPDOWN_LABEL,
+    SAVED_TABLE_SELECT_OPTIONS,
+} from './constants';
 import './DopTasksView.scss';
 
 export const DopTasksView = ({
@@ -47,18 +53,27 @@ export const DopTasksView = ({
         });
     };
 
+    const tableLabels = {
+        savedDropdownLabel: SAVED_TABLE_DROPDOWN_LABEL,
+        savedViewslabel: MY_SAVED_VIEWS_LABEL,
+        predifinedViewsLabel: MY_PREDEFINED_VIEWS_LABEL,
+    };
+    const tableOptions = SAVED_TABLE_SELECT_OPTIONS;
+
     return (
         <div className="nexus-c-dop-tasks-view">
             <DopTasksHeader>
                 <QueuedTasks setUser={changeUser} />
                 <NexusSavedTableDropdown
-                    dopPage={true}
                     gridApi={gridApi}
                     columnApi={columnApi}
                     username={username}
                     setUserDefinedGridState={setDopTasksUserDefinedGridState}
                     userDefinedGridStates={userDefinedGridStates}
                     applyPredefinedTableView={applyPredefinedTableView}
+                    tableLabels={tableLabels}
+                    tableOptions={tableOptions}
+                    hasPredefined={true}
                 />
                 <div className="nexus-c-dop-tasks-view__refresh-btn">
                     <IconButton

@@ -4,25 +4,22 @@ import Button from '@atlaskit/button';
 import RightsIcon from '@vubiquity-nexus/portal-assets/rights.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
+// import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import Loading from '../../../../static/Loading';
-import SavedTableDropdown from '../../../saved-table-dropdown/SavedTableDropdown';
 import {
-    // GROUPED_OPTIONS,
-    // SAVED_TABLE_DROPDOWN_LABEL,
-    // SAVED_TABLE_SELECT_OPTIONS,
-    READY_PENDING_VIEW,
-    ERROR_VIEW,
-    WITHDRAWN_VIEW,
-    REMOVED_FROM_CATALOG_VIEW,
+    SAVED_TABLE_DROPDOWN_LABEL,
+    MY_SAVED_VIEWS_LABEL,
+    MY_PREDEFINED_VIEWS_LABEL,
+    SAVED_TABLE_SELECT_OPTIONS,
 } from '../../../saved-table-dropdown/constants';
 import {CREATE_NEW_RIGHT, RIGHTS_TAB} from '../../constants';
 import './RightsRepositoryHeader.scss';
 import {storeAvailsUserDefinedGrid} from '../../rightsActions';
 import {createUserGridSelector} from '../../rightsSelectors';
+import {applyPredefinedTableView} from '../../util/utils';
 
 export const RightsRepositoryHeader = ({
     title,
@@ -43,73 +40,20 @@ export const RightsRepositoryHeader = ({
         }
     }, [gridState, username, get]);
 
-    const applyPredefinedTableView = filter => {
-        gridApi.setFilterModel(null);
-        gridApi.destroyFilter('icon');
-        gridApi.destroyFilter('icon_1');
-
-        switch (filter) {
-            case ERROR_VIEW: {
-                const filterInstance = gridApi.getFilterInstance('status');
-                filterInstance.setModel({
-                    filterType: 'set',
-                    values: ['Error'],
-                });
-                break;
-            }
-            case READY_PENDING_VIEW: {
-                const filterInstance = gridApi.getFilterInstance('status');
-                filterInstance.setModel({
-                    filterType: 'set',
-                    values: ['Pending', 'ReadyNew', 'Ready'],
-                });
-                break;
-            }
-            case WITHDRAWN_VIEW: {
-                const filterInstance = gridApi.getFilterInstance('rightStatus');
-                filterInstance.setModel({
-                    filterType: 'set',
-                    values: ['Withdrawn'],
-                });
-                break;
-            }
-            case REMOVED_FROM_CATALOG_VIEW: {
-                gridApi.setFilterModel({
-                    updatedCatalogReceived: {
-                        filterType: 'set',
-                        values: ['true'],
-                    },
-                });
-                break;
-            }
-            default:
-                break;
-        }
-        gridApi.onFilterChanged();
-        setSorting({colId: 'updatedAt', sort: 'desc'}, columnApi);
-        columnApi.resetColumnState();
+    const tableLabels = {
+        savedDropdownLabel: SAVED_TABLE_DROPDOWN_LABEL,
+        savedViewslabel: MY_SAVED_VIEWS_LABEL,
+        predifinedViewsLabel: MY_PREDEFINED_VIEWS_LABEL,
     };
+    const tableOptions = SAVED_TABLE_SELECT_OPTIONS;
 
     return (
-        <>
-            <div className="nexus-c-rights-repository-header">
-                <div className="nexus-c-rights-repository-header__title">
-                    <RightsIcon fill="#42526E" />
-                    <h1 className="nexus-c-rights-repository-header__title-text">{title}</h1>
-                </div>
-                {activeTab === RIGHTS_TAB && gridApi && columnApi ? (
-                    <SavedTableDropdown gridApi={gridApi} columnApi={columnApi} username={username} />
-                ) : activeTab === RIGHTS_TAB ? (
-                    <Loading />
-                ) : null}
-                <Button appearance="primary" onClick={() => history.push(URL.keepEmbedded('/avails/rights/create'))}>
-                    {CREATE_NEW_RIGHT}
-                </Button>
+        <div className="nexus-c-rights-repository-header">
+            <div className="nexus-c-rights-repository-header__title">
+                <RightsIcon fill="#42526E" />
+                <h1 className="nexus-c-rights-repository-header__title-text">{title}</h1>
             </div>
-            <div>
-                <hr />
-                <br />
-
+            {activeTab === RIGHTS_TAB && gridApi && columnApi ? (
                 <NexusSavedTableDropdown
                     gridApi={gridApi}
                     columnApi={columnApi}
@@ -118,12 +62,17 @@ export const RightsRepositoryHeader = ({
                     setUserDefinedGridState={storeAvailsUserDefinedGrid}
                     userDefinedGridStates={userDefinedGridStates}
                     applyPredefinedTableView={applyPredefinedTableView}
+                    tableLabels={tableLabels}
+                    tableOptions={tableOptions}
+                    hasPredefined={true}
                 />
-
-                <br />
-                <hr />
-            </div>
-        </>
+            ) : activeTab === RIGHTS_TAB ? (
+                <Loading />
+            ) : null}
+            <Button appearance="primary" onClick={() => history.push(URL.keepEmbedded('/avails/rights/create'))}>
+                {CREATE_NEW_RIGHT}
+            </Button>
+        </div>
     );
 };
 

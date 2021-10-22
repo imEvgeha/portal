@@ -7,36 +7,33 @@ import CrossIcon from '@atlaskit/icon/glyph/cross';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
-import {
-    MY_SAVED_VIEWS_LABEL,
-    MY_PREDEFINED_VIEWS_LABEL,
-    SAVED_TABLE_DROPDOWN_LABEL,
-    SAVED_TABLE_SELECT_OPTIONS,
-} from '../../../../../src/pages/dop-tasks/constants';
-// import {
-//     GROUPED_OPTIONS,
-//     SAVED_TABLE_DROPDOWN_LABEL,
-//     SAVED_TABLE_SELECT_OPTIONS,
-//     READY_PENDING_VIEW,
-//     ERROR_VIEW,
-//     WITHDRAWN_VIEW,
-//     REMOVED_FROM_CATALOG_VIEW,
-// } from '../../../saved-table-dropdown/constants';
 import './NexusSavedTableDropdown.scss';
-import {insertNewGridModel} from '../../../../../src/pages/dop-tasks/utils';
+
+const insertNewGridModel = (viewId, userDefinedGridStates, model) => {
+    const newUserData = userDefinedGridStates.slice();
+    const foundIndex = newUserData.findIndex(obj => obj.id === viewId);
+    if (foundIndex > -1) {
+        newUserData[foundIndex] = model;
+    } else {
+        newUserData.push(model);
+    }
+    return newUserData;
+};
 
 const NexusSavedTableDropdown = ({
     userDefinedGridStates,
 
-    dopPage,
     gridApi,
     columnApi,
     username,
     setUserDefinedGridState,
 
     applyPredefinedTableView,
+    tableLabels,
+    tableOptions,
+    hasPredefined,
 }) => {
-    const [selectedItem, setSelectedItem] = useState(SAVED_TABLE_SELECT_OPTIONS[0]);
+    const [selectedItem, setSelectedItem] = useState(tableOptions[0]);
     const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
     const [userInput, setUserInput] = useState('');
 
@@ -53,8 +50,8 @@ const NexusSavedTableDropdown = ({
     const filterRemovalHandler = (e, item) => {
         e.stopPropagation();
         if (selectedItem.value === item) {
-            setSelectedItem(SAVED_TABLE_SELECT_OPTIONS[0]);
-            selectPredefinedTableView(SAVED_TABLE_SELECT_OPTIONS[0].value);
+            setSelectedItem(tableOptions[0]);
+            selectPredefinedTableView(tableOptions[0].value);
         }
         removeUserDefinedGridState(item);
     };
@@ -97,10 +94,10 @@ const NexusSavedTableDropdown = ({
 
     return (
         <div className="nexus-c-dop-tasks-dropdown">
-            <div className="nexus-c-dop-tasks-dropdown__label">{SAVED_TABLE_DROPDOWN_LABEL}</div>
+            <div className="nexus-c-dop-tasks-dropdown__label">{tableLabels.savedDropdownLabel}</div>
             <div className="nexus-c-dop-tasks-dropdown__elements">
                 <DropdownMenu shouldFitContainer appearance="tall" trigger={selectedItem.label} triggerType="button">
-                    <DropdownItemGroup title={MY_SAVED_VIEWS_LABEL}>
+                    <DropdownItemGroup title={tableLabels.savedViewslabel}>
                         <div className="nexus-c-dop-tasks-dropdown__textfield">
                             <FieldTextStateless
                                 shouldFitContainer
@@ -140,15 +137,15 @@ const NexusSavedTableDropdown = ({
                             </DropdownItem>
                         ))}
                     </DropdownItemGroup>
-                    {/* {dopPage && ( */}
-                    <DropdownItemGroup title={MY_PREDEFINED_VIEWS_LABEL}>
-                        {SAVED_TABLE_SELECT_OPTIONS.map(item => (
-                            <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
-                                {item.label}
-                            </DropdownItem>
-                        ))}
-                    </DropdownItemGroup>
-                    ){/* } */}
+                    {hasPredefined && (
+                        <DropdownItemGroup title={tableLabels.predifinedViewsLabel}>
+                            {tableOptions.map(item => (
+                                <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
+                                    {item.label}
+                                </DropdownItem>
+                            ))}
+                        </DropdownItemGroup>
+                    )}
                 </DropdownMenu>
             </div>
         </div>
@@ -156,31 +153,27 @@ const NexusSavedTableDropdown = ({
 };
 
 NexusSavedTableDropdown.propTypes = {
-    selectPredefinedTableView: PropTypes.func,
-    saveUserDefinedGridState: PropTypes.func,
-    removeUserDefinedGridState: PropTypes.func,
-    selectUserDefinedTableView: PropTypes.func,
     userDefinedGridStates: PropTypes.array,
-    dopPage: PropTypes.bool,
     gridApi: PropTypes.object,
     columnApi: PropTypes.object,
     username: PropTypes.string,
     setUserDefinedGridState: PropTypes.func,
     applyPredefinedTableView: PropTypes.func,
+    tableLabels: PropTypes.object,
+    tableOptions: PropTypes.array,
+    hasPredefined: PropTypes.bool,
 };
 
 NexusSavedTableDropdown.defaultProps = {
-    selectPredefinedTableView: () => null,
-    saveUserDefinedGridState: () => null,
-    removeUserDefinedGridState: () => null,
-    selectUserDefinedTableView: () => null,
     userDefinedGridStates: [],
-    dopPage: false,
     gridApi: {},
     columnApi: {},
     username: '',
     setUserDefinedGridState: () => null,
     applyPredefinedTableView: () => null,
+    tableLabels: {},
+    tableOptions: [],
+    hasPredefined: false,
 };
 
 export default NexusSavedTableDropdown;

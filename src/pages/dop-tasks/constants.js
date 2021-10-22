@@ -1,8 +1,5 @@
 export const DOP_TASKS_HEDER = 'DOP Tasks';
 export const DOP_QUEUED_TASKS_LABEL = 'Queued Tasks';
-export const MY_SAVED_VIEWS_LABEL = 'My Saved Views';
-export const MY_PREDEFINED_VIEWS_LABEL = 'Predefined Views';
-export const SAVED_TABLE_DROPDOWN_LABEL = 'Saved Table View:';
 export const USER = 'user';
 export const POTENTIAL_OWNERS = 'potentialOwners';
 export const ACTUAL_OWNER = 'actualOwner';
@@ -15,6 +12,10 @@ export const QUEUED_TASKS_OPTIONS = [
     {label: 'My Tasks', value: 'user'},
     {label: 'Queued Tasks', value: '*'},
 ];
+
+export const SAVED_TABLE_DROPDOWN_LABEL = 'Saved Table View:';
+export const MY_SAVED_VIEWS_LABEL = 'My Saved Views';
+export const MY_PREDEFINED_VIEWS_LABEL = 'Predefined Views';
 
 export const SAVED_TABLE_SELECT_OPTIONS = [
     {label: 'All', value: 'all'},
