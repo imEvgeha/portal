@@ -8,15 +8,27 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     label="Title Metadata"
   >
     <NexusSavedTableDropdown
+      applyPredefinedTableView={[Function]}
       columnApi={null}
-      dopPage={false}
       gridApi={null}
-      removeUserDefinedGridState={[Function]}
-      saveUserDefinedGridState={[Function]}
-      selectPredefinedTableView={[Function]}
-      selectUserDefinedTableView={[Function]}
+      hasPredefined={false}
       setUserDefinedGridState={[Function]}
+      tableLabels={
+        Object {
+          "savedDropdownLabel": "Saved Table View:",
+          "savedViewslabel": "My Saved Views",
+        }
+      }
+      tableOptions={
+        Array [
+          Object {
+            "label": "All",
+            "value": "all",
+          },
+        ]
+      }
       userDefinedGridStates={Array []}
+      username=""
     />
     <CatalogueOwner
       setCatalogueOwner={[Function]}

@@ -7,7 +7,7 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
   <div
     className="nexus-c-saved-table-dropdown__label"
   >
-    Saved Table Views:
+    Saved Table View:
   </div>
   <AtlaskitSelect
     className="nexus-c-saved-table-dropdown__select"
