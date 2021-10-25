@@ -13,6 +13,7 @@ const FulfillmentOrderPanels = ({
     selectedFulfillmentOrder,
     handleFulfillmentOrderChange,
     statusFilter,
+    page,
 }) => {
     const {servicingOrderItems = []} = orderDetails;
     const [newFulfillmentOrders, setNewFulfillmentOrders] = useState(fulfillmentOrders);
@@ -20,15 +21,17 @@ const FulfillmentOrderPanels = ({
 
     useEffect(() => {
         if (sortDirection.type === 'ID') {
-            getFilteredByIdOrders(orderDetails.so_number, sortDirection.value, statusFilter.value).then(data => {
+            getFilteredByIdOrders(orderDetails.so_number, sortDirection.value, statusFilter.value, page).then(data => {
                 setNewFulfillmentOrders(data?.fulfillmentOrders);
                 setNewServicingOrderItems(data?.servicingOrderItems);
             });
         } else if (sortDirection.type === 'TITLE') {
-            getFilteredByTitleOrders(orderDetails.so_number, sortDirection.value, statusFilter.value).then(data => {
-                setNewFulfillmentOrders(data?.fulfillmentOrders);
-                setNewServicingOrderItems(data?.servicingOrderItems);
-            });
+            getFilteredByTitleOrders(orderDetails.so_number, sortDirection.value, statusFilter.value, page).then(
+                data => {
+                    setNewFulfillmentOrders(data?.fulfillmentOrders);
+                    setNewServicingOrderItems(data?.servicingOrderItems);
+                }
+            );
         }
     }, [sortDirection]);
 
@@ -56,6 +59,7 @@ FulfillmentOrderPanels.propTypes = {
     selectedFulfillmentOrder: PropTypes.string,
     handleFulfillmentOrderChange: PropTypes.func,
     statusFilter: PropTypes.object.isRequired,
+    page: PropTypes.number.isRequired,
 };
 
 FulfillmentOrderPanels.defaultProps = {

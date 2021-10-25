@@ -85,6 +85,7 @@ const HeaderSection = ({
                     fulfillmentOrders={getFilteredList()}
                     handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                     statusFilter={filter}
+                    page={page}
                 />
             </div>
         </div>
