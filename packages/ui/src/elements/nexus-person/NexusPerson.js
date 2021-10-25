@@ -11,6 +11,7 @@ import DraggableContent from './elements/DraggableContent/DraggableContent';
 import RemovePerson from './elements/RemovePerson/RemovePerson';
 import EditPerson from './elements/EditPerson/EditPerson';
 import {NEEDS_TRANSLATION, LOCALIZED_NOT_DEFINED} from '../nexus-persons-list/constants';
+import {getDir} from '../nexus-dynamic-form/utils';
 import './NexusPerson.scss';
 import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
@@ -51,12 +52,26 @@ const NexusPerson = ({
         return isNeedTranslation ? NEEDS_TRANSLATION : getLocalizedName();
     };
 
+    const hasTranslation = () => {
+        return (
+            localization?.some(translation => translation.language === emetLanguage) || Boolean(person?.displayNameEn)
+        );
+    };
+
+    const displayName = person?.displayNameEn ? person?.displayNameEn : person?.displayName;
+
     return (
         <Draggable draggableId={customKey} index={index}>
             {(provided, snapshot) => (
                 <div ref={provided.innerRef} {...provided.draggableProps}>
                     <DraggableContent isDragging={snapshot.isDragging}>
-                        <div className="nexus-c-nexus-person">
+                        <div
+                            className={
+                                hasTranslation() && emetLanguage !== 'en' && displayName
+                                    ? 'nexus-c-nexus-person'
+                                    : 'nexus-c-nexus-person__two-col'
+                            }
+                        >
                             <div className="nexus-c-nexus-person__info">
                                 <div>
                                     <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
@@ -64,6 +79,7 @@ const NexusPerson = ({
                                         <Lozenge appearance="default">{getFormatTypeName(person.personType)}</Lozenge>
                                     </div>
                                     <span
+                                        dir={getDir(localizedName())}
                                         className={
                                             person.displayNameEn && emetLanguage !== person?.language
                                                 ? 'nexus-c-nexus-person-italic'
@@ -73,20 +89,23 @@ const NexusPerson = ({
                                         {localizedName()}
                                     </span>
                                 </div>
-                                {emetLanguage !== 'en' && (
+                            </div>
+                            {hasTranslation() && emetLanguage !== 'en' && displayName && (
+                                <div className="nexus-c-nexus-person__translation">
                                     <div className="nexus-c-nexus-person-fade">
-                                        {person?.displayNameEn ? person?.displayNameEn : person?.displayName}
+                                        <span dir={getDir(displayName)}>{displayName}</span>
                                     </div>
-                                )}
-                                <div>
-                                    {isNeedTranslation && (
+                                </div>
+                            )}
+
+                            <div className="nexus-c-nexus-person__buttons">
+                                <div className="dot">
+                                    {person.displayName === person.displayNameEn && emetLanguage !== person?.language && (
                                         <Tooltip content={LOCALIZED_NOT_DEFINED}>
                                             <div className="nexus-c-nexus-person-warning" />
                                         </Tooltip>
                                     )}
                                 </div>
-                            </div>
-                            <div className="nexus-c-nexus-person__buttons">
                                 {isCastCrewField && isTitlePage && (
                                     <span title="Propagate">
                                         <PropagateButton onClick={onPropagate} />

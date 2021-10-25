@@ -1,5 +1,4 @@
 import React from 'react';
-import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
 import eventManagementRoutes from './pages/event-management/eventManagementRoutes';
@@ -20,9 +19,6 @@ const Contract = React.lazy(() =>
         /* webpackPrefetch: true, webpackChunkName: "Contract" */ './pages/legacy/containers/contracts/search/Contract'
     )
 );
-const Media = React.lazy(() =>
-    import(/* webpackPrefetch: true, webpackChunkName: "Media" */ './pages/legacy/containers/media/search/Media.js')
-);
 const Settings = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "Settings" */ './pages/legacy/containers/settings/Settings')
 );
@@ -41,10 +37,6 @@ const restRoutes = [
     {
         path: '/contractsearch',
         component: Contract,
-    },
-    {
-        path: '/media',
-        component: canRender(Media, 'read', 'AssetManagement'),
     },
     {
         path: '/settings',

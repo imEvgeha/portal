@@ -24,7 +24,7 @@ module.exports = envFile => ({
         new HtmlWebpackPlugin({
             template: paths.appHtml,
             inject: true,
-            favicon: 'public/favicon.svg',
+            favicon: 'public/favicon.ico',
         }),
         new webpack.HotModuleReplacementPlugin(),
     ],

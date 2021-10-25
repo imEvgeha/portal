@@ -67,7 +67,9 @@ const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) =>
                             'nexus-c-side-tabs__subtab-container--open': currentTab.tabIndex === index,
                         })}
                     >
-                        {isDecorated && !isRatings && <StatusLink className="tablinks__status-link" />}
+                        {isDecorated && !isRatings && obj.parentEmetId && (
+                            <StatusLink className="tablinks__status-link" />
+                        )}
                         <Button onClick={() => handleTabChanged(key, index, subIndex)}>{getSubTabLabel(obj)}</Button>
                     </div>
                 );

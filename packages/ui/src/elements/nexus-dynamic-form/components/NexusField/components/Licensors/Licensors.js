@@ -1,18 +1,22 @@
 import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {Field, FormFooter} from '@atlaskit/form';
-import {default as AKForm} from '@atlaskit/form/Form';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
-import Select from '@atlaskit/select';
-import TextField from '@atlaskit/textfield';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {cloneDeep} from 'lodash';
+import {
+    ERROR_ICON,
+    ERROR_TITLE,
+    LICENSOR_ERROR,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {store} from '../../../../../../../../../src';
 import {sortOptions} from '../../../../utils';
 import './Licensors.scss';
+import AddLicensorModal from './AddLincensorModal';
 
 const Licensors = ({selectValues, data, isEdit, onChange}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
+
     const [licensors, setLicensors] = useState([]);
     const [licensorOptions, setLicensorOptions] = useState([]);
 
@@ -21,8 +25,8 @@ const Licensors = ({selectValues, data, isEdit, onChange}) => {
     }, [data]);
 
     useEffect(() => {
-        if (Object.keys(selectValues).length) {
-            const options = cloneDeep(selectValues.licensor);
+        if (selectValues) {
+            const options = selectValues.licensor;
             let formattedOptions = options.map(opt => {
                 return {
                     label: opt.value,
@@ -35,19 +39,6 @@ const Licensors = ({selectValues, data, isEdit, onChange}) => {
         }
     }, [selectValues]);
 
-    const handleAddLicensor = async values => {
-        const updatedLicensors = [...licensors];
-        const newLicensor = {
-            id: values.licensor.id,
-            licensor: values.licensor.value,
-            licensorTitleId: values.licensorTitleId,
-        };
-        updatedLicensors.push(newLicensor);
-        setLicensors(updatedLicensors);
-        onChange([...updatedLicensors]);
-        closeModal();
-    };
-
     const removeLicensor = index => {
         const updatedLicensors = [...licensors];
         updatedLicensors.splice(index, 1);
@@ -55,51 +46,43 @@ const Licensors = ({selectValues, data, isEdit, onChange}) => {
         onChange([...updatedLicensors]);
     };
 
-    const openAddLicensorModal = () => {
-        openModal(modalContent(), {
-            title: <div>Add Licensor</div>,
-            width: 'medium',
-        });
+    const handleAddLicensor = async values => {
+        const found = licensors.find(item => values.licensor.id === item.id);
+
+        if (found) {
+            const errorToast = {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: LICENSOR_ERROR,
+            };
+            store.dispatch(addToast(errorToast));
+        } else {
+            const updatedLicensors = [...licensors];
+            const newLicensor = {
+                id: values.licensor.id,
+                licensor: values.licensor.value,
+                licensorTitleId: values.licensorTitleId,
+            };
+            updatedLicensors.push(newLicensor);
+            setLicensors(updatedLicensors);
+            onChange([...updatedLicensors]);
+            closeModal();
+        }
     };
 
-    const modalContent = () => {
-        return (
-            <div>
-                <AKForm onSubmit={values => handleAddLicensor(values)}>
-                    {({formProps, reset}) => (
-                        <form {...formProps}>
-                            <Field name="licensor" label="Licensor" isRequired>
-                                {({fieldProps}) => (
-                                    <Select
-                                        options={licensorOptions}
-                                        {...fieldProps}
-                                        className="nexus-c-modal__select-container"
-                                        classNamePrefix="nexus-c-modal__select"
-                                    />
-                                )}
-                            </Field>
-                            <Field name="licensorTitleId" label="Licensor Title ID" isRequired>
-                                {({fieldProps}) => <TextField {...fieldProps} />}
-                            </Field>
-                            <FormFooter>
-                                <Button type="submit" appearance="primary">
-                                    Submit
-                                </Button>
-                                <Button
-                                    className="nexus-c-modal__cancel-button"
-                                    appearance="danger"
-                                    onClick={() => {
-                                        reset();
-                                        closeModal();
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
-                            </FormFooter>
-                        </form>
-                    )}
-                </AKForm>
-            </div>
+    const openAddLicensorModal = () => {
+        openModal(
+            <AddLicensorModal
+                handleAddLicensor={handleAddLicensor}
+                closeModal={closeModal}
+                licensorOptions={licensorOptions}
+                licensors={licensors}
+            />,
+            {
+                title: <div>Add Licensor</div>,
+                width: 'medium',
+            }
         );
     };
 

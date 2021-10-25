@@ -78,7 +78,9 @@ const NexusDateTimePicker = ({
                         <div className="nexus-c-date-time-picker__date-time">
                             <NexusSimpleDateTimePicker
                                 id={id}
-                                onChange={setDate}
+                                onChange={e => {
+                                    setDate(e);
+                                }}
                                 value={value || ''}
                                 isSimulcast={isSimulcast}
                                 isTimestamp={isTimestamp}

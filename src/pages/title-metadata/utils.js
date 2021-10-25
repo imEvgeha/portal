@@ -161,7 +161,7 @@ export const prepareCategoryField = data => {
 export const prepareAwardsField = (data, selectValues) => {
     if (get(data, 'awards')) {
         return data.awards.map(award => {
-            const selectedValue = selectValues.find(x => x.name === award);
+            const selectedValue = selectValues.find(x => x?.name === award);
             return {
                 id: selectedValue?.id,
             };
@@ -170,22 +170,24 @@ export const prepareAwardsField = (data, selectValues) => {
 };
 
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
-    const newData = cloneDeep(data);
-    return newData.map(record => {
-        const field = record[fieldName];
-        if (field) {
-            const formattedValues = [];
-            field.forEach(obj => {
-                if (key === 'genre') {
-                    if (record?.language !== obj?.language) {
-                        formattedValues.push({label: `(${obj[key]})*`, value: obj.id});
-                    } else formattedValues.push({label: obj[key], value: obj.id});
-                } else formattedValues.push(obj[key]);
-            });
-            record[fieldName] = formattedValues;
-        }
-        return record;
-    });
+    return (
+        data &&
+        data.map(record => {
+            const field = record[fieldName];
+            if (field) {
+                const formattedValues = [];
+                field.forEach(obj => {
+                    if (key === 'genre') {
+                        if (record?.language !== obj?.language) {
+                            formattedValues.push({label: `(${obj[key]})*`, value: obj.id});
+                        } else formattedValues.push({label: obj[key], value: obj.id});
+                    } else formattedValues.push(obj[key]);
+                });
+                record[fieldName] = formattedValues;
+            }
+            return record;
+        })
+    );
 };
 
 const formatTerritoryBody = (data, titleId) => {
@@ -268,7 +270,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                         categoryValue = get(category, 'value');
                     }
                     return {
-                        category: categoryValue,
+                        name: categoryValue,
                         order: index,
                     };
                 });

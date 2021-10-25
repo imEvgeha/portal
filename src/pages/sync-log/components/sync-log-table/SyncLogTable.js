@@ -18,6 +18,7 @@ import {DOWNLOAD_BTN, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLo
 import {selectSyncLogDateFrom, selectSyncLogDateTo} from '../../syncLogSelectors';
 import {getSyncLog, exportSyncLog} from '../../syncLogService';
 import PublishErrors from '../PublishErrors/PublishErrors';
+import Status from '../Status/Status';
 import TitleNameCellRenderer from '../TitleNamecCellRenderer/TitleNameCellRenderer';
 import './SyncLogTable.scss';
 
@@ -130,6 +131,7 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
                 frameworkComponents={{
                     publishErrors: PublishErrors,
                     titleNameCellRenderer: TitleNameCellRenderer,
+                    status: Status,
                 }}
             />
 

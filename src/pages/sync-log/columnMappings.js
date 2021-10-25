@@ -1,10 +1,10 @@
 export default [
     {
         colId: 'status',
-        field: 'status',
+        field: 'publishErrors',
         headerName: 'Error/Success',
         width: 120,
-        valueFormatter: ({data}) => (data?.publishErrors?.length ? 'Error' : 'Success'),
+        cellRenderer: 'status',
     },
     {
         colId: 'updatedAt',

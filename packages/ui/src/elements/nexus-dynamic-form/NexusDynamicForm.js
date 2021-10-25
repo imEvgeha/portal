@@ -78,11 +78,11 @@ const NexusDynamicForm = ({
                 <Button
                     className="nexus-c-dynamic-form__discard-button"
                     onClick={() => onCancel(reset, getValues)}
-                    isDisabled={(!dirty || isSaving || !canEdit) && isEmpty(seasonPersons)}
+                    isDisabled={((!dirty && disableSubmit) || isSaving || !canEdit) && isEmpty(seasonPersons)}
                 >
                     Discard
                 </Button>
-                <div className={`nexus-c-dynamic-form__status ${formStatus(dirty, errors)}`} />
+                <div className={`nexus-c-dynamic-form__status ${formStatus(dirty || !disableSubmit, errors)}`} />
                 <Button
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"

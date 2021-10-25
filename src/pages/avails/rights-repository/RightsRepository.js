@@ -130,6 +130,15 @@ const RightsRepository = ({
         return () => clearInterval(timer);
     }, [selectedIngest, attachment]);
 
+    // update periodically the list of ingests
+    useEffect(() => {
+        const timer = setInterval(() => {
+            onFiltersChange(getFiltersToSend());
+        }, 50000);
+
+        return () => clearInterval(timer);
+    }, []);
+
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
     }, [selectedIngest, selectedAttachmentId, gridApi]);
@@ -303,7 +312,23 @@ const RightsRepository = ({
     const columnsValidationDefsClone = columnDefsClone.map(col => {
         if (['icon'].includes(col.colId)) {
             // eslint-disable-next-line no-param-reassign
-            col = {
+            if (['updatedCatalogReceived'].includes(col.field)) {
+                return {
+                    ...col,
+                    sortable: false,
+                    width: 175,
+                };
+            }
+
+            if (['rightStatus'].includes(col.field)) {
+                return {
+                    ...col,
+                    sortable: false,
+                    width: 150,
+                };
+            }
+
+            return {
                 ...col,
                 sortable: false,
             };

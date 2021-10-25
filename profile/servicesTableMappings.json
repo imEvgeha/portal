@@ -77,5 +77,15 @@
         "enableSearch": true,
         "enableEdit": false,
         "required": true
+    },
+    {
+        "javaVariableName": "deliveryMethod",
+        "displayName": "Delivery Method",
+        "dataType": "select",
+        "queryParamName": "deliveryMethod",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
     }
 ]

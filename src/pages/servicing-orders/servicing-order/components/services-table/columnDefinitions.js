@@ -81,6 +81,14 @@ const columnDefinitions = [
         width: 170,
         sortable: false,
     },
+    {
+        colId: 'deliveryMethod',
+        field: 'deliveryMethod',
+        dataSource: 'deliveryMethod',
+        headerName: 'Delivery Method',
+        width: 170,
+        sortable: false,
+    },
 ];
 
 export default columnDefinitions;

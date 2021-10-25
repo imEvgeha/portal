@@ -81,15 +81,13 @@ export function* fetchAndStoreSelectItems(payload, type) {
     const fields = [];
     const fetchedSelectedItems = yield all(
         mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint}) => {
-            if (!fields.includes(configEndpoint)) {
-                fields.push(configEndpoint);
-                return call(
-                    fetchAvailSelectValuesRequest,
-                    profileService.getSelectValues,
-                    configEndpoint,
-                    javaVariableName
-                );
-            }
+            fields.push(configEndpoint);
+            return call(
+                fetchAvailSelectValuesRequest,
+                profileService.getSelectValues,
+                configEndpoint,
+                javaVariableName
+            );
         })
     );
 

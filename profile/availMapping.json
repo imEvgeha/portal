@@ -11,24 +11,9 @@
             "required": false
         },
         {
-            "javaVariableName": "updatedCatalogReceived",
-            "searchDataType": "icon",
-            "displayName": "Removed from Catalog",
-            "dataType": "icon",
-            "readOnly": true,
-            "enableSearch": true,
-            "queryParamName": "icon",
-            "queryParamKey": "updatedCatalogReceived",
-            "queryParamValue": true,
-            "enableEdit": false,
-            "required": false,
-            "icon": "warning",
-            "tooltip": "Removed from Catalog"
-        },
-        {
             "javaVariableName": "rightStatus",
             "searchDataType": "icon",
-            "displayName": "Withdrawn",
+            "displayName": "Withdrawn Status",
             "dataType": "icon",
             "readOnly": true,
             "enableSearch": true,
@@ -38,7 +23,7 @@
             "enableEdit": false,
             "required": false,
             "icon": "block",
-            "tooltip": "Withdrawn",
+            "tooltip": "Withdrawn Status",
             "valueToDisplay": "Withdrawn"
         },
         {
@@ -200,7 +185,7 @@
         },
         {
             "javaVariableName": "territory",
-            "displayName": "Withdrawn",
+            "displayName": "Withdrawn Locales",
             "dataType": "territory.withdrawn",
             "searchDataType": "territoryType",
             "queryParamName": "withdrawn",
@@ -1900,7 +1885,7 @@
         {
             "javaVariableName": "updatedCatalogReceived",
             "displayName": "Removed from Catalogue",
-            "dataType": "boolean",
+            "dataType": "iconBoolean",
             "searchDataType": "boolean",
             "queryParamName": "updatedCatalogReceived",
             "readOnly": true,

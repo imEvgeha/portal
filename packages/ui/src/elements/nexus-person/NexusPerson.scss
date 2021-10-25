@@ -2,14 +2,17 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 
 .nexus-c-nexus-person {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-column-gap: 10px;
+}
+
+.nexus-c-nexus-person__two-col {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
 }
 
 .nexus-c-nexus-person__info {
-    width: 90%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -19,6 +22,11 @@
         text-overflow: ellipsis;
         @include margin(0, 2, 0, 0);
     }
+}
+
+.nexus-c-nexus-person__translation {
+    display: flex;
+    align-items: center;
 }
 
 .nexus-c-nexus-person__buttons {
@@ -54,11 +62,20 @@
     color: gray;
 }
 
+.dot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+}
+
 .nexus-c-nexus-person-fade {
     color: gray;
+    text-align: left;
 }
 
 .nexus-c-nexus-person-warning {
+    text-align: center;
     margin-right: 10px;
     width: 8px;
     height: 8px;
