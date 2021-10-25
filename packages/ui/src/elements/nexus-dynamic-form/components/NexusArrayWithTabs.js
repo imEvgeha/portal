@@ -78,6 +78,7 @@ const NexusArrayWithTabs = ({
         if (view === VIEWS.EDIT) {
             const currentFormData = getCurrentFormData();
             const current = currentData || currentFormData;
+            replaceRecordInGroupedData(currentFormData, current, oldSubTab, index, key);
             const newData = replaceRecordInData(currentFormData, current);
             setFieldValue(path, newData);
         } else {
