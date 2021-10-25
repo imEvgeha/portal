@@ -23,7 +23,7 @@ export const getSpecOptions = (recipientId, tenant) => {
 
 // TODO: Use an actual API when ready
 export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams) => {
-    const defaultSort = sortedParams.length ? sortedParams : [{colId: "submitted_date", sort: "desc"}];
+    const defaultSort = sortedParams.length ? sortedParams : [{colId: 'submitted_date', sort: 'desc'}];
     let queryParams = {};
     Object.keys(searchCriteria).forEach(key => {
         const value = searchCriteria[key];
@@ -48,6 +48,29 @@ export const getServicingOrderById = id => {
 
 export const getFulfilmentOrdersForServiceOrder = id => {
     const url = `${baseServicingOrdersURL(config)}/so/${id}/fo`;
+    return nexusFetch(url);
+};
+
+export const getFilteredByTitleOrders = (id, type, status, page) => {
+    const newType = type === 'TITLE_ASCENDING' ? 'ASC' : 'DESC';
+
+    const url = `${baseServicingOrdersURL(
+        config
+    )}/so/${id}/soi;product_description=${newType}/fo?soiStatus=${status}&page=${page}&size=100`;
+    return nexusFetch(url);
+};
+
+export const getFilteredByIdOrders = (id, type, status, page) => {
+    const newType = type === 'ID_ASCENDING' ? 'ASC' : 'DESC';
+
+    const url = `${baseServicingOrdersURL(
+        config
+    )}/so/${id}/soi;external_id=${newType}/fo?soiStatus=${status}&page=${page}&size=100`;
+    return nexusFetch(url);
+};
+
+export const getAdvancedFulfilmentOrdersForServiceOrder = (id, page, size) => {
+    const url = `${baseServicingOrdersURL(config)}/so/${id}/fo?page=${page}&size=${size}`;
     return nexusFetch(url);
 };
 
@@ -93,17 +116,20 @@ export const servicingOrdersService = {
     getServicingOrders,
     getServicingOrderById,
     getFulfilmentOrdersForServiceOrder,
+    getAdvancedFulfilmentOrdersForServiceOrder,
     saveFulfillmentOrder,
     exportServicingOrders,
 };
 
 const lateFaultsURL = config => {
-    return `${config.get('gateway.configuration')}${config.get('gateway.service.configuration')}${config.get('gateway.service.lateFaults')}`;
+    return `${config.get('gateway.configuration')}${config.get('gateway.service.configuration')}${config.get(
+        'gateway.service.lateFaults'
+    )}`;
 };
 
 export const getLateReasons = tenant => {
     // https://configapi.dev.vubiquity.com/configuration-api/v1/late-faults?tenant="MGM"
-    const url = `${lateFaultsURL(config)}?tenant=${tenant}`; 
+    const url = `${lateFaultsURL(config)}?tenant=${tenant}`;
     return nexusFetch(url, {
         method: 'get',
     });

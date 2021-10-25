@@ -1,45 +1,65 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {ISODateToView, sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
-import {SORT_DIRECTION} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
+import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {get} from 'lodash';
-import moment from 'moment';
+import {getFilteredByIdOrders, getFilteredByTitleOrders} from '../../../servicingOrdersService';
 import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPanel';
 import ServicingOrderItem from '../servicing-order-item/ServicingOrderItem';
 
 const FulfillmentOrderPanels = ({
-    dueDateSortDirection,
+    sortDirection,
     orderDetails,
     fulfillmentOrders,
     selectedFulfillmentOrder,
     handleFulfillmentOrderChange,
+    statusFilter,
+    page,
 }) => {
     const {servicingOrderItems = []} = orderDetails;
-    const fulfillmentOrdersWithoutParentServicingOrderItem = fulfillmentOrders.filter(fo => !fo.soi_doc_id);
+    const [newFulfillmentOrders, setNewFulfillmentOrders] = useState(fulfillmentOrders);
+    const [newServicingOrderItems, setNewServicingOrderItems] = useState(servicingOrderItems);
+
+    useEffect(() => {
+        if (sortDirection.type === 'ID') {
+            getFilteredByIdOrders(orderDetails.so_number, sortDirection.value, statusFilter.value, page).then(data => {
+                setNewFulfillmentOrders(data?.fulfillmentOrders);
+                setNewServicingOrderItems(data?.servicingOrderItems);
+            });
+        } else if (sortDirection.type === 'TITLE') {
+            getFilteredByTitleOrders(orderDetails.so_number, sortDirection.value, statusFilter.value, page).then(
+                data => {
+                    setNewFulfillmentOrders(data?.fulfillmentOrders);
+                    setNewServicingOrderItems(data?.servicingOrderItems);
+                }
+            );
+        }
+    }, [sortDirection]);
+
+    const fulfillmentOrdersWithoutParentServicingOrderItem = newFulfillmentOrders?.filter(fo => !fo.soi_doc_id);
     const panels = fulfillmentOrdersWithoutParentServicingOrderItem.concat(
-        servicingOrderItems.map(servicingOrderItem => ({
+        newServicingOrderItems.map(servicingOrderItem => ({
             ...servicingOrderItem,
-            fulfillmentOrders: fulfillmentOrders.filter(fo => fo.soi_doc_id === servicingOrderItem.id),
+            fulfillmentOrders: newFulfillmentOrders?.filter(fo => fo.soi_doc_id === servicingOrderItem.id),
         }))
     );
-    // determines whether to sort the fulfillment order panels or not
-    const sortedPanels = sortPanelsByDueDate(panels, dueDateSortDirection.value);
 
     const renderAccordion = accordionData => {
         return accordionData.map(info => renderPanel(info, selectedFulfillmentOrder, handleFulfillmentOrderChange));
     };
 
-    return renderAccordion(sortedPanels);
+    return renderAccordion(panels);
 };
 
 export default FulfillmentOrderPanels;
 
 FulfillmentOrderPanels.propTypes = {
-    dueDateSortDirection: PropTypes.object.isRequired,
+    sortDirection: PropTypes.object.isRequired,
     orderDetails: PropTypes.object.isRequired,
     fulfillmentOrders: PropTypes.array,
     selectedFulfillmentOrder: PropTypes.string,
     handleFulfillmentOrderChange: PropTypes.func,
+    statusFilter: PropTypes.object.isRequired,
+    page: PropTypes.number.isRequired,
 };
 
 FulfillmentOrderPanels.defaultProps = {
@@ -72,49 +92,4 @@ export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrd
             completedDate={ISODateToView(get(info, 'completed_date'), 'regionalMidnight')}
         />
     );
-};
-
-export const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
-    const toSort = panels.slice();
-
-    const getDueDateOfServicingOrderItem = servicingOrderItem => {
-        const {length} = servicingOrderItem.fulfillmentOrders;
-        const sortedDates = sortByDateFn(servicingOrderItem.fulfillmentOrders, 'due_date').map(getMomentDueDate);
-        return dueDateSortDirection === SORT_DIRECTION.ASCENDING ? sortedDates[0] : sortedDates[length - 1];
-    };
-
-    const getMomentDueDate = panel => {
-        if (panel.type === 'ServicingOrderItem') {
-            return moment(getDueDateOfServicingOrderItem(panel));
-        }
-
-        return moment(get(panel, 'due_date'));
-    };
-
-    const panelSortFn = (prevPanel, currPanel) => {
-        const prevPanelDueDate = getMomentDueDate(prevPanel);
-        const currPanelDueDate = getMomentDueDate(currPanel);
-        const diff = prevPanelDueDate.diff(currPanelDueDate);
-
-        switch (dueDateSortDirection) {
-            case SORT_DIRECTION.ASCENDING:
-                return diff;
-            case SORT_DIRECTION.DESCENDING:
-                return -diff;
-            default:
-                break;
-        }
-    };
-
-    return toSort
-        .map(panel => {
-            if (panel.type === 'ServicingOrderItem') {
-                return {
-                    ...panel,
-                    fulfillmentOrders: panel.fulfillmentOrders.sort(panelSortFn),
-                };
-            }
-            return panel;
-        })
-        .sort(panelSortFn);
 };
