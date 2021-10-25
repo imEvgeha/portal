@@ -234,19 +234,23 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
             payload.sortCriterion = val;
         }
         if (FIELDS_OPERATOR_IN.includes(key) && val) {
-            const searchText = val.split(', ').join(',');
-            const filterIndex = payload.filterCriterion.findIndex(item => item.fieldName === key);
-            if (filterIndex > 0) {
-                payload.filterCriterion[filterIndex].value = searchText;
-            } else {
+            const searchItemsArray = val.split(', ');
+            const isThereTerritoryItem = payload.filterCriterion.find(item => item.fieldName === key);
+            if (isThereTerritoryItem)
+                payload.filterCriterion = payload.filterCriterion.filter(item => item.fieldName !== key);
+
+            searchItemsArray.forEach(item => {
                 payload.filterCriterion.push({
-                    value: searchText,
+                    value: item,
                     fieldName: key,
-                    operator: 'in',
+                    operator: 'contain',
                     valueDataType: 'String',
                     logicalAnd: true,
                 });
-            }
+            });
+        }
+        if (FIELDS_OPERATOR_IN.includes(key) && !val) {
+            payload.filterCriterion = payload.filterCriterion.filter(item => item.fieldName !== key);
         }
         return null;
     });
