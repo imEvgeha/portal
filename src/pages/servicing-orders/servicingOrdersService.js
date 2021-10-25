@@ -51,6 +51,24 @@ export const getFulfilmentOrdersForServiceOrder = id => {
     return nexusFetch(url);
 };
 
+export const getFilteredByTitleOrders = (id, type, status) => {
+    const newType = type === 'TITLE_ASCENDING' ? 'ASC' : 'DESC';
+
+    const url = `${baseServicingOrdersURL(
+        config
+    )}/so/${id}/soi;product_description=${newType}/fo?soiStatus=${status}&page=0&size=100`;
+    return nexusFetch(url);
+};
+
+export const getFilteredByIdOrders = (id, type, status) => {
+    const newType = type === 'ID_ASCENDING' ? 'ASC' : 'DESC';
+
+    const url = `${baseServicingOrdersURL(
+        config
+    )}/so/${id}/soi;external_id=${newType}/fo?soiStatus=${status}&page=0&size=100`;
+    return nexusFetch(url);
+};
+
 export const getAdvancedFulfilmentOrdersForServiceOrder = (id, page, size) => {
     const url = `${baseServicingOrdersURL(config)}/so/${id}/fo?page=${page}&size=${size}`;
     return nexusFetch(url);

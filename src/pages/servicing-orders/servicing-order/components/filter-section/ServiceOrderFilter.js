@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
@@ -10,7 +10,7 @@ import PartnerRequest from '../partner-request/PartnerRequest';
 import {SORT_DIRECTION} from './constants';
 import './ServiceOrderFilter.scss';
 
-const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirection, setDueDateSortDirection}) => {
+const ServiceOrderFilter = ({orderDetails, filter, setFilter, sortDirection, setSortDirection}) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const {
         tenant,
@@ -78,12 +78,12 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
                     />
                 </div>
                 <div className="so-panel-filter-detail__dropdown">
-                    <label>Sort by Due Date</label>
+                    <label>Sort by</label>
                     <Select
                         options={SORT_DIRECTION}
-                        onChange={setDueDateSortDirection}
-                        value={dueDateSortDirection}
-                        placeholder="Select Date"
+                        onChange={setSortDirection}
+                        value={sortDirection}
+                        placeholder="Select type"
                     />
                 </div>
             </div>
@@ -95,15 +95,15 @@ ServiceOrderFilter.propTypes = {
     orderDetails: PropTypes.object.isRequired,
     filter: PropTypes.object,
     setFilter: PropTypes.func,
-    dueDateSortDirection: PropTypes.object,
-    setDueDateSortDirection: PropTypes.func,
+    sortDirection: PropTypes.object,
+    setSortDirection: PropTypes.func,
 };
 
 ServiceOrderFilter.defaultProps = {
     filter: {},
     setFilter: null,
-    dueDateSortDirection: {},
-    setDueDateSortDirection: null,
+    sortDirection: PropTypes.object,
+    setSortDirection: PropTypes.func,
 };
 
 export default ServiceOrderFilter;

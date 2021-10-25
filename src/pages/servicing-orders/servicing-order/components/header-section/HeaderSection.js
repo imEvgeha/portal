@@ -24,7 +24,7 @@ const HeaderSection = ({
     const [showFilter, setShowFilter] = useState(true);
     const [page, setPage] = useState(1);
     const [filter, setFilter] = useState({value: 'All', label: 'All'});
-    const [dueDateSortDirection, setDueDateSortDirection] = useState(SORT_DIRECTION[0]);
+    const [sortDirection, setSortDirection] = useState(SORT_DIRECTION[0]);
 
     const toggleFilters = () => setShowFilter(!showFilter);
     const getFilteredList = () => {
@@ -73,17 +73,18 @@ const HeaderSection = ({
                     orderDetails={orderDetails || {}}
                     filter={filter}
                     setFilter={setFilter}
-                    dueDateSortDirection={dueDateSortDirection}
-                    setDueDateSortDirection={setDueDateSortDirection}
+                    sortDirection={sortDirection}
+                    setSortDirection={setSortDirection}
                 />
             )}
             <div className="panel-header__list" onScroll={onScroll}>
                 <FulfillmentOrderPanels
                     orderDetails={orderDetails}
-                    dueDateSortDirection={dueDateSortDirection}
+                    sortDirection={sortDirection}
                     selectedFulfillmentOrder={selectedFulfillmentOrder}
                     fulfillmentOrders={getFilteredList()}
                     handleFulfillmentOrderChange={handleFulfillmentOrderChange}
+                    statusFilter={filter}
                 />
             </div>
         </div>
