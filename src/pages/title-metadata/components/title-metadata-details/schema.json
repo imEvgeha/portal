@@ -326,18 +326,6 @@
                                     }
                                 ]
                             ]
-                        },
-                        "awards": {
-                            "name": "Awards",
-                            "path": "awards",
-                            "type": "multiselect",
-                            "optionsConfig": {
-                                "defaultValuePath": "name",
-                                "defaultLabelPath": "name"
-                            },
-                            "selectConfig": {
-                                "defaultLabelPath": "name"
-                            }
                         }
                     }
                 }
@@ -948,22 +936,6 @@
                                     "name": "Copyright",
                                     "path": "copyright",
                                     "type": "string"
-                                },
-                                "editorial.awards": {
-                                    "name": "Awards",
-                                    "path": "awards",
-                                    "type": "multiselect",
-                                    "hideInCreate": true,
-                                    "isReadOnlyInEdit": true,
-                                    "optionsConfig": {
-                                        "defaultValuePath": "name",
-                                        "defaultLabelPath": "name"
-                                    },
-                                    "localizationConfig": {
-                                        "default": "nameEn",
-                                        "localized": "name"
-                                    },
-                                    "showLocalized": true
                                 },
                                 "editorial.sasktelInventoryId": {
                                     "name": "Sasktel Inventory ID",

@@ -8,7 +8,6 @@ import {
     PRODUCER,
     WRITER,
     ANIMATED_CHARACTER,
-    AWARD,
     RECORDING_ARTIST,
     VOICE_TALENT,
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
