@@ -20,7 +20,7 @@ describe('HeaderSection', () => {
         });
 
         it('sorts due dates by default - ascending', () => {
-            const sortDirection = wrapper.find('ServiceOrderFilter').prop('dueDateSortDirection');
+            const sortDirection = wrapper.find('ServiceOrderFilter').prop('sortDirection');
 
             expect(sortDirection).toEqual(SORT_DIRECTION[0]);
         });
