@@ -82,7 +82,7 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
             const errorToast = {
                 title: 'Regenerating Editorial Metadata Failed',
                 icon: WARNING_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: message,
             };
             store.dispatch(addToast(errorToast));
@@ -110,7 +110,7 @@ export const unmergeTitle = async id => {
             const errorToast = {
                 title: 'Unmerge not available',
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: response.body.description,
             };
             store.dispatch(addToast(errorToast));

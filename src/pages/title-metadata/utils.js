@@ -241,7 +241,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
         const errorToast = {
             title: ERROR_TITLE,
             icon: ERROR_ICON,
-            isAutoDismiss: true,
+            isAutoDismiss: false,
             description: UPDATE_TERRITORY_METADATA_ERROR,
         };
         store.dispatch(addToast(errorToast));
@@ -324,7 +324,7 @@ export const updateEditorialMetadata = async (values, titleId) => {
     const errorToast = {
         title: ERROR_TITLE,
         icon: ERROR_ICON,
-        isAutoDismiss: true,
+        isAutoDismiss: false,
         description: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
@@ -372,7 +372,7 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
             addToast({
                 title: ERROR_TITLE,
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: response.error,
             })
         );

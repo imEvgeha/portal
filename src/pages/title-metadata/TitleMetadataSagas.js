@@ -207,7 +207,7 @@ export function* updateTitle({payload}) {
             payload: {
                 title: ERROR_TITLE,
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: UPDATE_TITLE_ERROR,
             },
         });
@@ -261,7 +261,7 @@ export function* syncTitle({payload}) {
             payload: {
                 title: 'Title Sync',
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: err.message,
             },
         });
@@ -305,7 +305,7 @@ export function* publishTitle({payload}) {
             payload: {
                 title: 'Publish title',
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: 'Unable to publish',
             },
         });

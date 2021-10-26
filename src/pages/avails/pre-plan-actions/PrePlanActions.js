@@ -89,7 +89,7 @@ export const PrePlanActions = ({
                 title: WARNING_TITLE,
                 description: NO_TERRITORIES_SELECTED,
                 icon: WARNING_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 isWithOverlay: false,
             });
             return;
