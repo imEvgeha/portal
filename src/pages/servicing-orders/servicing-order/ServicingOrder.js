@@ -42,7 +42,9 @@ const ServicingOrder = ({match}) => {
 
     useEffect(() => {
         const order =
-            get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {};
+            get(serviceOrder, 'fulfillmentOrders', []).filter(s => s && s.id === selectedFulfillmentOrderID)[
+                serviceOrder?.fulfillmentOrders?.length - 1
+            ] || {};
         setSelectedOrder(order);
         setLastOrder(order);
     }, [serviceOrder, selectedFulfillmentOrderID]);

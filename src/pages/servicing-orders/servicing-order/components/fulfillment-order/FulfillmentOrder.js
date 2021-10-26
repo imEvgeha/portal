@@ -64,7 +64,7 @@ export const FulfillmentOrder = ({
     useEffect(
         () => {
             if (isSuccess && isSuccess !== 'ALREADY_SET') {
-                fetchFulfillmentOrders(serviceOrder).then(() => {
+                fetchFulfillmentOrders(serviceOrder).then(data => {
                     setSavedFulfillmentOrder(null);
                     setFulfillmentOrder(fulfillmentOrder);
                     setSelectedOrder(fulfillmentOrder);
