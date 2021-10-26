@@ -158,17 +158,6 @@ export const prepareCategoryField = data => {
     }
 };
 
-export const prepareAwardsField = (data, selectValues) => {
-    if (get(data, 'awards')) {
-        return data.awards.map(award => {
-            const selectedValue = selectValues.find(x => x?.name === award);
-            return {
-                id: selectedValue?.id,
-            };
-        });
-    }
-};
-
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     return (
         data &&

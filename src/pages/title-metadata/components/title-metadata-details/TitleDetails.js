@@ -36,7 +36,6 @@ import {
     isStateEditable,
     isMgmTitle,
     prepareCategoryField,
-    prepareAwardsField,
     handleDirtyValues,
     propagateSeasonsPersonsToEpisodes,
 } from '../../utils';
@@ -129,7 +128,6 @@ const TitleDetails = ({
         });
 
         prepareCategoryField(updatedValues);
-        updatedValues['awards'] = prepareAwardsField(updatedValues, selectValues?.awards);
         Promise.all([
             updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
