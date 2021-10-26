@@ -235,18 +235,39 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
         }
         if (FIELDS_OPERATOR_IN.includes(key) && val) {
             const searchItemsArray = val.split(', ');
+            const searchItemsArrayLength = searchItemsArray.length;
             const isThereTerritoryItem = payload.filterCriterion.find(item => item.fieldName === key);
             if (isThereTerritoryItem)
                 payload.filterCriterion = payload.filterCriterion.filter(item => item.fieldName !== key);
 
-            searchItemsArray.forEach(item => {
-                payload.filterCriterion.push({
+            searchItemsArray.forEach((item, index) => {
+                const territoryFilter = {
                     value: item,
                     fieldName: key,
                     operator: 'contain',
                     valueDataType: 'String',
-                    logicalAnd: true,
-                });
+                    logicalAnd: false,
+                };
+
+                if (searchItemsArrayLength - 1 === index) {
+                    payload.filterCriterion.push({
+                        ...territoryFilter,
+                        logicalAnd: !(searchItemsArrayLength - 1),
+                        closeParenNumber: 1,
+                    });
+                    return;
+                }
+                if (index === 0) {
+                    payload.filterCriterion.push({
+                        ...territoryFilter,
+                        openParenNumber: 1,
+                        logicalAnd: true,
+                    });
+                    return;
+                } else if (index) {
+                    payload.filterCriterion.push(territoryFilter);
+                    return;
+                }
             });
         }
         if (FIELDS_OPERATOR_IN.includes(key) && !val) {
