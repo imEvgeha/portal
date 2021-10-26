@@ -158,17 +158,6 @@ export const prepareCategoryField = data => {
     }
 };
 
-export const prepareAwardsField = (data, selectValues) => {
-    if (get(data, 'awards')) {
-        return data.awards.map(award => {
-            const selectedValue = selectValues.find(x => x?.name === award);
-            return {
-                id: selectedValue?.id,
-            };
-        });
-    }
-};
-
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     return (
         data &&
@@ -181,7 +170,7 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
                         if (record?.language !== obj?.language) {
                             formattedValues.push({label: `(${obj[key]})*`, value: obj.id});
                         } else formattedValues.push({label: obj[key], value: obj.id});
-                    } else formattedValues.push(obj[key]);
+                    } else obj[key] && formattedValues.push(obj[key]);
                 });
                 record[fieldName] = formattedValues;
             }

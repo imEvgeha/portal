@@ -6,7 +6,6 @@ export const DIRECTOR = 'Director';
 export const WRITER = 'Writer';
 export const PRODUCER = 'Producer';
 export const ANIMATED_CHARACTER = 'Animated Character';
-export const AWARD = 'Award';
 export const RECORDING_ARTIST = 'Recording Artist';
 export const VOICE_TALENT = 'Voice Talent';
 
@@ -17,7 +16,6 @@ const allowedEditorialCastTypes = [
     ANIMATED_CHARACTER.toLowerCase(),
     ACTOR.toLowerCase(),
     RECORDING_ARTIST.toLowerCase(),
-    AWARD.toLowerCase(),
     VOICE_TALENT.toLowerCase(),
 ];
 
@@ -150,8 +148,6 @@ export const getFormatTypeName = personType => {
                 return 'Animated Character:';
             case RECORDING_ARTIST.toLowerCase():
                 return 'Recording Artist:';
-            case AWARD.toLowerCase():
-                return 'Award:';
             case VOICE_TALENT.toLowerCase():
                 return 'Voice Talent:';
             default:
