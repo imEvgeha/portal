@@ -232,6 +232,7 @@ export const BulkMatching = ({
                     },
                 },
             ],
+            isAutoDismiss: false,
             isWithOverlay: true,
         });
     };

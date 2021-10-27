@@ -202,7 +202,7 @@ export function* updateRight({payload}) {
             payload: {
                 title: UPDATE_RIGHT_FAILED,
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: `${error.message.message.slice(0, MAX_CHARS)}...`,
             },
         });

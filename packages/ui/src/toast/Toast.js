@@ -1,14 +1,11 @@
 import React, {useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {store} from '../../../../src';
 import {NexusOverlayContext} from '../elements/nexus-overlay/NexusOverlay';
 import NexusToastNotification from '../elements/nexus-toast-notification/NexusToastNotification';
 import withToasts from './hoc/withToasts';
 
 const Toast = ({toasts, addToast, removeToast}) => {
     const {setIsOverlayActive} = useContext(NexusOverlayContext);
-
-    toasts.length > 0 && setTimeout(() => store.dispatch(removeToast()), 3000);
 
     useEffect(() => {
         const isWithOverlay = toasts.some(toast => toast.isWithOverlay);

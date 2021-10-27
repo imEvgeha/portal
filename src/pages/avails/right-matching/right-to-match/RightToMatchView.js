@@ -123,6 +123,7 @@ const RightToMatchView = ({
                 {content: 'Cancel', onClick: () => removeToast()},
                 {content: 'OK', onClick: onUpdateRight},
             ],
+            isAutoDismiss: false,
             isWithOverlay: true,
         });
     };
