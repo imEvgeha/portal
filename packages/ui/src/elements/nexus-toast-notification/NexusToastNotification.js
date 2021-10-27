@@ -1,6 +1,6 @@
-import React, {isValidElement, Fragment} from 'react';
+import React, {isValidElement} from 'react';
 import PropTypes from 'prop-types';
-import Flag, {FlagGroup, AutoDismissFlag} from '@atlaskit/flag';
+import Flag, {FlagGroup} from '@atlaskit/flag';
 import Tick from '@atlaskit/icon/glyph/check-circle';
 import Error from '@atlaskit/icon/glyph/error';
 import Info from '@atlaskit/icon/glyph/info';
@@ -26,8 +26,9 @@ const NexusToastNotification = ({toasts, removeToast}) => (
             };
             if (toast.isAutoDismiss) {
                 setTimeout(() => removeToast(index), 3000);
-                return <AutoDismissFlag key={index} {...updatedToast} />;
-            } return <Flag key={index} {...updatedToast} />;
+                return <Flag key={index} {...updatedToast} />;
+            }
+            return <Flag key={index} {...updatedToast} />;
         })}
     </FlagGroup>
 );
