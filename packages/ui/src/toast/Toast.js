@@ -1,6 +1,5 @@
 import React, {useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
-// import {store} from '../../../../src';
 import {NexusOverlayContext} from '../elements/nexus-overlay/NexusOverlay';
 import NexusToastNotification from '../elements/nexus-toast-notification/NexusToastNotification';
 import withToasts from './hoc/withToasts';
