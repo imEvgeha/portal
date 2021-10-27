@@ -4,11 +4,11 @@ import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
 import {RadioGroup} from '@atlaskit/radio';
-import {isEmpty, uniqBy} from 'lodash';
-import {useDispatch, useSelector} from 'react-redux';
+import {isEmpty} from 'lodash';
+import {useDispatch} from 'react-redux';
 import {searchPersonById} from '../../../../avails/right-details/rightDetailsServices';
 import Loading from '../../../../static/Loading';
-import {UPDATE_SEASON_PERSONS, PROPAGATE_CASTCREW_CORE} from '../../../titleMetadataActionTypes';
+import {UPDATE_SEASON_PERSONS} from '../../../titleMetadataActionTypes';
 import {
     CAST_CREW,
     CANCEL_BUTTON,
