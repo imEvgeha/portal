@@ -108,7 +108,6 @@ const NexusArrayWithTabs = ({
                 ...currentFormData,
             };
             const newCurrentData = updatedGroupedData[keyTo][indexTo];
-            console.log(newCurrentData, key, 'curr');
             setCurrentData(newCurrentData);
 
             setGroupedData(prevState => {
