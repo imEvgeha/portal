@@ -56,7 +56,7 @@ export const getFilteredByTitleOrders = (id, type, status, page) => {
 
     const url = `${baseServicingOrdersURL(
         config
-    )}/so/${id}/soi;product_description=${newType}/fo?soiStatus=${status}&page=${page}&size=100`;
+    )}/so/${id}/soi;product_description=${newType}/fo?soiStatus=${status}&page=${page - 1}&size=100`;
     return nexusFetch(url);
 };
 
