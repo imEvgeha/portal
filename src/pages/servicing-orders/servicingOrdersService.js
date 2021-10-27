@@ -63,9 +63,9 @@ export const getFilteredByTitleOrders = (id, type, status, page) => {
 export const getFilteredByIdOrders = (id, type, status, page) => {
     const newType = type === 'ID_ASCENDING' ? 'ASC' : 'DESC';
 
-    const url = `${baseServicingOrdersURL(
-        config
-    )}/so/${id}/soi;external_id=${newType}/fo?soiStatus=${status}&page=${page}&size=100`;
+    const url = `${baseServicingOrdersURL(config)}/so/${id}/soi;external_id=${newType}/fo?soiStatus=${status}&page=${
+        page - 1
+    }&size=100`;
     return nexusFetch(url);
 };
 
