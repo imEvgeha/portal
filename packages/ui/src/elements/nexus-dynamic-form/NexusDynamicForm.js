@@ -171,8 +171,13 @@ const NexusDynamicForm = ({
         return null;
     };
 
+    const closePropagateModal = () => {
+        closeModal();
+        setUpdate(prev => !prev);
+    };
+
     const showPropagateModal = useCallback((getValues, setFieldValue) => {
-        openModal(<PropagateForm getValues={getValues} setFieldValue={setFieldValue} onClose={closeModal} />, {
+        openModal(<PropagateForm getValues={getValues} setFieldValue={setFieldValue} onClose={closePropagateModal} />, {
             title: PROPAGATE_TITLE,
             width: 'small',
         });
@@ -247,6 +252,7 @@ const NexusDynamicForm = ({
                                                         setDisableSubmit,
                                                         prefix,
                                                         isTitlePage,
+                                                        setUpdate,
                                                     }
                                                 )}
                                             </Fragment>

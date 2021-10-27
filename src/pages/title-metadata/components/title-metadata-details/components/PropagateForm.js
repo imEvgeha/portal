@@ -4,11 +4,11 @@ import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
 import {RadioGroup} from '@atlaskit/radio';
-import {isEmpty} from 'lodash';
-import {useDispatch} from 'react-redux';
+import {isEmpty, uniqBy} from 'lodash';
+import {useDispatch, useSelector} from 'react-redux';
 import {searchPersonById} from '../../../../avails/right-details/rightDetailsServices';
 import Loading from '../../../../static/Loading';
-import {UPDATE_SEASON_PERSONS} from '../../../titleMetadataActionTypes';
+import {UPDATE_SEASON_PERSONS, PROPAGATE_CASTCREW_CORE} from '../../../titleMetadataActionTypes';
 import {
     CAST_CREW,
     CANCEL_BUTTON,
@@ -39,15 +39,16 @@ const episodePropagateOptions = [
 ];
 
 const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
-    const {castCrew, contentType, editorial, editorialMetadata} = getValues();
-    const persons = isEmpty(person) ? castCrew : [person];
-    const isCastCrewEmpty = !castCrew?.length;
-    const isEMetsEmpty = !editorialMetadata?.length;
     const dispatch = useDispatch();
     const [checkedEmet, setCheckedEmet] = useState(true);
     const [radioValue, setRadioValue] = useState('none');
     const [isLoading, setIsLoading] = useState(false);
     const [localizationCastCrew, setLocalizationCastCrew] = useState([]);
+
+    const {castCrew, contentType, editorial, editorialMetadata} = getValues();
+    const persons = isEmpty(person) ? castCrew : [person];
+    const isCastCrewEmpty = !castCrew?.length;
+    const isEMetsEmpty = !editorialMetadata?.length;
 
     useEffect(() => {
         async function fetchLocalizationPersons() {
@@ -70,41 +71,39 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
 
     const getPropagateMessage = () => `Propagate ${isEmpty(person) ? CAST_CREW : person.displayName} to...`;
 
-    const handleAddEmetOption = async () => {
-        const pushUpdatedCastCrew = emet => {
-            persons.forEach(person => {
-                const localization = localizationCastCrew.find(({id}) => id === person.id)?.localization;
-                localization && (person.localization = localization);
-            });
+    const generateCastCrewToPropagate = emet => {
+        const uniquePersons = persons.filter(person => {
+            return isEmpty(emet.castCrew)
+                ? person
+                : !emet.castCrew.some(
+                      emetPerson => emetPerson.id === person.id && emetPerson.personType === person.personType
+                  );
+        });
 
-            if (emet.castCrew) {
-                const uniquePersons = persons.filter(
-                    person =>
-                        !emet.castCrew.some(
-                            emetPerson => emetPerson.id === person.id && emetPerson.personType === person.personType
-                        )
-                );
+        const localizedUniquePersons = uniquePersons.map(person => {
+            const localization = localizationCastCrew.find(({id}) => id === person.id)?.localization;
 
-                const uniquePersonsWithCreditsOrder = uniquePersons.map((person, i) => {
-                    return {
-                        ...person,
-                        creditsOrder: emet.castCrew.length + i,
-                    };
-                });
-                emet.castCrew.push(...uniquePersonsWithCreditsOrder);
-            } else {
-                emet.castCrew = persons;
-            }
-            return emet;
+            return {
+                ...person,
+                localization,
+            };
+        });
+
+        const updatedEmet = {
+            ...emet,
+            castCrew: isEmpty(emet.castCrew) ? localizedUniquePersons : [...emet.castCrew, ...localizedUniquePersons],
         };
 
-        const updateEditorialMetadata = editorialMetadata.map(emet => pushUpdatedCastCrew(emet));
-        const updatedEditorial = pushUpdatedCastCrew(editorial);
+        if (updatedEmet.language === editorial.language && updatedEmet.locale === editorial.locale) {
+            setFieldValue(EDITORIAL, updatedEmet);
+        }
 
-        await setFieldValue(EDITORIAL, {});
-        await setFieldValue(EDITORIAL_METADATA, {});
+        return updatedEmet;
+    };
 
-        setFieldValue(EDITORIAL, updatedEditorial);
+    const handleAddEmetOption = async () => {
+        const updateEditorialMetadata = editorialMetadata.map(emet => generateCastCrewToPropagate(emet));
+
         setFieldValue(EDITORIAL_METADATA, updateEditorialMetadata);
     };
 

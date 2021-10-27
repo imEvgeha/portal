@@ -31,6 +31,7 @@ const NexusPersonsList = ({
     searchPerson,
     castCrewConfig,
     emetLanguage,
+    setUpdate,
     ...props
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
@@ -128,9 +129,19 @@ const NexusPersonsList = ({
         closeModal();
     };
 
+    const closePropagateModal = () => {
+        closeModal();
+        setUpdate(prev => !prev);
+    };
+
     const openPropagateModal = useCallback(person => {
         openModal(
-            <PropagateForm person={person} getValues={getValues} setFieldValue={setFieldValue} onClose={closeModal} />,
+            <PropagateForm
+                person={person}
+                getValues={getValues}
+                setFieldValue={setFieldValue}
+                onClose={closePropagateModal}
+            />,
             {
                 title: PROPAGATE_TITLE,
                 width: 'small',
@@ -332,6 +343,7 @@ NexusPersonsList.propTypes = {
     searchPerson: PropTypes.func,
     castCrewConfig: PropTypes.object,
     emetLanguage: PropTypes.string,
+    setUpdate: PropTypes.func,
 };
 
 NexusPersonsList.defaultProps = {
@@ -343,6 +355,7 @@ NexusPersonsList.defaultProps = {
     setFieldValue: () => null,
     getValues: () => null,
     searchPerson: () => null,
+    setUpdate: () => null,
     castCrewConfig: {},
     emetLanguage: 'en',
 };
