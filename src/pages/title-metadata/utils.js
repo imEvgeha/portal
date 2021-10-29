@@ -166,13 +166,13 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
             if (field) {
                 const formattedValues = [];
                 field.forEach(obj => {
-                    if (key === 'genre') {
+                    if (key === 'genre' && obj[key]) {
                         if (record?.language !== obj?.language) {
                             formattedValues.push({label: `(${obj[key]})*`, value: obj.id});
                         } else formattedValues.push({label: obj[key], value: obj.id});
                     } else obj[key] && formattedValues.push(obj[key]);
                 });
-                record[fieldName] = formattedValues;
+                record[fieldName] = formattedValues.length ? formattedValues : field;
             }
             return record;
         })
