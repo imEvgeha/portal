@@ -33,7 +33,7 @@ const FulfillmentOrderPanels = ({
                 }
             );
         }
-    }, [sortDirection]);
+    }, [statusFilter, sortDirection]);
 
     const fulfillmentOrdersWithoutParentServicingOrderItem = newFulfillmentOrders?.filter(fo => !fo.soi_doc_id);
     const panels = fulfillmentOrdersWithoutParentServicingOrderItem.concat(
