@@ -71,6 +71,51 @@ class DropdownCellEditor extends Component {
         });
     };
 
+    handleSelectAllChange = () => {
+        const {value} = this.state;
+        const updatedValue = cloneDeep(value);
+        const isUndefined = elem => typeof elem === 'undefined';
+
+        updatedValue.forEach(elem => {
+            if (
+                !isUndefined(elem.isDisabled) &&
+                !isUndefined(elem.withdrawn) &&
+                (!elem.isDisabled || !elem.withdrawn)
+            ) {
+                if (!this.isAllSelected()) {
+                    elem.selected = true;
+                    elem.isDirty = true;
+                } else {
+                    // const prevIsSelected = elem.selected;
+                    const prevIsSelected = elem.selected;
+                    elem.selected = !prevIsSelected;
+                    elem.isDirty = true;
+                }
+            }
+        });
+
+        this.setState({
+            value: updatedValue,
+        });
+    };
+
+    isAllSelected = (value = this.state.value) => {
+        const updatedValue = cloneDeep(value);
+        const isUndefined = elem => typeof elem === 'undefined';
+
+        const selectedElements = updatedValue.map(elem => {
+            if ((isUndefined(elem.isDisabled) || isUndefined(elem.withdrawn)) && (elem.isDisabled || elem.withdrawn)) {
+                return undefined;
+            }
+            if (elem.selected) {
+                return true;
+            }
+            return false;
+        });
+
+        return isUndefined(selectedElements.find(elem => elem === false));
+    };
+
     render() {
         const {value} = this.state;
 
@@ -78,6 +123,12 @@ class DropdownCellEditor extends Component {
             <div className="nexus-c-dropdown-cell-editor">
                 <Dropdown defaultOpen triggerType="button">
                     <DropdownItemGroupCheckbox id="select territories" title="Select Plan Territories">
+                        <DropdownItemCheckbox
+                            isSelected={this?.isAllSelected?.()}
+                            onClick={() => this.handleSelectAllChange()}
+                        >
+                            Select All
+                        </DropdownItemCheckbox>
                         {value.map((option, index) => (
                             <DropdownItemCheckbox
                                 isSelected={option.selected}
