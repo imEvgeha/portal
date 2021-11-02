@@ -78,6 +78,7 @@ const TitleDetails = ({
     const [refresh, setRefresh] = useState(false);
     const [VZDisabled, setVZDisabled] = useState(true);
     const [MOVDisabled, setMOVDisabled] = useState(true);
+    const [episodesCount, setEpisodesCount] = useState('0');
 
     const [episodesCount, setEpisodesCount] = useState('0');
 
