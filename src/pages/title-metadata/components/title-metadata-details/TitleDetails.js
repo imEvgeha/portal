@@ -26,7 +26,7 @@ import {
     clearSeasonPersons,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
-import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
+import {generateMsvIds, getEpisodesCount, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
 import {
     handleEditorialGenresAndCategory,
     handleTitleCategory,
@@ -79,6 +79,7 @@ const TitleDetails = ({
     const [refresh, setRefresh] = useState(false);
     const [VZDisabled, setVZDisabled] = useState(true);
     const [MOVDisabled, setMOVDisabled] = useState(true);
+    const [episodesCount, setEpisodesCount] = useState('0');
 
     const {fields} = schema;
 
@@ -100,6 +101,9 @@ const TitleDetails = ({
             getTerritoryMetadata({id, isMgm});
             getEditorialMetadata({id, isMgm});
             clearSeasonPersons();
+            getEpisodesCount(id).then(res => {
+                setEpisodesCount(res);
+            });
         }
     }, [refresh]);
 
@@ -158,7 +162,7 @@ const TitleDetails = ({
             },
         ];
     };
-    const extendTitleWithExternalIds = repo => {
+    const extendTitleWithExternalIds = () => {
         const [vzExternalIds] = getExternaIds('vz');
         const [movidaExternalIds] = getExternaIds('movida');
         const updatedTitle = handleTitleCategory(title);
@@ -166,6 +170,7 @@ const TitleDetails = ({
 
         return {
             ...updatedTitle,
+            totalEpisodesCount: episodesCount.total ? episodesCount.total : '0',
             vzExternalIds,
             movidaExternalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
