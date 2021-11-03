@@ -43,3 +43,6 @@ export const createInitialTitleDataSelector = () =>
 
 export const createExternalIdsLoadingSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.externalIdLoading || false);
+
+export const createGridStateSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.gridState || {});

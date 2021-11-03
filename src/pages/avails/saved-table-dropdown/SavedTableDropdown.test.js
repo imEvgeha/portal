@@ -23,7 +23,7 @@ describe('SavedTableDropdown', () => {
     });
 
     it('should render label', () => {
-        expect(wrapper.find('.nexus-c-saved-table-dropdown__label').text()).toEqual('Saved Table Views:');
+        expect(wrapper.find('.nexus-c-saved-table-dropdown__label').text()).toEqual('Saved Table View:');
     });
 
     it('should render creatable select', () => {

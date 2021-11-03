@@ -11,7 +11,6 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {get} from 'lodash';
 import {compose} from 'redux';
 import {
     COLUMN_MAPPINGS,
@@ -32,7 +31,7 @@ const TitleMetadataTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchTitleMetadata})
 )(NexusGrid);
 
-const TitleMetadataTable = ({history, catalogueOwner}) => {
+const TitleMetadataTable = ({history, catalogueOwner, setGridApi, setColumnApi, columnApi}) => {
     const columnDefs = COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
@@ -82,16 +81,6 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
         };
     });
 
-    const [columnApi, setColumnApi] = useState(null);
-
-    if (columnApi) {
-        if (get(catalogueOwner, 'tenantCode') !== DEFAULT_CATALOGUE_OWNER) {
-            columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, false);
-        } else {
-            columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, true);
-        }
-    }
-
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
@@ -120,6 +109,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
+                setGridApi(api);
                 setColumnApi(columnApi);
                 break;
             }
@@ -169,11 +159,17 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
 TitleMetadataTable.propTypes = {
     history: PropTypes.object,
     catalogueOwner: PropTypes.object,
+    columnApi: PropTypes.object,
+    setGridApi: PropTypes.func,
+    setColumnApi: PropTypes.func,
 };
 
 TitleMetadataTable.defaultProps = {
     history: {},
     catalogueOwner: DEFAULT_CATALOGUE_OWNER,
+    columnApi: {},
+    setGridApi: () => null,
+    setColumnApi: () => null,
 };
 
 export default TitleMetadataTable;
