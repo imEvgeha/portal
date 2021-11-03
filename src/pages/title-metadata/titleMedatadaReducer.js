@@ -11,6 +11,7 @@ const initialState = {
     territoryMetadata: [],
     editorialMetadata: [],
     seasonPersons: [],
+    removeSeasonPersons: [],
     isSyncingVZ: false,
     isPublishingVZ: false,
     isSyncingMOV: false,
@@ -25,6 +26,22 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 seasonPersons: [...state.seasonPersons, ...payload],
+                removeSeasonPersons: state.removeSeasonPersons.filter(person => {
+                    return !payload.some(entry => entry.id === person.id && entry.personType === person.personType);
+                }),
+            };
+        case actionTypes.REMOVE_SEASON_PERSONS:
+            // eslint-disable-next-line no-case-declarations
+            let isDuplicate = false;
+            state.removeSeasonPersons.forEach(person => {
+                if (person.id === payload.id && person.personType === payload.personType) {
+                    isDuplicate = true;
+                }
+            });
+
+            return {
+                ...state,
+                removeSeasonPersons: isDuplicate ? state.removeSeasonPersons : [...state.removeSeasonPersons, payload],
             };
         case actionTypes.CLEAR_TITLE:
             return {
@@ -34,6 +51,7 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 seasonPersons: initialState.seasonPersons,
+                removeSeasonPersons: initialState.removeSeasonPersons,
             };
         case actionTypes.GET_TITLE_SUCCESS:
             return {
