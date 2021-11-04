@@ -11,7 +11,8 @@ exports[`TitleMetadataView should match snapshot 1`] = `
       applyPredefinedTableView={[Function]}
       columnApi={null}
       gridApi={null}
-      hasPredefined={false}
+      gridState={Object {}}
+      hasPredefined={true}
       setUserDefinedGridState={[Function]}
       tableLabels={
         Object {
