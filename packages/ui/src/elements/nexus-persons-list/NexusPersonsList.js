@@ -15,8 +15,9 @@ import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getDir} from '../nexus-dynamic-form/utils';
+import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions'
 import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
-import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './constants';
+import {CAST, CAST_CONFIG, SEASON} from './constants';
 import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
 import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
@@ -128,16 +129,13 @@ const NexusPersonsList = ({
         setPersons(updatedPersons);
         updateCastCrew(updatedPersons, isCast);
 
-        if (!isVerticalLayout && contentType === 'SEASON') {
+        if (!isVerticalLayout && contentType === SEASON) {
             const {id, personType, creditsOrder} = person;
-            dispatch({
-                type: 'REMOVE_SEASON_PERSONS',
-                payload: {
-                    id,
-                    personType,
-                    creditsOrder,
-                },
-            });
+            dispatch(removeSeasonPerson({
+                id,
+                personType,
+                creditsOrder
+            }))
         }
 
         const updateEditorialMetadata = editorialMetadata.map(emet => {
@@ -173,7 +171,7 @@ const NexusPersonsList = ({
             if (isVerticalLayout) {
                 return `Remove ${person.displayName} from this Emet`;
             } else {
-                if (contentType === 'SEASON') {
+                if (contentType === SEASON) {
                     return `Remove ${person.displayName} from this Season, it's Episodes and all related Emets?`;
                 } else {
                     return `Remove ${person.displayName} from ${title}?`;

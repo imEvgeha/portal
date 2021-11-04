@@ -30,7 +30,7 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                     return !payload.some(entry => entry.id === person.id && entry.personType === person.personType);
                 }),
             };
-        case actionTypes.REMOVE_SEASON_PERSONS:
+        case actionTypes.REMOVE_SEASON_PERSON:
             // eslint-disable-next-line no-case-declarations
             let isDuplicate = false;
             state.removeSeasonPersons.forEach(person => {

@@ -20,6 +20,11 @@ export const updateSeasonPersonsPropagate = payload => ({
     payload,
 });
 
+export const removeSeasonPerson = payload => ({
+    type: actionTypes.REMOVE_SEASON_PERSON,
+    payload,
+});
+
 export const getEditorialMetadata = payload => ({
     type: actionTypes.GET_EDITORIAL_METADATA,
     payload,
