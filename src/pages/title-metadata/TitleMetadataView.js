@@ -80,17 +80,26 @@ export const TitleMetadataView = ({
     };
     const tableOptions = [{label: 'All', value: 'all'}];
 
+    const resetToAll = (gridApi, filter, columnApi) => {
+        gridApi.setFilterModel(null);
+        gridApi.onFilterChanged();
+        columnApi.resetColumnState();
+    };
+
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
                 <NexusSavedTableDropdown
-                    userDefinedGridStates={userDefinedGridStates}
-                    setUserDefinedGridState={storeTitleUserDefinedGridState}
                     gridApi={gridApi}
                     columnApi={columnApi}
                     username={username}
+                    gridState={gridState}
+                    userDefinedGridStates={userDefinedGridStates}
+                    setUserDefinedGridState={storeTitleUserDefinedGridState}
+                    applyPredefinedTableView={resetToAll}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
+                    hasPredefined={true}
                 />
                 <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 <Button
@@ -128,10 +137,9 @@ export const TitleMetadataView = ({
 
 const mapStateToProps = () => {
     const gridStateSelector = createGridStateSelector();
-
-    return (state, props) => ({
+    return state => ({
         username: getUsername(state),
-        gridState: gridStateSelector(state, props),
+        gridState: gridStateSelector(state),
     });
 };
 
