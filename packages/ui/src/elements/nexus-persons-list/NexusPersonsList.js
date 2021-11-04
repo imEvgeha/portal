@@ -1,21 +1,23 @@
 /* eslint-disable */
 import React, {useState, useEffect, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux';
 import Button from '@atlaskit/button';
 import UserPicker from '@atlaskit/user-picker';
 import classnames from 'classnames';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+
 import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
 import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
-import CharacterModal from './components/CharacterModal';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getDir} from '../nexus-dynamic-form/utils';
+import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions'
 import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
-import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './constants';
+import {CAST, CAST_CONFIG, SEASON} from './constants';
 import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
 import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
@@ -32,13 +34,16 @@ const NexusPersonsList = ({
     castCrewConfig,
     emetLanguage,
     setUpdate,
+    isVerticalLayout,
     ...props
 }) => {
+    const dispatch = useDispatch();
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [openPersonModal, setOpenPersonModal] = useState(false);
     const [currentRecord, setCurrentRecord] = useState({});
     const [persons, setPersons] = useState(personsList || []);
     const [searchText, setSearchText] = useState('');
+    const {title, contentType, editorial, editorialMetadata} = getValues();
 
     useEffect(() => {
         const updatedPersons = [...personsList];
@@ -123,15 +128,70 @@ const NexusPersonsList = ({
         });
         setPersons(updatedPersons);
         updateCastCrew(updatedPersons, isCast);
-    };
 
-    const closeCharacterModal = () => {
+        if (!isVerticalLayout && contentType === SEASON) {
+            const {id, personType, creditsOrder} = person;
+            dispatch(removeSeasonPerson({
+                id,
+                personType,
+                creditsOrder
+            }))
+        }
+
+        const updateEditorialMetadata = editorialMetadata.map(emet => {
+            const updatedCastCrew =
+                emet?.castCrew &&
+                emet.castCrew.filter(entry => {
+                    return entry.id !== person.id || entry.personType !== person.personType;
+                });
+
+            const updatedEmet = {
+                ...emet,
+                castCrew: updatedCastCrew,
+            };
+
+            if (updatedEmet.language === editorial.language && updatedEmet.locale === editorial.locale) {
+                setFieldValue('editorial', updatedEmet);
+            }
+            return updatedEmet;
+        });
+
+        setFieldValue('editorialMetadata', updateEditorialMetadata);
         closeModal();
+        setUpdate(prev => !prev);
     };
 
     const closePropagateModal = () => {
         closeModal();
         setUpdate(prev => !prev);
+    };
+
+    const openRemoveModal = person => {
+        const removeMessage = () => {
+            if (isVerticalLayout) {
+                return `Remove ${person.displayName} from this Emet`;
+            } else {
+                if (contentType === SEASON) {
+                    return `Remove ${person.displayName} from this Season, it's Episodes and all related Emets?`;
+                } else {
+                    return `Remove ${person.displayName} from ${title}?`;
+                }
+            }
+        };
+
+        openModal(
+            <>
+                <p>{removeMessage()}</p>
+                <div className="nexus-c-nexus-persons-list__remove-modal-actions">
+                    <Button onClick={closeModal}>Cancel</Button>
+                    <Button onClick={() => removePerson(person)}>{'Remove'}</Button>
+                </div>
+            </>,
+            {
+                title: 'Remove',
+                width: 'small',
+            }
+        );
     };
 
     const openPropagateModal = useCallback(person => {
@@ -148,39 +208,6 @@ const NexusPersonsList = ({
             }
         );
     }, []);
-
-    const openCharacterModal = id => {
-        const selectedPerson = persons && persons[id];
-        const data = {
-            personName: selectedPerson.displayName,
-            characterName: selectedPerson.characterName,
-        };
-        const message = data.characterName ? EDIT_CHARACTER_NAME : ADD_CHARACTER_NAME;
-        openModal(characterModalContent(data, id), {
-            title: <div>{message}</div>,
-            width: 'medium',
-        });
-    };
-
-    const characterModalContent = (data, id) => {
-        return (
-            <CharacterModal personId={id} closeModal={closeCharacterModal} onModalSubmit={onModalSubmit} data={data} />
-        );
-    };
-
-    const onModalSubmit = (values, id) => {
-        const updatedPersons = [...persons];
-        const [person] = updatedPersons.filter(entry => {
-            return entry.id === id;
-        });
-        if (person) {
-            person.characterName = values.characterName;
-            const isCast = uiConfig.type === CAST;
-            setPersons(updatedPersons);
-            updateCastCrew(updatedPersons, isCast);
-        }
-        closeCharacterModal();
-    };
 
     const reorder = (list, startIndex, endIndex) => {
         const updatedPersons = [...list];
@@ -240,7 +267,7 @@ const NexusPersonsList = ({
                     customKey={customKey}
                     index={i}
                     hasCharacter={hasCharacter}
-                    onRemove={() => removePerson(person)}
+                    onRemove={() => openRemoveModal(person)}
                     onPropagate={() => openPropagateModal(person)}
                     onEditPerson={() => onEditPerson(person)}
                     emetLanguage={emetLanguage}
@@ -344,6 +371,7 @@ NexusPersonsList.propTypes = {
     castCrewConfig: PropTypes.object,
     emetLanguage: PropTypes.string,
     setUpdate: PropTypes.func,
+    isVerticalLayout: PropTypes.bool,
 };
 
 NexusPersonsList.defaultProps = {
@@ -358,6 +386,7 @@ NexusPersonsList.defaultProps = {
     setUpdate: () => null,
     castCrewConfig: {},
     emetLanguage: 'en',
+    isVerticalLayout: false,
 };
 
 export default NexusPersonsList;

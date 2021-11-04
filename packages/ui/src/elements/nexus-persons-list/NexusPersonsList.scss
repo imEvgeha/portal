@@ -25,3 +25,13 @@
 .nexus-c-nexus-persons-list__error-modal-title {
     color: map-get($reds, R400);
 }
+
+.nexus-c-nexus-persons-list__remove-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 100px;
+
+    > button {
+        margin: 0 5px;
+    }
+}

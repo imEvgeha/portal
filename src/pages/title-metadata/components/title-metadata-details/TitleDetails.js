@@ -70,6 +70,7 @@ const TitleDetails = ({
     isVZTitlePublishing,
     isMOVTitlePublishing,
     seasonPersons,
+    removeSeasonPersons,
     titleLoading,
     emetLoading,
     clearSeasonPersons,
@@ -132,10 +133,11 @@ const TitleDetails = ({
             updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
-            !isEmpty(seasonPersons) &&
+            (!isEmpty(seasonPersons) || !isEmpty(removeSeasonPersons)) &&
                 propagateSeasonsPersonsToEpisodes(
                     {
                         addPersons: seasonPersons,
+                        removePersons: removeSeasonPersons,
                     },
                     id
                 ),
@@ -268,6 +270,7 @@ TitleDetails.propTypes = {
     fetchConfigApiEndpoints: PropTypes.func,
     castCrewConfig: PropTypes.object,
     seasonPersons: PropTypes.array,
+    removeSeasonPersons: PropTypes.array,
     titleLoading: PropTypes.bool,
     emetLoading: PropTypes.bool,
     externalIdsLoading: PropTypes.bool,
@@ -302,6 +305,7 @@ TitleDetails.defaultProps = {
     externalIdsLoading: true,
     castCrewConfig: {},
     seasonPersons: [],
+    removeSeasonPersons: [],
 };
 
 const mapStateToProps = () => {
@@ -318,6 +322,7 @@ const mapStateToProps = () => {
     const isVZTitlePublishingSelector = selectors.createVZTitleIsPublishingSelector();
     const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
     const seasonPersonsSelector = selectors.seasonPersonsSelector();
+    const removeSeasonPersonsSelector = selectors.removeSeasonPersonsSelector();
     const settingsConfigEndpointsSelector = settingsSelectors.createSettingsEndpointsSelector();
 
     return (state, props) => ({
@@ -336,6 +341,7 @@ const mapStateToProps = () => {
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
         seasonPersons: seasonPersonsSelector(state),
+        removeSeasonPersons: removeSeasonPersonsSelector(state),
         castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
     });
 };
