@@ -16,6 +16,7 @@ const initialState = {
     isPublishingVZ: false,
     isSyncingMOV: false,
     isPublishingMOV: false,
+    gridState: {},
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
@@ -26,13 +27,13 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 propagateAddPersons: payload.added,
-                propagateRemovePersons: payload.removed
+                propagateRemovePersons: payload.removed,
             };
         case actionTypes.PROPAGATE_REMOVE_PERSONS:
             return {
                 ...state,
-                propagateRemovePersons: payload
-            }
+                propagateRemovePersons: payload,
+            };
         case actionTypes.CLEAR_TITLE:
             return {
                 ...initialState,
@@ -129,6 +130,13 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 isPublishingVZ: payload === VZ ? false : state.isPublishingVZ,
                 isPublishingMOV: payload === MOVIDA ? false : state.isPublishingMOV,
             };
+        case actionTypes.SET_TITLE_USER_DEFINED_GRID_STATE: {
+            const {gridState = {}} = state;
+            return {
+                ...state,
+                gridState: {...gridState, ...payload},
+            };
+        }
         default:
             return state;
     }

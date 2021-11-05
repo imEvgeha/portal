@@ -15,8 +15,8 @@ import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getDir} from '../nexus-dynamic-form/utils';
-import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions'
-import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors'
+import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions';
+import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors';
 import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
 import {CAST, CAST_CONFIG, SEASON} from './constants';
 import {loadOptions} from './utils';
@@ -134,20 +134,17 @@ const NexusPersonsList = ({
         if (!isVerticalLayout && contentType === SEASON) {
             let isDuplicate = false;
             propagateRemovePersons.forEach(entry => {
-                            console.log(entry, person)
-
                 if (entry.id === person.id && entry.personType === person.personType) {
                     isDuplicate = true;
                 }
             });
 
-            console.log(propagateRemovePersons)
-            console.log(isDuplicate)
-
             const {id, personType, creditsOrder} = person;
-            const payload = isDuplicate ? propagateRemovePersons : [...propagateRemovePersons, { id, personType, creditsOrder }];
+            const payload = isDuplicate
+                ? propagateRemovePersons
+                : [...propagateRemovePersons, {id, personType, creditsOrder}];
 
-             dispatch(removeSeasonPerson(payload))
+            dispatch(removeSeasonPerson(payload));
         }
 
         const updateEditorialMetadata = editorialMetadata.map(emet => {

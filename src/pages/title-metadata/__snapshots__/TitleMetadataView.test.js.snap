@@ -7,6 +7,30 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   <TitleMetadataHeader
     label="Title Metadata"
   >
+    <NexusSavedTableDropdown
+      applyPredefinedTableView={[Function]}
+      columnApi={null}
+      gridApi={null}
+      gridState={Object {}}
+      hasPredefined={true}
+      setUserDefinedGridState={[Function]}
+      tableLabels={
+        Object {
+          "savedDropdownLabel": "Saved Table View:",
+          "savedViewslabel": "My Saved Views",
+        }
+      }
+      tableOptions={
+        Array [
+          Object {
+            "label": "All",
+            "value": "all",
+          },
+        ]
+      }
+      userDefinedGridStates={Array []}
+      username=""
+    />
     <CatalogueOwner
       setCatalogueOwner={[Function]}
     />
@@ -31,7 +55,10 @@ exports[`TitleMetadataView should match snapshot 1`] = `
         "tenantCode": "vu",
       }
     }
+    columnApi={null}
     history={Object {}}
+    setColumnApi={[Function]}
+    setGridApi={[Function]}
   />
   <Connect(ComposedComponent)
     display={false}
