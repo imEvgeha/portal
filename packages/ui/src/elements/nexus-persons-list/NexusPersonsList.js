@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, {useState, useEffect, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Button from '@atlaskit/button';
 import UserPicker from '@atlaskit/user-picker';
 import classnames from 'classnames';
@@ -15,7 +15,8 @@ import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getDir} from '../nexus-dynamic-form/utils';
-import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions'
+import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions';
+import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors';
 import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
 import {CAST, CAST_CONFIG, SEASON} from './constants';
 import {loadOptions} from './utils';
@@ -43,6 +44,7 @@ const NexusPersonsList = ({
     const [currentRecord, setCurrentRecord] = useState({});
     const [persons, setPersons] = useState(personsList || []);
     const [searchText, setSearchText] = useState('');
+    const propagateRemovePersons = useSelector(propagateRemovePersonsSelector);
     const {title, contentType, editorial, editorialMetadata} = getValues();
 
     useEffect(() => {
@@ -130,12 +132,19 @@ const NexusPersonsList = ({
         updateCastCrew(updatedPersons, isCast);
 
         if (!isVerticalLayout && contentType === SEASON) {
+            let isDuplicate = false;
+            propagateRemovePersons.forEach(entry => {
+                if (entry.id === person.id && entry.personType === person.personType) {
+                    isDuplicate = true;
+                }
+            });
+
             const {id, personType, creditsOrder} = person;
-            dispatch(removeSeasonPerson({
-                id,
-                personType,
-                creditsOrder
-            }))
+            const payload = isDuplicate
+                ? propagateRemovePersons
+                : [...propagateRemovePersons, {id, personType, creditsOrder}];
+
+            dispatch(removeSeasonPerson(payload));
         }
 
         const updateEditorialMetadata = editorialMetadata.map(emet => {
