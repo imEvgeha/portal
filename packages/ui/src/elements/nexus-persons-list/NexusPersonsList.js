@@ -165,7 +165,10 @@ const NexusPersonsList = ({
             return updatedEmet;
         });
 
-        setFieldValue('editorialMetadata', updateEditorialMetadata);
+        if (!isVerticalLayout) {
+            setFieldValue('editorialMetadata', updateEditorialMetadata);
+        }
+
         closeModal();
         setUpdate(prev => !prev);
     };

@@ -137,7 +137,7 @@ const TitleDetails = ({
                 propagateSeasonsPersonsToEpisodes(
                     {
                         addPersons: propagateAddPersons,
-                        removePersons: propagateRemovePersons,
+                        deletePersons: propagateRemovePersons,
                     },
                     id
                 ),
