@@ -161,13 +161,20 @@ const NexusPersonsList = ({
 
             if (updatedEmet.language === editorial.language && updatedEmet.locale === editorial.locale) {
                 setFieldValue('editorial', updatedEmet);
+
+                if (isVerticalLayout) {
+                    return updatedEmet
+                }
             }
-            return updatedEmet;
+
+            if (!isVerticalLayout) {
+                return updatedEmet; 
+            } else {
+                return emet
+            }
         });
 
-        if (!isVerticalLayout) {
-            setFieldValue('editorialMetadata', updateEditorialMetadata);
-        }
+        setFieldValue('editorialMetadata', updateEditorialMetadata);
 
         closeModal();
         setUpdate(prev => !prev);
