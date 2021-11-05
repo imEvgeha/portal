@@ -10,8 +10,8 @@ const initialState = {
     externalIdLoading: false,
     territoryMetadata: [],
     editorialMetadata: [],
-    seasonPersons: [],
-    removeSeasonPersons: [],
+    propagateAddPersons: [],
+    propagateRemovePersons: [],
     isSyncingVZ: false,
     isPublishingVZ: false,
     isSyncingMOV: false,
@@ -22,27 +22,17 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
 
     switch (type) {
-        case actionTypes.UPDATE_SEASON_PERSONS:
+        case actionTypes.PROPAGATE_ADD_PERSONS:
             return {
                 ...state,
-                seasonPersons: [...state.seasonPersons, ...payload],
-                removeSeasonPersons: state.removeSeasonPersons.filter(person => {
-                    return !payload.some(entry => entry.id === person.id && entry.personType === person.personType);
-                }),
+                propagateAddPersons: payload.added,
+                propagateRemovePersons: payload.removed
             };
-        case actionTypes.REMOVE_SEASON_PERSON:
-            // eslint-disable-next-line no-case-declarations
-            let isDuplicate = false;
-            state.removeSeasonPersons.forEach(person => {
-                if (person.id === payload.id && person.personType === payload.personType) {
-                    isDuplicate = true;
-                }
-            });
-
+        case actionTypes.PROPAGATE_REMOVE_PERSONS:
             return {
                 ...state,
-                removeSeasonPersons: isDuplicate ? state.removeSeasonPersons : [...state.removeSeasonPersons, payload],
-            };
+                propagateRemovePersons: payload
+            }
         case actionTypes.CLEAR_TITLE:
             return {
                 ...initialState,
@@ -50,8 +40,8 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
         case actionTypes.CLEAR_SEASON_PERSONS:
             return {
                 ...state,
-                seasonPersons: initialState.seasonPersons,
-                removeSeasonPersons: initialState.removeSeasonPersons,
+                propagateAddPersons: initialState.propagateAddPersons,
+                propagateRemovePersons: initialState.propagateRemovePersons,
             };
         case actionTypes.GET_TITLE_SUCCESS:
             return {
