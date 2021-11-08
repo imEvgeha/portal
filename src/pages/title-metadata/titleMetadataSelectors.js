@@ -35,12 +35,6 @@ export const createVZTitleIsPublishingSelector = () =>
 export const createMOVTitleIsPublishingSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isPublishingMOV || false);
 
-export const seasonPersonsSelector = () =>
-    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.seasonPersons || null);
-
-export const removeSeasonPersonsSelector = () =>
-    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.removeSeasonPersons || null);
-
 export const createInitialTitleDataSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.initialData || null);
 
@@ -49,3 +43,6 @@ export const createExternalIdsLoadingSelector = () =>
 
 export const createGridStateSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.gridState || {});
+
+export const propagateAddPersonsSelector = state => state?.titleMetadata?.propagateAddPersons || [];
+export const propagateRemovePersonsSelector = state => state?.titleMetadata?.propagateRemovePersons || [];

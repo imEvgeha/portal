@@ -15,13 +15,13 @@ export const getTerritoryMetadata = payload => ({
     payload,
 });
 
-export const updateSeasonPersonsPropagate = payload => ({
-    type: actionTypes.UPDATE_SEASON_PERSONS,
+export const propagateAddPersons = payload => ({
+    type: actionTypes.PROPAGATE_ADD_PERSONS,
     payload,
 });
 
 export const removeSeasonPerson = payload => ({
-    type: actionTypes.REMOVE_SEASON_PERSON,
+    type: actionTypes.PROPAGATE_REMOVE_PERSONS,
     payload,
 });
 
