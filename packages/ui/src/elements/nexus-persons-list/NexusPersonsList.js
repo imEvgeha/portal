@@ -142,7 +142,7 @@ const NexusPersonsList = ({
             const {id, personType, creditsOrder} = person;
             const payload = isDuplicate
                 ? propagateRemovePersons
-                : [...propagateRemovePersons, {id, personType, creditsOrder}];
+                : [...propagateRemovePersons, {id, personType, creditsOrder, propagateToEmet: true}];
 
             dispatch(removeSeasonPerson(payload));
         }
