@@ -160,17 +160,17 @@ const NexusPersonsList = ({
             };
 
             if (updatedEmet.language === editorial.language && updatedEmet.locale === editorial.locale) {
-                setFieldValue('editorial', updatedEmet);
+                setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
 
                 if (isVerticalLayout) {
-                    return updatedEmet
+                    return updatedEmet;
                 }
             }
 
             if (!isVerticalLayout) {
-                return updatedEmet; 
+                return updatedEmet;
             } else {
-                return emet
+                return emet;
             }
         });
 

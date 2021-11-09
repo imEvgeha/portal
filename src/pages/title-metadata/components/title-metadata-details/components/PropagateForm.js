@@ -92,13 +92,17 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             };
         });
 
+        const newCastCrew = isEmpty(emet.castCrew)
+            ? localizedUniquePersons
+            : [...emet.castCrew, ...localizedUniquePersons];
+
         const updatedEmet = {
             ...emet,
-            castCrew: isEmpty(emet.castCrew) ? localizedUniquePersons : [...emet.castCrew, ...localizedUniquePersons],
+            castCrew: newCastCrew,
         };
 
         if (updatedEmet.language === editorial.language && updatedEmet.locale === editorial.locale) {
-            setFieldValue(EDITORIAL, updatedEmet);
+            setFieldValue(EDITORIAL, {...editorial, castCrew: newCastCrew});
         }
 
         return updatedEmet;
@@ -124,11 +128,13 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
         const payload = {
             added: [...propagateAddedPersons, ...seasonCastCrewPropagateData],
             removed: propagateRemovePersons.filter(person => {
-                return !seasonCastCrewPropagateData.some(entry => entry.id === person.id && entry.personType === person.personType);
+                return !seasonCastCrewPropagateData.some(
+                    entry => entry.id === person.id && entry.personType === person.personType
+                );
             }),
-        }
+        };
 
-        dispatch(propagateAddPersons(payload))
+        dispatch(propagateAddPersons(payload));
     };
 
     const handleAdd = async () => {
