@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {cleanObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {omit, isEqual, debounce} from 'lodash';
 import {connect} from 'react-redux';
+import {useDateTimeContext} from '../../../../lib/elements/nexus-date-time-context/NexusDateTimeProvider';
 import {toggleRefreshGridData} from '../../../grid/gridActions';
 import {getShouldGridRefresh} from '../../../grid/gridSelectors';
 import {filterBy, sortBy} from '../utils';
@@ -35,6 +36,7 @@ const withInfiniteScrolling = ({
         const isMounted = useRef(true);
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
+        const {isLocal} = useDateTimeContext();
 
         useEffect(() => {
             return () => {
@@ -71,7 +73,7 @@ const withInfiniteScrolling = ({
             if (isMounted.current && gridApi && isDatasourceEnabled) {
                 updateData(fetchData, gridApi);
             }
-        }, [gridApi, props.isDatasourceEnabled, props.externalFilter]);
+        }, [gridApi, props.isDatasourceEnabled, props.externalFilter, isLocal]);
         /**
          * aggrid issue: getRows needs to be called with debounce (wait = 0, invocation is deferred until to the next tick)
          * in order to avoid subsequently calling fetchData with the same params every time filter, sort and columns model
@@ -113,8 +115,9 @@ const withInfiniteScrolling = ({
                 ? {
                       ...parsedParams,
                       ...filterParams,
+                      isLocal,
                   }
-                : {};
+                : {isLocal};
 
             if (typeof props.setDataLoading === 'function' && isMounted.current) {
                 props.setDataLoading(true);

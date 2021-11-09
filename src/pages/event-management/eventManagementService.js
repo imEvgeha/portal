@@ -8,7 +8,7 @@ const FETCH_PAGE_SIZE = 100;
 // Storing values for infinite loader fix
 let allKeys = [];
 
-export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams) => {
+export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams, body) => {
     let paramString = '';
     // Build sortParams string if sortParams are provided
     if (!isEmpty(sortedParams)) {
@@ -59,7 +59,9 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
                             // eslint-disable-next-line no-magic-numbers
                             filterParamKey = `${key.slice(0, -2)}End`;
                         }
-                        return `${paramString}&${filterParamKey}=${true ? dateForLocalRequest() : complexFilter[key]}`;
+                        return `${paramString}&${filterParamKey}=${
+                            body.isLocal ? dateForLocalRequest() : complexFilter[key]
+                        }`;
                     }
                     return '';
                 }, paramString);
