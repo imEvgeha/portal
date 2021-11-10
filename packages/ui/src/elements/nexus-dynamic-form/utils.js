@@ -24,6 +24,15 @@ export const getFieldConfig = (field, config, view) => {
     return viewConfig && viewConfig[config];
 };
 
+export const checkIfEmetIsEditorial = (emet, editorial) => {
+    return (
+        emet.language === editorial.language &&
+        emet.locale === editorial.locale &&
+        emet?.format === editorial?.format &&
+        emet?.service === editorial?.service
+    );
+};
+
 export const getDefaultValue = (field = {}, view, data) => {
     if (field.type === 'dateRange') {
         return {

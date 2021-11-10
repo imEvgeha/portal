@@ -4,6 +4,7 @@ import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
 import {RadioGroup} from '@atlaskit/radio';
+import {checkIfEmetIsEditorial} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import {isEmpty} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import {searchPersonById} from '../../../../avails/right-details/rightDetailsServices';
@@ -100,8 +101,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             ...emet,
             castCrew: newCastCrew,
         };
-
-        if (updatedEmet.language === editorial.language && updatedEmet.locale === editorial.locale) {
+        if (checkIfEmetIsEditorial(emet, editorial)) {
             setFieldValue(EDITORIAL, {...editorial, castCrew: newCastCrew});
         }
 
