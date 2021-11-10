@@ -208,6 +208,17 @@ export const FulfillmentOrder = ({
                 onClick: () => {
                     closeModal();
                     const dataToSave = prepareOrderPutData(fulfillmentOrder);
+                    const firstExternalServices = dataToSave?.definition?.deteServices?.[0].externalServices;
+                    if (
+                        firstExternalServices?.sourceStandard === undefined ||
+                        firstExternalServices?.sourceStandard === ' '
+                    ) {
+                        dataToSave.definition.deteServices[0].externalServices = {
+                            ...firstExternalServices,
+                            sourceStandard:
+                                dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources?.standard,
+                        };
+                    }
                     const payload = {data: dataToSave};
                     dispatch(saveFulfillmentOrder(payload));
                 },
@@ -229,6 +240,15 @@ export const FulfillmentOrder = ({
             openModal(ModalContent, {title: modalHeading, width: 'small', actions});
         } else {
             const dataToSave = prepareOrderPutData(fulfillmentOrder);
+            const firstExternalServices = dataToSave?.definition?.deteServices?.[0].externalServices;
+            if (firstExternalServices?.sourceStandard === undefined || firstExternalServices?.sourceStandard === ' ') {
+                dataToSave.definition.deteServices[0].externalServices = {
+                    ...firstExternalServices,
+                    sourceStandard:
+                        dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources?.standard,
+                };
+            }
+
             const payload = {data: dataToSave};
             dispatch(saveFulfillmentOrder(payload));
             setIsSaveDisabled(true);
