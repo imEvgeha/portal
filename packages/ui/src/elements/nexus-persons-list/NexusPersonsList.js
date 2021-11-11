@@ -163,15 +163,19 @@ const NexusPersonsList = ({
 
             if (checkIfEmetIsEditorial(emet, editorial)) {
                 setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
+                if (isVerticalLayout) {
+                    return updatedEmet;
+                }
             }
 
-            if (isVerticalLayout) {
+            if (!isVerticalLayout) {
                 return updatedEmet;
             } else {
                 return emet;
             }
         });
 
+        console.log(updateEditorialMetadata);
         setFieldValue('editorialMetadata', updateEditorialMetadata);
 
         closeModal();
