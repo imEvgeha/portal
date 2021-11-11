@@ -18,6 +18,18 @@ export class CustomDateFilter extends React.Component {
         };
     }
 
+    componentDidMount() {
+        const {filterChangedCallback} = this.props;
+
+        this.setState({
+            dates: {
+                startDate: moment().subtract(1, 'day').toISOString(),
+                endDate: moment().toISOString(),
+            },
+        });
+        setTimeout(() => filterChangedCallback(), 0);
+    }
+
     // eslint-disable-next-line react/destructuring-assignment
     isFilterDisabled = () => !(this.state.dates.startDate || this.state.dates.endDate);
 
