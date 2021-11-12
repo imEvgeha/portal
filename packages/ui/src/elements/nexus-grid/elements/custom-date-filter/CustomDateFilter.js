@@ -9,24 +9,16 @@ import './CustomDateFilter.scss';
 
 export class CustomDateFilter extends React.Component {
     constructor(props) {
+        const {filterChangedCallback} = props;
         super(props);
         this.state = {
             dates: {
-                startDate: props.initialFilters.from || '',
-                endDate: props.initialFilters.to || '',
+                startDate: props.initialFilters.from
+                    ? props.initialFilters.from
+                    : moment().subtract(1, 'day').toISOString(),
+                endDate: props.initialFilters.to ? props.initialFilters.to : moment().toISOString(),
             },
         };
-    }
-
-    componentDidMount() {
-        const {filterChangedCallback} = this.props;
-
-        this.setState({
-            dates: {
-                startDate: moment().subtract(1, 'day').toISOString(),
-                endDate: moment().toISOString(),
-            },
-        });
         setTimeout(() => filterChangedCallback(), 0);
     }
 
