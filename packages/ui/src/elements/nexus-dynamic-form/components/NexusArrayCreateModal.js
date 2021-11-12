@@ -19,6 +19,7 @@ const NexusArrayCreateModal = ({
     initialData,
     closeModal,
     prefix,
+    allData,
 }) => {
     const [updatedValues, setUpdatedValues] = useState(null);
 
@@ -57,6 +58,7 @@ const NexusArrayCreateModal = ({
                                             setUpdatedValues,
                                             updatedValues,
                                             prefix,
+                                            allData,
                                         })}
                                     </div>
                                 );
@@ -99,6 +101,7 @@ NexusArrayCreateModal.propTypes = {
     closeModal: PropTypes.func,
     handleModalSubmit: PropTypes.func,
     prefix: PropTypes.string,
+    allData: PropTypes.object,
 };
 
 NexusArrayCreateModal.defaultProps = {
@@ -116,6 +119,7 @@ NexusArrayCreateModal.defaultProps = {
     closeModal: undefined,
     handleModalSubmit: undefined,
     prefix: undefined,
+    allData: {},
 };
 
 export default NexusArrayCreateModal;

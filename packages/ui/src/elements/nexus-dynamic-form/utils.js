@@ -430,6 +430,7 @@ export const renderNexusField = (
         prefix,
         isTitlePage,
         setUpdate,
+        allData,
     }
 ) => {
     return toShow(field, updatedValues || initialData, prefix) ? (
@@ -457,6 +458,7 @@ export const renderNexusField = (
             setUpdatedValues={setUpdatedValues}
             isTitlePage={isTitlePage}
             setUpdate={setUpdate}
+            allData={allData}
         />
     ) : null;
 };

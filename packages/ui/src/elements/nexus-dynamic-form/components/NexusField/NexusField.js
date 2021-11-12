@@ -78,6 +78,7 @@ const NexusField = ({
     isClearable,
     isTitlePage,
     setUpdate,
+    allData,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -314,7 +315,13 @@ const NexusField = ({
                     <CastCrew
                         onChange={setUpdatedValues(getCurrentValues())}
                         {...fieldProps}
-                        persons={fieldProps.value ? fieldProps.value : []}
+                        persons={
+                            fieldProps.value
+                                ? fieldProps.value
+                                : allData?.castCrew?.length
+                                ? [...allData?.castCrew]
+                                : []
+                        }
                         isEdit={true}
                         getValues={getValues}
                         setFieldValue={setFieldValue}
@@ -325,6 +332,7 @@ const NexusField = ({
                         // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
                         language={isVerticalLayout ? getLanguage() : 'en'}
                         setUpdate={setUpdate}
+                        allData={allData}
                         {...fieldProps}
                     />
                 );
@@ -579,6 +587,7 @@ NexusField.propTypes = {
     getValues: PropTypes.func,
     setUpdatedValues: PropTypes.func,
     setUpdate: PropTypes.func,
+    allData: PropTypes.object,
 };
 
 NexusField.defaultProps = {
@@ -622,6 +631,7 @@ NexusField.defaultProps = {
     getValues: () => null,
     setUpdatedValues: () => {},
     setUpdate: () => null,
+    allData: {},
 };
 
 export default NexusField;
