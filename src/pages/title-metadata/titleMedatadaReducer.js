@@ -44,10 +44,13 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 ...state,
                 removeSeasonPersons: isDuplicate ? state.removeSeasonPersons : [...state.removeSeasonPersons, payload],
             };
-        case actionTypes.CLEAR_TITLE:
+        case actionTypes.CLEAR_TITLE: {
+            const {gridState, ...gridStateExcluded} = initialState;
             return {
-                ...initialState,
+                ...state,
+                ...gridStateExcluded,
             };
+        }
         case actionTypes.CLEAR_SEASON_PERSONS:
             return {
                 ...state,
