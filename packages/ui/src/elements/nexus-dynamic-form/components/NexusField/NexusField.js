@@ -126,11 +126,6 @@ const NexusField = ({
             const filtrationForCastCrew = (item, index, self) =>
                 index === self.findIndex(newItem => newItem.id === item.id);
             return () => {
-                setUpdatedCastCrew(
-                    data?.editorial?.castCrew?.length
-                        ? [...data.editorial.castCrew, ...allData.castCrew].filter(filtrationForCastCrew)
-                        : [...allData.castCrew]
-                );
                 setUpdatedValues({
                     editorial: {
                         ...data.editorial,
