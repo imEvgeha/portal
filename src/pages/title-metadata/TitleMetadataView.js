@@ -98,8 +98,6 @@ export const TitleMetadataView = ({
 
     lastFilterView(gridApi, columnApi, 'lastViewed');
 
-    sessionStorage.setItem('titleMetadataUrl', '/metadata');
-
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
