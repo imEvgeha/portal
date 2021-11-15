@@ -426,6 +426,7 @@ export const renderNexusField = (
         path,
         setDisableSubmit,
         setUpdatedValues,
+        setUpdatedCastCrew,
         updatedValues,
         prefix,
         isTitlePage,
@@ -456,6 +457,7 @@ export const renderNexusField = (
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
             setUpdatedValues={setUpdatedValues}
+            setUpdatedCastCrew={setUpdatedCastCrew}
             isTitlePage={isTitlePage}
             setUpdate={setUpdate}
             allData={allData}
