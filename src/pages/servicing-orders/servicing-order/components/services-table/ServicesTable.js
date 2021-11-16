@@ -331,7 +331,9 @@ const ServicesTable = ({
                 );
                 if (extParamWatermark) extParamWatermark.value = data.watermark;
                 if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
-                    currentService.deteTasks.deteDeliveries[0].externalDelivery = {deliverToId: data.recipient};
+                    currentService.deteTasks.deteDeliveries[0].externalDelivery = {
+                        ...get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery', ''),
+                    };
                 currentService.status = data.operationalStatus;
 
                 const newServices = {...services, [providerServices]: updatedServices};

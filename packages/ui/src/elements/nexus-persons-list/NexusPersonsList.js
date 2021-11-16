@@ -14,7 +14,7 @@ import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getDir} from '../nexus-dynamic-form/utils';
+import {getDir, checkIfEmetIsEditorial} from '../nexus-dynamic-form/utils';
 import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors';
 import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
@@ -45,7 +45,7 @@ const NexusPersonsList = ({
     const [persons, setPersons] = useState(personsList || []);
     const [searchText, setSearchText] = useState('');
     const propagateRemovePersons = useSelector(propagateRemovePersonsSelector);
-    const {title, contentType, editorial, editorialMetadata} = getValues();
+    const {title, contentType, editorialMetadata} = getValues();
 
     useEffect(() => {
         const updatedPersons = [...personsList];
@@ -142,7 +142,7 @@ const NexusPersonsList = ({
             const {id, personType, creditsOrder} = person;
             const payload = isDuplicate
                 ? propagateRemovePersons
-                : [...propagateRemovePersons, {id, personType, creditsOrder}];
+                : [...propagateRemovePersons, {id, personType, creditsOrder, propagateToEmet: true}];
 
             dispatch(removeSeasonPerson(payload));
         }
@@ -159,21 +159,23 @@ const NexusPersonsList = ({
                 castCrew: updatedCastCrew,
             };
 
-            if (updatedEmet.language === editorial.language && updatedEmet.locale === editorial.locale) {
-                setFieldValue('editorial', updatedEmet);
+            const {editorial} = getValues();
 
+            if (checkIfEmetIsEditorial(emet, editorial)) {
+                setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
                 if (isVerticalLayout) {
-                    return updatedEmet
+                    return updatedEmet;
                 }
             }
 
             if (!isVerticalLayout) {
-                return updatedEmet; 
+                return updatedEmet;
             } else {
-                return emet
+                return emet;
             }
         });
 
+        console.log(updateEditorialMetadata);
         setFieldValue('editorialMetadata', updateEditorialMetadata);
 
         closeModal();

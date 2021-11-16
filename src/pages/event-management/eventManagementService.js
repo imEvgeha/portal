@@ -21,56 +21,57 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
     // Only fetch headers, not headers + data
     paramString += `&headersOnly=true`;
 
+    const isKeyEqualPostedTimeStamp = elem => elem !== 'postedTimeStamp';
     // Build param string if params are provided
     if (!isEmpty(params)) {
-        paramString = Object.keys(params).reduce((paramString, paramKey) => {
-            // If we have a complex filter, break it down
-            if (isObject(params[paramKey])) {
-                const complexFilter = params[paramKey];
+        paramString = Object.keys(params)
+            .filter(isKeyEqualPostedTimeStamp)
+            .reduce((paramString, paramKey) => {
+                // If we have a complex filter, break it down
+                if (isObject(params[paramKey])) {
+                    const complexFilter = params[paramKey];
 
-                // Converts '-From' and '-To' suffixes to '-Start' and '-End' respectively
-                // and packs them into a param string
-                // eslint-disable-next-line no-param-reassign
-                paramString = Object.keys(complexFilter).reduce((paramString, key) => {
-                    if (complexFilter[key]) {
-                        let filterParamKey = key;
-                        const utcDate = moment(complexFilter[key]).utc(false);
-                        const localDate = moment(complexFilter[key]).utc(true);
-                        const amountHoursToAddOrSubtract = utcDate.hours() - localDate.hours();
-                        const amountMinutesToAddOrSubtract = utcDate.minutes() - localDate.minutes();
-                        const rightHours =
-                            amountHoursToAddOrSubtract < 0
-                                ? utcDate.subtract(Math.abs(amountHoursToAddOrSubtract), 'hours').toISOString()
-                                : utcDate.add(amountHoursToAddOrSubtract, 'hours').toISOString();
-                        const rightMinutes =
-                            amountMinutesToAddOrSubtract < 0
-                                ? utcDate.subtract(Math.abs(amountMinutesToAddOrSubtract), 'minutes').toISOString()
-                                : utcDate.add(amountMinutesToAddOrSubtract, 'minutes').toISOString();
-                        const dateForLocalRequest = () => {
-                            if (amountHoursToAddOrSubtract !== 0) return rightHours;
-                            if (amountMinutesToAddOrSubtract !== 0) return rightMinutes;
-                            return utcDate.toISOString();
-                        };
+                    // Converts '-From' and '-To' suffixes to '-Start' and '-End' respectively
+                    // and packs them into a param string
+                    // eslint-disable-next-line no-param-reassign
+                    paramString = Object.keys(complexFilter).reduce((paramString, key) => {
+                        if (complexFilter[key]) {
+                            let filterParamKey = key;
+                            const utcDate = moment(complexFilter[key]).utc(false);
+                            const localDate = moment(complexFilter[key]).utc(true);
+                            const amountHoursToAddOrSubtract = utcDate.hours() - localDate.hours();
+                            const amountMinutesToAddOrSubtract = utcDate.minutes() - localDate.minutes();
+                            const rightHours =
+                                amountHoursToAddOrSubtract < 0
+                                    ? utcDate.subtract(Math.abs(amountHoursToAddOrSubtract), 'hours').toISOString()
+                                    : utcDate.add(amountHoursToAddOrSubtract, 'hours').toISOString();
+                            const rightMinutes =
+                                amountMinutesToAddOrSubtract < 0
+                                    ? utcDate.subtract(Math.abs(amountMinutesToAddOrSubtract), 'minutes').toISOString()
+                                    : utcDate.add(amountMinutesToAddOrSubtract, 'minutes').toISOString();
+                            const dateForLocalRequest = () => {
+                                if (amountHoursToAddOrSubtract !== 0) return rightHours;
+                                if (amountMinutesToAddOrSubtract !== 0) return rightMinutes;
+                                return utcDate.toISOString();
+                            };
 
-                        if (key.endsWith('From')) {
-                            // eslint-disable-next-line no-magic-numbers
-                            filterParamKey = `${key.slice(0, -4)}Start`;
-                        } else if (key.endsWith('To')) {
-                            // eslint-disable-next-line no-magic-numbers
-                            filterParamKey = `${key.slice(0, -2)}End`;
+                            if (key.endsWith('From')) {
+                                // eslint-disable-next-line no-magic-numbers
+                                filterParamKey = `${key.slice(0, -4)}Start`;
+                            } else if (key.endsWith('To')) {
+                                // eslint-disable-next-line no-magic-numbers
+                                filterParamKey = `${key.slice(0, -2)}End`;
+                            }
+                            return `${paramString}&${filterParamKey}=${
+                                body.isLocal ? dateForLocalRequest() : complexFilter[key]
+                            }`;
                         }
-                        return `${paramString}&${filterParamKey}=${
-                            body.isLocal ? dateForLocalRequest() : complexFilter[key]
-                        }`;
-                    }
-                    return '';
-                }, paramString);
+                        return '';
+                    }, paramString);
 
-                return paramString;
-            }
-
-            return `${paramString}&${paramKey}=${params[paramKey]}`;
-        }, paramString);
+                    return `${paramString}&${paramKey}=${params[paramKey]}`;
+                }
+            }, paramString);
     }
 
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/search/fts`;
