@@ -1,4 +1,5 @@
 import {get, isEmpty, isObject, merge} from 'lodash';
+import moment from 'moment';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client';
 
@@ -7,9 +8,8 @@ const FETCH_PAGE_SIZE = 100;
 // Storing values for infinite loader fix
 let allKeys = [];
 
-export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams) => {
+export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams, body) => {
     let paramString = '';
-
     // Build sortParams string if sortParams are provided
     if (!isEmpty(sortedParams)) {
         paramString = sortedParams.reduce((sortedParams, {colId, sort}) => `${sortedParams}${colId}=${sort};`, ';');
@@ -30,13 +30,29 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
                 // If we have a complex filter, break it down
                 if (isObject(params[paramKey])) {
                     const complexFilter = params[paramKey];
-
                     // Converts '-From' and '-To' suffixes to '-Start' and '-End' respectively
                     // and packs them into a param string
                     // eslint-disable-next-line no-param-reassign
                     paramString = Object.keys(complexFilter).reduce((paramString, key) => {
                         if (complexFilter[key]) {
                             let filterParamKey = key;
+                            const utcDate = moment(complexFilter[key]).utc(false);
+                            const localDate = moment(complexFilter[key]).utc(true);
+                            const amountHoursToAddOrSubtract = utcDate.hours() - localDate.hours();
+                            const amountMinutesToAddOrSubtract = utcDate.minutes() - localDate.minutes();
+                            const rightHours =
+                                amountHoursToAddOrSubtract < 0
+                                    ? utcDate.subtract(Math.abs(amountHoursToAddOrSubtract), 'hours').toISOString()
+                                    : utcDate.add(amountHoursToAddOrSubtract, 'hours').toISOString();
+                            const rightMinutes =
+                                amountMinutesToAddOrSubtract < 0
+                                    ? utcDate.subtract(Math.abs(amountMinutesToAddOrSubtract), 'minutes').toISOString()
+                                    : utcDate.add(amountMinutesToAddOrSubtract, 'minutes').toISOString();
+                            const dateForLocalRequest = () => {
+                                if (amountHoursToAddOrSubtract !== 0) return rightHours;
+                                if (amountMinutesToAddOrSubtract !== 0) return rightMinutes;
+                                return utcDate.toISOString();
+                            };
 
                             if (key.endsWith('From')) {
                                 // eslint-disable-next-line no-magic-numbers
@@ -45,8 +61,9 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
                                 // eslint-disable-next-line no-magic-numbers
                                 filterParamKey = `${key.slice(0, -2)}End`;
                             }
-
-                            return `${paramString}&${filterParamKey}=${complexFilter[key]}`;
+                            return `${paramString}&${filterParamKey}=${
+                                body.isLocal ? dateForLocalRequest() : complexFilter[key]
+                            }`;
                         }
                         return '';
                     }, paramString);

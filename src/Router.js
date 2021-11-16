@@ -6,7 +6,7 @@ import {BASE_PATH} from './pages/title-metadata/titleMetadataRoutes';
 
 const Router = ({routes, history}) => {
     setTimeout(() => {
-        if (`/${  history.location.pathname.split('/', 2)[1]}` !== BASE_PATH) {
+        if (`/${history.location.pathname.split('/', 2)[1]}` !== BASE_PATH) {
             sessionStorage.removeItem('storedMetadataFilter');
         }
     }, 2000);
