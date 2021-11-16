@@ -35,7 +35,6 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
                     // eslint-disable-next-line no-param-reassign
                     paramString = Object.keys(complexFilter).reduce((paramString, key) => {
                         if (complexFilter[key]) {
-                            console.log(paramString, 'paramString');
                             let filterParamKey = key;
                             const utcDate = moment(complexFilter[key]).utc(false);
                             const localDate = moment(complexFilter[key]).utc(true);
