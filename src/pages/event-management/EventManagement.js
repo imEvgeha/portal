@@ -35,7 +35,7 @@ const EventManagement = props => {
     };
 
     useEffect(() => {
-        setDefaultFilters();
+        if (setDefaultFilters) setDefaultFilters();
     }, [gridApi]);
 
     const setDefaultFilters = () => {
