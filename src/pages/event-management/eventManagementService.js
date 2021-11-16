@@ -30,12 +30,12 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
                 // If we have a complex filter, break it down
                 if (isObject(params[paramKey])) {
                     const complexFilter = params[paramKey];
-
                     // Converts '-From' and '-To' suffixes to '-Start' and '-End' respectively
                     // and packs them into a param string
                     // eslint-disable-next-line no-param-reassign
                     paramString = Object.keys(complexFilter).reduce((paramString, key) => {
                         if (complexFilter[key]) {
+                            console.log(paramString, 'paramString');
                             let filterParamKey = key;
                             const utcDate = moment(complexFilter[key]).utc(false);
                             const localDate = moment(complexFilter[key]).utc(true);
@@ -69,8 +69,10 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
                         return '';
                     }, paramString);
 
-                    return `${paramString}&${paramKey}=${params[paramKey]}`;
+                    return paramString;
                 }
+
+                return `${paramString}&${paramKey}=${params[paramKey]}`;
             }, paramString);
     }
 
