@@ -7,7 +7,8 @@ import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {isEmpty, get} from 'lodash';
+import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
@@ -33,20 +34,20 @@ export const TitleMetadataView = ({
         tenantCode: DEFAULT_CATALOGUE_OWNER,
     });
 
+    const storedFilterData = JSON.parse(sessionStorage.getItem('storedMetadataFilter'));
+
     const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
 
     useEffect(() => {
         if (!isEmpty(gridState) && username) {
-            const userDefinedGridStates = get(gridState, username, []);
-            setUserDefinedGridStates(userDefinedGridStates);
+            setUserDefinedGridStates(gridState[`${username}`]);
         }
-    }, [gridState, username, get]);
+    }, [gridState, username]);
 
     useEffect(() => {
         resetTitleId();
-
         if (window.sessionStorage.getItem('unmerge')) {
             const successToast = {
                 title: 'Success',
@@ -81,10 +82,21 @@ export const TitleMetadataView = ({
     const tableOptions = [{label: 'All', value: 'all'}];
 
     const resetToAll = (gridApi, filter, columnApi) => {
-        gridApi.setFilterModel(null);
+        gridApi.setFilterModel();
         gridApi.onFilterChanged();
         columnApi.resetColumnState();
     };
+
+    const lastFilterView = (gridApi, columnApi, id) => {
+        if (!isEmpty(gridApi) && !isEmpty(columnApi) && id) {
+            const {columnState, filterModel, sortModel} = storedFilterData || {};
+            gridApi.setFilterModel(filterModel);
+            setSorting(sortModel, columnApi);
+            columnApi.setColumnState(columnState);
+        }
+    };
+
+    lastFilterView(gridApi, columnApi, 'lastViewed');
 
     return (
         <div className="nexus-c-title-metadata">
@@ -93,7 +105,6 @@ export const TitleMetadataView = ({
                     gridApi={gridApi}
                     columnApi={columnApi}
                     username={username}
-                    gridState={gridState}
                     userDefinedGridStates={userDefinedGridStates}
                     setUserDefinedGridState={storeTitleUserDefinedGridState}
                     applyPredefinedTableView={resetToAll}
@@ -124,6 +135,8 @@ export const TitleMetadataView = ({
                 setGridApi={setGridApi}
                 setColumnApi={setColumnApi}
                 columnApi={columnApi}
+                gridApi={gridApi}
+                storedFilterData={storedFilterData}
             />
             <TitleCreate
                 display={showModal}

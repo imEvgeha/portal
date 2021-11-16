@@ -34,10 +34,13 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 ...state,
                 propagateRemovePersons: payload,
             };
-        case actionTypes.CLEAR_TITLE:
+        case actionTypes.CLEAR_TITLE: {
+            const {gridState, ...gridStateExcluded} = initialState;
             return {
-                ...initialState,
+                ...state,
+                ...gridStateExcluded,
             };
+        }
         case actionTypes.CLEAR_SEASON_PERSONS:
             return {
                 ...state,
