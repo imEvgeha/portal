@@ -334,7 +334,11 @@ const RightsRepository = ({
             };
         }
 
-        if (!['buttons', 'title', 'id', 'action', 'territoryDateSelected'].includes(col.field)) {
+        if (
+            !['buttons', 'title', 'id', 'action', 'territoryDateSelected', 'platformCategory', 'format'].includes(
+                col.field
+            )
+        ) {
             return {
                 ...col,
                 cellStyle: params => cellStyling(params, col),
@@ -396,6 +400,13 @@ const RightsRepository = ({
             return {
                 ...col,
                 cellRenderer: 'selectedAtCellRenderer',
+            };
+        }
+
+        if (['platformCategory', 'format'].includes(col.field)) {
+            return {
+                ...col,
+                cellRenderer: 'wordsCellRenderer',
             };
         }
 

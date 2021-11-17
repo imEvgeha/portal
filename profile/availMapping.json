@@ -287,7 +287,8 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true
+            "required": true,
+            "cellRenderer": "wordsCellRenderer"
         },
         {
             "javaVariableName": "availStart",
@@ -404,7 +405,8 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "cellRenderer": "wordsCellRenderer"
         },
         {
             "javaVariableName": "titleStatus",
