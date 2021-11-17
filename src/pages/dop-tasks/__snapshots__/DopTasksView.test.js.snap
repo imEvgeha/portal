@@ -14,7 +14,8 @@ exports[`DopTasksView should match snapshot 1`] = `
       applyPredefinedTableView={[Function]}
       columnApi={null}
       gridApi={null}
-      hasPredefined={true}
+      lastStoredFilter={Object {}}
+      setBlockLastFilter={[Function]}
       setUserDefinedGridState={[Function]}
       tableLabels={
         Object {

@@ -34,8 +34,6 @@ export const TitleMetadataView = ({
         tenantCode: DEFAULT_CATALOGUE_OWNER,
     });
 
-    const storedFilterData = JSON.parse(sessionStorage.getItem('storedMetadataFilter'));
-
     const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
@@ -82,15 +80,19 @@ export const TitleMetadataView = ({
 
     const tableOptions = [{label: 'All', value: 'all'}];
 
-    const lastStoredFilter = {
-        label: storedFilterData?.filterModel?.title?.filter,
-        value: storedFilterData?.filterModel?.title?.filter,
-    };
-
     const resetToAll = (gridApi, filter, columnApi) => {
         gridApi.setFilterModel();
         gridApi.onFilterChanged();
         columnApi.resetColumnState();
+    };
+
+    //
+
+    const storedFilterData = JSON.parse(sessionStorage.getItem('storedMetadataFilter'));
+
+    const lastStoredFilter = {
+        label: storedFilterData?.filterModel?.title?.filter,
+        value: storedFilterData?.filterModel?.title?.filter,
     };
 
     const lastFilterView = (gridApi, columnApi, id) => {
@@ -102,7 +104,9 @@ export const TitleMetadataView = ({
         }
     };
 
-    lastFilterView(gridApi, columnApi, 'lastViewed');
+    const [blockLastFilter, setBlockLastFilter] = useState(true);
+
+    blockLastFilter && lastFilterView(gridApi, columnApi, 'lastViewed');
 
     return (
         <div className="nexus-c-title-metadata">
@@ -117,6 +121,7 @@ export const TitleMetadataView = ({
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
                     lastStoredFilter={lastStoredFilter}
+                    setBlockLastFilter={setBlockLastFilter}
                 />
                 <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 <Button
@@ -142,7 +147,6 @@ export const TitleMetadataView = ({
                 setColumnApi={setColumnApi}
                 columnApi={columnApi}
                 gridApi={gridApi}
-                storedFilterData={storedFilterData}
             />
             <TitleCreate
                 display={showModal}

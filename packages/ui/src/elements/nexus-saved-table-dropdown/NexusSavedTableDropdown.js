@@ -22,18 +22,18 @@ const insertNewGridModel = (viewId, userDefinedGridStates, model) => {
 
 const NexusSavedTableDropdown = ({
     userDefinedGridStates,
-
     gridApi,
     columnApi,
     username,
     setUserDefinedGridState,
-
     applyPredefinedTableView,
     tableLabels,
     tableOptions,
     lastStoredFilter,
+    setBlockLastFilter,
 }) => {
     const [selectedItem, setSelectedItem] = useState(lastStoredFilter.label ? lastStoredFilter : tableOptions[0]);
+
     const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
     const [userInput, setUserInput] = useState('');
 
@@ -57,6 +57,8 @@ const NexusSavedTableDropdown = ({
     };
 
     const saveButtonHandler = () => {
+        // Line below used to block applying stored filter for titleMetadata page
+        setBlockLastFilter(false);
         saveUserDefinedGridState(userInput);
         setSelectedItem({label: userInput, value: userInput});
         setUserInput('');
@@ -160,6 +162,7 @@ NexusSavedTableDropdown.propTypes = {
     tableLabels: PropTypes.object,
     tableOptions: PropTypes.array,
     lastStoredFilter: PropTypes.object,
+    setBlockLastFilter: PropTypes.func,
 };
 
 NexusSavedTableDropdown.defaultProps = {
@@ -172,6 +175,7 @@ NexusSavedTableDropdown.defaultProps = {
     tableLabels: {},
     tableOptions: [],
     lastStoredFilter: {},
+    setBlockLastFilter: () => null,
 };
 
 export default NexusSavedTableDropdown;
