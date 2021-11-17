@@ -86,8 +86,6 @@ export const TitleMetadataView = ({
         columnApi.resetColumnState();
     };
 
-    //
-
     const storedFilterData = JSON.parse(sessionStorage.getItem('storedMetadataFilter'));
 
     const lastStoredFilter = {
