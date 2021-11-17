@@ -64,7 +64,6 @@ export const RightsRepositoryHeader = ({
                     applyPredefinedTableView={applyPredefinedTableView}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
-                    hasPredefined={true}
                 />
             ) : activeTab === RIGHTS_TAB ? (
                 <Loading />

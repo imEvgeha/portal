@@ -31,9 +31,9 @@ const NexusSavedTableDropdown = ({
     applyPredefinedTableView,
     tableLabels,
     tableOptions,
-    hasPredefined,
+    lastStoredFilter,
 }) => {
-    const [selectedItem, setSelectedItem] = useState(tableOptions[0]);
+    const [selectedItem, setSelectedItem] = useState(lastStoredFilter.label ? lastStoredFilter : tableOptions[0]);
     const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
     const [userInput, setUserInput] = useState('');
 
@@ -137,15 +137,13 @@ const NexusSavedTableDropdown = ({
                             </DropdownItem>
                         ))}
                     </DropdownItemGroup>
-                    {hasPredefined && (
-                        <DropdownItemGroup title={tableLabels.predifinedViewsLabel}>
-                            {tableOptions.map(item => (
-                                <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
-                                    {item.label}
-                                </DropdownItem>
-                            ))}
-                        </DropdownItemGroup>
-                    )}
+                    <DropdownItemGroup title={tableLabels.predifinedViewsLabel}>
+                        {tableOptions.map(item => (
+                            <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
+                                {item.label}
+                            </DropdownItem>
+                        ))}
+                    </DropdownItemGroup>
                 </DropdownMenu>
             </div>
         </div>
@@ -161,7 +159,7 @@ NexusSavedTableDropdown.propTypes = {
     applyPredefinedTableView: PropTypes.func,
     tableLabels: PropTypes.object,
     tableOptions: PropTypes.array,
-    hasPredefined: PropTypes.bool,
+    lastStoredFilter: PropTypes.object,
 };
 
 NexusSavedTableDropdown.defaultProps = {
@@ -173,7 +171,7 @@ NexusSavedTableDropdown.defaultProps = {
     applyPredefinedTableView: () => null,
     tableLabels: {},
     tableOptions: [],
-    hasPredefined: false,
+    lastStoredFilter: {},
 };
 
 export default NexusSavedTableDropdown;

@@ -79,7 +79,13 @@ export const TitleMetadataView = ({
         savedDropdownLabel: 'Saved Table View:',
         savedViewslabel: 'My Saved Views',
     };
+
     const tableOptions = [{label: 'All', value: 'all'}];
+
+    const lastStoredFilter = {
+        label: storedFilterData?.filterModel?.title?.filter,
+        value: storedFilterData?.filterModel?.title?.filter,
+    };
 
     const resetToAll = (gridApi, filter, columnApi) => {
         gridApi.setFilterModel();
@@ -110,7 +116,7 @@ export const TitleMetadataView = ({
                     applyPredefinedTableView={resetToAll}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
-                    hasPredefined={true}
+                    lastStoredFilter={lastStoredFilter}
                 />
                 <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 <Button
