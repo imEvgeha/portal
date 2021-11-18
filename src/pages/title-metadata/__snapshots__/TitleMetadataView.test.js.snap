@@ -11,7 +11,13 @@ exports[`TitleMetadataView should match snapshot 1`] = `
       applyPredefinedTableView={[Function]}
       columnApi={null}
       gridApi={null}
-      hasPredefined={true}
+      lastStoredFilter={
+        Object {
+          "label": undefined,
+          "value": undefined,
+        }
+      }
+      setBlockLastFilter={[Function]}
       setUserDefinedGridState={[Function]}
       tableLabels={
         Object {
@@ -59,7 +65,6 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     history={Object {}}
     setColumnApi={[Function]}
     setGridApi={[Function]}
-    storedFilterData={null}
   />
   <Connect(ComposedComponent)
     display={false}
