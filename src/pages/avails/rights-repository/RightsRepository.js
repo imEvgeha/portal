@@ -113,22 +113,6 @@ const RightsRepository = ({
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
 
-    const multiselectFields = [
-        'format',
-        'platformCategory',
-        'territoryExcluded',
-        'region',
-        'genres',
-        'affiliate',
-        'affiliateExclude',
-        'holdbackLanguage',
-        'allowedLanguages',
-        'requiredFulfillmentLanguages',
-        'audioDescription',
-        'subtitles',
-    ];
-    const fieldsForRendering = ['buttons', 'title', 'id', 'action', 'territoryDateSelected', ...multiselectFields];
-
     useEffect(() => {
         return () => {
             isMounted.current = false;
@@ -326,6 +310,7 @@ const RightsRepository = ({
     });
 
     const columnsValidationDefsClone = columnDefsClone.map(col => {
+        const mappingCol = mapping.find(elem => elem.queryParamName === col.field);
         if (['icon'].includes(col.colId)) {
             // eslint-disable-next-line no-param-reassign
             if (['updatedCatalogReceived'].includes(col.field)) {
@@ -350,7 +335,14 @@ const RightsRepository = ({
             };
         }
 
-        if (!fieldsForRendering.includes(col.field)) {
+        if (mappingCol?.dataType === 'multiselect') {
+            return {
+                ...col,
+                cellRenderer: 'wordsCellRenderer',
+            };
+        }
+
+        if (!['buttons', 'title', 'id', 'action', 'territoryDateSelected'].includes(col.field)) {
             return {
                 ...col,
                 cellStyle: params => cellStyling(params, col),
@@ -412,13 +404,6 @@ const RightsRepository = ({
             return {
                 ...col,
                 cellRenderer: 'selectedAtCellRenderer',
-            };
-        }
-
-        if (multiselectFields.includes(col.field)) {
-            return {
-                ...col,
-                cellRenderer: 'wordsCellRenderer',
             };
         }
 
