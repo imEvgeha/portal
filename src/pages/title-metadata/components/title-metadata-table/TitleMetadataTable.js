@@ -39,8 +39,15 @@ const TitleMetadataTable = ({history, catalogueOwner, setGridApi, setColumnApi, 
                 const filterModel = gridApi.getFilterModel();
                 const sortModel = getSortModel(columnApi);
                 const columnState = columnApi.getColumnState();
-                const model = {id: 'lastViewed', filterModel, sortModel, columnState};
+
+                const firstFilterModel = Object.keys(filterModel).shift();
+                const generateId = firstFilterModel && filterModel[`${firstFilterModel}`].filter;
+
+                const selectedId = sessionStorage.getItem('storedSelectedID');
+                // eslint-disable-next-line no-unneeded-ternary
+                const model = {id: selectedId ? selectedId : generateId, filterModel, sortModel, columnState};
                 sessionStorage.setItem('storedMetadataFilter', JSON.stringify(model));
+                sessionStorage.removeItem('storedSelectedID');
             }
         };
     }, [columnApi]);

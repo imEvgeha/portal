@@ -8,6 +8,7 @@ const Router = ({routes, history}) => {
     setTimeout(() => {
         if (`/${history.location.pathname.split('/', 2)[1]}` !== BASE_PATH) {
             sessionStorage.removeItem('storedMetadataFilter');
+            sessionStorage.removeItem('storedSelectedID');
         }
     }, 2000);
 

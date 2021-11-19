@@ -11,10 +11,10 @@ exports[`TitleMetadataView should match snapshot 1`] = `
       applyPredefinedTableView={[Function]}
       columnApi={null}
       gridApi={null}
+      isTitleMetadata={true}
       lastStoredFilter={
         Object {
           "label": undefined,
-          "value": undefined,
         }
       }
       setBlockLastFilter={[Function]}
