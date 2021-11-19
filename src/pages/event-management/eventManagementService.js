@@ -8,6 +8,7 @@ const FETCH_PAGE_SIZE = 100;
 // Storing values for infinite loader fix
 let allKeys = [];
 
+// eslint-disable-next-line max-params
 export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams, body) => {
     let paramString = '';
     // Build sortParams string if sortParams are provided

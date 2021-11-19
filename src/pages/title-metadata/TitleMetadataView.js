@@ -87,10 +87,13 @@ export const TitleMetadataView = ({
     };
 
     const storedFilterData = JSON.parse(sessionStorage.getItem('storedMetadataFilter'));
+    const storedFilterDataId = storedFilterData?.id;
+
+    const selectedId = sessionStorage.getItem('storedSelectedID');
 
     const lastStoredFilter = {
-        label: storedFilterData?.filterModel?.title?.filter,
-        value: storedFilterData?.filterModel?.title?.filter,
+        // eslint-disable-next-line no-unneeded-ternary
+        label: selectedId ? selectedId : storedFilterDataId,
     };
 
     const lastFilterView = (gridApi, columnApi, id) => {
@@ -104,7 +107,7 @@ export const TitleMetadataView = ({
 
     const [blockLastFilter, setBlockLastFilter] = useState(true);
 
-    blockLastFilter && lastFilterView(gridApi, columnApi, 'lastViewed');
+    blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
 
     return (
         <div className="nexus-c-title-metadata">
@@ -120,6 +123,7 @@ export const TitleMetadataView = ({
                     tableOptions={tableOptions}
                     lastStoredFilter={lastStoredFilter}
                     setBlockLastFilter={setBlockLastFilter}
+                    isTitleMetadata={true}
                 />
                 <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 <Button

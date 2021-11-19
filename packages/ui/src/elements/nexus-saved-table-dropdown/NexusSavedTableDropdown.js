@@ -31,6 +31,7 @@ const NexusSavedTableDropdown = ({
     tableOptions,
     lastStoredFilter,
     setBlockLastFilter,
+    isTitleMetadata,
 }) => {
     const [selectedItem, setSelectedItem] = useState(lastStoredFilter.label ? lastStoredFilter : tableOptions[0]);
 
@@ -91,6 +92,9 @@ const NexusSavedTableDropdown = ({
             gridApi.setFilterModel(filterModel);
             setSorting(sortModel, columnApi);
             columnApi.setColumnState(columnState);
+
+            // Used for saving state of titleMetadata filter
+            isTitleMetadata && sessionStorage.setItem('storedSelectedID', id);
         }
     };
 
@@ -163,6 +167,7 @@ NexusSavedTableDropdown.propTypes = {
     tableOptions: PropTypes.array,
     lastStoredFilter: PropTypes.object,
     setBlockLastFilter: PropTypes.func,
+    isTitleMetadata: PropTypes.bool,
 };
 
 NexusSavedTableDropdown.defaultProps = {
@@ -176,6 +181,7 @@ NexusSavedTableDropdown.defaultProps = {
     tableOptions: [],
     lastStoredFilter: {},
     setBlockLastFilter: () => null,
+    isTitleMetadata: false,
 };
 
 export default NexusSavedTableDropdown;
