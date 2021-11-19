@@ -113,6 +113,22 @@ const RightsRepository = ({
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
 
+    const multiselectFields = [
+        'format',
+        'platformCategory',
+        'territoryExcluded',
+        'region',
+        'genres',
+        'affiliate',
+        'affiliateExclude',
+        'holdbackLanguage',
+        'allowedLanguages',
+        'requiredFulfillmentLanguages',
+        'audioDescription',
+        'subtitles',
+    ];
+    const fieldsForRendering = ['buttons', 'title', 'id', 'action', 'territoryDateSelected', ...multiselectFields];
+
     useEffect(() => {
         return () => {
             isMounted.current = false;
@@ -334,11 +350,7 @@ const RightsRepository = ({
             };
         }
 
-        if (
-            !['buttons', 'title', 'id', 'action', 'territoryDateSelected', 'platformCategory', 'format'].includes(
-                col.field
-            )
-        ) {
+        if (!fieldsForRendering.includes(col.field)) {
             return {
                 ...col,
                 cellStyle: params => cellStyling(params, col),
@@ -403,7 +415,7 @@ const RightsRepository = ({
             };
         }
 
-        if (['platformCategory', 'format'].includes(col.field)) {
+        if (multiselectFields.includes(col.field)) {
             return {
                 ...col,
                 cellRenderer: 'wordsCellRenderer',
