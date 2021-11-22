@@ -310,6 +310,7 @@ const RightsRepository = ({
     });
 
     const columnsValidationDefsClone = columnDefsClone.map(col => {
+        const mappingCol = mapping.find(elem => elem.queryParamName === col.field);
         if (['icon'].includes(col.colId)) {
             // eslint-disable-next-line no-param-reassign
             if (['updatedCatalogReceived'].includes(col.field)) {
@@ -331,6 +332,13 @@ const RightsRepository = ({
             return {
                 ...col,
                 sortable: false,
+            };
+        }
+
+        if (mappingCol?.dataType === 'multiselect') {
+            return {
+                ...col,
+                cellRenderer: 'wordsCellRenderer',
             };
         }
 

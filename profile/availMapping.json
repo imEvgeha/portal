@@ -180,8 +180,7 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false,
-            "cellRenderer": "selectedAtCellRenderer"
+            "required": false
         },
         {
             "javaVariableName": "territory",
