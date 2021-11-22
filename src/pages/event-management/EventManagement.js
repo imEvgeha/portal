@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {get, isEmpty} from 'lodash';
+import moment from 'moment';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {INITIAL_SORT, TITLE} from './eventManagementConstants';
@@ -31,6 +32,30 @@ const EventManagement = props => {
         props.history.push({
             search: newParams,
         });
+    };
+
+    useEffect(() => {
+        if (setDefaultFilters) setDefaultFilters();
+    }, [gridApi]);
+
+    const setDefaultFilters = () => {
+        if (gridApi) {
+            const currentFilterModel = gridApi.getFilterModel();
+            const defaultFilterValues = {
+                createdTimeStamp: {
+                    filter: {
+                        createdTimeStampFrom: moment().subtract(1, 'day').toISOString(),
+                        createdTimeStampTo: moment().toISOString(),
+                    },
+                    type: 'range',
+                },
+            };
+            gridApi.setFilterModel({
+                ...currentFilterModel,
+                ...defaultFilterValues,
+            });
+            gridApi.onFilterChanged();
+        }
     };
 
     const clearFilters = () => {

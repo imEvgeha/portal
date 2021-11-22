@@ -7,7 +7,7 @@ import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sti
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';

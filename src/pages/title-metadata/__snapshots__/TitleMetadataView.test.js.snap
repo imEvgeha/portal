@@ -11,8 +11,13 @@ exports[`TitleMetadataView should match snapshot 1`] = `
       applyPredefinedTableView={[Function]}
       columnApi={null}
       gridApi={null}
-      gridState={Object {}}
-      hasPredefined={true}
+      isTitleMetadata={true}
+      lastStoredFilter={
+        Object {
+          "label": undefined,
+        }
+      }
+      setBlockLastFilter={[Function]}
       setUserDefinedGridState={[Function]}
       tableLabels={
         Object {
@@ -56,6 +61,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
       }
     }
     columnApi={null}
+    gridApi={null}
     history={Object {}}
     setColumnApi={[Function]}
     setGridApi={[Function]}

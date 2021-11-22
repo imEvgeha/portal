@@ -73,7 +73,6 @@ export const DopTasksView = ({
                     applyPredefinedTableView={applyPredefinedTableView}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
-                    hasPredefined={true}
                 />
                 <div className="nexus-c-dop-tasks-view__refresh-btn">
                     <IconButton
