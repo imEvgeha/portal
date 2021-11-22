@@ -33,7 +33,7 @@ export const SELECT_VALUES = {
         '_4K_UHD_SDR_30',
         '_4K_UHD_HDR_30',
         '_4K_UHD_SDR_60',
-        '_4K_UHD_HDR_60]',
+        '_4K_UHD_HDR_60',
     ],
     deliveryMethod: ['Aspera Servicing', 'IFT Servicing'],
 };

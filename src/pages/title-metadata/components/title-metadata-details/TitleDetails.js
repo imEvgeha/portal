@@ -7,7 +7,7 @@ import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sti
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
@@ -69,7 +69,6 @@ const TitleDetails = ({
     isMOVTitleSyncing,
     isVZTitlePublishing,
     isMOVTitlePublishing,
-    seasonPersons,
     titleLoading,
     emetLoading,
     clearSeasonPersons,
@@ -79,7 +78,11 @@ const TitleDetails = ({
     const [refresh, setRefresh] = useState(false);
     const [VZDisabled, setVZDisabled] = useState(true);
     const [MOVDisabled, setMOVDisabled] = useState(true);
+
     const [episodesCount, setEpisodesCount] = useState('0');
+
+    const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
+    const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
 
     const {fields} = schema;
 
@@ -136,10 +139,11 @@ const TitleDetails = ({
             updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
-            !isEmpty(seasonPersons) &&
+            (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
                 propagateSeasonsPersonsToEpisodes(
                     {
-                        addPersons: seasonPersons,
+                        addPersons: propagateAddPersons,
+                        deletePersons: propagateRemovePersons,
                     },
                     id
                 ),
@@ -207,7 +211,7 @@ const TitleDetails = ({
                         canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
                         containerRef={containerRef}
                         selectValues={selectValues}
-                        seasonPersons={seasonPersons}
+                        seasonPersons={propagateAddPersons}
                         onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
                         generateMsvIds={generateMsvIds}
                         regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
@@ -272,7 +276,6 @@ TitleDetails.propTypes = {
     isMOVTitlePublishing: PropTypes.bool,
     fetchConfigApiEndpoints: PropTypes.func,
     castCrewConfig: PropTypes.object,
-    seasonPersons: PropTypes.array,
     titleLoading: PropTypes.bool,
     emetLoading: PropTypes.bool,
     externalIdsLoading: PropTypes.bool,
@@ -306,7 +309,6 @@ TitleDetails.defaultProps = {
     emetLoading: true,
     externalIdsLoading: true,
     castCrewConfig: {},
-    seasonPersons: [],
 };
 
 const mapStateToProps = () => {
@@ -322,7 +324,6 @@ const mapStateToProps = () => {
     const isMOVTitleSyncingSelector = selectors.createMOVTitleIsSyncingSelector();
     const isVZTitlePublishingSelector = selectors.createVZTitleIsPublishingSelector();
     const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
-    const seasonPersonsSelector = selectors.seasonPersonsSelector();
     const settingsConfigEndpointsSelector = settingsSelectors.createSettingsEndpointsSelector();
 
     return (state, props) => ({
@@ -340,7 +341,6 @@ const mapStateToProps = () => {
         isMOVTitleSyncing: isMOVTitleSyncingSelector(state, props),
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
-        seasonPersons: seasonPersonsSelector(state),
         castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
     });
 };

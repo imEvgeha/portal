@@ -70,7 +70,9 @@ export const getFilteredByIdOrders = (id, type, status, page) => {
 };
 
 export const getAdvancedFulfilmentOrdersForServiceOrder = (id, page, size) => {
-    const url = `${baseServicingOrdersURL(config)}/so/${id}/fo?page=${page}&size=${size}`;
+    const url = `${baseServicingOrdersURL(
+        config
+    )}/so/${id}/soi;external_id=ASC/fo?soiStatus=All&page=${page}&size=${size}`;
     return nexusFetch(url);
 };
 

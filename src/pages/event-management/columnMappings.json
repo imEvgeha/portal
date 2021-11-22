@@ -42,6 +42,16 @@
         "minWidth": 200
     },
     {
+        "colId": "eventTypeContext",
+        "javaVariableName": "eventTypeContext",
+        "field": "eventTypeContext",
+        "headerName": "Event Type Context",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "minWidth": 200
+    },
+    {
         "colId": "tenantId",
         "javaVariableName": "tenantId",
         "width": 100,

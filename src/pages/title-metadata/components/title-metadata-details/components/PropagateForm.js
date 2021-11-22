@@ -4,11 +4,13 @@ import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
 import {RadioGroup} from '@atlaskit/radio';
+import {checkIfEmetIsEditorial} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import {isEmpty} from 'lodash';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {searchPersonById} from '../../../../avails/right-details/rightDetailsServices';
 import Loading from '../../../../static/Loading';
-import {UPDATE_SEASON_PERSONS} from '../../../titleMetadataActionTypes';
+import {propagateAddPersons} from '../../../titleMetadataActions';
+import {propagateAddPersonsSelector, propagateRemovePersonsSelector} from '../../../titleMetadataSelectors';
 import {
     CAST_CREW,
     CANCEL_BUTTON,
@@ -44,6 +46,8 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     const [radioValue, setRadioValue] = useState('none');
     const [isLoading, setIsLoading] = useState(false);
     const [localizationCastCrew, setLocalizationCastCrew] = useState([]);
+    const propagateAddedPersons = useSelector(propagateAddPersonsSelector);
+    const propagateRemovePersons = useSelector(propagateRemovePersonsSelector);
 
     const {castCrew, contentType, editorial, editorialMetadata} = getValues();
     const persons = isEmpty(person) ? castCrew : [person];
@@ -89,13 +93,16 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             };
         });
 
+        const newCastCrew = isEmpty(emet.castCrew)
+            ? localizedUniquePersons
+            : [...emet.castCrew, ...localizedUniquePersons];
+
         const updatedEmet = {
             ...emet,
-            castCrew: isEmpty(emet.castCrew) ? localizedUniquePersons : [...emet.castCrew, ...localizedUniquePersons],
+            castCrew: newCastCrew,
         };
-
-        if (updatedEmet.language === editorial.language && updatedEmet.locale === editorial.locale) {
-            setFieldValue(EDITORIAL, updatedEmet);
+        if (checkIfEmetIsEditorial(emet, editorial)) {
+            setFieldValue(EDITORIAL, {...editorial, castCrew: newCastCrew});
         }
 
         return updatedEmet;
@@ -118,10 +125,16 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             };
         });
 
-        dispatch({
-            type: UPDATE_SEASON_PERSONS,
-            payload: seasonCastCrewPropagateData,
-        });
+        const payload = {
+            added: [...propagateAddedPersons, ...seasonCastCrewPropagateData],
+            removed: propagateRemovePersons.filter(person => {
+                return !seasonCastCrewPropagateData.some(
+                    entry => entry.id === person.id && entry.personType === person.personType
+                );
+            }),
+        };
+
+        dispatch(propagateAddPersons(payload));
     };
 
     const handleAdd = async () => {

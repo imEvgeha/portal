@@ -39,8 +39,8 @@ export const updateRight = payload => ({
     payload,
 });
 
-export const setUserDefinedGrid = payload => ({
-    type: actionTypes.SET_USER_DEFINED_GRID,
+export const storeAvailsUserDefinedGrid = payload => ({
+    type: actionTypes.SET_AVAILS_USER_DEFINED_GRID,
     payload,
 });
 
