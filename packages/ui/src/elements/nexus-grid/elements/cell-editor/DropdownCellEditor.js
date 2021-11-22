@@ -84,13 +84,12 @@ class DropdownCellEditor extends Component {
             ) {
                 if (!this.isAllSelected()) {
                     elem.selected = true;
-                    elem.isDirty = true;
                 } else {
                     // const prevIsSelected = elem.selected;
                     const prevIsSelected = elem.selected;
                     elem.selected = !prevIsSelected;
-                    elem.isDirty = true;
                 }
+                elem.isDirty = true;
             }
         });
 
@@ -107,10 +106,8 @@ class DropdownCellEditor extends Component {
             if ((isUndefined(elem.isDisabled) || isUndefined(elem.withdrawn)) && (elem.isDisabled || elem.withdrawn)) {
                 return undefined;
             }
-            if (elem.selected) {
-                return true;
-            }
-            return false;
+
+            return Boolean(elem.selected);
         });
 
         return isUndefined(selectedElements.find(elem => elem === false));
