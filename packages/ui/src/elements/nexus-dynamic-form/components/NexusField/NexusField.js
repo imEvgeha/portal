@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Field as AKField, CheckboxField} from '@atlaskit/form';
@@ -83,6 +83,8 @@ const NexusField = ({
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, getCurrentValues});
     };
+
+    const [required, setRequired] = useState(!!(checkDependencies('required') || isRequired));
 
     const addedProps = {
         isOptional,
@@ -490,8 +492,6 @@ const NexusField = ({
         }
     };
 
-    const required = !!(checkDependencies('required') || isRequired);
-
     return (
         <ErrorBoundary>
             <div
@@ -510,14 +510,7 @@ const NexusField = ({
                     {({fieldProps, error}) => (
                         <>
                             {!FIELDS_WITHOUT_LABEL.includes(type) &&
-                                renderLabel(
-                                    label,
-                                    !!(checkDependencies('required') || isRequired),
-                                    tooltip,
-                                    isGridLayout,
-                                    isRequiredVZ,
-                                    oneIsRequiredVZ
-                                )}
+                                renderLabel(label, required, tooltip, isGridLayout, isRequiredVZ, oneIsRequiredVZ)}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
                                     {!getIsReadOnly() && (view === VIEWS.EDIT || view === VIEWS.CREATE)
