@@ -105,7 +105,7 @@ const rightsReducer = (state = initialState, action = {}) => {
                 ...state,
                 filter: payload,
             };
-        case actionTypes.SET_USER_DEFINED_GRID:
+        case actionTypes.SET_AVAILS_USER_DEFINED_GRID:
             return {
                 ...state,
                 gridState: {...state.gridState, ...payload},

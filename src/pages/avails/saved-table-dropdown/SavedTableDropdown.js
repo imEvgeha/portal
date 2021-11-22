@@ -7,7 +7,7 @@ import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils'
 import {get} from 'lodash';
 import {connect} from 'react-redux';
 import {insertNewGridModel} from '../../dop-tasks/utils';
-import {setUserDefinedGrid} from '../rights-repository/rightsActions';
+import {storeAvailsUserDefinedGrid} from '../rights-repository/rightsActions';
 import {createUserGridSelector} from '../rights-repository/rightsSelectors';
 import {
     GROUPED_OPTIONS,
@@ -20,7 +20,7 @@ import {
 } from './constants';
 import './SavedTableDropdown.scss';
 
-const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridState, gridState}) => {
+const SavedTableDropdown = ({gridApi, columnApi, username, storeAvailsUserDefinedGrid, gridState}) => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [groupedOptions, setGroupedOptions] = useState(GROUPED_OPTIONS);
 
@@ -96,7 +96,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
             applyPredefinedTableView(gridApi, SAVED_TABLE_SELECT_OPTIONS[0]?.value);
         }
         const filtered = get(gridState, username, []).filter(o => o.id !== item);
-        setUserDefinedGridState({[username]: filtered});
+        storeAvailsUserDefinedGrid({[username]: filtered});
     };
 
     const onCreateOption = value => {
@@ -110,7 +110,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
             const columnState = columnApi.getColumnState();
             const model = {id: value, filterModel, sortModel, columnState};
             const newUserData = insertNewGridModel(value, get(gridState, username, []), model);
-            setUserDefinedGridState({[username]: newUserData});
+            storeAvailsUserDefinedGrid({[username]: newUserData});
             const newUserOptions = [...groupedOptions[1].options, {label: value, value}];
             setGroupedOptions([groupedOptions[0], {...groupedOptions[1], options: newUserOptions}]);
         }
@@ -170,7 +170,7 @@ SavedTableDropdown.propTypes = {
     columnApi: PropTypes.object.isRequired,
     username: PropTypes.string,
     gridState: PropTypes.object,
-    setUserDefinedGridState: PropTypes.func.isRequired,
+    storeAvailsUserDefinedGrid: PropTypes.func.isRequired,
 };
 
 SavedTableDropdown.defaultProps = {
@@ -186,7 +186,7 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    setUserDefinedGridState: payload => dispatch(setUserDefinedGrid(payload)),
+    storeAvailsUserDefinedGrid: payload => dispatch(storeAvailsUserDefinedGrid(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedTableDropdown);

@@ -89,6 +89,7 @@ const CastCrew = ({
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                     emetLanguage={language}
+                    isVerticalLayout={isVerticalLayout}
                     setUpdate={setUpdate}
                     {...props}
                 />

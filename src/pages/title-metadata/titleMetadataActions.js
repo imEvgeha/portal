@@ -15,8 +15,13 @@ export const getTerritoryMetadata = payload => ({
     payload,
 });
 
-export const updateSeasonPersonsPropagate = payload => ({
-    type: actionTypes.UPDATE_SEASON_PERSONS,
+export const propagateAddPersons = payload => ({
+    type: actionTypes.PROPAGATE_ADD_PERSONS,
+    payload,
+});
+
+export const removeSeasonPerson = payload => ({
+    type: actionTypes.PROPAGATE_REMOVE_PERSONS,
     payload,
 });
 
@@ -47,3 +52,10 @@ export const clearTitle = () => ({
 export const clearSeasonPersons = () => ({
     type: actionTypes.CLEAR_SEASON_PERSONS,
 });
+
+export const storeTitleUserDefinedGridState = payload => {
+    return {
+        type: actionTypes.SET_TITLE_USER_DEFINED_GRID_STATE,
+        payload,
+    };
+};
