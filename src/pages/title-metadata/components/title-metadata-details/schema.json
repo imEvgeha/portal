@@ -196,6 +196,7 @@
                             "path": "episodic.seasonNumber",
                             "type": "link",
                             "isRequired": true,
+                            "isReadOnlyInEdit": true,
                             "linkConfig": {
                                 "baseUrl": "/metadata/detail/",
                                 "contentType": "SEASON"
