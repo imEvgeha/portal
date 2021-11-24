@@ -35,7 +35,7 @@ export const SELECT_VALUES = {
         '_4K_UHD_SDR_60',
         '_4K_UHD_HDR_60',
     ],
-    deliveryMethod: ['Aspera Servicing', 'IFT Servicing'],
+    deliveryMethod: ['Aspera Servicing', 'IFT Servicing', 'SmartJog Servicing'],
 };
 
 export const TABLE_ROW = {
