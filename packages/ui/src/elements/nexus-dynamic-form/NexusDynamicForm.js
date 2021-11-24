@@ -160,10 +160,16 @@ const NexusDynamicForm = ({
         if (isTitlePage) {
             const allowedContents = [SEASON, SERIES];
             const contentType = get(initialData, 'contentType', '');
+            const handleClickOnShowAll = async () => {
+                await sessionStorage.removeItem('storedMetadataFilter');
+                await sessionStorage.removeItem('storedSelectedID');
+            };
             if (allowedContents.includes(contentType)) {
                 return (
                     <div className="nexus-c-dynamic-form__show-all">
-                        <a href={createLink(contentType)}>Show all {contentType === SERIES ? 'seasons' : 'episodes'}</a>
+                        <a onClick={handleClickOnShowAll} href={createLink(contentType)}>
+                            Show all {contentType === SERIES ? 'seasons' : 'episodes'}
+                        </a>
                     </div>
                 );
             }
