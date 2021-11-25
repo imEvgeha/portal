@@ -10,6 +10,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     <NexusSavedTableDropdown
       applyPredefinedTableView={[Function]}
       columnApi={null}
+      externalFilter={Object {}}
       gridApi={null}
       isTitleMetadata={true}
       lastStoredFilter={
@@ -17,6 +18,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
           "label": undefined,
         }
       }
+      onUserDefinedViewSelected={[Function]}
       setBlockLastFilter={[Function]}
       setUserDefinedGridState={[Function]}
       tableLabels={
