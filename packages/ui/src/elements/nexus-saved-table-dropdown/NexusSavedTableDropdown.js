@@ -25,8 +25,10 @@ const NexusSavedTableDropdown = ({
     gridApi,
     columnApi,
     username,
+    externalFilter,
     setUserDefinedGridState,
     applyPredefinedTableView,
+    onUserDefinedViewSelected,
     tableLabels,
     tableOptions,
     lastStoredFilter,
@@ -70,7 +72,7 @@ const NexusSavedTableDropdown = ({
             const filterModel = gridApi.getFilterModel();
             const sortModel = getSortModel(columnApi);
             const columnState = columnApi.getColumnState();
-            const model = {id: viewId, filterModel, sortModel, columnState};
+            const model = {id: viewId, filterModel, sortModel, columnState, externalFilter};
             const newUserData = insertNewGridModel(viewId, userDefinedGridStates, model);
             setUserDefinedGridState({[username]: newUserData});
         }
@@ -92,7 +94,7 @@ const NexusSavedTableDropdown = ({
             gridApi.setFilterModel(filterModel);
             setSorting(sortModel, columnApi);
             columnApi.setColumnState(columnState);
-
+            onUserDefinedViewSelected(selectedModel[0]);
             // Used for saving state of titleMetadata filter
             isTitleMetadata && sessionStorage.setItem('storedSelectedID', id);
         }
@@ -162,7 +164,9 @@ NexusSavedTableDropdown.propTypes = {
     columnApi: PropTypes.object,
     username: PropTypes.string,
     setUserDefinedGridState: PropTypes.func,
+    externalFilter: PropTypes.object,
     applyPredefinedTableView: PropTypes.func,
+    onUserDefinedViewSelected: PropTypes.func,
     tableLabels: PropTypes.object,
     tableOptions: PropTypes.array,
     lastStoredFilter: PropTypes.object,
@@ -175,8 +179,10 @@ NexusSavedTableDropdown.defaultProps = {
     gridApi: {},
     columnApi: {},
     username: '',
+    externalFilter: {},
     setUserDefinedGridState: () => null,
     applyPredefinedTableView: () => null,
+    onUserDefinedViewSelected: () => null,
     tableLabels: {},
     tableOptions: [],
     lastStoredFilter: {},

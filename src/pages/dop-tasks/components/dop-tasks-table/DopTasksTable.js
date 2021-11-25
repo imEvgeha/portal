@@ -170,7 +170,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
     const onSortChanged = ({columnApi}) => {
         // get sorting column and prepare data for passing it as a payload instead of url params (not supported by DOP api)
         const sortModel = getSortModel(columnApi);
-        if (sortModel.length) {
+        if (sortModel?.length) {
             const sortCriterion = [
                 {
                     fieldName: sortModel[0].colId,
