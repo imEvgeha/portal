@@ -100,7 +100,7 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
     }
 };
 
-export const applyPredefinedTableView = (gridApi, filter, columnApi) => {
+export const applyPredefinedTableView = (gridApi, filter, columnApi, cb) => {
     switch (filter) {
         case 'open': {
             clearAllDopTasksFilters(gridApi);
@@ -139,6 +139,7 @@ export const applyPredefinedTableView = (gridApi, filter, columnApi) => {
         default:
         // no-op
     }
+    cb && cb();
 };
 
 const setTaskStatusFilter = (gridApi, values) => {
