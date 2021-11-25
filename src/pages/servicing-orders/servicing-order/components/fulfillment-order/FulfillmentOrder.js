@@ -209,14 +209,21 @@ export const FulfillmentOrder = ({
                     closeModal();
                     const dataToSave = prepareOrderPutData(fulfillmentOrder);
                     const firstExternalServices = dataToSave?.definition?.deteServices?.[0].externalServices;
-                    if (
-                        firstExternalServices?.sourceStandard === undefined ||
-                        firstExternalServices?.sourceStandard === ' '
-                    ) {
+                    const sourceStandardAsParameter = firstExternalServices?.parameters?.find(
+                        param => param.name === 'SourceStandard'
+                    )?.value;
+                    if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
                         dataToSave.definition.deteServices[0].externalServices = {
                             ...firstExternalServices,
-                            sourceStandard:
-                                dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources?.standard,
+                            parameters: [
+                                ...firstExternalServices.parameters,
+                                {
+                                    name: 'SourceStandard',
+                                    value:
+                                        dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources
+                                            ?.standard,
+                                },
+                            ],
                         };
                     }
                     const payload = {data: dataToSave};
@@ -241,12 +248,40 @@ export const FulfillmentOrder = ({
         } else {
             const dataToSave = prepareOrderPutData(fulfillmentOrder);
             const firstExternalServices = dataToSave?.definition?.deteServices?.[0].externalServices;
-            if (firstExternalServices?.sourceStandard === undefined || firstExternalServices?.sourceStandard === ' ') {
+            const sourceStandardAsParameter = firstExternalServices?.parameters?.find(
+                param => param.name === 'SourceStandard'
+            )?.value;
+            if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
                 dataToSave.definition.deteServices[0].externalServices = {
                     ...firstExternalServices,
-                    sourceStandard:
-                        dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources?.standard,
+                    parameters: [
+                        ...firstExternalServices.parameters,
+                        {
+                            name: 'SourceStandard',
+                            value:
+                                dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources?.standard,
+                        },
+                    ],
                 };
+            }
+
+            if (dataToSave.definition.deteServices.length) {
+                dataToSave.definition.deteServices.map(item => {
+                    if (item.externalServices.sourceStandard) {
+                        const sourceStandard = item.externalServices.sourceStandard;
+                        const indexOfSourceStandard = item.externalServices.parameters.findIndex(
+                            elem => elem.name === 'SourceStandard'
+                        );
+                        indexOfSourceStandard >= 0
+                            ? (item.externalServices.parameters[indexOfSourceStandard].value = sourceStandard)
+                            : (item.externalServices.parameters = [
+                                  ...item.externalServices.parameters,
+                                  {name: 'SourceStandard', value: sourceStandard},
+                              ]);
+                        delete item.externalServices['sourceStandard'];
+                    }
+                    return item;
+                });
             }
 
             const payload = {data: dataToSave};

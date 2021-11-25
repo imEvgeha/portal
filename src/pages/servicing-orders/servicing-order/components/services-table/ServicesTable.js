@@ -79,7 +79,9 @@ const ServicesTable = ({
                     operationalStatus: service.foiStatus || '',
                     rowIndex: index,
                     rowHeight: 50,
-                    sourceStandard: service.externalServices.sourceStandard,
+                    sourceStandard: service?.externalServices?.parameters?.find(
+                        param => param.name === 'SourceStandard'
+                    )?.value,
                     deliveryMethod: service?.deteTasks?.deteDeliveries?.[0]
                         ? service.deteTasks.deteDeliveries[0].deliveryMethod
                         : undefined,
@@ -315,7 +317,8 @@ const ServicesTable = ({
                 currentService.externalServices.assetType = data.assetType;
                 currentService.externalServices.formatType = data.spec;
                 currentService.overrideStartDate = data.doNotStartBefore || '';
-                currentService.externalServices.sourceStandard = data.sourceStandard;
+                currentService.externalServices.parameters.find(param => param.name === 'SourceStandard').value =
+                    data.sourceStandard;
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
 
