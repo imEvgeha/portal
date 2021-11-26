@@ -426,10 +426,12 @@ export const renderNexusField = (
         path,
         setDisableSubmit,
         setUpdatedValues,
+        setUpdatedCastCrew,
         updatedValues,
         prefix,
         isTitlePage,
         setUpdate,
+        allData,
     }
 ) => {
     return toShow(field, updatedValues || initialData, prefix) ? (
@@ -455,8 +457,10 @@ export const renderNexusField = (
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
             setUpdatedValues={setUpdatedValues}
+            setUpdatedCastCrew={setUpdatedCastCrew}
             isTitlePage={isTitlePage}
             setUpdate={setUpdate}
+            allData={allData}
         />
     ) : null;
 };

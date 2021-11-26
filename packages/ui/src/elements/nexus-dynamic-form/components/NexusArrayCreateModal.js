@@ -19,8 +19,10 @@ const NexusArrayCreateModal = ({
     initialData,
     closeModal,
     prefix,
+    allData,
 }) => {
     const [updatedValues, setUpdatedValues] = useState(null);
+    const [updatedCastCrew, setUpdatedCastCrew] = useState([]);
 
     const getVisibleFields = allFields => {
         const updateFields = {...allFields};
@@ -40,7 +42,15 @@ const NexusArrayCreateModal = ({
 
     return (
         <div>
-            <AKForm onSubmit={values => handleModalSubmit(values)}>
+            <AKForm
+                onSubmit={values => {
+                    handleModalSubmit(
+                        values?.editorial?.castCrew?.length
+                            ? values
+                            : {...values, editorial: {...values.editorial, castCrew: updatedCastCrew}}
+                    );
+                }}
+            >
                 {({formProps, reset, getValues}) => (
                     <form {...formProps}>
                         <div>
@@ -55,8 +65,10 @@ const NexusArrayCreateModal = ({
                                             castCrewConfig,
                                             initialData: {contentType: initialData.contentType},
                                             setUpdatedValues,
+                                            setUpdatedCastCrew,
                                             updatedValues,
                                             prefix,
+                                            allData,
                                         })}
                                     </div>
                                 );
@@ -99,6 +111,7 @@ NexusArrayCreateModal.propTypes = {
     closeModal: PropTypes.func,
     handleModalSubmit: PropTypes.func,
     prefix: PropTypes.string,
+    allData: PropTypes.object,
 };
 
 NexusArrayCreateModal.defaultProps = {
@@ -116,6 +129,7 @@ NexusArrayCreateModal.defaultProps = {
     closeModal: undefined,
     handleModalSubmit: undefined,
     prefix: undefined,
+    allData: {},
 };
 
 export default NexusArrayCreateModal;
