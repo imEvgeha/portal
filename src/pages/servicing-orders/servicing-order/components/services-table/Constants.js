@@ -114,3 +114,5 @@ export const ErrorTestRows = [
     {error: 'error 4', severity: 'ERROR'},
 ];
 export const DETE_SERVICE_TYPE = 'DETE Recipient';
+
+export const SOURCE_STANDARD = 'SourceStandard';

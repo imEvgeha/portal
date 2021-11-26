@@ -134,13 +134,16 @@ const ServicingOrder = ({match}) => {
                 let recp = {};
                 source.deteServices.forEach(item => {
                     const extId = get(item, 'externalServices.externalId', '');
-                    if (
-                        item.externalServices.sourceStandard === undefined ||
-                        item.externalServices.sourceStandard === ' '
-                    ) {
+                    const sourceStandardAsParameter = item.externalServices?.parameters?.find(
+                        param => param.name === 'SourceStandard'
+                    )?.value;
+                    if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
                         item.externalServices = {
                             ...item.externalServices,
-                            sourceStandard: item.deteSources?.[0]?.assetInfo?.standard,
+                            parameters: [
+                                ...item.externalServices.parameters,
+                                {name: 'SourceStandard', value: item.deteSources?.[0]?.assetInfo?.standard},
+                            ],
                         };
                     }
                     if (!item?.deteTasks?.deteDeliveries?.length)
