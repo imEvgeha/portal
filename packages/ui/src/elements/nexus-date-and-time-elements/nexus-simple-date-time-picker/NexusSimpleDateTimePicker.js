@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form';
 import {getDateFormatBasedOnLocale} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
+import {debounce} from 'lodash';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
 import styled from 'styled-components';
@@ -75,6 +76,33 @@ const NexusSimpleDateTimePicker = ({
         }
     };
 
+    const debouncedOnChange = useCallback(
+        debounce((newValue, callback) => {
+            callback(convertToRequiredFormat(newValue));
+        }, 600),
+        []
+    );
+
+    const debouncedOnTimeChange = useCallback(
+        debounce(time => {
+            const [hours, minutes] = moment(time, ['h:mm A']).format('HH:mm').split(':');
+            if (hours && minutes) {
+                const mergedDate = moment(date || undefined)
+                    .hours(Number(hours))
+                    .minutes(Number(minutes));
+                onChange(convertToRequiredFormat(mergedDate));
+            }
+        }, 600),
+        []
+    );
+
+    const input = document.getElementById(`react-select-date-picker-${id}-input`);
+
+    // eslint-disable-next-line no-unused-expressions
+    input?.addEventListener('input', e => {
+        debouncedOnTimeChange(e.target.value);
+    });
+
     return (
         <>
             {label && (
@@ -104,6 +132,15 @@ const NexusSimpleDateTimePicker = ({
                                     : onChange(convertToRequiredFormat(newValue + date.slice(MIN_DATE_LENGTH)));
                             },
                             formatDisplayLabel: date => `${moment(date).format(DISPLAY_DATE_FORMAT)}`,
+                            parseInputValue: e => {
+                                if (e) {
+                                    setDate(e);
+                                    debouncedOnChange(e, onChange);
+                                } else {
+                                    setDate('');
+                                    onChange('');
+                                }
+                            },
                         }}
                         timePickerProps={{
                             placeholder: TIME_PLACEHOLDER,
@@ -116,6 +153,7 @@ const NexusSimpleDateTimePicker = ({
                                     onChange(convertToRequiredFormat(mergedDate));
                                 }
                             },
+                            id: `date-picker-${id}`,
                         }}
                         timeIsEditable
                         times={TIMES}

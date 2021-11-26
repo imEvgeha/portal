@@ -79,6 +79,10 @@ const ServicesTable = ({
                     operationalStatus: service.foiStatus || '',
                     rowIndex: index,
                     rowHeight: 50,
+                    sourceStandard: service.externalServices.sourceStandard,
+                    deliveryMethod: service?.deteTasks?.deteDeliveries?.[0]
+                        ? service.deteTasks.deteDeliveries[0].deliveryMethod
+                        : undefined,
                 }));
 
                 setTableData(flattenedObject);
@@ -311,15 +315,25 @@ const ServicesTable = ({
                 currentService.externalServices.assetType = data.assetType;
                 currentService.externalServices.formatType = data.spec;
                 currentService.overrideStartDate = data.doNotStartBefore || '';
+                currentService.externalServices.sourceStandard = data.sourceStandard;
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
+
+                if (!currentService?.deteTasks?.deteDeliveries?.length) {
+                    currentService.deteTasks.deteDeliveries = [{deliveryMethod: SELECT_VALUES.deliveryMethod[0]}];
+                } else {
+                    currentService.deteTasks.deteDeliveries[0].deliveryMethod = data.deliveryMethod;
+                }
+
                 // watermark will not arrive for old orders, hence need to check
                 const extParamWatermark = currentService.externalServices.parameters.find(
                     param => param.name === 'Watermark'
                 );
                 if (extParamWatermark) extParamWatermark.value = data.watermark;
                 if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
-                    currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
+                    currentService.deteTasks.deteDeliveries[0].externalDelivery = {
+                        ...get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery', ''),
+                    };
                 currentService.status = data.operationalStatus;
 
                 const newServices = {...services, [providerServices]: updatedServices};
@@ -343,6 +357,7 @@ const ServicesTable = ({
         blankService.overrideDueDate = blankService.deteTasks.dueDate;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.externalId = newExternalId;
+        blankService.deteTasks.deteDeliveries[0].deliveryMethod = SELECT_VALUES.deliveryMethod[0];
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);

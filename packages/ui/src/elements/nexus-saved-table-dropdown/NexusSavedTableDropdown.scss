@@ -3,7 +3,7 @@
 
 .nexus-c-dop-tasks-dropdown {
     @include addSpacing('width', 100);
-    @include margin(0, 0, 0, 10);
+    @include margin(0, 10, 0, 10);
     display: flex;
     align-items: center;
 

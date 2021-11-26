@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import './SideTabs.scss';
 
-const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved, isEdit, setTabData}) => {
+const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) => {
     const [currentTab, setCurrentTab] = useState({
         tabIndex: 0,
         subTabIndex: 0,
@@ -22,16 +22,6 @@ const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved, isEdit, s
             clearIsRemoved();
         }
     }, [isRemoved]);
-
-    useEffect(() => {
-        if (data && !isEdit) {
-            setCurrentTab({
-                tabIndex: 0,
-                subTabIndex: 0,
-            });
-            setTabData(0);
-        }
-    }, [isEdit]);
 
     const handleTabChanged = (key, tabIndex, subTabIndex = 0) => {
         const oldSubTab = currentTab.subTabIndex;
@@ -65,6 +55,8 @@ const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved, isEdit, s
             const duration = moment.duration(moment.utc(masterTitle?.updatedAt).diff(moment.utc(obj?.updatedAt)));
             const secs = Math.abs(duration.asSeconds());
             const isDecorated = secs < 5;
+            const isRatings = path === 'ratings';
+
             if (checkSubTabValues(obj)) {
                 toReturn.push(
                     <div
@@ -75,7 +67,9 @@ const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved, isEdit, s
                             'nexus-c-side-tabs__subtab-container--open': currentTab.tabIndex === index,
                         })}
                     >
-                        {isDecorated && <StatusLink className="tablinks__status-link" />}
+                        {isDecorated && !isRatings && obj.parentEmetId && (
+                            <StatusLink className="tablinks__status-link" />
+                        )}
                         <Button onClick={() => handleTabChanged(key, index, subIndex)}>{getSubTabLabel(obj)}</Button>
                     </div>
                 );
@@ -144,19 +138,17 @@ const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved, isEdit, s
 
 SideTabs.propTypes = {
     data: PropTypes.object,
+    path: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     subTabs: PropTypes.array,
     isRemoved: PropTypes.bool,
-    setTabData: PropTypes.func.isRequired,
     clearIsRemoved: PropTypes.func.isRequired,
-    isEdit: PropTypes.bool,
 };
 
 SideTabs.defaultProps = {
     data: {},
     subTabs: [],
     isRemoved: false,
-    isEdit: false,
 };
 
 export default SideTabs;

@@ -11,7 +11,6 @@ import dashboard from './pages/legacy/stores/reducers/avail/dashboard';
 import manualRightsEntry from './pages/legacy/stores/reducers/avail/manualRightsEntry';
 import root from './pages/legacy/stores/reducers/index';
 import localeReducer from './pages/legacy/stores/reducers/localization/localeReducer';
-import media from './pages/legacy/stores/reducers/media/search';
 import titleReducer from './pages/legacy/stores/reducers/metadata/titleReducer';
 import manualTasksReducer from './pages/manual-tasks/manualTasksReducer';
 import metadataReducer from './pages/metadata/metadataReducer';
@@ -34,7 +33,6 @@ const createRootReducer = routerHistory =>
 
         root: createPersistReducer(rootPersistConfig, root), // rename it to 'config'
         settings,
-        media,
         dopReducer, // separate DOP reducer for all pages or integrate DOP per domain
 
         titleReducer, // remove it

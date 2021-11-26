@@ -10,14 +10,13 @@ import PartnerRequest from '../partner-request/PartnerRequest';
 import {SORT_DIRECTION} from './constants';
 import './ServiceOrderFilter.scss';
 
-const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirection, setDueDateSortDirection}) => {
+const ServiceOrderFilter = ({orderDetails, filter, setFilter, sortDirection, setSortDirection}) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const {
         tenant,
         external_id: externalId,
         description,
         configured_pr_id: configuredPrId,
-        sr_due_date: srDueDate,
         so_number: soNumber,
         title_manager: titleManager,
         completed_date: completedDate,
@@ -57,23 +56,16 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
             </div>
 
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
-                <NexusDatePicker
-                    id="dueDate"
-                    label="SO Due Date"
-                    value={getValidDate(srDueDate)}
-                    isDisabled
-                    isReturningTime={false}
-                    onChange={() => null}
-                />
-                {completedDate && 
-                <NexusDatePicker
-                    id="completedDate"
-                    label="Completed Date"
-                    value={getValidDate(completedDate)}
-                    isDisabled
-                    isReturningTime={false}
-                    onChange={() => null}
-                />}
+                {completedDate && (
+                    <NexusDatePicker
+                        id="completedDate"
+                        label="Completed Date"
+                        value={getValidDate(completedDate)}
+                        isDisabled
+                        isReturningTime={false}
+                        onChange={() => null}
+                    />
+                )}
             </div>
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
                 <div className="so-panel-filter-detail__dropdown">
@@ -86,12 +78,12 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
                     />
                 </div>
                 <div className="so-panel-filter-detail__dropdown">
-                    <label>Sort by Due Date</label>
+                    <label>Sort by</label>
                     <Select
                         options={SORT_DIRECTION}
-                        onChange={setDueDateSortDirection}
-                        value={dueDateSortDirection}
-                        placeholder="Select Date"
+                        onChange={setSortDirection}
+                        value={sortDirection}
+                        placeholder="Select type"
                     />
                 </div>
             </div>
@@ -103,15 +95,15 @@ ServiceOrderFilter.propTypes = {
     orderDetails: PropTypes.object.isRequired,
     filter: PropTypes.object,
     setFilter: PropTypes.func,
-    dueDateSortDirection: PropTypes.object,
-    setDueDateSortDirection: PropTypes.func,
+    sortDirection: PropTypes.object,
+    setSortDirection: PropTypes.func,
 };
 
 ServiceOrderFilter.defaultProps = {
     filter: {},
     setFilter: null,
-    dueDateSortDirection: {},
-    setDueDateSortDirection: null,
+    sortDirection: PropTypes.object,
+    setSortDirection: PropTypes.func,
 };
 
 export default ServiceOrderFilter;

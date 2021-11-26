@@ -6,7 +6,10 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
+import {history} from '../../index';
+import {showToastForErrors} from '../../util/http-client/handleError';
 import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
+import {uploadService} from './service/UploadService';
 import * as actionTypes from './titleMetadataActionTypes';
 import {
     getTitleById,
@@ -53,7 +56,12 @@ export function* loadTitle({payload}) {
         type: actionTypes.GET_TITLE_LOADING,
         payload: true,
     });
+
     try {
+        yield put({
+            type: actionTypes.CLEAR_TITLE,
+        });
+
         const response = yield call(getTitleById, {id: payload.id, isMgm: payload.isMgm});
         const updatedResponse = yield call(loadParentTitle, response);
         yield put({
@@ -65,6 +73,8 @@ export function* loadTitle({payload}) {
             payload: false,
         });
     } catch (error) {
+        const {bindingResult} = error.message;
+
         yield put({
             type: actionTypes.GET_TITLE_ERROR,
             payload: error,
@@ -73,6 +83,14 @@ export function* loadTitle({payload}) {
             type: actionTypes.GET_TITLE_LOADING,
             payload: false,
         });
+
+        showToastForErrors({
+            errorToast: {
+                description: bindingResult,
+            },
+        });
+
+        history.push('/metadata');
     }
 }
 
@@ -80,6 +98,11 @@ export function* loadExternalIds({payload}) {
     if (!payload.id) {
         return;
     }
+
+    yield put({
+        type: actionTypes.GET_EXTERNAL_IDS_LOADING,
+        payload: true,
+    });
 
     try {
         const response = yield call(getExternalIds, payload.id);
@@ -118,6 +141,10 @@ export function* loadEditorialMetadata({payload}) {
     if (!payload.id) {
         return;
     }
+    yield put({
+        type: actionTypes.GET_EDITORIAL_METADATA_LOADING,
+        payload: true,
+    });
 
     try {
         const response = yield call(getEditorialMetadataByTitleId, {id: payload.id, isMgm: payload.isMgm});
@@ -125,10 +152,18 @@ export function* loadEditorialMetadata({payload}) {
             type: actionTypes.GET_EDITORIAL_METADATA_SUCCESS,
             payload: response,
         });
+        yield put({
+            type: actionTypes.GET_EDITORIAL_METADATA_LOADING,
+            payload: false,
+        });
     } catch (error) {
         yield put({
             type: actionTypes.GET_EDITORIAL_METADATA_ERROR,
             payload: error,
+        });
+        yield put({
+            type: actionTypes.GET_EDITORIAL_METADATA_LOADING,
+            payload: false,
         });
     }
 }
@@ -173,7 +208,7 @@ export function* updateTitle({payload}) {
             payload: {
                 title: ERROR_TITLE,
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: UPDATE_TITLE_ERROR,
             },
         });
@@ -227,7 +262,7 @@ export function* syncTitle({payload}) {
             payload: {
                 title: 'Title Sync',
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: err.message,
             },
         });
@@ -271,7 +306,7 @@ export function* publishTitle({payload}) {
             payload: {
                 title: 'Publish title',
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: 'Unable to publish',
             },
         });
@@ -279,6 +314,51 @@ export function* publishTitle({payload}) {
         yield put({
             type: actionTypes.TITLE_IS_PUBLISHING_END,
             payload: payload.externalSystem,
+        });
+    }
+}
+
+function* uploadMetadata({payload}) {
+    const {file, ...rest} = payload || {};
+    const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Title.';
+
+    try {
+        yield put({
+            type: actionTypes.UPLOAD_METADATA_REQUEST,
+            payload: {},
+        });
+
+        const response = yield uploadService.uploadMetadata({file, params: rest});
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: `${UPLOAD_SUCCESS_MESSAGE} ${response.fileName}`,
+            },
+        });
+
+        yield put({
+            type: actionTypes.UPLOAD_METADATA_SUCCESS,
+            payload: {},
+        });
+    } catch (e) {
+        yield put({
+            type: actionTypes.UPLOAD_METADATA_ERROR,
+            payload: {},
+        });
+
+        console.log(e, 'error');
+
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: 'Upload Metadata error',
+                icon: ERROR_ICON,
+                isAutoDismiss: false,
+                description: `Type: ${e.type}`,
+            },
         });
     }
 }
@@ -292,5 +372,6 @@ export function* titleMetadataWatcher() {
         takeEvery(actionTypes.UPDATE_TITLE, updateTitle),
         takeEvery(actionTypes.SYNC_TITLE, syncTitle),
         takeEvery(actionTypes.PUBLISH_TITLE, publishTitle),
+        takeEvery(actionTypes.UPLOAD_METADATA, uploadMetadata),
     ]);
 }

@@ -5,7 +5,6 @@ import {
     PRODUCER,
     WRITER,
     ANIMATED_CHARACTER,
-    AWARD,
     RECORDING_ARTIST,
     VOICE_TALENT,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
@@ -13,7 +12,7 @@ import config from 'react-global-configuration';
 import {nexusFetch} from '../../../util/http-client/index';
 
 const createMultiCastPersonTypePath = () => {
-    const value = `${ACTOR},${ANIMATED_CHARACTER},${AWARD},${RECORDING_ARTIST},${VOICE_TALENT}&`.toLowerCase();
+    const value = `${ACTOR},${ANIMATED_CHARACTER},${RECORDING_ARTIST},${VOICE_TALENT}&`.toLowerCase();
     return `personTypes=${value}`;
 };
 

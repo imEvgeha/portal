@@ -25,3 +25,4 @@ yarn-error.log*
 debug.log
 
 packages/*/lib
+.vscode/settings.json

@@ -60,6 +60,7 @@ function* assignTasks({payload}) {
                 toastParams = {
                     title: SUCCESS_TITLE,
                     icon: SUCCESS_ICON,
+                    isAutoDismiss: true,
                     description: `${taskIds.length} tasks successfully ${action.toLowerCase()}ed to ${userId}.`,
                 };
                 break;
@@ -68,6 +69,7 @@ function* assignTasks({payload}) {
                 toastParams = {
                     title: ERROR_TITLE,
                     icon: ERROR_ICON,
+                    isAutoDismiss: false,
                     description: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
                 };
                 break;
@@ -83,6 +85,7 @@ function* assignTasks({payload}) {
                 toastParams = {
                     title: WARNING_TITLE,
                     icon: WARNING_ICON,
+                    isAutoDismiss: false,
                     description: `${jobDetails.success} tasks ${action.toLowerCase()}ed successfully to ${userId}.
                     Error in ${action.toLowerCase()}ing ${jobDetails.error} tasks.`,
                 };
@@ -92,6 +95,7 @@ function* assignTasks({payload}) {
                 toastParams = {
                     title: ERROR_TITLE,
                     icon: ERROR_ICON,
+                    isAutoDismiss: false,
                     description: `Status: ${statusResponse.status}`,
                 };
         }
@@ -108,7 +112,7 @@ function* assignTasks({payload}) {
             payload: {
                 title: ERROR_TITLE,
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
             },
         });
@@ -141,7 +145,7 @@ function* changeDOPPriority({payload}) {
             payload: {
                 title: ERROR_TITLE,
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: `Error in changing priority of ${taskIds.length} tasks.`,
             },
         });

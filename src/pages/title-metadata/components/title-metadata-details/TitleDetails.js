@@ -1,15 +1,18 @@
+/* eslint-disable react/prop-types */
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
+import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
+import Loading from '../../../static/Loading';
 import {FIELDS_TO_REMOVE, SYNC, VZ, MOVIDA} from '../../constants';
 import {
     getTitle,
@@ -20,6 +23,7 @@ import {
     updateTitle,
     syncTitle,
     publishTitle,
+    clearSeasonPersons,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
@@ -32,8 +36,8 @@ import {
     isStateEditable,
     isMgmTitle,
     prepareCategoryField,
-    prepareAwardsField,
     handleDirtyValues,
+    propagateSeasonsPersonsToEpisodes,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
@@ -65,11 +69,17 @@ const TitleDetails = ({
     isMOVTitleSyncing,
     isVZTitlePublishing,
     isMOVTitlePublishing,
+    titleLoading,
+    emetLoading,
+    clearSeasonPersons,
+    externalIdsLoading,
 }) => {
     const containerRef = useRef();
     const [refresh, setRefresh] = useState(false);
     const [VZDisabled, setVZDisabled] = useState(true);
     const [MOVDisabled, setMOVDisabled] = useState(true);
+    const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
+    const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
 
     const {fields} = schema;
 
@@ -90,6 +100,7 @@ const TitleDetails = ({
             nexusTitle && !isMgm && getExternalIds({id});
             getTerritoryMetadata({id, isMgm});
             getEditorialMetadata({id, isMgm});
+            clearSeasonPersons();
         }
     }, [refresh]);
 
@@ -118,12 +129,21 @@ const TitleDetails = ({
         });
 
         prepareCategoryField(updatedValues);
-        updatedValues['awards'] = prepareAwardsField(updatedValues, selectValues?.awards);
         Promise.all([
             updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
+            (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
+                propagateSeasonsPersonsToEpisodes(
+                    {
+                        addPersons: propagateAddPersons,
+                        deletePersons: propagateRemovePersons,
+                    },
+                    id
+                ),
+            clearSeasonPersons(),
         ]).then(() => {
+            setRefresh(prev => !prev);
             setVZDisabled(false);
             setMOVDisabled(false);
         });
@@ -145,6 +165,7 @@ const TitleDetails = ({
         const [movidaExternalIds] = getExternaIds('movida');
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
+
         return {
             ...updatedTitle,
             vzExternalIds,
@@ -167,32 +188,33 @@ const TitleDetails = ({
     };
 
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
-
+    const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
     return (
-        <div className="nexus-c-title-details">
+        <div className={classnames(loading ? 'nexus-c-title-details__loading' : 'nexus-c-title-details')}>
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
-            {!isLoadingSelectValues && !isEmpty(selectValues) && (
-                <NexusDynamicForm
-                    castCrewConfig={castCrewConfig}
-                    searchPerson={searchPerson}
-                    schema={schema}
-                    initialData={extendTitleWithExternalIds()}
-                    canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
-                    containerRef={containerRef}
-                    selectValues={selectValues}
-                    onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
-                    generateMsvIds={generateMsvIds}
-                    regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
-                    hasButtons={isNexusTitle(title.id)}
-                    isSaving={isSaving}
-                    setRefresh={setRefresh}
-                    isTitlePage
-                />
-            )}
-            <NexusStickyFooter>
-                <NexusStickyFooter.LeftActions>
-                    {title.id && externalIds && (
-                        <>
+            {loading ? (
+                <Loading />
+            ) : (
+                <>
+                    <NexusDynamicForm
+                        castCrewConfig={castCrewConfig}
+                        searchPerson={searchPerson}
+                        schema={schema}
+                        initialData={extendTitleWithExternalIds()}
+                        canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
+                        containerRef={containerRef}
+                        selectValues={selectValues}
+                        seasonPersons={propagateAddPersons}
+                        onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
+                        generateMsvIds={generateMsvIds}
+                        regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
+                        hasButtons={isNexusTitle(title.id)}
+                        isSaving={isSaving}
+                        setRefresh={setRefresh}
+                        isTitlePage
+                    />
+                    <NexusStickyFooter>
+                        <NexusStickyFooter.LeftActions>
                             <SyncPublish
                                 externalSystem={VZ}
                                 externalIds={externalIds}
@@ -201,6 +223,7 @@ const TitleDetails = ({
                                 isPublishing={isVZTitlePublishing}
                                 isDisabled={VZDisabled}
                                 titleUpdatedAt={title.updatedAt}
+                                hasButtons={isNexusTitle(title.id)}
                             />
                             <SyncPublish
                                 externalSystem={MOVIDA}
@@ -210,12 +233,13 @@ const TitleDetails = ({
                                 isPublishing={isMOVTitlePublishing}
                                 isDisabled={MOVDisabled}
                                 titleUpdatedAt={title.updatedAt}
+                                hasButtons={isNexusTitle(title.id)}
                             />
-                            <ActionMenu titleId={title.id} />
-                        </>
-                    )}
-                </NexusStickyFooter.LeftActions>
-            </NexusStickyFooter>
+                            {title.id && <ActionMenu titleId={title.id} />}
+                        </NexusStickyFooter.LeftActions>
+                    </NexusStickyFooter>
+                </>
+            )}
         </div>
     );
 };
@@ -229,6 +253,7 @@ TitleDetails.propTypes = {
     editorialMetadata: PropTypes.array,
     getTitle: PropTypes.func,
     clearTitle: PropTypes.func,
+    clearSeasonPersons: PropTypes.func,
     getExternalIds: PropTypes.func,
     getTerritoryMetadata: PropTypes.func,
     getEditorialMetadata: PropTypes.func,
@@ -244,6 +269,9 @@ TitleDetails.propTypes = {
     isMOVTitlePublishing: PropTypes.bool,
     fetchConfigApiEndpoints: PropTypes.func,
     castCrewConfig: PropTypes.object,
+    titleLoading: PropTypes.bool,
+    emetLoading: PropTypes.bool,
+    externalIdsLoading: PropTypes.bool,
 };
 
 TitleDetails.defaultProps = {
@@ -269,11 +297,18 @@ TitleDetails.defaultProps = {
     isVZTitlePublishing: false,
     isMOVTitlePublishing: false,
     fetchConfigApiEndpoints: () => null,
+    clearSeasonPersons: () => null,
+    titleLoading: true,
+    emetLoading: true,
+    externalIdsLoading: true,
     castCrewConfig: {},
 };
 
 const mapStateToProps = () => {
     const titleSelector = selectors.createTitleSelector();
+    const externalIdsLoadingSelector = selectors.createExternalIdsLoadingSelector();
+    const titleLoadingSelector = selectors.createTitleLoadingSelector();
+    const emetLoadingSelector = selectors.createEmetLoadingSelector();
     const selectValuesLoadingSelector = createLoadingSelector(['FETCH_SELECT_VALUES']);
     const externalIdsSelector = selectors.createExternalIdsSelector();
     const territoryMetadataSelector = selectors.createTerritoryMetadataSelector();
@@ -286,6 +321,9 @@ const mapStateToProps = () => {
 
     return (state, props) => ({
         title: titleSelector(state, props),
+        titleLoading: titleLoadingSelector(state),
+        externalIdsLoading: externalIdsLoadingSelector(state),
+        emetLoading: emetLoadingSelector(state),
         externalIds: externalIdsSelector(state, props),
         territoryMetadata: territoryMetadataSelector(state, props),
         editorialMetadata: editorialMetadataSelector(state, props),
@@ -303,6 +341,7 @@ const mapStateToProps = () => {
 const mapDispatchToProps = dispatch => ({
     getTitle: payload => dispatch(getTitle(payload)),
     clearTitle: () => dispatch(clearTitle()),
+    clearSeasonPersons: () => dispatch(clearSeasonPersons()),
     getExternalIds: payload => dispatch(getExternalIds(payload)),
     getTerritoryMetadata: payload => dispatch(getTerritoryMetadata(payload)),
     getEditorialMetadata: payload => dispatch(getEditorialMetadata(payload)),

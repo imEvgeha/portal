@@ -1,87 +1,152 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
+import {RadioGroup} from '@atlaskit/radio';
+import {checkIfEmetIsEditorial} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import {isEmpty} from 'lodash';
+import {useDispatch, useSelector} from 'react-redux';
 import {searchPersonById} from '../../../../avails/right-details/rightDetailsServices';
 import Loading from '../../../../static/Loading';
+import {propagateAddPersons} from '../../../titleMetadataActions';
+import {propagateAddPersonsSelector, propagateRemovePersonsSelector} from '../../../titleMetadataSelectors';
 import {
     CAST_CREW,
     CANCEL_BUTTON,
-    ADD_BUTTON,
+    PROPAGATE,
     EDITORIAL,
     EDITORIAL_METADATA,
     EMPTY_CAST_CREW,
     EMPTY_EMETS,
     EMETS,
+    SEASON,
+    EPISODE,
 } from './propagateConstants';
 import './PropagateForm.scss';
 
+const episodePropagateOptions = [
+    {
+        label: 'None',
+        value: 'none',
+    },
+    {
+        label: 'Core',
+        value: 'core',
+    },
+    {
+        label: 'Core & EMets',
+        value: 'emets',
+    },
+];
+
 const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
-    const {castCrew, editorial, editorialMetadata} = getValues();
+    const dispatch = useDispatch();
+    const [checkedEmet, setCheckedEmet] = useState(true);
+    const [radioValue, setRadioValue] = useState('none');
+    const [isLoading, setIsLoading] = useState(false);
+    const [localizationCastCrew, setLocalizationCastCrew] = useState([]);
+    const propagateAddedPersons = useSelector(propagateAddPersonsSelector);
+    const propagateRemovePersons = useSelector(propagateRemovePersonsSelector);
+
+    const {castCrew, contentType, editorial, editorialMetadata} = getValues();
     const persons = isEmpty(person) ? castCrew : [person];
     const isCastCrewEmpty = !castCrew?.length;
     const isEMetsEmpty = !editorialMetadata?.length;
-    const [checkedEmet, setCheckedEmet] = useState(false);
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [localizationCastCrew, setLocalizationCastCrew] = useState([]);
 
     useEffect(() => {
         async function fetchLocalizationPersons() {
             setIsLoading(true);
             const allLocalizationsPersons = persons.map(async ({id}) => {
-                const localizationPerson = await searchPersonById(id);
-                return localizationPerson;
+                try {
+                    const localizationPerson = await searchPersonById(id);
+                    return localizationPerson;
+                } catch (err) {
+                    return;
+                }
             });
 
             const localizationPersons = await Promise.all(allLocalizationsPersons);
             setLocalizationCastCrew(localizationPersons);
             setIsLoading(false);
         }
-        fetchLocalizationPersons();
+        !isEmpty(persons) && fetchLocalizationPersons();
     }, [castCrew]);
 
     const getPropagateMessage = () => `Propagate ${isEmpty(person) ? CAST_CREW : person.displayName} to...`;
 
-    const handleAdd = async () => {
-        if (castCrew.length && editorialMetadata.length) {
-            const pushUpdatedCastCrew = emet => {
-                persons.forEach(person => {
-                    const localization = localizationCastCrew.find(({id}) => id === person.id)?.localization;
-                    localization && (person.localization = localization);
-                });
+    const generateCastCrewToPropagate = emet => {
+        const uniquePersons = persons.filter(person => {
+            return isEmpty(emet.castCrew)
+                ? person
+                : !emet.castCrew.some(
+                      emetPerson => emetPerson.id === person.id && emetPerson.personType === person.personType
+                  );
+        });
 
-                if (emet.castCrew) {
-                    const uniquePersons = persons.filter(
-                        person =>
-                            !emet.castCrew.some(
-                                emetPerson =>
-                                    emetPerson.id === person.id && emetPerson.creditsOrder === person.creditsOrder
-                            )
-                    );
+        const localizedUniquePersons = uniquePersons.map(person => {
+            const localization = localizationCastCrew.find(({id}) => id === person.id)?.localization;
 
-                    emet.castCrew.push(...uniquePersons);
-                } else {
-                    emet.castCrew = persons;
-                }
-                return emet;
+            return {
+                ...person,
+                localization,
             };
+        });
 
-            const updateEditorialMetadata = editorialMetadata.map(emet => pushUpdatedCastCrew(emet));
-            const updatedEditorial = pushUpdatedCastCrew(editorial);
-            await setFieldValue(EDITORIAL, {});
-            await setFieldValue(EDITORIAL_METADATA, {});
+        const newCastCrew = isEmpty(emet.castCrew)
+            ? localizedUniquePersons
+            : [...emet.castCrew, ...localizedUniquePersons];
 
-            setFieldValue(EDITORIAL, updatedEditorial);
-            setFieldValue(EDITORIAL_METADATA, updateEditorialMetadata);
-            setError(null);
-            onClose();
-        } else {
-            setError(isCastCrewEmpty ? EMPTY_CAST_CREW : EMPTY_EMETS);
+        const updatedEmet = {
+            ...emet,
+            castCrew: newCastCrew,
+        };
+        if (checkIfEmetIsEditorial(emet, editorial)) {
+            setFieldValue(EDITORIAL, {...editorial, castCrew: newCastCrew});
         }
+
+        return updatedEmet;
     };
+
+    const handleAddEmetOption = async () => {
+        const updateEditorialMetadata = editorialMetadata.map(emet => generateCastCrewToPropagate(emet));
+
+        setFieldValue(EDITORIAL_METADATA, updateEditorialMetadata);
+    };
+
+    const handleAddSeasonOption = () => {
+        const seasonCastCrewPropagateData = persons.map(person => {
+            const {id, personType, creditsOrder} = person;
+            return {
+                id,
+                personType,
+                creditsOrder,
+                propagateToEmet: radioValue === 'emets',
+            };
+        });
+
+        const payload = {
+            added: [...propagateAddedPersons, ...seasonCastCrewPropagateData],
+            removed: propagateRemovePersons.filter(person => {
+                return !seasonCastCrewPropagateData.some(
+                    entry => entry.id === person.id && entry.personType === person.personType
+                );
+            }),
+        };
+
+        dispatch(propagateAddPersons(payload));
+    };
+
+    const handleAdd = async () => {
+        checkedEmet && !isCastCrewEmpty && !isEMetsEmpty && handleAddEmetOption();
+        radioValue !== 'none' && handleAddSeasonOption();
+
+        onClose();
+    };
+
+    const onChange = useCallback(event => {
+        setRadioValue(event.currentTarget.value);
+    }, []);
 
     return (
         <>
@@ -89,24 +154,54 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <Checkbox
-                    label={EMETS}
-                    value={EMETS}
-                    isChecked={checkedEmet}
-                    onChange={() => setCheckedEmet(!checkedEmet)}
-                    isDisabled={isCastCrewEmpty || isEMetsEmpty}
-                />
+                <>
+                    <div className="propagate-form__section">
+                        <h5>{contentType !== 'AD' ? contentType : 'ADVERTISMENT'}</h5>
+                        <Checkbox
+                            id="emets"
+                            label={EMETS}
+                            isChecked={checkedEmet}
+                            onChange={() => setCheckedEmet(!checkedEmet)}
+                            isDisabled={isCastCrewEmpty || isEMetsEmpty}
+                        />
+                    </div>
+                    {contentType === SEASON && (
+                        <>
+                            <hr className="solid" />
+                            <div className="propagate-form__section">
+                                <h5>{EPISODE}</h5>
+                                <div className="propagate-form__radio">
+                                    <RadioGroup
+                                        label={EPISODE}
+                                        value={radioValue}
+                                        options={episodePropagateOptions}
+                                        onChange={onChange}
+                                        isDisabled={isCastCrewEmpty}
+                                    />
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </>
             )}
 
             <div className="propagate-form__error">
-                {isCastCrewEmpty && !error && !isEMetsEmpty ? <ErrorMessage>{EMPTY_CAST_CREW}</ErrorMessage> : null}
-                {isEMetsEmpty && !error ? <ErrorMessage>{EMPTY_EMETS}</ErrorMessage> : null}
-                {error && <ErrorMessage>{error}</ErrorMessage>}
+                {isCastCrewEmpty && <ErrorMessage>{EMPTY_CAST_CREW}</ErrorMessage>}
+                {isEMetsEmpty && <ErrorMessage>{EMPTY_EMETS}</ErrorMessage>}
             </div>
             <div className="propagate-form__actions">
                 <Button onClick={() => onClose()}>{CANCEL_BUTTON}</Button>
-                <Button onClick={handleAdd} isDisabled={error || !checkedEmet || isLoading} appearance="primary">
-                    {ADD_BUTTON}
+                <Button
+                    onClick={handleAdd}
+                    isDisabled={
+                        (radioValue === 'none' && isEMetsEmpty) ||
+                        isCastCrewEmpty ||
+                        isLoading ||
+                        (radioValue === 'none' && !checkedEmet)
+                    }
+                    appearance="primary"
+                >
+                    {PROPAGATE}
                 </Button>
             </div>
         </>

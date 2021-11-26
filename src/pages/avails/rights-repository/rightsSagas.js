@@ -8,6 +8,7 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
+import {history} from '../../../index';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getLinkedToOriginalRightsV2, bulkDeleteRights} from '../availsService';
 import * as actionTypes from './rightsActionTypes';
@@ -150,6 +151,8 @@ export function* getRight({payload}) {
             type: actionTypes.GET_RIGHT_ERROR,
             payload: error,
         });
+
+        history.push('/avails');
     }
 }
 
@@ -199,7 +202,7 @@ export function* updateRight({payload}) {
             payload: {
                 title: UPDATE_RIGHT_FAILED,
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: `${error.message.message.slice(0, MAX_CHARS)}...`,
             },
         });

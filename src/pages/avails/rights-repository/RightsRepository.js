@@ -29,10 +29,12 @@ import {
     deselectIngest,
     downloadEmailAttachment,
     downloadFileAttachment,
+    fetchIngests,
     filterRightsByStatus,
     selectIngest,
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import {getFiltersToSend} from '../ingest-panel/utils';
 import PreplanRightsTable from '../preplan-rights-table/PreplanRightsTable';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {
@@ -86,6 +88,7 @@ const RightsRepository = ({
     isTableDataLoading,
     setIsTableDataLoading,
     username,
+    onFiltersChange,
 }) => {
     const isMounted = useRef(true);
     const [updatedMapping, setUpdatedMapping] = useState(null);
@@ -114,6 +117,26 @@ const RightsRepository = ({
         return () => {
             isMounted.current = false;
         };
+    }, []);
+
+    useEffect(() => {
+        const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
+        const timer = setInterval(() => {
+            if (updatedAttachment?.status === 'PENDING' && attachment?.status === 'PENDING')
+                onFiltersChange(getFiltersToSend());
+            else clearInterval(timer);
+        }, 3000);
+
+        return () => clearInterval(timer);
+    }, [selectedIngest, attachment]);
+
+    // update periodically the list of ingests
+    useEffect(() => {
+        const timer = setInterval(() => {
+            onFiltersChange(getFiltersToSend());
+        }, 50000);
+
+        return () => clearInterval(timer);
     }, []);
 
     useEffect(() => {
@@ -189,11 +212,11 @@ const RightsRepository = ({
 
             gridApi.forEachNode(node => {
                 const {data = {}} = node;
-                if (selectedIds.includes(data.id)) node.setSelected(true);
-                else data.id && node.setSelected(false);
+
+                selectedIds.includes(data.id) && node.setSelected(true);
             });
         }
-        if (isMounted.current) {
+        if (isMounted.current && selectedGridApi) {
             setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
         }
     }, [search, currentUserSelectedRights, selectedIngest, gridApi, isTableDataLoading]);
@@ -284,16 +307,38 @@ const RightsRepository = ({
         cellRendererParams: {isTooltipEnabled: true, setSingleRightMatch},
         lockVisible: true,
         cellStyle: {overflow: 'visible'},
-        field: 'id',
-        // The AgGridReact tracks changes in this field and provides new data for components
     });
 
     const columnsValidationDefsClone = columnDefsClone.map(col => {
+        const mappingCol = mapping.find(elem => elem.queryParamName === col.field);
         if (['icon'].includes(col.colId)) {
             // eslint-disable-next-line no-param-reassign
-            col = {
+            if (['updatedCatalogReceived'].includes(col.field)) {
+                return {
+                    ...col,
+                    sortable: false,
+                    width: 175,
+                };
+            }
+
+            if (['rightStatus'].includes(col.field)) {
+                return {
+                    ...col,
+                    sortable: false,
+                    width: 150,
+                };
+            }
+
+            return {
                 ...col,
                 sortable: false,
+            };
+        }
+
+        if (mappingCol?.dataType === 'multiselect') {
+            return {
+                ...col,
+                cellRenderer: 'wordsCellRenderer',
             };
         }
 
@@ -549,7 +594,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    }, 1000);
+    }, 200);
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
@@ -608,7 +653,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    }, 500);
+    }, 100);
 
     // Returns only selected rights that are also included in the selected ingest
     const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
@@ -745,6 +790,7 @@ RightsRepository.propTypes = {
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
+    onFiltersChange: PropTypes.func,
 };
 
 RightsRepository.defaultProps = {
@@ -756,6 +802,7 @@ RightsRepository.defaultProps = {
     rightsFilter: {},
     isTableDataLoading: false,
     setIsTableDataLoading: () => null,
+    onFiltersChange: PropTypes.func,
 };
 
 const mapStateToProps = () => {
@@ -787,6 +834,7 @@ const mapDispatchToProps = dispatch => ({
     downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
+    onFiltersChange: payload => dispatch(fetchIngests(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

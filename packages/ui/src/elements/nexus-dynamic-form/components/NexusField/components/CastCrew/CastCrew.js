@@ -19,6 +19,7 @@ const CastCrew = ({
     castCrewConfig,
     language,
     setFieldValue,
+    setUpdate,
     ...props
 }) => {
     const [cast, setCast] = useState(
@@ -88,6 +89,8 @@ const CastCrew = ({
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                     emetLanguage={language}
+                    isVerticalLayout={isVerticalLayout}
+                    setUpdate={setUpdate}
                     {...props}
                 />
             </div>
@@ -107,6 +110,7 @@ const CastCrew = ({
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                     emetLanguage={language}
+                    setUpdate={setUpdate}
                     {...props}
                 />
             </div>
@@ -124,6 +128,7 @@ CastCrew.propTypes = {
     searchPerson: PropTypes.func,
     castCrewConfig: PropTypes.object,
     language: PropTypes.string,
+    setUpdate: PropTypes.func,
 };
 
 CastCrew.defaultProps = {
@@ -132,6 +137,7 @@ CastCrew.defaultProps = {
     onChange: () => null,
     getValues: () => null,
     setFieldValue: () => null,
+    setUpdate: () => null,
     isVerticalLayout: false,
     searchPerson: undefined,
     castCrewConfig: {},

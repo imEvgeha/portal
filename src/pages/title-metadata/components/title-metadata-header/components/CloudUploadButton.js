@@ -1,13 +1,29 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import PropTypes from 'prop-types';
 import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.svg';
 import config from 'react-global-configuration';
+import {connect} from 'react-redux';
 import './CloudUploadButton.scss';
+import {uploadMetadata} from '../../../titleMetadataActions';
 
-const CloudUploadButton = () => {
+const CloudUploadButton = ({uploadMetadata}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
 
     const inputClick = () => inputRef && inputRef.current && inputRef.current.click();
+
+    useEffect(() => {
+        if (file) uploadHandler();
+    }, [file]);
+
+    const uploadHandler = () => {
+        const params = {
+            name: 'tenantCode',
+            file,
+            required: false,
+        };
+        uploadMetadata(params);
+    };
 
     const handleUpload = e => {
         const {files} = e.target;
@@ -27,4 +43,19 @@ const CloudUploadButton = () => {
     );
 };
 
-export default CloudUploadButton;
+CloudUploadButton.propTypes = {
+    uploadMetadata: PropTypes.func,
+};
+
+CloudUploadButton.defaultProps = {
+    uploadMetadata: () => null,
+};
+
+const mapDispatchToProps = dispatch => ({
+    uploadMetadata: payload => {
+        console.log(payload, uploadMetadata);
+        return dispatch(uploadMetadata(payload));
+    },
+});
+
+export default connect(null, mapDispatchToProps)(CloudUploadButton);

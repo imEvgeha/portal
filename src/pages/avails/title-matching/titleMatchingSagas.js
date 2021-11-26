@@ -131,7 +131,7 @@ function* mergeAndStoreTitles({payload}) {
             payload: {
                 title: ERROR_TITLE,
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
             },
         });

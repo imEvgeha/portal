@@ -21,6 +21,11 @@
     .nexus-c-field__placeholder {
         color: map-get($neutrals, N50);
     }
+
+    .nexus-c-field__wrap-text {
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+    }
 }
 
 .italic {

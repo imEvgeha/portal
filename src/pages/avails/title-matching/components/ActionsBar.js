@@ -58,6 +58,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
             description: TITLE_MATCH_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
             actions: [{content: 'View Title', onClick: onViewTitleClick}],
+            isAutoDismiss: true,
             isWithOverlay: true,
         });
     };
@@ -77,6 +78,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
                     {content: 'Cancel', onClick: removeToast},
                     {content: 'Ok', onClick: mergeSingle},
                 ],
+                isAutoDismiss: false,
                 isWithOverlay: true,
             });
         } else {

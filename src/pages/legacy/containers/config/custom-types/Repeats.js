@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {get, uniqueId} from 'lodash';
 import Button from '@atlaskit/button';
+import {getDir, hebrew} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import {Form, FormContext} from 'react-forms-processor';
 import {Expander} from 'react-forms-processor-atlaskit';
 import {Field as AkField} from '@atlaskit/form';
@@ -18,6 +19,12 @@ const createFormForItem = (field, item, targetIndex, fieldsForForm, formChangeHa
               }))
             : [],
     }));
+
+    mappedFields.forEach(x => {
+        const firstName = document.getElementById(x.id)?.getElementsByTagName('input')[0];
+        firstName?.setAttribute('dir', getDir(firstName.value));
+    });
+
     return (
         <FormContext.Consumer>
             {context => {

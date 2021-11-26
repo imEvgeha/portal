@@ -7,6 +7,7 @@ import NexusDropdown, {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import styled from 'styled-components';
+import {keycloak} from '../../../../../../packages/auth/keycloak';
 import {unmergeTitle} from '../../../titleMetadataServices';
 
 const ActionMenuContainer = styled.div`
@@ -21,6 +22,9 @@ const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
 const ActionMenu = ({titleId}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
+    const {realmAccess} = keycloak;
+    const {roles} = realmAccess || {};
+    const isAbleSeeUnmergeBtn = roles.includes('metadata_admin');
 
     const openUnmergeDialog = useCallback(() => {
         const confirmUnmerge = () => {
@@ -43,7 +47,7 @@ const ActionMenu = ({titleId}) => {
         openModal(UNMERGE_MESSAGE, {title: UNMERGE_TITLE, width: 'medium', actions});
     }, [titleId]);
 
-    return (
+    return isAbleSeeUnmergeBtn ? (
         <ActionMenuContainer>
             <NexusDropdown>
                 <DropdownToggle label="Actions" isMobile />
@@ -54,7 +58,7 @@ const ActionMenu = ({titleId}) => {
                 </DropdownOptions>
             </NexusDropdown>
         </ActionMenuContainer>
-    );
+    ) : null;
 };
 
 ActionMenu.propTypes = {

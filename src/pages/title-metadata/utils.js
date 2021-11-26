@@ -17,6 +17,7 @@ import {
     UPDATE_EDITORIAL_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_ERROR,
+    PROPAGATE_SEASON_PERSONS_SUCCESS,
 } from './constants';
 
 export const isNexusTitle = titleId => {
@@ -157,34 +158,25 @@ export const prepareCategoryField = data => {
     }
 };
 
-export const prepareAwardsField = (data, selectValues) => {
-    if (get(data, 'awards')) {
-        return data.awards.map(award => {
-            const selectedValue = selectValues.find(x => x.name === award);
-            return {
-                id: selectedValue?.id,
-            };
-        });
-    }
-};
-
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
-    const newData = cloneDeep(data);
-    return newData.map(record => {
-        const field = record[fieldName];
-        if (field) {
-            const formattedValues = [];
-            field.forEach(obj => {
-                if (key === 'genre') {
-                    if (record?.language !== obj?.language) {
-                        formattedValues.push({label: `(${obj[key]})*`, value: obj.id});
-                    } else formattedValues.push({label: obj[key], value: obj.id});
-                } else formattedValues.push(obj[key]);
-            });
-            record[fieldName] = formattedValues;
-        }
-        return record;
-    });
+    return (
+        data &&
+        data.map(record => {
+            const field = record[fieldName];
+            if (field) {
+                const formattedValues = [];
+                field.forEach(obj => {
+                    if (key === 'genre' && obj[key]) {
+                        if (record?.language !== obj?.language) {
+                            formattedValues.push({label: `(${obj[key]})*`, value: obj.id});
+                        } else formattedValues.push({label: obj[key], value: obj.id});
+                    } else obj[key] && formattedValues.push(obj[key]);
+                });
+                record[fieldName] = formattedValues.length ? formattedValues : field;
+            }
+            return record;
+        })
+    );
 };
 
 const formatTerritoryBody = (data, titleId) => {
@@ -238,7 +230,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
         const errorToast = {
             title: ERROR_TITLE,
             icon: ERROR_ICON,
-            isAutoDismiss: true,
+            isAutoDismiss: false,
             description: UPDATE_TERRITORY_METADATA_ERROR,
         };
         store.dispatch(addToast(errorToast));
@@ -267,7 +259,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                         categoryValue = get(category, 'value');
                     }
                     return {
-                        category: categoryValue,
+                        name: categoryValue,
                         order: index,
                     };
                 });
@@ -321,7 +313,7 @@ export const updateEditorialMetadata = async (values, titleId) => {
     const errorToast = {
         title: ERROR_TITLE,
         icon: ERROR_ICON,
-        isAutoDismiss: true,
+        isAutoDismiss: false,
         description: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
@@ -355,6 +347,33 @@ export const updateEditorialMetadata = async (values, titleId) => {
         }
     } catch (error) {
         store.dispatch(addToast(errorToast));
+    }
+};
+
+export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
+    const response = await titleService.propagateSeasonsPersonsToEpisodes({
+        ...data,
+        seasonId: id,
+    });
+
+    if (response.error) {
+        store.dispatch(
+            addToast({
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: false,
+                description: response.error,
+            })
+        );
+    } else {
+        store.dispatch(
+            addToast({
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: PROPAGATE_SEASON_PERSONS_SUCCESS,
+            })
+        );
     }
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {LeftActions, RightActions} from './components';
+import {LeftActions, RightActions, CenterActions} from './components';
 
 const NexusStickyFooterContainer = styled.div`
     background-color: ${({theme}) => theme.colors.grays.light}
@@ -18,6 +18,10 @@ const NexusStickyFooterContent = styled.div`
     flex: 1;
     padding: 10px 0;
     margin: 0 auto;
+
+    & > * {
+        align-items: center;
+    }
 `;
 
 const NexusStickyFooter = ({children}) => {
@@ -33,6 +37,7 @@ NexusStickyFooter.propTypes = {};
 NexusStickyFooter.defaultProps = {};
 
 NexusStickyFooter.LeftActions = LeftActions;
+NexusStickyFooter.CenterActions = CenterActions;
 NexusStickyFooter.RightActions = RightActions;
 
 export default NexusStickyFooter;
