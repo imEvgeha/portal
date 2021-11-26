@@ -203,31 +203,38 @@ export const FulfillmentOrder = ({
 
     const onSaveHandler = () => {
         const status = get(selectedFulfillmentOrder, fieldKeys.READINESS, '');
+
+        const setDefaultValues = data => {
+            const updatedData = data;
+            const firstExternalServices = updatedData?.definition?.deteServices?.[0].externalServices;
+            const sourceStandardAsParameter = firstExternalServices?.parameters?.find(
+                param => param.name === SOURCE_STANDARD
+            )?.value;
+
+            if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
+                updatedData.definition.deteServices[0].externalServices = {
+                    ...firstExternalServices,
+                    parameters: [
+                        ...firstExternalServices.parameters,
+                        {
+                            name: SOURCE_STANDARD,
+                            value:
+                                updatedData?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources?.standard,
+                        },
+                    ],
+                };
+            }
+            return updatedData;
+        };
+
         const actions = [
             {
                 text: 'Continue',
                 onClick: () => {
                     closeModal();
-                    const dataToSave = prepareOrderPutData(fulfillmentOrder);
-                    const firstExternalServices = dataToSave?.definition?.deteServices?.[0].externalServices;
-                    const sourceStandardAsParameter = firstExternalServices?.parameters?.find(
-                        param => param.name === SOURCE_STANDARD
-                    )?.value;
-                    if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
-                        dataToSave.definition.deteServices[0].externalServices = {
-                            ...firstExternalServices,
-                            parameters: [
-                                ...firstExternalServices.parameters,
-                                {
-                                    name: SOURCE_STANDARD,
-                                    value:
-                                        dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources
-                                            ?.standard,
-                                },
-                            ],
-                        };
-                    }
-                    const payload = {data: dataToSave};
+                    const data = prepareOrderPutData(fulfillmentOrder);
+                    const dataToSave = setDefaultValues(data);
+                    const payload = {data: setDefaultValues(dataToSave)};
                     dispatch(saveFulfillmentOrder(payload));
                 },
             },
@@ -247,24 +254,8 @@ export const FulfillmentOrder = ({
             );
             openModal(ModalContent, {title: modalHeading, width: 'small', actions});
         } else {
-            const dataToSave = prepareOrderPutData(fulfillmentOrder);
-            const firstExternalServices = dataToSave?.definition?.deteServices?.[0].externalServices;
-            const sourceStandardAsParameter = firstExternalServices?.parameters?.find(
-                param => param.name === SOURCE_STANDARD
-            )?.value;
-            if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
-                dataToSave.definition.deteServices[0].externalServices = {
-                    ...firstExternalServices,
-                    parameters: [
-                        ...firstExternalServices.parameters,
-                        {
-                            name: SOURCE_STANDARD,
-                            value:
-                                dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources?.standard,
-                        },
-                    ],
-                };
-            }
+            const data = prepareOrderPutData(fulfillmentOrder);
+            const dataToSave = setDefaultValues(data);
 
             if (dataToSave?.definition?.deteServices?.length) {
                 dataToSave.definition.deteServices.forEach(item => {
