@@ -1,7 +1,4 @@
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const paths = require('./paths');
 
@@ -12,11 +9,7 @@ module.exports = envFile => ({
         rules: [
             {
                 test: /\.(scss|css)/,
-                loader: [
-                    require.resolve('style-loader'),
-                    require.resolve('css-loader'),
-                    require.resolve('sass-loader'),
-                ],
+                use: ['style-loader', 'css-loader', 'sass-loader'],
             },
         ],
     },
