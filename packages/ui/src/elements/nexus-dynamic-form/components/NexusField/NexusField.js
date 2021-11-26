@@ -75,9 +75,11 @@ const NexusField = ({
     showLocalized,
     localizationConfig,
     setUpdatedValues,
+    setUpdatedCastCrew,
     isClearable,
     isTitlePage,
     setUpdate,
+    allData,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -121,11 +123,32 @@ const NexusField = ({
         typeof setDisableSubmit === 'function' && setDisableSubmit(false);
     };
 
+    const onChange = data => {
+        if (allData?.castCrew?.length && data?.editorial) {
+            const filtrationForCastCrew = (item, index, self) =>
+                index === self.findIndex(newItem => newItem.id === item.id);
+            return () => {
+                setUpdatedValues({
+                    editorial: {
+                        ...data.editorial,
+                        castCrew: data?.editorial?.castCrew?.length
+                            ? [...data.editorial.castCrew, ...allData.castCrew].filter(filtrationForCastCrew)
+                            : [...allData.castCrew],
+                    },
+                });
+            };
+        }
+        return () => setUpdatedValues(data);
+    };
+
     const renderFieldEditMode = fieldProps => {
         const selectFieldProps = {...fieldProps};
         const multiselectFieldProps = {...fieldProps};
         let selectLocalizedValues = null;
         let newOptionsConfig = null;
+        const persons = () => {
+            return fieldProps.value ? fieldProps.value : allData?.castCrew?.length ? [...allData?.castCrew] : [];
+        };
 
         switch (type) {
             case 'string':
@@ -167,7 +190,7 @@ const NexusField = ({
                     >
                         {({fieldProps}) => (
                             <CheckboxWithOptional
-                                onChange={setUpdatedValues(getCurrentValues())}
+                                onChange={onChange(getCurrentValues())}
                                 isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                                 {...addedProps}
                                 {...fieldProps}
@@ -206,7 +229,7 @@ const NexusField = ({
 
                 return (
                     <NexusSelect
-                        onChange={setUpdatedValues(getCurrentValues())}
+                        onChange={onChange(getCurrentValues())}
                         fieldProps={selectFieldProps}
                         type={type}
                         optionsConfig={optionsConfig}
@@ -261,7 +284,7 @@ const NexusField = ({
 
                 return (
                     <NexusSelect
-                        onChange={setUpdatedValues(getCurrentValues())}
+                        onChange={onChange(getCurrentValues())}
                         fieldProps={multiselectFieldProps}
                         type={type}
                         optionsConfig={
@@ -287,13 +310,7 @@ const NexusField = ({
                     />
                 );
             case 'dateRange':
-                return (
-                    <DateTimeWithOptional
-                        onChange={setUpdatedValues(getCurrentValues())}
-                        {...fieldProps}
-                        {...dateProps}
-                    />
-                );
+                return <DateTimeWithOptional onChange={onChange(getCurrentValues())} {...fieldProps} {...dateProps} />;
             case 'datetime': {
                 // withdrawn date is readOnly when populated (when empty, user can populate it using checkbox)
                 const hasWithDrawnDate = fieldProps?.name.includes('dateWithdrawn');
@@ -301,7 +318,7 @@ const NexusField = ({
 
                 return fieldProps.value || !dateProps.isReadOnly ? (
                     <DateTimeWithOptional
-                        onChange={setUpdatedValues(getCurrentValues())}
+                        onChange={onChange(getCurrentValues())}
                         {...fieldProps}
                         {...dateProps}
                         isReadOnly={isWithDrawnReadOnly}
@@ -314,12 +331,13 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
-                        onChange={setUpdatedValues(getCurrentValues())}
+                        onChange={onChange(getCurrentValues())}
                         {...fieldProps}
-                        persons={fieldProps.value ? fieldProps.value : []}
+                        persons={persons()}
                         isEdit={true}
                         getValues={getValues}
                         setFieldValue={setFieldValue}
+                        setUpdatedCastCrew={setUpdatedCastCrew}
                         isVerticalLayout={isVerticalLayout}
                         isTitlePage={isTitlePage}
                         searchPerson={searchPerson}
@@ -327,6 +345,7 @@ const NexusField = ({
                         // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
                         language={isVerticalLayout ? getLanguage() : 'en'}
                         setUpdate={setUpdate}
+                        allData={allData}
                         {...fieldProps}
                     />
                 );
@@ -441,7 +460,7 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
-                        persons={fieldProps.value ? fieldProps.value : []}
+                        persons={persons()}
                         isEdit={false}
                         getValues={getValues}
                         setFieldValue={setFieldValue}
@@ -571,7 +590,9 @@ NexusField.propTypes = {
     localizationConfig: PropTypes.object,
     getValues: PropTypes.func,
     setUpdatedValues: PropTypes.func,
+    setUpdatedCastCrew: PropTypes.func,
     setUpdate: PropTypes.func,
+    allData: PropTypes.object,
 };
 
 NexusField.defaultProps = {
@@ -614,7 +635,9 @@ NexusField.defaultProps = {
     localizationConfig: undefined,
     getValues: () => null,
     setUpdatedValues: () => {},
+    setUpdatedCastCrew: () => {},
     setUpdate: () => null,
+    allData: {},
 };
 
 export default NexusField;
