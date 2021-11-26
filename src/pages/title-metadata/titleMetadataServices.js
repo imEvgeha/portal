@@ -23,13 +23,6 @@ export const getTitleById = payload => {
     });
 };
 
-export const getEpisodesCount = id => {
-    const url = `${config.get('gateway.titleUrl')}${config.get(
-        'gateway.service.title'
-    )}/titles/search?parentId=${id}&contentType=EPISODE`;
-    return nexusFetch(url);
-};
-
 export const getExternalIds = id => {
     const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/getPublishInfo/${id}`;
     return nexusFetch(url);
