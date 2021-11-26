@@ -1,6 +1,5 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import ReactDOM from 'react-dom';
 import EventSectionCollapsible from './EventSectionCollapsible';
 
 describe('EventSectionCollapsible', () => {
@@ -11,9 +10,8 @@ describe('EventSectionCollapsible', () => {
     });
 
     it('renders without crashing', () => {
-        const div = document.createElement('div');
-        ReactDOM.render(<EventSectionCollapsible />, div);
-        ReactDOM.unmountComponentAtNode(div);
+        const wrapper = shallow(<EventSectionCollapsible />);
+        expect(wrapper.containsMatchingElement(<div />)).toEqual(true);
     });
 
     it('should match snapshot', () => {
