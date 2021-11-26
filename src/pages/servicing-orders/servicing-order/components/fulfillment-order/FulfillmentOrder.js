@@ -18,6 +18,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {readinessStatus} from '../../../constants';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
+import {SOURCE_STANDARD} from '../services-table/Constants';
 import ErrorsList from './ErrorsList';
 import Constants, {READINESS_CHANGE_WARNING, ORDER_REVISION_WARNING} from './constants';
 import './FulfillmentOrder.scss';
@@ -210,7 +211,7 @@ export const FulfillmentOrder = ({
                     const dataToSave = prepareOrderPutData(fulfillmentOrder);
                     const firstExternalServices = dataToSave?.definition?.deteServices?.[0].externalServices;
                     const sourceStandardAsParameter = firstExternalServices?.parameters?.find(
-                        param => param.name === 'SourceStandard'
+                        param => param.name === SOURCE_STANDARD
                     )?.value;
                     if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
                         dataToSave.definition.deteServices[0].externalServices = {
@@ -218,7 +219,7 @@ export const FulfillmentOrder = ({
                             parameters: [
                                 ...firstExternalServices.parameters,
                                 {
-                                    name: 'SourceStandard',
+                                    name: SOURCE_STANDARD,
                                     value:
                                         dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources
                                             ?.standard,
@@ -249,7 +250,7 @@ export const FulfillmentOrder = ({
             const dataToSave = prepareOrderPutData(fulfillmentOrder);
             const firstExternalServices = dataToSave?.definition?.deteServices?.[0].externalServices;
             const sourceStandardAsParameter = firstExternalServices?.parameters?.find(
-                param => param.name === 'SourceStandard'
+                param => param.name === SOURCE_STANDARD
             )?.value;
             if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
                 dataToSave.definition.deteServices[0].externalServices = {
@@ -257,7 +258,7 @@ export const FulfillmentOrder = ({
                     parameters: [
                         ...firstExternalServices.parameters,
                         {
-                            name: 'SourceStandard',
+                            name: SOURCE_STANDARD,
                             value:
                                 dataToSave?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources?.standard,
                         },
@@ -265,22 +266,21 @@ export const FulfillmentOrder = ({
                 };
             }
 
-            if (dataToSave.definition.deteServices.length) {
-                dataToSave.definition.deteServices.map(item => {
+            if (dataToSave?.definition?.deteServices?.length) {
+                dataToSave.definition.deteServices.forEach(item => {
                     if (item.externalServices.sourceStandard) {
                         const sourceStandard = item.externalServices.sourceStandard;
                         const indexOfSourceStandard = item.externalServices.parameters.findIndex(
-                            elem => elem.name === 'SourceStandard'
+                            elem => elem.name === SOURCE_STANDARD
                         );
                         indexOfSourceStandard >= 0
                             ? (item.externalServices.parameters[indexOfSourceStandard].value = sourceStandard)
                             : (item.externalServices.parameters = [
                                   ...item.externalServices.parameters,
-                                  {name: 'SourceStandard', value: sourceStandard},
+                                  {name: SOURCE_STANDARD, value: sourceStandard},
                               ]);
-                        delete item.externalServices['sourceStandard'];
+                        delete item.externalServices[SOURCE_STANDARD];
                     }
-                    return item;
                 });
             }
 
