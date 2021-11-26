@@ -113,7 +113,7 @@ export const TitleMetadataView = ({
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
-                <CloudUploadButton />
+                <CloudUploadButton catalogueOwner={catalogueOwner.tenantCode} />
                 <NexusSavedTableDropdown
                     gridApi={gridApi}
                     columnApi={columnApi}

@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import './CloudUploadButton.scss';
 import {uploadMetadata} from '../../../titleMetadataActions';
 
-const CloudUploadButton = ({uploadMetadata}) => {
+const CloudUploadButton = ({uploadMetadata, catalogueOwner}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
 
@@ -18,9 +18,8 @@ const CloudUploadButton = ({uploadMetadata}) => {
 
     const uploadHandler = () => {
         const params = {
-            name: 'tenantCode',
+            tenantCode: catalogueOwner.toUpperCase(), // VU
             file,
-            required: false,
         };
         uploadMetadata(params);
     };
@@ -45,10 +44,12 @@ const CloudUploadButton = ({uploadMetadata}) => {
 
 CloudUploadButton.propTypes = {
     uploadMetadata: PropTypes.func,
+    catalogueOwner: PropTypes.string,
 };
 
 CloudUploadButton.defaultProps = {
     uploadMetadata: () => null,
+    catalogueOwner: '',
 };
 
 const mapDispatchToProps = dispatch => ({
