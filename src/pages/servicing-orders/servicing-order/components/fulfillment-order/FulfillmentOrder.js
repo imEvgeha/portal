@@ -212,10 +212,11 @@ export const FulfillmentOrder = ({
             )?.value;
 
             if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
+                const parametersWithoutSourceStandard = firstExternalServices?.parameters?.filter((elem) => elem.name !== SOURCE_STANDARD);
                 updatedData.definition.deteServices[0].externalServices = {
                     ...firstExternalServices,
                     parameters: [
-                        ...firstExternalServices.parameters,
+                        ...parametersWithoutSourceStandard,
                         {
                             name: SOURCE_STANDARD,
                             value:
