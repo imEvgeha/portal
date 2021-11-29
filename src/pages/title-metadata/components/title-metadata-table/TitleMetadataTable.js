@@ -12,6 +12,7 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {
     COLUMN_MAPPINGS,
@@ -23,6 +24,7 @@ import {
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
+
 
 const TitleMetadataTableGrid = compose(
     withSideBar(),
@@ -194,4 +196,18 @@ TitleMetadataTable.defaultProps = {
     gridApi: {},
 };
 
-export default TitleMetadataTable;
+const mapStateToProps = () => {
+    const rightsFilterSelector = selectors.createRightsFilterSelector();
+
+    return (state, props) => ({
+        rightsFilter: rightsFilterSelector(state, props),
+    });
+};
+
+const mapDispatchToProps = dispatch => ({
+    setRightsFilter: payload => dispatch(setRightsFilter(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataTable);
+
+// export default TitleMetadataTable;

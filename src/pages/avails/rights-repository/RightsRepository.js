@@ -113,6 +113,8 @@ const RightsRepository = ({
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
 
+    console.log(rightsFilter, 'rightsFilter')
+
     useEffect(() => {
         return () => {
             isMounted.current = false;
@@ -658,7 +660,7 @@ const RightsRepository = ({
     // Returns only selected rights that are also included in the selected ingest
     const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
         const {id} = selectedIngest || {};
-
+ 
         // If an ingest is selected, provide only selected rights that also belong to the ingest.
         // Otherwise return all selected rights.
         return id
@@ -681,7 +683,7 @@ const RightsRepository = ({
                     filterByStatus={filterByStatus}
                 />
             )}
-            <AvailsTableToolbar
+            {/* <AvailsTableToolbar
                 totalRows={totalCount === 'One' ? 1 : totalCount}
                 selectedRightsCount={selectedRepoRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
@@ -710,7 +712,7 @@ const RightsRepository = ({
                 prePlanGridApi={prePlanGridApi}
                 selectedForPlanningColumnApi={selectedForPlanningColumnApi}
                 selectedForPlanningGridApi={selectedForPlanningGridApi}
-            />
+            /> */}
             <RightsRepositoryTable
                 id="rightsRepo"
                 columnDefs={updatedColumnDefs}
