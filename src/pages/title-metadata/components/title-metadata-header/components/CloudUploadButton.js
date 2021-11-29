@@ -54,7 +54,6 @@ CloudUploadButton.defaultProps = {
 
 const mapDispatchToProps = dispatch => ({
     uploadMetadata: payload => {
-        console.log(payload, uploadMetadata);
         return dispatch(uploadMetadata(payload));
     },
 });

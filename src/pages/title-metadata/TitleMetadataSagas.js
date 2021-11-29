@@ -335,7 +335,7 @@ function* uploadMetadata({payload}) {
                 title: SUCCESS_TITLE,
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
-                description: `${UPLOAD_SUCCESS_MESSAGE} ${response.fileName}`,
+                description: `${UPLOAD_SUCCESS_MESSAGE} ${response.id}`,
             },
         });
 
@@ -348,8 +348,6 @@ function* uploadMetadata({payload}) {
             type: actionTypes.UPLOAD_METADATA_ERROR,
             payload: {},
         });
-
-        console.log(e, 'error');
 
         yield put({
             type: ADD_TOAST,
