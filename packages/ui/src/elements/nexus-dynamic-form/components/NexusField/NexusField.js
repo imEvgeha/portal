@@ -141,14 +141,15 @@ const NexusField = ({
         return () => setUpdatedValues(data);
     };
 
+    const persons = fieldProps => {
+        return fieldProps.value ? fieldProps.value : allData?.castCrew?.length ? [...allData?.castCrew] : [];
+    };
+
     const renderFieldEditMode = fieldProps => {
         const selectFieldProps = {...fieldProps};
         const multiselectFieldProps = {...fieldProps};
         let selectLocalizedValues = null;
         let newOptionsConfig = null;
-        const persons = () => {
-            return fieldProps.value ? fieldProps.value : allData?.castCrew?.length ? [...allData?.castCrew] : [];
-        };
 
         switch (type) {
             case 'string':
@@ -333,7 +334,7 @@ const NexusField = ({
                     <CastCrew
                         onChange={onChange(getCurrentValues())}
                         {...fieldProps}
-                        persons={persons()}
+                        persons={persons(fieldProps)}
                         isEdit={true}
                         getValues={getValues}
                         setFieldValue={setFieldValue}
@@ -460,7 +461,7 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
-                        persons={persons()}
+                        persons={persons(fieldProps)}
                         isEdit={false}
                         getValues={getValues}
                         setFieldValue={setFieldValue}
