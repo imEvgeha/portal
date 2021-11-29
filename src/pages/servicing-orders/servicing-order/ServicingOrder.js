@@ -8,7 +8,7 @@ import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService'
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
 import JuiceBoxSection from './components/juicebox-section/JuiceBoxSection';
-import {SELECT_VALUES} from './components/services-table/Constants';
+import {SELECT_VALUES, SOURCE_STANDARD} from './components/services-table/Constants';
 import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
 import {
@@ -135,14 +135,15 @@ const ServicingOrder = ({match}) => {
                 source.deteServices.forEach(item => {
                     const extId = get(item, 'externalServices.externalId', '');
                     const sourceStandardAsParameter = item.externalServices?.parameters?.find(
-                        param => param.name === 'SourceStandard'
+                        param => param.name === SOURCE_STANDARD
                     )?.value;
                     if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
+                        const parametersWithoutSourceStandard = item?.externalServices?.parameters?.filter((elem) => elem.name !== SOURCE_STANDARD);
                         item.externalServices = {
                             ...item.externalServices,
                             parameters: [
-                                ...item.externalServices.parameters,
-                                {name: 'SourceStandard', value: item.deteSources?.[0]?.assetInfo?.standard},
+                                ...parametersWithoutSourceStandard,
+                                {name: SOURCE_STANDARD, value: item.deteSources?.[0]?.assetInfo?.standard},
                             ],
                         };
                     }
