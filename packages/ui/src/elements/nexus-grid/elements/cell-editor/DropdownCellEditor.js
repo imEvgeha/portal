@@ -85,7 +85,6 @@ class DropdownCellEditor extends Component {
                 if (!this.isAllSelected()) {
                     elem.selected = true;
                 } else {
-                    // const prevIsSelected = elem.selected;
                     const prevIsSelected = elem.selected;
                     elem.selected = !prevIsSelected;
                 }
