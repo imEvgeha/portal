@@ -8,16 +8,9 @@ import {nexusFetch} from '../../../util/http-client';
 // some of the extrenal package e.g. https://www.npmjs.com/package/fetch-progress
 
 export const uploadService = {
-    uploadMetadata: ({file, externalId, params = {}, ...rest}) => {
-        const {token} = keycloak || {};
+    uploadMetadata: ({file, externalId, params = {}}) => {
         const formData = new FormData();
         formData.append('file', file);
-
-        const options = {
-            headers: {
-                ...(token ? {Authorization: `Bearer ${token}`} : {}),
-            },
-        };
 
         if (externalId) {
             params.externalId = externalId;
@@ -34,7 +27,6 @@ export const uploadService = {
             {
                 method: 'post',
                 body: formData,
-                ...options,
             },
             abortAfter
         );
