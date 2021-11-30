@@ -683,7 +683,7 @@ const RightsRepository = ({
                     filterByStatus={filterByStatus}
                 />
             )}
-            {/* <AvailsTableToolbar
+            <AvailsTableToolbar
                 totalRows={totalCount === 'One' ? 1 : totalCount}
                 selectedRightsCount={selectedRepoRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
@@ -712,7 +712,7 @@ const RightsRepository = ({
                 prePlanGridApi={prePlanGridApi}
                 selectedForPlanningColumnApi={selectedForPlanningColumnApi}
                 selectedForPlanningGridApi={selectedForPlanningGridApi}
-            /> */}
+            />
             <RightsRepositoryTable
                 id="rightsRepo"
                 columnDefs={updatedColumnDefs}

@@ -86,28 +86,28 @@ export const TitleMetadataView = ({
         columnApi.resetColumnState();
     };
 
-    const storedFilterData = JSON.parse(sessionStorage.getItem('storedMetadataFilter'));
-    const storedFilterDataId = storedFilterData?.id;
+    // const storedFilterData = JSON.parse(sessionStorage.getItem('storedMetadataFilter'));
+    // const storedFilterDataId = storedFilterData?.id;
 
-    const selectedId = sessionStorage.getItem('storedSelectedID');
+    // const selectedId = sessionStorage.getItem('storedSelectedID');
 
-    const lastStoredFilter = {
+    // const lastStoredFilter = {
         // eslint-disable-next-line no-unneeded-ternary
-        label: selectedId ? selectedId : storedFilterDataId,
-    };
+        // label: selectedId,
+    // };
 
-    const lastFilterView = (gridApi, columnApi, id) => {
-        if (!isEmpty(gridApi) && !isEmpty(columnApi) && id) {
-            const {columnState, filterModel, sortModel} = storedFilterData || {};
-            gridApi.setFilterModel(filterModel);
-            setSorting(sortModel, columnApi);
-            columnApi.setColumnState(columnState);
-        }
-    };
+    // const lastFilterView = (gridApi, columnApi, id) => {
+    //     if (!isEmpty(gridApi) && !isEmpty(columnApi) && id) {
+    //         const {columnState, filterModel, sortModel} = storedFilterData || {};
+    //         gridApi.setFilterModel(filterModel);
+    //         setSorting(sortModel, columnApi);
+    //         columnApi.setColumnState(columnState);
+    //     }
+    // };
 
-    const [blockLastFilter, setBlockLastFilter] = useState(true);
+    // const [blockLastFilter, setBlockLastFilter] = useState(true);
 
-    blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
+    // blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
 
     return (
         <div className="nexus-c-title-metadata">
@@ -121,8 +121,8 @@ export const TitleMetadataView = ({
                     applyPredefinedTableView={resetToAll}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
-                    lastStoredFilter={lastStoredFilter}
-                    setBlockLastFilter={setBlockLastFilter}
+                    // lastStoredFilter={lastStoredFilter}
+                    // setBlockLastFilter={setBlockLastFilter}
                     isTitleMetadata={true}
                 />
                 <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />

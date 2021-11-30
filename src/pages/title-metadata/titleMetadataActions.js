@@ -58,4 +58,9 @@ export const storeTitleUserDefinedGridState = payload => {
         type: actionTypes.SET_TITLE_USER_DEFINED_GRID_STATE,
         payload,
     };
-};
+}; 
+
+export const setTitleMetadataFilter = payload => ({
+    type: actionTypes.SET_TITLE_FILTER,
+    payload,
+});

@@ -17,6 +17,7 @@ const initialState = {
     isSyncingMOV: false,
     isPublishingMOV: false,
     gridState: {},
+    filter: {},
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
@@ -35,7 +36,8 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 propagateRemovePersons: payload,
             };
         case actionTypes.CLEAR_TITLE: {
-            const {gridState, ...gridStateExcluded} = initialState;
+            const {gridState, filter, ...gridStateExcluded} = initialState;
+            console.log(filter, 'filter')
             return {
                 ...state,
                 ...gridStateExcluded,
@@ -140,6 +142,11 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 gridState: {...gridState, ...payload},
             };
         }
+        case actionTypes.SET_TITLE_FILTER:
+            return {
+                ...state,
+                filter: payload,
+            };
         default:
             return state;
     }
