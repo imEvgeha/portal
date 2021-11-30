@@ -17,7 +17,7 @@ $palette: (
 @function palette($color, $tone) {
     @warn map-get($palette,$color);
 
-    $transparency-list: 100, 80, 55, 20, 10, 8, 5, 2;
+    $transparency-list: 100, 80, 55, 20, 10, 8, 5, 2, 0;
     @if map-has-key($palette, $color) {
         $color: map-get($palette, $color);
         @if (null != index($transparency-list, $tone)) {
