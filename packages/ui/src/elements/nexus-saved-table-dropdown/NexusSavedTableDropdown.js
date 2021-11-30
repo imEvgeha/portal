@@ -95,8 +95,6 @@ const NexusSavedTableDropdown = ({
             setSorting(sortModel, columnApi);
             columnApi.setColumnState(columnState);
             onUserDefinedViewSelected(selectedModel[0]);
-            // Used for saving state of titleMetadata filter
-            // isTitleMetadata && sessionStorage.setItem('storedSelectedID', id);
         }
     };
 

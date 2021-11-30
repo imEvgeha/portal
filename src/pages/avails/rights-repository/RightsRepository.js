@@ -658,7 +658,6 @@ const RightsRepository = ({
     // Returns only selected rights that are also included in the selected ingest
     const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
         const {id} = selectedIngest || {};
- 
         // If an ingest is selected, provide only selected rights that also belong to the ingest.
         // Otherwise return all selected rights.
         return id
