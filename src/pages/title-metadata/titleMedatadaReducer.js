@@ -37,7 +37,6 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
             };
         case actionTypes.CLEAR_TITLE: {
             const {gridState, filter, ...gridStateExcluded} = initialState;
-            console.log(filter, 'filter')
             return {
                 ...state,
                 ...gridStateExcluded,
@@ -146,6 +145,11 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 filter: payload,
+            };
+        case actionTypes.CLEAR_TITLE_FILTER:
+            return {
+                ...state,
+                filter: {},
             };
         default:
             return state;

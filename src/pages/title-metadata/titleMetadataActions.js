@@ -64,3 +64,7 @@ export const setTitleMetadataFilter = payload => ({
     type: actionTypes.SET_TITLE_FILTER,
     payload,
 });
+
+export const clearTitleMetadataFilter = () => ({
+    type: actionTypes.SET_TITLE_FILTER,
+});

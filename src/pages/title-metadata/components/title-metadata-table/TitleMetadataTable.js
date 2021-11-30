@@ -11,9 +11,9 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import { getSortModel } from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import { filterBy } from '../../../../../packages/ui/lib/elements/nexus-grid/utils';
 import {
     COLUMN_MAPPINGS,
     NEXUS,
@@ -36,25 +36,6 @@ const TitleMetadataTableGrid = compose(
 )(NexusGrid);
 
 const TitleMetadataTable = ({history, catalogueOwner, setGridApi, setColumnApi, columnApi, gridApi, setTitleMetadataFilter, titleMetadataFilter}) => {
-    // useLayoutEffect(() => {
-    //     return () => {
-    //         if (gridApi) {
-    //             const filterModel = gridApi.getFilterModel();
-    //             const sortModel = getSortModel(columnApi);
-    //             const columnState = columnApi.getColumnState();
-
-    //             const firstFilterModel = Object.keys(filterModel).shift();
-    //             const generateId = firstFilterModel && filterModel[`${firstFilterModel}`].filter;
-
-    //             const selectedId = sessionStorage.getItem('storedSelectedID');
-    //             // eslint-disable-next-line no-unneeded-ternary
-    //             const model = {id: selectedId ? selectedId : generateId, filterModel, sortModel, columnState};
-    //             sessionStorage.setItem('storedMetadataFilter', JSON.stringify(model));
-    //             sessionStorage.removeItem('storedSelectedID');
-    //         }
-    //     };
-    // }, [columnApi]);
-
     const columnDefs = COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
@@ -137,13 +118,10 @@ const TitleMetadataTable = ({history, catalogueOwner, setGridApi, setColumnApi, 
                 break;
             }
             case FILTER_CHANGED: {
-                const column = filterBy(api.getFilterModel());
-                
-                console.log(column, 'column')
-                console.log(titleMetadataFilter, 'Change')
-
-                setTitleMetadataFilter({...titleMetadataFilter, column});
-                // updateMapping(api);
+                const filterModel = gridApi?.getFilterModel?.();
+                const sortModel = getSortModel(columnApi);
+                const columnState = columnApi.getColumnState();
+                setTitleMetadataFilter({...titleMetadataFilter, filterModel, sortModel, columnState});
                 break;
             }
             default:
@@ -181,8 +159,7 @@ const TitleMetadataTable = ({history, catalogueOwner, setGridApi, setColumnApi, 
                 onGridEvent={onGridReady}
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
-                // externalFilter={externalFilter}
-                initialFilter={titleMetadataFilter}
+                externalFilter={externalFilter}
                 link="/metadata/detail"
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
@@ -213,12 +190,7 @@ TitleMetadataTable.defaultProps = {
 };
 
 const mapStateToProps = () => {
-    return (state, props) => {
-        console.log(state, 'state')
-        return ({
-            titleMetadataFilter: state.titleMetadata.filter,
-        })
-    };
+    return (state, props) => ({titleMetadataFilter: state.titleMetadata.filter});
 };
 
 const mapDispatchToProps = dispatch => ({

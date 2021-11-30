@@ -113,8 +113,6 @@ const RightsRepository = ({
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
 
-    console.log(rightsFilter, 'rightsFilter')
-
     useEffect(() => {
         return () => {
             isMounted.current = false;
