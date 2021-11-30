@@ -21,7 +21,7 @@ import {
     registerTitle,
 } from './titleMetadataServices';
 import {isMgmTitle} from './utils';
-import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR} from './constants';
+import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR, UPLOAD_SUCCESS_MESSAGE} from './constants';
 
 export function* loadParentTitle(title) {
     const {parentIds} = title;
@@ -320,8 +320,6 @@ export function* publishTitle({payload}) {
 
 function* uploadMetadata({payload}) {
     const {file, ...rest} = payload || {};
-    const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Title.';
-
     try {
         yield put({
             type: actionTypes.UPLOAD_METADATA_REQUEST,

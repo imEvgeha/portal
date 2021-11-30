@@ -1,5 +1,6 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
 .cloud-upload-button {
     @include margin(0, 6);
@@ -8,7 +9,7 @@
     > span {
         transition: 0.2s;
         &:hover {
-            color: map-get($blues, B200);
+            color: palette(blue, 100);
         }
     }
     > input {
