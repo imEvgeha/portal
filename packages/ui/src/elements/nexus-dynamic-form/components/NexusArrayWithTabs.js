@@ -313,6 +313,8 @@ const NexusArrayWithTabs = ({
                 initialData={initialData}
                 closeModal={closeModal}
                 prefix={prefix}
+                getValues={getValues}
+                allData={getValues()}
             />
         );
     };

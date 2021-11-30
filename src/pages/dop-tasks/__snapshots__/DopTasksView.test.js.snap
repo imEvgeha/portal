@@ -8,14 +8,26 @@ exports[`DopTasksView should match snapshot 1`] = `
     label="DOP Tasks"
   >
     <QueuedTasks
+      selectedValue={
+        Object {
+          "label": "My Tasks",
+          "value": "user",
+        }
+      }
       setUser={[Function]}
     />
     <NexusSavedTableDropdown
       applyPredefinedTableView={[Function]}
       columnApi={null}
+      externalFilter={
+        Object {
+          "user": "user",
+        }
+      }
       gridApi={null}
       isTitleMetadata={false}
       lastStoredFilter={Object {}}
+      onUserDefinedViewSelected={[Function]}
       setBlockLastFilter={[Function]}
       setUserDefinedGridState={[Function]}
       tableLabels={

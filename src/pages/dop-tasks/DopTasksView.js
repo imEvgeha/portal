@@ -19,6 +19,7 @@ import {
     MY_PREDEFINED_VIEWS_LABEL,
     SAVED_TABLE_DROPDOWN_LABEL,
     SAVED_TABLE_SELECT_OPTIONS,
+    QUEUED_TASKS_OPTIONS,
 } from './constants';
 import './DopTasksView.scss';
 
@@ -33,6 +34,7 @@ export const DopTasksView = ({
     const [externalFilter, setExternalFilter] = useState({
         user: USER,
     });
+    const [selectedTaskType, setSelectedTaskType] = useState(QUEUED_TASKS_OPTIONS[0]);
     const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
@@ -45,12 +47,18 @@ export const DopTasksView = ({
     }, [gridState, username, get]);
 
     const changeUser = user => {
+        onSelectTaskType(user);
         setExternalFilter(prevState => {
             return {
                 ...prevState,
                 user,
             };
         });
+    };
+
+    const onSelectTaskType = value => {
+        const type = QUEUED_TASKS_OPTIONS.find(option => option.value === value);
+        setSelectedTaskType(type);
     };
 
     const tableLabels = {
@@ -60,17 +68,31 @@ export const DopTasksView = ({
     };
     const tableOptions = SAVED_TABLE_SELECT_OPTIONS;
 
+    const onUserDefinedViewSelected = view => {
+        const user = view?.externalFilter?.user;
+        user && changeUser(user);
+    };
+
+    const applyPredefinedTableViewCallBack = () => {
+        setSelectedTaskType(QUEUED_TASKS_OPTIONS[0]);
+        changeUser(QUEUED_TASKS_OPTIONS[0].value);
+    };
+
     return (
         <div className="nexus-c-dop-tasks-view">
             <DopTasksHeader>
-                <QueuedTasks setUser={changeUser} />
+                <QueuedTasks setUser={changeUser} selectedValue={selectedTaskType} />
                 <NexusSavedTableDropdown
                     gridApi={gridApi}
                     columnApi={columnApi}
                     username={username}
                     setUserDefinedGridState={setDopTasksUserDefinedGridState}
                     userDefinedGridStates={userDefinedGridStates}
-                    applyPredefinedTableView={applyPredefinedTableView}
+                    applyPredefinedTableView={(gridApi, filter, columnApi) =>
+                        applyPredefinedTableView(gridApi, filter, columnApi, applyPredefinedTableViewCallBack)
+                    }
+                    onUserDefinedViewSelected={onUserDefinedViewSelected}
+                    externalFilter={externalFilter}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
                 />

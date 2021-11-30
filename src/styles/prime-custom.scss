@@ -1,0 +1,243 @@
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+
+// Buttons Related
+.p-button {
+    background: palette(black, 10);
+    border: 1px solid palette(black, 10);
+    &.p-button {
+        &:enabled {
+            background: palette(black, 10);
+            border: none;
+
+            &:hover {
+                background: palette(black, 5);
+            }
+
+            &:active {
+                background: palette(blue, 100);
+
+                svg {
+                    fill: palette(white, 100);
+                }
+                .p-button-label {
+                    color: palette(white, 100);
+                }
+            }
+
+            &:focus {
+                box-shadow: none;
+            }
+
+            .p-button-label {
+                color: palette(black, 100);
+            }
+        }
+
+        &:disabled {
+            background-color: palette(black, 0);
+            border: none;
+            opacity: 1;
+
+            svg,
+            .p-button-label {
+                color: palette(black, 20);
+                fill: palette(black, 20);
+            }
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+            margin: 0 4px;
+        }
+    }
+
+    &.p-button-text {
+        &:enabled {
+            border-radius: 8px;
+            background-color: palette(black, 0);
+
+            &:hover {
+                background: palette(black, 5);
+            }
+
+            &:active {
+                background: palette(blue, 100);
+                svg {
+                    fill: palette(white, 100);
+                }
+
+                .p-button-label {
+                    color: palette(white, 100);
+                }
+            }
+
+            &:focus {
+                box-shadow: none;
+            }
+
+            .p-button-label {
+                color: palette(black, 80);
+            }
+        }
+        &:disabled {
+            background-color: palette(black, 0);
+            border: none;
+            opacity: 1;
+
+            svg,
+            .p-button-label {
+                color: palette(black, 20);
+                fill: palette(black, 20);
+            }
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+            margin: 0 4px;
+            fill: palette(black, 80);
+        }
+    }
+}
+
+// Icon Buttons
+.p-button.p-button-icon-only.p-button-rounded {
+    width: 3rem;
+    padding: 0.75rem 0;
+    border-radius: 50% !important;
+}
+
+// Dialog Related
+
+.p-dialog.p-component {
+    box-shadow: 0 8px 30px 0 palette(black, 2);
+    border-radius: 8px;
+
+    .p-dialog-header {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding: 16px 32px;
+        border-bottom: 1px solid palette(black, 5);
+        .p-dialog-title {
+            font-weight: bold;
+            font-size: 26px;
+        }
+    }
+
+    .p-dialog-content {
+        padding: 16px 32px 32px 32px;
+        .p-dialog-subheader {
+            min-height: 48px;
+        }
+    }
+
+    .p-dialog-footer {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-top: 1px solid palette(black, 5);
+        padding: 16px 32px;
+
+        .p-button.p-button-icon-only {
+            width: 3rem;
+        }
+        .p-button.p-button {
+            &:enabled {
+                border-radius: 8px;
+                border: 1px solid palette(black, 20);
+                background-color: palette(black, 10);
+
+                &:active {
+                    background: palette(blue, 100);
+                    svg {
+                        fill: palette(white, 100);
+                    }
+                    .p-button-label {
+                        color: palette(white, 100);
+                    }
+                }
+
+                &:hover {
+                    background-color: palette(blue, 20);
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+            &:disabled {
+                background-color: palette(black, 0);
+                border: 1px solid palette(black, 10);
+                opacity: 1;
+
+                svg,
+                .p-button-label {
+                    color: palette(black, 20);
+                    fill: palette(black, 20);
+                }
+            }
+
+            svg {
+                width: 16px;
+                height: 16px;
+                margin: 0 4px;
+            }
+        }
+
+        .p-button.p-button-text {
+            &:enabled {
+                border-radius: 8px;
+                border: 1px solid palette(black, 20);
+                background-color: palette(black, 0);
+
+                &:active {
+                    background: palette(blue, 100);
+                    svg {
+                        fill: palette(white, 100);
+                    }
+                    .p-button-label {
+                        color: palette(white, 100);
+                    }
+                }
+
+                .p-button-label {
+                    color: palette(black, 80);
+                }
+
+                &:hover {
+                    background-color: palette(blue, 20);
+                }
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+            &:disabled {
+                background-color: palette(black, 0);
+                border: 1px solid palette(black, 10);
+                opacity: 1;
+
+                svg,
+                .p-button-label {
+                    color: palette(black, 20);
+                    fill: palette(black, 20);
+                }
+            }
+
+            svg {
+                width: 16px;
+                height: 16px;
+                margin: 0 4px;
+                fill: palette(black, 80);
+            }
+        }
+
+        .p-button-label {
+            color: palette(black, 100);
+        }
+
+        .p-button-icon {
+            color: palette(black, 100);
+        }
+    }
+}

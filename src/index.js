@@ -9,6 +9,9 @@ import {createBrowserHistory} from 'history';
 import {render} from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
 import {Provider} from 'react-redux';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import '@vubiquity-nexus/portal-styles/scss/index.scss';
@@ -23,6 +26,7 @@ import {initializeTracker} from './util/hoc/withTracker';
 import './styles/legacy/bootstrap.scss'; // TODO: remove
 import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
 import './styles/legacy/global.scss'; // TODO; refactor
+import './styles/prime-custom.scss';
 
 const AG_GRID_LICENSE_KEY =
     'CompanyName=QBS Software Ltd_on_behalf_of_Vubiquity Management Ltd,LicensedGroup=Multi,LicenseType=MultipleApplications,LicensedConcurrentDeveloperCount=4,LicensedProductionInstancesCount=0,AssetReference=AG-010641,ExpiryDate=11_November_2021_[v2]_MTYzNjU4ODgwMDAwMA==14105f72d5a1473f60b320a047d57a3b';

@@ -12,6 +12,7 @@ module.exports = envKeys => ({
         rules: [
             {
                 test: /\.svg$/,
+                exclude: /node_modules[\\\/]primeicons\.svg$/,
                 use: ['@svgr/webpack'],
             },
             {
@@ -33,6 +34,7 @@ module.exports = envKeys => ({
                     },
                 ],
             },
+            {test: /\.(woff|woff2|eot|ttf)$/, loader: 'url-loader?limit=100000'},
         ],
     },
     resolve: {
