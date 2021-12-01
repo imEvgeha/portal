@@ -447,10 +447,6 @@ const NexusField = ({
         if (validationError) {
             return <div>{validationError}</div>;
         }
-        const persons = () => {
-            return fieldProps.value ? fieldProps.value : allData?.castCrew?.length ? [...allData?.castCrew] : [];
-        };
-
         switch (type) {
             case 'boolean':
                 return <Checkbox isDisabled isChecked={fieldProps.value} />;
