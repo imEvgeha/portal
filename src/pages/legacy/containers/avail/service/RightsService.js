@@ -12,6 +12,7 @@ import {
     STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS,
     MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
     ARRAY_OF_OBJECTS,
+    NON_MATCHING_VALUES,
 } from './Constants';
 
 const isNotEmpty = function (obj) {
@@ -137,6 +138,15 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
     function isQuoted(value) {
         return value[0] === '"' && value[value.length - 1] === '"';
     }
+    const isKeyValueForMatch = (keyValue) => {
+        let result = true; // default Value for Match = TRUE
+        NON_MATCHING_VALUES.forEach((item) => {
+            console.log(item, '===', keyValue,)
+            if(item === keyValue) result = false;
+        })
+        return result;
+    };
+
     for (let key in searchCriteria) {
         if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
             let value = searchCriteria[key];
@@ -176,7 +186,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
-                } else {
+                } else if (isKeyValueForMatch(keyValue)) {
                     keyValue += 'Match';
                 }
             }
