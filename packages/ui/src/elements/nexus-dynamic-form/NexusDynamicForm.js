@@ -6,7 +6,9 @@ import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-m
 import classnames from 'classnames';
 import {mergeWith, set, get, isEmpty} from 'lodash';
 import moment from 'moment';
+import {connect} from 'react-redux';
 import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
+import { clearTitleMetadataFilter } from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import PropagateButton from '../nexus-person/elements/PropagateButton/PropagateButton';
 import {buildSection, getProperValues, getProperValue, getAllFields} from './utils';
 import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION, CAST_AND_CREW_TITLE, PROPAGATE_TITLE} from './constants';
@@ -29,6 +31,7 @@ const NexusDynamicForm = ({
     castCrewConfig,
     // eslint-disable-next-line react/prop-types
     seasonPersons,
+    clearMetadataFilters,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [disableSubmit, setDisableSubmit] = useState(true);
@@ -160,14 +163,10 @@ const NexusDynamicForm = ({
         if (isTitlePage) {
             const allowedContents = [SEASON, SERIES];
             const contentType = get(initialData, 'contentType', '');
-            const handleClickOnShowAll = async () => {
-                await sessionStorage.removeItem('storedMetadataFilter');
-                await sessionStorage.removeItem('storedSelectedID');
-            };
             if (allowedContents.includes(contentType)) {
                 return (
                     <div className="nexus-c-dynamic-form__show-all">
-                        <a onClick={handleClickOnShowAll} href={createLink(contentType)}>
+                        <a onClick={clearMetadataFilters} href={createLink(contentType)}>
                             Show all {contentType === SERIES ? 'seasons' : 'episodes'}
                         </a>
                     </div>
@@ -290,6 +289,7 @@ NexusDynamicForm.propTypes = {
     setRefresh: PropTypes.func,
     castCrewConfig: PropTypes.object,
     storedInitialData: PropTypes.object,
+    clearMetadataFilters: PropTypes.func,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -307,6 +307,12 @@ NexusDynamicForm.defaultProps = {
     setRefresh: () => null,
     castCrewConfig: {},
     storedInitialData: null,
+    clearMetadataFilters: () => null,
 };
 
-export default NexusDynamicForm;
+
+const mapDispatchToProps = dispatch => ({
+    clearMetadataFilters: payload => dispatch(clearTitleMetadataFilter()),
+});
+
+export default connect(null, mapDispatchToProps)(NexusDynamicForm);
