@@ -446,7 +446,7 @@ const NexusField = ({
     const renderFieldViewMode = fieldProps => {
         if (validationError) {
             return <div>{validationError}</div>;
-        }
+        } 
         switch (type) {
             case 'boolean':
                 return <Checkbox isDisabled isChecked={fieldProps.value} />;
