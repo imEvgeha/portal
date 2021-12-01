@@ -127,18 +127,20 @@ const NexusField = ({
         if (allData?.castCrew?.length && data?.editorial) {
             const filtrationForCastCrew = (item, index, self) =>
                 index === self.findIndex(newItem => newItem.id === item.id);
-            return () => {
-                setUpdatedValues({
-                    editorial: {
-                        ...data.editorial,
-                        castCrew: data?.editorial?.castCrew?.length
-                            ? [...data.editorial.castCrew, ...allData.castCrew].filter(filtrationForCastCrew)
-                            : [...allData.castCrew],
-                    },
-                });
-            };
+            setUpdatedValues({
+                editorial: {
+                    ...data.editorial,
+                    castCrew: data?.editorial?.castCrew?.length
+                        ? [...data.editorial.castCrew, ...allData.castCrew].filter(filtrationForCastCrew)
+                        : [...allData.castCrew],
+                },
+            });
         }
-        return () => setUpdatedValues(data);
+        setUpdatedValues(data);
+    };
+
+    const persons = fieldProps => {
+        return fieldProps.value ? fieldProps.value : allData?.castCrew?.length ? [...allData?.castCrew] : [];
     };
 
     const renderFieldEditMode = fieldProps => {
@@ -146,9 +148,6 @@ const NexusField = ({
         const multiselectFieldProps = {...fieldProps};
         let selectLocalizedValues = null;
         let newOptionsConfig = null;
-        const persons = () => {
-            return fieldProps.value ? fieldProps.value : allData?.castCrew?.length ? [...allData?.castCrew] : [];
-        };
 
         switch (type) {
             case 'string':
@@ -333,7 +332,7 @@ const NexusField = ({
                     <CastCrew
                         onChange={onChange(getCurrentValues())}
                         {...fieldProps}
-                        persons={persons()}
+                        persons={persons(fieldProps)}
                         isEdit={true}
                         getValues={getValues}
                         setFieldValue={setFieldValue}
@@ -464,7 +463,7 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
-                        persons={persons()}
+                        persons={persons(fieldProps)}
                         isEdit={false}
                         getValues={getValues}
                         setFieldValue={setFieldValue}
