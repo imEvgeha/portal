@@ -1,5 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+import configureStore from 'redux-mock-store';
 import {TitleMetadataView} from './TitleMetadataView';
 
 describe('TitleMetadataView', () => {
@@ -8,11 +9,21 @@ describe('TitleMetadataView', () => {
     let titleMetadataTable = null;
     let createBtn = null;
     let syncBtn = null;
+    const mockStore = configureStore();
+    const store = mockStore({
+        titleMetadata: {
+            filter: {
+                filterModel: {},
+                sortModel: null,
+                columnState: [],
+            },
+        },
+    });
 
     beforeAll(() => {
-        wrapper = shallow(<TitleMetadataView />);
+        wrapper = shallow(<TitleMetadataView store={store} />);
         titleMetadataHeader = wrapper.find('TitleMetadataHeader');
-        titleMetadataTable = wrapper.find('TitleMetadataTable');
+        titleMetadataTable = wrapper.find('.nexus-c-title-metadata__table');
         createBtn = wrapper.find('.nexus-c-title-metadata__create-btn');
         syncBtn = wrapper.find('.nexus-c-title-metadata__sync-btn');
     });

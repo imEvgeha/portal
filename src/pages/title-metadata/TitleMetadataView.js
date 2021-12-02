@@ -137,6 +137,7 @@ export const TitleMetadataView = ({
                 setColumnApi={setColumnApi}
                 columnApi={columnApi}
                 gridApi={gridApi}
+                className='nexus-c-title-metadata__table'
             />
             <TitleCreate
                 display={showModal}
