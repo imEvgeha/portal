@@ -381,6 +381,8 @@ export const handleDirtyValues = (initialValues, values) => {
     handleDirtyRatingsValues(values);
     handleDirtyEMETValues(initialValues, values);
     handleDirtyTMETValues(values);
+
+    return values.editorialMetadata;
 };
 
 const handleDirtyRatingsValues = values => {

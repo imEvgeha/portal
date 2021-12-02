@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
@@ -6,7 +5,7 @@ import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynami
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import classnames from 'classnames';
-import {get, isEmpty} from 'lodash';
+import {get, isEmpty, isEqual, pickBy, cloneDeep, omit} from 'lodash';
 import {connect, useSelector} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
@@ -111,7 +110,21 @@ const TitleDetails = ({
     }, [refresh]);
 
     const onSubmit = (values, initialValues) => {
-        handleDirtyValues(initialValues, values);
+        const cleanedValues = values.editorialMetadata.map(item => pickBy(item, v => v !== undefined));
+        console.log('%ccleanedValues', 'color: red; font-size: 14px;', cleanedValues);
+
+        const updatedNewValues = handleDirtyValues(initialValues, values);
+        const updatedNewValuesClone = cloneDeep(updatedNewValues);
+
+        const cleanedUpdatedValues = updatedNewValuesClone.map(item =>
+            pickBy(item, v => v !== undefined, delete item.isUpdated)
+        );
+
+        console.log('%ccleanedUpdatedValues', 'color: gold; font-size: 14px;', cleanedUpdatedValues);
+
+        const isEmetUpdated = isEqual(cleanedValues, cleanedUpdatedValues);
+        console.log('%cisEmetUpdated', 'color: gold; font-size: 14px;', isEmetUpdated);
+
         const {params} = match || {};
         const {id} = params;
         // remove fields under arrayWithTabs
@@ -212,7 +225,7 @@ const TitleDetails = ({
                         containerRef={containerRef}
                         selectValues={selectValues}
                         seasonPersons={propagateAddPersons}
-                        onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
+                        onSubmit={onSubmit}
                         generateMsvIds={generateMsvIds}
                         regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                         hasButtons={isNexusTitle(title.id)}

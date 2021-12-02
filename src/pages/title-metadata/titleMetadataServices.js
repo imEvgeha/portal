@@ -210,6 +210,8 @@ export const titleService = {
         });
     },
     updateEditorialMetadata: (editedEditorialMetadata, tenantCode) => {
+        // console.log('%c LOS REQUEST pdateEditorialMetadata', 'color: tomato; font-size: 14px;', editedEditorialMetadata);
+
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
         const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
