@@ -114,6 +114,7 @@ class DropdownCellEditor extends Component {
 
     render() {
         const {value} = this.state;
+        const filteredValue = value.filter(item => !item.isDisabled).filter(item => !item.withdrawn);
 
         return (
             <div className="nexus-c-dropdown-cell-editor">
@@ -125,7 +126,7 @@ class DropdownCellEditor extends Component {
                         >
                             Select All
                         </DropdownItemCheckbox>
-                        {value.map((option, index) => (
+                        {filteredValue.map((option, index) => (
                             <DropdownItemCheckbox
                                 isSelected={option.selected}
                                 key={option.country}
