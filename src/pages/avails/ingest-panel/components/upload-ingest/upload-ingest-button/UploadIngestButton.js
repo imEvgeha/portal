@@ -1,15 +1,16 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import AddIcon from '@atlaskit/icon/glyph/add';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import config from 'react-global-configuration';
+import {connect} from 'react-redux';
+import { uploadMetadata } from '../../../../../title-metadata/titleMetadataActions';
 import InputForm from '../InputForm/InputForm';
 import './UploadIngestButton.scss';
 
 const TITLE = 'AVAIL INGEST';
 
-const UploadIngestButton = ({ingestData}) => {
+const UploadIngestButton = ({ingestData, withModal, uploadMetadata, catalogueOwner, icon}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const {openModal, closeModal} = useContext(NexusModalContext);
@@ -26,6 +27,14 @@ const UploadIngestButton = ({ingestData}) => {
         inputClick();
     }, [closeUploadModal]);
 
+    const uploadHandler = () => {
+        const params = {
+            tenantCode: catalogueOwner.toUpperCase(), // VU
+            file,
+        }; 
+        uploadMetadata(params);
+    };
+
     const buildForm = useCallback(() => {
         return (
             <InputForm
@@ -40,9 +49,10 @@ const UploadIngestButton = ({ingestData}) => {
     }, [browseClick, closeUploadModal, file]);
 
     useEffect(() => {
-        if (file) {
+        if (file && withModal) {
             openModalCallback(buildForm(), {title: TITLE, width: 'medium', shouldCloseOnOverlayClick: false});
         }
+        if (file && !withModal) uploadHandler();
     }, [buildForm, file]);
 
     const inputClick = () => inputRef && inputRef.current && inputRef.current.click();
@@ -52,11 +62,11 @@ const UploadIngestButton = ({ingestData}) => {
         if (files && files.length > 0) {
             setFile(Array.from(files)[0]);
             e.target.value = null;
-        }
+        } 
     };
 
     return (
-        <div className="ingest-upload">
+        <div className={withModal ? "ingest-upload-with-border" : "ingest-upload"}>
             <input
                 className="ingest-upload__input"
                 type="file"
@@ -69,7 +79,7 @@ const UploadIngestButton = ({ingestData}) => {
                     Upload
                 </button>
             ) : (
-                <IconButton icon={AddIcon} onClick={inputClick} label="Upload Ingest" />
+                <IconButton icon={icon} onClick={inputClick} label="Upload Ingest" />
             )}
         </div>
     );
@@ -77,10 +87,23 @@ const UploadIngestButton = ({ingestData}) => {
 
 UploadIngestButton.propTypes = {
     ingestData: PropTypes.object,
+    uploadMetadata: PropTypes.func,
+    catalogueOwner: PropTypes.string,
+    withModal: PropTypes.bool,
+    icon: PropTypes.any.isRequired
 };
 
 UploadIngestButton.defaultProps = {
     ingestData: null,
+    uploadMetadata: () => null,
+    catalogueOwner: '',
+    withModal: false,
 };
 
-export default UploadIngestButton;
+const mapDispatchToProps = dispatch => ({
+    uploadMetadata: payload => {
+        return dispatch(uploadMetadata(payload));
+    },
+});
+
+export default connect(null, mapDispatchToProps)(UploadIngestButton);

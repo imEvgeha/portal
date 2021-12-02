@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import AddIcon from '@atlaskit/icon/glyph/add';
 import {debounce} from 'lodash';
 import {connect} from 'react-redux';
 import Bundle from './components/bundle/Bundle';
@@ -101,7 +102,7 @@ const IngestPanel = ({
                 })}
             </div>
             <div className="ingest-panel__btns">
-                <UploadIngestButton />
+                <UploadIngestButton icon={AddIcon} withModal />
                 <RefreshConfigBtn />
             </div>
         </div>

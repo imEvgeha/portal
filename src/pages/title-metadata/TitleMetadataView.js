@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.svg';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
@@ -11,11 +12,11 @@ import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {store} from '../../index';
+import UploadIngestButton from '../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
-import CloudUploadButton from './components/title-metadata-header/components/CloudUploadButton';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
 import {storeTitleUserDefinedGridState} from './titleMetadataActions';
@@ -113,7 +114,7 @@ export const TitleMetadataView = ({
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
-                <CloudUploadButton catalogueOwner={catalogueOwner.tenantCode} />
+                <UploadIngestButton catalogueOwner={catalogueOwner.tenantCode} icon={CloudUploadIcon} />
                 <NexusSavedTableDropdown
                     gridApi={gridApi}
                     columnApi={columnApi}

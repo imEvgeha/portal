@@ -1,8 +1,16 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 
-.ingest-upload {
+.ingest-upload-with-border {
     @include padding(2.5, 5);
     border-top: 1px solid map-get($light-neutral-colors, light-neutral-1);
+
+    &__input {
+        display: none;
+    }
+}
+
+.ingest-upload {
+    @include padding(2.5, 5);
 
     &__input {
         display: none;

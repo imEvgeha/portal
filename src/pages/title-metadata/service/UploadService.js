@@ -11,17 +11,14 @@ export const uploadService = {
     uploadMetadata: ({file, externalId, params = {}}) => {
         const formData = new FormData();
         formData.append('file', file);
-
         if (externalId) {
             params.externalId = externalId;
         }
-
         const queryParams = new URLSearchParams({...params}).toString();
         const url = `${config.get('gateway.titleUrl') + config.get('gateway.service.title')}/editorialmetadata/upload${
             queryParams && `?${queryParams}`
         }`;
         const abortAfter = config.get('title.upload.http.timeout');
-
         return nexusFetch(
             url,
             {

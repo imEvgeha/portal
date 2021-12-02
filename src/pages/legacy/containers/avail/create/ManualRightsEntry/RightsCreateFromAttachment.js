@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
+import AddIcon from '@atlaskit/icon/glyph/add';
 import {Button} from 'reactstrap';
 import AkButton from '@atlaskit/button';
 import {connect} from 'react-redux';
@@ -322,7 +323,7 @@ class RightsCreateFromAttachment extends React.Component {
                     </div>
                     <div>
                         <Can I="create" a="Avail">
-                            <UploadIngestButton ingestData={this.state.historyData} />
+                            <UploadIngestButton ingestData={this.state.historyData} icon={AddIcon} withModal />
                         </Can>
                     </div>
                 </div>
