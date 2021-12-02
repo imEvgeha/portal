@@ -80,8 +80,6 @@ const TitleDetails = ({
     const [MOVDisabled, setMOVDisabled] = useState(true);
     const [episodesCount, setEpisodesCount] = useState('0');
 
-    const [episodesCount, setEpisodesCount] = useState('0');
-
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
     const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
 
@@ -175,7 +173,7 @@ const TitleDetails = ({
 
         return {
             ...updatedTitle,
-            totalEpisodesCount: episodesCount.total ? episodesCount.total : '0',
+            episodesCount: episodesCount.total ? episodesCount.total : '0',
             vzExternalIds,
             movidaExternalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
