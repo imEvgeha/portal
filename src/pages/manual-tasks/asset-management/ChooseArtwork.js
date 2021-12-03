@@ -17,116 +17,15 @@ import ArtworkItem from './components/artwork-item/ArtworkItem';
 
 const UPLOAD_ARTWORK_TITLE = 'Upload Artwork';
 const DOP_POP_UP_TITLE = 'Choose Artwork';
-const DOP_POP_UP_MESSAGE = 'Please, select atleast one thumbnail!';
-const CHUNK_SIZE = 5;
+const DOP_POP_UP_MESSAGE = 'Please, select at least one thumbnail!';
 const IMG_WIDTH = 300;
 const IMG_HEIGHT = 200;
 
 const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) => {
-    const tmpPosters = [
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-        'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000',
-    ];
     const [selectedArtwork, setSelectedArtwork] = useState();
     const [posters, setPosters] = useState([]);
     const [lazyLoading, setLazyLoading] = useState(false);
-    const [itemSize, setItemSize] = useState(Math.trunc((window.screen.width - 50) / IMG_WIDTH));
+    const [itemSize] = useState(Math.trunc((window.screen.width - 50) / IMG_WIDTH));
 
     const {openModal, closeModal} = useContext(NexusModalContext);
     const sourceMediaAssetID = VuURL.getParamIfExists('sourceMediaAssetID', '');
@@ -156,7 +55,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
     };
 
     useEffect(() => {
-        setPosters(Array.from({length: tmpPosters.length}));
+        setPosters(Array.from({length: posterList.length}));
         setLazyLoading(false);
 
         fetchAsset(artworkAssetID);
@@ -181,7 +80,6 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
 
     const basicItemTemplate = (item, options) => {
         const timing = item?.split('/')?.at(-1);
-        // timing = timing && timing[timing.length - 1];
         return (
             <div className="scroll-item">
                 <div>{options.index}</div>
@@ -201,7 +99,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
         const positionsToCheck = posters.slice(first, last);
         if (posters.includes(undefined) && positionsToCheck.includes(undefined)) {
             setLazyLoading(true);
-            const postersToFetch = tmpPosters.slice(first, last).map(url => fetchPoster(url));
+            const postersToFetch = posterList.slice(first, last).map(url => fetchPoster(url));
             const lazyItems = [...posters];
             Promise.all(postersToFetch).then(res => {
                 let counter = 0;
@@ -218,16 +116,10 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
     const fetchPoster = poster => {
         const headers = new Headers();
         headers.append('Authorization', `token ${localStorage.getItem('token')}`);
-
-        return fetch(poster, {method: 'GET', headers}).then(res => res.blob()); // Gets the response and returns it as a blob
-        // .then(blob => {
-        //     const imageRef = React.useRef();
-        //     const objectURL = Vu_URL.createObjectURL(blob);
-        //     imageRef.current.src = objectURL;
-        // });
+        return fetch(poster, {method: 'GET', headers}).then(res => res.blob());
     };
 
-    const basicLoadingTemplate = options => {
+    const basicLoadingTemplate = () => {
         return (
             <div className="loading-item px-2">
                 <Skeleton className="skeleton" />

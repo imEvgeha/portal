@@ -6,19 +6,6 @@ import './AtrworkItem.scss';
 
 const ArtworkItem = ({poster, timing, onClick, isSelected}) => {
     const parsedPoster = poster.split('?url=true/')[1];
-    // const imageRef = React.useRef();
-    //
-    // React.useEffect(() => {
-    //     const headers = new Headers();
-    //     headers.append('Authorization', `token ${localStorage.getItem('token')}`);
-    //
-    //     fetch(poster, {method: 'GET', headers})
-    //         .then(res => res.blob()) // Gets the response and returns it as a blob
-    //         .then(blob => {
-    //             const objectURL = URL.createObjectURL(blob);
-    //             imageRef.current.src = objectURL;
-    //         });
-    // }, []);
 
     return (
         <div className={`artwork-item ${isSelected ? 'artwork-item--selected' : ''}`}>
