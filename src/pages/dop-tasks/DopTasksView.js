@@ -10,7 +10,7 @@ import {connect} from 'react-redux';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
-import {setDopTasksUserDefinedGridState, assignDopTasks, changeDOPPriority} from './dopTasksActions';
+import {setDopTasksUserDefinedGridState, assignDopTasks, unAssignDopTasks, changeDOPPriority} from './dopTasksActions';
 import {createGridStateSelector} from './dopTasksSelectors';
 import {applyPredefinedTableView} from './utils';
 import {
@@ -28,6 +28,7 @@ export const DopTasksView = ({
     gridState,
     setDopTasksUserDefinedGridState,
     assignTasks,
+    unAssignTasks,
     changePriority,
 }) => {
     const [externalFilter, setExternalFilter] = useState({
@@ -88,6 +89,7 @@ export const DopTasksView = ({
                 setGridApi={setGridApi}
                 setColumnApi={setColumnApi}
                 assignTasks={assignTasks}
+                unAssignTasks={unAssignTasks}
                 changePriority={changePriority}
             />
         </div>
@@ -107,6 +109,7 @@ const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
     setDopTasksUserDefinedGridState: payload => dispatch(setDopTasksUserDefinedGridState(payload)),
     assignTasks: payload => dispatch(assignDopTasks(payload)),
+    unAssignTasks: payload => dispatch(unAssignDopTasks(payload)),
     changePriority: payload => dispatch(changeDOPPriority(payload)),
 });
 
@@ -114,6 +117,7 @@ DopTasksView.propTypes = {
     toggleRefreshGridData: PropTypes.func,
     setDopTasksUserDefinedGridState: PropTypes.func,
     assignTasks: PropTypes.func,
+    unAssignTasks: PropTypes.func,
     changePriority: PropTypes.func,
     gridState: PropTypes.object,
     username: PropTypes.string.isRequired,
@@ -123,6 +127,7 @@ DopTasksView.defaultProps = {
     toggleRefreshGridData: () => null,
     setDopTasksUserDefinedGridState: () => null,
     assignTasks: () => null,
+    unAssignTasks: () => null,
     changePriority: () => null,
     gridState: {},
 };
