@@ -1,5 +1,4 @@
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
-import {isString} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../../util/http-client';
 
@@ -9,11 +8,18 @@ import {nexusFetch} from '../../../util/http-client';
 
 export const uploadService = {
     uploadMetadata: ({file, externalId, params = {}}) => {
+        const {token} = keycloak || {};
         const formData = new FormData();
         formData.append('file', file);
         if (externalId) {
             params.externalId = externalId;
         }
+        // do not remove options cuz we need it for request
+        const options = {
+            headers: {
+                ...(token ? {Authorization: `Bearer ${token}`} : {}),
+            },
+        };
         const queryParams = new URLSearchParams({...params}).toString();
         const url = `${config.get('gateway.titleUrl') + config.get('gateway.service.title')}/editorialmetadata/upload${
             queryParams && `?${queryParams}`
@@ -24,6 +30,7 @@ export const uploadService = {
             {
                 method: 'post',
                 body: formData,
+                ...options,
             },
             abortAfter
         );
