@@ -1,6 +1,6 @@
 import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
-import {get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import config from 'react-global-configuration';
 import {call, put, all, takeEvery} from 'redux-saga/effects';
 import {nexusFetch} from '../../../util/http-client';
@@ -25,15 +25,23 @@ function* resourcePosters({payload}) {
         )}/item/${payload}/posterresource`;
         const resource = yield call(fetchPosters, url);
         const resourceURL = `${get(resource, 'uri[0]', '')}?url=true`;
-        const timeFrames = yield call(fetchPosters, resourceURL);
-        const posters = [];
-        get(timeFrames, 'uri', []).forEach(frame => {
-            posters.push(`${resourceURL}/${frame}`);
-        });
-        yield put({
-            type: STORE_POSTERS,
-            payload: posters,
-        });
+
+        const img = yield call(
+            fetchPosters,
+            'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000'
+        );
+        console.log(img);
+        if (!isEmpty(resource)) {
+            const timeFrames = yield call(fetchPosters, resourceURL);
+            const posters = [];
+            get(timeFrames, 'uri', []).forEach(frame => {
+                posters.push(`${resourceURL}/${frame}`);
+            });
+            yield put({
+                type: STORE_POSTERS,
+                payload: posters,
+            });
+        }
     } catch (error) {
         // error handling here
     }
