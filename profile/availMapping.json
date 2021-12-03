@@ -426,8 +426,7 @@
             "readOnly": true,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false,
-            "nonMatchingValue": true
+            "required": false
         },
         {
             "javaVariableName": "storeLanguage",
