@@ -127,7 +127,7 @@ $button-font-size: 13px;
     background-color: palette(white, 0);
     border: none;
     &:hover {
-        background-color: palette(black, 5);
+        background-color: palette(black, 5) !important;
     }
     &:hover:active {
         background-color: palette(black, 20);
