@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import config from 'react-global-configuration';
-import {connect} from 'react-redux';
-import { uploadMetadata } from '../../../../../title-metadata/titleMetadataActions';
 import InputForm from '../InputForm/InputForm';
 import './UploadIngestButton.scss';
 
 const TITLE = 'AVAIL INGEST';
 
-const UploadIngestButton = ({ingestData, withModal, uploadMetadata, catalogueOwner, icon}) => {
+const UploadIngestButton = ({ingestData, withModal, icon, uploadCallback}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const {openModal, closeModal} = useContext(NexusModalContext);
@@ -26,14 +24,6 @@ const UploadIngestButton = ({ingestData, withModal, uploadMetadata, catalogueOwn
         closeUploadModal();
         inputClick();
     }, [closeUploadModal]);
-
-    const uploadHandler = () => {
-        const params = {
-            tenantCode: catalogueOwner.toUpperCase(), // VU
-            file,
-        }; 
-        uploadMetadata(params);
-    };
 
     const buildForm = useCallback(() => {
         return (
@@ -52,7 +42,7 @@ const UploadIngestButton = ({ingestData, withModal, uploadMetadata, catalogueOwn
         if (file && withModal) {
             openModalCallback(buildForm(), {title: TITLE, width: 'medium', shouldCloseOnOverlayClick: false});
         }
-        if (file && !withModal) uploadHandler();
+        if (file && uploadCallback) uploadCallback(file);
     }, [buildForm, file]);
 
     const inputClick = () => inputRef && inputRef.current && inputRef.current.click();
@@ -87,23 +77,15 @@ const UploadIngestButton = ({ingestData, withModal, uploadMetadata, catalogueOwn
 
 UploadIngestButton.propTypes = {
     ingestData: PropTypes.object,
-    uploadMetadata: PropTypes.func,
-    catalogueOwner: PropTypes.string,
     withModal: PropTypes.bool,
-    icon: PropTypes.any.isRequired
+    icon: PropTypes.any.isRequired,
+    uploadCallback: PropTypes.func,
 };
 
 UploadIngestButton.defaultProps = {
     ingestData: null,
-    uploadMetadata: () => null,
-    catalogueOwner: '',
     withModal: false,
+    uploadCallback: () => null,
 };
 
-const mapDispatchToProps = dispatch => ({
-    uploadMetadata: payload => {
-        return dispatch(uploadMetadata(payload));
-    },
-});
-
-export default connect(null, mapDispatchToProps)(UploadIngestButton);
+export default UploadIngestButton;

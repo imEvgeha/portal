@@ -19,7 +19,7 @@ import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
-import {storeTitleUserDefinedGridState} from './titleMetadataActions';
+import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector} from './titleMetadataSelectors';
 import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS} from './constants';
 
@@ -31,6 +31,7 @@ export const TitleMetadataView = ({
     username,
     gridState,
     titleMetadataFilter,
+    uploadMetadata
 }) => {
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
@@ -89,6 +90,14 @@ export const TitleMetadataView = ({
         columnApi.resetColumnState();
     };
 
+    const uploadHandler = (file) => {
+        const params = {
+            tenantCode: catalogueOwner.tenantCode.toUpperCase(),
+            file,
+        }; 
+        uploadMetadata(params);
+    };
+
     const [blockLastFilter, setBlockLastFilter] = useState(true);
 
     useEffect(() => {
@@ -103,7 +112,7 @@ export const TitleMetadataView = ({
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
-                <UploadIngestButton catalogueOwner={catalogueOwner.tenantCode} icon={CloudUploadIcon} />
+                <UploadIngestButton icon={CloudUploadIcon} uploadCallback={uploadHandler} />
                 <NexusSavedTableDropdown
                     gridApi={gridApi} 
                     columnApi={columnApi}
@@ -165,6 +174,7 @@ const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
     resetTitleId: () => dispatch(resetTitle()),
     storeTitleUserDefinedGridState: payload => dispatch(storeTitleUserDefinedGridState(payload)),
+    uploadMetadata: payload => dispatch(uploadMetadata(payload)),
 });
 
 TitleMetadataView.propTypes = {
@@ -175,6 +185,7 @@ TitleMetadataView.propTypes = {
     username: PropTypes.string.isRequired,
     gridState: PropTypes.object,
     titleMetadataFilter: PropTypes.object,
+    uploadMetadata: PropTypes.func,
 };
 
 TitleMetadataView.defaultProps = {
@@ -184,6 +195,7 @@ TitleMetadataView.defaultProps = {
     storeTitleUserDefinedGridState: () => null,
     gridState: {},
     titleMetadataFilter: {},
+    uploadMetadata: () => null,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataView);
