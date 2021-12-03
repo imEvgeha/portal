@@ -114,7 +114,7 @@ class DropdownCellEditor extends Component {
 
     render() {
         const {value} = this.state;
-        const filteredValue = value.filter(item => !item.isDisabled && !item.withdrawn);
+        // const filteredValue = value.filter(item => item.isDisabled && item.withdrawn);
 
         return (
             <div className="nexus-c-dropdown-cell-editor">
@@ -126,17 +126,20 @@ class DropdownCellEditor extends Component {
                         >
                             Select All
                         </DropdownItemCheckbox>
-                        {filteredValue.map((option, index) => (
-                            <DropdownItemCheckbox
-                                isSelected={option.selected}
-                                key={option.country}
-                                id={option.country}
-                                isDisabled={option.isDisabled || option.withdrawn}
-                                onClick={() => this.handleChange(index)}
-                            >
-                                {option.country}
-                            </DropdownItemCheckbox>
-                        ))}
+                        {value.map((option, index) => {
+                            if(option.isDisabled || option.withdrawn) return null;
+                            return (
+                                <DropdownItemCheckbox
+                                    isSelected={option.selected}
+                                    key={option.country}
+                                    id={option.country}
+                                    isDisabled={option.isDisabled || option.withdrawn}
+                                    onClick={() => this.handleChange(index)}
+                                >
+                                    {option.country}
+                                </DropdownItemCheckbox>
+                            )
+                        })}
                     </DropdownItemGroupCheckbox>
                 </Dropdown>
             </div>
