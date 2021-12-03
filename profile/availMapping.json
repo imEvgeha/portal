@@ -1800,7 +1800,8 @@
             "readOnlyInDetails": true,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "nonMatchingValue": true
         },
         {
             "javaVariableName": "sourceRightId",
@@ -1812,7 +1813,8 @@
             "readOnlyInDetails": true,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "nonMatchingValue": true
         },
         {
             "javaVariableName": "copyright",

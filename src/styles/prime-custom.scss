@@ -1,41 +1,43 @@
 @import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
+// Variables
+$button-height: 32px;
+$button-font-size: 13px;
+
 // Buttons Related
 .p-button {
     background: palette(black, 10);
     border: 1px solid palette(black, 10);
-    &.p-button {
+    height: $button-height;
+    font-size: $button-font-size;
+
+    &.p-button-outlined {
         &:enabled {
-            background: palette(black, 10);
-            border: none;
+            border-radius: 8px;
+            border: 1px solid palette(black, 20);
+            background-color: palette(black, 10);
 
             &:hover {
-                background: palette(black, 5);
+                background-color: palette(blue, 20);
+                border: 1px solid palette(blue, 20);
             }
-
+            &:hover:active,
             &:active {
-                background: palette(blue, 100);
-
-                svg {
-                    fill: palette(white, 100);
-                }
-                .p-button-label {
-                    color: palette(white, 100);
-                }
+                background-color: palette(black, 20);
+                border: 1px solid palette(black, 20);
             }
 
             &:focus {
                 box-shadow: none;
             }
-
             .p-button-label {
-                color: palette(black, 100);
+                color: palette(black, 80);
             }
         }
 
         &:disabled {
             background-color: palette(black, 0);
-            border: none;
+            border: 1px solid palette(black, 10);
             opacity: 1;
 
             svg,
@@ -50,6 +52,21 @@
             height: 16px;
             margin: 0 4px;
         }
+
+        &.p-button-secondary {
+            &:enabled {
+                background-color: palette(white, 0);
+                &:hover {
+                    background-color: palette(blue, 20);
+                    border: 1px solid palette(blue, 20);
+                }
+                &:hover:active,
+                &:active {
+                    background-color: palette(black, 20);
+                    border: 1px solid palette(black, 20);
+                }
+            }
+        }
     }
 
     &.p-button-text {
@@ -61,15 +78,9 @@
                 background: palette(black, 5);
             }
 
+            &:hover:active,
             &:active {
-                background: palette(blue, 100);
-                svg {
-                    fill: palette(white, 100);
-                }
-
-                .p-button-label {
-                    color: palette(white, 100);
-                }
+                background-color: palette(black, 20);
             }
 
             &:focus {
@@ -99,17 +110,61 @@
             fill: palette(black, 80);
         }
     }
+
+    // Icons
+    &.p-button-icon-only.p-button-rounded {
+        height: $button-height;
+        font-size: $button-font-size;
+        width: 2.4rem;
+        padding: 0.75rem 0;
+        border-radius: 50% !important;
+    }
 }
 
-// Icon Buttons
-.p-button.p-button-icon-only.p-button-rounded {
-    width: 3rem;
-    padding: 0.75rem 0;
-    border-radius: 50% !important;
+// Toggle Buttons
+
+.p-button.p-togglebutton {
+    background-color: palette(white, 0);
+    border: none;
+    &:hover {
+        background-color: palette(black, 5);
+    }
+    &:hover:active {
+        background-color: palette(black, 20);
+    }
+    &:active {
+        background-color: palette(black, 10) !important;
+        .p-button-label {
+            color: palette(black, 80);
+        }
+    }
+
+    &.p-disabled {
+        color: palette(black, 20);
+    }
+
+    &.p-highlight {
+        background-color: palette(black, 10);
+        &:hover {
+            background-color: palette(black, 5);
+        }
+        &:hover:active {
+            background-color: palette(black, 20);
+        }
+        &:active {
+            background-color: palette(black, 10);
+        }
+        .p-button-label {
+            color: palette(black, 80);
+        }
+    }
+
+    &:focus {
+        box-shadow: none;
+    }
 }
 
 // Dialog Related
-
 .p-dialog.p-component {
     box-shadow: 0 8px 30px 0 palette(black, 2);
     border-radius: 8px;
@@ -137,107 +192,5 @@
         border-bottom-right-radius: 8px;
         border-top: 1px solid palette(black, 5);
         padding: 16px 32px;
-
-        .p-button.p-button-icon-only {
-            width: 3rem;
-        }
-        .p-button.p-button {
-            &:enabled {
-                border-radius: 8px;
-                border: 1px solid palette(black, 20);
-                background-color: palette(black, 10);
-
-                &:active {
-                    background: palette(blue, 100);
-                    svg {
-                        fill: palette(white, 100);
-                    }
-                    .p-button-label {
-                        color: palette(white, 100);
-                    }
-                }
-
-                &:hover {
-                    background-color: palette(blue, 20);
-                }
-
-                &:focus {
-                    box-shadow: none;
-                }
-            }
-            &:disabled {
-                background-color: palette(black, 0);
-                border: 1px solid palette(black, 10);
-                opacity: 1;
-
-                svg,
-                .p-button-label {
-                    color: palette(black, 20);
-                    fill: palette(black, 20);
-                }
-            }
-
-            svg {
-                width: 16px;
-                height: 16px;
-                margin: 0 4px;
-            }
-        }
-
-        .p-button.p-button-text {
-            &:enabled {
-                border-radius: 8px;
-                border: 1px solid palette(black, 20);
-                background-color: palette(black, 0);
-
-                &:active {
-                    background: palette(blue, 100);
-                    svg {
-                        fill: palette(white, 100);
-                    }
-                    .p-button-label {
-                        color: palette(white, 100);
-                    }
-                }
-
-                .p-button-label {
-                    color: palette(black, 80);
-                }
-
-                &:hover {
-                    background-color: palette(blue, 20);
-                }
-
-                &:focus {
-                    box-shadow: none;
-                }
-            }
-            &:disabled {
-                background-color: palette(black, 0);
-                border: 1px solid palette(black, 10);
-                opacity: 1;
-
-                svg,
-                .p-button-label {
-                    color: palette(black, 20);
-                    fill: palette(black, 20);
-                }
-            }
-
-            svg {
-                width: 16px;
-                height: 16px;
-                margin: 0 4px;
-                fill: palette(black, 80);
-            }
-        }
-
-        .p-button-label {
-            color: palette(black, 100);
-        }
-
-        .p-button-icon {
-            color: palette(black, 100);
-        }
     }
 }

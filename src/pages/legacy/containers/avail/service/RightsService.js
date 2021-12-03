@@ -137,6 +137,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
     function isQuoted(value) {
         return value[0] === '"' && value[value.length - 1] === '"';
     }
+
     for (let key in searchCriteria) {
         if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
             let value = searchCriteria[key];
@@ -157,6 +158,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 ({queryParamName, javaVariableName, dataType}) =>
                     (queryParamName === key || javaVariableName === key) && dataType !== 'icon'
             );
+            
             let keyValue = (map && map.queryParamName) || key;
             if (key === 'selected' || key === 'withdrawn') {
                 keyValue = `${key}FlattenList`;
@@ -176,7 +178,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
-                } else {
+                } else if (!map.nonMatchingValue) {
                     keyValue += 'Match';
                 }
             }
