@@ -114,7 +114,6 @@ class DropdownCellEditor extends Component {
 
     render() {
         const {value} = this.state;
-        // const filteredValue = value.filter(item => item.isDisabled && item.withdrawn);
 
         return (
             <div className="nexus-c-dropdown-cell-editor">
