@@ -18,6 +18,7 @@ const initialState = {
     isPublishingMOV: false,
     gridState: {},
     filter: {},
+    selectedId: '',
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
@@ -150,6 +151,11 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 filter: {},
+            };
+        case actionTypes.STORE_SELECTED_ID:
+            return {
+                ...state,
+                selectedId: payload,
             };
         default:
             return state;

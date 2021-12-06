@@ -8,6 +8,11 @@ import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/Icon
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
 import './NexusSavedTableDropdown.scss';
+import {useDispatch} from 'react-redux';
+import {
+    clearTitleMetadataFilter,
+    storeTitleSelectedId,
+} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 
 const insertNewGridModel = (viewId, userDefinedGridStates, model) => {
     const newUserData = userDefinedGridStates.slice();
@@ -35,6 +40,8 @@ const NexusSavedTableDropdown = ({
     setBlockLastFilter,
     isTitleMetadata,
 }) => {
+    const dispatch = useDispatch();
+
     const [selectedItem, setSelectedItem] = useState(lastStoredFilter.label ? lastStoredFilter : tableOptions[0]);
 
     const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
@@ -95,6 +102,8 @@ const NexusSavedTableDropdown = ({
             setSorting(sortModel, columnApi);
             columnApi.setColumnState(columnState);
             onUserDefinedViewSelected(selectedModel[0]);
+
+            isTitleMetadata && dispatch(clearTitleMetadataFilter(), storeTitleSelectedId(id));
         }
     };
 

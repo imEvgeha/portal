@@ -18,7 +18,11 @@ import TitleMetadataHeader from './components/title-metadata-header/TitleMetadat
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
 import {storeTitleUserDefinedGridState} from './titleMetadataActions';
-import {createGridStateSelector} from './titleMetadataSelectors';
+import {
+    createGridStateSelector,
+    createTitleMetadataFilterSelector,
+    createSelectedIdSelector,
+} from './titleMetadataSelectors';
 import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
@@ -29,6 +33,7 @@ export const TitleMetadataView = ({
     username,
     gridState,
     titleMetadataFilter,
+    selectedId,
 }) => {
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
@@ -95,14 +100,32 @@ export const TitleMetadataView = ({
             setSorting(titleMetadataFilter.sortModel, columnApi);
             columnApi.setColumnState(titleMetadataFilter.columnState);
         }
-    }, [gridApi, columnApi])
+    }, [gridApi, columnApi]);
 
+    const storedFilterData = titleMetadataFilter;
+    const storedFilterDataId = titleMetadataFilter?.id;
+
+    const lastStoredFilter = {
+        // eslint-disable-next-line no-unneeded-ternary
+        label: selectedId ? selectedId : storedFilterDataId,
+    };
+
+    const lastFilterView = (gridApi, columnApi, id) => {
+        if (!isEmpty(gridApi) && !isEmpty(columnApi) && id) {
+            const {columnState, filterModel, sortModel} = storedFilterData || {};
+            gridApi.setFilterModel(filterModel);
+            setSorting(sortModel, columnApi);
+            columnApi.setColumnState(columnState);
+        }
+    };
+
+    blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
 
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
                 <NexusSavedTableDropdown
-                    gridApi={gridApi} 
+                    gridApi={gridApi}
                     columnApi={columnApi}
                     username={username}
                     userDefinedGridStates={userDefinedGridStates}
@@ -110,6 +133,7 @@ export const TitleMetadataView = ({
                     applyPredefinedTableView={resetToAll}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
+                    lastStoredFilter={lastStoredFilter}
                     setBlockLastFilter={setBlockLastFilter}
                     isTitleMetadata={true}
                 />
@@ -137,7 +161,7 @@ export const TitleMetadataView = ({
                 setColumnApi={setColumnApi}
                 columnApi={columnApi}
                 gridApi={gridApi}
-                className='nexus-c-title-metadata__table'
+                className="nexus-c-title-metadata__table"
             />
             <TitleCreate
                 display={showModal}
@@ -151,10 +175,13 @@ export const TitleMetadataView = ({
 
 const mapStateToProps = () => {
     const gridStateSelector = createGridStateSelector();
+    const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
+    const selectedIdSelector = createSelectedIdSelector();
     return state => ({
         username: getUsername(state),
         gridState: gridStateSelector(state),
-        titleMetadataFilter: state.titleMetadata.filter,
+        titleMetadataFilter: titleMetadataFilterSelector(state),
+        selectedId: selectedIdSelector(state),
     });
 };
 
@@ -172,6 +199,7 @@ TitleMetadataView.propTypes = {
     username: PropTypes.string.isRequired,
     gridState: PropTypes.object,
     titleMetadataFilter: PropTypes.object,
+    selectedId: PropTypes.string,
 };
 
 TitleMetadataView.defaultProps = {
@@ -181,6 +209,7 @@ TitleMetadataView.defaultProps = {
     storeTitleUserDefinedGridState: () => null,
     gridState: {},
     titleMetadataFilter: {},
+    selectedId: '',
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataView);

@@ -58,7 +58,7 @@ export const storeTitleUserDefinedGridState = payload => {
         type: actionTypes.SET_TITLE_USER_DEFINED_GRID_STATE,
         payload,
     };
-}; 
+};
 
 export const setTitleMetadataFilter = payload => ({
     type: actionTypes.SET_TITLE_FILTER,
@@ -67,4 +67,9 @@ export const setTitleMetadataFilter = payload => ({
 
 export const clearTitleMetadataFilter = () => ({
     type: actionTypes.SET_TITLE_FILTER,
+});
+
+export const storeTitleSelectedId = payload => ({
+    type: actionTypes.STORE_SELECTED_ID,
+    payload,
 });
