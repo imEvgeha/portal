@@ -20,7 +20,6 @@ const AuditHistory = ({selectedRights}) => {
     const buildModalContent = () => {
         return (
             <div>
-                <div>ok</div>
                 {selectedRights.map(right => (
                     <AuditHistoryTable key={right.id} focusedRight={right} data={eventsHistory[right.id]} />
                 ))}
