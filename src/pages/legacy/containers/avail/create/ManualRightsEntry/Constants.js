@@ -6,4 +6,5 @@ export default {
         icon: 'far fa-envelope',
     },
     REFRESH_INTERVAL: 5 * 1000, //5 seconds
+    UPLOAD_TITLE: 'AVAIL INGEST',
 };

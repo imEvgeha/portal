@@ -18,7 +18,8 @@ import {
     manualRightsResultPageLoading,
     updateManualRightsEntryColumns,
 } from '../../../../stores/actions/avail/manualRightEntry';
-import UploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
+import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-ingest-button/NexusUploadButton';
+import { NexusModalContext } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import StatusIcon from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-icon/StatusIcon';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
@@ -32,7 +33,7 @@ import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
 
-const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON} = Constants;
+const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON, UPLOAD_TITLE} = Constants;
 
 const mapStateToProps = () => {
     const manualRightsEntrySelectedTabSelector = selectors.createManualRightsEntrySelectedTabSelector();
@@ -288,6 +289,20 @@ class RightsCreateFromAttachment extends React.Component {
         return selectedOnTab;
     };
 
+    buildForm = (data) => {
+        const {ingestData, closeUploadModal, file, browseClick, openModalCallback, closeModalCallback} = data;
+         return (
+            <InputForm
+                ingestData={ingestData}
+                closeModal={closeUploadModal}
+                file={file}
+                browseClick={browseClick}
+                openModalCallback={openModalCallback}
+                closeModalCallback={closeModalCallback}
+            />
+        );
+    };
+
     render() {
         const {
             historyData: {
@@ -323,7 +338,14 @@ class RightsCreateFromAttachment extends React.Component {
                     </div>
                     <div>
                         <Can I="create" a="Avail">
-                            <UploadIngestButton ingestData={this.state.historyData} icon={AddIcon} withModal />
+                            <NexusUploadButton
+                                modalContext={NexusModalContext}
+                                modalCallback={this.buildForm}
+                                title={UPLOAD_TITLE}
+                                ingestData={this.state.historyData}
+                                icon={AddIcon}
+                                withModal
+                            />
                         </Can>
                     </div>
                 </div>

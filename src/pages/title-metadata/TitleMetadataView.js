@@ -5,6 +5,7 @@ import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-ingest-button/NexusUploadButton';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
@@ -12,7 +13,6 @@ import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {store} from '../../index';
-import UploadIngestButton from '../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
@@ -21,7 +21,7 @@ import TitleMetadataTable from './components/title-metadata-table/TitleMetadataT
 import './TitleMetadataView.scss';
 import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector} from './titleMetadataSelectors';
-import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS} from './constants';
+import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS, METADATA_UPLOAD_TITLE} from './constants';
 
 export const TitleMetadataView = ({
     history,
@@ -112,7 +112,7 @@ export const TitleMetadataView = ({
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
-                <UploadIngestButton icon={CloudUploadIcon} uploadCallback={uploadHandler} />
+                <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
                 <NexusSavedTableDropdown
                     gridApi={gridApi} 
                     columnApi={columnApi}

@@ -66,5 +66,6 @@ export default {
     LICENSEE_TOOLTIP_MSG:
         'If Licensee is defined anywhere in the file, the system will use the file to determine Licensee.',
 };
+export const UPLOAD_TITLE = 'AVAIL INGEST';
 
 export const DEBOUNCE_TIMEOUT = 2000;
