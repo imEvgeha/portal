@@ -2,7 +2,7 @@ import React, {useCallback, useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import { NexusModalContext } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-ingest-button/NexusUploadButton';
+import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import {debounce} from 'lodash';
 import {connect} from 'react-redux';
 import Bundle from './components/bundle/Bundle';

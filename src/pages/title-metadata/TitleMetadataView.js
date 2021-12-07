@@ -5,7 +5,7 @@ import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-ingest-button/NexusUploadButton';
+import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';

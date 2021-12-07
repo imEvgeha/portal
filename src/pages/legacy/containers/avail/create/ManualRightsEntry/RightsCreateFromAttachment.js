@@ -18,7 +18,7 @@ import {
     manualRightsResultPageLoading,
     updateManualRightsEntryColumns,
 } from '../../../../stores/actions/avail/manualRightEntry';
-import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-ingest-button/NexusUploadButton';
+import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import { NexusModalContext } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import StatusIcon from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-icon/StatusIcon';
