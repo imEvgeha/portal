@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
+import { downloadFile } from '@vubiquity-nexus/portal-utils/lib/Common';
 import { connect } from 'react-redux';
+import { downloadService } from '../../../../service/downloadService';
 import {createInitialValues} from '../utils';
 import {createLanguagesSelector, createCountrySelector} from './downloadEmetModalSelectors'
 import {downloadFormSubtitle, downloadFormFields, cancelButton, downloadButton} from '../constants';
@@ -19,7 +21,6 @@ const DownloadEmetModal = ({closeModal, languages, locale}) => {
         const updatedPlaceholder = `Select ${placeholder}...`;
 
         const getOptions = () => {
-            // ...getting options from API
             if(name === 'status') {
                 return [
                     {label: 'Pending', value: 'pending'},
@@ -30,7 +31,7 @@ const DownloadEmetModal = ({closeModal, languages, locale}) => {
                 return languages.map((elem) => ({label: elem.value, value: elem.languageCode}))
             }
             if(name === 'locale') {
-                return locale.map((elem) => ({label: elem.countryName, value: elem.countryCode}))
+                return locale.map((elem) => ({label: elem.countryCode, value: elem.countryCode}))
             }
         };
 
@@ -56,6 +57,12 @@ const DownloadEmetModal = ({closeModal, languages, locale}) => {
         );
     };
 
+    const handleDownload = () => {
+        downloadService.downloadMetadata().then(response => {
+            downloadFile(response)
+        });
+    };
+
     return (
         <div className="download-emet-modal">
             <h5 className="download-emet-modal__subtitle">{downloadFormSubtitle}</h5>
@@ -68,7 +75,7 @@ const DownloadEmetModal = ({closeModal, languages, locale}) => {
                 >
                     {cancelButton}
                 </Button>
-                <Button className="download-emet-modal__button" isDisabled={isDisabled} appearance="primary">
+                <Button onClick={handleDownload} className="download-emet-modal__button" isDisabled={isDisabled} appearance="primary">
                     {downloadButton}
                 </Button>
             </div>
