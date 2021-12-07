@@ -5,7 +5,7 @@ pipeline {
              steps {
                sh 'yarn'
                sh 'yarn prebuild'
-               sh 'build:local:prod'
+               sh 'yarn build:local:prod'
                sh 'yarn test'
              }
          }
