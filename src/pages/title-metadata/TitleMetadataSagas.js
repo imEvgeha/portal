@@ -21,7 +21,7 @@ import {
     registerTitle,
 } from './titleMetadataServices';
 import {isMgmTitle} from './utils';
-import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR, UPLOAD_SUCCESS_MESSAGE} from './constants';
+import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR, UPLOAD_SUCCESS_MESSAGE, METADATA_UPLOAD_ERROR_TITLE} from './constants';
 
 export function* loadParentTitle(title) {
     const {parentIds} = title;
@@ -350,7 +350,7 @@ function* uploadMetadata({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: 'Upload Metadata error',
+                title: METADATA_UPLOAD_ERROR_TITLE,
                 icon: ERROR_ICON,
                 isAutoDismiss: false,
                 description: `Type: ${e.type}`,

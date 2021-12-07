@@ -322,3 +322,4 @@ export const UNABLE_PUBLISH =
     'Unable to Publish: Additional information required in EMets or some of the EMets are not in complete status';
 
 export const METADATA_UPLOAD_TITLE = 'METADATA INGEST';
+export const METADATA_UPLOAD_ERROR_TITLE = 'Upload Metadata error'
