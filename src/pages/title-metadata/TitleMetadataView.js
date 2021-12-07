@@ -17,12 +17,8 @@ import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
-import {storeTitleUserDefinedGridState, clearTitleMetadataFilter, storeTitleSelectedId} from './titleMetadataActions';
-import {
-    createGridStateSelector,
-    createTitleMetadataFilterSelector,
-    createSelectedIdSelector,
-} from './titleMetadataSelectors';
+import {storeTitleUserDefinedGridState} from './titleMetadataActions';
+import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
 import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
