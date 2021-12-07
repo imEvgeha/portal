@@ -7,6 +7,19 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   <TitleMetadataHeader
     label="Title Metadata"
   >
+    <NexusUploadButton
+      buttonTitle="Upload"
+      icon={
+        Object {
+          "process": [Function],
+        }
+      }
+      ingestData={null}
+      modalCallback={[Function]}
+      modalContext={Object {}}
+      title="METADATA INGEST"
+      uploadCallback={[Function]}
+    />
     <NexusSavedTableDropdown
       applyPredefinedTableView={[Function]}
       columnApi={null}
