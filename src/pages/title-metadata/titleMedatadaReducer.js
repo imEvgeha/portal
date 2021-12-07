@@ -152,11 +152,6 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 ...state,
                 filter: {},
             };
-        case actionTypes.STORE_SELECTED_ID:
-            return {
-                ...state,
-                selectedId: payload,
-            };
         default:
             return state;
     }

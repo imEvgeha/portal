@@ -22,7 +22,7 @@ import {
     REPOSITORY_COLUMN_ID,
 } from '../../constants';
 import {setTitleMetadataFilter} from '../../titleMetadataActions';
-import {createTitleMetadataFilterSelector, createSelectedIdSelector} from '../../titleMetadataSelectors';
+import {createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
@@ -44,7 +44,6 @@ const TitleMetadataTable = ({
     gridApi,
     setTitleMetadataFilter,
     titleMetadataFilter,
-    selectedId,
 }) => {
     const columnDefs = COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
@@ -126,7 +125,7 @@ const TitleMetadataTable = ({
                 const columnState = columnApi.getColumnState();
 
                 const firstFilterModel = Object.keys(filterModel).shift();
-                const id = firstFilterModel && selectedId ? selectedId : filterModel[`${firstFilterModel}`].filter;
+                const id = filterModel && filterModel[`${firstFilterModel}`]?.filter;
 
                 setTitleMetadataFilter({...titleMetadataFilter, id, filterModel, sortModel, columnState});
             }
@@ -134,15 +133,13 @@ const TitleMetadataTable = ({
     }, [columnApi]);
 
     const onGridReady = ({type, api, columnApi}) => {
-        const {READY, FILTER_CHANGED} = GRID_EVENTS;
+        const {READY} = GRID_EVENTS;
+
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
                 setGridApi(api);
                 setColumnApi(columnApi);
-                break;
-            }
-            case FILTER_CHANGED: {
                 break;
             }
             default:
@@ -197,7 +194,6 @@ TitleMetadataTable.propTypes = {
     gridApi: PropTypes.object,
     setTitleMetadataFilter: PropTypes.func,
     titleMetadataFilter: PropTypes.object,
-    selectedId: PropTypes.string,
 };
 
 TitleMetadataTable.defaultProps = {
@@ -209,15 +205,12 @@ TitleMetadataTable.defaultProps = {
     gridApi: {},
     setTitleMetadataFilter: () => null,
     titleMetadataFilter: {},
-    selectedId: '',
 };
 
 const mapStateToProps = () => {
     const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
-    const selectedIdSelector = createSelectedIdSelector();
     return state => ({
         titleMetadataFilter: titleMetadataFilterSelector(state),
-        selectedId: selectedIdSelector(state),
     });
 };
 

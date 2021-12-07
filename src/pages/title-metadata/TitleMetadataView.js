@@ -17,7 +17,7 @@ import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
-import {storeTitleUserDefinedGridState} from './titleMetadataActions';
+import {storeTitleUserDefinedGridState, clearTitleMetadataFilter, storeTitleSelectedId} from './titleMetadataActions';
 import {
     createGridStateSelector,
     createTitleMetadataFilterSelector,
@@ -33,7 +33,6 @@ export const TitleMetadataView = ({
     username,
     gridState,
     titleMetadataFilter,
-    selectedId,
 }) => {
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
@@ -106,8 +105,7 @@ export const TitleMetadataView = ({
     const storedFilterDataId = titleMetadataFilter?.id;
 
     const lastStoredFilter = {
-        // eslint-disable-next-line no-unneeded-ternary
-        label: selectedId ? selectedId : storedFilterDataId,
+        label: storedFilterDataId,
     };
 
     const lastFilterView = (gridApi, columnApi, id) => {
@@ -176,12 +174,10 @@ export const TitleMetadataView = ({
 const mapStateToProps = () => {
     const gridStateSelector = createGridStateSelector();
     const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
-    const selectedIdSelector = createSelectedIdSelector();
     return state => ({
         username: getUsername(state),
         gridState: gridStateSelector(state),
         titleMetadataFilter: titleMetadataFilterSelector(state),
-        selectedId: selectedIdSelector(state),
     });
 };
 
@@ -199,7 +195,6 @@ TitleMetadataView.propTypes = {
     username: PropTypes.string.isRequired,
     gridState: PropTypes.object,
     titleMetadataFilter: PropTypes.object,
-    selectedId: PropTypes.string,
 };
 
 TitleMetadataView.defaultProps = {
@@ -209,7 +204,6 @@ TitleMetadataView.defaultProps = {
     storeTitleUserDefinedGridState: () => null,
     gridState: {},
     titleMetadataFilter: {},
-    selectedId: '',
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataView);
