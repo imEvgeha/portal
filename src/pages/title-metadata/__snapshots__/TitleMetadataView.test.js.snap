@@ -26,7 +26,11 @@ exports[`TitleMetadataView should match snapshot 1`] = `
       externalFilter={Object {}}
       gridApi={null}
       isTitleMetadata={true}
-      lastStoredFilter={Object {}}
+      lastStoredFilter={
+        Object {
+          "label": undefined,
+        }
+      }
       onUserDefinedViewSelected={[Function]}
       setBlockLastFilter={[Function]}
       setUserDefinedGridState={[Function]}

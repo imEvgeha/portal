@@ -20,8 +20,10 @@ import TitleMetadataHeader from './components/title-metadata-header/TitleMetadat
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
 import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
-import {createGridStateSelector} from './titleMetadataSelectors';
+import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
 import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS, METADATA_UPLOAD_TITLE} from './constants';
+
+
 
 export const TitleMetadataView = ({
     history,
@@ -106,15 +108,32 @@ export const TitleMetadataView = ({
             setSorting(titleMetadataFilter.sortModel, columnApi);
             columnApi.setColumnState(titleMetadataFilter.columnState);
         }
-    }, [gridApi, columnApi])
+    }, [gridApi, columnApi]);
 
+    const storedFilterData = titleMetadataFilter;
+    const storedFilterDataId = titleMetadataFilter?.id;
+
+    const lastStoredFilter = {
+        label: storedFilterDataId,
+    };
+
+    const lastFilterView = (gridApi, columnApi, id) => {
+        if (!isEmpty(gridApi) && !isEmpty(columnApi) && id) {
+            const {columnState, filterModel, sortModel} = storedFilterData || {};
+            gridApi.setFilterModel(filterModel);
+            setSorting(sortModel, columnApi);
+            columnApi.setColumnState(columnState);
+        }
+    };
+
+    blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
 
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
                 <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
                 <NexusSavedTableDropdown
-                    gridApi={gridApi} 
+                    gridApi={gridApi}
                     columnApi={columnApi}
                     username={username}
                     userDefinedGridStates={userDefinedGridStates}
@@ -122,6 +141,7 @@ export const TitleMetadataView = ({
                     applyPredefinedTableView={resetToAll}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
+                    lastStoredFilter={lastStoredFilter}
                     setBlockLastFilter={setBlockLastFilter}
                     isTitleMetadata={true}
                 />
@@ -149,7 +169,7 @@ export const TitleMetadataView = ({
                 setColumnApi={setColumnApi}
                 columnApi={columnApi}
                 gridApi={gridApi}
-                className='nexus-c-title-metadata__table'
+                className="nexus-c-title-metadata__table"
             />
             <TitleCreate
                 display={showModal}
@@ -163,10 +183,11 @@ export const TitleMetadataView = ({
 
 const mapStateToProps = () => {
     const gridStateSelector = createGridStateSelector();
+    const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
     return state => ({
         username: getUsername(state),
         gridState: gridStateSelector(state),
-        titleMetadataFilter: state.titleMetadata.filter,
+        titleMetadataFilter: titleMetadataFilterSelector(state),
     });
 };
 
