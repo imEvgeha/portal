@@ -56,6 +56,26 @@ const DopTasksService = {
             true
         );
     },
+    unAssignTask: taskIds => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksAssign')}`;
+        const dataToSend = {
+            assignmentDetail: {
+                isoverrideExistingAssignment: true,
+                action: 'RELEASE',
+            },
+            taskList: taskIds.map(t => ({id: t})),
+        };
+        return nexusFetch(
+            url,
+            {
+                method: 'post',
+                credentials: 'include',
+                body: JSON.stringify(dataToSend),
+            },
+            DEFAULT_TIMEOUT,
+            true
+        );
+    },
     forwardTask: (taskIds, userId) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksForward')}`;
         const dataToSend = {

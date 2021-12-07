@@ -36,11 +36,7 @@ const CastCrew = ({
     }, [persons]);
 
     useEffect(() => {
-        setUpdatedCastCrew(
-            persons
-                .filter(person => !CREW_LIST.includes(person.personType))
-                .sort((a, b) => a.creditsOrder - b.creditsOrder)
-        );
+        setUpdatedCastCrew(persons.sort((a, b) => a.creditsOrder - b.creditsOrder));
     }, []);
 
     const resetPersons = () => {

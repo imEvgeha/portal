@@ -11,7 +11,13 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {uniqBy} from 'lodash';
 import {call, put, all, takeLatest} from 'redux-saga/effects';
 import DopTasksService from './dopTasks-services';
-import {GET_DOP_TASKS_OWNERS, SET_OWNERS_LIST, ASSIGN_DOP_TASKS, CHANGE_PRIORITY} from './dopTasksActionTypes';
+import {
+    GET_DOP_TASKS_OWNERS,
+    SET_OWNERS_LIST,
+    ASSIGN_DOP_TASKS,
+    CHANGE_PRIORITY,
+    UNASSIGN_DOP_TASKS,
+} from './dopTasksActionTypes';
 import {jobStatus, TASK_ACTIONS_ASSIGN} from './constants';
 
 function* fetchOwners({payload}) {
@@ -121,6 +127,33 @@ function* assignTasks({payload}) {
     }
 }
 
+function* unAssignTasks({payload}) {
+    const {taskIds} = payload;
+    try {
+        yield call(DopTasksService.unAssignTask, taskIds);
+        yield put({type: TOGGLE_REFRESH_GRID_DATA, payload: true});
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: `${taskIds.length} tasks successfully un-assigned`,
+            },
+        });
+    } catch (error) {
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: false,
+                description: `Error in un-assigning ${taskIds.length} tasks.`,
+            },
+        });
+    }
+}
+
 function* changeDOPPriority({payload}) {
     const {taskIds, priority} = payload;
     try {
@@ -155,5 +188,6 @@ function* changeDOPPriority({payload}) {
 export default function* dopTasksWatcher() {
     yield all([takeLatest(GET_DOP_TASKS_OWNERS, fetchOwners)]);
     yield all([takeLatest(ASSIGN_DOP_TASKS, assignTasks)]);
+    yield all([takeLatest(UNASSIGN_DOP_TASKS, unAssignTasks)]);
     yield all([takeLatest(CHANGE_PRIORITY, changeDOPPriority)]);
 }

@@ -123,21 +123,7 @@ const NexusField = ({
         typeof setDisableSubmit === 'function' && setDisableSubmit(false);
     };
 
-    const onChange = data => {
-        if (allData?.castCrew?.length && data?.editorial) {
-            const filtrationForCastCrew = (item, index, self) =>
-                index === self.findIndex(newItem => newItem.id === item.id);
-            setUpdatedValues({
-                editorial: {
-                    ...data.editorial,
-                    castCrew: data?.editorial?.castCrew?.length
-                        ? [...data.editorial.castCrew, ...allData.castCrew].filter(filtrationForCastCrew)
-                        : [...allData.castCrew],
-                },
-            });
-        }
-        setUpdatedValues(data);
-    };
+    const onChange = data => setUpdatedValues(data);
 
     const persons = fieldProps => {
         return fieldProps.value ? fieldProps.value : allData?.castCrew?.length ? [...allData?.castCrew] : [];
@@ -446,7 +432,7 @@ const NexusField = ({
     const renderFieldViewMode = fieldProps => {
         if (validationError) {
             return <div>{validationError}</div>;
-        } 
+        }
         switch (type) {
             case 'boolean':
                 return <Checkbox isDisabled isChecked={fieldProps.value} />;
