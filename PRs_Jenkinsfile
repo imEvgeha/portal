@@ -1,4 +1,5 @@
 pipeline {
+    agent { label 'usla-jknd-p003' }
 
      stages {
          stage('build') {
