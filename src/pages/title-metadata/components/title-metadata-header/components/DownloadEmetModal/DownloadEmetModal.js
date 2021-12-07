@@ -2,11 +2,13 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
+import { connect } from 'react-redux';
 import {createInitialValues} from '../utils';
+import {createLanguagesSelector, createCountrySelector} from './downloadEmetModalSelectors'
 import {downloadFormSubtitle, downloadFormFields, cancelButton, downloadButton} from '../constants';
 import './DownloadEmetModal.scss';
 
-const DownloadEmetModal = ({closeModal}) => {
+const DownloadEmetModal = ({closeModal, languages, locale}) => {
     const initialValues = createInitialValues(downloadFormFields);
     const [values, setValues] = useState(initialValues);
 
@@ -18,11 +20,18 @@ const DownloadEmetModal = ({closeModal}) => {
 
         const getOptions = () => {
             // ...getting options from API
-            return [
-                {label: 'Test-1', value: 'test-1'},
-                {label: 'Test-2', value: 'test-2'},
-                {label: 'Test-3', value: 'test-3'},
-            ];
+            if(name === 'status') {
+                return [
+                    {label: 'Pending', value: 'pending'},
+                    {label: 'Complete', value: 'complete'},
+                ];
+            }
+            if(name === 'language') {
+                return languages.map((elem) => ({label: elem.value, value: elem.languageCode}))
+            }
+            if(name === 'locale') {
+                return locale.map((elem) => ({label: elem.countryName, value: elem.countryCode}))
+            }
         };
 
         const handleChange = value => {
@@ -67,8 +76,19 @@ const DownloadEmetModal = ({closeModal}) => {
     );
 };
 
-DownloadEmetModal.propTypes = {
-    closeModal: PropTypes.func.isRequired,
+const createMapStateToProps = () => {
+    const metadataLanguagesSelector = createLanguagesSelector();
+    const metadataCountrySelector = createCountrySelector();
+    return (state, props) => ({
+        languages: metadataLanguagesSelector(state, props),
+        locale: metadataCountrySelector(state, props),
+    });
 };
 
-export default DownloadEmetModal;
+DownloadEmetModal.propTypes = {
+    closeModal: PropTypes.func.isRequired,
+    languages: PropTypes.array.isRequired,
+    locale: PropTypes.array.isRequired,
+};
+
+export default connect(createMapStateToProps, null)(DownloadEmetModal);
