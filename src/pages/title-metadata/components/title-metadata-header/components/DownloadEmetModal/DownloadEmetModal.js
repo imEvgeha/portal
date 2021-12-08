@@ -76,7 +76,7 @@ const DownloadEmetModal = ({closeModal, languages, locale, addToast}) => {
             }).catch(err => {
                 addToast({
                     title: failureDownloadTitle,
-                    description: `${failureDownloadDesc} - ${err}`,
+                    description: `${failureDownloadDesc} Details: ${err}`,
                     icon: ERROR_ICON,
                     isWithOverlay: true,
                     isAutoDismiss: true,
