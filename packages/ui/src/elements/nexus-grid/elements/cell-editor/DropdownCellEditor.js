@@ -71,6 +71,47 @@ class DropdownCellEditor extends Component {
         });
     };
 
+    handleSelectAllChange = () => {
+        const {value} = this.state;
+        const updatedValue = cloneDeep(value);
+        const isUndefined = elem => typeof elem === 'undefined';
+
+        updatedValue.forEach(elem => {
+            if (
+                !isUndefined(elem.isDisabled) &&
+                !isUndefined(elem.withdrawn) &&
+                (!elem.isDisabled || !elem.withdrawn)
+            ) {
+                if (!this.isAllSelected()) {
+                    elem.selected = true;
+                } else {
+                    const prevIsSelected = elem.selected;
+                    elem.selected = !prevIsSelected;
+                }
+                elem.isDirty = true;
+            }
+        });
+
+        this.setState({
+            value: updatedValue,
+        });
+    };
+
+    isAllSelected = (value = this.state.value) => {
+        const updatedValue = cloneDeep(value);
+        const isUndefined = elem => typeof elem === 'undefined';
+
+        const selectedElements = updatedValue.map(elem => {
+            if ((isUndefined(elem.isDisabled) || isUndefined(elem.withdrawn)) && (elem.isDisabled || elem.withdrawn)) {
+                return undefined;
+            }
+
+            return Boolean(elem.selected);
+        });
+
+        return isUndefined(selectedElements.find(elem => elem === false));
+    };
+
     render() {
         const {value} = this.state;
 
@@ -78,17 +119,26 @@ class DropdownCellEditor extends Component {
             <div className="nexus-c-dropdown-cell-editor">
                 <Dropdown defaultOpen triggerType="button">
                     <DropdownItemGroupCheckbox id="select territories" title="Select Plan Territories">
-                        {value.map((option, index) => (
-                            <DropdownItemCheckbox
-                                isSelected={option.selected}
-                                key={option.country}
-                                id={option.country}
-                                isDisabled={option.isDisabled || option.withdrawn}
-                                onClick={() => this.handleChange(index)}
-                            >
-                                {option.country}
-                            </DropdownItemCheckbox>
-                        ))}
+                        <DropdownItemCheckbox
+                            isSelected={this?.isAllSelected?.()}
+                            onClick={() => this.handleSelectAllChange()}
+                        >
+                            Select All
+                        </DropdownItemCheckbox>
+                        {value.map((option, index) => {
+                            if(option.isDisabled || option.withdrawn) return null;
+                            return (
+                                <DropdownItemCheckbox
+                                    isSelected={option.selected}
+                                    key={option.country}
+                                    id={option.country}
+                                    isDisabled={option.isDisabled || option.withdrawn}
+                                    onClick={() => this.handleChange(index)}
+                                >
+                                    {option.country}
+                                </DropdownItemCheckbox>
+                            )
+                        })}
                     </DropdownItemGroupCheckbox>
                 </Dropdown>
             </div>

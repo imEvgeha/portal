@@ -70,13 +70,13 @@ exports[`SyncLogTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
+          "cellRenderer": "status",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
           "colId": "status",
-          "field": "status",
+          "field": "publishErrors",
           "headerName": "Error/Success",
-          "valueFormatter": [Function],
           "width": 120,
         },
         Object {
@@ -159,16 +159,17 @@ exports[`SyncLogTable should match snapshot 1`] = `
     frameworkComponents={
       Object {
         "publishErrors": [Function],
+        "status": [Function],
         "titleNameCellRenderer": [Function],
       }
     }
     mapping={
       Array [
         Object {
+          "cellRenderer": "status",
           "colId": "status",
-          "field": "status",
+          "field": "publishErrors",
           "headerName": "Error/Success",
-          "valueFormatter": [Function],
           "width": 120,
         },
         Object {

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {cleanObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {omit, isEqual, debounce} from 'lodash';
 import {connect} from 'react-redux';
+import {useDateTimeContext} from '../../../../lib/elements/nexus-date-time-context/NexusDateTimeProvider';
 import {toggleRefreshGridData} from '../../../grid/gridActions';
 import {getShouldGridRefresh} from '../../../grid/gridSelectors';
 import {filterBy, sortBy} from '../utils';
@@ -12,6 +13,7 @@ import {
     DEFAULT_HOC_PROPS,
     ROW_BUFFER,
     PAGINATION_PAGE_SIZE,
+    PAGINATION_SIZE_STEP,
     CACHE_OVERFLOW_SIZE,
     MAX_CONCURRENT_DATASOURCE_REQUEST,
     MAX_BLOCKS_IN_CACHE,
@@ -34,6 +36,7 @@ const withInfiniteScrolling = ({
         const isMounted = useRef(true);
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
+        const {isLocal} = useDateTimeContext();
 
         useEffect(() => {
             return () => {
@@ -70,7 +73,7 @@ const withInfiniteScrolling = ({
             if (isMounted.current && gridApi && isDatasourceEnabled) {
                 updateData(fetchData, gridApi);
             }
-        }, [gridApi, props.isDatasourceEnabled, props.externalFilter]);
+        }, [gridApi, props.isDatasourceEnabled, props.externalFilter, isLocal]);
         /**
          * aggrid issue: getRows needs to be called with debounce (wait = 0, invocation is deferred until to the next tick)
          * in order to avoid subsequently calling fetchData with the same params every time filter, sort and columns model
@@ -112,12 +115,14 @@ const withInfiniteScrolling = ({
                 ? {
                       ...parsedParams,
                       ...filterParams,
+                      isLocal,
                   }
-                : {};
+                : {isLocal};
 
             if (typeof props.setDataLoading === 'function' && isMounted.current) {
                 props.setDataLoading(true);
             }
+
             fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
                 .then(response => {
                     const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
@@ -132,7 +137,8 @@ const withInfiniteScrolling = ({
                     }
 
                     if (total > 0) {
-                        successCallback(data, total);
+                        const updatedTotal = size * page + PAGINATION_SIZE_STEP;
+                        successCallback(data, updatedTotal > total ? total : updatedTotal);
 
                         // selected rows
                         if (context && context.selectedRows) {
@@ -152,6 +158,7 @@ const withInfiniteScrolling = ({
                         gridApi.hideOverlay();
                         return;
                     }
+
                     successCallback(data, 0);
                     gridApi.showNoRowsOverlay();
                 })

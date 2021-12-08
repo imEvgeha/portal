@@ -123,6 +123,7 @@ const RightToMatchView = ({
                 {content: 'Cancel', onClick: () => removeToast()},
                 {content: 'OK', onClick: onUpdateRight},
             ],
+            isAutoDismiss: false,
             isWithOverlay: true,
         });
     };
@@ -241,7 +242,7 @@ const RightToMatchView = ({
         } = TABLE_HEADERS;
         const headerNames = [RIGHT_ID, REMOVED_CATALOG, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
 
-        let columnDefinitions = columnDefs;
+        let columnDefinitions = columnDefs?.filter(elem => elem);
         if (tableName === PENDING_RIGHT) {
             if (matchingCandidates.length === 0 && get(focusedRight, 'id')) {
                 headerNames.unshift(ACTIONS);
@@ -251,7 +252,7 @@ const RightToMatchView = ({
             }
         }
 
-        const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames);
+        const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames)?.filter(elem => elem);
 
         if (tableName === CONFLICTING_RIGHTS) highlightDiffCells(reorderedHeaders);
 

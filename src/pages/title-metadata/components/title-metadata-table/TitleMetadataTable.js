@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
@@ -11,7 +11,8 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {get} from 'lodash';
+import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {
     COLUMN_MAPPINGS,
@@ -20,6 +21,8 @@ import {
     DEFAULT_CATALOGUE_OWNER,
     REPOSITORY_COLUMN_ID,
 } from '../../constants';
+import {setTitleMetadataFilter} from '../../titleMetadataActions';
+import {createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
@@ -32,7 +35,16 @@ const TitleMetadataTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchTitleMetadata})
 )(NexusGrid);
 
-const TitleMetadataTable = ({history, catalogueOwner}) => {
+const TitleMetadataTable = ({
+    history,
+    catalogueOwner,
+    setGridApi,
+    setColumnApi,
+    columnApi,
+    gridApi,
+    setTitleMetadataFilter,
+    titleMetadataFilter,
+}) => {
     const columnDefs = COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
@@ -82,16 +94,6 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
         };
     });
 
-    const [columnApi, setColumnApi] = useState(null);
-
-    if (columnApi) {
-        if (get(catalogueOwner, 'tenantCode') !== DEFAULT_CATALOGUE_OWNER) {
-            columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, false);
-        } else {
-            columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, true);
-        }
-    }
-
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
@@ -115,11 +117,28 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
         });
     };
 
+    useLayoutEffect(() => {
+        return () => {
+            if (gridApi) {
+                const filterModel = gridApi.getFilterModel();
+                const sortModel = getSortModel(columnApi);
+                const columnState = columnApi.getColumnState();
+
+                const firstFilterModel = Object.keys(filterModel).shift();
+                const id = filterModel && filterModel[`${firstFilterModel}`]?.filter;
+
+                setTitleMetadataFilter({...titleMetadataFilter, id, filterModel, sortModel, columnState});
+            }
+        };
+    }, [columnApi]);
+
     const onGridReady = ({type, api, columnApi}) => {
         const {READY} = GRID_EVENTS;
+
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
+                setGridApi(api);
                 setColumnApi(columnApi);
                 break;
             }
@@ -169,11 +188,34 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
 TitleMetadataTable.propTypes = {
     history: PropTypes.object,
     catalogueOwner: PropTypes.object,
+    columnApi: PropTypes.object,
+    setGridApi: PropTypes.func,
+    setColumnApi: PropTypes.func,
+    gridApi: PropTypes.object,
+    setTitleMetadataFilter: PropTypes.func,
+    titleMetadataFilter: PropTypes.object,
 };
 
 TitleMetadataTable.defaultProps = {
     history: {},
     catalogueOwner: DEFAULT_CATALOGUE_OWNER,
+    columnApi: {},
+    setGridApi: () => null,
+    setColumnApi: () => null,
+    gridApi: {},
+    setTitleMetadataFilter: () => null,
+    titleMetadataFilter: {},
 };
 
-export default TitleMetadataTable;
+const mapStateToProps = () => {
+    const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
+    return state => ({
+        titleMetadataFilter: titleMetadataFilterSelector(state),
+    });
+};
+
+const mapDispatchToProps = dispatch => ({
+    setTitleMetadataFilter: payload => dispatch(setTitleMetadataFilter(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataTable);

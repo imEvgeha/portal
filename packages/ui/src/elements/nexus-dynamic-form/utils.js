@@ -24,6 +24,15 @@ export const getFieldConfig = (field, config, view) => {
     return viewConfig && viewConfig[config];
 };
 
+export const checkIfEmetIsEditorial = (emet, editorial) => {
+    return (
+        emet.language === editorial.language &&
+        emet.locale === editorial.locale &&
+        emet?.format === editorial?.format &&
+        emet?.service === editorial?.service
+    );
+};
+
 export const getDefaultValue = (field = {}, view, data) => {
     if (field.type === 'dateRange') {
         return {
@@ -158,27 +167,21 @@ export const getValidationFunction = (value, validations, {type, isRequired, get
             switch (v.name) {
                 case 'fieldRequired':
                     return fieldRequired(value, v.args, getCurrentValues);
-                    break;
                 case 'areAllWithdrawn':
                     return areAllWithdrawn(value, v.args, getCurrentValues);
-                    break;
                 case 'incorrectValue':
                     return incorrectValue(value, v.args, getCurrentValues);
-                    break;
                 case 'isDuration':
                     return isDuration(value, v.args, getCurrentValues);
-                    break;
                 case 'isInteger':
                     return isInteger(value, v.args, getCurrentValues);
-                    break;
                 case 'isTime':
                     return isTime(value, v.args, getCurrentValues);
-                    break;
                 case 'isYear':
                     return isYear(value, v.args, getCurrentValues);
-                    break;
                 case 'lengthEqual':
                     return lengthEqual(value, v.args, getCurrentValues);
+                default:
                     break;
             }
         });
@@ -331,6 +334,8 @@ export const buildSection = (
         subTabs,
         setDisableSubmit,
         prefix,
+        isTitlePage,
+        setUpdate,
     }
 ) => {
     return (
@@ -386,6 +391,8 @@ export const buildSection = (
                                 searchPerson,
                                 castCrewConfig,
                                 setDisableSubmit,
+                                isTitlePage,
+                                setUpdate,
                             })}
                         </div>
                     ))
@@ -393,6 +400,12 @@ export const buildSection = (
             })}
         </div>
     );
+};
+
+export const hebrew = /[\u0590-\u05FF]/;
+
+export const getDir = value => {
+    return hebrew.test(value) ? 'rtl' : 'ltr';
 };
 
 export const renderNexusField = (
@@ -413,8 +426,12 @@ export const renderNexusField = (
         path,
         setDisableSubmit,
         setUpdatedValues,
+        setUpdatedCastCrew,
         updatedValues,
         prefix,
+        isTitlePage,
+        setUpdate,
+        allData,
     }
 ) => {
     return toShow(field, updatedValues || initialData, prefix) ? (
@@ -440,6 +457,10 @@ export const renderNexusField = (
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
             setUpdatedValues={setUpdatedValues}
+            setUpdatedCastCrew={setUpdatedCastCrew}
+            isTitlePage={isTitlePage}
+            setUpdate={setUpdate}
+            allData={allData}
         />
     ) : null;
 };

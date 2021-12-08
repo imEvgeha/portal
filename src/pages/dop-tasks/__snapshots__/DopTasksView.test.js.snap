@@ -8,14 +8,61 @@ exports[`DopTasksView should match snapshot 1`] = `
     label="DOP Tasks"
   >
     <QueuedTasks
+      selectedValue={
+        Object {
+          "label": "My Tasks",
+          "value": "user",
+        }
+      }
       setUser={[Function]}
     />
-    <SavedTableDropdown
-      removeUserDefinedGridState={[Function]}
-      saveUserDefinedGridState={[Function]}
-      selectPredefinedTableView={[Function]}
-      selectUserDefinedTableView={[Function]}
+    <NexusSavedTableDropdown
+      applyPredefinedTableView={[Function]}
+      columnApi={null}
+      externalFilter={
+        Object {
+          "user": "user",
+        }
+      }
+      gridApi={null}
+      isTitleMetadata={false}
+      lastStoredFilter={Object {}}
+      onUserDefinedViewSelected={[Function]}
+      setBlockLastFilter={[Function]}
+      setUserDefinedGridState={[Function]}
+      tableLabels={
+        Object {
+          "predifinedViewsLabel": "Predefined Views",
+          "savedDropdownLabel": "Saved Table View:",
+          "savedViewslabel": "My Saved Views",
+        }
+      }
+      tableOptions={
+        Array [
+          Object {
+            "label": "All",
+            "value": "all",
+          },
+          Object {
+            "label": "Open",
+            "value": "open",
+          },
+          Object {
+            "label": "Not Started",
+            "value": "notStarted",
+          },
+          Object {
+            "label": "In Progress",
+            "value": "inProgress",
+          },
+          Object {
+            "label": "Closed",
+            "value": "closed",
+          },
+        ]
+      }
       userDefinedGridStates={Array []}
+      username=""
     />
     <div
       className="nexus-c-dop-tasks-view__refresh-btn"
@@ -39,6 +86,7 @@ exports[`DopTasksView should match snapshot 1`] = `
     setColumnApi={[Function]}
     setExternalFilter={[Function]}
     setGridApi={[Function]}
+    unAssignTasks={[Function]}
   />
 </div>
 `;

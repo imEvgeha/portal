@@ -31,7 +31,10 @@ export const UPDATE_TERRITORY_METADATA_ERROR = 'Error while updating Territorial
 export const UPDATE_EDITORIAL_METADATA_SUCCESS = 'Editorial Metadata updated successfully';
 export const UPDATE_EDITORIAL_METADATA_ERROR = 'Error while updating Editorial Metadata';
 
+export const PROPAGATE_SEASON_PERSONS_SUCCESS = 'Season cast and crew propagated successfully';
 export const UNMERGE_TITLE_SUCCESS = 'Title succesfully unmerged!';
+
+export const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Title.';
 
 export const COLUMN_MAPPINGS = [
     {
@@ -63,8 +66,7 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'repository',
         enableSearch: false,
         readOnly: true,
-        minWidth: 120,
-        maxWidth: 120,
+        width: 120,
     },
     {
         colId: 'contentType',
@@ -74,7 +76,7 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         dataType: 'string',
         searchDataType: 'string',
-        width: 50,
+        width: 120,
     },
     {
         colId: 'seriesName',
@@ -318,3 +320,6 @@ export const COLUMN_MAPPINGS = [
 export const FIELDS_TO_REMOVE = ['editorial', 'territorial', 'movidaExternalIds', 'vzExternalIds'];
 export const UNABLE_PUBLISH =
     'Unable to Publish: Additional information required in EMets or some of the EMets are not in complete status';
+
+export const METADATA_UPLOAD_TITLE = 'METADATA INGEST';
+export const METADATA_UPLOAD_ERROR_TITLE = 'Upload Metadata error'

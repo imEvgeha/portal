@@ -19,7 +19,15 @@ export const getTitleById = payload => {
     const params = isMgm ? {tenantCode: 'mgm'} : {};
     return nexusFetch(url, {
         params: encodedSerialize(params),
+        isWithErrorHandling: false,
     });
+};
+
+export const getEpisodesCount = id => {
+    const url = `${config.get('gateway.titleUrl')}${config.get(
+        'gateway.service.title'
+    )}/titles/search?parentId=${id}&contentType=EPISODE`;
+    return nexusFetch(url);
 };
 
 export const getExternalIds = id => {
@@ -81,7 +89,7 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
             const errorToast = {
                 title: 'Regenerating Editorial Metadata Failed',
                 icon: WARNING_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: message,
             };
             store.dispatch(addToast(errorToast));
@@ -109,7 +117,7 @@ export const unmergeTitle = async id => {
             const errorToast = {
                 title: 'Unmerge not available',
                 icon: ERROR_ICON,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
                 description: response.body.description,
             };
             store.dispatch(addToast(errorToast));
@@ -226,6 +234,13 @@ export const titleService = {
             method: 'put',
             body: JSON.stringify(editedTerritoryMetadata),
             params: encodedSerialize(params),
+        });
+    },
+    propagateSeasonsPersonsToEpisodes: seasonPersons => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/seasonsPersonsToEpisodes`;
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(seasonPersons),
         });
     },
     regenerateAutoDecoratedMetadata: masterEmetId => {

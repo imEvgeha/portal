@@ -45,10 +45,17 @@ const LegacyTitleReconciliationReview = ({createColumnDefs, columnDefs, titles, 
         }
     };
 
-    const updatedColumnDefs = [
-        getRepositoryCell({headerName: 'Repository'}),
-        ...columnDefs,
-    ];
+    const withResizableTitle = columnDefs.map(column => {
+        const {field} = column;
+
+        if (field === 'title') {
+            column.resizable = true;
+        }
+
+        return column;
+    });
+
+    const updatedColumnDefs = [getRepositoryCell({headerName: 'Repository'}), ...withResizableTitle];
 
     const duplicateRowData = titles.filter(({id}) => duplicateIds.includes(id));
     const masterRowData = titles.filter(({id}) => masterIds.includes(id));

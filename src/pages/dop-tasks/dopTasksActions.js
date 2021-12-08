@@ -15,6 +15,11 @@ export const assignDopTasks = payload => ({
     payload,
 });
 
+export const unAssignDopTasks = payload => ({
+    type: actionTypes.UNASSIGN_DOP_TASKS,
+    payload,
+});
+
 export const changeDOPPriority = payload => ({
     type: actionTypes.CHANGE_PRIORITY,
     payload,

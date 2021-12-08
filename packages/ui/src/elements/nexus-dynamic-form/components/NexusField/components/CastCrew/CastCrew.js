@@ -19,6 +19,8 @@ const CastCrew = ({
     castCrewConfig,
     language,
     setFieldValue,
+    setUpdatedCastCrew,
+    setUpdate,
     ...props
 }) => {
     const [cast, setCast] = useState(
@@ -32,6 +34,10 @@ const CastCrew = ({
     useEffect(() => {
         resetPersons();
     }, [persons]);
+
+    useEffect(() => {
+        setUpdatedCastCrew(persons.sort((a, b) => a.creditsOrder - b.creditsOrder));
+    }, []);
 
     const resetPersons = () => {
         setCast(
@@ -88,6 +94,8 @@ const CastCrew = ({
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                     emetLanguage={language}
+                    isVerticalLayout={isVerticalLayout}
+                    setUpdate={setUpdate}
                     {...props}
                 />
             </div>
@@ -107,6 +115,7 @@ const CastCrew = ({
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                     emetLanguage={language}
+                    setUpdate={setUpdate}
                     {...props}
                 />
             </div>
@@ -120,10 +129,12 @@ CastCrew.propTypes = {
     onChange: PropTypes.func,
     getValues: PropTypes.func,
     setFieldValue: PropTypes.func,
+    setUpdatedCastCrew: PropTypes.func,
     isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
     castCrewConfig: PropTypes.object,
     language: PropTypes.string,
+    setUpdate: PropTypes.func,
 };
 
 CastCrew.defaultProps = {
@@ -132,6 +143,8 @@ CastCrew.defaultProps = {
     onChange: () => null,
     getValues: () => null,
     setFieldValue: () => null,
+    setUpdatedCastCrew: () => null,
+    setUpdate: () => null,
     isVerticalLayout: false,
     searchPerson: undefined,
     castCrewConfig: {},

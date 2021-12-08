@@ -56,6 +56,26 @@ const DopTasksService = {
             true
         );
     },
+    unAssignTask: taskIds => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksAssign')}`;
+        const dataToSend = {
+            assignmentDetail: {
+                isoverrideExistingAssignment: true,
+                action: 'RELEASE',
+            },
+            taskList: taskIds.map(t => ({id: t})),
+        };
+        return nexusFetch(
+            url,
+            {
+                method: 'post',
+                credentials: 'include',
+                body: JSON.stringify(dataToSend),
+            },
+            DEFAULT_TIMEOUT,
+            true
+        );
+    },
     forwardTask: (taskIds, userId) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPTasksForward')}`;
         const dataToSend = {
@@ -234,19 +254,44 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
             payload.sortCriterion = val;
         }
         if (FIELDS_OPERATOR_IN.includes(key) && val) {
-            const searchText = val.split(', ').join(',');
-            const filterIndex = payload.filterCriterion.findIndex(item => item.fieldName === key);
-            if (filterIndex > 0) {
-                payload.filterCriterion[filterIndex].value = searchText;
-            } else {
-                payload.filterCriterion.push({
-                    value: searchText,
+            const searchItemsArray = val.split(', ');
+            const searchItemsArrayLength = searchItemsArray.length;
+            const isThereTerritoryItem = payload.filterCriterion.find(item => item.fieldName === key);
+            if (isThereTerritoryItem)
+                payload.filterCriterion = payload.filterCriterion.filter(item => item.fieldName !== key);
+
+            searchItemsArray.forEach((item, index) => {
+                const territoryFilter = {
+                    value: item,
                     fieldName: key,
-                    operator: 'in',
+                    operator: 'contain',
                     valueDataType: 'String',
-                    logicalAnd: true,
-                });
-            }
+                    logicalAnd: false,
+                };
+
+                if (searchItemsArrayLength - 1 === index) {
+                    payload.filterCriterion.push({
+                        ...territoryFilter,
+                        logicalAnd: !(searchItemsArrayLength - 1),
+                        closeParenNumber: 1,
+                    });
+                    return;
+                }
+                if (index === 0) {
+                    payload.filterCriterion.push({
+                        ...territoryFilter,
+                        openParenNumber: 1,
+                        logicalAnd: true,
+                    });
+                    return;
+                } else if (index) {
+                    payload.filterCriterion.push(territoryFilter);
+                    return;
+                }
+            });
+        }
+        if (FIELDS_OPERATOR_IN.includes(key) && !val) {
+            payload.filterCriterion = payload.filterCriterion.filter(item => item.fieldName !== key);
         }
         return null;
     });

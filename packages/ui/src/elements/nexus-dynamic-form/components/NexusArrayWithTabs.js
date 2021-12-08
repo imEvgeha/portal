@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
-import {get} from 'lodash';
+import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {get, cloneDeep} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import NexusArrayCreateModal from './NexusArrayCreateModal';
@@ -41,16 +42,10 @@ const NexusArrayWithTabs = ({
     useEffect(() => {
         const groupedObj = data ? groupBy(data) : {};
         setGroupedData(groupedObj);
-    }, [data, initialData, isUpdate]);
+    }, [data, isUpdate]);
 
     const clearIsRemoved = () => {
         setIsRemoved(false);
-    };
-
-    const setTabData = tabIndex => {
-        if (groupedData) {
-            setCurrentData(groupedData[tabIndex]);
-        }
     };
 
     const groupBy = values => {
@@ -84,12 +79,15 @@ const NexusArrayWithTabs = ({
             const currentFormData = getCurrentFormData();
             const current = currentData || currentFormData;
             replaceRecordInGroupedData(currentFormData, current, oldSubTab, index, key);
-            const newData = replaceRecordInData(currentFormData, current);
-            setFieldValue(path, newData);
         } else {
             const newCurrentData = groupedData[key][index];
             setCurrentData(newCurrentData);
         }
+    };
+
+    const groupedDataWithUpdatedValues = () => {
+        const updatedData = getValues();
+        return groupBy(updatedData[path]);
     };
 
     const replaceRecordInGroupedData = (currentFormData, current, subTabIndex, indexTo, keyTo) => {
@@ -98,13 +96,13 @@ const NexusArrayWithTabs = ({
             tabs.forEach(property => {
                 key += key.length > 1 ? ` ${current[property]}` : current[property];
             });
-            const updatedArray = [...groupedData[key]];
+            const updatedArray = [...groupedDataWithUpdatedValues()[key]];
             updatedArray[subTabIndex] = {
                 ...updatedArray[subTabIndex],
                 ...currentFormData,
             };
 
-            const updatedGroupedData = {...groupedData};
+            const updatedGroupedData = {...groupedDataWithUpdatedValues()};
             updatedGroupedData[key][subTabIndex] = {
                 ...updatedGroupedData[key][subTabIndex],
                 ...currentFormData,
@@ -122,7 +120,7 @@ const NexusArrayWithTabs = ({
             const [property] = tabs;
             const key = current[property];
 
-            const updatedGroupedData = {...groupedData};
+            const updatedGroupedData = {...groupedDataWithUpdatedValues()};
             updatedGroupedData[key][0] = {
                 ...updatedGroupedData[key][0],
                 ...currentFormData,
@@ -296,11 +294,16 @@ const NexusArrayWithTabs = ({
         closeModal();
     };
 
+    // Cancels Auto-Decorate condition from schema.js when in creating modal
+    const fieldsForModal = fields && cloneDeep(fields);
+    fieldsForModal['editorial.hasGeneratedChildren']?.showWhen[0] &&
+        fieldsForModal['editorial.hasGeneratedChildren'].showWhen[0].splice(2, 1);
+
     const modalContent = () => {
         return (
             <NexusArrayCreateModal
                 handleModalSubmit={handleModalSubmit}
-                fields={fields}
+                fields={fieldsForModal}
                 selectValues={selectValues}
                 data={data}
                 setFieldValue={setFieldValue}
@@ -310,6 +313,8 @@ const NexusArrayWithTabs = ({
                 initialData={initialData}
                 closeModal={closeModal}
                 prefix={prefix}
+                getValues={getValues}
+                allData={getValues()}
             />
         );
     };
@@ -328,7 +333,7 @@ const NexusArrayWithTabs = ({
             const hasGeneratedChildren = usEnData && usEnData.some(obj => obj.hasGeneratedChildren);
             const current = currentData || data[0];
             const isUsEn = current && get(current, 'locale') === 'US' && get(current, 'language') === 'en';
-            return isUsEn && hasGeneratedChildren;
+            return isUsEn && hasGeneratedChildren && isNexusTitle(current?.id);
         }
         return false;
     };
@@ -377,10 +382,9 @@ const NexusArrayWithTabs = ({
                 <SideTabs
                     onChange={changeTabData}
                     data={groupedData}
+                    path={path}
                     subTabs={subTabs}
                     isRemoved={isRemoved}
-                    isEdit={view === VIEWS.EDIT}
-                    setTabData={setTabData}
                     clearIsRemoved={clearIsRemoved}
                 />
             </div>
@@ -398,7 +402,7 @@ const NexusArrayWithTabs = ({
                         )}
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
-                    {showRegenerateAutoDecoratedMetadata() && (
+                    {(showRegenerateAutoDecoratedMetadata() || isMasterEditorialRecord()) && (
                         <Button
                             appearance="primary"
                             onClick={handleRegenerateAutoDecoratedMetadata}

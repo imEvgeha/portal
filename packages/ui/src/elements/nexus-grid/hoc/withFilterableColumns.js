@@ -14,7 +14,8 @@ import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/Cu
 import CustomIconFilter from '../elements/custom-icon-filter/CustomIconFilter';
 import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
-import TitleSelectionRenderer from '../elements/title-selection-renderer/TitleSelectionRenderer';
+import DuplicateTitleSelectionRenderer from '../elements/duplicate-title-selection-renderer/DuplicateTitleSelectionRenderer';
+import MasterTitleSelectionRenderer from '../elements/master-title-selection-renderer/MasterTitleSelectionRenderer';
 import {PriceTypeFormSchema, AudioLanguageTypeFormSchema} from '../elements/utils';
 import {fetchAvailMapping} from '../nexusGridActions';
 import {createAvailSelectValuesSelector} from '../nexusGridSelectors';
@@ -427,7 +428,8 @@ const withFilterableColumns = ({
                     customComplexFilter: CustomComplexFilter,
                     customReadOnlyFilter: CustomReadOnlyFilter,
                     customReadOnlyFloatingFilter: CustomReadOnlyFloatingFilter,
-                    titleSelectionRenderer: TitleSelectionRenderer,
+                    masterTitleSelectionRenderer: MasterTitleSelectionRenderer,
+                    duplicateTitleSelectionRenderer: DuplicateTitleSelectionRenderer,
                 }}
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}

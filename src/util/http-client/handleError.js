@@ -45,7 +45,7 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
     const defaultErrorToast = {
         title: ERROR_TITLE,
         icon: ERROR_ICON,
-        isAutoDismiss: true,
+        isAutoDismiss: false,
     };
 
     let toast = null;
@@ -71,7 +71,7 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
                       ? [{content: 'OK', onClick: () => store.dispatch(removeToast())}]
                       : [],
                   isWithOverlay: ERROR_MODAL.codes.includes(status),
-                  isAutoDismiss: true,
+                  isAutoDismiss: false,
               };
     }
     store.dispatch(addToast(toast));

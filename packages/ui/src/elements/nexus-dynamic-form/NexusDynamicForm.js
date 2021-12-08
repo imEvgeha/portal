@@ -4,9 +4,11 @@ import Button from '@atlaskit/button';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import classnames from 'classnames';
-import {mergeWith, set, get} from 'lodash';
+import {mergeWith, set, get, isEmpty} from 'lodash';
 import moment from 'moment';
+import {connect} from 'react-redux';
 import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
+import { clearTitleMetadataFilter } from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import PropagateButton from '../nexus-person/elements/PropagateButton/PropagateButton';
 import {buildSection, getProperValues, getProperValue, getAllFields} from './utils';
 import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION, CAST_AND_CREW_TITLE, PROPAGATE_TITLE} from './constants';
@@ -27,6 +29,9 @@ const NexusDynamicForm = ({
     hasButtons,
     setRefresh,
     castCrewConfig,
+    // eslint-disable-next-line react/prop-types
+    seasonPersons,
+    clearMetadataFilters,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [disableSubmit, setDisableSubmit] = useState(true);
@@ -51,34 +56,15 @@ const NexusDynamicForm = ({
         errorsCount && setValidationErrorCount(errorsCount);
     };
 
-    const getInitialEditorialValues = getValues => {
-        return initialData.editorialMetadata.length
-            ? initialData.editorialMetadata.filter(elem => {
-                  return (
-                      elem.language === getValues().editorial.language &&
-                      elem.locale === getValues().editorial.locale &&
-                      elem.metadataStatus === getValues().editorial.metadataStatus
-                  );
-              })
-            : [];
-    };
-
-    const onCancel = async (reset, getValues) => {
-        const initialDynamicEditorialValue = initialData.editorialMetadata.filter(elem => {
-            return getInitialEditorialValues(getValues).find(initialElem => elem.id === initialElem.id);
-        });
-
-        await reset({
-            ...initialData,
-            editorial: initialDynamicEditorialValue.length ? initialDynamicEditorialValue[0] : undefined,
-        });
+    const onCancel = () => {
+        setRefresh(prev => !prev);
         setUpdate(true);
         setValidationErrorCount(0);
     };
 
     const formStatus = (dirty, errors) => {
         if (errors > 0) return 'error';
-        if (dirty) return 'updated';
+        if (dirty || !isEmpty(seasonPersons)) return 'updated';
         return 'success';
     };
 
@@ -95,15 +81,15 @@ const NexusDynamicForm = ({
                 <Button
                     className="nexus-c-dynamic-form__discard-button"
                     onClick={() => onCancel(reset, getValues)}
-                    isDisabled={!dirty || isSaving || !canEdit}
+                    isDisabled={((!dirty && disableSubmit) || isSaving || !canEdit) && isEmpty(seasonPersons)}
                 >
                     Discard
                 </Button>
-                <div className={`nexus-c-dynamic-form__status ${formStatus(dirty, errors)}`} />
+                <div className={`nexus-c-dynamic-form__status ${formStatus(dirty || !disableSubmit, errors)}`} />
                 <Button
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"
-                    isDisabled={(!dirty && disableSubmit) || !canEdit}
+                    isDisabled={((!dirty && disableSubmit) || !canEdit) && isEmpty(seasonPersons)}
                     // this is a form submit button and hence validation check will not work on submit function
                     onClick={showValidationError}
                     isLoading={isSaving}
@@ -180,7 +166,9 @@ const NexusDynamicForm = ({
             if (allowedContents.includes(contentType)) {
                 return (
                     <div className="nexus-c-dynamic-form__show-all">
-                        <a href={createLink(contentType)}>Show all {contentType === SERIES ? 'seasons' : 'episodes'}</a>
+                        <a onClick={clearMetadataFilters} href={createLink(contentType)}>
+                            Show all {contentType === SERIES ? 'seasons' : 'episodes'}
+                        </a>
                     </div>
                 );
             }
@@ -188,8 +176,13 @@ const NexusDynamicForm = ({
         return null;
     };
 
+    const closePropagateModal = () => {
+        closeModal();
+        setUpdate(prev => !prev);
+    };
+
     const showPropagateModal = useCallback((getValues, setFieldValue) => {
-        openModal(<PropagateForm getValues={getValues} setFieldValue={setFieldValue} onClose={closeModal} />, {
+        openModal(<PropagateForm getValues={getValues} setFieldValue={setFieldValue} onClose={closePropagateModal} />, {
             title: PROPAGATE_TITLE,
             width: 'small',
         });
@@ -229,7 +222,7 @@ const NexusDynamicForm = ({
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">
-                                                    {sectionTitle === CAST_AND_CREW_TITLE && canEdit ? (
+                                                    {sectionTitle === CAST_AND_CREW_TITLE && isTitlePage && canEdit ? (
                                                         <div className="nexus-c-dynamic-form__additional-option">
                                                             {sectionTitle}
                                                             <PropagateButton
@@ -263,6 +256,8 @@ const NexusDynamicForm = ({
                                                         subTabs,
                                                         setDisableSubmit,
                                                         prefix,
+                                                        isTitlePage,
+                                                        setUpdate,
                                                     }
                                                 )}
                                             </Fragment>
@@ -293,6 +288,8 @@ NexusDynamicForm.propTypes = {
     hasButtons: PropTypes.bool,
     setRefresh: PropTypes.func,
     castCrewConfig: PropTypes.object,
+    storedInitialData: PropTypes.object,
+    clearMetadataFilters: PropTypes.func,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -309,6 +306,13 @@ NexusDynamicForm.defaultProps = {
     hasButtons: true,
     setRefresh: () => null,
     castCrewConfig: {},
+    storedInitialData: null,
+    clearMetadataFilters: () => null,
 };
 
-export default NexusDynamicForm;
+
+const mapDispatchToProps = dispatch => ({
+    clearMetadataFilters: payload => dispatch(clearTitleMetadataFilter()),
+});
+
+export default connect(null, mapDispatchToProps)(NexusDynamicForm);

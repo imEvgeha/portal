@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import NexusEditableTag from '../nexus-editable-tag/NexusEditableTag';
 
-const NexusTagsContainer = ({data, saveData, removeItems}) => {
+const NexusTagsContainer = ({data, saveData, removeItems, isEdit}) => {
     const [dataset, setDataSet] = useState(data || []);
 
     const removeItem = value => {
@@ -24,7 +24,7 @@ const NexusTagsContainer = ({data, saveData, removeItems}) => {
     }, [data]);
 
     return (
-        <div style={{border: '1px solid lightgrey', padding: '8px', borderRadius: '5px', minHeight: '38px'}}>
+        <div style={{display: 'flex', flexWrap: 'wrap'}}>
             {dataset.map((item, index) => (
                 <NexusEditableTag
                     text={item}
@@ -33,6 +33,7 @@ const NexusTagsContainer = ({data, saveData, removeItems}) => {
                     inputWidth="350px"
                     remove={() => removeItem(item)}
                     save={saveItem}
+                    isEdit={isEdit}
                 />
             ))}
         </div>
@@ -43,11 +44,13 @@ NexusTagsContainer.propTypes = {
     data: PropTypes.array.isRequired,
     saveData: PropTypes.func,
     removeItems: PropTypes.func,
+    isEdit: PropTypes.bool,
 };
 
 NexusTagsContainer.defaultProps = {
     saveData: () => null,
     removeItems: () => null,
+    isEdit: false,
 };
 
 export default NexusTagsContainer;

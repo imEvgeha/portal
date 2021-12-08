@@ -9,7 +9,10 @@ export const createTitleSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.title || {});
 
 export const createTitleLoadingSelector = () =>
-    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.loading || false);
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.titleLoading || false);
+
+export const createEmetLoadingSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.emetLoading || false);
 
 export const createExternalIdsSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.externalIds || {});
@@ -32,5 +35,20 @@ export const createVZTitleIsPublishingSelector = () =>
 export const createMOVTitleIsPublishingSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isPublishingMOV || false);
 
-export const createIsEditModeSelector = () =>
-    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isEditMode || false);
+export const createInitialTitleDataSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.initialData || null);
+
+export const createExternalIdsLoadingSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.externalIdLoading || false);
+
+export const createGridStateSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.gridState || {});
+
+export const createTitleMetadataFilterSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.filter || {});
+
+export const createSelectedIdSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.selectedId || '');
+
+export const propagateAddPersonsSelector = state => state?.titleMetadata?.propagateAddPersons || [];
+export const propagateRemovePersonsSelector = state => state?.titleMetadata?.propagateRemovePersons || [];

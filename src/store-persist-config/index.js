@@ -68,7 +68,7 @@ export const titleMetadataPersistConfig = {
     version: 0,
     storage,
     stateReconciler: autoMergeLevel2,
-    whitelist: ['title'],
+    whitelist: ['title', 'gridState'],
     transforms: [
         // createWhitelistFilter('rights', ['list']) // second argument = persisted keys
     ],

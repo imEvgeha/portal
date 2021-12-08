@@ -191,11 +191,23 @@
                                 }
                             ]
                         },
+                        "totalEpisodes": {
+                            "name": "Total Episodes",
+                            "path": "totalNumberOfEpisodes",
+                            "type": "number",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                }
+                            ]
+                        },
                         "seasonNumber": {
                             "name": "Season Number",
                             "path": "episodic.seasonNumber",
                             "type": "link",
                             "isRequired": true,
+                            "isReadOnlyInEdit": true,
                             "linkConfig": {
                                 "baseUrl": "/metadata/detail/",
                                 "contentType": "SEASON"
@@ -243,6 +255,18 @@
                                 }
                             ]
                         },
+                        "episodesCount": {
+                            "name": "Episode Count",
+                            "path": "episodesCount",
+                            "type": "string",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                }
+                            ],
+                            "isReadOnly": true
+                        },
                         "seasonId": {
                             "name": "Season ID",
                             "path": "episodic.seasonId",
@@ -254,18 +278,6 @@
                                 }
                             ]
                         },
-                        "totalEpisodes": {
-                            "name": "Total Episodes",
-                            "path": "totalNumberOfEpisodes",
-                            "type": "number",
-                            "showWhen": [
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "SEASON"
-                                }
-                            ]
-                        },
-
                         "episodeNumber": {
                             "name": "Episode Number",
                             "path": "episodic.episodeNumber",
@@ -327,18 +339,6 @@
                                     }
                                 ]
                             ]
-                        },
-                        "awards": {
-                            "name": "Awards",
-                            "path": "awards",
-                            "type": "multiselect",
-                            "optionsConfig": {
-                                "defaultValuePath": "name",
-                                "defaultLabelPath": "name"
-                            },
-                            "selectConfig": {
-                                "defaultLabelPath": "name"
-                            }
                         }
                     }
                 }
@@ -752,6 +752,10 @@
                                             {
                                                 "field": "language",
                                                 "hasValue": "en"
+                                            },
+                                            {
+                                                "field": "hasGeneratedChildren",
+                                                "hasValue": true
                                             }
                                         ]
                                     ]
@@ -760,6 +764,7 @@
                                     "name": "Auto - Decorate Title",
                                     "path": "shortTitleTemplate",
                                     "type": "string",
+                                    "maxLength": 2000,
                                     "dependencies": [
                                         {
                                             "view": "EDIT",
@@ -945,30 +950,14 @@
                                     "path": "copyright",
                                     "type": "string"
                                 },
-                                "editorial.awards": {
-                                    "name": "Awards",
-                                    "path": "awards",
-                                    "type": "multiselect",
-                                    "hideInCreate": true,
-                                    "isReadOnlyInEdit": true,
-                                    "optionsConfig": {
-                                        "defaultValuePath": "name",
-                                        "defaultLabelPath": "name"
-                                    },
-                                    "localizationConfig": {
-                                        "default": "nameEn",
-                                        "localized": "name"
-                                    },
-                                    "showLocalized": true
-                                },
-                                "editorial.sakstelInventoryId": {
-                                    "name": "Sakstel Inventory ID",
-                                    "path": "sakstelInventoryId",
+                                "editorial.sasktelInventoryId": {
+                                    "name": "Sasktel Inventory ID",
+                                    "path": "sasktelInventoryId",
                                     "type": "string"
                                 },
-                                "editorial.sakstelLineupId": {
-                                    "name": "Sakstel Lineup ID",
-                                    "path": "sakstelLineupId",
+                                "editorial.sasktelLineupId": {
+                                    "name": "Sasktel Lineup ID",
+                                    "path": "sasktelLineupId",
                                     "type": "string"
                                 },
                                 "editorial.castCrew": {

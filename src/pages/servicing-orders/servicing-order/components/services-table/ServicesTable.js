@@ -17,7 +17,14 @@ import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION, DETE_SERVICE_TYPE} from './Constants';
+import {
+    SELECT_VALUES,
+    SERVICE_SCHEMA,
+    CLICK_FOR_SELECTION,
+    NO_SELECTION,
+    DETE_SERVICE_TYPE,
+    SOURCE_STANDARD,
+} from './Constants';
 import CheckBoxRenderer from './cell-renderers/CheckBoxRenderer';
 import CloseButtonCellRenderer from './cell-renderers/CloseButtonCellRenderer';
 import columnDefinitions from './columnDefinitions';
@@ -79,6 +86,11 @@ const ServicesTable = ({
                     operationalStatus: service.foiStatus || '',
                     rowIndex: index,
                     rowHeight: 50,
+                    sourceStandard: service?.externalServices?.parameters?.find(param => param.name === SOURCE_STANDARD)
+                        ?.value,
+                    deliveryMethod: service?.deteTasks?.deteDeliveries?.[0]
+                        ? service.deteTasks.deteDeliveries[0].deliveryMethod
+                        : undefined,
                 }));
 
                 setTableData(flattenedObject);
@@ -311,15 +323,26 @@ const ServicesTable = ({
                 currentService.externalServices.assetType = data.assetType;
                 currentService.externalServices.formatType = data.spec;
                 currentService.overrideStartDate = data.doNotStartBefore || '';
+                currentService.externalServices.parameters.find(param => param.name === SOURCE_STANDARD).value =
+                    data.sourceStandard;
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
+
+                if (!currentService?.deteTasks?.deteDeliveries?.length) {
+                    currentService.deteTasks.deteDeliveries = [{deliveryMethod: SELECT_VALUES.deliveryMethod[0]}];
+                } else {
+                    currentService.deteTasks.deteDeliveries[0].deliveryMethod = data.deliveryMethod;
+                }
+
                 // watermark will not arrive for old orders, hence need to check
                 const extParamWatermark = currentService.externalServices.parameters.find(
                     param => param.name === 'Watermark'
                 );
                 if (extParamWatermark) extParamWatermark.value = data.watermark;
                 if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
-                    currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
+                    currentService.deteTasks.deteDeliveries[0].externalDelivery = {
+                        ...get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery', ''),
+                    };
                 currentService.status = data.operationalStatus;
 
                 const newServices = {...services, [providerServices]: updatedServices};
@@ -343,6 +366,7 @@ const ServicesTable = ({
         blankService.overrideDueDate = blankService.deteTasks.dueDate;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.externalId = newExternalId;
+        blankService.deteTasks.deteDeliveries[0].deliveryMethod = SELECT_VALUES.deliveryMethod[0];
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);

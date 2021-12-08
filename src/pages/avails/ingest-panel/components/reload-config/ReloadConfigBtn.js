@@ -37,15 +37,21 @@ const ReloadConfigBtn = ({addToast}) => {
             </div>
         );
 
-        const icon = res[0].status === 'fulfilled' && res[1].status === 'fulfilled' ? SUCCESS_ICON : WARNING_ICON;
-
-        addToast({
-            title: 'Reload Configuration Status',
-            description: statusDesc(),
-            icon,
-            isAutoDismiss: true,
-            isWithOverlay: false,
-        });
+        res[0].status === 'fulfilled' && res[1].status === 'fulfilled'
+            ? addToast({
+                  title: 'Reload Configuration Status',
+                  description: statusDesc(),
+                  icon: SUCCESS_ICON,
+                  isAutoDismiss: true,
+                  isWithOverlay: false,
+              })
+            : addToast({
+                  title: 'Reload Configuration Status',
+                  description: statusDesc(),
+                  icon: WARNING_ICON,
+                  isAutoDismiss: false,
+                  isWithOverlay: false,
+              });
     };
 
     return (

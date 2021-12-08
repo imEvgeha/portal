@@ -11,24 +11,9 @@
             "required": false
         },
         {
-            "javaVariableName": "updatedCatalogReceived",
-            "searchDataType": "icon",
-            "displayName": "Removed from Catalog",
-            "dataType": "icon",
-            "readOnly": true,
-            "enableSearch": true,
-            "queryParamName": "icon",
-            "queryParamKey": "updatedCatalogReceived",
-            "queryParamValue": true,
-            "enableEdit": false,
-            "required": false,
-            "icon": "warning",
-            "tooltip": "Removed from Catalog"
-        },
-        {
             "javaVariableName": "rightStatus",
             "searchDataType": "icon",
-            "displayName": "Withdrawn",
+            "displayName": "Withdrawn Status",
             "dataType": "icon",
             "readOnly": true,
             "enableSearch": true,
@@ -38,7 +23,7 @@
             "enableEdit": false,
             "required": false,
             "icon": "block",
-            "tooltip": "Withdrawn",
+            "tooltip": "Withdrawn Status",
             "valueToDisplay": "Withdrawn"
         },
         {
@@ -195,12 +180,11 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false,
-            "cellRenderer": "selectedAtCellRenderer"
+            "required": false
         },
         {
             "javaVariableName": "territory",
-            "displayName": "Withdrawn",
+            "displayName": "Withdrawn Locales",
             "dataType": "territory.withdrawn",
             "searchDataType": "territoryType",
             "queryParamName": "withdrawn",
@@ -1816,7 +1800,8 @@
             "readOnlyInDetails": true,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "nonMatchingValue": true
         },
         {
             "javaVariableName": "sourceRightId",
@@ -1828,7 +1813,8 @@
             "readOnlyInDetails": true,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "nonMatchingValue": true
         },
         {
             "javaVariableName": "copyright",
@@ -1900,7 +1886,7 @@
         {
             "javaVariableName": "updatedCatalogReceived",
             "displayName": "Removed from Catalogue",
-            "dataType": "boolean",
+            "dataType": "iconBoolean",
             "searchDataType": "boolean",
             "queryParamName": "updatedCatalogReceived",
             "readOnly": true,

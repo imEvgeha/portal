@@ -264,7 +264,7 @@ export function* validateConflictingRights({payload}) {
                     title: WARNING_TITLE,
                     icon: WARNING_ICON,
                     description: WARNING_CONFLICTING_RIGHTS,
-                    isAutoDismiss: true,
+                    isAutoDismiss: false,
                 },
             });
         }
@@ -275,7 +275,7 @@ export function* validateConflictingRights({payload}) {
                 title: WARNING_TITLE,
                 icon: WARNING_ICON,
                 description: WARNING_CONFLICTING_RIGHTS,
-                isAutoDismiss: true,
+                isAutoDismiss: false,
             },
         });
     }

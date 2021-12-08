@@ -1,17 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import AddIcon from '@atlaskit/icon/glyph/add';
+import { NexusModalContext } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import {debounce} from 'lodash';
 import {connect} from 'react-redux';
 import Bundle from './components/bundle/Bundle';
 import Ingest from './components/ingest/Ingest';
 import PanelHeader from './components/panel-header/PanelHeader';
 import RefreshConfigBtn from './components/reload-config/ReloadConfigBtn';
-import UploadIngestButton from './components/upload-ingest/upload-ingest-button/UploadIngestButton';
+import InputForm from './components/upload-ingest/InputForm/InputForm';
 import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import {getIngests, getSelectedIngest, getSelectedAttachmentId, getTotalIngests} from './ingestSelectors';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
-import Constants, {DEBOUNCE_TIMEOUT} from './constants';
+import Constants, {DEBOUNCE_TIMEOUT, UPLOAD_TITLE} from './constants';
 
 const {
     attachmentTypes: {EXCEL, PDF},
@@ -28,6 +31,20 @@ const IngestPanel = ({
     isTableDataLoading,
 }) => {
     const [showFilters, setShowFilters] = useState(false);
+
+    const buildForm = (data) => {
+        const {ingestData, closeUploadModal, file, browseClick, openModalCallback, closeModalCallback} = data;
+        return (
+            <InputForm
+                ingestData={ingestData}
+                closeModal={closeUploadModal}
+                file={file}
+                browseClick={browseClick}
+                openModalCallback={openModalCallback}
+                closeModalCallback={closeModalCallback}
+            />
+        );
+    };
 
     useEffect(() => {
         onFiltersChange(getFiltersToSend());
@@ -101,7 +118,13 @@ const IngestPanel = ({
                 })}
             </div>
             <div className="ingest-panel__btns">
-                <UploadIngestButton />
+                <NexusUploadButton 
+                    modalContext={NexusModalContext}
+                    modalCallback={buildForm}
+                    title={UPLOAD_TITLE}
+                    icon={AddIcon}
+                    withModal
+                />
                 <RefreshConfigBtn />
             </div>
         </div>
