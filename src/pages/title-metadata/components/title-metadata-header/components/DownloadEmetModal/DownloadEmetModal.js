@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import { downloadFile } from '@vubiquity-nexus/portal-utils/lib/Common';
 import { connect } from 'react-redux';
-import { downloadService } from '../../../../service/downloadService';
+import { exportService } from '../../../../../legacy/containers/avail/service/ExportService';
 import {createInitialValues} from '../utils';
 import {createLanguagesSelector, createCountrySelector} from './downloadEmetModalSelectors'
 import {downloadFormSubtitle, downloadFormFields, cancelButton, downloadButton} from '../constants';
@@ -58,9 +58,13 @@ const DownloadEmetModal = ({closeModal, languages, locale}) => {
     };
 
     const handleDownload = () => {
-        downloadService.downloadMetadata().then(response => {
-            downloadFile(response)
-        });
+        exportService.bulkExportMetadata(values).then(response => {
+            console.log(response.value, 'response.value')
+            const blob = new Blob(response.value, {
+                type: 'application/octet-stream',
+              })
+            downloadFile(blob)
+        })
     };
 
     return (
