@@ -15,6 +15,11 @@
     @include margin(0, 0, 6, 0);
 }
 
+.download-emet-modal__select {
+    width: 100%;
+    max-width: 25rem;
+}
+
 .download-emet-modal__select-wrapper {
     width: 100%;
     max-width: 25rem;
@@ -39,4 +44,8 @@
 .download-emet-modal__buttons {
     display: flex;
     justify-content: flex-end;
+}
+
+.cancel-button {
+    @include margin(0, 3, 0, 0);
 }

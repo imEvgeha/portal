@@ -1,19 +1,16 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
-import Select from '@atlaskit/select';
-import { ERROR_ICON, SUCCESS_ICON } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import { downloadFile } from '@vubiquity-nexus/portal-utils/lib/Common';
+import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
 import { connect } from 'react-redux';
-import {compose} from 'redux';
 import { exportService } from '../../../../../legacy/containers/avail/service/ExportService';
 import {createInitialValues} from '../utils';
 import {createLanguagesSelector, createCountrySelector} from './downloadEmetModalSelectors'
-import {downloadFormSubtitle, downloadFormFields, cancelButton, downloadButton, successDownloadTitle, successDownloadDesc, failureDownloadTitle, failureDownloadDesc} from '../constants';
+import {downloadFormSubtitle, downloadFormFields, cancelButton, downloadButton} from '../constants';
 import './DownloadEmetModal.scss';
 
-const DownloadEmetModal = ({closeModal, languages, locale, addToast}) => {
+const DownloadEmetModal = ({closeModal, languages, locale, showSuccess, showError}) => {
     const initialValues = createInitialValues(downloadFormFields);
     const [values, setValues] = useState(initialValues);
 
@@ -37,8 +34,8 @@ const DownloadEmetModal = ({closeModal, languages, locale, addToast}) => {
             }
         };
 
-        const handleChange = value => {
-            values[name] = value;
+        const handleChange = (event) => {
+            values[name] = event.value;
             setValues({...values});
         };
 
@@ -46,13 +43,14 @@ const DownloadEmetModal = ({closeModal, languages, locale, addToast}) => {
             <div key={name} className="download-emet-modal__field">
                 <label className="download-emet-modal__label">{name}</label>
                 <div className="download-emet-modal__select-wrapper">
-                    <Select
-                        className="download-emet-modal__select"
+                    <Dropdown 
+                        className="download-emet-modal__select" 
+                        value={values?.[name]}
                         options={getOptions()}
-                        placeholder={updatedPlaceholder}
-                        classNamePrefix="nexus-c-nexus-select"
-                        value={values[name]}
                         onChange={handleChange}
+                        optionLabel="label"
+                        // filter 
+                        placeholder={updatedPlaceholder}
                     />
                 </div>
             </div>
@@ -65,23 +63,10 @@ const DownloadEmetModal = ({closeModal, languages, locale, addToast}) => {
                 const buffer = new Uint8Array(response.value).buffer;
                 const buftype = 'application/vnd.ms-excel;charset=utf-8';
                 const blob = new Blob([buffer], {type: buftype});
+                showSuccess();
+                closeModal()
                 downloadFile(blob);
-                addToast({
-                    title: successDownloadTitle,
-                    description: successDownloadDesc,
-                    icon: SUCCESS_ICON,
-                    isWithOverlay: true,
-                    isAutoDismiss: true,
-                });
-            }).catch(err => {
-                addToast({
-                    title: failureDownloadTitle,
-                    description: `${failureDownloadDesc} Details: ${err}`,
-                    icon: ERROR_ICON,
-                    isWithOverlay: true,
-                    isAutoDismiss: true,
-                });
-            })
+            }).catch(err => showError(err))
     };
 
     return (
@@ -90,15 +75,17 @@ const DownloadEmetModal = ({closeModal, languages, locale, addToast}) => {
             <div className="download-emet-modal__fields">{downloadFormFields.map(field => buildField(field))}</div>
             <div className="download-emet-modal__buttons">
                 <Button
-                    onClick={() => {
-                        closeModal();
-                    }}
-                >
-                    {cancelButton}
-                </Button>
-                <Button onClick={handleDownload} className="download-emet-modal__button" isDisabled={isDisabled} appearance="primary">
-                    {downloadButton}
-                </Button>
+                    onClick={() => {closeModal()}}
+                    className="p-button-outlined p-button-secondary cancel-button"
+                    label={cancelButton}
+                />
+                <Button
+                    label={downloadButton}
+                    onClick={handleDownload}
+                    className="download-emet-modal__button"
+                    disabled={isDisabled}
+                    className="p-button-outlined p-button-secondary"
+                />
             </div>
         </div>
     );
@@ -117,15 +104,8 @@ DownloadEmetModal.propTypes = {
     closeModal: PropTypes.func.isRequired,
     languages: PropTypes.array.isRequired,
     locale: PropTypes.array.isRequired,
-    addToast: PropTypes.func,
+    showSuccess: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
 };
 
-DownloadEmetModal.defaultProps = {
-    addToast: () => null,
-}
-
-export default compose(
-    withToasts,
-    // eslint-disable-next-line
-    connect(createMapStateToProps, null)
-)(DownloadEmetModal);
+export default connect(createMapStateToProps, null)(DownloadEmetModal);

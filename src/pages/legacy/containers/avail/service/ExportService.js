@@ -57,7 +57,7 @@ export const exportService = {
         const {locale, language, status} = params;
         const url = `${
             config.get('gateway.titleUrl') + config.get('gateway.service.title')
-        }/editorialmetadata/download?locale=${locale.value}&language=${language.value}&byDopEmtTasks=${false}&emetStatus=${status.value.toUpperCase()}`;
+        }/editorialmetadata/download?locale=${locale}&language=${language}&byDopEmtTasks=${false}&emetStatus=${status}`;
         const abortAfter = config.get('avails.export.http.timeout');
 
         return nexusFetch(
