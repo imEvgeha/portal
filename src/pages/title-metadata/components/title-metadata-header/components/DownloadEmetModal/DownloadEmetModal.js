@@ -2,20 +2,22 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
+import { ERROR_ICON, SUCCESS_ICON } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import { downloadFile } from '@vubiquity-nexus/portal-utils/lib/Common';
 import { connect } from 'react-redux';
+import {compose} from 'redux';
 import { exportService } from '../../../../../legacy/containers/avail/service/ExportService';
 import {createInitialValues} from '../utils';
 import {createLanguagesSelector, createCountrySelector} from './downloadEmetModalSelectors'
-import {downloadFormSubtitle, downloadFormFields, cancelButton, downloadButton} from '../constants';
+import {downloadFormSubtitle, downloadFormFields, cancelButton, downloadButton, successDownloadTitle, successDownloadDesc, failureDownloadTitle, failureDownloadDesc} from '../constants';
 import './DownloadEmetModal.scss';
 
-const DownloadEmetModal = ({closeModal, languages, locale}) => {
+const DownloadEmetModal = ({closeModal, languages, locale, addToast}) => {
     const initialValues = createInitialValues(downloadFormFields);
     const [values, setValues] = useState(initialValues);
 
     const isDisabled = values ? !Object.values(values).every(value => Boolean(value) === true) : true;
-
     const buildField = field => {
         const {name, placeholder} = field;
         const updatedPlaceholder = `Select ${placeholder}...`;
@@ -58,13 +60,28 @@ const DownloadEmetModal = ({closeModal, languages, locale}) => {
     };
 
     const handleDownload = () => {
-        exportService.bulkExportMetadata(values).then(response => {
-            console.log(response.value, 'response.value')
-            const blob = new Blob(response.value, {
-                type: 'application/octet-stream',
-              })
-            downloadFile(blob)
-        })
+        exportService.bulkExportMetadata(values)
+            .then(response => {
+                const buffer = new Uint8Array(response.value).buffer;
+                const buftype = 'application/vnd.ms-excel;charset=utf-8';
+                const blob = new Blob([buffer], {type: buftype});
+                downloadFile(blob);
+                addToast({
+                    title: successDownloadTitle,
+                    description: successDownloadDesc,
+                    icon: SUCCESS_ICON,
+                    isWithOverlay: true,
+                    isAutoDismiss: true,
+                });
+            }).catch(err => {
+                addToast({
+                    title: failureDownloadTitle,
+                    description: `${failureDownloadDesc} - ${err}`,
+                    icon: ERROR_ICON,
+                    isWithOverlay: true,
+                    isAutoDismiss: true,
+                });
+            })
     };
 
     return (
@@ -100,6 +117,15 @@ DownloadEmetModal.propTypes = {
     closeModal: PropTypes.func.isRequired,
     languages: PropTypes.array.isRequired,
     locale: PropTypes.array.isRequired,
+    addToast: PropTypes.func,
 };
 
-export default connect(createMapStateToProps, null)(DownloadEmetModal);
+DownloadEmetModal.defaultProps = {
+    addToast: () => null,
+}
+
+export default compose(
+    withToasts,
+    // eslint-disable-next-line
+    connect(createMapStateToProps, null)
+)(DownloadEmetModal);

@@ -1,9 +1,0 @@
-@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
-
-.cloud-upload-button {
-    @include margin(0, 3, 0, 6);
-    @include padding(0);
-    > input {
-        display: none;
-    }
-}
