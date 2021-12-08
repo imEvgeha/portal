@@ -8,7 +8,6 @@ void setBuildStatus(String message, String state) {
     ]);
 }
 
-
 pipeline {
     agent { label 'usla-jknd-p003' }
      stages {
