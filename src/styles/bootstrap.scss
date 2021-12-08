@@ -1,0 +1,7 @@
+@import './legacy/variables';
+@import '~bootstrap/scss/bootstrap';
+@import '~react-datepicker/dist/react-datepicker.css';
+
+.fade:not(.show) {
+    opacity: initial;
+}
