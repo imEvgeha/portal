@@ -18,6 +18,7 @@ const initialState = {
     isPublishingMOV: false,
     gridState: {},
     filter: {},
+    selectedId: '',
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {

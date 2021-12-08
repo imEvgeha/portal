@@ -44,5 +44,11 @@ export const createExternalIdsLoadingSelector = () =>
 export const createGridStateSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.gridState || {});
 
+export const createTitleMetadataFilterSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.filter || {});
+
+export const createSelectedIdSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.selectedId || '');
+
 export const propagateAddPersonsSelector = state => state?.titleMetadata?.propagateAddPersons || [];
 export const propagateRemovePersonsSelector = state => state?.titleMetadata?.propagateRemovePersons || [];

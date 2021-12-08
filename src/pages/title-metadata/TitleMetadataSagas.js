@@ -9,6 +9,7 @@ import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {history} from '../../index';
 import {showToastForErrors} from '../../util/http-client/handleError';
 import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
+import {uploadService} from './service/UploadService';
 import * as actionTypes from './titleMetadataActionTypes';
 import {
     getTitleById,
@@ -20,7 +21,7 @@ import {
     registerTitle,
 } from './titleMetadataServices';
 import {isMgmTitle} from './utils';
-import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR} from './constants';
+import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR, UPLOAD_SUCCESS_MESSAGE, METADATA_UPLOAD_ERROR_TITLE} from './constants';
 
 export function* loadParentTitle(title) {
     const {parentIds} = title;
@@ -317,6 +318,47 @@ export function* publishTitle({payload}) {
     }
 }
 
+function* uploadMetadata({payload}) {
+    const {file, ...rest} = payload || {};
+    try {
+        yield put({
+            type: actionTypes.UPLOAD_METADATA_REQUEST,
+            payload: {},
+        });
+
+        const response = yield uploadService.uploadMetadata({file, params: rest});
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: `${UPLOAD_SUCCESS_MESSAGE} ${response.id}`,
+            },
+        });
+
+        yield put({
+            type: actionTypes.UPLOAD_METADATA_SUCCESS,
+            payload: {},
+        });
+    } catch (e) {
+        yield put({
+            type: actionTypes.UPLOAD_METADATA_ERROR,
+            payload: {},
+        });
+
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: METADATA_UPLOAD_ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: false,
+                description: `Type: ${e.type}`,
+            },
+        });
+    }
+}
+
 export function* titleMetadataWatcher() {
     yield all([
         takeEvery(actionTypes.GET_TITLE, loadTitle),
@@ -326,5 +368,6 @@ export function* titleMetadataWatcher() {
         takeEvery(actionTypes.UPDATE_TITLE, updateTitle),
         takeEvery(actionTypes.SYNC_TITLE, syncTitle),
         takeEvery(actionTypes.PUBLISH_TITLE, publishTitle),
+        takeEvery(actionTypes.UPLOAD_METADATA, uploadMetadata),
     ]);
 }

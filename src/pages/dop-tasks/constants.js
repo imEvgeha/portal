@@ -359,6 +359,7 @@ export const jobStatus = {
     PARTIAL: 'Partially Completed',
 };
 export const TASK_ACTIONS_ASSIGN = 'Assign';
+export const TASK_ACTIONS_UNASSIGN = 'Un-Assign';
 export const TASK_ACTIONS_FORWARD = 'Forward';
 export const PRIORITY_OPTIONS = [
     {

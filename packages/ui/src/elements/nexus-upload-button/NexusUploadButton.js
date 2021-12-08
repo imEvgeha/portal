@@ -1,18 +1,14 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import AddIcon from '@atlaskit/icon/glyph/add';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import config from 'react-global-configuration';
-import InputForm from '../InputForm/InputForm';
-import './UploadIngestButton.scss';
+import './NexusUploadButton.scss';
 
-const TITLE = 'AVAIL INGEST';
-
-const UploadIngestButton = ({ingestData}) => {
+const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon, uploadCallback, modalContext}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
-    const {openModal, closeModal} = useContext(NexusModalContext);
+    const contextFromModal = useContext(modalContext);
+    const {openModal, closeModal} = contextFromModal ? contextFromModal : { openModal: () => null, closeModal: () => null}
     const openModalCallback = useCallback((node, params) => openModal(node, params), []);
     const closeModalCallback = useCallback(() => closeModal(), []);
 
@@ -26,24 +22,14 @@ const UploadIngestButton = ({ingestData}) => {
         inputClick();
     }, [closeUploadModal]);
 
-    const buildForm = useCallback(() => {
-        return (
-            <InputForm
-                ingestData={ingestData}
-                closeModal={closeUploadModal}
-                file={file}
-                browseClick={browseClick}
-                openModalCallback={openModalCallback}
-                closeModalCallback={closeModalCallback}
-            />
-        );
-    }, [browseClick, closeUploadModal, file]);
+    const modalCallbackData = {ingestData, closeUploadModal, file, browseClick, openModalCallback, closeModalCallback};
 
     useEffect(() => {
-        if (file) {
-            openModalCallback(buildForm(), {title: TITLE, width: 'medium', shouldCloseOnOverlayClick: false});
+        if (file && modalCallback) {
+            openModalCallback(modalCallback(modalCallbackData), {title, width: 'medium', shouldCloseOnOverlayClick: false});
         }
-    }, [buildForm, file]);
+        if (file && uploadCallback) uploadCallback(file);
+    }, [file]);
 
     const inputClick = () => inputRef && inputRef.current && inputRef.current.click();
 
@@ -52,11 +38,11 @@ const UploadIngestButton = ({ingestData}) => {
         if (files && files.length > 0) {
             setFile(Array.from(files)[0]);
             e.target.value = null;
-        }
+        } 
     };
 
     return (
-        <div className="ingest-upload">
+        <div className={modalCallback(modalCallbackData) === undefined ? "ingest-upload-with-border" : "ingest-upload"}>
             <input
                 className="ingest-upload__input"
                 type="file"
@@ -66,21 +52,32 @@ const UploadIngestButton = ({ingestData}) => {
             />
             {ingestData ? (
                 <button className="btn btn-primary" onClick={inputClick}>
-                    Upload
+                    {buttonTitle}
                 </button>
             ) : (
-                <IconButton icon={AddIcon} onClick={inputClick} label="Upload Ingest" />
+                <IconButton icon={icon} onClick={inputClick} label="Upload Ingest" />
             )}
         </div>
     );
 };
 
-UploadIngestButton.propTypes = {
+NexusUploadButton.propTypes = {
+    title: PropTypes.string,
+    buttonTitle: PropTypes.string,
     ingestData: PropTypes.object,
+    modalCallback: PropTypes.func,
+    icon: PropTypes.any.isRequired,
+    uploadCallback: PropTypes.func,
+    modalContext: PropTypes.any,
 };
 
-UploadIngestButton.defaultProps = {
+NexusUploadButton.defaultProps = {
+    title: '',
+    buttonTitle: 'Upload',
     ingestData: null,
+    modalCallback: () => null,
+    uploadCallback: () => null,
+    modalContext: {},
 };
 
-export default UploadIngestButton;
+export default NexusUploadButton;
