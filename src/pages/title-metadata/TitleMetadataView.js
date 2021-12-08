@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.svg';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
@@ -17,9 +19,11 @@ import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
-import {storeTitleUserDefinedGridState} from './titleMetadataActions';
-import {createGridStateSelector} from './titleMetadataSelectors';
-import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS} from './constants';
+import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
+import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
+import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS, METADATA_UPLOAD_TITLE} from './constants';
+
+
 
 export const TitleMetadataView = ({
     history,
@@ -29,6 +33,7 @@ export const TitleMetadataView = ({
     username,
     gridState,
     titleMetadataFilter,
+    uploadMetadata
 }) => {
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
@@ -87,6 +92,14 @@ export const TitleMetadataView = ({
         columnApi.resetColumnState();
     };
 
+    const uploadHandler = (file) => {
+        const params = {
+            tenantCode: catalogueOwner.tenantCode.toUpperCase(),
+            file,
+        }; 
+        uploadMetadata(params);
+    };
+
     const [blockLastFilter, setBlockLastFilter] = useState(true);
 
     useEffect(() => {
@@ -95,14 +108,32 @@ export const TitleMetadataView = ({
             setSorting(titleMetadataFilter.sortModel, columnApi);
             columnApi.setColumnState(titleMetadataFilter.columnState);
         }
-    }, [gridApi, columnApi])
+    }, [gridApi, columnApi]);
 
+    const storedFilterData = titleMetadataFilter;
+    const storedFilterDataId = titleMetadataFilter?.id;
+
+    const lastStoredFilter = {
+        label: storedFilterDataId,
+    };
+
+    const lastFilterView = (gridApi, columnApi, id) => {
+        if (!isEmpty(gridApi) && !isEmpty(columnApi) && id) {
+            const {columnState, filterModel, sortModel} = storedFilterData || {};
+            gridApi.setFilterModel(filterModel);
+            setSorting(sortModel, columnApi);
+            columnApi.setColumnState(columnState);
+        }
+    };
+
+    blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
 
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
+                <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
                 <NexusSavedTableDropdown
-                    gridApi={gridApi} 
+                    gridApi={gridApi}
                     columnApi={columnApi}
                     username={username}
                     userDefinedGridStates={userDefinedGridStates}
@@ -110,6 +141,7 @@ export const TitleMetadataView = ({
                     applyPredefinedTableView={resetToAll}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
+                    lastStoredFilter={lastStoredFilter}
                     setBlockLastFilter={setBlockLastFilter}
                     isTitleMetadata={true}
                 />
@@ -137,7 +169,7 @@ export const TitleMetadataView = ({
                 setColumnApi={setColumnApi}
                 columnApi={columnApi}
                 gridApi={gridApi}
-                className='nexus-c-title-metadata__table'
+                className="nexus-c-title-metadata__table"
             />
             <TitleCreate
                 display={showModal}
@@ -151,10 +183,11 @@ export const TitleMetadataView = ({
 
 const mapStateToProps = () => {
     const gridStateSelector = createGridStateSelector();
+    const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
     return state => ({
         username: getUsername(state),
         gridState: gridStateSelector(state),
-        titleMetadataFilter: state.titleMetadata.filter,
+        titleMetadataFilter: titleMetadataFilterSelector(state),
     });
 };
 
@@ -162,6 +195,7 @@ const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
     resetTitleId: () => dispatch(resetTitle()),
     storeTitleUserDefinedGridState: payload => dispatch(storeTitleUserDefinedGridState(payload)),
+    uploadMetadata: payload => dispatch(uploadMetadata(payload)),
 });
 
 TitleMetadataView.propTypes = {
@@ -172,6 +206,7 @@ TitleMetadataView.propTypes = {
     username: PropTypes.string.isRequired,
     gridState: PropTypes.object,
     titleMetadataFilter: PropTypes.object,
+    uploadMetadata: PropTypes.func,
 };
 
 TitleMetadataView.defaultProps = {
@@ -181,6 +216,7 @@ TitleMetadataView.defaultProps = {
     storeTitleUserDefinedGridState: () => null,
     gridState: {},
     titleMetadataFilter: {},
+    uploadMetadata: () => null,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataView);
