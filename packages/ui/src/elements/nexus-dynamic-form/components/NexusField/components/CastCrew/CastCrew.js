@@ -7,7 +7,9 @@ import {
     CREW_LIST,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
 import classnames from 'classnames';
+import { isEmpty } from 'lodash';
 import './CastCrew.scss';
+import { searchPersonById } from '../../../../../../../../../src/pages/avails/right-details/rightDetailsServices';
 
 const CastCrew = ({
     persons,
@@ -23,6 +25,7 @@ const CastCrew = ({
     setUpdate,
     ...props
 }) => {
+    const [personsWithLocalization, setPersonsWithLocalization] = useState(persons || []);
     const [cast, setCast] = useState(
         persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
     );
@@ -33,7 +36,23 @@ const CastCrew = ({
 
     useEffect(() => {
         resetPersons();
+        async function fetchLocalizationPersons() {
+            const allLocalizationsPersons = persons.map(async (person) => {
+                try {
+                    const localizationPerson = await searchPersonById(person.id);
+                    return {...person, localization: localizationPerson.localization};
+                } catch (err) {
+                    return;
+                }
+            });
+            setPersonsWithLocalization(await Promise.all(allLocalizationsPersons));
+        }
+        !isEmpty(persons) && fetchLocalizationPersons();
     }, [persons]);
+
+    useEffect(() => {
+        resetPersons();
+    }, [personsWithLocalization]);
 
     useEffect(() => {
         setUpdatedCastCrew(persons.sort((a, b) => a.creditsOrder - b.creditsOrder));
@@ -41,12 +60,12 @@ const CastCrew = ({
 
     const resetPersons = () => {
         setCast(
-            persons
+            personsWithLocalization
                 .filter(person => !CREW_LIST.includes(person.personType))
                 .sort((a, b) => a.creditsOrder - b.creditsOrder)
         );
         setCrew(
-            persons
+            personsWithLocalization
                 .filter(person => CREW_LIST.includes(person.personType))
                 .sort((a, b) => a.creditsOrder - b.creditsOrder)
         );
