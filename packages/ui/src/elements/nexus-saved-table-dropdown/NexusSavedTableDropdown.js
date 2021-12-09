@@ -33,7 +33,6 @@ const NexusSavedTableDropdown = ({
     tableOptions,
     lastStoredFilter,
     setBlockLastFilter,
-    isTitleMetadata,
 }) => {
     const [selectedItem, setSelectedItem] = useState(lastStoredFilter.label ? lastStoredFilter : tableOptions[0]);
 
