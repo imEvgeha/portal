@@ -57,7 +57,9 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
     useEffect(() => {
         setPosters(Array.from({length: posterList.length}));
         setLazyLoading(false);
+    }, [posterList]);
 
+    useEffect(() => {
         fetchAsset(artworkAssetID);
         loginAssets().then(() => fetchResourcePosters(sourceMediaAssetID));
     }, []);
@@ -78,14 +80,13 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
         });
     };
 
-    const basicItemTemplate = (item, options) => {
-        const timing = item?.split('/')?.at(-1);
+    const basicItemTemplate = item => {
+        const timing = item?.url?.split('/')?.at(-1);
         return (
             <div className="scroll-item">
-                <div>{options.index}</div>
                 <ArtworkItem
                     key={timing}
-                    poster={item}
+                    poster={item?.img}
                     timing={timing}
                     onClick={artworkClick}
                     isSelected={selectedArtwork === timing}
@@ -99,12 +100,13 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
         const positionsToCheck = posters.slice(first, last);
         if (posters.includes(undefined) && positionsToCheck.includes(undefined)) {
             setLazyLoading(true);
-            const postersToFetch = posterList.slice(first, last).map(url => fetchPoster(url));
+            const postersInView = posterList.slice(first, last);
+            const postersToFetch = postersInView.map(url => fetchPoster(url));
             const lazyItems = [...posters];
             Promise.all(postersToFetch).then(res => {
                 let counter = 0;
                 for (let i = first; i < last; i++) {
-                    lazyItems[i] = URL.createObjectURL(res[counter]);
+                    lazyItems[i] = {img: URL.createObjectURL(res[counter]), url: postersInView[counter]};
                     counter++;
                 }
                 setLazyLoading(false);

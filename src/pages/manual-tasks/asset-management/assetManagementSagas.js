@@ -25,17 +25,11 @@ function* resourcePosters({payload}) {
         )}/item/${payload}/posterresource`;
         const resource = yield call(fetchPosters, url);
         const resourceURL = `${get(resource, 'uri[0]', '')}?url=true`;
-
-        const img = yield call(
-            fetchPosters,
-            'http://vidispine-5-6-stg.misc.odg.ondemand.co.uk/API/poster/VX-6/VX-10705;version=0/2735733@24000'
-        );
-        console.log(img);
         if (!isEmpty(resource)) {
             const timeFrames = yield call(fetchPosters, resourceURL);
             const posters = [];
             get(timeFrames, 'uri', []).forEach(frame => {
-                posters.push(`${resourceURL}/${frame}`);
+                posters.push(`${frame}`);
             });
             yield put({
                 type: STORE_POSTERS,
