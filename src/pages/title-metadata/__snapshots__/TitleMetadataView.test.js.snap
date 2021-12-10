@@ -12,7 +12,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     onHide={null}
     onRemove={null}
     onShow={null}
-    position="top-right"
+    position="bottom-left"
     style={null}
     transitionOptions={null}
   />
