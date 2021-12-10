@@ -122,7 +122,7 @@ const TitleMetadataTable = ({
             if (gridApi) {
                 const filterModel = gridApi.getFilterModel();
                 const sortModel = getSortModel(columnApi);
-                const columnState = columnApi.getColumnState();
+                const columnState = columnApi?.getColumnState();
 
                 const firstFilterModel = Object.keys(filterModel).shift();
                 const id = filterModel && filterModel[`${firstFilterModel}`]?.filter;

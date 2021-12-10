@@ -16,12 +16,16 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    // left: 0px;
 }
 
 .nexus-c-title-metadata__select-container {
     display: flex;
     justify-content: flex-end;
-    width: 50%;
+    padding-right: 43px;
+    position: absolute;
+    width: 100%;
+    left: 0px;
 }
 
 .nexus-c-title-metadata__tab-menu {
@@ -50,7 +54,7 @@
 
     .p-highlight {
         .p-menuitem-link {
-            background: palette(black, 20) !important;
+            background: palette(black, 10) !important;
             color: palette(black, 100) !important;
             border: none !important;
         }

@@ -329,3 +329,10 @@ export const TITLE_METADATA_TABS = [
     {label: 'Sync Log', value: 'syncLog'},
     {label: 'Upload Log', value: 'uploadLog'},
 ];
+
+export const TABLE_LABELS = {
+    savedDropdownLabel: 'Saved Table View:',
+    savedViewslabel: 'My Saved Views',
+};
+
+export const TABLE_OPTIONS = [{label: 'All', value: 'all'}];
