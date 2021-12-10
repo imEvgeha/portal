@@ -19,12 +19,11 @@ import {selectSyncLogDateFrom, selectSyncLogDateTo} from '../../syncLogSelectors
 import {getSyncLog, exportSyncLog} from '../../syncLogService';
 import PublishErrors from '../PublishErrors/PublishErrors';
 import Status from '../Status/Status';
+import SyncLogDatePicker from '../SyncLogDatePicker/SyncLogDatePicker'
 import TitleNameCellRenderer from '../TitleNamecCellRenderer/TitleNameCellRenderer';
 import './SyncLogTable.scss';
 
 const SyncLogGrid = compose(withColumnsResizing(), withInfiniteScrolling({fetchData: getSyncLog}))(NexusGrid);
-const FROM_DATE_ERROR = 'FUTURE DATES ARE NOT ALLOWED!';
-const TO_DATE_ERROR = 'THIS DATE MUST BE AFTER YOUR FROM DATE';
 
 const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
     const [gridApi, setGridApi] = useState(null);
@@ -87,33 +86,13 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
         <div className="nexus-c-sync-log-table">
             <div className="nexus-c-sync-log-table__actions">
                 <div />
-                <div className="nexus-c-sync-log-table__date-filter">
-                    <div className="nexus-c-sync-log-table__date-field">
-                        <NexusDatePicker
-                            id="dateFrom"
-                            label="Date From"
-                            onChange={onDateFromChange}
-                            value={dateFrom}
-                            isReturningTime={false}
-                            isRequired
-                        />
-                        <div id="dateFromError" className="nexus-c-sync-log-table__date-field--error">
-                            {dateError === 'from' && FROM_DATE_ERROR}
-                        </div>
-                    </div>
-                    <div className="nexus-c-sync-log-table__date-field">
-                        <NexusDatePicker
-                            id="dateTo"
-                            label="Date To"
-                            onChange={onDateToChange}
-                            value={dateTo}
-                            isReturningTime={false}
-                        />
-                        <div id="dateToError" className="nexus-c-sync-log-table__date-field--error">
-                            {dateError === 'to' && TO_DATE_ERROR}
-                        </div>
-                    </div>
-                </div>
+                <SyncLogDatePicker
+                    onDateFromChange={onDateFromChange}
+                    onDateToChange={onDateToChange}
+                    dateFrom={dateFrom}
+                    dateTo={dateTo}
+                    dateError={dateError}
+                />
                 <Button onClick={() => exportSyncLog(dateFrom, dateTo)} isDisabled={!gridApi}>
                     {DOWNLOAD_BTN}
                 </Button>

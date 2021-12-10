@@ -58,17 +58,3 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
     justify-content: space-between;
     align-items: flex-end;
 }
-
-.nexus-c-sync-log-table__date-filter {
-    display: flex;
-    justify-content: space-between;
-}
-
-.nexus-c-sync-log-table__date-field {
-    width: 220px;
-    margin: 0 5px;
-    &--error {
-        color: map-get($reds, R400);
-        font-size: 12px;
-    }
-}

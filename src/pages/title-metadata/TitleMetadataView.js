@@ -1,29 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
-import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.svg';
+import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
+import { Button } from 'primereact/button';
+import { TabMenu } from 'primereact/tabmenu';
 import {connect} from 'react-redux';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
+import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart'
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
 import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
-import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS, METADATA_UPLOAD_TITLE} from './constants';
-
-
+import {DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS, TITLE_METADATA_TABS} from './constants';
 
 export const TitleMetadataView = ({
     history,
@@ -42,6 +40,7 @@ export const TitleMetadataView = ({
 
     const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
+    const [activeIndex, setActiveIndex] = useState(0);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
 
     useEffect(() => {
@@ -64,6 +63,11 @@ export const TitleMetadataView = ({
             store.dispatch(addToast(successToast));
         }
     }, []);
+
+    const getNameOfCurrentTab = () => {
+        const lastIndex = TITLE_METADATA_TABS.length - 1;
+        if (lastIndex >= 0) return TITLE_METADATA_TABS[activeIndex].value
+    }
 
     const closeModalAndRefreshTable = () => {
         setShowModal(false);
@@ -126,40 +130,56 @@ export const TitleMetadataView = ({
         }
     };
 
+    const RepositorySelectsAndButtons = () => {
+        if (getNameOfCurrentTab() === 'repository') {
+            return (
+                <div className="nexus-c-title-metadata__select-container">
+                    <NexusSavedTableDropdown
+                        gridApi={gridApi}
+                        columnApi={columnApi}
+                        username={username}
+                        userDefinedGridStates={userDefinedGridStates}
+                        setUserDefinedGridState={storeTitleUserDefinedGridState}
+                        applyPredefinedTableView={resetToAll}
+                        tableLabels={tableLabels}
+                        tableOptions={tableOptions}
+                        lastStoredFilter={lastStoredFilter}
+                        setBlockLastFilter={setBlockLastFilter}
+                        isTitleMetadata={true}
+                    />
+                    <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
+                    <Button icon={IconActionAdd} onClick={() => setShowModal(true)} className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn" />
+                    {/* <Button
+                        className="nexus-c-title-metadata__sync-btn"
+                        appearance="subtle"
+                        onClick={() => history.push(URL.keepEmbedded('/metadata/sync-log'))}
+                    >
+                        {SYNC_LOG}
+                    </Button> */}
+                </div>
+            )
+        }
+        
+        return null;
+    }
+
     blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
 
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
-                <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
-                <NexusSavedTableDropdown
-                    gridApi={gridApi}
-                    columnApi={columnApi}
-                    username={username}
-                    userDefinedGridStates={userDefinedGridStates}
-                    setUserDefinedGridState={storeTitleUserDefinedGridState}
-                    applyPredefinedTableView={resetToAll}
-                    tableLabels={tableLabels}
-                    tableOptions={tableOptions}
-                    lastStoredFilter={lastStoredFilter}
-                    setBlockLastFilter={setBlockLastFilter}
-                    isTitleMetadata={true}
-                />
-                <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
-                <Button
-                    className="nexus-c-title-metadata__create-btn"
-                    appearance="primary"
-                    onClick={() => setShowModal(true)}
-                >
-                    {CREATE_NEW_TITLE}
-                </Button>
-                <Button
-                    className="nexus-c-title-metadata__sync-btn"
-                    appearance="subtle"
-                    onClick={() => history.push(URL.keepEmbedded('/metadata/sync-log'))}
-                >
-                    {SYNC_LOG}
-                </Button>
+                <div className="nexus-c-title-metadata__main-container">
+                    <div  className="nexus-c-title-tab-menu-container">
+                        <TabMenu
+                            className="nexus-c-title-metadata__tab-menu"
+                            model={TITLE_METADATA_TABS}
+                            activeIndex={activeIndex}
+                            onTabChange={(e) => setActiveIndex(e.index)}
+                        />
+                    </div>
+                    <RepositorySelectsAndButtons />
+                </div>
+                <TitleMetadataBottomHeaderPart uploadHandler={uploadHandler} getNameOfCurrentTab={getNameOfCurrentTab} />
             </TitleMetadataHeader>
 
             <TitleMetadataTable
