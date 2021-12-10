@@ -76,7 +76,7 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess, showErro
             <div className="nexus-c-download-emet-modal__buttons">
                 <Button
                     onClick={() => {closeModal()}}
-                    className="p-button-outlined p-button-secondary cancel-button"
+                    className="p-button-outlined p-button-secondary nexus-c-cancel-button"
                     label={cancelButton}
                 />
                 <Button
