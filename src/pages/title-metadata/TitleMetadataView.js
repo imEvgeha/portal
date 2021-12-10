@@ -142,7 +142,7 @@ export const TitleMetadataView = ({
 
     return (
         <div className="nexus-c-title-metadata">
-            <Toast ref={toast} />
+            <Toast ref={toast} position="bottom-left" />
             <TitleMetadataHeader>
                 <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
                 <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
