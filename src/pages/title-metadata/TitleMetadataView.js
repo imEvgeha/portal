@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.svg';
@@ -11,12 +11,15 @@ import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
+import { Toast } from 'primereact/toast';
 import {connect} from 'react-redux';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
+import CloudDownloadButton from './components/title-metadata-header/components/CloudDownloadButton/CloudDownloadButton';
+import { failureDownloadDesc, failureDownloadTitle, successDownloadDesc, successDownloadTitle } from './components/title-metadata-header/components/constants';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
 import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
@@ -43,6 +46,15 @@ export const TitleMetadataView = ({
     const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
+    const toast = useRef(null);
+    
+    const showSuccess = () => {
+        toast.current.show({severity:'success', summary: successDownloadTitle, detail: successDownloadDesc, life: 3000});
+    }
+
+    const showError = (err) => {
+        toast.current.show({severity:'error', summary: failureDownloadTitle, detail: `${failureDownloadDesc} Details: ${err}`, life: 300000});
+    }
 
     useEffect(() => {
         if (!isEmpty(gridState) && username) {
@@ -130,8 +142,10 @@ export const TitleMetadataView = ({
 
     return (
         <div className="nexus-c-title-metadata">
+            <Toast ref={toast} position="bottom-left" />
             <TitleMetadataHeader>
                 <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
+                <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
                 <NexusSavedTableDropdown
                     gridApi={gridApi}
                     columnApi={columnApi}
