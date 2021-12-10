@@ -14,7 +14,7 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
     };
 
     return (
-        <div className="cloud-download-button">
+        <div className="nexus-c-button-cloud-download">
             <IconButton icon={CloudDownloadIcon} onClick={handleOpenModal} label="Download Emmet" />
         </div>
     );
