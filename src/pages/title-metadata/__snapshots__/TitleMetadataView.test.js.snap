@@ -4,6 +4,18 @@ exports[`TitleMetadataView should match snapshot 1`] = `
 <div
   className="nexus-c-title-metadata"
 >
+  <Toast
+    baseZIndex={0}
+    className={null}
+    id={null}
+    onClick={null}
+    onHide={null}
+    onRemove={null}
+    onShow={null}
+    position="bottom-left"
+    style={null}
+    transitionOptions={null}
+  />
   <TitleMetadataHeader
     label="Title Metadata"
   >
@@ -19,6 +31,10 @@ exports[`TitleMetadataView should match snapshot 1`] = `
       modalContext={Object {}}
       title="METADATA INGEST"
       uploadCallback={[Function]}
+    />
+    <CloudDownloadButton
+      showError={[Function]}
+      showSuccess={[Function]}
     />
     <NexusSavedTableDropdown
       applyPredefinedTableView={[Function]}
