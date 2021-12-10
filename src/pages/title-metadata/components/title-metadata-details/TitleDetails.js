@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import File from '@vubiquity-nexus/portal-assets/file.svg';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
+import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import classnames from 'classnames';
@@ -194,6 +196,31 @@ const TitleDetails = ({
         externalSystem === VZ ? setVZDisabled(true) : setMOVDisabled(true);
     };
 
+    const actions = [
+        new Action(
+            File,
+            () => {
+                console.log('icon clicked');
+            },
+            6,
+            false,
+            'fileBtn'
+        ),
+        new Action(
+            File,
+            () => {
+                console.log('icon clicked');
+            },
+            1,
+            false,
+            'fileBtn2'
+        ),
+    ];
+
+    const heading = <span>Heading</span>;
+    const season = 'Season1';
+    const episode = 'Episode1';
+
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
     const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
     return (
@@ -203,7 +230,9 @@ const TitleDetails = ({
                 <Loading />
             ) : (
                 <>
-                    <NexusEntity />
+                    <div>
+                        <NexusEntity heading={heading} tag="Season" actions={actions} />
+                    </div>
                     <NexusDynamicForm
                         castCrewConfig={castCrewConfig}
                         searchPerson={searchPerson}

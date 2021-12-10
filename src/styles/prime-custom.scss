@@ -194,3 +194,22 @@ $button-font-size: 13px;
         padding: 16px 32px;
     }
 }
+
+.p-tag {
+    &.p-component {
+        background: palette(black, 10);
+        border-radius: 2px;
+    }
+
+    .p-tag-value {
+        color: palette(black, 80);
+        font-size: 10px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: 0.4px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}

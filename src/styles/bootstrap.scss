@@ -7,6 +7,13 @@
 }
 
 .row {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    &.section {
+        margin-top: 16px;
+        margin-bottom: 16px;
+    }
+
+    > * {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
 }
