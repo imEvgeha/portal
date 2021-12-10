@@ -40,11 +40,11 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess, showErro
         };
 
         return (
-            <div key={name} className="download-emet-modal__field">
-                <label className="download-emet-modal__label">{name}</label>
-                <div className="download-emet-modal__select-wrapper">
+            <div key={name} className="nexus-c-download-emet-modal__field">
+                <label className="nexus-c-download-emet-modal__label">{name}</label>
+                <div className="nexus-c-download-emet-modal__select-wrapper">
                     <Dropdown 
-                        className="download-emet-modal__select" 
+                        className="nexus-c-download-emet-modal__select" 
                         value={values?.[name]}
                         options={getOptions()}
                         onChange={handleChange}
@@ -70,10 +70,10 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess, showErro
     };
 
     return (
-        <div className="download-emet-modal">
-            <h5 className="download-emet-modal__subtitle">{downloadFormSubtitle}</h5>
-            <div className="download-emet-modal__fields">{downloadFormFields.map(field => buildField(field))}</div>
-            <div className="download-emet-modal__buttons">
+        <div className="nexus-c-download-emet-modal">
+            <h5 className="nexus-c-download-emet-modal__subtitle">{downloadFormSubtitle}</h5>
+            <div className="nexus-c-download-emet-modal__fields">{downloadFormFields.map(field => buildField(field))}</div>
+            <div className="nexus-c-download-emet-modal__buttons">
                 <Button
                     onClick={() => {closeModal()}}
                     className="p-button-outlined p-button-secondary cancel-button"
@@ -82,7 +82,7 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess, showErro
                 <Button
                     label={downloadButton}
                     onClick={handleDownload}
-                    className="download-emet-modal__button"
+                    className="nexus-c-download-emet-modal__button"
                     disabled={isDisabled}
                     className="p-button-outlined p-button-secondary"
                 />
