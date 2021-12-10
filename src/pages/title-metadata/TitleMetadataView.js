@@ -53,7 +53,7 @@ export const TitleMetadataView = ({
     }
 
     const showError = (err) => {
-        toast.current.show({severity:'error', summary: failureDownloadTitle, detail: `${failureDownloadDesc} Details: ${err}`, life: 3000});
+        toast.current.show({severity:'error', summary: failureDownloadTitle, detail: `${failureDownloadDesc} Details: ${err}`, life: 300000});
     }
 
     useEffect(() => {
