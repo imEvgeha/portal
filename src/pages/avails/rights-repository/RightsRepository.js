@@ -141,7 +141,7 @@ const RightsRepository = ({
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
-    }, [selectedIngest, selectedAttachmentId, gridApi]);
+    }, [selectedAttachmentId, gridApi]);
 
     // TODO: create column defs on app loading
     useEffect(() => {
