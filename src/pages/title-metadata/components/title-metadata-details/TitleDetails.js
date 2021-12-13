@@ -5,7 +5,7 @@ import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynami
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import classnames from 'classnames';
-import {get, isEmpty, isEqual, pickBy, cloneDeep, omit} from 'lodash';
+import {get, isEmpty, isEqual, pickBy, cloneDeep, omit, isObject} from 'lodash';
 import {connect, useSelector} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
@@ -121,6 +121,60 @@ const TitleDetails = ({
         );
 
         console.log('%ccleanedUpdatedValues', 'color: gold; font-size: 14px;', cleanedUpdatedValues);
+
+        const getMapFromArray = data =>
+            data.reduce((acc, item) => {
+                console.log('%c@@@@@@@@@@@item', 'color: tomato; font-size: 14px;', item);
+
+                const init = [];
+
+                // add object key to our object i.e. charmander: { type: 'water' }
+                //   acc = { item: Object.values(item.title) !== undefined && item.title };
+                acc = init.push(pickBy(item, v => v !== undefined));
+                return init;
+            }, []);
+
+        // let test = []
+        // const getMapFromArray2 = data => data.map((item, i) => {
+
+        //     test.push(pickBy(item, v => v !== undefined))
+
+        // })
+
+        console.log('%cgetMapFromArray', 'color: magenta; font-size: 14px;', getMapFromArray(cleanedUpdatedValues));
+
+        // console.log('%ctest', 'color: gold; font-size: 14px;', test);
+
+        cleanedUpdatedValues.map(item => {
+            // const getMapFromArray = data =>
+            // data.reduce((acc, item) => {
+            //   // add object key to our object i.e. charmander: { type: 'water' }
+            //   acc = { item };
+            //   return acc;
+            // }, {});
+
+            // console.log('%cgetMapFromArray', 'color: magenta; font-size: 14px;', getMapFromArray(item));
+
+            let cleanedObject;
+            Object.keys(item).forEach(key => {
+                const innerObj = item[`${key}`];
+
+                console.log('%cinnerObj', 'color: gold; font-size: 14px;', innerObj);
+                // console.log('%cinnerObj removed', 'color: gold; font-size: 14px;',
+                // isObject(innerObj) && pickBy(innerObj, v => v !== undefined) );
+
+                const innerObjCleaned = isObject(innerObj) && pickBy(innerObj, v => v !== undefined);
+
+                cleanedObject = {cleanedObject, ...innerObjCleaned};
+
+                // console.log('%cinnerObjCleaned', 'color: lawngreen; font-size: 14px;', {innerObj, ...innerObjCleaned});
+
+                // isObject(innerObj) && Object.keys(innerObj).forEach( inKey =>
+                //     console.log('%cinKey', 'color: gold; font-size: 14px;', inKey)
+                // )
+            });
+            console.log('%ccleanedObject', 'color: aqua; font-size: 14px;', cleanedObject);
+        });
 
         const isEmetUpdated = isEqual(cleanedValues, cleanedUpdatedValues);
         console.log('%cisEmetUpdated', 'color: gold; font-size: 14px;', isEmetUpdated);
