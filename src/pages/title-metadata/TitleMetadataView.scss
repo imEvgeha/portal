@@ -27,35 +27,41 @@
     right: 0px;
 }
 
-.nexus-c-title-metadata__tab-menu {
+.nexus-c-title-metadata__tab-menu.p-tabmenu {
     .p-tabmenu-nav {
         background: none;
         border: none;
-    }
 
-    .p-tabmenuitem {
-        @include margin(0, 0, 1, 3);
+        .p-tabmenuitem, .p-tabmenuitem:not(.p-highlight):not(.p-disabled):hover {
+            @include margin(0, 0, 1, 3);
 
-        .p-menuitem-link {
-            border: none !important;
-            background: none !important;
-            color: palette(black, 50);
-            padding: 1.25rem;
-            font-weight: 700;
-            border-radius: 6px;
-            transition: box-shadow 0.2s;
+            .p-menuitem-link {
+                border: none;
+                background: none;
+                color: palette(black, 50);
+                padding: 1.25rem;
+                font-weight: 700;
+                border-radius: 6px;
+                transition: box-shadow 0.2s;
+            }
+    
+            .p-menuitem-link:focus {
+                box-shadow: none;
+            }
         }
 
-        .p-menuitem-link:focus {
-            box-shadow: none !important;
-        }
-    }
+        .p-highlight {
+            .p-menuitem-link {
+                background: palette(black, 10);
+                color: palette(black, 100);
+                border: none;
+            }
 
-    .p-highlight {
-        .p-menuitem-link {
-            background: palette(black, 10) !important;
-            color: palette(black, 100) !important;
-            border: none !important;
+            .p-menuitem-link:hover {
+                background: palette(black, 10);
+                color: palette(black, 100);
+                border: none;
+            }
         }
     }
 }
