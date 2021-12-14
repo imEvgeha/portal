@@ -234,7 +234,13 @@ const DopTasksTable = ({
             : {'pointer-events': 'none'};
     };
 
-    const checkboxColumn = {...defineCheckboxSelectionColumn(), cellStyle};
+    const cellClass = ({data}) => {
+        return data && [TASK_STATUS_ENUM.READY, TASK_STATUS_ENUM.IN_PROGRESS].includes(data.taskStatus)
+            ? ''
+            : 'nexus-c-grid-checkbox--is-disabled';
+    };
+
+    const checkboxColumn = {...defineCheckboxSelectionColumn(), cellStyle, cellClass};
 
     return (
         <div className="nexus-c-dop-tasks-table">
