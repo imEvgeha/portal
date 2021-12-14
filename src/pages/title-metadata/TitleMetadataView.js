@@ -164,6 +164,7 @@ export const TitleMetadataView = ({
                 </div>
 
                 <TitleMetadataBottomHeaderPart
+                    className="nexus-c-title-metadata-header__bottom"
                     showSuccess={showSuccess}
                     showError={showError}
                     uploadHandler={uploadHandler}

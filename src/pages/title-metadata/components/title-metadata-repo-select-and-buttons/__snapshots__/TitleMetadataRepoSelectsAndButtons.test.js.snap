@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
+<div
+  className="nexus-c-title-metadata__select-container"
+>
+  <NexusSavedTableDropdown
+    applyPredefinedTableView={[Function]}
+    columnApi={null}
+    externalFilter={Object {}}
+    gridApi={null}
+    isTitleMetadata={true}
+    lastStoredFilter={Object {}}
+    onUserDefinedViewSelected={[Function]}
+    setBlockLastFilter={[Function]}
+    setUserDefinedGridState={[Function]}
+    tableLabels={
+      Object {
+        "savedDropdownLabel": "Saved Table View:",
+        "savedViewslabel": "My Saved Views",
+      }
+    }
+    tableOptions={
+      Array [
+        Object {
+          "label": "All",
+          "value": "all",
+        },
+      ]
+    }
+    userDefinedGridStates={Array []}
+    username=""
+  />
+  <CatalogueOwner
+    setCatalogueOwner={[Function]}
+  />
+  <ForwardRef
+    className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn"
+    icon={
+      Object {
+        "process": [Function],
+      }
+    }
+    onClick={[Function]}
+  />
+</div>
+`;

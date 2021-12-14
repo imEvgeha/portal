@@ -28,12 +28,10 @@ const TitleMetadataBottomHeaderPart = ({
   const [dateError, setDateError] = useState(null);
 
   if(isItTheSameTab('repository')){
-
       return (<div className="nexus-c-title-metadata__load-container">
           <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
           <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
       </div>)
-
   }
 
   if(isItTheSameTab('syncLog')) {

@@ -2,62 +2,19 @@
 
 exports[`SyncLogTable should match snapshot 1`] = `
 <div
-  className="nexus-c-sync-log-table"
+  className="nexus-c-sync-log-table "
 >
   <div
     className="nexus-c-sync-log-table__actions"
   >
     <div />
-    <div
-      className="nexus-c-sync-log-table__date-filter"
-    >
-      <div
-        className="nexus-c-sync-log-table__date-field"
-      >
-        <NexusDatePicker
-          error=""
-          id="dateFrom"
-          isClearable={false}
-          isLabelHidden={false}
-          isReadOnly={false}
-          isRequired={true}
-          isReturningTime={false}
-          isTimestamp={false}
-          isWithInlineEdit={false}
-          label="Date From"
-          onChange={[Function]}
-          onConfirm={[Function]}
-          value=""
-        />
-        <div
-          className="nexus-c-sync-log-table__date-field--error"
-          id="dateFromError"
-        />
-      </div>
-      <div
-        className="nexus-c-sync-log-table__date-field"
-      >
-        <NexusDatePicker
-          error=""
-          id="dateTo"
-          isClearable={false}
-          isLabelHidden={false}
-          isReadOnly={false}
-          isRequired={false}
-          isReturningTime={false}
-          isTimestamp={false}
-          isWithInlineEdit={false}
-          label="Date To"
-          onChange={[Function]}
-          onConfirm={[Function]}
-          value=""
-        />
-        <div
-          className="nexus-c-sync-log-table__date-field--error"
-          id="dateToError"
-        />
-      </div>
-    </div>
+    <SyncLogDatePicker
+      dateError={null}
+      dateFrom=""
+      dateTo=""
+      onDateFromChange={[Function]}
+      onDateToChange={[Function]}
+    />
     <WithAnalyticsContext(WithAnalyticsEvents(Button))
       isDisabled={true}
       onClick={[Function]}
