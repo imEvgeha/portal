@@ -82,7 +82,7 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo, withoutHeader})
     }, [dateFrom]);
 
     return (
-        <div className={`nexus-c-sync-log-table ${withoutHeader ? 'nexus-c-sync-log-table-with-padding' : null}`}>
+        <div className={`nexus-c-sync-log-table ${withoutHeader ? 'nexus-c-sync-log-table-with-padding' : ''}`}>
             {withoutHeader ? null : 
                 <div className="nexus-c-sync-log-table__actions">
                     <div />
