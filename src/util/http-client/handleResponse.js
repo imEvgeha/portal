@@ -6,12 +6,12 @@ export default async (response, fetchHeaders) => {
             if (response.status === 204) {
                 return '';
             }
-
+            
             // BE issue: empty response headers workaround
             if (!contentType) {
                 return fetchHeaders ? [response.body, response.headers] : response.body;
             }
-
+            
             const responseBody = await parseResponse(response, contentType);
 
             return fetchHeaders ? [responseBody, response.headers] : responseBody;
@@ -47,6 +47,9 @@ const parseResponse = (response, type) => {
         return response.text();
     } else if (type.includes('multipart/form-data')) {
         return response.formData();
+    } else if (type.includes('application/vnd.ms-excel')) {
+        const reader = response.body.getReader();
+        return reader.read()
     } else if (type.includes('application/octet-stream')) {
         return response.arrayBuffer();
     }

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
@@ -7,6 +7,7 @@ import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
 import { TabMenu } from 'primereact/tabmenu';
+import { Toast } from 'primereact/toast';
 import {connect} from 'react-redux';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
@@ -14,6 +15,7 @@ import {resetTitle} from '../metadata/metadataActions';
 import SyncLogTable from '../sync-log/components/sync-log-table/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart'
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
+import { failureDownloadDesc, failureDownloadTitle, successDownloadDesc, successDownloadTitle } from './components/title-metadata-header/components/constants';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
@@ -40,6 +42,15 @@ export const TitleMetadataView = ({
     const [columnApi, setColumnApi] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
+    const toast = useRef(null);
+    
+    const showSuccess = () => {
+        toast.current.show({severity:'success', summary: successDownloadTitle, detail: successDownloadDesc, life: 3000});
+    }
+
+    const showError = (err) => {
+        toast.current.show({severity:'error', summary: failureDownloadTitle, detail: `${failureDownloadDesc} Details: ${err}`, life: 300000});
+    }
 
     useEffect(() => {
         if (!isEmpty(gridState) && username) {
@@ -128,6 +139,7 @@ export const TitleMetadataView = ({
 
     return (
         <div className="nexus-c-title-metadata">
+            <Toast ref={toast} position="bottom-left" />
             <TitleMetadataHeader>
                 <div  className="nexus-c-title-tab-menu-container">
                     <TabMenu
@@ -151,7 +163,12 @@ export const TitleMetadataView = ({
                     />
                 </div>
 
-                <TitleMetadataBottomHeaderPart uploadHandler={uploadHandler} isItTheSameTab={isItTheSameTab} />
+                <TitleMetadataBottomHeaderPart
+                    showSuccess={showSuccess}
+                    showError={showError}
+                    uploadHandler={uploadHandler}
+                    isItTheSameTab={isItTheSameTab}
+                />
             </TitleMetadataHeader>
             {isItTheSameTab('repository') ? 
             <TitleMetadataTable

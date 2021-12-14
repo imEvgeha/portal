@@ -194,3 +194,8 @@ $button-font-size: 13px;
         padding: 16px 32px;
     }
 }
+
+.p-toast .p-toast-message.p-toast-message-success, 
+.p-toast .p-toast-message.p-toast-message-error {
+    background: palette(white, 100);;
+}

@@ -12,15 +12,26 @@ import { createSaveDateFromAction, createSaveDateToAction } from '../../../sync-
 import { selectSyncLogDateFrom, selectSyncLogDateTo } from '../../../sync-log/syncLogSelectors';
 import { exportSyncLog } from '../../../sync-log/syncLogService';
 import { METADATA_UPLOAD_TITLE } from '../../constants';
+import CloudDownloadButton from '../title-metadata-header/components/CloudDownloadButton/CloudDownloadButton';
 
 
-const TitleMetadataBottomHeaderPart = ({isItTheSameTab, uploadHandler, setDateFrom, dateFrom, setDateTo, dateTo}) => {
+const TitleMetadataBottomHeaderPart = ({
+  isItTheSameTab,
+  uploadHandler,
+  setDateFrom,
+  dateFrom,
+  setDateTo,
+  dateTo,
+  showSuccess,
+  showError
+}) => {
   const [dateError, setDateError] = useState(null);
 
   if(isItTheSameTab('repository')){
 
       return (<div className="nexus-c-title-metadata__load-container">
           <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
+          <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
       </div>)
 
   }
@@ -68,11 +79,15 @@ TitleMetadataBottomHeaderPart.propTypes = {
   dateFrom: PropTypes.string.isRequired,
   setDateTo: PropTypes.func.isRequired,
   dateTo: PropTypes.string.isRequired,
+  showSuccess: PropTypes.func,
+  showError: PropTypes.func,
 };
 
 TitleMetadataBottomHeaderPart.defaultProps = {
   isItTheSameTab: () => null,
   uploadHandler: () => null,
+  showSuccess: () => null,
+  showError: () => null,
 };
 
 const mapStateToProps = state => ({
