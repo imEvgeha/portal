@@ -20,14 +20,32 @@ exports[`ChooseArtwork should match snapshot 1`] = `
     />
   </div>
   <div
-    className="choose-artwork__list"
+    className="nexus-c-artwork-items"
   >
-    <ArtworkItem
-      isSelected={false}
-      key="abc"
-      onClick={[Function]}
-      poster="abc"
-      timing="abc"
+    <VirtualScroller
+      className={null}
+      columns={null}
+      contentTemplate={null}
+      delay={0}
+      disabled={false}
+      id={null}
+      itemSize={-Infinity}
+      itemTemplate={[Function]}
+      items={Array []}
+      lazy={true}
+      loaderDisabled={false}
+      loading={false}
+      loadingTemplate={[Function]}
+      numToleratedItems={null}
+      onLazyLoad={[Function]}
+      onScroll={null}
+      onScrollIndexChange={null}
+      orientation="vertical"
+      scrollHeight="100%"
+      scrollWidth={null}
+      showLoader={true}
+      showSpacer={true}
+      style={null}
     />
   </div>
 </div>

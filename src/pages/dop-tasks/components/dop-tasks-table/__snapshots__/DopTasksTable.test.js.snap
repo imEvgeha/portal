@@ -12,6 +12,8 @@ exports[`DopTasksTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
+          "cellClass": [Function],
+          "cellStyle": [Function],
           "checkboxSelection": true,
           "field": "action",
           "filter": false,

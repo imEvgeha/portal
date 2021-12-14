@@ -24,6 +24,7 @@ import {
     TASK_ACTIONS_ASSIGN,
     TASK_ACTIONS_UNASSIGN,
     TASK_ACTIONS_FORWARD,
+    TASK_STATUS_ENUM,
     CHANGE_PRIORITY_TITLE,
 } from '../../constants';
 import {fetchDopTasksData} from '../../utils';
@@ -227,6 +228,20 @@ const DopTasksTable = ({
               });
     };
 
+    const cellStyle = ({data}) => {
+        return data && [TASK_STATUS_ENUM.READY, TASK_STATUS_ENUM.IN_PROGRESS].includes(data.taskStatus)
+            ? ''
+            : {'pointer-events': 'none'};
+    };
+
+    const cellClass = ({data}) => {
+        return data && [TASK_STATUS_ENUM.READY, TASK_STATUS_ENUM.IN_PROGRESS].includes(data.taskStatus)
+            ? ''
+            : 'nexus-c-grid-checkbox--is-disabled';
+    };
+
+    const checkboxColumn = {...defineCheckboxSelectionColumn(), cellStyle, cellClass};
+
     return (
         <div className="nexus-c-dop-tasks-table">
             <MoreIcon className="nexus-c-dop-tasks-table__more-actions" onClick={openMenu} />
@@ -249,7 +264,7 @@ const DopTasksTable = ({
             )}
             <DopTasksTableGrid
                 id="DopTasksTable"
-                columnDefs={[defineCheckboxSelectionColumn(), ...formattedValueColDefs]}
+                columnDefs={[checkboxColumn, ...formattedValueColDefs]}
                 rowSelection="multiple"
                 notFilterableColumns={['action']}
                 mapping={COLUMN_MAPPINGS}
