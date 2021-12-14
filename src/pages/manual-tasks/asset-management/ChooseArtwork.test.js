@@ -25,6 +25,6 @@ describe('ChooseArtwork', () => {
     });
 
     it('should render 1 item', () => {
-        expect(wrapper.find('ArtworkItem').length).toEqual(1);
+        expect(wrapper.find('VirtualScroller').length).toEqual(1);
     });
 });
