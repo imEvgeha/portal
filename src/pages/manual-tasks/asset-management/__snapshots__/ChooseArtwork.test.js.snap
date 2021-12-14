@@ -20,7 +20,7 @@ exports[`ChooseArtwork should match snapshot 1`] = `
     />
   </div>
   <div
-    className="artwork-items"
+    className="nexus-c-artwork-items"
   >
     <VirtualScroller
       className={null}

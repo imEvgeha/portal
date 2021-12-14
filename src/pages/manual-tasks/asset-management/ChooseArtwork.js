@@ -11,7 +11,7 @@ import Loading from '../../static/Loading';
 import './ChooseArtwork.scss';
 import {fetchPosters, fetchAsset} from './assetManagementReducer';
 import {posterListSelector, assetDetailsSelector} from './assetManagementSelectors';
-import {loginAssets} from './assetManagementService';
+import {fetchPoster, loginAssets} from './assetManagementService';
 import UploadArtworkForm from './components/UploadArtworkForm';
 import ArtworkItem from './components/artwork-item/ArtworkItem';
 
@@ -83,7 +83,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
     const basicItemTemplate = item => {
         const timing = item?.url?.split('/')?.at(-1);
         return (
-            <div className="scroll-item">
+            <div className="nexus-c-scroll-item">
                 <ArtworkItem
                     key={timing}
                     poster={item?.img}
@@ -121,16 +121,10 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
         }
     };
 
-    const fetchPoster = poster => {
-        const headers = new Headers();
-        headers.append('Authorization', `token ${localStorage.getItem('token')}`);
-        return fetch(poster, {method: 'GET', headers}).then(res => res.blob());
-    };
-
     const basicLoadingTemplate = () => {
         return (
-            <div className="loading-item px-2">
-                <Skeleton className="skeleton" />
+            <div className="nexus-c-loading-item px-2">
+                <Skeleton width="100%" height="100%" />
             </div>
         );
     };
@@ -150,7 +144,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
                     <Loading />
                 )}
             </div>
-            <div className="artwork-items">
+            <div className="nexus-c-artwork-items">
                 <VirtualScroller
                     items={posters}
                     itemSize={Math.trunc(IMG_HEIGHT / itemSize)}

@@ -21,23 +21,20 @@
         padding: 24px;
     }
 
-    .artwork-items {
+    .nexus-c-artwork-items {
         flex: 1 1 auto;
+        margin: 5px 0 0 20px;
     }
 
-    .scroll-item {
+    .nexus-c-scroll-item {
         display: inline-block;
         height: 200px;
     }
 
-    .loading-item {
+    .nexus-c-loading-item {
         height: 200px;
         display: inline-block;
         width: 300px;
-        .skeleton {
-            width: 100% !important;
-            height: 100% !important;
-        }
     }
 
     .artwork-actions {
