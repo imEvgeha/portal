@@ -2,6 +2,8 @@
 
 .artwork-item {
     margin: 0 16px 16px 0;
+    width: 280px;
+    height: 158px;
     &--selected {
         outline: 3px solid map-get($blues, B300);
     }
@@ -15,5 +17,15 @@
         display: flex;
         justify-content: space-between;
         color: map-get($neutrals, N200);
+    }
+
+    .loading-item {
+        height: 200px;
+        display: inline-block;
+        width: 300px;
+        .skeleton {
+            width: 100% !important;
+            height: 100% !important;
+        }
     }
 }

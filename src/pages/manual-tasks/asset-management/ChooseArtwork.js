@@ -98,14 +98,20 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
     const onLazyLoad = event => {
         const {first, last} = event;
         const positionsToCheck = posters.slice(first, last);
-        if (posters.includes(undefined) && positionsToCheck.includes(undefined)) {
+        if (posters.includes(undefined) && positionsToCheck.includes(undefined) && !lazyLoading) {
             setLazyLoading(true);
-            const postersInView = posterList.slice(first, last);
+
+            const notDefinedItems = [];
+            positionsToCheck.forEach((item, index) => !item && notDefinedItems.push(index));
+            const firstItem = notDefinedItems[0] + first;
+            const lastItem = first + notDefinedItems.at(-1) + 1;
+            const postersInView = posterList.slice(firstItem, lastItem);
             const postersToFetch = postersInView.map(url => fetchPoster(url));
             const lazyItems = [...posters];
+
             Promise.all(postersToFetch).then(res => {
                 let counter = 0;
-                for (let i = first; i < last; i++) {
+                for (let i = firstItem; i < lastItem; i++) {
                     lazyItems[i] = {img: URL.createObjectURL(res[counter]), url: postersInView[counter]};
                     counter++;
                 }
