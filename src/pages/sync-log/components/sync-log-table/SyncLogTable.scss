@@ -1,9 +1,11 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 @import '~@vubiquity-nexus/portal-styles/scss/config';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 
 $border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
 
 .nexus-c-sync-log-table {
+    @include padding(6, 6, 10, 6);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -50,6 +52,10 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
         text-overflow: ellipsis;
         overflow: hidden;
     }
+}
+
+.nexus-c-sync-log-table-with-padding {
+    @include padding(6, 6, 10, 6);
 }
 
 .nexus-c-sync-log-table__actions {

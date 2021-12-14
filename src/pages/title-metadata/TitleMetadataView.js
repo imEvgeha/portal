@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
+import SyncLogTable from '../sync-log/components/sync-log-table/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart'
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
@@ -66,6 +67,8 @@ export const TitleMetadataView = ({
         if (lastIndex >= 0) return TITLE_METADATA_TABS[activeIndex].value
     }
 
+    const isItTheSameTab = (tabName) => getNameOfCurrentTab() === tabName;
+
     const closeModalAndRefreshTable = () => {
         setShowModal(false);
         toggleRefreshGridData(true);
@@ -99,9 +102,9 @@ export const TitleMetadataView = ({
 
     useEffect(() => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
-            gridApi.setFilterModel(titleMetadataFilter.filterModel);
-            setSorting(titleMetadataFilter.sortModel, columnApi);
-            columnApi.setColumnState(titleMetadataFilter.columnState);
+            gridApi.setFilterModel(titleMetadataFilter?.filterModel);
+            if(columnApi.columnController) setSorting(titleMetadataFilter.sortModel, columnApi);
+            columnApi.setColumnState(titleMetadataFilter?.columnState);
         }
     }, [gridApi, columnApi]);
 
@@ -126,15 +129,13 @@ export const TitleMetadataView = ({
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
-                <div className="nexus-c-title-metadata__main-container">
-                    <div  className="nexus-c-title-tab-menu-container">
-                        <TabMenu
-                            className="nexus-c-title-metadata__tab-menu"
-                            model={TITLE_METADATA_TABS}
-                            activeIndex={activeIndex}
-                            onTabChange={(e) => setActiveIndex(e.index)}
-                        />
-                    </div>
+                <div  className="nexus-c-title-tab-menu-container">
+                    <TabMenu
+                        className="nexus-c-title-metadata__tab-menu"
+                        model={TITLE_METADATA_TABS}
+                        activeIndex={activeIndex}
+                        onTabChange={(e) => setActiveIndex(e.index)}
+                    />
                     <RepositorySelectsAndButtons
                         getNameOfCurrentTab={getNameOfCurrentTab}
                         gridApi={gridApi}
@@ -149,9 +150,10 @@ export const TitleMetadataView = ({
                         setShowModal={setShowModal}
                     />
                 </div>
-                <TitleMetadataBottomHeaderPart uploadHandler={uploadHandler} getNameOfCurrentTab={getNameOfCurrentTab} />
-            </TitleMetadataHeader>
 
+                <TitleMetadataBottomHeaderPart uploadHandler={uploadHandler} isItTheSameTab={isItTheSameTab} />
+            </TitleMetadataHeader>
+            {isItTheSameTab('repository') ? 
             <TitleMetadataTable
                 history={history}
                 catalogueOwner={catalogueOwner}
@@ -160,7 +162,8 @@ export const TitleMetadataView = ({
                 columnApi={columnApi}
                 gridApi={gridApi}
                 className="nexus-c-title-metadata__table"
-            />
+            /> : null }
+            {isItTheSameTab('syncLog') ? <SyncLogTable withoutHeader /> : null}
             <TitleCreate
                 display={showModal}
                 toggle={closeModalAndRefreshTable}
