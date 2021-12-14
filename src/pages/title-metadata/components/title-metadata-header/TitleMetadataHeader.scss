@@ -22,6 +22,7 @@
     color: map-get($neutrals, N800);
     display: flex;
     align-self: flex-start;
+    position: absolute;
 }
 
 .nexus-c-title-metadata-header__buttons-wrapper {
