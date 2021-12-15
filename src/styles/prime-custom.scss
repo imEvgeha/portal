@@ -195,7 +195,21 @@ $button-font-size: 13px;
     }
 }
 
-.p-toast .p-toast-message.p-toast-message-success, 
+.p-toast .p-toast-message.p-toast-message-success,
 .p-toast .p-toast-message.p-toast-message-error {
-    background: palette(white, 100);;
+    background: palette(white, 100);
+}
+
+// Input Text
+.p-inputtext {
+    &.p-component {
+        width: 100%;
+    }
+}
+
+// Calendar
+.p-calendar {
+    &.p-component {
+        width: 100%;
+    }
 }

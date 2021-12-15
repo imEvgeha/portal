@@ -12,6 +12,7 @@ import {getConfigApiValues} from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
 import {Can, can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import './ConfigUI.scss';
+import CreateEditConfig from '../../../settings/create-edit-config/CreateEditConfig';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -97,6 +98,7 @@ export class EndpointContainer extends Component {
             searchValue: '',
             isLoading: false,
             currentRecord: null,
+            showEditConfigModal: false,
             pageSize: defaultPageSize,
         };
 
@@ -185,6 +187,7 @@ export class EndpointContainer extends Component {
 
     onEditRecord(rec) {
         this.setState({currentRecord: rec});
+        this.setState({showEditConfigModal: true});
     }
 
     editRecord(val) {
@@ -213,6 +216,7 @@ export class EndpointContainer extends Component {
 
     onNewRecord() {
         this.setState({currentRecord: {}});
+        this.setState({showEditConfigModal: true});
     }
 
     onRemoveItem = item => {
@@ -268,14 +272,28 @@ export class EndpointContainer extends Component {
                 </TextHeader>
                 {this.state.currentRecord && (
                     <DataBody>
-                        <CreateEditConfigForm
+                        {/*<CreateEditConfigForm*/}
+                        {/*    onRemoveItem={this.onRemoveItem}*/}
+                        {/*    schema={selectedApi && selectedApi.uiSchema}*/}
+                        {/*    label={this.getLabel(selectedApi, this.state.currentRecord, false)}*/}
+                        {/*    displayName={selectedApi && selectedApi.displayName}*/}
+                        {/*    value={this.state.currentRecord}*/}
+                        {/*    onSubmit={this.editRecord}*/}
+                        {/*    onCancel={() => this.setState({currentRecord: null})}*/}
+                        {/*/>*/}
+
+                        <CreateEditConfig
+                            visible={this.state.showEditConfigModal}
                             onRemoveItem={this.onRemoveItem}
                             schema={selectedApi && selectedApi.uiSchema}
-                            label={this.getLabel(selectedApi, this.state.currentRecord, false)}
+                            label={this.getLabel(selectedApi, this.state.currentRecord, false) || ''}
                             displayName={selectedApi && selectedApi.displayName}
                             value={this.state.currentRecord}
                             onSubmit={this.editRecord}
                             onCancel={() => this.setState({currentRecord: null})}
+                            onHide={() => {
+                                this.setState({showEditConfigModal: false});
+                            }}
                         />
                     </DataBody>
                 )}

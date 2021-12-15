@@ -21027,6 +21027,11 @@ react-google-maps@9.4.5:
     scriptjs "^2.5.8"
     warning "^3.0.0"
 
+react-hook-form@7.17.5:
+  version "7.17.5"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-hook-form/-/react-hook-form-7.17.5.tgz#3852f294159378d0b5893c9fcc89e313937c6f89"
+  integrity sha512-4bPtPGkpVhZlgtTbtMGi0RFphKHgxCj5u3AsGz3SBdleELlG1pDf9zRQOtfGlOGkZlc7u78RzD0xu9kOw7PYdQ==
+
 react-hot-loader@^4.12.20:
   version "4.13.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-hot-loader/-/react-hot-loader-4.13.0.tgz#c27e9408581c2a678f5316e69c061b226dc6a202"
