@@ -11,33 +11,29 @@ import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
-import { Toast } from 'primereact/toast';
-import {connect} from 'react-redux';
+import {Toast} from 'primereact/toast';
+import {connect, useDispatch} from 'react-redux';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
 import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import CloudDownloadButton from './components/title-metadata-header/components/CloudDownloadButton/CloudDownloadButton';
-import { failureDownloadDesc, failureDownloadTitle, successDownloadDesc, successDownloadTitle } from './components/title-metadata-header/components/constants';
+import {successDownloadDesc, successDownloadTitle} from './components/title-metadata-header/components/constants';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import './TitleMetadataView.scss';
 import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
-import {CREATE_NEW_TITLE, SYNC_LOG, DEFAULT_CATALOGUE_OWNER, UNMERGE_TITLE_SUCCESS, METADATA_UPLOAD_TITLE} from './constants';
+import {
+    CREATE_NEW_TITLE,
+    SYNC_LOG,
+    DEFAULT_CATALOGUE_OWNER,
+    UNMERGE_TITLE_SUCCESS,
+    METADATA_UPLOAD_TITLE,
+} from './constants';
 
-
-
-export const TitleMetadataView = ({
-    history,
-    toggleRefreshGridData,
-    resetTitleId,
-    storeTitleUserDefinedGridState,
-    username,
-    gridState,
-    titleMetadataFilter,
-    uploadMetadata
-}) => {
+export const TitleMetadataView = ({history, username, gridState, titleMetadataFilter}) => {
+    const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
         tenantCode: DEFAULT_CATALOGUE_OWNER,
@@ -47,14 +43,15 @@ export const TitleMetadataView = ({
     const [columnApi, setColumnApi] = useState(null);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
     const toast = useRef(null);
-    
-    const showSuccess = () => {
-        toast.current.show({severity:'success', summary: successDownloadTitle, detail: successDownloadDesc, life: 3000});
-    }
 
-    const showError = (err) => {
-        toast.current.show({severity:'error', summary: failureDownloadTitle, detail: `${failureDownloadDesc} Details: ${err}`, life: 300000});
-    }
+    const showSuccess = () => {
+        toast.current.show({
+            severity: 'success',
+            summary: successDownloadTitle,
+            detail: successDownloadDesc,
+            life: 3000,
+        });
+    };
 
     useEffect(() => {
         if (!isEmpty(gridState) && username) {
@@ -63,7 +60,7 @@ export const TitleMetadataView = ({
     }, [gridState, username]);
 
     useEffect(() => {
-        resetTitleId();
+        dispatch(resetTitle());
         if (window.sessionStorage.getItem('unmerge')) {
             const successToast = {
                 title: 'Success',
@@ -79,7 +76,7 @@ export const TitleMetadataView = ({
 
     const closeModalAndRefreshTable = () => {
         setShowModal(false);
-        toggleRefreshGridData(true);
+        dispatch(toggleRefreshGridData(true));
     };
 
     const changeCatalogueOwner = owner => {
@@ -104,12 +101,12 @@ export const TitleMetadataView = ({
         columnApi.resetColumnState();
     };
 
-    const uploadHandler = (file) => {
+    const uploadHandler = file => {
         const params = {
             tenantCode: catalogueOwner.tenantCode.toUpperCase(),
             file,
-        }; 
-        uploadMetadata(params);
+        };
+        dispatch(uploadMetadata(params));
     };
 
     const [blockLastFilter, setBlockLastFilter] = useState(true);
@@ -144,14 +141,18 @@ export const TitleMetadataView = ({
         <div className="nexus-c-title-metadata">
             <Toast ref={toast} position="bottom-left" />
             <TitleMetadataHeader>
-                <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
-                <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
+                <NexusUploadButton
+                    title={METADATA_UPLOAD_TITLE}
+                    icon={CloudUploadIcon}
+                    uploadCallback={uploadHandler}
+                />
+                <CloudDownloadButton showSuccess={showSuccess} />
                 <NexusSavedTableDropdown
                     gridApi={gridApi}
                     columnApi={columnApi}
                     username={username}
                     userDefinedGridStates={userDefinedGridStates}
-                    setUserDefinedGridState={storeTitleUserDefinedGridState}
+                    setUserDefinedGridState={payload => dispatch(storeTitleUserDefinedGridState(payload))}
                     applyPredefinedTableView={resetToAll}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
@@ -205,32 +206,17 @@ const mapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = dispatch => ({
-    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
-    resetTitleId: () => dispatch(resetTitle()),
-    storeTitleUserDefinedGridState: payload => dispatch(storeTitleUserDefinedGridState(payload)),
-    uploadMetadata: payload => dispatch(uploadMetadata(payload)),
-});
-
 TitleMetadataView.propTypes = {
     history: PropTypes.object,
-    toggleRefreshGridData: PropTypes.func,
-    resetTitleId: PropTypes.func,
-    storeTitleUserDefinedGridState: PropTypes.func,
     username: PropTypes.string.isRequired,
     gridState: PropTypes.object,
     titleMetadataFilter: PropTypes.object,
-    uploadMetadata: PropTypes.func,
 };
 
 TitleMetadataView.defaultProps = {
     history: {},
-    toggleRefreshGridData: () => null,
-    resetTitleId: () => null,
-    storeTitleUserDefinedGridState: () => null,
     gridState: {},
     titleMetadataFilter: {},
-    uploadMetadata: () => null,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataView);
+export default connect(mapStateToProps)(TitleMetadataView);
