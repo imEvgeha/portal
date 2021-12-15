@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
-import SyncLogTable from '../sync-log/components/sync-log-table/SyncLogTable';
+import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart'
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import { failureDownloadDesc, failureDownloadTitle, successDownloadDesc, successDownloadTitle } from './components/title-metadata-header/components/constants';
@@ -181,7 +181,7 @@ export const TitleMetadataView = ({
                 gridApi={gridApi}
                 className="nexus-c-title-metadata__table"
             /> : null }
-            {isItTheSameTab('syncLog') ? <SyncLogTable withoutHeader /> : null}
+            {isItTheSameTab('syncLog') ? <SyncLogTable /> : null}
             <TitleCreate
                 display={showModal}
                 toggle={closeModalAndRefreshTable}

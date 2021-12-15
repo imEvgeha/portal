@@ -2,26 +2,8 @@
 
 exports[`SyncLogTable should match snapshot 1`] = `
 <div
-  className="nexus-c-sync-log-table "
+  className="nexus-c-sync-log-table"
 >
-  <div
-    className="nexus-c-sync-log-table__actions"
-  >
-    <div />
-    <SyncLogDatePicker
-      dateError={null}
-      dateFrom=""
-      dateTo=""
-      onDateFromChange={[Function]}
-      onDateToChange={[Function]}
-    />
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
-      isDisabled={true}
-      onClick={[Function]}
-    >
-      Download
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-  </div>
   <Connect(ComposedComponent)
     className="nexus-c-sync-log-grid"
     columnDefs={

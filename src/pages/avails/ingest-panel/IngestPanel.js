@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import { NexusModalContext } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
