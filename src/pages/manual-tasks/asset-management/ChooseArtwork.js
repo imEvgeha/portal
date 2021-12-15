@@ -2,26 +2,34 @@ import React, {useEffect, useState, useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {URL as VuURL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
+import {Skeleton} from 'primereact/skeleton';
+import {VirtualScroller} from 'primereact/virtualscroller';
 import {connect} from 'react-redux';
 import Loading from '../../static/Loading';
 import './ChooseArtwork.scss';
 import {fetchPosters, fetchAsset} from './assetManagementReducer';
 import {posterListSelector, assetDetailsSelector} from './assetManagementSelectors';
-import {loginAssets} from './assetManagementService';
+import {fetchPoster, loginAssets} from './assetManagementService';
 import UploadArtworkForm from './components/UploadArtworkForm';
 import ArtworkItem from './components/artwork-item/ArtworkItem';
 
 const UPLOAD_ARTWORK_TITLE = 'Upload Artwork';
 const DOP_POP_UP_TITLE = 'Choose Artwork';
-const DOP_POP_UP_MESSAGE = 'Please, select atleast one thumbnail!';
+const DOP_POP_UP_MESSAGE = 'Please, select at least one thumbnail!';
+const IMG_WIDTH = 300;
+const IMG_HEIGHT = 200;
 
 const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) => {
     const [selectedArtwork, setSelectedArtwork] = useState();
+    const [posters, setPosters] = useState([]);
+    const [lazyLoading, setLazyLoading] = useState(false);
+    const [itemSize] = useState(Math.trunc((window.screen.width - 50) / IMG_WIDTH));
+
     const {openModal, closeModal} = useContext(NexusModalContext);
-    const sourceMediaAssetID = URL.getParamIfExists('sourceMediaAssetID', '');
-    const artworkAssetID = URL.getParamIfExists('artworkAssetID', '');
+    const sourceMediaAssetID = VuURL.getParamIfExists('sourceMediaAssetID', '');
+    const artworkAssetID = VuURL.getParamIfExists('artworkAssetID', '');
 
     const openDOPPopUp = useCallback(() => {
         const handlePopUpClick = () => {
@@ -47,6 +55,11 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
     };
 
     useEffect(() => {
+        setPosters(Array.from({length: posterList.length}));
+        setLazyLoading(false);
+    }, [posterList]);
+
+    useEffect(() => {
         fetchAsset(artworkAssetID);
         loginAssets().then(() => fetchResourcePosters(sourceMediaAssetID));
     }, []);
@@ -67,13 +80,60 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
         });
     };
 
-    let timing = '';
+    const basicItemTemplate = item => {
+        const timing = item?.url?.split('/')?.at(-1);
+        return (
+            <div className="nexus-c-scroll-item">
+                <ArtworkItem
+                    key={timing}
+                    poster={item?.img}
+                    timing={timing}
+                    onClick={artworkClick}
+                    isSelected={selectedArtwork === timing}
+                />
+            </div>
+        );
+    };
+
+    const onLazyLoad = event => {
+        const {first, last} = event;
+        const positionsToCheck = posters.slice(first, last);
+        if (posters.includes(undefined) && positionsToCheck.includes(undefined) && !lazyLoading) {
+            setLazyLoading(true);
+
+            const notDefinedItems = [];
+            positionsToCheck.forEach((item, index) => !item && notDefinedItems.push(index));
+            const firstItem = notDefinedItems[0] + first;
+            const lastItem = first + notDefinedItems.at(-1) + 1;
+            const postersInView = posterList.slice(firstItem, lastItem);
+            const postersToFetch = postersInView.map(url => fetchPoster(url));
+            const lazyItems = [...posters];
+
+            Promise.all(postersToFetch).then(res => {
+                let counter = 0;
+                for (let i = firstItem; i < lastItem; i++) {
+                    lazyItems[i] = {img: URL.createObjectURL(res[counter]), url: postersInView[counter]};
+                    counter++;
+                }
+                setLazyLoading(false);
+                setPosters(lazyItems);
+            });
+        }
+    };
+
+    const basicLoadingTemplate = () => {
+        return (
+            <div className="nexus-c-loading-item px-2">
+                <Skeleton width="100%" height="100%" />
+            </div>
+        );
+    };
 
     return (
         <div className="choose-artwork">
             <div className="choose-artwork__header">
                 <span>Title: </span>
-                <span>{URL.getParamIfExists('title', '')}</span>
+                <span>{VuURL.getParamIfExists('title', '')}</span>
             </div>
             <div className="artwork-actions">
                 {asset ? (
@@ -84,20 +144,18 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
                     <Loading />
                 )}
             </div>
-            <div className="choose-artwork__list">
-                {posterList.map(poster => {
-                    timing = poster.split('/');
-                    timing = timing[timing.length - 1];
-                    return (
-                        <ArtworkItem
-                            key={timing}
-                            poster={poster}
-                            timing={timing}
-                            onClick={artworkClick}
-                            isSelected={selectedArtwork === timing}
-                        />
-                    );
-                })}
+            <div className="nexus-c-artwork-items">
+                <VirtualScroller
+                    items={posters}
+                    itemSize={Math.trunc(IMG_HEIGHT / itemSize)}
+                    itemTemplate={basicItemTemplate}
+                    scrollHeight="100%"
+                    lazy
+                    onLazyLoad={onLazyLoad}
+                    showLoader
+                    loading={lazyLoading}
+                    loadingTemplate={basicLoadingTemplate}
+                />
             </div>
         </div>
     );
