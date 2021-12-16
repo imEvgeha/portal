@@ -34,7 +34,7 @@ export const UPDATE_EDITORIAL_METADATA_ERROR = 'Error while updating Editorial M
 export const PROPAGATE_SEASON_PERSONS_SUCCESS = 'Season cast and crew propagated successfully';
 export const UNMERGE_TITLE_SUCCESS = 'Title succesfully unmerged!';
 
-export const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Title.';
+export const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded a Title.';
 
 export const COLUMN_MAPPINGS = [
     {
@@ -322,4 +322,4 @@ export const UNABLE_PUBLISH =
     'Unable to Publish: Additional information required in EMets or some of the EMets are not in complete status';
 
 export const METADATA_UPLOAD_TITLE = 'METADATA INGEST';
-export const METADATA_UPLOAD_ERROR_TITLE = 'Upload Metadata error'
+export const METADATA_UPLOAD_ERROR_TITLE = 'Upload Metadata error';
