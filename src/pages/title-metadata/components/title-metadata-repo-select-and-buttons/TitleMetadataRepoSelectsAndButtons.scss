@@ -1,7 +1,13 @@
-
-
 .nexus-c-title-metadata__load-container {
   display: flex;
-  align-self: flex-end;
+  justify-content: end;
   min-height: 52px;
+}
+
+.nexus-c-title-metadata__select-container {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 34px;
+  position: absolute;
+  right: 0px;
 }

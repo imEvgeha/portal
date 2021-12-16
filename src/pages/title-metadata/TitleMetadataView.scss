@@ -7,24 +7,10 @@
     flex-direction: column;
 }
 
-.nexus-c-title-metadata__main-container {
-    display: flex;
-    width: 100%;
-}
-
 .nexus-c-title-tab-menu-container {
     display: flex;
     justify-content: center;
     width: 100%;
-    // left: 0px;
-}
-
-.nexus-c-title-metadata__select-container {
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 43px;
-    position: absolute;
-    right: 0px;
 }
 
 .nexus-c-title-metadata__tab-menu.p-tabmenu {

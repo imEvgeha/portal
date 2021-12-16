@@ -4,11 +4,13 @@ import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import { TITLE_METADATA } from '@vubiquity-nexus/portal-utils/lib/constants';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
 import { TabMenu } from 'primereact/tabmenu';
 import { Toast } from 'primereact/toast';
 import {connect} from 'react-redux';
+import { Col, Row } from 'reactstrap';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
@@ -140,36 +142,46 @@ export const TitleMetadataView = ({
     return (
         <div className="nexus-c-title-metadata">
             <Toast ref={toast} position="bottom-left" />
-            <TitleMetadataHeader>
-                <div  className="nexus-c-title-tab-menu-container">
-                    <TabMenu
-                        className="nexus-c-title-metadata__tab-menu"
-                        model={TITLE_METADATA_TABS}
-                        activeIndex={activeIndex}
-                        onTabChange={(e) => setActiveIndex(e.index)}
-                    />
-                    <RepositorySelectsAndButtons
-                        getNameOfCurrentTab={getNameOfCurrentTab}
-                        gridApi={gridApi}
-                        columnApi={columnApi}
-                        username={username}
-                        userDefinedGridStates={userDefinedGridStates}
-                        setUserDefinedGridState={storeTitleUserDefinedGridState}
-                        applyPredefinedTableView={resetToAll}
-                        lastStoredFilter={lastStoredFilter}
-                        setBlockLastFilter={setBlockLastFilter}
-                        changeCatalogueOwner={changeCatalogueOwner}
-                        setShowModal={setShowModal}
-                    />
-                </div>
-
-                <TitleMetadataBottomHeaderPart
-                    className="nexus-c-title-metadata-header__bottom"
-                    showSuccess={showSuccess}
-                    showError={showError}
-                    uploadHandler={uploadHandler}
-                    isItTheSameTab={isItTheSameTab}
-                />
+            <TitleMetadataHeader withoutTitleLabel>
+                <Row>
+                    <Col xs="3">
+                        <div className="nexus-c-title-metadata-header__label">{TITLE_METADATA}</div>
+                    </Col>
+                    <Col xs="6" className="nexus-c-title-tab-menu-container">
+                        <TabMenu
+                            className="nexus-c-title-metadata__tab-menu"
+                            model={TITLE_METADATA_TABS}
+                            activeIndex={activeIndex}
+                            onTabChange={(e) => setActiveIndex(e.index)}
+                        />
+                    </Col>
+                    <Col xs="3">
+                        <RepositorySelectsAndButtons
+                            getNameOfCurrentTab={getNameOfCurrentTab}
+                            gridApi={gridApi}
+                            columnApi={columnApi}
+                            username={username}
+                            userDefinedGridStates={userDefinedGridStates}
+                            setUserDefinedGridState={storeTitleUserDefinedGridState}
+                            applyPredefinedTableView={resetToAll}
+                            lastStoredFilter={lastStoredFilter}
+                            setBlockLastFilter={setBlockLastFilter}
+                            changeCatalogueOwner={changeCatalogueOwner}
+                            setShowModal={setShowModal}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <TitleMetadataBottomHeaderPart
+                            className="nexus-c-title-metadata-header__bottom"
+                            showSuccess={showSuccess}
+                            showError={showError}
+                            uploadHandler={uploadHandler}
+                            isItTheSameTab={isItTheSameTab}
+                        />
+                    </Col>
+                </Row>
             </TitleMetadataHeader>
             {isItTheSameTab('repository') ? 
             <TitleMetadataTable

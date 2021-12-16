@@ -18,58 +18,142 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   />
   <TitleMetadataHeader
     label="Title Metadata"
+    withoutTitleLabel={true}
   >
-    <div
-      className="nexus-c-title-tab-menu-container"
+    <Row
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
-      <TabMenu
-        activeIndex={0}
-        className="nexus-c-title-metadata__tab-menu"
-        id={null}
-        model={
+      <Col
+        tag="div"
+        widths={
           Array [
-            Object {
-              "label": "Repository",
-              "value": "repository",
-            },
-            Object {
-              "label": "Sync Log",
-              "value": "syncLog",
-            },
-            Object {
-              "label": "Upload Log",
-              "value": "uploadLog",
-            },
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
           ]
         }
-        onTabChange={[Function]}
-        style={null}
-      />
-      <RepositorySelectsAndButtons
-        applyPredefinedTableView={[Function]}
-        changeCatalogueOwner={[Function]}
-        columnApi={null}
-        getNameOfCurrentTab={[Function]}
-        gridApi={null}
-        lastStoredFilter={
-          Object {
-            "label": undefined,
-          }
+        xs="3"
+      >
+        <div
+          className="nexus-c-title-metadata-header__label"
+        >
+          Title Metadata
+        </div>
+      </Col>
+      <Col
+        className="nexus-c-title-tab-menu-container"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
         }
-        setBlockLastFilter={[Function]}
-        setShowModal={[Function]}
-        setUserDefinedGridState={[Function]}
-        userDefinedGridStates={Array []}
-        username=""
-      />
-    </div>
-    <Connect(TitleMetadataBottomHeaderPart)
-      className="nexus-c-title-metadata-header__bottom"
-      isItTheSameTab={[Function]}
-      showError={[Function]}
-      showSuccess={[Function]}
-      uploadHandler={[Function]}
-    />
+        xs="6"
+      >
+        <TabMenu
+          activeIndex={0}
+          className="nexus-c-title-metadata__tab-menu"
+          id={null}
+          model={
+            Array [
+              Object {
+                "label": "Repository",
+                "value": "repository",
+              },
+              Object {
+                "label": "Sync Log",
+                "value": "syncLog",
+              },
+              Object {
+                "label": "Upload Log",
+                "value": "uploadLog",
+              },
+            ]
+          }
+          onTabChange={[Function]}
+          style={null}
+        />
+      </Col>
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+        xs="3"
+      >
+        <RepositorySelectsAndButtons
+          applyPredefinedTableView={[Function]}
+          changeCatalogueOwner={[Function]}
+          columnApi={null}
+          getNameOfCurrentTab={[Function]}
+          gridApi={null}
+          lastStoredFilter={
+            Object {
+              "label": undefined,
+            }
+          }
+          setBlockLastFilter={[Function]}
+          setShowModal={[Function]}
+          setUserDefinedGridState={[Function]}
+          userDefinedGridStates={Array []}
+          username=""
+        />
+      </Col>
+    </Row>
+    <Row
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Connect(TitleMetadataBottomHeaderPart)
+          className="nexus-c-title-metadata-header__bottom"
+          isItTheSameTab={[Function]}
+          showError={[Function]}
+          showSuccess={[Function]}
+          uploadHandler={[Function]}
+        />
+      </Col>
+    </Row>
   </TitleMetadataHeader>
   <Connect(TitleMetadataTable)
     catalogueOwner={
