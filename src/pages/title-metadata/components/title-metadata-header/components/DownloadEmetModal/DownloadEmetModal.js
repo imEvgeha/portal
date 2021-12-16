@@ -49,7 +49,6 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess}) => {
                         options={getOptions()}
                         onChange={handleChange}
                         optionLabel="label"
-                        // filter
                         placeholder={updatedPlaceholder}
                     />
                 </div>
