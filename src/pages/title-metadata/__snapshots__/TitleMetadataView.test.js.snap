@@ -33,7 +33,6 @@ exports[`TitleMetadataView should match snapshot 1`] = `
       uploadCallback={[Function]}
     />
     <CloudDownloadButton
-      showError={[Function]}
       showSuccess={[Function]}
     />
     <NexusSavedTableDropdown
