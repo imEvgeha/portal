@@ -6,23 +6,25 @@ import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-m
 import DownloadEmetModal from '../DownloadEmetModal/DownloadEmetModal';
 import './CloudDownloadButton.scss';
 
-const CloudDownloadButton = ({showSuccess, showError}) => {
+const CloudDownloadButton = ({showSuccess}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     const handleOpenModal = () => {
-        openModal(<DownloadEmetModal closeModal={closeModal} showSuccess={showSuccess} showError={showError} />, {title: 'Download', width: 'medium'});
+        openModal(<DownloadEmetModal closeModal={closeModal} showSuccess={showSuccess} />, {
+            title: 'Download',
+            width: 'medium',
+        });
     };
 
     return (
         <div className="nexus-c-button-cloud-download">
-            <IconButton icon={CloudDownloadIcon} onClick={handleOpenModal} label="Download Emmet" />
+            <IconButton icon={CloudDownloadIcon} onClick={handleOpenModal} label="Download" />
         </div>
     );
 };
 
 CloudDownloadButton.propTypes = {
     showSuccess: PropTypes.func.isRequired,
-    showError: PropTypes.func.isRequired,
 };
 
 export default CloudDownloadButton;

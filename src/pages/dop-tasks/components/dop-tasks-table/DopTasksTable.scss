@@ -1,6 +1,7 @@
 @import '~@vubiquity-nexus/portal-styles/scss/config.scss';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
 .nexus-c-dop-tasks-table {
     position: relative;
@@ -43,5 +44,10 @@
     & .nexus-c-nexus-grid {
         height: 100%;
         margin: 0;
+        .nexus-c-grid-checkbox--is-disabled {
+            .ag-checkbox-input-wrapper {
+                background-color: palette(black, 10);
+            }
+        }
     }
 }
