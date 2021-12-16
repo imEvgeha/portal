@@ -18,21 +18,26 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess, showErro
     const buildField = field => {
         const {name, placeholder} = field;
         const updatedPlaceholder = `Select ${placeholder}...`;
+        const isItStatus = name === 'status';
+        const isItLanguage = name === 'language';
+        const isItLocale = name === 'locale';
 
         const getOptions = () => {
-            if(name === 'status') {
+            if(isItStatus) {
                 return [
                     {label: 'Pending', value: 'pending'},
                     {label: 'Complete', value: 'complete'},
                 ];
             }
-            if(name === 'language') {
+            if(isItLanguage) {
                 return languages.map((elem) => ({label: elem.value, value: elem.languageCode}))
             }
-            if(name === 'locale') {
-                return locale.map((elem) => ({label: elem.countryCode, value: elem.countryCode}))
+            if(isItLocale) {
+                return locale.map((elem) => ({label: elem.countryName, value: elem.countryCode}))
             }
         };
+
+        const selectCompare = (a, b) => a.label < b.label ? -1 : a.label > b.label ? 1 : 0;
 
         const handleChange = (event) => {
             values[name] = event.value;
@@ -46,11 +51,12 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess, showErro
                     <Dropdown 
                         className="nexus-c-download-emet-modal__select" 
                         value={values?.[name]}
-                        options={getOptions()}
+                        options={getOptions().sort(selectCompare)}
                         onChange={handleChange}
                         optionLabel="label"
-                        // filter 
+                        filterBy="label"
                         placeholder={updatedPlaceholder}
+                        filter={!isItStatus}
                     />
                 </div>
             </div>
@@ -65,7 +71,7 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess, showErro
                 const blob = new Blob([buffer], {type: buftype});
                 showSuccess();
                 closeModal()
-                downloadFile(blob);
+                downloadFile(blob, 'Editorial_Metadata');
             }).catch(err => showError(err))
     };
 

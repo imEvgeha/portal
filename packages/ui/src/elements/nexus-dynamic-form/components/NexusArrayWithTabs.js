@@ -300,6 +300,7 @@ const NexusArrayWithTabs = ({
         fieldsForModal['editorial.hasGeneratedChildren'].showWhen[0].splice(2, 1);
 
     const modalContent = () => {
+        console.log(getValues(), selectValues, 'data')
         return (
             <NexusArrayCreateModal
                 handleModalSubmit={handleModalSubmit}

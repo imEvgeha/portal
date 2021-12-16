@@ -114,6 +114,8 @@ const NexusSelect = ({
         });
     }
 
+    console.log(options, 'options')
+
     return isMultiselect ? (
         <SelectWithOptional
             {...fieldProps}
