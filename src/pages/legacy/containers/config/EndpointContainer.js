@@ -242,6 +242,10 @@ export class EndpointContainer extends Component {
         );
     }
 
+    onHideCreateEditConfigModal = () => {
+        this.setState({showEditConfigModal: false, currentRecord: null});
+    };
+
     render() {
         const {selectedApi} = this.props;
         const canUpdate = can('update', 'ConfigUI');
@@ -290,10 +294,7 @@ export class EndpointContainer extends Component {
                             displayName={selectedApi && selectedApi.displayName}
                             value={this.state.currentRecord}
                             onSubmit={this.editRecord}
-                            onCancel={() => this.setState({currentRecord: null})}
-                            onHide={() => {
-                                this.setState({showEditConfigModal: false});
-                            }}
+                            onHide={this.onHideCreateEditConfigModal}
                         />
                     </DataBody>
                 )}

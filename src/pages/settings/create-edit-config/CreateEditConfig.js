@@ -1,27 +1,57 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
 import {constructFieldPerType} from './FieldsPerType';
 
-const CreateEditConfig = ({value, visible, onHide, onRemoveItem, onCancel, schema, onSubmit, displayName, label}) => {
+const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmit, displayName, label}) => {
+    const [isVisible, setIsVisible] = useState(visible);
     const form = useForm({});
 
     const constructFields = (schema, form, value) => {
+        console.log(schema);
         return schema?.map(elementSchema => {
-            return constructFieldPerType(elementSchema, form, value[elementSchema.name]);
+            return constructFieldPerType(elementSchema, form, value?.[elementSchema?.name] || '');
         });
     };
+
+    useEffect(() => {
+        !isVisible &&
+            setTimeout(() => {
+                onHide();
+            }, 50);
+    }, [isVisible]);
+
+    const onHideDialog = () => {
+        setIsVisible(false);
+    };
+
+    const submit = () => {
+        console.log(form.getValues());
+        // form.handleSubmit(onSubmit(form.getValues()))
+    };
+
+    const footer = (
+        <div className="row">
+            <div className="col-sm-12 text-end">
+                <Button className="p-button-outlined p-button-secondary" label="Cancel" onClick={onHideDialog} />
+                <Button className="p-button-outlined" label="OK" onClick={submit} />
+            </div>
+        </div>
+    );
 
     return (
         <Dialog
             key="dlgCreateEditConfig"
-            visible={visible}
-            onHide={onHide}
+            visible={isVisible}
+            onHide={onHideDialog}
             breakpoints={{'960px': '75vw', '640px': '100vw'}}
             style={{width: '50vw'}}
+            footer={footer}
+            closeOnEscape={false}
         >
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form>
                 <div className="row">{constructFields(schema, form, value)}</div>
             </form>
         </Dialog>
@@ -32,7 +62,6 @@ CreateEditConfig.propTypes = {
     value: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]).isRequired,
     visible: PropTypes.bool,
     onRemoveItem: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
     schema: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     onSubmit: PropTypes.func.isRequired,
     displayName: PropTypes.string,

@@ -211,5 +211,27 @@ $button-font-size: 13px;
 .p-calendar {
     &.p-component {
         width: 100%;
+
+        .p-button {
+            &.p-component {
+                &.p-datepicker-trigger {
+                    height: inherit;
+                }
+            }
+        }
+    }
+}
+
+// Dropdown
+.p-dropdown {
+    &.p-component {
+        width: 100%;
+    }
+}
+
+// Multiselect
+.p-multiselect {
+    &.p-component {
+        width: 100%;
     }
 }
