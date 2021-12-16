@@ -12,7 +12,7 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
 import {Toast} from 'primereact/toast';
-import {connect, useDispatch} from 'react-redux';
+import {connect} from 'react-redux';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
@@ -32,8 +32,16 @@ import {
     METADATA_UPLOAD_TITLE,
 } from './constants';
 
-export const TitleMetadataView = ({history, username, gridState, titleMetadataFilter}) => {
-    const dispatch = useDispatch();
+export const TitleMetadataView = ({
+    history,
+    toggleRefreshGridData,
+    resetTitleId,
+    storeTitleUserDefinedGridState,
+    username,
+    gridState,
+    titleMetadataFilter,
+    uploadMetadata,
+}) => {
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
         tenantCode: DEFAULT_CATALOGUE_OWNER,
@@ -60,7 +68,7 @@ export const TitleMetadataView = ({history, username, gridState, titleMetadataFi
     }, [gridState, username]);
 
     useEffect(() => {
-        dispatch(resetTitle());
+        resetTitleId();
         if (window.sessionStorage.getItem('unmerge')) {
             const successToast = {
                 title: 'Success',
@@ -76,7 +84,7 @@ export const TitleMetadataView = ({history, username, gridState, titleMetadataFi
 
     const closeModalAndRefreshTable = () => {
         setShowModal(false);
-        dispatch(toggleRefreshGridData(true));
+        toggleRefreshGridData(true);
     };
 
     const changeCatalogueOwner = owner => {
@@ -106,7 +114,7 @@ export const TitleMetadataView = ({history, username, gridState, titleMetadataFi
             tenantCode: catalogueOwner.tenantCode.toUpperCase(),
             file,
         };
-        dispatch(uploadMetadata(params));
+        uploadMetadata(params);
     };
 
     const [blockLastFilter, setBlockLastFilter] = useState(true);
@@ -152,7 +160,7 @@ export const TitleMetadataView = ({history, username, gridState, titleMetadataFi
                     columnApi={columnApi}
                     username={username}
                     userDefinedGridStates={userDefinedGridStates}
-                    setUserDefinedGridState={payload => dispatch(storeTitleUserDefinedGridState(payload))}
+                    setUserDefinedGridState={storeTitleUserDefinedGridState}
                     applyPredefinedTableView={resetToAll}
                     tableLabels={tableLabels}
                     tableOptions={tableOptions}
@@ -206,17 +214,32 @@ const mapStateToProps = () => {
     });
 };
 
+const mapDispatchToProps = dispatch => ({
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+    resetTitleId: () => dispatch(resetTitle()),
+    storeTitleUserDefinedGridState: payload => dispatch(storeTitleUserDefinedGridState(payload)),
+    uploadMetadata: payload => dispatch(uploadMetadata(payload)),
+});
+
 TitleMetadataView.propTypes = {
     history: PropTypes.object,
+    toggleRefreshGridData: PropTypes.func,
+    resetTitleId: PropTypes.func,
+    storeTitleUserDefinedGridState: PropTypes.func,
     username: PropTypes.string.isRequired,
     gridState: PropTypes.object,
     titleMetadataFilter: PropTypes.object,
+    uploadMetadata: PropTypes.func,
 };
 
 TitleMetadataView.defaultProps = {
     history: {},
+    toggleRefreshGridData: () => null,
+    resetTitleId: () => null,
+    storeTitleUserDefinedGridState: () => null,
     gridState: {},
     titleMetadataFilter: {},
+    uploadMetadata: () => null,
 };
 
-export default connect(mapStateToProps)(TitleMetadataView);
+export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataView);
