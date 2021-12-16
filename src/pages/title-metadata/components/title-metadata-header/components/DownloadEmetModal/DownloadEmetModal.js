@@ -87,10 +87,8 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess}) => {
                 <Button
                     label={downloadButton}
                     onClick={handleDownload}
-                    className="nexus-c-download-emet-modal__button"
+                    className="p-button-outlined p-button-secondary nexus-c-download-emet-modal__button"
                     disabled={isDisabled}
-                    // eslint-disable-next-line
-                    className="p-button-outlined p-button-secondary"
                 />
             </div>
         </div>
