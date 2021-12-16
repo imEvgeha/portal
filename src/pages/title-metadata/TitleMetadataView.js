@@ -142,12 +142,12 @@ export const TitleMetadataView = ({
     return (
         <div className="nexus-c-title-metadata">
             <Toast ref={toast} position="bottom-left" />
-            <TitleMetadataHeader withoutTitleLabel>
+            <TitleMetadataHeader>
                 <Row>
-                    <Col xs="3">
+                    <Col xs="4">
                         <div className="nexus-c-title-metadata-header__label">{TITLE_METADATA}</div>
                     </Col>
-                    <Col xs="6" className="nexus-c-title-tab-menu-container">
+                    <Col xs="4" className="nexus-c-title-tab-menu-container">
                         <TabMenu
                             className="nexus-c-title-metadata__tab-menu"
                             model={TITLE_METADATA_TABS}
@@ -155,7 +155,7 @@ export const TitleMetadataView = ({
                             onTabChange={(e) => setActiveIndex(e.index)}
                         />
                     </Col>
-                    <Col xs="3">
+                    <Col xs="4">
                         <RepositorySelectsAndButtons
                             getNameOfCurrentTab={getNameOfCurrentTab}
                             gridApi={gridApi}
