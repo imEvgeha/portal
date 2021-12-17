@@ -34,7 +34,7 @@ export const UPDATE_EDITORIAL_METADATA_ERROR = 'Error while updating Editorial M
 export const PROPAGATE_SEASON_PERSONS_SUCCESS = 'Season cast and crew propagated successfully';
 export const UNMERGE_TITLE_SUCCESS = 'Title succesfully unmerged!';
 
-export const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Title.';
+export const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded a Title.';
 
 export const COLUMN_MAPPINGS = [
     {
