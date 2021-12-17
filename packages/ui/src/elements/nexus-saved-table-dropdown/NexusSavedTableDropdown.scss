@@ -2,10 +2,10 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 
 .nexus-c-dop-tasks-dropdown {
-    @include addSpacing('width', 100);
-    @include margin(0, 10, 0, 10);
+    @include margin(0, 0, 0, 2);
     display: flex;
     align-items: center;
+    width: 130px;
 
     button {
         width: 100%;
@@ -27,7 +27,7 @@
 }
 
 .nexus-c-dop-tasks-dropdown__elements {
-    width: 70%;
+    width: 100%;
 }
 
 .nexus-c-dop-tasks-dropdown__textfield {

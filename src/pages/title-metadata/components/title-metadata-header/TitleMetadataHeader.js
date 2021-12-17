@@ -5,7 +5,6 @@ import './TitleMetadataHeader.scss';
 
 const TitleMetadataHeader = ({label, children}) => (
     <div className="nexus-c-title-metadata-header">
-        <div className="nexus-c-title-metadata-header__label">{label}</div>
         <div className="nexus-c-title-metadata-header__buttons-wrapper">{children}</div>
     </div>
 );

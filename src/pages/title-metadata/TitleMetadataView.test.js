@@ -8,8 +8,7 @@ describe('TitleMetadataView', () => {
     let wrapper = null;
     let titleMetadataHeader = null;
     let titleMetadataTable = null;
-    let createBtn = null;
-    let syncBtn = null;
+    let tabMenu = null;
     const mockStore = configureStore();
     const store = mockStore({
         titleMetadata: {
@@ -25,8 +24,7 @@ describe('TitleMetadataView', () => {
         wrapper = shallow(<TitleMetadataView store={store} />);
         titleMetadataHeader = wrapper.find('TitleMetadataHeader');
         titleMetadataTable = wrapper.find('.nexus-c-title-metadata__table');
-        createBtn = wrapper.find('.nexus-c-title-metadata__create-btn');
-        syncBtn = wrapper.find('.nexus-c-title-metadata__sync-btn');
+        tabMenu = wrapper.find('.nexus-c-title-metadata__tab-menu');
     });
 
     it('should match snapshot', () => {
@@ -45,11 +43,7 @@ describe('TitleMetadataView', () => {
         expect(titleMetadataTable.length).toEqual(1);
     });
 
-    it('should render Create button', () => {
-        expect(createBtn.length).toEqual(1);
-    });
-
-    it('should render Sync button', () => {
-        expect(syncBtn.length).toEqual(1);
+    it('should render Tab menu', () => {
+        expect(tabMenu.length).toEqual(1);
     });
 });
