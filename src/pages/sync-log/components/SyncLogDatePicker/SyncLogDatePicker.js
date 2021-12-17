@@ -11,7 +11,7 @@ const SyncLogDatePicker = ({onDateFromChange, onDateToChange, dateFrom, dateTo, 
     <div className="nexus-c-sync-log-table__date-filter">
         <div className="nexus-c-sync-log-table__date-field">
             <NexusDatePicker
-                id="dateFrom"
+                id="nexus-c-sync-log-dateFrom"
                 onChange={onDateFromChange}
                 value={dateFrom}
                 isReturningTime={false}
@@ -24,7 +24,7 @@ const SyncLogDatePicker = ({onDateFromChange, onDateToChange, dateFrom, dateTo, 
         <div  className="nexus-c-sync-log-table__title-between">TO</div>
         <div className="nexus-c-sync-log-table__date-field">
             <NexusDatePicker
-                id="dateTo"
+                id="nexus-c-sync-log-dateTo"
                 onChange={onDateToChange}
                 value={dateTo}
                 isReturningTime={false}
