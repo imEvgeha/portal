@@ -18,23 +18,28 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess}) => {
     const buildField = field => {
         const {name, placeholder} = field;
         const updatedPlaceholder = `Select ${placeholder}...`;
+        const isItStatus = name === 'status';
+        const isItLanguage = name === 'language';
+        const isItLocale = name === 'locale';
 
         const getOptions = () => {
-            if (name === 'status') {
+            if(isItStatus) {
                 return [
                     {label: 'Pending', value: 'pending'},
                     {label: 'Complete', value: 'complete'},
                 ];
             }
-            if (name === 'language') {
-                return languages.map(elem => ({label: elem.value, value: elem.languageCode}));
+            if(isItLanguage) {
+                return languages.map((elem) => ({label: elem.value, value: elem.languageCode}))
             }
-            if (name === 'locale') {
-                return locale.map(elem => ({label: elem.countryCode, value: elem.countryCode}));
+            if(isItLocale) {
+                return locale.map((elem) => ({label: elem.countryName, value: elem.countryCode}))
             }
         };
 
-        const handleChange = event => {
+        const selectCompare = (a, b) => a.label < b.label ? -1 : a.label > b.label ? 1 : 0;
+
+        const handleChange = (event) => {
             values[name] = event.value;
             setValues({...values});
         };
@@ -46,10 +51,12 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess}) => {
                     <Dropdown
                         className="nexus-c-download-emet-modal__select"
                         value={values?.[name]}
-                        options={getOptions()}
+                        options={getOptions().sort(selectCompare)}
                         onChange={handleChange}
                         optionLabel="label"
+                        filterBy="label"
                         placeholder={updatedPlaceholder}
+                        filter={!isItStatus}
                     />
                 </div>
             </div>
@@ -64,10 +71,9 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess}) => {
                 const buftype = 'application/vnd.ms-excel;charset=utf-8';
                 const blob = new Blob([buffer], {type: buftype});
                 showSuccess();
-                closeModal();
-                downloadFile(blob);
-            })
-            .catch(err => err);
+                closeModal()
+                downloadFile(blob, 'Editorial_Metadata');
+            }).catch(err => err)
     };
 
     return (
