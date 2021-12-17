@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
-import {constructFieldPerType} from './FieldsPerType';
+import {constructFieldPerType} from './dynamic-fields/FieldsPerType';
 
 const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmit, displayName, label}) => {
     const [isVisible, setIsVisible] = useState(visible);
-    const form = useForm({});
+    const form = useForm({mode: 'all', reValidateMode: 'onChange'});
 
     const constructFields = (schema, form, value) => {
-        console.log(schema);
+        // console.log(schema);
         return schema?.map(elementSchema => {
-            return constructFieldPerType(elementSchema, form, value?.[elementSchema?.name] || '');
+            return constructFieldPerType(elementSchema, form, value?.[elementSchema?.name] || '', undefined, undefined);
         });
     };
 
@@ -29,6 +29,7 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
 
     const submit = () => {
         console.log(form.getValues());
+        console.log(form.formState.errors);
         // form.handleSubmit(onSubmit(form.getValues()))
     };
 
@@ -36,7 +37,13 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
         <div className="row">
             <div className="col-sm-12 text-end">
                 <Button className="p-button-outlined p-button-secondary" label="Cancel" onClick={onHideDialog} />
-                <Button className="p-button-outlined" label="OK" onClick={submit} />
+                <Button
+                    className="p-button-outlined"
+                    label="OK"
+                    disabled={!form.formState.isValid || !form.formState.isDirty}
+                    // disabled={!isEmpty(form.formState.errors)}
+                    onClick={submit}
+                />
             </div>
         </div>
     );

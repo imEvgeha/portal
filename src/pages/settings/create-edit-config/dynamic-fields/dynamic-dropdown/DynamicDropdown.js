@@ -1,42 +1,48 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {get, sortBy} from 'lodash';
+import {get, sortBy, startCase} from 'lodash';
 import {Dropdown} from 'primereact/dropdown';
 import {MultiSelect} from 'primereact/multiselect';
-import {getConfigApiValues} from '../../../legacy/common/CommonConfigService';
-import {cache} from '../../../legacy/containers/config/EndpointContainer';
+import {getConfigApiValues} from '../../../../legacy/common/CommonConfigService';
+import {cache} from '../../../../legacy/containers/config/EndpointContainer';
 
 const DynamicDropdown = ({elementSchema, formField}) => {
     const [value, setValue] = useState(undefined);
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
-        if (elementSchema.name === 'licensees') {
-            // licensees needs to be filtered by selected servicing region name
-            // getLicensees(elementSchema, context);
-        } else if (cache[elementSchema.source.url] === undefined) {
-            const promise = getConfigApiValues(elementSchema.source.url, 0, 1000).then(response => {
-                cache[elementSchema.source.url] = response.data;
-                processOptions(response.data, elementSchema);
-            });
-            cache[elementSchema.source.url] = promise;
-            // return promise;
-        } else if (cache[elementSchema.source.url]) {
-            if (cache[elementSchema.source.url] instanceof Promise) {
-                // return cache[elementSchema.source.url].then(() => {});
-                cache[elementSchema.source.url].then(() => {});
-            }
-            processOptions(cache[elementSchema.source.url], elementSchema);
-        } else {
-            console.error('Cannot load dropdown values from: ', elementSchema.source.url);
-        }
+        constructOptions();
     }, []);
 
+    const constructOptions = () => {
+        const sourceUrl = elementSchema?.source?.url;
+        let cachedOption = cache[sourceUrl];
+        if (elementSchema?.options) {
+            const opts = elementSchema?.options?.[0]?.items?.map(i => ({value: i, label: startCase(i)}));
+            setOptions(opts);
+        } else if (elementSchema.name === 'licensees') {
+            // licensees needs to be filtered by selected servicing region name
+            // getLicensees(elementSchema, context);
+        } else if (sourceUrl && cachedOption === undefined) {
+            cachedOption = getConfigApiValues(sourceUrl, 0, 1000).then(response => {
+                cachedOption = response.data;
+                processOptions(response.data, elementSchema);
+            });
+        } else if (cachedOption) {
+            if (cachedOption instanceof Promise) {
+                cachedOption.then(res => {
+                    processOptions(res, elementSchema);
+                });
+            } else {
+                processOptions(cachedOption, elementSchema);
+            }
+        } else {
+            console.error('Cannot load dropdown values from: ', sourceUrl);
+        }
+    };
+
     const processOptions = (rawOptions, field) => {
-        const items = sortBy(
-            rawOptions.map(rec => convertDataToOption(rec, field.source)),
-            ['label']
-        );
+        const items = sortBy(rawOptions?.map(rec => convertDataToOption(rec, field.source)) || [], ['label']);
         setOptions(items);
         // return [{items}];
     };
@@ -77,7 +83,8 @@ const DynamicDropdown = ({elementSchema, formField}) => {
     };
 
     const convertDataToOption = (dataSource, schema) => {
-        let label; let value;
+        let label;
+        let value;
         const {displayValueDelimiter = ' / '} = schema;
         if (Array.isArray(schema.label) && schema.label.length > 1) {
             label = schema.label.map(fieldName => dataSource[fieldName]).join(displayValueDelimiter);
@@ -108,7 +115,7 @@ const DynamicDropdown = ({elementSchema, formField}) => {
                         disabled={elementSchema.disable}
                         options={options}
                         // onChange={e => setValue(e.value)}
-                        filter={true}
+                        filter={options.length > 10}
                         filterBy="label"
                     />
                 );
@@ -124,7 +131,7 @@ const DynamicDropdown = ({elementSchema, formField}) => {
                         placeholder={elementSchema.description}
                         disabled={elementSchema.disable}
                         // onChange={e => setValue(e.value)}
-                        filter={true}
+                        filter={options.length > 10}
                         filterBy="label"
                     />
                 );
