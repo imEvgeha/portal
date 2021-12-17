@@ -7,9 +7,9 @@ import {
     CREW_LIST,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import {isEmpty} from 'lodash';
 import './CastCrew.scss';
-import { searchPersonById } from '../../../../../../../../../src/pages/avails/right-details/rightDetailsServices';
+import {searchPersonById} from '../../../../../../../../../src/pages/avails/right-details/rightDetailsServices';
 
 const CastCrew = ({
     persons,
@@ -37,13 +37,16 @@ const CastCrew = ({
     useEffect(() => {
         resetPersons();
         async function fetchLocalizationPersons() {
-            const allLocalizationsPersons = persons.map(async (person) => {
-                try {
-                    const localizationPerson = await searchPersonById(person.id);
-                    return {...person, localization: localizationPerson.localization};
-                } catch (err) {
-                    return;
-                }
+            const allLocalizationsPersons = persons.map(async person => {
+                // for avails there is no language
+                if (person.hasOwnProperty('language')) {
+                    try {
+                        const localizationPerson = await searchPersonById(person.id);
+                        return {...person, localization: localizationPerson.localization};
+                    } catch (err) {
+                        return;
+                    }
+                } else return person;
             });
             setPersonsWithLocalization(await Promise.all(allLocalizationsPersons));
         }

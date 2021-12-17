@@ -43,13 +43,17 @@ const NexusPersonsList = ({
     const [openPersonModal, setOpenPersonModal] = useState(false);
     const [currentRecord, setCurrentRecord] = useState({});
     const [persons, setPersons] = useState(personsList || []);
+    const [deletedPersonsIds, setDeletedPersonsIds] = useState([]);
     const [searchText, setSearchText] = useState('');
     const propagateRemovePersons = useSelector(propagateRemovePersonsSelector);
-    const {title, contentType, editorialMetadata} = getValues();
+    const {title, contentType, castCrew} = getValues();
 
     useEffect(() => {
-        const updatedPersons = [...personsList];
+        const updatedPersons = [...personsList.filter(elem => !deletedPersonsIds.includes(elem.id))];
+
         updatedPersons.forEach((person, index) => {
+            //Avails crew doesn't come with id so displayName is used instead
+            !person.hasOwnProperty('id') ? (person.id = person.displayName) : person;
             person.creditsOrder = index;
         });
         setPersons(updatedPersons);
@@ -147,37 +151,16 @@ const NexusPersonsList = ({
             dispatch(removeSeasonPerson(payload));
         }
 
-        const updateEditorialMetadata = editorialMetadata.map(emet => {
-            const updatedCastCrew =
-                emet?.castCrew &&
-                emet.castCrew.filter(entry => {
-                    return entry.id !== person.id || entry.personType !== person.personType;
-                });
+        const updatedCastCrew =
+            castCrew &&
+            castCrew.filter(entry => {
+                return entry.id !== person.id || entry.personType !== person.personType;
+            });
 
-            const updatedEmet = {
-                ...emet,
-                castCrew: updatedCastCrew,
-            };
+        const deletedCastCrew = castCrew && castCrew.filter(entry => entry.id === person.id);
 
-            const {editorial} = getValues();
-
-            if (checkIfEmetIsEditorial(emet, editorial)) {
-                setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
-                if (isVerticalLayout) {
-                    return updatedEmet;
-                }
-            }
-
-            if (!isVerticalLayout) {
-                return updatedEmet;
-            } else {
-                return emet;
-            }
-        });
-
-        console.log(updateEditorialMetadata);
-        setFieldValue('editorialMetadata', updateEditorialMetadata);
-
+        setFieldValue('castCrew', updatedCastCrew);
+        setDeletedPersonsIds([...deletedPersonsIds, ...deletedCastCrew.map(elem => elem.id)]);
         closeModal();
         setUpdate(prev => !prev);
     };

@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Draggable} from 'react-beautiful-dnd';
-import {uid} from 'react-uid';
 import Tooltip from '@atlaskit/tooltip';
 import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
 import PropagateButton from './elements/PropagateButton/PropagateButton';
@@ -16,6 +15,8 @@ import './NexusPerson.scss';
 import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
 import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
+import {withRouter} from 'react-router-dom';
+import {AVAILS_PATH} from '../../../../../src/pages/avails/availsRoutes';
 
 const NexusPerson = ({
     person,
@@ -27,7 +28,11 @@ const NexusPerson = ({
     name,
     customKey,
     isTitlePage,
+    history,
 }) => {
+    const path = `/${history.location.pathname.split('/', 2)[1]}`;
+    const isAvails = path === AVAILS_PATH;
+
     const localization = get(person, 'localization');
     const isCastCrewField = name === 'castCrew';
 
@@ -111,14 +116,17 @@ const NexusPerson = ({
                                         <PropagateButton onClick={onPropagate} />
                                     </span>
                                 )}
-                                <span title="Edit">
-                                    <EditPerson onClick={onEditPerson} />
-                                </span>
+                                {!isAvails && (
+                                    <span title="Edit">
+                                        <EditPerson onClick={onEditPerson} />
+                                    </span>
+                                )}
                                 <span title="Remove">
                                     <RemovePerson onClick={onRemove} />
                                 </span>
                                 <span title="Drag this item">
-                                    <DragButton {...provided.dragHandleProps} />
+                                    {/* iiAvails converterd to string to avoid arror caused by draggable*/}
+                                    <DragButton {...provided.dragHandleProps} avails={isAvails.toString()} />
                                 </span>
                             </div>
                         </div>
@@ -151,4 +159,4 @@ NexusPerson.defaultProps = {
     isTitlePage: false,
 };
 
-export default NexusPerson;
+export default withRouter(NexusPerson);
