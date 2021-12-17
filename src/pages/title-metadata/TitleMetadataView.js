@@ -147,7 +147,7 @@ export const TitleMetadataView = ({
                     <Col xs="4">
                         <div className="nexus-c-title-metadata-header__label">{TITLE_METADATA}</div>
                     </Col>
-                    <Col xs="4" className="nexus-c-title-tab-menu-container">
+                    <Col xs="4" className="d-flex justify-content-center">
                         <TabMenu
                             className="nexus-c-title-metadata__tab-menu"
                             model={TITLE_METADATA_TABS}

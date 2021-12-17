@@ -1,47 +1,101 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
-<div
+<Row
   className="nexus-c-title-metadata__select-container"
+  tag="div"
+  widths={
+    Array [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "xl",
+    ]
+  }
 >
-  <NexusSavedTableDropdown
-    applyPredefinedTableView={[Function]}
-    columnApi={null}
-    externalFilter={Object {}}
-    gridApi={null}
-    isTitleMetadata={true}
-    lastStoredFilter={Object {}}
-    onUserDefinedViewSelected={[Function]}
-    setBlockLastFilter={[Function]}
-    setUserDefinedGridState={[Function]}
-    tableLabels={
-      Object {
-        "savedDropdownLabel": "Saved Table View:",
-        "savedViewslabel": "My Saved Views",
-      }
-    }
-    tableOptions={
+  <Col
+    className="d-flex justify-content-end"
+    tag="div"
+    widths={
       Array [
-        Object {
-          "label": "All",
-          "value": "all",
-        },
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
       ]
     }
-    userDefinedGridStates={Array []}
-    username=""
-  />
-  <CatalogueOwner
-    setCatalogueOwner={[Function]}
-  />
-  <ForwardRef
-    className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn"
-    icon={
-      Object {
-        "process": [Function],
+    xs={5}
+  >
+    <NexusSavedTableDropdown
+      applyPredefinedTableView={[Function]}
+      columnApi={null}
+      externalFilter={Object {}}
+      gridApi={null}
+      isTitleMetadata={true}
+      lastStoredFilter={Object {}}
+      onUserDefinedViewSelected={[Function]}
+      setBlockLastFilter={[Function]}
+      setUserDefinedGridState={[Function]}
+      tableLabels={
+        Object {
+          "savedDropdownLabel": "Saved Table View:",
+          "savedViewslabel": "My Saved Views",
+        }
       }
+      tableOptions={
+        Array [
+          Object {
+            "label": "All",
+            "value": "all",
+          },
+        ]
+      }
+      userDefinedGridStates={Array []}
+      username=""
+    />
+  </Col>
+  <Col
+    className="d-flex justify-content-end"
+    tag="div"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
     }
-    onClick={[Function]}
-  />
-</div>
+    xs={5}
+  >
+    <CatalogueOwner
+      setCatalogueOwner={[Function]}
+    />
+  </Col>
+  <Col
+    tag="div"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
+    }
+    xs={2}
+  >
+    <ForwardRef
+      className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn"
+      icon={
+        Object {
+          "process": [Function],
+        }
+      }
+      onClick={[Function]}
+    />
+  </Col>
+</Row>
 `;

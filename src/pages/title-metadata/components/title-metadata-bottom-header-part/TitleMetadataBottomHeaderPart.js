@@ -6,6 +6,7 @@ import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upl
 import moment from 'moment';
 import { Button } from 'primereact/button';
 import {connect} from 'react-redux';
+import { Col, Row } from 'reactstrap';
 import './TitleMetadataBottomHeaderPart.scss';
 import SyncLogDatePicker from '../../../sync-log/components/SyncLogDatePicker/SyncLogDatePicker';
 import { createSaveDateFromAction, createSaveDateToAction } from '../../../sync-log/syncLogActions';
@@ -28,10 +29,14 @@ const TitleMetadataBottomHeaderPart = ({
   const [dateError, setDateError] = useState(null);
 
   if(isItTheSameTab('repository')){
-      return (<div className="nexus-c-title-metadata__load-container">
-          <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
-          <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
-      </div>)
+      return (
+        <Row>
+          <Col className="d-flex justify-content-end">
+            <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
+            <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
+          </Col>
+        </Row>
+      )
   }
 
   if(isItTheSameTab('syncLog')) {
@@ -54,8 +59,9 @@ const TitleMetadataBottomHeaderPart = ({
       };
 
     return (
-        <div className="nexus-c-title-date-picker-container">
-            <div />
+      <Row className='nexus-c-title-date-picker-container'>
+        <Col xs={4} />
+        <Col xs={4} className='d-flex justify-content-center'>
             <SyncLogDatePicker
                 onDateFromChange={onDateFromChange}
                 onDateToChange={onDateToChange}
@@ -63,8 +69,11 @@ const TitleMetadataBottomHeaderPart = ({
                 dateTo={dateTo}
                 dateError={dateError}
             />
-            <Button icon={CloudDownloadIcon} className="p-button-rounded p-button-secondary p-button-text" onClick={() => exportSyncLog(dateFrom, dateTo)} />
-        </div>
+        </Col>
+        <Col xs={4} className='d-flex justify-content-end align-items-center'>
+          <Button icon={CloudDownloadIcon} className="p-button-rounded p-button-secondary p-button-text" onClick={() => exportSyncLog(dateFrom, dateTo)} />
+        </Col>
+      </Row>
     )
   }
   return null;

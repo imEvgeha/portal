@@ -7,12 +7,6 @@
     flex-direction: column;
 }
 
-.nexus-c-title-tab-menu-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
 .nexus-c-title-metadata__tab-menu.p-tabmenu {
     .p-tabmenu-nav {
         background: none;
@@ -46,12 +40,6 @@
             }
         }
     }
-}
-
-.nexus-c-title-metadata__create-btn {
-    display: flex;
-    flex-direction: row;
-    align-self: center;
 }
 
 .nexus-c-title-synclog__table-container {

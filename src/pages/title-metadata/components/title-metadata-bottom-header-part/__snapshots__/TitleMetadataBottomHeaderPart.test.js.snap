@@ -51,7 +51,7 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
         </div>
       </Col>
       <Col
-        className="nexus-c-title-tab-menu-container"
+        className="d-flex justify-content-center"
         tag="div"
         widths={
           Array [

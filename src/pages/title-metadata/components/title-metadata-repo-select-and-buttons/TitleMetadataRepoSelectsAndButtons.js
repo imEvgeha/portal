@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import { Button } from 'primereact/button';
+import { Col, Row } from 'reactstrap';
 import './TitleMetadataRepoSelectsAndButtons.scss';
 import { TABLE_LABELS, TABLE_OPTIONS } from '../../constants';
 import CatalogueOwner from '../catalogue-owner/CatalogueOwner';
@@ -22,7 +23,8 @@ const RepositorySelectsAndButtons = ({
 }) => {
   if (getNameOfCurrentTab() === 'repository') {
       return (
-          <div className="nexus-c-title-metadata__select-container">
+        <Row className='nexus-c-title-metadata__select-container'>
+          <Col xs={5} className="d-flex justify-content-end">
               <NexusSavedTableDropdown
                   gridApi={gridApi}
                   columnApi={columnApi}
@@ -36,9 +38,14 @@ const RepositorySelectsAndButtons = ({
                   setBlockLastFilter={setBlockLastFilter}
                   isTitleMetadata={true}
               />
+            </Col>
+            <Col xs={5} className="d-flex justify-content-end">
               <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
+            </Col>
+            <Col xs={2}>
               <Button icon={IconActionAdd} onClick={() => setShowModal(true)} className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn" />
-          </div>
+            </Col>
+        </Row>
       )
   }
   
