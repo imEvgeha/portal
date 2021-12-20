@@ -46,7 +46,7 @@ const CloudDownloadButton = ({showSuccess}) => {
                 <Button
                     label={downloadButton}
                     onClick={handleDownload}
-                    className="p-button-outlined p-button-secondary nexus-c-download-emet-modal__button"
+                    className="p-button-outlined nexus-c-download-emet-modal__button"
                     disabled={isDisabled}
                 />
             </div>
@@ -55,7 +55,13 @@ const CloudDownloadButton = ({showSuccess}) => {
 
     return (
         <div className="nexus-c-button-cloud-download">
-            <IconButton icon={CloudDownloadIcon} onClick={openModal} label="Download" />
+            <Button
+                icon={CloudDownloadIcon}
+                onClick={openModal}
+                tooltip='Download'
+                className="p-button-text"
+                tooltipOptions={{position: 'bottom'}}
+            />
             <Dialog header="Download" visible={displayModal} style={{ width: '50vw' }} footer={renderFooter()} onHide={closeModal}>
                 <DownloadEmetModal closeModal={closeModal} showSuccess={showSuccess} values={values} setValues={setValues} />
             </Dialog>
