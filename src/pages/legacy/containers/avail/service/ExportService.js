@@ -53,11 +53,14 @@ export const exportService = {
         );
     },
 
-    bulkExportMetadata: (params) => {
+    bulkExportMetadata: params => {
         const {locale, language, status} = params;
+        const statusUrl = status !== 'openDopTasks' ? `&emetStatus=${status}` : ``;
         const url = `${
             config.get('gateway.titleUrl') + config.get('gateway.service.title')
-        }/editorialmetadata/download?locale=${locale}&language=${language}&byDopEmtTasks=${false}&emetStatus=${status}`;
+        }/editorialmetadata/download?locale=${locale}&language=${language}&byDopEmtTasks=${
+            status === 'openDopTasks'
+        }${statusUrl}`;
         const abortAfter = config.get('avails.export.http.timeout');
 
         return nexusFetch(
