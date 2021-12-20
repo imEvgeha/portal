@@ -25,6 +25,16 @@
                 transition: box-shadow 0.2s;
                 height: 40px;
             }
+
+            .p-menuitem-link:hover {
+                color: palette(black, 100);
+                background: palette(black, 5);
+            }
+
+            .p-menuitem-link:active {
+                color: palette(black, 100);
+                background: palette(black, 20);
+            }
     
             .p-menuitem-link:focus {
                 box-shadow: none;
