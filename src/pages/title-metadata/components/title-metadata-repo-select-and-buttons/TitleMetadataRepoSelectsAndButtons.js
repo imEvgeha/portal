@@ -44,13 +44,12 @@ const RepositorySelectsAndButtons = ({
               <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
             </Col>
             <Col xs={2}>
-              <Tooltip target=".p-button-text" />
               <Button
                 tooltip="Create New Title"
                 tooltipOptions={{ position: 'left'}}
                 icon={IconActionAdd}
                 onClick={() => setShowModal(true)}
-                className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn"
+                className="p-button-text nexus-c-title-metadata__create-btn"
               />
             </Col>
         </Row>
