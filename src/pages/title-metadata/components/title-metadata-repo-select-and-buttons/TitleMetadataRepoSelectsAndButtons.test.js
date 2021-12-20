@@ -18,7 +18,9 @@ describe('TitleMetadataRepoSelectsAndButtons', () => {
     });
 
     beforeAll(() => {
-        wrapper = shallow(<TitleMetadataRepoSelectsAndButtons getNameOfCurrentTab={() => 'repository'} store={store} />);
+        wrapper = shallow(
+            <TitleMetadataRepoSelectsAndButtons getNameOfCurrentTab={() => 'repository'} store={store} />
+        );
         createBtn = wrapper.find('.nexus-c-title-metadata__create-btn');
     });
 
