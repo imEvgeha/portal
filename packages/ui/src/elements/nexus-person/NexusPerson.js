@@ -30,8 +30,6 @@ const NexusPerson = ({
     isTitlePage,
     isCrewEditable,
 }) => {
-    console.log('%cisCrewEditable', 'color: gold; font-size: 14px;', isCrewEditable);
-
     const isAvails = isCrewEditable;
 
     const localization = get(person, 'localization');
