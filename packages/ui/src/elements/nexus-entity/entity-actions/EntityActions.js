@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Button} from 'primereact/button';
 import {Tag} from 'primereact/tag';
 import {Action} from './Actions.class';
-import './EntityActions.scss';
 
 const EntityActions = ({tag, season, episode, actions}) => {
     const constructActions = () => {

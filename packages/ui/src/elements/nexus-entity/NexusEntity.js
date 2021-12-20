@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import EntityActions from './entity-actions/EntityActions';
-import './NexusEntity.scss';
 
 // Actions Usage:
 // const actions = [

@@ -42,7 +42,7 @@ const RepositorySelectsAndButtons = ({
                 <Col xs={5} className="d-flex justify-content-end">
                     <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 </Col>
-                <Col xs={2}>
+                <Col xs={2} className="d-flex align-items-center">
                     <Button
                         icon={IconActionAdd}
                         onClick={() => setShowModal(true)}
