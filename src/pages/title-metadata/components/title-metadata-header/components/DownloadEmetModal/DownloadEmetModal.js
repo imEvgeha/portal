@@ -23,23 +23,24 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess}) => {
         const isItLocale = name === 'locale';
 
         const getOptions = () => {
-            if(isItStatus) {
+            if (isItStatus) {
                 return [
                     {label: 'Pending', value: 'pending'},
                     {label: 'Complete', value: 'complete'},
+                    {label: 'With open DOP Tasks', value: 'openDopTasks'},
                 ];
             }
-            if(isItLanguage) {
-                return languages.map((elem) => ({label: elem.value, value: elem.languageCode}))
+            if (isItLanguage) {
+                return languages.map(elem => ({label: elem.value, value: elem.languageCode}));
             }
-            if(isItLocale) {
-                return locale.map((elem) => ({label: elem.countryName, value: elem.countryCode}))
+            if (isItLocale) {
+                return locale.map(elem => ({label: elem.countryName, value: elem.countryCode}));
             }
         };
 
-        const selectCompare = (a, b) => a.label < b.label ? -1 : a.label > b.label ? 1 : 0;
+        const selectCompare = (a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0);
 
-        const handleChange = (event) => {
+        const handleChange = event => {
             values[name] = event.value;
             setValues({...values});
         };
@@ -71,9 +72,10 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess}) => {
                 const buftype = 'application/vnd.ms-excel;charset=utf-8';
                 const blob = new Blob([buffer], {type: buftype});
                 showSuccess();
-                closeModal()
+                closeModal();
                 downloadFile(blob, 'Editorial_Metadata');
-            }).catch(err => err)
+            })
+            .catch(err => err);
     };
 
     return (
