@@ -5,7 +5,6 @@ import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.
 import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import moment from 'moment';
 import { Button } from 'primereact/button';
-import { Tooltip } from 'primereact/tooltip';
 import {connect} from 'react-redux';
 import { Col, Row } from 'reactstrap';
 import './TitleMetadataBottomHeaderPart.scss';
