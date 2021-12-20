@@ -3,12 +3,25 @@ import PropTypes from 'prop-types';
 import EntityActions from './entity-actions/EntityActions';
 import './NexusEntity.scss';
 
+// Actions Usage:
+// const actions = [
+//     new Action({
+//         icon: File,
+//         action: () => {
+//             console.log('icon clicked');
+//         },
+//         position: 6,
+//         disabled: false,
+//         buttonId: 'fileBtn',
+//     }),
+// ];
+
 const NexusEntity = ({heading, tag, season, episode, actions}) => {
     return (
-        <div className="entity container-fluid">
-            <div className="row section align-items-center">
-                <div className="col-sm-6">{heading}</div>
-                <div className="col-sm-6">
+        <div className="nexus-c-entity container-fluid">
+            <div className="row nexus-c-section align-items-center">
+                <div className="col-12 text-center text-sm-start col-sm-6">{heading}</div>
+                <div className="col-12 text-center text-sm-start col-sm-6">
                     <EntityActions actions={actions} tag={tag} season={season} episode={episode} />
                 </div>
             </div>

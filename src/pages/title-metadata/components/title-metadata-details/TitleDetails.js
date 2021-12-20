@@ -1,11 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import File from '@vubiquity-nexus/portal-assets/file.svg';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
-import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
-import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import classnames from 'classnames';
@@ -16,31 +13,31 @@ import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
 import Loading from '../../../static/Loading';
-import {FIELDS_TO_REMOVE, SYNC, VZ, MOVIDA} from '../../constants';
+import {FIELDS_TO_REMOVE, MOVIDA, SYNC, VZ} from '../../constants';
 import {
-    getTitle,
+    clearSeasonPersons,
     clearTitle,
+    getEditorialMetadata,
     getExternalIds,
     getTerritoryMetadata,
-    getEditorialMetadata,
-    updateTitle,
-    syncTitle,
+    getTitle,
     publishTitle,
-    clearSeasonPersons,
+    syncTitle,
+    updateTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, getEpisodesCount, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
 import {
+    handleDirtyValues,
     handleEditorialGenresAndCategory,
     handleTitleCategory,
-    updateTerritoryMetadata,
-    updateEditorialMetadata,
+    isMgmTitle,
     isNexusTitle,
     isStateEditable,
-    isMgmTitle,
     prepareCategoryField,
-    handleDirtyValues,
     propagateSeasonsPersonsToEpisodes,
+    updateEditorialMetadata,
+    updateTerritoryMetadata,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
@@ -196,31 +193,6 @@ const TitleDetails = ({
         externalSystem === VZ ? setVZDisabled(true) : setMOVDisabled(true);
     };
 
-    const actions = [
-        new Action(
-            File,
-            () => {
-                console.log('icon clicked');
-            },
-            6,
-            false,
-            'fileBtn'
-        ),
-        new Action(
-            File,
-            () => {
-                console.log('icon clicked');
-            },
-            1,
-            false,
-            'fileBtn2'
-        ),
-    ];
-
-    const heading = <span>Heading</span>;
-    const season = 'Season1';
-    const episode = 'Episode1';
-
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
     const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
     return (
@@ -230,9 +202,6 @@ const TitleDetails = ({
                 <Loading />
             ) : (
                 <>
-                    <div>
-                        <NexusEntity heading={heading} tag="Season" actions={actions} />
-                    </div>
                     <NexusDynamicForm
                         castCrewConfig={castCrewConfig}
                         searchPerson={searchPerson}

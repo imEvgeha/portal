@@ -5,7 +5,8 @@ export class Action {
     disabled;
     buttonId;
 
-    constructor(icon, action, position, disabled, buttonId) {
+    constructor(props) {
+        const {icon, action, position, disabled, buttonId} = props;
         this.icon = icon;
         this.action = action;
         this.position = position;

@@ -12,20 +12,22 @@ const EntityActions = ({tag, season, episode, actions}) => {
         const tmpActionItems = [];
 
         while (counter < maxActions) {
-            tmpActionItems.push(new Action(undefined, undefined, counter + 1, true));
+            tmpActionItems.push(
+                new Action({icon: undefined, action: undefined, position: counter + 1, disabled: true, buttonId: ''})
+            );
             counter++;
         }
         counter = 0;
         actions.forEach(action => (tmpActionItems[action.position - 1] = action));
         Object.seal(tmpActionItems);
-        console.log(actions);
-        console.log(tmpActionItems);
+
         const actionCols = [];
         while (counter < maxActions) {
             const col = (
-                <div className="col-sm-2 text-center">
+                <div className="col-2 text-center" key={`action-icon_${counter}`}>
                     {!!tmpActionItems[counter]?.icon && (
                         <Button
+                            key={tmpActionItems[counter].buttonId}
                             id={tmpActionItems[counter].buttonId}
                             icon={tmpActionItems[counter].icon}
                             onClick={tmpActionItems[counter].action}
@@ -43,16 +45,16 @@ const EntityActions = ({tag, season, episode, actions}) => {
     };
 
     return (
-        <div className="entity__actions">
-            <div className="row align-items-center">
-                <div className="col-sm-6">
+        <div className="nexus-c-entity-actions">
+            <div className="row text-center text-sm-start align-items-center">
+                <div className="col-12 col-sm-4 col-lg-6">
                     <div className="row">
                         <div className="col-sm-4">{!!tag && <Tag value={tag} />}</div>
                         <div className="col-sm-3">{season}</div>
                         <div className="col-sm-3">{episode}</div>
                     </div>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-12 col-sm-8 col-lg-6 text-end">
                     <div className="row">{constructActions()}</div>
                 </div>
             </div>

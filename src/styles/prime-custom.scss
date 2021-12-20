@@ -103,6 +103,10 @@ $button-font-size: 13px;
             }
         }
 
+        &.p-button-icon-only {
+            width: 32px;
+        }
+
         svg {
             width: 16px;
             height: 16px;
