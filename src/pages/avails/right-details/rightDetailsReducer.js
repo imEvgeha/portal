@@ -5,6 +5,7 @@ const initialState = {
     selectValues: {},
     areValid: true,
     isSaving: false,
+    isCrewEditable: false,
 };
 
 const rightDetailsOptionsReducer = (state = initialState, action = {}) => {
@@ -42,6 +43,11 @@ const rightDetailsOptionsReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 selectValues: cloneDeep(payload),
+            };
+        case actionTypes.IS_CREW_EDITABLE:
+            return {
+                ...state,
+                isCrewEditable: payload,
             };
         default:
             return state;

@@ -15,8 +15,8 @@ import './NexusPerson.scss';
 import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
 import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
-import {withRouter} from 'react-router-dom';
-import {AVAILS_PATH} from '../../../../../src/pages/avails/availsRoutes';
+import {connect} from 'react-redux';
+import {createIsCrewEditableSelector} from '../../../../../src/pages/avails/right-details/rightDetailsSelector';
 
 const NexusPerson = ({
     person,
@@ -28,10 +28,11 @@ const NexusPerson = ({
     name,
     customKey,
     isTitlePage,
-    history,
+    isCrewEditable,
 }) => {
-    const path = `/${history.location.pathname.split('/', 2)[1]}`;
-    const isAvails = path === AVAILS_PATH;
+    console.log('%cisCrewEditable', 'color: gold; font-size: 14px;', isCrewEditable);
+
+    const isAvails = isCrewEditable;
 
     const localization = get(person, 'localization');
     const isCastCrewField = name === 'castCrew';
@@ -147,6 +148,7 @@ NexusPerson.propTypes = {
     name: PropTypes.string,
     customKey: PropTypes.string,
     isTitlePage: PropTypes.bool,
+    isCrewEditable: PropTypes.bool,
 };
 
 NexusPerson.defaultProps = {
@@ -157,6 +159,14 @@ NexusPerson.defaultProps = {
     name: null,
     customKey: '',
     isTitlePage: false,
+    isCrewEditable: false,
 };
 
-export default withRouter(NexusPerson);
+const mapStateToProps = () => {
+    const isCrewEditableSelector = createIsCrewEditableSelector();
+    return state => ({
+        isCrewEditable: isCrewEditableSelector(state),
+    });
+};
+
+export default connect(mapStateToProps)(NexusPerson);

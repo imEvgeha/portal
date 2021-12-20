@@ -8,13 +8,26 @@ import Loading from '../../static/Loading';
 import {getRight, updateRight, clearRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
+import {isCrewEditable} from './rightDetailsActions';
 import * as detailsSelectors from './rightDetailsSelector';
 import {searchPerson} from './rightDetailsServices';
 import schema from './schema.json';
 import './RightDetails.scss';
 
-const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving, clearRight, isFetching}) => {
+const RightDetails = ({
+    getRight,
+    updateRight,
+    right,
+    match,
+    selectValues,
+    isSaving,
+    clearRight,
+    isFetching,
+    isCrewEditable,
+}) => {
     const containerRef = useRef();
+
+    isCrewEditable(true);
 
     useEffect(() => {
         const {params} = match || {};
@@ -64,6 +77,7 @@ RightDetails.propTypes = {
     selectValues: PropTypes.object,
     isSaving: PropTypes.bool,
     isFetching: PropTypes.bool,
+    isCrewEditable: PropTypes.func,
 };
 
 RightDetails.defaultProps = {
@@ -75,6 +89,7 @@ RightDetails.defaultProps = {
     selectValues: {},
     isSaving: false,
     isFetching: false,
+    isCrewEditable: () => null,
 };
 
 const mapStateToProps = () => {
@@ -93,6 +108,7 @@ const mapDispatchToProps = dispatch => ({
     getRight: payload => dispatch(getRight(payload)),
     clearRight: () => dispatch(clearRight()),
     updateRight: payload => dispatch(updateRight(payload)),
+    isCrewEditable: payload => dispatch(isCrewEditable(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(memo(RightDetails));
