@@ -27,6 +27,7 @@ const DownloadEmetModal = ({closeModal, languages, locale, showSuccess}) => {
                 return [
                     {label: 'Pending', value: 'pending'},
                     {label: 'Complete', value: 'complete'},
+                    {label: 'With open DOP Tasks', value: 'openDopTasks'},
                 ];
             }
             if (isItLanguage) {
