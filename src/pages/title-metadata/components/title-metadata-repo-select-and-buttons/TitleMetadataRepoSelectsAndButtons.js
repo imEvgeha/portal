@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import { Button } from 'primereact/button';
-import { Tooltip } from 'primereact/tooltip';
 import { Col, Row } from 'reactstrap';
 import './TitleMetadataRepoSelectsAndButtons.scss';
 import { TABLE_LABELS, TABLE_OPTIONS } from '../../constants';
