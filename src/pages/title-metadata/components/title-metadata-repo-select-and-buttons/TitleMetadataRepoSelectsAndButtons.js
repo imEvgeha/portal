@@ -21,40 +21,42 @@ const RepositorySelectsAndButtons = ({
     changeCatalogueOwner,
     setShowModal,
 }) => {
-    if (getNameOfCurrentTab() === 'repository') {
-        return (
-            <Row className="nexus-c-title-metadata__select-container">
-                <Col xs={5} className="d-flex justify-content-end">
-                    <NexusSavedTableDropdown
-                        gridApi={gridApi}
-                        columnApi={columnApi}
-                        username={username}
-                        userDefinedGridStates={userDefinedGridStates}
-                        setUserDefinedGridState={setUserDefinedGridState}
-                        applyPredefinedTableView={applyPredefinedTableView}
-                        tableLabels={TABLE_LABELS}
-                        tableOptions={TABLE_OPTIONS}
-                        lastStoredFilter={lastStoredFilter}
-                        setBlockLastFilter={setBlockLastFilter}
-                        isTitleMetadata={true}
-                    />
-                </Col>
-                <Col xs={5} className="d-flex justify-content-end">
-                    <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
-                </Col>
-                <Col xs={2} className="d-flex align-items-center">
-                    <Button
-                        icon={IconActionAdd}
-                        onClick={() => setShowModal(true)}
-                        className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn"
-                    />
-                </Col>
-            </Row>
-        );
-    }
-
-    return null;
-};
+  if (getNameOfCurrentTab() === 'repository') {
+      return (
+        <Row className='nexus-c-title-metadata__select-container'>
+          <Col xs={5} className="d-flex justify-content-end">
+              <NexusSavedTableDropdown
+                  gridApi={gridApi}
+                  columnApi={columnApi}
+                  username={username}
+                  userDefinedGridStates={userDefinedGridStates}
+                  setUserDefinedGridState={setUserDefinedGridState}
+                  applyPredefinedTableView={applyPredefinedTableView}
+                  tableLabels={TABLE_LABELS}
+                  tableOptions={TABLE_OPTIONS}
+                  lastStoredFilter={lastStoredFilter}
+                  setBlockLastFilter={setBlockLastFilter}
+                  isTitleMetadata={true}
+              />
+            </Col>
+            <Col xs={5} className="d-flex justify-content-end">
+              <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
+            </Col>
+            <Col xs={2} className="d-flex align-items-center">
+              <Button
+                tooltip="Create New Title"
+                tooltipOptions={{ position: 'left'}}
+                icon={IconActionAdd}
+                onClick={() => setShowModal(true)}
+                className="p-button-text nexus-c-title-metadata__create-btn"
+              />
+            </Col>
+        </Row>
+      )
+  }
+  
+  return null;
+}
 
 RepositorySelectsAndButtons.propTypes = {
     getNameOfCurrentTab: PropTypes.func,

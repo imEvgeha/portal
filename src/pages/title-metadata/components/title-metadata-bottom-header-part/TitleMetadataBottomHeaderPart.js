@@ -60,30 +60,32 @@ const TitleMetadataBottomHeaderPart = ({
             }
         };
 
-        return (
-            <Row className="nexus-c-title-date-picker-container">
-                <Col xs={4} />
-                <Col xs={4} className="d-flex justify-content-center">
-                    <SyncLogDatePicker
-                        onDateFromChange={onDateFromChange}
-                        onDateToChange={onDateToChange}
-                        dateFrom={dateFrom}
-                        dateTo={dateTo}
-                        dateError={dateError}
-                    />
-                </Col>
-                <Col xs={4} className="d-flex justify-content-end align-items-center">
-                    <Button
-                        icon={CloudDownloadIcon}
-                        className="p-button-rounded p-button-secondary p-button-text"
-                        onClick={() => exportSyncLog(dateFrom, dateTo)}
-                    />
-                </Col>
-            </Row>
-        );
-    }
-    return null;
-};
+    return (
+      <Row className='nexus-c-title-date-picker-container'>
+        <Col xs={4} />
+        <Col xs={4} className='d-flex justify-content-center'>
+            <SyncLogDatePicker
+                onDateFromChange={onDateFromChange}
+                onDateToChange={onDateToChange}
+                dateFrom={dateFrom}
+                dateTo={dateTo}
+                dateError={dateError}
+            />
+        </Col>
+        <Col xs={4} className='d-flex justify-content-end align-items-center'>
+          <Button
+            icon={CloudDownloadIcon}
+            className="p-button-text"
+            onClick={() => exportSyncLog(dateFrom, dateTo)}
+            tooltip="Download"
+            tooltipOptions={{ position: 'left'}}
+          />
+        </Col>
+      </Row>
+    )
+  }
+  return null;
+}
 
 TitleMetadataBottomHeaderPart.propTypes = {
     isItTheSameTab: PropTypes.func,
