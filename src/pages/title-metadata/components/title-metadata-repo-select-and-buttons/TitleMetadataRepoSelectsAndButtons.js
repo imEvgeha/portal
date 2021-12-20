@@ -2,24 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
-import { Button } from 'primereact/button';
-import { Col, Row } from 'reactstrap';
+import {Button} from 'primereact/button';
+import {Col, Row} from 'reactstrap';
 import './TitleMetadataRepoSelectsAndButtons.scss';
-import { TABLE_LABELS, TABLE_OPTIONS } from '../../constants';
+import {TABLE_LABELS, TABLE_OPTIONS} from '../../constants';
 import CatalogueOwner from '../catalogue-owner/CatalogueOwner';
 
 const RepositorySelectsAndButtons = ({
-  getNameOfCurrentTab,
-  gridApi,
-  columnApi,
-  username,
-  userDefinedGridStates,
-  setUserDefinedGridState,
-  applyPredefinedTableView,
-  lastStoredFilter,
-  setBlockLastFilter,
-  changeCatalogueOwner,
-  setShowModal
+    getNameOfCurrentTab,
+    gridApi,
+    columnApi,
+    username,
+    userDefinedGridStates,
+    setUserDefinedGridState,
+    applyPredefinedTableView,
+    lastStoredFilter,
+    setBlockLastFilter,
+    changeCatalogueOwner,
+    setShowModal,
 }) => {
   if (getNameOfCurrentTab() === 'repository') {
       return (
@@ -59,33 +59,31 @@ const RepositorySelectsAndButtons = ({
 }
 
 RepositorySelectsAndButtons.propTypes = {
-  getNameOfCurrentTab: PropTypes.func,
-  gridApi: PropTypes.any,
-  columnApi: PropTypes.any,
-  username: PropTypes.string,
-  userDefinedGridStates: PropTypes.array,
-  setUserDefinedGridState: PropTypes.func,
-  applyPredefinedTableView: PropTypes.func,
-  lastStoredFilter: PropTypes.object,
-  setBlockLastFilter: PropTypes.func,
-  changeCatalogueOwner: PropTypes.func,
-  setShowModal: PropTypes.func,
+    getNameOfCurrentTab: PropTypes.func,
+    gridApi: PropTypes.any,
+    columnApi: PropTypes.any,
+    username: PropTypes.string,
+    userDefinedGridStates: PropTypes.array,
+    setUserDefinedGridState: PropTypes.func,
+    applyPredefinedTableView: PropTypes.func,
+    lastStoredFilter: PropTypes.object,
+    setBlockLastFilter: PropTypes.func,
+    changeCatalogueOwner: PropTypes.func,
+    setShowModal: PropTypes.func,
 };
 
 RepositorySelectsAndButtons.defaultProps = {
-  getNameOfCurrentTab: () => null,
-  gridApi: null,
-  columnApi: null,
-  username: '',
-  userDefinedGridStates: [],
-  setUserDefinedGridState: () => null,
-  applyPredefinedTableView: () => null,
-  lastStoredFilter: {},
-  setBlockLastFilter: () => null,
-  changeCatalogueOwner: () => null,
-  setShowModal: () => null,
+    getNameOfCurrentTab: () => null,
+    gridApi: null,
+    columnApi: null,
+    username: '',
+    userDefinedGridStates: [],
+    setUserDefinedGridState: () => null,
+    applyPredefinedTableView: () => null,
+    lastStoredFilter: {},
+    setBlockLastFilter: () => null,
+    changeCatalogueOwner: () => null,
+    setShowModal: () => null,
 };
-
-
 
 export default RepositorySelectsAndButtons;

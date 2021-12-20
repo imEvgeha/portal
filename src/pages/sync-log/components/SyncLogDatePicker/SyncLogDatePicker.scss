@@ -3,21 +3,21 @@
 @import '~@vubiquity-nexus/portal-styles/scss/config';
 
 .nexus-c-sync-log-table__date-filter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 10px;
 }
 
 .nexus-c-sync-log-table__date-field {
-  width: 220px;
-  margin: 0 5px;
-  &--error {
-      color: map-get($reds, R400);
-      font-size: 12px;
-  }
+    width: 220px;
+    margin: 0 5px;
+    &--error {
+        color: map-get($reds, R400);
+        font-size: 12px;
+    }
 }
 
 .nexus-c-sync-log-table__title-between {
-  @include margin(0, 3, 0, 3);
+    @include margin(0, 3, 0, 3);
 }

@@ -7,7 +7,6 @@ import {downloadFormSubtitle, downloadFormFields} from '../constants';
 import './DownloadEmetModal.scss';
 
 const DownloadEmetModal = ({languages, locale, values, setValues}) => {
-
     const buildField = field => {
         const {name, placeholder} = field;
         const updatedPlaceholder = `Select ${placeholder}...`;
