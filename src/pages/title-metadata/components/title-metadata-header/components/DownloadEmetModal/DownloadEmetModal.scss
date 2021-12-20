@@ -1,18 +1,10 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 
-.nexus-c-download-emet-modal {
-    @include margin(0, 0, 5, 0);
-}
-
 .nexus-c-download-emet-modal__field {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    @include margin(0, 0, 4, 0);
-}
-
-.nexus-c-download-emet-modal__fields {
-    @include margin(0, 0, 6, 0);
+    @include margin(4, 0, 4, 0);
 }
 
 .nexus-c-download-emet-modal__select {
