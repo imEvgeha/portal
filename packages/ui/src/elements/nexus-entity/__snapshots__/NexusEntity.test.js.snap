@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusEntity should match snapshot 1`] = `
+<div
+  className="nexus-c-entity container-fluid"
+>
+  <div
+    className="row nexus-c-section align-items-center"
+  >
+    <div
+      className="col-12 text-center text-sm-start col-sm-6"
+    >
+      <h1>
+        Heading
+      </h1>
+    </div>
+    <div
+      className="col-12 text-center text-sm-start col-sm-6"
+    >
+      <EntityActions
+        actions={
+          Array [
+            Action {
+              "action": [Function],
+              "buttonId": "fileBtn",
+              "disabled": false,
+              "icon": [Function],
+              "position": 6,
+            },
+          ]
+        }
+        episode="E1"
+        season="S3"
+        tag="Season"
+      />
+    </div>
+  </div>
+</div>
+`;
