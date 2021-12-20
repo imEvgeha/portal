@@ -73,7 +73,13 @@ const TitleMetadataBottomHeaderPart = ({
         </Col>
         <Col xs={4} className='d-flex justify-content-end align-items-center'>
           <Tooltip target=".p-button-text" />
-          <Button icon={CloudDownloadIcon} className="p-button-rounded p-button-secondary p-button-text" onClick={() => exportSyncLog(dateFrom, dateTo)} tooltip="Download" tooltipOptions={{ position: 'left'}} />
+          <Button
+            icon={CloudDownloadIcon}
+            className="p-button-rounded p-button-secondary p-button-text"
+            onClick={() => exportSyncLog(dateFrom, dateTo)}
+            tooltip="Download"
+            tooltipOptions={{ position: 'left'}}
+          />
         </Col>
       </Row>
     )
