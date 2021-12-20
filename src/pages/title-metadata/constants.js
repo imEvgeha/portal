@@ -36,7 +36,7 @@ export const UNMERGE_TITLE_SUCCESS = 'Title succesfully unmerged!';
 
 export const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded a Title.';
 
-export const COLUMN_MAPPINGS = [
+export const METADATA_COLUMN_MAPPINGS = [
     {
         colId: 'id',
         field: 'id',
@@ -317,6 +317,47 @@ export const COLUMN_MAPPINGS = [
     },
 ];
 
+export const UPLOAD_COLUMN_MAPPINGS = [
+    {
+        colId: 'ingestStatus',
+        field: 'ingestStatus',
+        headerName: 'Ingest Status',
+        javaVariableName: 'ingestStatus',
+        enableSearch: false,
+        dataType: 'string',
+        width: 150,
+    },
+    {
+        colId: 'uploadDate',
+        field: 'uploadDate',
+        headerName: 'Upload date',
+        javaVariableName: 'uploadDate',
+        enableSearch: false,
+        dataType: 'string',
+        width: 150,
+    },
+    {
+        colId: 'fileName',
+        field: 'fileName',
+        headerName: 'File name',
+        javaVariableName: 'fileName',
+        enableSearch: true,
+        dataType: 'string',
+        searchDataType: 'string',
+        cellRenderer: 'loadingCellRenderer',
+        width: 150,
+    },
+    {
+        colId: 'uploadedBy',
+        field: 'uploadedBy',
+        headerName: 'Uploaded by',
+        javaVariableName: 'uploadedBy',
+        enableSearch: false,
+        dataType: 'string',
+        width: 150,
+    },
+]
+
 export const FIELDS_TO_REMOVE = ['editorial', 'territorial', 'movidaExternalIds', 'vzExternalIds'];
 export const UNABLE_PUBLISH =
     'Unable to Publish: Additional information required in EMets or some of the EMets are not in complete status';
@@ -336,3 +377,4 @@ export const TABLE_LABELS = {
 };
 
 export const TABLE_OPTIONS = [{label: 'All', value: 'all'}];
+

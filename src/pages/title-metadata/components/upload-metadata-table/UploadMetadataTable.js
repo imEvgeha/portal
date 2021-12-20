@@ -15,7 +15,7 @@ import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {
-    METADATA_COLUMN_MAPPINGS,
+    UPLOAD_COLUMN_MAPPINGS,
     NEXUS,
     LEGACY_TOOLTIP_TEXT,
     DEFAULT_CATALOGUE_OWNER,
@@ -25,9 +25,9 @@ import {setTitleMetadataFilter} from '../../titleMetadataActions';
 import {createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
-import './TitleMetadataTable.scss';
+import './UploadMetadataTable.scss';
 
-const TitleMetadataTableGrid = compose(
+const UploadMetadataTableGrid = compose(
     withSideBar(),
     withFilterableColumns(),
     withColumnsResizing(),
@@ -35,7 +35,7 @@ const TitleMetadataTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchTitleMetadata})
 )(NexusGrid);
 
-const TitleMetadataTable = ({
+const UploadMetadataTable = ({
     history,
     catalogueOwner,
     setGridApi,
@@ -45,7 +45,7 @@ const TitleMetadataTable = ({
     setTitleMetadataFilter,
     titleMetadataFilter,
 }) => {
-    const columnDefs = METADATA_COLUMN_MAPPINGS.map(mapping => {
+    const columnDefs = UPLOAD_COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
                 ...mapping,
@@ -169,9 +169,9 @@ const TitleMetadataTable = ({
 
     return (
         <div className="nexus-c-title-metadata-table">
-            <TitleMetadataTableGrid
+            <UploadMetadataTableGrid
                 columnDefs={columnDefs}
-                mapping={METADATA_COLUMN_MAPPINGS}
+                mapping={UPLOAD_COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onGridEvent={onGridReady}
                 setTotalCount={setTotalCount}
@@ -184,7 +184,7 @@ const TitleMetadataTable = ({
     );
 };
 
-TitleMetadataTable.propTypes = {
+UploadMetadataTable.propTypes = {
     history: PropTypes.object,
     catalogueOwner: PropTypes.object,
     columnApi: PropTypes.object,
@@ -195,7 +195,7 @@ TitleMetadataTable.propTypes = {
     titleMetadataFilter: PropTypes.object,
 };
 
-TitleMetadataTable.defaultProps = {
+UploadMetadataTable.defaultProps = {
     history: {},
     catalogueOwner: DEFAULT_CATALOGUE_OWNER,
     columnApi: {},
@@ -217,4 +217,4 @@ const mapDispatchToProps = dispatch => ({
     setTitleMetadataFilter: payload => dispatch(setTitleMetadataFilter(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataTable);
+export default connect(mapStateToProps, mapDispatchToProps)(UploadMetadataTable);
