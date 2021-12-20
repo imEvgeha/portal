@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import CloudDownloadIcon from '@vubiquity-nexus/portal-assets/action-cloud-download.svg';
-import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
@@ -71,8 +70,6 @@ const CloudDownloadButton = ({showSuccess}) => {
                 onHide={closeModal}
             >
                 <DownloadEmetModal
-                    closeModal={closeModal}
-                    showSuccess={showSuccess}
                     values={values}
                     setValues={setValues}
                 />
