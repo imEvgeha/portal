@@ -75,6 +75,7 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
     />
   </Col>
   <Col
+    className="d-flex align-items-center"
     tag="div"
     widths={
       Array [
