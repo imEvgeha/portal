@@ -47,6 +47,9 @@ const parseResponse = (response, type) => {
         return response.text();
     } else if (type.includes('multipart/form-data')) {
         return response.formData();
+    } else if (type.includes('application/vnd.ms-excel')) {
+        const reader = response.body.getReader();
+        return reader.read();
     } else if (type.includes('application/octet-stream')) {
         return response.arrayBuffer();
     }

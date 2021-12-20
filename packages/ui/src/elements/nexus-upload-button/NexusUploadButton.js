@@ -8,7 +8,7 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const contextFromModal = useContext(modalContext);
-    const {openModal, closeModal} = contextFromModal ? contextFromModal : { openModal: () => null, closeModal: () => null}
+    const {openModal, closeModal} = contextFromModal || {openModal: () => null, closeModal: () => null};
     const openModalCallback = useCallback((node, params) => openModal(node, params), []);
     const closeModalCallback = useCallback(() => closeModal(), []);
 
@@ -26,7 +26,11 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
 
     useEffect(() => {
         if (file && modalCallback) {
-            openModalCallback(modalCallback(modalCallbackData), {title, width: 'medium', shouldCloseOnOverlayClick: false});
+            openModalCallback(modalCallback(modalCallbackData), {
+                title,
+                width: 'medium',
+                shouldCloseOnOverlayClick: false,
+            });
         }
         if (file && uploadCallback) uploadCallback(file);
     }, [file]);
@@ -38,11 +42,11 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
         if (files && files.length > 0) {
             setFile(Array.from(files)[0]);
             e.target.value = null;
-        } 
+        }
     };
 
     return (
-        <div className={modalCallback(modalCallbackData) === undefined ? "ingest-upload-with-border" : "ingest-upload"}>
+        <div className={modalCallback(modalCallbackData) === undefined ? 'ingest-upload-with-border' : 'ingest-upload'}>
             <input
                 className="ingest-upload__input"
                 type="file"
@@ -55,7 +59,7 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
                     {buttonTitle}
                 </button>
             ) : (
-                <IconButton icon={icon} onClick={inputClick} label="Upload Ingest" />
+                <IconButton icon={icon} onClick={inputClick} label="Upload" />
             )}
         </div>
     );

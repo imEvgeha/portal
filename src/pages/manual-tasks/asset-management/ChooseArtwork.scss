@@ -2,7 +2,11 @@
 
 .choose-artwork {
     background: map-get($neutrals, N0);
+    display: flex;
+    flex-flow: column;
+    height: 100%;
     &__header {
+        flex: 0 1 auto;
         padding: 10px 24px;
         background: map-get($neutrals, N20);
         color: map-get($neutrals, N800);
@@ -17,7 +21,24 @@
         padding: 24px;
     }
 
+    .nexus-c-artwork-items {
+        flex: 1 1 auto;
+        margin: 5px 0 0 20px;
+    }
+
+    .nexus-c-scroll-item {
+        display: inline-block;
+        height: 200px;
+    }
+
+    .nexus-c-loading-item {
+        height: 200px;
+        display: inline-block;
+        width: 300px;
+    }
+
     .artwork-actions {
+        flex: 0 1 40px;
         display: flex;
         align-items: center;
         margin: 0 20px;

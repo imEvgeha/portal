@@ -8,6 +8,6 @@
 }
 
 .nexus-c-catalogue-owner-select {
-    @include addSpacing('width', 40);
-    @include margin(0, 10, 0, 2.5);
+    @include addSpacing('width', 30);
+    @include margin(0, 2, 0, 2.5);
 }

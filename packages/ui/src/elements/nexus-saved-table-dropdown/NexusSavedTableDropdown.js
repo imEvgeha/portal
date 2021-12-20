@@ -99,7 +99,6 @@ const NexusSavedTableDropdown = ({
 
     return (
         <div className="nexus-c-dop-tasks-dropdown">
-            <div className="nexus-c-dop-tasks-dropdown__label">{tableLabels.savedDropdownLabel}</div>
             <div className="nexus-c-dop-tasks-dropdown__elements">
                 <DropdownMenu shouldFitContainer appearance="tall" trigger={selectedItem.label} triggerType="button">
                     <DropdownItemGroup title={tableLabels.savedViewslabel}>
