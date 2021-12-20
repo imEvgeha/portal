@@ -7,8 +7,8 @@ describe('EntityActions', () => {
     let wrapper = null;
 
     const tag = 'Season';
-    const season = 'S3';
-    const episode = 'E1';
+    const flag1 = 'S3';
+    const flag2 = 'E1';
     const actions = [
         new Action({
             icon: File,
@@ -20,7 +20,7 @@ describe('EntityActions', () => {
     ];
 
     beforeEach(() => {
-        wrapper = shallow(<EntityActions tag={tag} episode={episode} season={season} actions={actions} />);
+        wrapper = shallow(<EntityActions tag={tag} flag2={flag2} flag1={flag1} actions={actions} />);
     });
 
     it('should match snapshot', () => {

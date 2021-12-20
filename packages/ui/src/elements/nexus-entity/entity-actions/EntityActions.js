@@ -4,7 +4,7 @@ import {Button} from 'primereact/button';
 import {Tag} from 'primereact/tag';
 import {Action} from './Actions.class';
 
-const EntityActions = ({tag, season, episode, actions}) => {
+const EntityActions = ({tag, flag1, flag2, actions}) => {
     const constructActions = () => {
         const maxActions = 6;
         let counter = 0;
@@ -49,8 +49,8 @@ const EntityActions = ({tag, season, episode, actions}) => {
                 <div className="col-12 col-sm-4 col-lg-6">
                     <div className="row">
                         <div className="col-sm-4">{!!tag && <Tag value={tag} />}</div>
-                        <div className="col-sm-3">{season}</div>
-                        <div className="col-sm-3">{episode}</div>
+                        <div className="col-sm-3">{flag1}</div>
+                        <div className="col-sm-3">{flag2}</div>
                     </div>
                 </div>
                 <div className="col-12 col-sm-8 col-lg-6 text-end">
@@ -63,15 +63,15 @@ const EntityActions = ({tag, season, episode, actions}) => {
 
 EntityActions.propTypes = {
     tag: PropTypes.string || PropTypes.element,
-    season: PropTypes.string || PropTypes.element,
-    episode: PropTypes.string || PropTypes.element,
+    flag1: PropTypes.string || PropTypes.element,
+    flag2: PropTypes.string || PropTypes.element,
     actions: PropTypes.array,
 };
 
 EntityActions.defaultProps = {
     tag: '',
-    season: '',
-    episode: '',
+    flag1: '',
+    flag2: '',
     actions: [],
 };
 
