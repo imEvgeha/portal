@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import { Button } from 'primereact/button';
+import { Tooltip } from 'primereact/tooltip';
 import { Col, Row } from 'reactstrap';
 import './TitleMetadataRepoSelectsAndButtons.scss';
 import { TABLE_LABELS, TABLE_OPTIONS } from '../../constants';
@@ -43,7 +44,8 @@ const RepositorySelectsAndButtons = ({
               <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
             </Col>
             <Col xs={2}>
-              <Button icon={IconActionAdd} onClick={() => setShowModal(true)} className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn" />
+              <Tooltip target=".p-button-text" />
+              <Button tooltip="Create New Title" tooltipOptions={{ position: 'left'}} icon={IconActionAdd} onClick={() => setShowModal(true)} className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn" />
             </Col>
         </Row>
       )

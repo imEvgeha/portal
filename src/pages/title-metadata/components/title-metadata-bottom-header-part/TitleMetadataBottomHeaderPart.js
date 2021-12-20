@@ -5,6 +5,7 @@ import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.
 import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import moment from 'moment';
 import { Button } from 'primereact/button';
+import { Tooltip } from 'primereact/tooltip';
 import {connect} from 'react-redux';
 import { Col, Row } from 'reactstrap';
 import './TitleMetadataBottomHeaderPart.scss';
@@ -35,7 +36,7 @@ const TitleMetadataBottomHeaderPart = ({
             <NexusUploadButton title={METADATA_UPLOAD_TITLE} icon={CloudUploadIcon} uploadCallback={uploadHandler} />
             <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
           </Col>
-        </Row>
+        </Row> 
       )
   }
 
@@ -71,7 +72,8 @@ const TitleMetadataBottomHeaderPart = ({
             />
         </Col>
         <Col xs={4} className='d-flex justify-content-end align-items-center'>
-          <Button icon={CloudDownloadIcon} className="p-button-rounded p-button-secondary p-button-text" onClick={() => exportSyncLog(dateFrom, dateTo)} />
+          <Tooltip target=".p-button-text" />
+          <Button icon={CloudDownloadIcon} className="p-button-rounded p-button-secondary p-button-text" onClick={() => exportSyncLog(dateFrom, dateTo)} tooltip="Download" tooltipOptions={{ position: 'left'}} />
         </Col>
       </Row>
     )
