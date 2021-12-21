@@ -7,41 +7,6 @@
     flex-direction: column;
 }
 
-.nexus-c-title-metadata__tab-menu.p-tabmenu {
-    .p-tabmenu-nav {
-        background: none;
-        border: none;
-
-        .p-tabmenuitem, .p-tabmenuitem:not(.p-highlight):not(.p-disabled):hover {
-            @include margin(0, 0, 1, 3);
-
-            .p-menuitem-link {
-                border: none;
-                background: none;
-                color: palette(black, 55);
-                padding: 1.25rem;
-                font-weight: 700;
-                border-radius: 6px;
-                transition: box-shadow 0.2s;
-                height: 40px;
-            }
-    
-            .p-menuitem-link:focus {
-                box-shadow: none;
-            }
-        }
-
-        .p-highlight {
-            .p-menuitem-link, .p-menuitem-link:hover {
-                background: palette(black, 10);
-                color: palette(black, 100);
-                border: none;
-                height: 40px;
-            }
-        }
-    }
-}
-
 .nexus-c-title-synclog__table-container {
     @include padding(6, 6, 10, 6);
 }

@@ -75,6 +75,7 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
     />
   </Col>
   <Col
+    className="d-flex align-items-center"
     tag="div"
     widths={
       Array [
@@ -88,13 +89,19 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
     xs={2}
   >
     <ForwardRef
-      className="p-button-rounded p-button-text nexus-c-title-metadata__create-btn"
+      className="p-button-text nexus-c-title-metadata__create-btn"
       icon={
         Object {
           "process": [Function],
         }
       }
       onClick={[Function]}
+      tooltip="Create New Title"
+      tooltipOptions={
+        Object {
+          "position": "left",
+        }
+      }
     />
   </Col>
 </Row>
