@@ -68,6 +68,7 @@ const CloudDownloadButton = ({showSuccess}) => {
                 style={{width: '50vw'}}
                 footer={renderFooter()}
                 onHide={closeModal}
+                className="nexus-c-button-dialog-for-emet-download"
             >
                 <DownloadEmetModal
                     values={values}

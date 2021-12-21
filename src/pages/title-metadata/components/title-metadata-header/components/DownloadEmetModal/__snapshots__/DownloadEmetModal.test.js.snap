@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
+exports[`DownloadEmetModal should match snapshot 1`] = `
 <div
   className="nexus-c-download-emet-modal"
 >

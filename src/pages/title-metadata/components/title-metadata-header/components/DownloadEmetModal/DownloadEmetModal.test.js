@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
 import DownloadEmetModal from './DownloadEmetModal';
 
-describe('TitleMetadataBottomHeaderPart', () => {
+describe('DownloadEmetModal', () => {
     let wrapper = null;
     const mockStore = configureStore();
     const store = mockStore({
