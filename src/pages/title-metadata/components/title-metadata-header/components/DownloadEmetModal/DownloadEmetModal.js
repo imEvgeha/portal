@@ -76,10 +76,15 @@ const createMapStateToProps = () => {
 };
 
 DownloadEmetModal.propTypes = {
-    languages: PropTypes.array.isRequired,
-    locale: PropTypes.array.isRequired,
+    languages: PropTypes.array,
+    locale: PropTypes.array,
     values: PropTypes.array.isRequired,
     setValues: PropTypes.func.isRequired,
+};
+
+DownloadEmetModal.defaultProps = {
+    languages: [],
+    locale: [],
 };
 
 export default connect(createMapStateToProps, null)(DownloadEmetModal);
