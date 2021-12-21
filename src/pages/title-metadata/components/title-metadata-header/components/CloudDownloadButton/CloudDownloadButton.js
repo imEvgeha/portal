@@ -65,7 +65,7 @@ const CloudDownloadButton = ({showSuccess}) => {
             <Dialog
                 header="Download"
                 visible={displayModal}
-                style={{width: '40vw', minWidth: '505px'}}
+                style={{width: '35vw', minWidth: '505px'}}
                 footer={renderFooter()}
                 onHide={closeModal}
                 className="nexus-c-button-dialog-for-emet-download"
