@@ -1,7 +1,7 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import { NexusModalContext } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import {debounce} from 'lodash';
 import {connect} from 'react-redux';
@@ -32,7 +32,7 @@ const IngestPanel = ({
 }) => {
     const [showFilters, setShowFilters] = useState(false);
 
-    const buildForm = (data) => {
+    const buildForm = data => {
         const {ingestData, closeUploadModal, file, browseClick, openModalCallback, closeModalCallback} = data;
         return (
             <InputForm
@@ -118,7 +118,7 @@ const IngestPanel = ({
                 })}
             </div>
             <div className="ingest-panel__btns">
-                <NexusUploadButton 
+                <NexusUploadButton
                     modalContext={NexusModalContext}
                     modalCallback={buildForm}
                     title={UPLOAD_TITLE}

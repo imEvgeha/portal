@@ -25,7 +25,13 @@ export const SAVED_TABLE_SELECT_OPTIONS = [
     {label: 'Closed', value: 'closed'},
 ];
 
-export const TASK_STATUS_ENUM = ['READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
+export const TASK_STATUS_ENUM = {
+    READY: 'READY',
+    IN_PROGRESS: 'IN PROGRESS',
+    COMPLETED: 'COMPLETED',
+    EXITED: 'EXITED',
+    OBSOLETE: 'OBSOLETE',
+};
 
 export const PROJECT_STATUS_ENUM = {
     'BNOT STARTED': 'NOT STARTED',
@@ -56,7 +62,7 @@ export const COLUMN_MAPPINGS = [
         headerName: 'Status',
         enableSearch: true,
         searchDataType: 'multiselect',
-        options: TASK_STATUS_ENUM,
+        options: Object.values(TASK_STATUS_ENUM),
         width: 180,
     },
     {
@@ -318,7 +324,7 @@ export const INITIAL_SEARCH_PARAMS = {
             valueDataType: 'String',
             operator: 'in',
             logicalAnd: true,
-            value: TASK_STATUS_ENUM.join(','),
+            value: Object.values(TASK_STATUS_ENUM).join(','),
         },
     ],
     sortCriterion: [

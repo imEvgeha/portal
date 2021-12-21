@@ -5,6 +5,30 @@ exports[`NexusArray should match snapshot 1`] = `
   className="nexus-c-array "
 >
   <Field
+    defaultValue={
+      Array [
+        Object {
+          "comment": "yyyyy",
+          "country": "IL",
+          "dateSelected": null,
+          "dateWithdrawn": null,
+          "hide": null,
+          "rightContractStatus": "Pending",
+          "selected": false,
+          "vuContractId": Array [],
+        },
+        Object {
+          "comment": "",
+          "country": "US",
+          "dateSelected": null,
+          "dateWithdrawn": null,
+          "hide": null,
+          "rightContractStatus": "MatchedOnce",
+          "selected": false,
+          "vuContractId": Array [],
+        },
+      ]
+    }
     isDisabled={false}
     isRequired={false}
     validate={[Function]}
@@ -41,12 +65,28 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field selected"
       >
         <NexusField
+          allData={Object {}}
+          castCrewConfig={Object {}}
           config={Array []}
           dateType=""
           dependencies={Array []}
           formData={Object {}}
           getCurrentValues={[Function]}
+          getValues={[Function]}
           id="undefined[0].selected"
+          initialData={
+            Object {
+              "comment": "yyyyy",
+              "country": "IL",
+              "dateSelected": null,
+              "dateWithdrawn": null,
+              "hide": null,
+              "rightContractStatus": "Pending",
+              "selected": false,
+              "vuContractId": Array [],
+            }
+          }
+          isClearable={false}
           isEditable={false}
           isGridLayout={false}
           isHighlighted={false}
@@ -54,16 +94,24 @@ exports[`NexusArray should match snapshot 1`] = `
           isReadOnly={true}
           isReadOnlyInEdit={false}
           isRequired={false}
+          isRequiredVZ={false}
           isReturningTime={true}
+          isTitlePage={false}
           isVerticalLayout={false}
           key="undefined[0].selected"
           label="Selected"
           labels={Array []}
+          linkConfig={Object {}}
           name="undefined[0].selected"
+          oneIsRequiredVZ={false}
           optionsConfig={Object {}}
           path="territory.selected"
           selectValues={Object {}}
           setFieldValue={[MockFunction]}
+          setUpdate={[Function]}
+          setUpdatedCastCrew={[Function]}
+          setUpdatedValues={[Function]}
+          showLocalized={false}
           tooltip={null}
           type="boolean"
           useCurrentDate={false}
@@ -77,12 +125,28 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field country"
       >
         <NexusField
+          allData={Object {}}
+          castCrewConfig={Object {}}
           config={Array []}
           dateType=""
           dependencies={Array []}
           formData={Object {}}
           getCurrentValues={[Function]}
+          getValues={[Function]}
           id="undefined[0].country"
+          initialData={
+            Object {
+              "comment": "yyyyy",
+              "country": "IL",
+              "dateSelected": null,
+              "dateWithdrawn": null,
+              "hide": null,
+              "rightContractStatus": "Pending",
+              "selected": false,
+              "vuContractId": Array [],
+            }
+          }
+          isClearable={false}
           isEditable={false}
           isGridLayout={false}
           isHighlighted={false}
@@ -90,16 +154,24 @@ exports[`NexusArray should match snapshot 1`] = `
           isReadOnly={false}
           isReadOnlyInEdit={false}
           isRequired={false}
+          isRequiredVZ={false}
           isReturningTime={true}
+          isTitlePage={false}
           isVerticalLayout={false}
           key="undefined[0].country"
           label="Country"
           labels={Array []}
+          linkConfig={Object {}}
           name="undefined[0].country"
+          oneIsRequiredVZ={false}
           optionsConfig={Object {}}
           path="territory.country"
           selectValues={Object {}}
           setFieldValue={[MockFunction]}
+          setUpdate={[Function]}
+          setUpdatedCastCrew={[Function]}
+          setUpdatedValues={[Function]}
+          showLocalized={false}
           tooltip={null}
           type="string"
           useCurrentDate={false}
@@ -126,12 +198,28 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field selected"
       >
         <NexusField
+          allData={Object {}}
+          castCrewConfig={Object {}}
           config={Array []}
           dateType=""
           dependencies={Array []}
           formData={Object {}}
           getCurrentValues={[Function]}
+          getValues={[Function]}
           id="undefined[1].selected"
+          initialData={
+            Object {
+              "comment": "",
+              "country": "US",
+              "dateSelected": null,
+              "dateWithdrawn": null,
+              "hide": null,
+              "rightContractStatus": "MatchedOnce",
+              "selected": false,
+              "vuContractId": Array [],
+            }
+          }
+          isClearable={false}
           isEditable={false}
           isGridLayout={false}
           isHighlighted={false}
@@ -139,16 +227,24 @@ exports[`NexusArray should match snapshot 1`] = `
           isReadOnly={true}
           isReadOnlyInEdit={false}
           isRequired={false}
+          isRequiredVZ={false}
           isReturningTime={true}
+          isTitlePage={false}
           isVerticalLayout={false}
           key="undefined[1].selected"
           label="Selected"
           labels={Array []}
+          linkConfig={Object {}}
           name="undefined[1].selected"
+          oneIsRequiredVZ={false}
           optionsConfig={Object {}}
           path="territory.selected"
           selectValues={Object {}}
           setFieldValue={[MockFunction]}
+          setUpdate={[Function]}
+          setUpdatedCastCrew={[Function]}
+          setUpdatedValues={[Function]}
+          showLocalized={false}
           tooltip={null}
           type="boolean"
           useCurrentDate={false}
@@ -162,12 +258,28 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field country"
       >
         <NexusField
+          allData={Object {}}
+          castCrewConfig={Object {}}
           config={Array []}
           dateType=""
           dependencies={Array []}
           formData={Object {}}
           getCurrentValues={[Function]}
+          getValues={[Function]}
           id="undefined[1].country"
+          initialData={
+            Object {
+              "comment": "",
+              "country": "US",
+              "dateSelected": null,
+              "dateWithdrawn": null,
+              "hide": null,
+              "rightContractStatus": "MatchedOnce",
+              "selected": false,
+              "vuContractId": Array [],
+            }
+          }
+          isClearable={false}
           isEditable={false}
           isGridLayout={false}
           isHighlighted={false}
@@ -175,16 +287,24 @@ exports[`NexusArray should match snapshot 1`] = `
           isReadOnly={false}
           isReadOnlyInEdit={false}
           isRequired={false}
+          isRequiredVZ={false}
           isReturningTime={true}
+          isTitlePage={false}
           isVerticalLayout={false}
           key="undefined[1].country"
           label="Country"
           labels={Array []}
+          linkConfig={Object {}}
           name="undefined[1].country"
+          oneIsRequiredVZ={false}
           optionsConfig={Object {}}
           path="territory.country"
           selectValues={Object {}}
           setFieldValue={[MockFunction]}
+          setUpdate={[Function]}
+          setUpdatedCastCrew={[Function]}
+          setUpdatedValues={[Function]}
+          showLocalized={false}
           tooltip={null}
           type="string"
           useCurrentDate={false}

@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@atlaskit/button';
 import {shallow} from 'enzyme';
 import {SyncLogTable} from './SyncLogTable';
 
@@ -27,10 +26,6 @@ describe('SyncLogTable', () => {
 
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('should have a Download button', () => {
-        expect(wrapper.find(Button).length).toEqual(1);
     });
 
     it('should render NexusDrawer', () => {

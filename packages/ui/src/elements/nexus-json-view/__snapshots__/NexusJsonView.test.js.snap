@@ -13,7 +13,7 @@ exports[`NexusJsonView should match snapshot 1`] = `
   <div
     className="nexus-c-json-view"
   >
-    <t
+    <n
       collapseStringsAfterLength={false}
       collapsed={false}
       defaultValue={null}

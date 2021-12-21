@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
+import {Button} from 'primereact/button';
 import config from 'react-global-configuration';
 import './NexusUploadButton.scss';
 
@@ -8,7 +8,7 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const contextFromModal = useContext(modalContext);
-    const {openModal, closeModal} = contextFromModal ? contextFromModal : { openModal: () => null, closeModal: () => null}
+    const {openModal, closeModal} = contextFromModal || {openModal: () => null, closeModal: () => null};
     const openModalCallback = useCallback((node, params) => openModal(node, params), []);
     const closeModalCallback = useCallback(() => closeModal(), []);
 
@@ -26,7 +26,11 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
 
     useEffect(() => {
         if (file && modalCallback) {
-            openModalCallback(modalCallback(modalCallbackData), {title, width: 'medium', shouldCloseOnOverlayClick: false});
+            openModalCallback(modalCallback(modalCallbackData), {
+                title,
+                width: 'medium',
+                shouldCloseOnOverlayClick: false,
+            });
         }
         if (file && uploadCallback) uploadCallback(file);
     }, [file]);
@@ -38,11 +42,11 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
         if (files && files.length > 0) {
             setFile(Array.from(files)[0]);
             e.target.value = null;
-        } 
+        }
     };
 
     return (
-        <div className={modalCallback(modalCallbackData) === undefined ? "ingest-upload-with-border" : "ingest-upload"}>
+        <div className={modalCallback(modalCallbackData) === undefined ? 'ingest-upload-with-border' : 'ingest-upload'}>
             <input
                 className="ingest-upload__input"
                 type="file"
@@ -55,7 +59,13 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
                     {buttonTitle}
                 </button>
             ) : (
-                <IconButton icon={icon} onClick={inputClick} label="Upload Ingest" />
+                <Button
+                    className="p-button-text"
+                    icon={icon}
+                    onClick={inputClick}
+                    tooltip="Upload"
+                    tooltipOptions={{ position: 'bottom'}}
+                />
             )}
         </div>
     );

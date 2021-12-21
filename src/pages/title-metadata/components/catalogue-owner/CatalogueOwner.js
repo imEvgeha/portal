@@ -7,7 +7,6 @@ import './CatalogueOwner.scss';
 const CatalogueOwner = ({setCatalogueOwner}) => {
     return (
         <div className="nexus-c-catalogue-owner">
-            <span>Catalogue owner:</span>
             <Select
                 className="nexus-c-catalogue-owner-select"
                 classNamePrefix="nexus-select"

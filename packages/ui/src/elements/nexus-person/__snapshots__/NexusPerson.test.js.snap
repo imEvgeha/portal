@@ -3,7 +3,7 @@
 exports[`NexusPerson should match snapshot 1`] = `
 <Connect(Draggable)
   disableInteractiveElementBlocking={false}
-  draggableId="idx-1"
+  draggableId=""
   index={1}
   isDragDisabled={false}
   shouldRespectForcePress={false}
