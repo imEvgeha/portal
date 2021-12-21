@@ -23,9 +23,9 @@ import rootSaga from './saga';
 import configureStore from './store';
 import {configurePersistor} from './store-persist-config';
 import {initializeTracker} from './util/hoc/withTracker';
-import './styles/legacy/bootstrap.scss'; // TODO: remove
 import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
 import './styles/legacy/global.scss'; // TODO; refactor
+import './styles/bootstrap.scss';
 import './styles/prime-custom.scss';
 
 const AG_GRID_LICENSE_KEY =
