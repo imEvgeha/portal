@@ -145,6 +145,13 @@ export const handleTitleCategory = data => {
     return data;
 };
 
+export const fetchUploadLogMetadata = async data => {
+    if ('eir_VU_9ba1b23f-c1f4-416f-b272-487de66b605b') { // get(data, 'id')
+        const response = await titleService.getUploadLogMetadata('eir_VU_9ba1b23f-c1f4-416f-b272-487de66b605b');
+        return response
+    }
+};
+
 export const prepareCategoryField = data => {
     if (get(data, 'category')) {
         const updatedCategory = [];

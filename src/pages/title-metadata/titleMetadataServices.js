@@ -200,6 +200,12 @@ export const titleService = {
             method: 'post',
         });
     },
+    getUploadLogMetadata: (id) => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/importReport/${id}`;
+        return nexusFetch(url, {
+            method: 'get',
+        });
+    },
     addEditorialMetadata: (editorialMetadata, tenantCode) => {
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
         const params = tenantCode ? {tenantCode} : {};
