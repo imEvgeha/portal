@@ -65,7 +65,7 @@ export const TitleMetadataView = ({
             severity: 'error',
             summary: failureDownloadTitle,
             detail: `${failureDownloadDesc} Details: ${err}`,
-            life: 300000,
+            life: 3000,
         });
     };
 
