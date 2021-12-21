@@ -4,21 +4,21 @@ import MenuExpandIcon from '@atlaskit/icon/glyph/menu-expand';
 import './DragButton.scss';
 
 const DragButton = props => {
-    const {avails} = props;
+    const {editable} = props;
 
     return (
-        <div {...props} className={`nexus-c-drag-button ${avails === 'true' ? 'hide' : ''}`}>
+        <div {...props} className={`nexus-c-drag-button ${editable === 'false' ? 'hide' : ''}`}>
             <MenuExpandIcon size="medium" label="" />
         </div>
     );
 };
 
 DragButton.propTypes = {
-    avails: PropTypes.string,
+    editable: PropTypes.string,
 };
 
 DragButton.defaultProps = {
-    avails: '',
+    editable: '',
 };
 
 export default DragButton;

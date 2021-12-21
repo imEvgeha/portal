@@ -316,6 +316,7 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
+                        isEditable={isEditable}
                         onChange={onChange(getCurrentValues())}
                         {...fieldProps}
                         persons={persons(fieldProps)}

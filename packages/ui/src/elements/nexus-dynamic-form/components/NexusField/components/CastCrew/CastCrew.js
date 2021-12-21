@@ -23,6 +23,7 @@ const CastCrew = ({
     setFieldValue,
     setUpdatedCastCrew,
     setUpdate,
+    isEditable,
     ...props
 }) => {
     const [personsWithLocalization, setPersonsWithLocalization] = useState(persons || []);
@@ -106,6 +107,7 @@ const CastCrew = ({
                 })}
             >
                 <NexusPersonsList
+                    isEditable={isEditable}
                     searchPerson={searchPerson}
                     castCrewConfig={updateCastCrewConfig()}
                     personsList={cast}
@@ -127,6 +129,7 @@ const CastCrew = ({
                 })}
             >
                 <NexusPersonsList
+                    isEditable={isEditable}
                     searchPerson={searchPerson}
                     castCrewConfig={updateCastCrewConfig()}
                     personsList={crew}
@@ -157,6 +160,7 @@ CastCrew.propTypes = {
     castCrewConfig: PropTypes.object,
     language: PropTypes.string,
     setUpdate: PropTypes.func,
+    isEditable: PropTypes.bool,
 };
 
 CastCrew.defaultProps = {
@@ -171,6 +175,7 @@ CastCrew.defaultProps = {
     searchPerson: undefined,
     castCrewConfig: {},
     language: 'en',
+    isEditable: false,
 };
 
 export default CastCrew;

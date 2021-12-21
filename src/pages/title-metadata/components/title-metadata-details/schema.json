@@ -352,7 +352,8 @@
                     "fields": {
                         "castCrew": {
                             "type": "castCrew",
-                            "path": "castCrew"
+                            "path": "castCrew",
+                            "isEditable": true
                         }
                     }
                 }

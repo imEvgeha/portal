@@ -24,6 +24,3 @@ export const selectValuesSelector = createSelector(
 );
 
 export const countryOptionsSelector = createSelector(selectValuesSelector, selectValues => selectValues.country || []);
-
-export const createIsCrewEditableSelector = () =>
-    createSelector(getRightDetailsOptionsReducer, rightDetailsOptions => rightDetailsOptions.isCrewEditable || {});

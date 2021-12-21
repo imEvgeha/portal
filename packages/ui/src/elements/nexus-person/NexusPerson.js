@@ -15,8 +15,6 @@ import './NexusPerson.scss';
 import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
 import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
-import {connect} from 'react-redux';
-import {createIsCrewEditableSelector} from '../../../../../src/pages/avails/right-details/rightDetailsSelector';
 
 const NexusPerson = ({
     person,
@@ -28,10 +26,8 @@ const NexusPerson = ({
     name,
     customKey,
     isTitlePage,
-    isCrewEditable,
+    isEditable,
 }) => {
-    const isAvails = isCrewEditable;
-
     const localization = get(person, 'localization');
     const isCastCrewField = name === 'castCrew';
 
@@ -115,7 +111,7 @@ const NexusPerson = ({
                                         <PropagateButton onClick={onPropagate} />
                                     </span>
                                 )}
-                                {!isAvails && (
+                                {isEditable && (
                                     <span title="Edit">
                                         <EditPerson onClick={onEditPerson} />
                                     </span>
@@ -124,8 +120,8 @@ const NexusPerson = ({
                                     <RemovePerson onClick={onRemove} />
                                 </span>
                                 <span title="Drag this item">
-                                    {/* iiAvails converterd to string to avoid arror caused by draggable*/}
-                                    <DragButton {...provided.dragHandleProps} avails={isAvails.toString()} />
+                                    {/* isCrewEditable converterd to string to avoid arror caused by draggable*/}
+                                    <DragButton {...provided.dragHandleProps} editable={isEditable.toString()} />
                                 </span>
                             </div>
                         </div>
@@ -146,7 +142,7 @@ NexusPerson.propTypes = {
     name: PropTypes.string,
     customKey: PropTypes.string,
     isTitlePage: PropTypes.bool,
-    isCrewEditable: PropTypes.bool,
+    isEditable: PropTypes.bool,
 };
 
 NexusPerson.defaultProps = {
@@ -157,14 +153,7 @@ NexusPerson.defaultProps = {
     name: null,
     customKey: '',
     isTitlePage: false,
-    isCrewEditable: false,
+    isEditable: false,
 };
 
-const mapStateToProps = () => {
-    const isCrewEditableSelector = createIsCrewEditableSelector();
-    return state => ({
-        isCrewEditable: isCrewEditableSelector(state),
-    });
-};
-
-export default connect(mapStateToProps)(NexusPerson);
+export default NexusPerson;

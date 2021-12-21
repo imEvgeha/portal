@@ -36,6 +36,7 @@ const NexusPersonsList = ({
     emetLanguage,
     setUpdate,
     isVerticalLayout,
+    isEditable,
     ...props
 }) => {
     const dispatch = useDispatch();
@@ -151,13 +152,11 @@ const NexusPersonsList = ({
             dispatch(removeSeasonPerson(payload));
         }
 
-        const updatedCastCrew =
-            castCrew &&
-            castCrew.filter(entry => {
-                return entry.id !== person.id || entry.personType !== person.personType;
-            });
+        const updatedCastCrew = castCrew?.filter(entry => {
+            return entry.id !== person.id || entry.personType !== person.personType;
+        });
 
-        const deletedCastCrew = castCrew && castCrew.filter(entry => entry.id === person.id);
+        const deletedCastCrew = castCrew?.filter(entry => entry.id === person.id);
 
         setFieldValue('castCrew', updatedCastCrew);
         setDeletedPersonsIds([...deletedPersonsIds, ...deletedCastCrew.map(elem => elem.id)]);
@@ -266,6 +265,7 @@ const NexusPersonsList = ({
             const customKey = person.id ? uid(person.id, i) : `${person.displayName}-${i}`;
             return (
                 <NexusPerson
+                    isEditable={isEditable}
                     key={customKey}
                     person={person}
                     customKey={customKey}
@@ -376,6 +376,7 @@ NexusPersonsList.propTypes = {
     emetLanguage: PropTypes.string,
     setUpdate: PropTypes.func,
     isVerticalLayout: PropTypes.bool,
+    isEditable: PropTypes.bool,
 };
 
 NexusPersonsList.defaultProps = {
@@ -391,6 +392,7 @@ NexusPersonsList.defaultProps = {
     castCrewConfig: {},
     emetLanguage: 'en',
     isVerticalLayout: false,
+    isEditable: false,
 };
 
 export default NexusPersonsList;
