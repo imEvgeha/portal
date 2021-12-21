@@ -78,7 +78,8 @@ exports[`CloudDownloadButton should match snapshot 1`] = `
     showHeader={true}
     style={
       Object {
-        "width": "50vw",
+        "minWidth": "505px",
+        "width": "35vw",
       }
     }
     transitionOptions={null}

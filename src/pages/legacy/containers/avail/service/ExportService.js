@@ -2,6 +2,7 @@ import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {parseAdvancedFilter} from './RightsService';
 import {prepareSortMatrixParam, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
+import { keycloak } from '@vubiquity-nexus/portal-auth/keycloak';
 
 export const exportService = {
     exportAvails: (rightsIDs, columns) => {
@@ -53,7 +54,11 @@ export const exportService = {
         );
     },
 
-    bulkExportMetadata: params => {
+    bulkExportMetadata: async params => {
+        const headers = new Headers();
+        const {token} = keycloak;
+        headers.append('Authorization', `Bearer ${token}`);
+        headers.append('Accept', `application/vnd.ms-excel`);
         const {locale, language, status} = params;
         const statusUrl = status !== 'openDopTasks' ? `&emetStatus=${status}` : ``;
         const url = `${
@@ -67,6 +72,7 @@ export const exportService = {
             url,
             {
                 method: 'get',
+                headers,
             },
             abortAfter
         );
