@@ -64,7 +64,7 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
                     icon={icon}
                     onClick={inputClick}
                     tooltip="Upload"
-                    tooltipOptions={{ position: 'bottom'}}
+                    tooltipOptions={{position: 'bottom'}}
                 />
             )}
         </div>
