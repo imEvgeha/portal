@@ -19,71 +19,140 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   <TitleMetadataHeader
     label="Title Metadata"
   >
-    <NexusUploadButton
-      buttonTitle="Upload"
-      icon={
-        Object {
-          "process": [Function],
-        }
-      }
-      ingestData={null}
-      modalCallback={[Function]}
-      modalContext={Object {}}
-      title="METADATA INGEST"
-      uploadCallback={[Function]}
-    />
-    <CloudDownloadButton
-      showError={[Function]}
-      showSuccess={[Function]}
-    />
-    <NexusSavedTableDropdown
-      applyPredefinedTableView={[Function]}
-      columnApi={null}
-      externalFilter={Object {}}
-      gridApi={null}
-      isTitleMetadata={true}
-      lastStoredFilter={
-        Object {
-          "label": undefined,
-        }
-      }
-      onUserDefinedViewSelected={[Function]}
-      setBlockLastFilter={[Function]}
-      setUserDefinedGridState={[Function]}
-      tableLabels={
-        Object {
-          "savedDropdownLabel": "Saved Table View:",
-          "savedViewslabel": "My Saved Views",
-        }
-      }
-      tableOptions={
+    <Row
+      tag="div"
+      widths={
         Array [
-          Object {
-            "label": "All",
-            "value": "all",
-          },
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
         ]
       }
-      userDefinedGridStates={Array []}
-      username=""
-    />
-    <CatalogueOwner
-      setCatalogueOwner={[Function]}
-    />
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
-      appearance="primary"
-      className="nexus-c-title-metadata__create-btn"
-      onClick={[Function]}
     >
-      Create New Title
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
-      appearance="subtle"
-      className="nexus-c-title-metadata__sync-btn"
-      onClick={[Function]}
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+        xs="4"
+      >
+        <div
+          className="nexus-c-title-metadata-header__label"
+        >
+          Title Metadata
+        </div>
+      </Col>
+      <Col
+        className="d-flex justify-content-center"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+        xs="4"
+      >
+        <TabMenu
+          activeIndex={0}
+          className="nexus-c-title-metadata__tab-menu"
+          id={null}
+          model={
+            Array [
+              Object {
+                "label": "Repository",
+                "value": "repository",
+              },
+              Object {
+                "label": "Sync Log",
+                "value": "syncLog",
+              },
+              Object {
+                "label": "Upload Log",
+                "value": "uploadLog",
+              },
+            ]
+          }
+          onTabChange={[Function]}
+          style={null}
+        />
+      </Col>
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+        xs="4"
+      >
+        <RepositorySelectsAndButtons
+          applyPredefinedTableView={[Function]}
+          changeCatalogueOwner={[Function]}
+          columnApi={null}
+          getNameOfCurrentTab={[Function]}
+          gridApi={null}
+          lastStoredFilter={
+            Object {
+              "label": undefined,
+            }
+          }
+          setBlockLastFilter={[Function]}
+          setShowModal={[Function]}
+          setUserDefinedGridState={[Function]}
+          userDefinedGridStates={Array []}
+          username=""
+        />
+      </Col>
+    </Row>
+    <Row
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
-      Sync Log
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Connect(TitleMetadataBottomHeaderPart)
+          className="nexus-c-title-metadata-header__bottom"
+          isItTheSameTab={[Function]}
+          showError={[Function]}
+          showSuccess={[Function]}
+          uploadHandler={[Function]}
+        />
+      </Col>
+    </Row>
   </TitleMetadataHeader>
   <Connect(TitleMetadataTable)
     catalogueOwner={

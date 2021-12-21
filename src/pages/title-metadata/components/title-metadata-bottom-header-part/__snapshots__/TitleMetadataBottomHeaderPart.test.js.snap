@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
+<div
+  className="nexus-c-title-metadata"
+>
+  <Toast
+    baseZIndex={0}
+    className={null}
+    id={null}
+    onClick={null}
+    onHide={null}
+    onRemove={null}
+    onShow={null}
+    position="bottom-left"
+    style={null}
+    transitionOptions={null}
+  />
+  <TitleMetadataHeader
+    label="Title Metadata"
+  >
+    <Row
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+        xs="4"
+      >
+        <div
+          className="nexus-c-title-metadata-header__label"
+        >
+          Title Metadata
+        </div>
+      </Col>
+      <Col
+        className="d-flex justify-content-center"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+        xs="4"
+      >
+        <TabMenu
+          activeIndex={0}
+          className="nexus-c-title-metadata__tab-menu"
+          id={null}
+          model={
+            Array [
+              Object {
+                "label": "Repository",
+                "value": "repository",
+              },
+              Object {
+                "label": "Sync Log",
+                "value": "syncLog",
+              },
+              Object {
+                "label": "Upload Log",
+                "value": "uploadLog",
+              },
+            ]
+          }
+          onTabChange={[Function]}
+          style={null}
+        />
+      </Col>
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+        xs="4"
+      >
+        <RepositorySelectsAndButtons
+          applyPredefinedTableView={[Function]}
+          changeCatalogueOwner={[Function]}
+          columnApi={null}
+          getNameOfCurrentTab={[Function]}
+          gridApi={null}
+          lastStoredFilter={
+            Object {
+              "label": undefined,
+            }
+          }
+          setBlockLastFilter={[Function]}
+          setShowModal={[Function]}
+          setUserDefinedGridState={[Function]}
+          userDefinedGridStates={Array []}
+          username=""
+        />
+      </Col>
+    </Row>
+    <Row
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Connect(TitleMetadataBottomHeaderPart)
+          className="nexus-c-title-metadata-header__bottom"
+          isItTheSameTab={[Function]}
+          showError={[Function]}
+          showSuccess={[Function]}
+          uploadHandler={[Function]}
+        />
+      </Col>
+    </Row>
+  </TitleMetadataHeader>
+  <Connect(TitleMetadataTable)
+    catalogueOwner={
+      Object {
+        "tenantCode": "vu",
+      }
+    }
+    className="nexus-c-title-metadata__table"
+    columnApi={null}
+    gridApi={null}
+    history={Object {}}
+    setColumnApi={[Function]}
+    setGridApi={[Function]}
+  />
+  <Connect(ComposedComponent)
+    display={false}
+    redirectToV2={true}
+    tenantCode="vu"
+    toggle={[Function]}
+  />
+</div>
+`;

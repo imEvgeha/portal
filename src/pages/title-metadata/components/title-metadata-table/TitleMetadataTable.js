@@ -119,10 +119,10 @@ const TitleMetadataTable = ({
 
     useLayoutEffect(() => {
         return () => {
-            if (gridApi) {
+            if (gridApi && columnApi?.columnController) {
                 const filterModel = gridApi.getFilterModel();
                 const sortModel = getSortModel(columnApi);
-                const columnState = columnApi.getColumnState();
+                const columnState = columnApi?.getColumnState();
 
                 const firstFilterModel = Object.keys(filterModel).shift();
                 const id = filterModel && filterModel[`${firstFilterModel}`]?.filter;
@@ -134,7 +134,6 @@ const TitleMetadataTable = ({
 
     const onGridReady = ({type, api, columnApi}) => {
         const {READY} = GRID_EVENTS;
-
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
