@@ -175,7 +175,7 @@ CastCrew.defaultProps = {
     searchPerson: undefined,
     castCrewConfig: {},
     language: 'en',
-    isEditable: false,
+    isEditable: true,
 };
 
 export default CastCrew;

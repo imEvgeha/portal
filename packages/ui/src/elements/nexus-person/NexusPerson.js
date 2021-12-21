@@ -153,7 +153,7 @@ NexusPerson.defaultProps = {
     name: null,
     customKey: '',
     isTitlePage: false,
-    isEditable: false,
+    isEditable: true,
 };
 
 export default NexusPerson;
