@@ -44,7 +44,7 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
         return (
             <div className="nexus-c-download-emet-modal__buttons">
                 <Button
-                    onClick={handleCancel}
+                    onClick={closeModal}
                     className="p-button-outlined p-button-secondary nexus-c-cancel-button"
                     label={cancelButton}
                 />
