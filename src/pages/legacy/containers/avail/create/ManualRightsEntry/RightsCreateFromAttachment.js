@@ -19,7 +19,7 @@ import {
     updateManualRightsEntryColumns,
 } from '../../../../stores/actions/avail/manualRightEntry';
 import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
-import { NexusModalContext } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import StatusIcon from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-icon/StatusIcon';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
@@ -32,6 +32,7 @@ import moment from 'moment';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
+import InputForm from '../../../../../avails/ingest-panel/components/upload-ingest/InputForm/InputForm';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON, UPLOAD_TITLE} = Constants;
 
@@ -289,9 +290,9 @@ class RightsCreateFromAttachment extends React.Component {
         return selectedOnTab;
     };
 
-    buildForm = (data) => {
+    buildForm = data => {
         const {ingestData, closeUploadModal, file, browseClick, openModalCallback, closeModalCallback} = data;
-         return (
+        return (
             <InputForm
                 ingestData={ingestData}
                 closeModal={closeUploadModal}
