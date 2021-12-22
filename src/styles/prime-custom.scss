@@ -337,3 +337,12 @@ $element-margin-bottom: 18px;
         }
     }
 }
+
+// Panel
+.p-panel {
+    &.p-component {
+        .p-panel-header {
+            border-radius: 5px;
+        }
+    }
+}

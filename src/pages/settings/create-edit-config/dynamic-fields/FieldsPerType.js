@@ -43,7 +43,7 @@ export const constructFieldPerType = (elementSchema, form, value, className, but
                                             onClick={e => {
                                                 e.preventDefault();
                                                 e.stopPropagation();
-                                                buttonConfig.action();
+                                                buttonConfig.action(elementSchema);
                                             }}
                                         />
                                     </div>

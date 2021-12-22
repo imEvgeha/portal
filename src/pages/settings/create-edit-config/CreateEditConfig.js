@@ -11,6 +11,7 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
 
     const constructFields = (schema, form, value) => {
         // console.log(schema);
+        console.log(value);
         return schema?.map(elementSchema => {
             return constructFieldPerType(elementSchema, form, value?.[elementSchema?.name] || '', undefined, undefined);
         });
