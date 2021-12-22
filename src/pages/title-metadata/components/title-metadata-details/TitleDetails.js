@@ -5,7 +5,7 @@ import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynami
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import classnames from 'classnames';
-import {get, isEmpty, isEqual, pickBy, cloneDeep, omit, isObject} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {connect, useSelector} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
@@ -108,31 +108,10 @@ const TitleDetails = ({
         }
     }, [refresh]);
 
-    const cleanObject = object => {
-        Object.entries(object).forEach(([k, v]) => {
-            if (v && typeof v === 'object') cleanObject(v);
-            if (k === 'isUpdated') {
-                delete object[k];
-            }
-            if (
-                (v && typeof v === 'object' && !Object.keys(v).length) ||
-                v === null ||
-                v === undefined ||
-                v.length === 0
-            ) {
-                if (Array.isArray(object)) object.splice(k, 1);
-                else if (!(v instanceof Date)) delete object[k];
-            }
-        });
-        return object;
-    };
-
     const onSubmit = (values, initialValues) => {
-        console.log('!!! values global', values);
-        console.log('!!! initialValues global', initialValues);
-        console.log('!!! values', values.editorialMetadata);
-        console.log('!!! initialValues', initialValues.editorialMetadata);
         handleDirtyValues(initialValues, values);
+
+        const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
 
         const {params} = match || {};
         const {id} = params;
@@ -158,7 +137,7 @@ const TitleDetails = ({
 
         prepareCategoryField(updatedValues);
         Promise.all([
-            updateTitle({...updatedValues, id: title.id}),
+            !isEmetUpdated && updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
             (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&

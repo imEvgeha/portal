@@ -394,7 +394,7 @@ const handleDirtyRatingsValues = values => {
         advisoriesCode,
         advisoriesFreeText,
     };
-    const index = values.ratings && values.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
+    const index = values?.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
     if (index !== null && index >= 0) {
         values.ratings[index] = updatedRatingRecord;
     }
@@ -412,8 +412,7 @@ const cleanObject = object => {
 };
 
 const handleDirtyEMETValues = (initialValues, values) => {
-    const editorial = get(values, 'editorial');
-    console.log('editorial', editorial);
+    const editorial = values.editorial;
     if (editorial) {
         const index =
             values.editorialMetadata &&
@@ -445,11 +444,11 @@ const handleDirtyEMETValues = (initialValues, values) => {
             }
         }
 
-        // values.editorialMetadata.forEach((emet, i) => {
-        //     if (!emet.isDeleted && i !== index && !isEqual(emet, initialValues.editorialMetadata[i])) {
-        //         values.editorialMetadata[i] = {...emet, isUpdated: true};
-        //     }
-        // });
+        values.editorialMetadata.forEach((emet, i) => {
+            if (!emet.isDeleted && i !== index && !isEqual(emet, initialValues.editorialMetadata[i])) {
+                values.editorialMetadata[i] = {...emet, isUpdated: true};
+            }
+        });
     }
 };
 
