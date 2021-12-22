@@ -28,6 +28,7 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
     const handleDownload = () => {
         closeModal();
         showSuccess(successDownloadingStarted);
+        setValues(initialValues);
         exportService
             .bulkExportMetadata(values)
             .then(response => {
