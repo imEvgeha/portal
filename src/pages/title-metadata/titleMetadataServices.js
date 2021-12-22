@@ -200,7 +200,17 @@ export const titleService = {
             method: 'post',
         });
     },
-    getUploadLogMetadata: (id) => {
+    getUploadedMetadata: async (dataForUploadedMetadata, tenantCode) => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/importLog?`;
+        const params = tenantCode ? {tenantCode} : {};
+
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(dataForUploadedMetadata),
+            params: encodedSerialize(params),
+        });
+    },
+    getUploadLogMetadataFile: (id) => {
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/importReport/${id}`;
         return nexusFetch(url, {
             method: 'get',

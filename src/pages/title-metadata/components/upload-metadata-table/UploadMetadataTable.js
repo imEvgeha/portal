@@ -23,7 +23,7 @@ import {
 } from '../../constants';
 import {setTitleMetadataFilter} from '../../titleMetadataActions';
 import {createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
-import {fetchUploadLogMetadata} from '../../utils';
+import {fetchListOfUploadedMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './UploadMetadataTable.scss';
 
@@ -32,7 +32,7 @@ const UploadMetadataTableGrid = compose(
     withFilterableColumns(),
     withColumnsResizing(),
     withSorting(),
-    withInfiniteScrolling({fetchData: fetchUploadLogMetadata})
+    withInfiniteScrolling({fetchData: fetchListOfUploadedMetadata}) // fetchUploadLogMetadata
 )(NexusGrid);
 
 const UploadMetadataTable = ({

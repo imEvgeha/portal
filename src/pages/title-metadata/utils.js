@@ -145,9 +145,18 @@ export const handleTitleCategory = data => {
     return data;
 };
 
-export const fetchUploadLogMetadata = async data => {
+export const fetchListOfUploadedMetadata = async data => {
+    const {tenantCode} = data;
+    if (tenantCode) {
+        const body = { uploadedBy: "unknown_user", } // startDate: null, endDate: null, status: "PROCESSING" }
+        const response = await titleService.getUploadedMetadata(body, tenantCode);
+        return response
+    }
+};
+
+export const downloadUploadedMetadata = async data => {
     if ('eir_VU_9ba1b23f-c1f4-416f-b272-487de66b605b') { // get(data, 'id')
-        const response = await titleService.getUploadLogMetadata('eir_VU_9ba1b23f-c1f4-416f-b272-487de66b605b');
+        const response = await titleService.getUploadLogMetadataFile('eir_VU_9ba1b23f-c1f4-416f-b272-487de66b605b');
         return response
     }
 };
