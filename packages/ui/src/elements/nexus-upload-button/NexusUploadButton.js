@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
+import {Button} from 'primereact/button';
 import config from 'react-global-configuration';
 import './NexusUploadButton.scss';
 
@@ -59,7 +59,13 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
                     {buttonTitle}
                 </button>
             ) : (
-                <IconButton icon={icon} onClick={inputClick} label="Upload" />
+                <Button
+                    className="p-button-text"
+                    icon={icon}
+                    onClick={inputClick}
+                    tooltip="Upload"
+                    tooltipOptions={{position: 'bottom'}}
+                />
             )}
         </div>
     );

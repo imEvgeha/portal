@@ -310,6 +310,7 @@ $element-margin-bottom: 18px;
             .p-menuitem-link:hover {
                 color: palette(black, 100);
                 background: palette(black, 5);
+                text-decoration: none;
             }
 
             .p-menuitem-link:active {
