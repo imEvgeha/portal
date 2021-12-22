@@ -2,7 +2,7 @@ import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {parseAdvancedFilter} from './RightsService';
 import {prepareSortMatrixParam, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
-import { keycloak } from '@vubiquity-nexus/portal-auth/keycloak';
+import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 
 export const exportService = {
     exportAvails: (rightsIDs, columns) => {
@@ -68,13 +68,9 @@ export const exportService = {
         }${statusUrl}`;
         const abortAfter = config.get('avails.export.http.timeout');
 
-        return nexusFetch(
-            url,
-            {
-                method: 'get',
-                headers,
-            },
-            abortAfter
-        );
+        return nexusFetch(url, {
+            method: 'post',
+            headers,
+        });
     },
 };
