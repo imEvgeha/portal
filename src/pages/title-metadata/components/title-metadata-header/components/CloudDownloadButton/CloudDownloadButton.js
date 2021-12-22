@@ -8,7 +8,7 @@ import {exportService} from '../../../../../legacy/containers/avail/service/Expo
 import DownloadEmetModal from '../DownloadEmetModal/DownloadEmetModal';
 import './CloudDownloadButton.scss';
 import {createInitialValues} from '../utils';
-import {cancelButton, downloadButton, downloadFormFields} from '../constants';
+import {cancelButton, downloadButton, downloadFormFields, successDownloadDesc, successDownloadingStarted} from '../constants';
 
 const CloudDownloadButton = ({showSuccess, showError}) => {
     const initialValues = createInitialValues(downloadFormFields);
@@ -21,13 +21,14 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
 
     const handleDownload = () => {
         closeModal();
+        showSuccess(successDownloadingStarted);
         exportService
             .bulkExportMetadata(values)
             .then(response => {
                 const buffer = new Uint8Array(response.value).buffer;
                 const buftype = 'application/vnd.ms-excel;charset=utf-8';
                 const blob = new Blob([buffer], {type: buftype});
-                showSuccess();
+                showSuccess(successDownloadDesc);
                 downloadFile(blob, 'Editorial_Metadata');
             })
             .catch(err => showError(err.message));
