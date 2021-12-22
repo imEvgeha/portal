@@ -10,7 +10,7 @@ import './CloudDownloadButton.scss';
 import {createInitialValues} from '../utils';
 import {cancelButton, downloadButton, downloadFormFields} from '../constants';
 
-const CloudDownloadButton = ({showSuccess}) => {
+const CloudDownloadButton = ({showSuccess, showError}) => {
     const initialValues = createInitialValues(downloadFormFields);
     const [displayModal, setDisplayModal] = useState(false);
     const [values, setValues] = useState(initialValues);
@@ -20,6 +20,7 @@ const CloudDownloadButton = ({showSuccess}) => {
     const closeModal = () => setDisplayModal(false);
 
     const handleDownload = () => {
+        closeModal();
         exportService
             .bulkExportMetadata(values)
             .then(response => {
@@ -27,19 +28,16 @@ const CloudDownloadButton = ({showSuccess}) => {
                 const buftype = 'application/vnd.ms-excel;charset=utf-8';
                 const blob = new Blob([buffer], {type: buftype});
                 showSuccess();
-                closeModal();
                 downloadFile(blob, 'Editorial_Metadata');
             })
-            .catch(err => err);
+            .catch(err => showError(err.message));
     };
 
     const renderFooter = () => {
         return (
             <div className="nexus-c-download-emet-modal__buttons">
                 <Button
-                    onClick={() => {
-                        closeModal();
-                    }}
+                    onClick={closeModal}
                     className="p-button-outlined p-button-secondary nexus-c-cancel-button"
                     label={cancelButton}
                 />
@@ -81,6 +79,7 @@ const CloudDownloadButton = ({showSuccess}) => {
 
 CloudDownloadButton.propTypes = {
     showSuccess: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
 };
 
 export default CloudDownloadButton;
