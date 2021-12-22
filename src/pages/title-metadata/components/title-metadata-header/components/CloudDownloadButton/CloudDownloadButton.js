@@ -23,12 +23,14 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
     const isDisabled = values ? !Object.values(values).every(value => Boolean(value) === true) : true;
 
     const openModal = () => setDisplayModal(true);
-    const closeModal = () => setDisplayModal(false);
+    const closeModal = () => {
+        setDisplayModal(false);
+        setValues(initialValues);
+    }
 
     const handleDownload = () => {
         closeModal();
         showSuccess(successDownloadingStarted);
-        setValues(initialValues);
         exportService
             .bulkExportMetadata(values)
             .then(response => {
@@ -36,11 +38,6 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
                 downloadFile(response, 'Editorial_Metadata');
             })
             .catch(err => showError(err.message));
-    };
-
-    const handleCancel = () => {
-        closeModal();
-        setValues(initialValues);
     };
 
     const renderFooter = () => {
