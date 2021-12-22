@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SyncLogDatePicker should match snapshot 1`] = `
+<div
+  className="nexus-c-sync-log-table__date-filter"
+>
+  <div
+    className="nexus-c-sync-log-table__date-field"
+  >
+    <NexusDatePicker
+      error=""
+      id="nexus-c-sync-log-dateFrom"
+      isClearable={false}
+      isLabelHidden={false}
+      isReadOnly={false}
+      isRequired={true}
+      isReturningTime={false}
+      isTimestamp={false}
+      isWithInlineEdit={false}
+      label=""
+      onChange={[Function]}
+      onConfirm={[Function]}
+      value={null}
+    />
+    <div
+      className="nexus-c-sync-log-table__date-field--error"
+      id="dateFromError"
+    />
+  </div>
+  <div
+    className="nexus-c-sync-log-table__title-between"
+  >
+    TO
+  </div>
+  <div
+    className="nexus-c-sync-log-table__date-field"
+  >
+    <NexusDatePicker
+      error=""
+      id="nexus-c-sync-log-dateTo"
+      isClearable={false}
+      isLabelHidden={false}
+      isReadOnly={false}
+      isRequired={false}
+      isReturningTime={false}
+      isTimestamp={false}
+      isWithInlineEdit={false}
+      label=""
+      onChange={[Function]}
+      onConfirm={[Function]}
+      value={null}
+    />
+    <div
+      className="nexus-c-sync-log-table__date-field--error"
+      id="dateToError"
+    />
+  </div>
+</div>
+`;

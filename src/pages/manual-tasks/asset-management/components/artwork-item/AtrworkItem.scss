@@ -2,6 +2,8 @@
 
 .artwork-item {
     margin: 0 16px 16px 0;
+    width: 280px;
+    height: 158px;
     &--selected {
         outline: 3px solid map-get($blues, B300);
     }

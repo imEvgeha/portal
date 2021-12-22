@@ -2,30 +2,39 @@
 
 exports[`NexusPersonRO should match snapshot 1`] = `
 <div
-  className="nexus-c-nexus-person-ro"
+  className="nexus-c-nexus-person-ro__one-col"
 >
-  <div>
-    <img
-      alt="Person"
-      className="nexus-c-nexus-person-ro__img"
-      src={
-        Object {
-          "process": [Function],
-        }
-      }
-    />
-    Amaka Obi
-  </div>
   <div
-    className="nexus-c-nexus-person-ro__tag"
+    className="nexus-c-nexus-person-ro__info"
   >
-    <Lozenge
-      appearance="default"
-      isBold={false}
-      maxWidth={200}
-    >
-      Actor
-    </Lozenge>
+    <div>
+      <img
+        alt="Person"
+        className="nexus-c-nexus-person-ro__img"
+        src={
+          Object {
+            "process": [Function],
+          }
+        }
+      />
+      <div
+        className="nexus-c-nexus-person-type"
+      >
+        <Lozenge
+          appearance="default"
+          isBold={false}
+          maxWidth={200}
+        >
+          Actor:
+        </Lozenge>
+      </div>
+      <span
+        className=""
+        dir="ltr"
+      >
+        Amaka Obi
+      </span>
+    </div>
   </div>
 </div>
 `;

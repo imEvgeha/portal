@@ -10,6 +10,12 @@ export const fetchPosters = url => {
     }).then(response => response.json());
 };
 
+export const fetchPoster = poster => {
+    const headers = new Headers();
+    headers.append('Authorization', `token ${localStorage.getItem('token')}`);
+    return fetch(poster, {method: 'GET', headers}).then(res => res.blob());
+};
+
 export const loginAssets = () => {
     const headers = new Headers();
     const url = `${config.get('gateway.kongUrl')}${config.get(

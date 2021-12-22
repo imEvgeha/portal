@@ -5,7 +5,6 @@ import eventManagementRoutes from './pages/event-management/eventManagementRoute
 import manualTasksRoutes from './pages/manual-tasks/manualTasksRoutes';
 import servicingOrdersRoutes from './pages/servicing-orders/servicingOrdersRoutes';
 import staticPagesRoutes from './pages/static/staticPagesRoutes';
-import syncLogRoutes from './pages/sync-log/syncLogRoutes';
 import titleMetadataRoutes from './pages/title-metadata/titleMetadataRoutes';
 import withTracker from './util/hoc/withTracker';
 
@@ -53,7 +52,6 @@ export const routes = [
     ...titleMetadataRoutes,
     ...servicingOrdersRoutes,
     ...eventManagementRoutes,
-    ...syncLogRoutes,
     ...dopTasksRoutes,
     ...manualTasksRoutes,
     ...restRoutes,

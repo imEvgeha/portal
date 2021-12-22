@@ -22,7 +22,9 @@ import {
     DOP_PROJECT_URL,
     PROJECT_STATUS_ENUM,
     TASK_ACTIONS_ASSIGN,
+    TASK_ACTIONS_UNASSIGN,
     TASK_ACTIONS_FORWARD,
+    TASK_STATUS_ENUM,
     CHANGE_PRIORITY_TITLE,
 } from '../../constants';
 import {fetchDopTasksData} from '../../utils';
@@ -37,7 +39,15 @@ const DopTasksTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
-const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumnApi, assignTasks, changePriority}) => {
+const DopTasksTable = ({
+    externalFilter,
+    setExternalFilter,
+    setGridApi,
+    setColumnApi,
+    assignTasks,
+    unAssignTasks,
+    changePriority,
+}) => {
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
@@ -199,44 +209,62 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumn
     };
 
     const handleAssign = val => {
-        openModal(<AssignModal selectedTasks={rowsSelected} onChange={setModalValue} action={val} />, {
-            title: val === CHANGE_PRIORITY_TITLE ? CHANGE_PRIORITY_TITLE : `${val} Tasks`,
-            actions: [
-                {
-                    text: 'Apply',
-                    onClick: () => setAction([val]),
-                    appearance: 'primary',
-                },
-                {
-                    text: 'Cancel',
-                    onClick: closeModal,
-                    appearance: 'default',
-                },
-            ],
-        });
+        val === TASK_ACTIONS_UNASSIGN
+            ? unAssignTasks({taskIds: rowsSelected.map(n => n.id)})
+            : openModal(<AssignModal selectedTasks={rowsSelected} onChange={setModalValue} action={val} />, {
+                  title: val === CHANGE_PRIORITY_TITLE ? CHANGE_PRIORITY_TITLE : `${val} Tasks`,
+                  actions: [
+                      {
+                          text: 'Apply',
+                          onClick: () => setAction([val]),
+                          appearance: 'primary',
+                      },
+                      {
+                          text: 'Cancel',
+                          onClick: closeModal,
+                          appearance: 'default',
+                      },
+                  ],
+              });
     };
+
+    const cellStyle = ({data}) => {
+        return data && [TASK_STATUS_ENUM.READY, TASK_STATUS_ENUM.IN_PROGRESS].includes(data.taskStatus)
+            ? ''
+            : {'pointer-events': 'none'};
+    };
+
+    const cellClass = ({data}) => {
+        return data && [TASK_STATUS_ENUM.READY, TASK_STATUS_ENUM.IN_PROGRESS].includes(data.taskStatus)
+            ? ''
+            : 'nexus-c-grid-checkbox--is-disabled';
+    };
+
+    const checkboxColumn = {...defineCheckboxSelectionColumn(), cellStyle, cellClass};
 
     return (
         <div className="nexus-c-dop-tasks-table">
             <MoreIcon className="nexus-c-dop-tasks-table__more-actions" onClick={openMenu} />
             {isMenuOpen && (
                 <div className="nexus-c-dop-tasks-table__action-menu">
-                    {[TASK_ACTIONS_ASSIGN, TASK_ACTIONS_FORWARD, CHANGE_PRIORITY_TITLE].map(key => (
-                        <div
-                            className={`nexus-c-dop-tasks-table__action-menu--item ${
-                                rowsSelected.length ? 'enable-option' : ''
-                            }`}
-                            key={key}
-                            onClick={() => handleAssign(key)}
-                        >
-                            {key}
-                        </div>
-                    ))}
+                    {[TASK_ACTIONS_ASSIGN, TASK_ACTIONS_UNASSIGN, TASK_ACTIONS_FORWARD, CHANGE_PRIORITY_TITLE].map(
+                        key => (
+                            <div
+                                className={`nexus-c-dop-tasks-table__action-menu--item ${
+                                    rowsSelected.length ? 'enable-option' : ''
+                                }`}
+                                key={key}
+                                onClick={() => handleAssign(key)}
+                            >
+                                {key}
+                            </div>
+                        )
+                    )}
                 </div>
             )}
             <DopTasksTableGrid
                 id="DopTasksTable"
-                columnDefs={[defineCheckboxSelectionColumn(), ...formattedValueColDefs]}
+                columnDefs={[checkboxColumn, ...formattedValueColDefs]}
                 rowSelection="multiple"
                 notFilterableColumns={['action']}
                 mapping={COLUMN_MAPPINGS}
@@ -258,6 +286,7 @@ DopTasksTable.propTypes = {
     setGridApi: PropTypes.func,
     setColumnApi: PropTypes.func,
     assignTasks: PropTypes.func,
+    unAssignTasks: PropTypes.func,
     changePriority: PropTypes.func,
 };
 
@@ -267,6 +296,7 @@ DopTasksTable.defaultProps = {
     setGridApi: () => null,
     setColumnApi: () => null,
     assignTasks: () => null,
+    unAssignTasks: () => null,
     changePriority: () => null,
 };
 

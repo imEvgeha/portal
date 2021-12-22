@@ -1,0 +1,19 @@
+@import './legacy/variables';
+@import '~bootstrap/scss/bootstrap';
+@import '~react-datepicker/dist/react-datepicker.css';
+
+.fade:not(.show) {
+    opacity: initial;
+}
+
+.row {
+    &.nexus-c-section {
+        margin-top: 16px;
+        margin-bottom: 16px;
+    }
+
+    > * {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+}

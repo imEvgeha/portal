@@ -1,5 +1,12 @@
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+
 .nexus-c-title-metadata {
     height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+.nexus-c-title-synclog__table-container {
+    @include padding(6, 6, 10, 6);
 }

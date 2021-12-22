@@ -35,4 +35,4 @@ export const LONG_CHARACTER_ERROR = 'CHARACTER NAME MUST BE LESS THAN 100 CHARAC
 export const LOCALIZED_NOT_DEFINED = 'Localized name not defined';
 export const NEEDS_TRANSLATION = '(Needs translation)';
 
-export const SEASON = 'SEASON'
+export const SEASON = 'SEASON';

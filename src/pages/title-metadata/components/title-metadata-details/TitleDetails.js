@@ -12,31 +12,31 @@ import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
 import Loading from '../../../static/Loading';
-import {FIELDS_TO_REMOVE, SYNC, VZ, MOVIDA} from '../../constants';
+import {FIELDS_TO_REMOVE, MOVIDA, SYNC, VZ} from '../../constants';
 import {
-    getTitle,
+    clearSeasonPersons,
     clearTitle,
+    getEditorialMetadata,
     getExternalIds,
     getTerritoryMetadata,
-    getEditorialMetadata,
-    updateTitle,
-    syncTitle,
+    getTitle,
     publishTitle,
-    clearSeasonPersons,
+    syncTitle,
+    updateTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, getEpisodesCount, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
 import {
+    handleDirtyValues,
     handleEditorialGenresAndCategory,
     handleTitleCategory,
-    updateTerritoryMetadata,
-    updateEditorialMetadata,
+    isMgmTitle,
     isNexusTitle,
     isStateEditable,
-    isMgmTitle,
     prepareCategoryField,
-    handleDirtyValues,
     propagateSeasonsPersonsToEpisodes,
+    updateEditorialMetadata,
+    updateTerritoryMetadata,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
@@ -77,7 +77,6 @@ const TitleDetails = ({
     const [refresh, setRefresh] = useState(false);
     const [VZDisabled, setVZDisabled] = useState(true);
     const [MOVDisabled, setMOVDisabled] = useState(true);
-
     const [episodesCount, setEpisodesCount] = useState('0');
 
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
@@ -197,7 +196,7 @@ const TitleDetails = ({
 
         return {
             ...updatedTitle,
-            totalEpisodesCount: episodesCount.total ? episodesCount.total : '0',
+            episodesCount: episodesCount.total ? episodesCount.total : '0',
             vzExternalIds,
             movidaExternalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),

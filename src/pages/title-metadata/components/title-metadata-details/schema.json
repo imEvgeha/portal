@@ -191,6 +191,17 @@
                                 }
                             ]
                         },
+                        "totalEpisodes": {
+                            "name": "Total Episodes",
+                            "path": "totalNumberOfEpisodes",
+                            "type": "number",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                }
+                            ]
+                        },
                         "seasonNumber": {
                             "name": "Season Number",
                             "path": "episodic.seasonNumber",
@@ -244,6 +255,18 @@
                                 }
                             ]
                         },
+                        "episodesCount": {
+                            "name": "Episode Count",
+                            "path": "episodesCount",
+                            "type": "string",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                }
+                            ],
+                            "isReadOnly": true
+                        },
                         "seasonId": {
                             "name": "Season ID",
                             "path": "episodic.seasonId",
@@ -254,18 +277,6 @@
                                     "hasValue": "SEASON"
                                 }
                             ]
-                        },
-                        "totalEpisodesCount": {
-                            "name": "Total Episodes",
-                            "path": "totalEpisodesCount",
-                            "type": "string",
-                            "showWhen": [
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "SEASON"
-                                }
-                            ],
-                            "isReadOnly": true
                         },
                         "episodeNumber": {
                             "name": "Episode Number",

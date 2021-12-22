@@ -2,6 +2,7 @@ import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {parseAdvancedFilter} from './RightsService';
 import {prepareSortMatrixParam, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
+import { keycloak } from '@vubiquity-nexus/portal-auth/keycloak';
 
 export const exportService = {
     exportAvails: (rightsIDs, columns) => {
@@ -48,6 +49,30 @@ export const exportService = {
             {
                 method: 'post',
                 body: JSON.stringify(searchCriteria),
+            },
+            abortAfter
+        );
+    },
+
+    bulkExportMetadata: async params => {
+        const headers = new Headers();
+        const {token} = keycloak;
+        headers.append('Authorization', `Bearer ${token}`);
+        headers.append('Accept', `application/vnd.ms-excel`);
+        const {locale, language, status} = params;
+        const statusUrl = status !== 'openDopTasks' ? `&emetStatus=${status}` : ``;
+        const url = `${
+            config.get('gateway.titleUrl') + config.get('gateway.service.title')
+        }/editorialmetadata/download?locale=${locale}&language=${language}&byDopEmtTasks=${
+            status === 'openDopTasks'
+        }${statusUrl}`;
+        const abortAfter = config.get('avails.export.http.timeout');
+
+        return nexusFetch(
+            url,
+            {
+                method: 'get',
+                headers,
             },
             abortAfter
         );

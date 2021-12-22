@@ -125,17 +125,20 @@ class DropdownCellEditor extends Component {
                         >
                             Select All
                         </DropdownItemCheckbox>
-                        {value.map((option, index) => (
-                            <DropdownItemCheckbox
-                                isSelected={option.selected}
-                                key={option.country}
-                                id={option.country}
-                                isDisabled={option.isDisabled || option.withdrawn}
-                                onClick={() => this.handleChange(index)}
-                            >
-                                {option.country}
-                            </DropdownItemCheckbox>
-                        ))}
+                        {value.map((option, index) => {
+                            if(option.isDisabled || option.withdrawn) return null;
+                            return (
+                                <DropdownItemCheckbox
+                                    isSelected={option.selected}
+                                    key={option.country}
+                                    id={option.country}
+                                    isDisabled={option.isDisabled || option.withdrawn}
+                                    onClick={() => this.handleChange(index)}
+                                >
+                                    {option.country}
+                                </DropdownItemCheckbox>
+                            )
+                        })}
                     </DropdownItemGroupCheckbox>
                 </Dropdown>
             </div>
