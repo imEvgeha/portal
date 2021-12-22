@@ -69,7 +69,7 @@ export const exportService = {
         const abortAfter = config.get('avails.export.http.timeout');
 
         return nexusFetch(url, {
-            method: 'post',
+            method: 'get',
             headers,
         });
     },
