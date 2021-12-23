@@ -392,7 +392,7 @@ NexusPersonsList.defaultProps = {
     castCrewConfig: {},
     emetLanguage: 'en',
     isVerticalLayout: false,
-    isEditable: false,
+    isEditable: true,
 };
 
 export default NexusPersonsList;
