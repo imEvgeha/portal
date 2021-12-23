@@ -36,6 +36,7 @@ const NexusPersonsList = ({
     emetLanguage,
     setUpdate,
     isVerticalLayout,
+    isEditable,
     ...props
 }) => {
     const dispatch = useDispatch();
@@ -43,13 +44,17 @@ const NexusPersonsList = ({
     const [openPersonModal, setOpenPersonModal] = useState(false);
     const [currentRecord, setCurrentRecord] = useState({});
     const [persons, setPersons] = useState(personsList || []);
+    const [deletedPersonsIds, setDeletedPersonsIds] = useState([]);
     const [searchText, setSearchText] = useState('');
     const propagateRemovePersons = useSelector(propagateRemovePersonsSelector);
-    const {title, contentType, editorialMetadata} = getValues();
+    const {title, contentType, castCrew} = getValues();
 
     useEffect(() => {
-        const updatedPersons = [...personsList];
+        const updatedPersons = [...personsList.filter(elem => !deletedPersonsIds.includes(elem.id))];
+
         updatedPersons.forEach((person, index) => {
+            //Avails crew doesn't come with id so displayName is used instead
+            !person.hasOwnProperty('id') ? (person.id = person.displayName) : person;
             person.creditsOrder = index;
         });
         setPersons(updatedPersons);
@@ -147,37 +152,14 @@ const NexusPersonsList = ({
             dispatch(removeSeasonPerson(payload));
         }
 
-        const updateEditorialMetadata = editorialMetadata.map(emet => {
-            const updatedCastCrew =
-                emet?.castCrew &&
-                emet.castCrew.filter(entry => {
-                    return entry.id !== person.id || entry.personType !== person.personType;
-                });
-
-            const updatedEmet = {
-                ...emet,
-                castCrew: updatedCastCrew,
-            };
-
-            const {editorial} = getValues();
-
-            if (checkIfEmetIsEditorial(emet, editorial)) {
-                setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
-                if (isVerticalLayout) {
-                    return updatedEmet;
-                }
-            }
-
-            if (!isVerticalLayout) {
-                return updatedEmet;
-            } else {
-                return emet;
-            }
+        const updatedCastCrew = castCrew?.filter(entry => {
+            return entry.id !== person.id || entry.personType !== person.personType;
         });
 
-        console.log(updateEditorialMetadata);
-        setFieldValue('editorialMetadata', updateEditorialMetadata);
+        const deletedCastCrew = castCrew?.filter(entry => entry.id === person.id);
 
+        setFieldValue('castCrew', updatedCastCrew);
+        setDeletedPersonsIds([...deletedPersonsIds, ...deletedCastCrew.map(elem => elem.id)]);
         closeModal();
         setUpdate(prev => !prev);
     };
@@ -283,6 +265,7 @@ const NexusPersonsList = ({
             const customKey = person.id ? uid(person.id, i) : `${person.displayName}-${i}`;
             return (
                 <NexusPerson
+                    isEditable={isEditable}
                     key={customKey}
                     person={person}
                     customKey={customKey}
@@ -393,6 +376,7 @@ NexusPersonsList.propTypes = {
     emetLanguage: PropTypes.string,
     setUpdate: PropTypes.func,
     isVerticalLayout: PropTypes.bool,
+    isEditable: PropTypes.bool,
 };
 
 NexusPersonsList.defaultProps = {
@@ -408,6 +392,7 @@ NexusPersonsList.defaultProps = {
     castCrewConfig: {},
     emetLanguage: 'en',
     isVerticalLayout: false,
+    isEditable: false,
 };
 
 export default NexusPersonsList;
