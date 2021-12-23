@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
@@ -111,6 +110,9 @@ const TitleDetails = ({
 
     const onSubmit = (values, initialValues) => {
         handleDirtyValues(initialValues, values);
+
+        const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
+
         const {params} = match || {};
         const {id} = params;
         // remove fields under arrayWithTabs
@@ -135,7 +137,7 @@ const TitleDetails = ({
 
         prepareCategoryField(updatedValues);
         Promise.all([
-            updateTitle({...updatedValues, id: title.id}),
+            !isEmetUpdated && updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
             (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
@@ -211,7 +213,7 @@ const TitleDetails = ({
                         containerRef={containerRef}
                         selectValues={selectValues}
                         seasonPersons={propagateAddPersons}
-                        onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
+                        onSubmit={onSubmit}
                         generateMsvIds={generateMsvIds}
                         regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                         hasButtons={isNexusTitle(title.id)}
