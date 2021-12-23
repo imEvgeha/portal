@@ -582,7 +582,7 @@ NexusField.propTypes = {
 };
 
 NexusField.defaultProps = {
-    isEditable: false,
+    isEditable: true,
     view: VIEWS.VIEW,
     tooltip: null,
     formData: {},
