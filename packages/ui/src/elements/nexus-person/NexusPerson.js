@@ -60,76 +60,96 @@ const NexusPerson = ({
 
     const displayName = person?.displayNameEn ? person?.displayNameEn : person?.displayName;
 
-    return (
-        <Draggable draggableId={customKey} index={index}>
-            {(provided, snapshot) => (
-                <div ref={provided.innerRef} {...provided.draggableProps}>
-                    <DraggableContent isDragging={snapshot.isDragging}>
-                        <div
-                            className={
-                                hasTranslation() && emetLanguage !== 'en' && displayName
-                                    ? 'nexus-c-nexus-person'
-                                    : 'nexus-c-nexus-person__two-col'
-                            }
-                        >
-                            <div className="nexus-c-nexus-person__info">
-                                <div>
-                                    <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
-                                    <div className="nexus-c-nexus-person-type">
-                                        <Lozenge appearance="default">{getFormatTypeName(person.personType)}</Lozenge>
-                                    </div>
-                                    <span
-                                        dir={getDir(localizedName())}
-                                        className={
-                                            person.displayNameEn && emetLanguage !== person?.language
-                                                ? 'nexus-c-nexus-person-italic'
-                                                : ''
-                                        }
-                                    >
-                                        {localizedName()}
-                                    </span>
-                                </div>
-                            </div>
-                            {hasTranslation() && emetLanguage !== 'en' && displayName && (
-                                <div className="nexus-c-nexus-person__translation">
-                                    <div className="nexus-c-nexus-person-fade">
-                                        <span dir={getDir(displayName)}>{displayName}</span>
+    if (isEditable)
+        return (
+            <Draggable draggableId={customKey} index={index}>
+                {(provided, snapshot) => (
+                    <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <DraggableContent isDragging={snapshot.isDragging}>
+                            <div
+                                className={
+                                    hasTranslation() && emetLanguage !== 'en' && displayName
+                                        ? 'nexus-c-nexus-person'
+                                        : 'nexus-c-nexus-person__two-col'
+                                }
+                            >
+                                <div className="nexus-c-nexus-person__info">
+                                    <div>
+                                        <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
+                                        <div className="nexus-c-nexus-person-type">
+                                            <Lozenge appearance="default">
+                                                {getFormatTypeName(person.personType)}
+                                            </Lozenge>
+                                        </div>
+                                        <span
+                                            dir={getDir(localizedName())}
+                                            className={
+                                                person.displayNameEn && emetLanguage !== person?.language
+                                                    ? 'nexus-c-nexus-person-italic'
+                                                    : ''
+                                            }
+                                        >
+                                            {localizedName()}
+                                        </span>
                                     </div>
                                 </div>
-                            )}
-
-                            <div className="nexus-c-nexus-person__buttons">
-                                <div className="dot">
-                                    {person.displayName === person.displayNameEn && emetLanguage !== person?.language && (
-                                        <Tooltip content={LOCALIZED_NOT_DEFINED}>
-                                            <div className="nexus-c-nexus-person-warning" />
-                                        </Tooltip>
-                                    )}
-                                </div>
-                                {isCastCrewField && isTitlePage && (
-                                    <span title="Propagate">
-                                        <PropagateButton onClick={onPropagate} />
-                                    </span>
+                                {hasTranslation() && emetLanguage !== 'en' && displayName && (
+                                    <div className="nexus-c-nexus-person__translation">
+                                        <div className="nexus-c-nexus-person-fade">
+                                            <span dir={getDir(displayName)}>{displayName}</span>
+                                        </div>
+                                    </div>
                                 )}
-                                {isEditable && (
+                                <div className="nexus-c-nexus-person__buttons">
+                                    <div className="dot">
+                                        {person.displayName === person.displayNameEn &&
+                                            emetLanguage !== person?.language && (
+                                                <Tooltip content={LOCALIZED_NOT_DEFINED}>
+                                                    <div className="nexus-c-nexus-person-warning" />
+                                                </Tooltip>
+                                            )}
+                                    </div>
+                                    {isCastCrewField && isTitlePage && (
+                                        <span title="Propagate">
+                                            <PropagateButton onClick={onPropagate} />
+                                        </span>
+                                    )}
                                     <span title="Edit">
                                         <EditPerson onClick={onEditPerson} />
                                     </span>
-                                )}
-                                <span title="Remove">
-                                    <RemovePerson onClick={onRemove} />
-                                </span>
-                                <span title="Drag this item">
-                                    {/* isCrewEditable converterd to string to avoid arror caused by draggable*/}
-                                    <DragButton {...provided.dragHandleProps} editable={isEditable.toString()} />
-                                </span>
+                                    <span title="Remove">
+                                        <RemovePerson onClick={onRemove} />
+                                    </span>
+                                    <span title="Drag this item">
+                                        <DragButton {...provided.dragHandleProps} />
+                                    </span>
+                                </div>
                             </div>
+                        </DraggableContent>
+                    </div>
+                )}
+            </Draggable>
+        );
+    else
+        return (
+            <div className="nexus-c-nexus-person-avails__two-col">
+                <div className="nexus-c-nexus-person__info">
+                    <div>
+                        <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
+                        <div className="nexus-c-nexus-person-type">
+                            <Lozenge appearance="default">{getFormatTypeName(person.personType)}</Lozenge>
                         </div>
-                    </DraggableContent>
+                        <span>{displayName}</span>
+                    </div>
                 </div>
-            )}
-        </Draggable>
-    );
+
+                <div className="nexus-c-nexus-person__buttons">
+                    <span title="Remove">
+                        <RemovePerson onClick={onRemove} />
+                    </span>
+                </div>
+            </div>
+        );
 };
 
 NexusPerson.propTypes = {
