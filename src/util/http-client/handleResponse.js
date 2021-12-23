@@ -1,4 +1,6 @@
 /* eslint-disable no-magic-numbers, no-throw-literal */
+import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
+
 export default async (response, fetchHeaders) => {
     try {
         const contentType = getResponseContentType(response);
@@ -48,8 +50,7 @@ const parseResponse = (response, type) => {
     } else if (type.includes('multipart/form-data')) {
         return response.formData();
     } else if (type.includes('application/vnd.ms-excel')) {
-        const reader = response.body.getReader();
-        return reader.read();
+        return response.blob();
     } else if (type.includes('application/octet-stream')) {
         return response.arrayBuffer();
     }
