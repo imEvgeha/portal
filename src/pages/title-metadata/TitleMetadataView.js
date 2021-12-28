@@ -18,7 +18,6 @@ import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import {
-    successDownloadDesc,
     successDownloadTitle,
     failureDownloadDesc,
     failureDownloadTitle,
@@ -52,11 +51,11 @@ export const TitleMetadataView = ({
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
     const toast = useRef(null);
 
-    const showSuccess = () => {
+    const showSuccess = (detail) => {
         toast.current.show({
             severity: 'success',
             summary: successDownloadTitle,
-            detail: successDownloadDesc,
+            detail,
             life: 3000,
         });
     };
@@ -66,7 +65,6 @@ export const TitleMetadataView = ({
             severity: 'error',
             summary: failureDownloadTitle,
             detail: `${failureDownloadDesc} Details: ${err}`,
-            life: 300000,
         });
     };
 

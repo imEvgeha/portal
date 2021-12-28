@@ -7,9 +7,9 @@ import {
     CREW_LIST,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import {isEmpty} from 'lodash';
 import './CastCrew.scss';
-import { searchPersonById } from '../../../../../../../../../src/pages/avails/right-details/rightDetailsServices';
+import {searchPersonById} from '../../../../../../../../../src/pages/avails/right-details/rightDetailsServices';
 
 const CastCrew = ({
     persons,
@@ -23,6 +23,7 @@ const CastCrew = ({
     setFieldValue,
     setUpdatedCastCrew,
     setUpdate,
+    isEditable,
     ...props
 }) => {
     const [personsWithLocalization, setPersonsWithLocalization] = useState(persons || []);
@@ -37,13 +38,16 @@ const CastCrew = ({
     useEffect(() => {
         resetPersons();
         async function fetchLocalizationPersons() {
-            const allLocalizationsPersons = persons.map(async (person) => {
-                try {
-                    const localizationPerson = await searchPersonById(person.id);
-                    return {...person, localization: localizationPerson.localization};
-                } catch (err) {
-                    return;
-                }
+            const allLocalizationsPersons = persons.map(async person => {
+                // for avails there is no language
+                if (person.hasOwnProperty('language')) {
+                    try {
+                        const localizationPerson = await searchPersonById(person.id);
+                        return {...person, localization: localizationPerson.localization};
+                    } catch (err) {
+                        return;
+                    }
+                } else return person;
             });
             setPersonsWithLocalization(await Promise.all(allLocalizationsPersons));
         }
@@ -103,6 +107,7 @@ const CastCrew = ({
                 })}
             >
                 <NexusPersonsList
+                    isEditable={isEditable}
                     searchPerson={searchPerson}
                     castCrewConfig={updateCastCrewConfig()}
                     personsList={cast}
@@ -124,6 +129,7 @@ const CastCrew = ({
                 })}
             >
                 <NexusPersonsList
+                    isEditable={isEditable}
                     searchPerson={searchPerson}
                     castCrewConfig={updateCastCrewConfig()}
                     personsList={crew}
@@ -154,6 +160,7 @@ CastCrew.propTypes = {
     castCrewConfig: PropTypes.object,
     language: PropTypes.string,
     setUpdate: PropTypes.func,
+    isEditable: PropTypes.bool,
 };
 
 CastCrew.defaultProps = {
@@ -168,6 +175,7 @@ CastCrew.defaultProps = {
     searchPerson: undefined,
     castCrewConfig: {},
     language: 'en',
+    isEditable: true,
 };
 
 export default CastCrew;

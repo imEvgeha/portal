@@ -415,14 +415,23 @@ const handleDirtyRatingsValues = values => {
         advisoriesCode,
         advisoriesFreeText,
     };
-    const index = values.ratings && values.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
+    const index = values?.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
     if (index !== null && index >= 0) {
         values.ratings[index] = updatedRatingRecord;
     }
 };
 
+// remove undefined and null values from object
+const cleanObject = obj => {
+    return JSON.parse(
+        JSON.stringify(obj, (key, value) => {
+            return value === null ? undefined : value;
+        })
+    );
+};
+
 const handleDirtyEMETValues = (initialValues, values) => {
-    const editorial = get(values, 'editorial');
+    const editorial = values.editorial;
     if (editorial) {
         const index =
             values.editorialMetadata &&
@@ -438,13 +447,20 @@ const handleDirtyEMETValues = (initialValues, values) => {
                 }
                 return false;
             });
+
         if (index !== null && index >= 0) {
-            const updatedEmetRecord = {
-                ...values.editorialMetadata[index],
-                ...editorial,
-                isUpdated: true,
-            };
-            values.editorialMetadata[index] = updatedEmetRecord;
+            const cleanEditorial = cleanObject(editorial);
+            const isChanged = initialValues?.editorialMetadata && initialValues?.editorialMetadata[index] && Object.keys(cleanEditorial).some(
+                item => !isEqual(initialValues.editorialMetadata[index][item], cleanEditorial[item])
+            );
+            if (isChanged) {
+                const updatedEmetRecord = {
+                    ...values.editorialMetadata[index],
+                    ...editorial,
+                    isUpdated: true,
+                };
+                values.editorialMetadata[index] = updatedEmetRecord;
+            }
         }
 
         values.editorialMetadata.forEach((emet, i) => {
