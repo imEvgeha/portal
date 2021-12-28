@@ -28,10 +28,7 @@ const LoadingCellRenderer = params => {
     
     const handleDownload = () => {
         downloadUploadedMetadata(idToFileDownloading).then(response => {
-            const buffer = new Uint8Array(response.value).buffer;
-            const buftype = 'application/vnd.ms-excel;charset=utf-8';
-            const blob = new Blob([buffer], {type: buftype});
-            downloadFile(blob, 'Editorial_Metadata');
+            downloadFile(response, 'Editorial_Metadata');
         }).catch((err) => console.error(err))
     };
 
