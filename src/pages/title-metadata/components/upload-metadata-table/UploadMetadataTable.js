@@ -126,7 +126,7 @@ const UploadMetadataTable = ({
     }, [catalogueOwner, history?.location?.search]);
 
     return (
-        <div className="nexus-c-title-metadata-table">
+        <div className="nexus-c-upload-metadata-table">
             <UploadMetadataTableGrid
                 columnDefs={columnDefs}
                 mapping={UPLOAD_COLUMN_MAPPINGS}

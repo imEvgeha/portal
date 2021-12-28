@@ -1,9 +1,9 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
-import TitleMetadataTable from './TitleMetadataTable';
+import UploadMetadataTable from './UploadMetadataTable';
 
-describe('TitleMetadataTable', () => {
+describe('UploadMetadataTable', () => {
     let wrapper = null;
     const mockStore = configureStore();
     const store = mockStore({
@@ -17,7 +17,7 @@ describe('TitleMetadataTable', () => {
     });
 
     beforeAll(() => {
-        wrapper = shallow(<TitleMetadataTable store={store} />)
+        wrapper = shallow(<UploadMetadataTable store={store} />)
         .dive()
         .shallow();
     });
@@ -26,7 +26,7 @@ describe('TitleMetadataTable', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('renders TitleMetadataTableGrid wrapper', () => {
-        expect(wrapper.find('.nexus-c-title-metadata-table')).toHaveLength(1);
+    it('renders UploadMetadataTableGrid wrapper', () => {
+        expect(wrapper.find('.nexus-c-upload-metadata-table')).toHaveLength(1);
     });
 });
