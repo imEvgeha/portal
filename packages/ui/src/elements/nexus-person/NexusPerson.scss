@@ -14,7 +14,6 @@
 .nexus-c-nexus-person-avails__two-col {
     display: flex;
     background: map-get($neutrals, N10);
-    // grid-template-columns: 2fr 1fr;
     border: 1px solid map-get($neutrals, N40);
     padding: 5px 3px;
     &:hover {
