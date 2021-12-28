@@ -4,6 +4,8 @@ import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dyna
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {connect} from 'react-redux';
+import {fetchConfigApiEndpoints} from '../../legacy/containers/settings/settingsActions';
+import * as settingsSelectors from '../../legacy/containers/settings/settingsSelectors';
 import Loading from '../../static/Loading';
 import {getRight, updateRight, clearRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
@@ -13,10 +15,23 @@ import {searchPerson} from './rightDetailsServices';
 import schema from './schema.json';
 import './RightDetails.scss';
 
-const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving, clearRight, isFetching}) => {
+const RightDetails = ({
+    getRight,
+    updateRight,
+    right,
+    match,
+    selectValues,
+    isSaving,
+    clearRight,
+    isFetching,
+    fetchConfigApiEndpoints,
+    configApiEndpoints,
+}) => {
     const containerRef = useRef();
 
     useEffect(() => {
+        fetchConfigApiEndpoints();
+
         const {params} = match || {};
         if (params.id) {
             getRight({id: params.id});
@@ -40,6 +55,7 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, isSavi
             <RightDetailsHeader title="Right Details" right={right} containerRef={containerRef} />
             {right?.id && (
                 <NexusDynamicForm
+                    castCrewConfig={configApiEndpoints.find(e => e.displayName === 'Persons')}
                     schema={schema}
                     initialData={right}
                     onSubmit={values => onSubmit(values)}
@@ -64,6 +80,8 @@ RightDetails.propTypes = {
     selectValues: PropTypes.object,
     isSaving: PropTypes.bool,
     isFetching: PropTypes.bool,
+    configApiEndpoints: PropTypes.object,
+    fetchConfigApiEndpoints: PropTypes.func,
 };
 
 RightDetails.defaultProps = {
@@ -75,17 +93,21 @@ RightDetails.defaultProps = {
     selectValues: {},
     isSaving: false,
     isFetching: false,
+    configApiEndpoints: {},
+    fetchConfigApiEndpoints: () => null,
 };
 
 const mapStateToProps = () => {
     const rightSelector = selectors.getRightDetailsRightsSelector();
     const loadingSelector = createLoadingSelector(['GET_RIGHT']);
+    const settingsConfigEndpointsSelector = settingsSelectors.createSettingsEndpointsSelector();
 
     return (state, props) => ({
         right: rightSelector(state, props),
         selectValues: detailsSelectors.selectValuesSelector(state, props),
         isSaving: detailsSelectors.isSavingSelector(state),
         isFetching: loadingSelector(state),
+        configApiEndpoints: settingsConfigEndpointsSelector(state, props),
     });
 };
 
@@ -93,6 +115,7 @@ const mapDispatchToProps = dispatch => ({
     getRight: payload => dispatch(getRight(payload)),
     clearRight: () => dispatch(clearRight()),
     updateRight: payload => dispatch(updateRight(payload)),
+    fetchConfigApiEndpoints: payload => dispatch(fetchConfigApiEndpoints(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(memo(RightDetails));
