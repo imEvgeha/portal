@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {isEmpty, pickBy, without} from 'lodash';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
@@ -10,10 +11,17 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
     const form = useForm({mode: 'all', reValidateMode: 'onChange'});
 
     const constructFields = (schema, form, value) => {
-        // console.log(schema);
-        console.log(value);
+        console.log(schema);
+        // console.log(value);
         return schema?.map(elementSchema => {
-            return constructFieldPerType(elementSchema, form, value?.[elementSchema?.name] || '', undefined, undefined);
+            return constructFieldPerType(
+                elementSchema,
+                form,
+                value?.[elementSchema?.name] || '',
+                undefined,
+                undefined,
+                undefined
+            );
         });
     };
 
@@ -30,8 +38,21 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
 
     const submit = () => {
         console.log(form.getValues());
-        console.log(form.formState.errors);
-        // form.handleSubmit(onSubmit(form.getValues()))
+        if (isEmpty(form.formState.errors)) {
+            const tmp = pickBy(form.getValues());
+            let formValues = {};
+            Object.keys(tmp).forEach(key => {
+                if (Array.isArray(tmp[key])) {
+                    const arr = without(tmp[key], null, undefined);
+                    console.log('arr');
+                    console.log(arr);
+                    formValues = {...formValues, [key]: arr};
+                } else {
+                    formValues = {...formValues, [key]: tmp[key]};
+                }
+            });
+            onSubmit(formValues);
+        }
     };
 
     const footer = (
@@ -41,8 +62,7 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
                 <Button
                     className="p-button-outlined"
                     label="OK"
-                    disabled={!form.formState.isValid || !form.formState.isDirty}
-                    // disabled={!isEmpty(form.formState.errors)}
+                    disabled={!form.formState.isValid || isEmpty(form.formState.dirtyFields)}
                     onClick={submit}
                 />
             </div>
@@ -58,6 +78,8 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
             style={{width: '50vw'}}
             footer={footer}
             closeOnEscape={false}
+            header={displayName}
+            closable={false}
         >
             <form>
                 <div className="row">{constructFields(schema, form, value)}</div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button} from 'primereact/button';
 import {Calendar} from 'primereact/calendar';
+import {Checkbox} from 'primereact/checkbox';
 import {InputText} from 'primereact/inputtext';
 import {Controller} from 'react-hook-form';
 import DynamicArrayElement from './dynamic-array-element/DynamicArrayElement';
@@ -8,7 +9,7 @@ import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import FieldError from './field-error/FieldError';
 import FieldLabel from './field-label/FieldLabel';
 
-export const constructFieldPerType = (elementSchema, form, value, className, buttonConfig) => {
+export const constructFieldPerType = (elementSchema, form, value, className, buttonConfig, customOnChange) => {
     return (
         <div
             className={className || (elementSchema.type === 'array' ? 'col-sm-12' : 'col-sm-6 mb-1')}
@@ -21,16 +22,22 @@ export const constructFieldPerType = (elementSchema, form, value, className, but
                 defaultValue={value}
                 rules={{...createRules(!!elementSchema.required, elementSchema.validWhen)}}
                 render={({field, fieldState}) => {
+                    const onFormElementChanged = e => {
+                        field?.onChange(e);
+                        customOnChange && customOnChange(field);
+                    };
                     return (
                         <div className="row align-items-center">
                             <div className={buttonConfig ? 'col-sm-11' : 'col-sm-12'}>
                                 <div className="p-field">
-                                    <FieldLabel
-                                        htmlFor={elementSchema.id}
-                                        label={elementSchema.label}
-                                        isRequired={!!elementSchema.required}
-                                    />
-                                    {getElement(elementSchema, field, value, form)}
+                                    {elementSchema.type !== 'checkbox' && (
+                                        <FieldLabel
+                                            htmlFor={elementSchema.id}
+                                            label={elementSchema.label}
+                                            isRequired={!!elementSchema.required}
+                                        />
+                                    )}
+                                    {getElement(elementSchema, field, value, form, onFormElementChanged)}
                                     {elementSchema.type !== 'array' && <FieldError error={fieldState.error} />}
                                 </div>
                             </div>
@@ -57,7 +64,7 @@ export const constructFieldPerType = (elementSchema, form, value, className, but
     );
 };
 
-const getElement = (elementSchema, field, value, form) => {
+const getElement = (elementSchema, field, value, form, onChange) => {
     let singleField;
     let Comp;
     switch (elementSchema.type) {
@@ -71,6 +78,7 @@ const getElement = (elementSchema, field, value, form) => {
                     onKeyPress={e => {
                         e.key === 'Enter' && e.preventDefault();
                     }}
+                    onChange={onChange}
                     placeholder={elementSchema.description}
                     disabled={elementSchema.disable}
                 />
@@ -84,6 +92,7 @@ const getElement = (elementSchema, field, value, form) => {
                     key={elementSchema.id}
                     {...field}
                     // value={date}
+                    onChange={onChange}
                     placeholder={elementSchema.description}
                     disabled={elementSchema.disable}
                     showTime
@@ -96,7 +105,30 @@ const getElement = (elementSchema, field, value, form) => {
             return <DynamicArrayElement elementsSchema={elementSchema} form={form} values={value} />;
         case 'multiselect':
         case 'select': {
-            return <DynamicDropdown formField={field} elementSchema={elementSchema} />;
+            return <DynamicDropdown formField={field} elementSchema={elementSchema} change={onChange} />;
+        }
+        case 'checkbox': {
+            return (
+                <div className="p-checkbox-wrapper">
+                    <Checkbox
+                        {...field}
+                        inputId={`${elementSchema.name}_input`}
+                        name={elementSchema.name}
+                        key={elementSchema.id}
+                        id={elementSchema.id}
+                        disabled={elementSchema.disable}
+                        onChange={onChange}
+                        checked={field.value}
+                    />
+                    <div className="d-inline-block mx-2">
+                        <FieldLabel
+                            htmlFor={elementSchema.name}
+                            label={elementSchema.label}
+                            isRequired={!!elementSchema.required}
+                        />
+                    </div>
+                </div>
+            );
         }
         default:
             break;

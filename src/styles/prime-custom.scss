@@ -115,6 +115,7 @@ $element-margin-bottom: 18px;
             height: 16px;
             margin: 0 4px;
             fill: palette(black, 80);
+            color: palette(black, 80);
         }
     }
 
@@ -346,4 +347,31 @@ $element-margin-bottom: 18px;
             border-radius: 5px;
         }
     }
+}
+
+// Checkbox
+.p-checkbox-wrapper {
+    margin-bottom: $element-margin-bottom;
+}
+
+// Scrollbar styling
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: blue orange;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 9px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #ebebeb;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background-color: #b3b3b3;
+    border: 1px solid #ebebeb;
 }

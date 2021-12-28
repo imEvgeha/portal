@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {capitalize} from 'lodash';
 import FieldRequired from '../field-required/FieldRequired';
 
 const FieldLabel = ({htmlFor, label, isRequired}) => {
     return label ? (
         <label htmlFor={htmlFor}>
-            {label}
+            {capitalize(label)}
             <FieldRequired required={!!isRequired} />
         </label>
     ) : null;

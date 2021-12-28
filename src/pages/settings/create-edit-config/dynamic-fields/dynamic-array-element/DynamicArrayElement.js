@@ -40,31 +40,14 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
     const [headers, setHeaders] = useState(getInitHeader());
 
     React.useEffect(() => {
-        let tst = 'tst';
-
-        const onWatch = (value, {name, type}, headerIn, setHeaderOut) => {
+        const subscription = form.watch((value, {name, type}) => {
             if (fields.current.includes(name)) {
                 data.current = {...data.current, [name]: value[name]};
-                // form.setValue(elementsSchema.name, Object.values(data.current));
             }
-            const labelPath = elementsSchema?.misc?.idAttribute;
-            if (name.includes(labelPath)) {
-                tst = name;
-                // setHeader(form.getValues(name));
-                const newHeaders = {...headerIn, [name]: form.getValues(name)};
-                setHeaderOut(newHeaders);
-            }
-        };
+        });
 
-        const subscription = form.watch((value, {name, type}) => onWatch(value, {name, type}, headers, setHeaders));
-
-        console.log(tst);
         return () => subscription.unsubscribe();
     }, [form.watch]);
-
-    React.useEffect(() => {
-        console.log(headers);
-    }, [headers]);
 
     const addField = fieldSchema => {
         const newFields = [...formFields];
@@ -96,7 +79,10 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
 
     const removeGroup = index => {
         let newFormFields = [...formFields];
+        const headerKey = newFormFields[index].find(x => x.id === elementsSchema.misc.idAttribute).name;
         newFormFields.splice(index, 1);
+
+        console.log(headerKey);
 
         const formPath = formFields[index]?.[0].name.split('.')[0];
         const formValues = form.getValues(formPath);
@@ -113,7 +99,30 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
             });
         });
 
+        adjustHeaders(headerKey, index);
         setFormFields(newFormFields);
+    };
+
+    const adjustHeaders = (headerKey, index) => {
+        const tmpHeaders = {...headers};
+        delete tmpHeaders?.[headerKey];
+
+        let newHeaders = {};
+        Object.keys(tmpHeaders).forEach(key => {
+            const headerParts = key.split('.');
+            const headerIndex = +headerParts[1];
+            if (headerIndex >= index) {
+                newHeaders = {
+                    ...newHeaders,
+                    [`${headerParts[0]}.${headerIndex - 1}.${headerParts[2]}`]: tmpHeaders[key],
+                };
+            } else {
+                newHeaders = {...newHeaders, [key]: tmpHeaders[key]};
+            }
+        });
+
+        console.log(newHeaders);
+        setHeaders(newHeaders);
     };
 
     const template = (options, index) => {
@@ -177,16 +186,25 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
         return newGroups;
     };
 
+    const onChange = field => {
+        const labelPath = elementsSchema?.misc?.idAttribute;
+        if (field?.name?.includes(labelPath) && isGroup.current) {
+            const newHeaders = {...headers, [field?.name]: form.getValues(field?.name)};
+            setHeaders(newHeaders);
+        }
+    };
+
     const renderDynamicArray = (fieldsIn, addButton = false) => {
         const newFields = fieldsIn.map(fieldSchema => {
             return constructFieldPerType(
                 fieldSchema,
                 form,
-                values?.[fieldSchema?.name] || '',
+                values?.[fieldSchema?.name] || undefined,
                 'mb-2',
                 addButton && {
                     action: addField,
-                }
+                },
+                onChange
             );
         });
 

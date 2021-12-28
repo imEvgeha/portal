@@ -6,7 +6,7 @@ import {MultiSelect} from 'primereact/multiselect';
 import {getConfigApiValues} from '../../../../legacy/common/CommonConfigService';
 import {cache} from '../../../../legacy/containers/config/EndpointContainer';
 
-const DynamicDropdown = ({elementSchema, formField}) => {
+const DynamicDropdown = ({elementSchema, formField, change}) => {
     const [value, setValue] = useState(undefined);
     const [options, setOptions] = useState([]);
 
@@ -43,6 +43,7 @@ const DynamicDropdown = ({elementSchema, formField}) => {
 
     const processOptions = (rawOptions, field) => {
         const items = sortBy(rawOptions?.map(rec => convertDataToOption(rec, field.source)) || [], ['label']);
+        console.log(items);
         setOptions(items);
         // return [{items}];
     };
@@ -89,7 +90,7 @@ const DynamicDropdown = ({elementSchema, formField}) => {
         if (Array.isArray(schema.label) && schema.label.length > 1) {
             label = schema.label.map(fieldName => dataSource[fieldName]).join(displayValueDelimiter);
         } else {
-            label = dataSource[schema.label || schema.value];
+            label = dataSource[schema.label] || dataSource[schema.value];
         }
         if (Array.isArray(schema.value) && schema.value.length > 1) {
             value = schema.value.reduce(function (result, item) {
@@ -114,7 +115,7 @@ const DynamicDropdown = ({elementSchema, formField}) => {
                         placeholder={elementSchema.description}
                         disabled={elementSchema.disable}
                         options={options}
-                        // onChange={e => setValue(e.value)}
+                        onChange={change}
                         filter={options.length > 10}
                         filterBy="label"
                     />
@@ -128,9 +129,9 @@ const DynamicDropdown = ({elementSchema, formField}) => {
                         key={elementSchema.id}
                         // value={value}
                         options={options}
+                        onChange={change}
                         placeholder={elementSchema.description}
                         disabled={elementSchema.disable}
-                        // onChange={e => setValue(e.value)}
                         filter={options.length > 10}
                         filterBy="label"
                     />
@@ -147,6 +148,7 @@ const DynamicDropdown = ({elementSchema, formField}) => {
 DynamicDropdown.propTypes = {
     formField: PropTypes.object.isRequired,
     elementSchema: PropTypes.object.isRequired,
+    change: PropTypes.func,
 };
 
 DynamicDropdown.defaultProps = {};
