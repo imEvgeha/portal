@@ -46,20 +46,6 @@ const UploadMetadataTable = ({
     titleMetadataFilter,
 }) => {
     const columnDefs = UPLOAD_COLUMN_MAPPINGS.map(mapping => {
-        if (mapping.colId === 'title') {
-            return {
-                ...mapping,
-                cellRendererParams: ({data = {}}) => {
-                    const {id} = data;
-                    return {
-                        link: `/metadata/detail/`,
-                        linkId: id,
-                        newTab: false,
-                    };
-                },
-                valueFormatter: createValueFormatter(mapping),
-            };
-        }
         if (mapping.colId === REPOSITORY_COLUMN_ID) {
             return {
                 ...mapping,
