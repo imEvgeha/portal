@@ -60,7 +60,7 @@ const TitleDetails = ({
     updateTitle,
     selectValues,
     isLoadingSelectValues,
-    castCrewConfig,
+    configApiEndpoints,
     syncTitle,
     publishTitle,
     isSaving,
@@ -205,7 +205,7 @@ const TitleDetails = ({
             ) : (
                 <>
                     <NexusDynamicForm
-                        castCrewConfig={castCrewConfig}
+                        castCrewConfig={configApiEndpoints.find(e => e.displayName === 'Persons')}
                         searchPerson={searchPerson}
                         schema={schema}
                         initialData={extendTitleWithExternalIds()}
@@ -276,7 +276,7 @@ TitleDetails.propTypes = {
     isVZTitlePublishing: PropTypes.bool,
     isMOVTitlePublishing: PropTypes.bool,
     fetchConfigApiEndpoints: PropTypes.func,
-    castCrewConfig: PropTypes.object,
+    configApiEndpoints: PropTypes.array,
     titleLoading: PropTypes.bool,
     emetLoading: PropTypes.bool,
     externalIdsLoading: PropTypes.bool,
@@ -309,7 +309,7 @@ TitleDetails.defaultProps = {
     titleLoading: true,
     emetLoading: true,
     externalIdsLoading: true,
-    castCrewConfig: {},
+    configApiEndpoints: [],
 };
 
 const mapStateToProps = () => {
@@ -342,7 +342,7 @@ const mapStateToProps = () => {
         isMOVTitleSyncing: isMOVTitleSyncingSelector(state, props),
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
-        castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
+        configApiEndpoints: settingsConfigEndpointsSelector(state, props),
     });
 };
 

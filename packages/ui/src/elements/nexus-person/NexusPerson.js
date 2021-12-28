@@ -133,7 +133,7 @@ const NexusPerson = ({
     else
         return (
             <div className="nexus-c-nexus-person-avails__two-col">
-                <div className="nexus-c-nexus-person__info">
+                <div className="nexus-c-nexus-person-avails__info">
                     <div>
                         <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
                         <div className="nexus-c-nexus-person-type">

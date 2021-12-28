@@ -429,7 +429,7 @@ const handleDirtyEMETValues = (initialValues, values) => {
 
         if (index !== null && index >= 0) {
             const cleanEditorial = cleanObject(editorial);
-            const isChanged = Object.keys(cleanEditorial).some(
+            const isChanged = initialValues?.editorialMetadata && initialValues?.editorialMetadata[index] && Object.keys(cleanEditorial).some(
                 item => !isEqual(initialValues.editorialMetadata[index][item], cleanEditorial[item])
             );
             if (isChanged) {
