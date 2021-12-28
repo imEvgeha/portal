@@ -145,18 +145,23 @@ export const handleTitleCategory = data => {
     return data;
 };
 
-export const fetchListOfUploadedMetadata = async data => {
-    const {tenantCode} = data;
+export const fetchListOfUploadedMetadata = async (data, page, size) => {
+    const {tenantCode, uploadedBy, uploadedAt, status} = data;
     if (tenantCode) {
-        const body = { uploadedBy: "unknown_user", } // startDate: null, endDate: null, status: "PROCESSING" }
-        const response = await titleService.getUploadedMetadata(body, tenantCode);
+        const body = { 
+            uploadedBy,
+            startDate: uploadedAt?.uploadedAtFrom,
+            endDate: uploadedAt?.uploadedAtTo,
+            status
+        }
+        const response = await titleService.getUploadedMetadata(body, tenantCode, page, size);
         return response
     }
 };
 
-export const downloadUploadedMetadata = async data => {
-    if ('eir_VU_9ba1b23f-c1f4-416f-b272-487de66b605b') { // get(data, 'id')
-        const response = await titleService.getUploadLogMetadataFile('eir_VU_9ba1b23f-c1f4-416f-b272-487de66b605b');
+export const downloadUploadedMetadata = async fileId => {
+    if (fileId) {
+        const response = await titleService.getUploadLogMetadataFile(fileId);
         return response
     }
 };

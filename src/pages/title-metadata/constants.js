@@ -319,42 +319,58 @@ export const METADATA_COLUMN_MAPPINGS = [
 
 export const UPLOAD_COLUMN_MAPPINGS = [
     {
-        colId: 'ingestStatus',
-        field: 'ingestStatus',
+        colId: 'status',
+        field: 'status',
         headerName: 'Ingest Status',
-        javaVariableName: 'ingestStatus',
-        enableSearch: false,
-        dataType: 'string',
-        width: 150,
-    },
-    {
-        colId: 'uploadDate',
-        field: 'uploadDate',
-        headerName: 'Upload date',
-        javaVariableName: 'uploadDate',
-        enableSearch: false,
-        dataType: 'string',
-        width: 150,
-    },
-    {
-        colId: 'fileName',
-        field: 'fileName',
-        headerName: 'File name',
-        javaVariableName: 'fileName',
+        javaVariableName: 'status',
         enableSearch: true,
         dataType: 'string',
         searchDataType: 'string',
-        cellRenderer: 'loadingCellRenderer',
         width: 150,
+        sortable: false
+    },
+    {
+        colId: 'uploadedAt',
+        field: 'uploadedAt',
+        headerName: 'Upload date',
+        javaVariableName: 'uploadedAt',
+        enableSearch: true,
+        dataType: 'businessDateTime',
+        searchDataType: 'businessDateTime',
+        width: 250,
+        sortable: false
+    },
+    {
+        colId: 'sourceFileName',
+        field: 'sourceFileName',
+        headerName: 'File name',
+        javaVariableName: 'sourceFileName',
+        enableSearch: false,
+        dataType: 'string',
+        cellRenderer: 'loadingCellRenderer',
+        width: 380,
+        // sortable: false
+    },
+    {
+        colId: 'error',
+        field: 'error',
+        headerName: 'Error',
+        javaVariableName: 'error',
+        enableSearch: false,
+        dataType: 'string',
+        width: 225,
+        sortable: false
     },
     {
         colId: 'uploadedBy',
         field: 'uploadedBy',
         headerName: 'Uploaded by',
         javaVariableName: 'uploadedBy',
-        enableSearch: false,
+        enableSearch: true,
         dataType: 'string',
+        searchDataType: 'string',
         width: 150,
+        sortable: false
     },
 ]
 

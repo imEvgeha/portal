@@ -32,7 +32,7 @@ const UploadMetadataTableGrid = compose(
     withFilterableColumns(),
     withColumnsResizing(),
     withSorting(),
-    withInfiniteScrolling({fetchData: fetchListOfUploadedMetadata}) // fetchUploadLogMetadata
+    withInfiniteScrolling({fetchData: fetchListOfUploadedMetadata})
 )(NexusGrid);
 
 const UploadMetadataTable = ({
@@ -178,6 +178,7 @@ const UploadMetadataTable = ({
                 setDisplayedRows={setDisplayedRows}
                 externalFilter={externalFilter}
                 link="/metadata/detail"
+                onlyReceivedSize
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>
