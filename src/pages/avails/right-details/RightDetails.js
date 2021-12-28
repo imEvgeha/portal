@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useRef} from 'react';
+import React, {memo, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
@@ -28,6 +28,7 @@ const RightDetails = ({
     configApiEndpoints,
 }) => {
     const containerRef = useRef();
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         fetchConfigApiEndpoints();
@@ -40,7 +41,7 @@ const RightDetails = ({
         return () => {
             clearRight();
         };
-    }, []);
+    }, [refresh]);
 
     const onSubmit = values => {
         updateRight(values);
@@ -64,6 +65,7 @@ const RightDetails = ({
                     containerRef={containerRef}
                     searchPerson={searchPerson}
                     canEdit={!!right?.id}
+                    setRefresh={setRefresh}
                 />
             )}
             <NexusStickyFooter />
@@ -80,7 +82,7 @@ RightDetails.propTypes = {
     selectValues: PropTypes.object,
     isSaving: PropTypes.bool,
     isFetching: PropTypes.bool,
-    configApiEndpoints: PropTypes.object,
+    configApiEndpoints: PropTypes.array,
     fetchConfigApiEndpoints: PropTypes.func,
 };
 
@@ -93,7 +95,7 @@ RightDetails.defaultProps = {
     selectValues: {},
     isSaving: false,
     isFetching: false,
-    configApiEndpoints: {},
+    configApiEndpoints: [],
     fetchConfigApiEndpoints: () => null,
 };
 

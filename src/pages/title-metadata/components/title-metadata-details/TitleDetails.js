@@ -276,7 +276,7 @@ TitleDetails.propTypes = {
     isVZTitlePublishing: PropTypes.bool,
     isMOVTitlePublishing: PropTypes.bool,
     fetchConfigApiEndpoints: PropTypes.func,
-    configApiEndpoints: PropTypes.object,
+    configApiEndpoints: PropTypes.array,
     titleLoading: PropTypes.bool,
     emetLoading: PropTypes.bool,
     externalIdsLoading: PropTypes.bool,
@@ -309,7 +309,7 @@ TitleDetails.defaultProps = {
     titleLoading: true,
     emetLoading: true,
     externalIdsLoading: true,
-    configApiEndpoints: {},
+    configApiEndpoints: [],
 };
 
 const mapStateToProps = () => {
