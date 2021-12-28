@@ -1,7 +1,7 @@
 @import '~@vubiquity-nexus/portal-styles/scss/config.scss';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 
-.nexus-c-title-metadata-table {
+.nexus-c-upload-metadata-table {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -12,14 +12,4 @@
         height: 100%;
         margin: 0;
     }
-}
-
-.nexus-c-title-metadata-table__repository {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.nexus-c-title-metadata-table__repository-icon {
-    cursor: pointer;
 }
