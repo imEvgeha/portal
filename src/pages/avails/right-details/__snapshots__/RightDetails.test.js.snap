@@ -6,6 +6,7 @@ exports[`RightDetails should match snapshot 1`] = `
 >
   <Memo(RightDetails)
     clearRight={[Function]}
+    fetchConfigApiEndpoints={[Function]}
     getRight={[Function]}
     isFetching={false}
     isSaving={false}
