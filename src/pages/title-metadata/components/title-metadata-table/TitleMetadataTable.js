@@ -15,7 +15,7 @@ import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {
-    METADATA_COLUMN_MAPPINGS,
+    UPLOADED_EMETS_COLUMN_MAPPINGS,
     NEXUS,
     LEGACY_TOOLTIP_TEXT,
     DEFAULT_CATALOGUE_OWNER,
@@ -45,7 +45,7 @@ const TitleMetadataTable = ({
     setTitleMetadataFilter,
     titleMetadataFilter,
 }) => {
-    const columnDefs = METADATA_COLUMN_MAPPINGS.map(mapping => {
+    const columnDefs = UPLOADED_EMETS_COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
                 ...mapping,
@@ -171,7 +171,7 @@ const TitleMetadataTable = ({
         <div className="nexus-c-title-metadata-table">
             <TitleMetadataTableGrid
                 columnDefs={columnDefs}
-                mapping={METADATA_COLUMN_MAPPINGS}
+                mapping={UPLOADED_EMETS_COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onGridEvent={onGridReady}
                 setTotalCount={setTotalCount}

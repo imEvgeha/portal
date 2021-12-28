@@ -13,7 +13,7 @@ import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect, useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {UPLOAD_COLUMN_MAPPINGS, DEFAULT_CATALOGUE_OWNER} from '../../constants';
-import { fetchListOfUploadedMetadata } from '../../service/UploadLogService';
+import { fetchUploadedEMETsLog } from '../../service/UploadLogService';
 import {setTitleMetadataFilter} from '../../titleMetadataActions';
 import {createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
@@ -24,7 +24,7 @@ const UploadMetadataTableGrid = compose(
     withFilterableColumns(),
     withColumnsResizing(),
     withSorting(),
-    withInfiniteScrolling({fetchData: fetchListOfUploadedMetadata})
+    withInfiniteScrolling({fetchData: fetchUploadedEMETsLog})
 )(NexusGrid);
 
 const UploadMetadataTable = ({

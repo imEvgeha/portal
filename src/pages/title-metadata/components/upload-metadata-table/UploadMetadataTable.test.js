@@ -1,5 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import UploadMetadataTable from './UploadMetadataTable';
 
@@ -17,16 +18,10 @@ describe('UploadMetadataTable', () => {
     });
 
     beforeAll(() => {
-        wrapper = shallow(<UploadMetadataTable store={store} />)
-        .dive()
-        .shallow();
+        wrapper = shallow(<Provider store={store}><UploadMetadataTable /></Provider>);
     });
 
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('renders UploadMetadataTableGrid wrapper', () => {
-        expect(wrapper.find('.nexus-c-upload-metadata-table')).toHaveLength(1);
     });
 });

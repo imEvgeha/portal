@@ -1,144 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UploadMetadataTable should match snapshot 1`] = `
-<div
-  className="nexus-c-upload-metadata-table"
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <Component
-    columnDefs={
-      Array [
-        Object {
-          "colId": "status",
-          "dataType": "string",
-          "enableSearch": true,
-          "field": "status",
-          "headerName": "Ingest Status",
-          "javaVariableName": "status",
-          "searchDataType": "string",
-          "sortable": false,
-          "valueFormatter": undefined,
-          "width": 150,
-        },
-        Object {
-          "colId": "uploadedAt",
-          "dataType": "businessDateTime",
-          "enableSearch": true,
-          "field": "uploadedAt",
-          "headerName": "Upload date",
-          "javaVariableName": "uploadedAt",
-          "searchDataType": "businessDateTime",
-          "sortable": false,
-          "valueFormatter": [Function],
-          "width": 250,
-        },
-        Object {
-          "cellRenderer": "loadingCellRenderer",
-          "colId": "sourceFileName",
-          "dataType": "string",
-          "enableSearch": false,
-          "field": "sourceFileName",
-          "headerName": "File name",
-          "javaVariableName": "sourceFileName",
-          "valueFormatter": undefined,
-          "width": 380,
-        },
-        Object {
-          "colId": "error",
-          "dataType": "string",
-          "enableSearch": false,
-          "field": "error",
-          "headerName": "Error",
-          "javaVariableName": "error",
-          "sortable": false,
-          "valueFormatter": undefined,
-          "width": 225,
-        },
-        Object {
-          "colId": "uploadedBy",
-          "dataType": "string",
-          "enableSearch": true,
-          "field": "uploadedBy",
-          "headerName": "Uploaded by",
-          "javaVariableName": "uploadedBy",
-          "searchDataType": "string",
-          "sortable": false,
-          "valueFormatter": undefined,
-          "width": 150,
-        },
-      ]
-    }
-    externalFilter={null}
-    link="/metadata/detail"
-    mapping={
-      Array [
-        Object {
-          "colId": "status",
-          "dataType": "string",
-          "enableSearch": true,
-          "field": "status",
-          "headerName": "Ingest Status",
-          "javaVariableName": "status",
-          "searchDataType": "string",
-          "sortable": false,
-          "width": 150,
-        },
-        Object {
-          "colId": "uploadedAt",
-          "dataType": "businessDateTime",
-          "enableSearch": true,
-          "field": "uploadedAt",
-          "headerName": "Upload date",
-          "javaVariableName": "uploadedAt",
-          "searchDataType": "businessDateTime",
-          "sortable": false,
-          "width": 250,
-        },
-        Object {
-          "cellRenderer": "loadingCellRenderer",
-          "colId": "sourceFileName",
-          "dataType": "string",
-          "enableSearch": false,
-          "field": "sourceFileName",
-          "headerName": "File name",
-          "javaVariableName": "sourceFileName",
-          "width": 380,
-        },
-        Object {
-          "colId": "error",
-          "dataType": "string",
-          "enableSearch": false,
-          "field": "error",
-          "headerName": "Error",
-          "javaVariableName": "error",
-          "sortable": false,
-          "width": 225,
-        },
-        Object {
-          "colId": "uploadedBy",
-          "dataType": "string",
-          "enableSearch": true,
-          "field": "uploadedBy",
-          "headerName": "Uploaded by",
-          "javaVariableName": "uploadedBy",
-          "searchDataType": "string",
-          "sortable": false,
-          "width": 150,
-        },
-      ]
-    }
-    onGridEvent={[Function]}
-    onlyReceivedSize={true}
-    setDisplayedRows={[Function]}
-    setTotalCount={[Function]}
-    suppressRowClickSelection={true}
-  />
-  <TitleMetadataTableStatusBar
-    paginationData={
-      Object {
-        "pageSize": 0,
-        "totalCount": 0,
-      }
-    }
-  />
-</div>
+  <Connect(UploadMetadataTable) />
+</ContextProvider>
 `;

@@ -36,7 +36,7 @@ export const UNMERGE_TITLE_SUCCESS = 'Title succesfully unmerged!';
 
 export const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded a Title.';
 
-export const METADATA_COLUMN_MAPPINGS = [
+export const UPLOADED_EMETS_COLUMN_MAPPINGS = [
     {
         colId: 'id',
         field: 'id',
