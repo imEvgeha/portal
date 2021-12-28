@@ -1,5 +1,4 @@
 /* eslint-disable no-magic-numbers, no-throw-literal */
-import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 export default async (response, fetchHeaders) => {
     try {
