@@ -46,34 +46,6 @@ const UploadMetadataTable = ({
     titleMetadataFilter,
 }) => {
     const columnDefs = UPLOAD_COLUMN_MAPPINGS.map(mapping => {
-        if (mapping.colId === REPOSITORY_COLUMN_ID) {
-            return {
-                ...mapping,
-                cellRendererFramework: params => {
-                    const {value, data = {}} = params || {};
-                    const {id} = data;
-                    return (
-                        <div className="nexus-c-title-metadata-table__repository">
-                            <div>{value}</div>
-                            {value !== NEXUS && (
-                                <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
-                                    <div
-                                        className="nexus-c-title-metadata-table__repository-icon"
-                                        onClick={() =>
-                                            history.push(
-                                                URL.keepEmbedded(`/metadata/detail/${id}/legacy-title-reconciliation`)
-                                            )
-                                        }
-                                    >
-                                        <EditorWarningIcon primaryColor="#0052CC" />
-                                    </div>
-                                </NexusTooltip>
-                            )}
-                        </div>
-                    );
-                },
-            };
-        }
         return {
             ...mapping,
             valueFormatter: createValueFormatter(mapping),
