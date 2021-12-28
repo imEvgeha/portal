@@ -6,23 +6,33 @@ import {MultiSelect} from 'primereact/multiselect';
 import {getConfigApiValues} from '../../../../legacy/common/CommonConfigService';
 import {cache} from '../../../../legacy/containers/config/EndpointContainer';
 
-const DynamicDropdown = ({elementSchema, formField, change}) => {
-    const [value, setValue] = useState(undefined);
+const DynamicDropdown = ({elementSchema, formField, change, form}) => {
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
         constructOptions();
     }, []);
 
+    React.useEffect(() => {
+        const subscription = form.watch((value, {name, type}) => {
+            if (elementSchema.id === 'licensees' && name.includes('servicingRegionName')) {
+                getLicensees(elementSchema, name);
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [form.watch]);
+
     const constructOptions = () => {
         const sourceUrl = elementSchema?.source?.url;
         let cachedOption = cache[sourceUrl];
+
         if (elementSchema?.options) {
             const opts = elementSchema?.options?.[0]?.items?.map(i => ({value: i, label: startCase(i)}));
             setOptions(opts);
-        } else if (elementSchema.name === 'licensees') {
+        } else if (elementSchema.id === 'licensees') {
             // licensees needs to be filtered by selected servicing region name
-            // getLicensees(elementSchema, context);
+            getLicensees(elementSchema);
         } else if (sourceUrl && cachedOption === undefined) {
             cachedOption = getConfigApiValues(sourceUrl, 0, 1000).then(response => {
                 cachedOption = response.data;
@@ -43,44 +53,40 @@ const DynamicDropdown = ({elementSchema, formField, change}) => {
 
     const processOptions = (rawOptions, field) => {
         const items = sortBy(rawOptions?.map(rec => convertDataToOption(rec, field.source)) || [], ['label']);
-        console.log(items);
         setOptions(items);
         // return [{items}];
     };
 
-    const getLicensees = (field, context) => {
+    const getLicensees = (field, valuePath) => {
         // needs to be moved to API side to make this generic
-        const servicingRegion = get(context, 'value.servicingRegionName', '');
+        const servicingRegion = (valuePath && form.getValues(valuePath)) || '';
 
-        if (!servicingRegion) {
-            return;
-        }
         if (get(cache[field.source.url], servicingRegion, '')) {
             // licensees cache is per servicing region
             if (cache[field.source.url][servicingRegion] instanceof Promise) {
                 return cache[field.source.url][servicingRegion].then(() => {});
             }
             processOptions(cache[field.source.url][servicingRegion], field);
-        }
-        const promiseLicensees = getConfigApiValues(
-            field.source.url,
-            0,
-            1000,
-            '',
-            'servicingRegion',
-            servicingRegion
-        ).then(response => {
+        } else {
+            const promiseLicensees = getConfigApiValues(
+                field.source.url,
+                0,
+                1000,
+                '',
+                'servicingRegion',
+                servicingRegion
+            ).then(response => {
+                cache[field.source.url] = {
+                    ...cache[field.source.url],
+                    [servicingRegion]: response.data,
+                };
+                processOptions(response.data, field);
+            });
             cache[field.source.url] = {
                 ...cache[field.source.url],
-                [servicingRegion]: response.data,
+                [servicingRegion]: promiseLicensees,
             };
-            processOptions(response.data, field);
-        });
-        cache[field.source.url] = {
-            ...cache[field.source.url],
-            [servicingRegion]: promiseLicensees,
-        };
-        return promiseLicensees;
+        }
     };
 
     const convertDataToOption = (dataSource, schema) => {
@@ -149,6 +155,7 @@ DynamicDropdown.propTypes = {
     formField: PropTypes.object.isRequired,
     elementSchema: PropTypes.object.isRequired,
     change: PropTypes.func,
+    form: PropTypes.object.isRequired,
 };
 
 DynamicDropdown.defaultProps = {};

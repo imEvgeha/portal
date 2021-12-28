@@ -11,17 +11,10 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
     const form = useForm({mode: 'all', reValidateMode: 'onChange'});
 
     const constructFields = (schema, form, value) => {
-        console.log(schema);
+        // console.log(schema);
         // console.log(value);
         return schema?.map(elementSchema => {
-            return constructFieldPerType(
-                elementSchema,
-                form,
-                value?.[elementSchema?.name] || '',
-                undefined,
-                undefined,
-                undefined
-            );
+            return constructFieldPerType(elementSchema, form, value?.[elementSchema?.name] || '', undefined, undefined);
         });
     };
 
@@ -33,6 +26,7 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
     }, [isVisible]);
 
     const onHideDialog = () => {
+        form.reset();
         setIsVisible(false);
     };
 
@@ -44,14 +38,13 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
             Object.keys(tmp).forEach(key => {
                 if (Array.isArray(tmp[key])) {
                     const arr = without(tmp[key], null, undefined);
-                    console.log('arr');
-                    console.log(arr);
                     formValues = {...formValues, [key]: arr};
                 } else {
                     formValues = {...formValues, [key]: tmp[key]};
                 }
             });
             onSubmit(formValues);
+            onHideDialog();
         }
     };
 

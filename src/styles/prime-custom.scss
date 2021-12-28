@@ -368,6 +368,7 @@ $element-margin-bottom: 18px;
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
     width: 9px;
+    height: 9px;
 }
 
 *::-webkit-scrollbar-track {

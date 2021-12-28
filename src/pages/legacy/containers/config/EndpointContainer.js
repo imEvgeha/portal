@@ -292,7 +292,7 @@ export class EndpointContainer extends Component {
                             schema={selectedApi && selectedApi.uiSchema}
                             label={this.getLabel(selectedApi, this.state.currentRecord, false) || ''}
                             displayName={selectedApi && selectedApi.displayName}
-                            value={this.state.currentRecord}
+                            value={{...this.state.currentRecord}}
                             onSubmit={this.editRecord}
                             onHide={this.onHideCreateEditConfigModal}
                         />
