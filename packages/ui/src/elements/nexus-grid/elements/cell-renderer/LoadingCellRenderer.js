@@ -3,7 +3,7 @@ import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {downloadFile, getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
-import { downloadUploadedMetadata } from '../../../../../../../src/pages/title-metadata/utils';
+import { downloadUploadedMetadata } from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
 import {renderTitleName} from './utils/utils';
 
 const LoadingCellRenderer = params => {

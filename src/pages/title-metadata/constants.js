@@ -349,7 +349,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         dataType: 'string',
         cellRenderer: 'loadingCellRenderer',
         width: 380,
-        // sortable: false
+        sortable: false
     },
     {
         colId: 'error',

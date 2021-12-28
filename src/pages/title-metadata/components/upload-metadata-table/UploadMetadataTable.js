@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
-import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
@@ -9,21 +8,14 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
-import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {compose} from 'redux';
-import {
-    UPLOAD_COLUMN_MAPPINGS,
-    NEXUS,
-    LEGACY_TOOLTIP_TEXT,
-    DEFAULT_CATALOGUE_OWNER,
-    REPOSITORY_COLUMN_ID,
-} from '../../constants';
+import {UPLOAD_COLUMN_MAPPINGS, DEFAULT_CATALOGUE_OWNER} from '../../constants';
+import { fetchListOfUploadedMetadata } from '../../service/UploadLogService';
 import {setTitleMetadataFilter} from '../../titleMetadataActions';
 import {createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
-import {fetchListOfUploadedMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './UploadMetadataTable.scss';
 
@@ -42,9 +34,9 @@ const UploadMetadataTable = ({
     setColumnApi,
     columnApi,
     gridApi,
-    setTitleMetadataFilter,
     titleMetadataFilter,
 }) => {
+    const dispatch = useDispatch();
     const columnDefs = UPLOAD_COLUMN_MAPPINGS.map(mapping => {
         return {
             ...mapping,
@@ -84,8 +76,7 @@ const UploadMetadataTable = ({
 
                 const firstFilterModel = Object.keys(filterModel).shift();
                 const id = filterModel && filterModel[`${firstFilterModel}`]?.filter;
-
-                setTitleMetadataFilter({...titleMetadataFilter, id, filterModel, sortModel, columnState});
+                dispatch(setTitleMetadataFilter({...titleMetadataFilter, id, filterModel, sortModel, columnState}));
             }
         };
     }, [columnApi]);
@@ -150,7 +141,6 @@ UploadMetadataTable.propTypes = {
     setGridApi: PropTypes.func,
     setColumnApi: PropTypes.func,
     gridApi: PropTypes.object,
-    setTitleMetadataFilter: PropTypes.func,
     titleMetadataFilter: PropTypes.object,
 };
 
@@ -161,7 +151,6 @@ UploadMetadataTable.defaultProps = {
     setGridApi: () => null,
     setColumnApi: () => null,
     gridApi: {},
-    setTitleMetadataFilter: () => null,
     titleMetadataFilter: {},
 };
 
@@ -172,8 +161,4 @@ const mapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = dispatch => ({
-    setTitleMetadataFilter: payload => dispatch(setTitleMetadataFilter(payload)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(UploadMetadataTable);
+export default connect(mapStateToProps, null)(UploadMetadataTable);
