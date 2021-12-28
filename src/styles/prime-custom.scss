@@ -110,6 +110,10 @@ $element-margin-bottom: 18px;
             }
         }
 
+        &.p-button-icon-only {
+            width: 32px;
+        }
+
         svg {
             width: 16px;
             height: 16px;
