@@ -8,7 +8,7 @@ import {mergeWith, set, get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
-import { clearTitleMetadataFilter } from '../../../../../src/pages/title-metadata/titleMetadataActions';
+import {clearTitleMetadataFilter} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import PropagateButton from '../nexus-person/elements/PropagateButton/PropagateButton';
 import {buildSection, getProperValues, getProperValue, getAllFields} from './utils';
 import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION, CAST_AND_CREW_TITLE, PROPAGATE_TITLE} from './constants';
@@ -125,31 +125,31 @@ const NexusDynamicForm = ({
                 correctValues = {...(type === 'array' && defaultValue), ...correctValues};
             });
             Object.keys(properValues).forEach(key => set(correctValues, key, properValues[key]));
-            onSubmit(
-                mergeWith({}, initialData, correctValues, (obj, src) => {
-                    if (Array.isArray(src)) {
-                        return src;
-                    }
-                    // keep original null value if updated value is object and all its properties are falsy
-                    // non object values are null already if not edited
-                    else if (obj === null && typeof src === 'object') {
-                        if (!src) return null;
-                        if (
-                            !Object.keys(src).some(k => {
-                                if (Array.isArray(src[k]))
-                                    // if value is array
-                                    return src[k].length;
-                                else if (typeof src[k] === 'object' && src[k] !== null)
-                                    // if value is object
-                                    return Object.keys(src[k]).length;
-                                return src[k]; // else return value
-                            })
-                        )
-                            return null;
-                    }
-                }),
-                initialData
-            );
+
+            const valuesData = mergeWith({}, initialData, correctValues, (obj, src) => {
+                if (Array.isArray(src)) {
+                    return src;
+                }
+                // keep original null value if updated value is object and all its properties are falsy
+                // non object values are null already if not edited
+                else if (obj === null && typeof src === 'object') {
+                    if (!src) return null;
+                    if (
+                        !Object.keys(src).some(k => {
+                            if (Array.isArray(src[k]))
+                                // if value is array
+                                return src[k].length;
+                            else if (typeof src[k] === 'object' && src[k] !== null)
+                                // if value is object
+                                return Object.keys(src[k]).length;
+                            return src[k]; // else return value
+                        })
+                    )
+                        return null;
+                }
+            });
+
+            onSubmit(valuesData, initialData);
         }
     };
 
@@ -309,7 +309,6 @@ NexusDynamicForm.defaultProps = {
     storedInitialData: null,
     clearMetadataFilters: () => null,
 };
-
 
 const mapDispatchToProps = dispatch => ({
     clearMetadataFilters: payload => dispatch(clearTitleMetadataFilter()),

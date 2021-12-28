@@ -23,7 +23,10 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
     const isDisabled = values ? !Object.values(values).every(value => Boolean(value) === true) : true;
 
     const openModal = () => setDisplayModal(true);
-    const closeModal = () => setDisplayModal(false);
+    const closeModal = () => {
+        setDisplayModal(false);
+        setValues(initialValues);
+    }
 
     const handleDownload = () => {
         closeModal();
