@@ -43,11 +43,13 @@ pipeline {
     post {
         success {
             steps {
-                if(PROMOTE_QA){
-                    echo "Triggering promote-qa--portal"
-                    build job: 'promote-qa--portal'
+                script {
+                    if (PROMOTE_QA) {
+                        echo "Triggering promote-qa--portal"
+                        build job: 'promote-qa--portal'
+                    }
+                    mail to: 'petrosde@amdocs.com;antonia.nikolaou@amdocs.com', subject: "Build ${currentBuild.fullDisplayName} SUCCEEDED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
                 }
-                mail to: 'petrosde@amdocs.com;antonia.nikolaou@amdocs.com', subject: "Build ${currentBuild.fullDisplayName} SUCCEEDED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
             }
         }
         failure {
