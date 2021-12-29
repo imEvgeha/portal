@@ -52,6 +52,7 @@ pipeline {
 void successPostActions(){
     if (PROMOTE_QA) {
         echo "Triggering promote-qa--portal"
+        echo PROMOTE_QA
         build job: 'promote-qa--portal'
     }
     mail to: 'petrosde@amdocs.com,antonia.nikolaou@amdocs.com', subject: "Build ${currentBuild.fullDisplayName} SUCCEEDED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
