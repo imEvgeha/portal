@@ -1,6 +1,6 @@
 import { titleService } from '../titleMetadataServices';
 
-export const fetchUploadedEMETsLog = async (data, page, size) => {
+export const fetchUploadedEMETsLog = async (data, page, size, sortedParams) => {
   const {tenantCode, uploadedBy, uploadedAt, status} = data;
   if (tenantCode) {
       const body = { 
@@ -9,7 +9,7 @@ export const fetchUploadedEMETsLog = async (data, page, size) => {
           endDate: uploadedAt?.uploadedAtTo,
           status
       }
-      const response = await titleService.getUploadedMetadata(body, tenantCode, page, size);
+      const response = await titleService.getUploadedMetadata(body, tenantCode, page, size, sortedParams);
       return response
   }
 };

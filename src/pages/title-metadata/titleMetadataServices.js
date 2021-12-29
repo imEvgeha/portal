@@ -200,14 +200,14 @@ export const titleService = {
             method: 'post',
         });
     },
-    getUploadedMetadata: async (dataForUploadedMetadata, tenantCode, page, size) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/importLog?`;
+    getUploadedMetadata: async (dataForUploadedMetadata, tenantCode, page, size, sortedParams) => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/importLog${prepareSortMatrixParamTitles(sortedParams)}`;
         const params = tenantCode ? {tenantCode} : {};
 
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(dataForUploadedMetadata),
-            params: encodedSerialize({params, page, size}),
+            params: encodedSerialize({...params, page, size}),
         });
     },
     getUploadLogMetadataFile: (id) => {
