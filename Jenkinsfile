@@ -39,21 +39,20 @@ pipeline {
             }
         }  // kubernetes
     }
-
     post {
         success {
-            steps {
-                script {
-                    if (PROMOTE_QA) {
-                        echo "Triggering promote-qa--portal"
-                        build job: 'promote-qa--portal'
-                    }
-                    mail to: 'petrosde@amdocs.com;antonia.nikolaou@amdocs.com', subject: "Build ${currentBuild.fullDisplayName} SUCCEEDED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
-                }
-            }
+            successPostActions()
         }
         failure {
-            mail to: 'petrosde@amdocs.com;antonia.nikolaou@amdocs.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+            mail to: 'PDemetriou@vubiquity.net,anikolaou@vubiquity.net', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
         }
     }  // Post
+}
+
+void successPostActions(){
+    if (PROMOTE_QA == "true") {
+        echo "Triggering promote-qa--portal"
+        build job: 'promote-qa--portal'
+    }
+    mail to: 'PDemetriou@vubiquity.net,anikolaou@vubiquity.net', subject: "Build ${currentBuild.fullDisplayName} SUCCEEDED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
 }
