@@ -22,7 +22,7 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
                 rules={{...createRules(!!elementSchema.required, elementSchema.validWhen)}}
                 render={({field, fieldState}) => {
                     const onFormElementChanged = e => {
-                        field?.onChange(e);
+                        field && field.onChange(e);
                         customOnChange && customOnChange(field);
                     };
                     return (
@@ -49,8 +49,6 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
 };
 
 const getElement = (elementSchema, field, value, form, onChange) => {
-    let singleField;
-    let Comp;
     switch (elementSchema.type) {
         case 'text': {
             return (
@@ -69,13 +67,11 @@ const getElement = (elementSchema, field, value, form, onChange) => {
             );
         }
         case 'timestamp': {
-            const date = new Date(value);
             return (
                 <Calendar
                     id={elementSchema.id}
                     key={elementSchema.id}
                     {...field}
-                    // value={date}
                     onChange={onChange}
                     placeholder={elementSchema.description}
                     disabled={elementSchema.disable}

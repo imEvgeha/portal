@@ -14,8 +14,8 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
     }, []);
 
     React.useEffect(() => {
-        const subscription = form.watch((value, {name, type}) => {
-            if (elementSchema.id === 'licensees' && name.includes('servicingRegionName')) {
+        const subscription = form.watch((value, {name}) => {
+            if (elementSchema.id === 'licensees' && name?.includes('servicingRegionName')) {
                 getLicensees(elementSchema, name);
             }
         });
@@ -46,25 +46,21 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
             } else {
                 processOptions(cachedOption, elementSchema);
             }
-        } else {
-            console.error('Cannot load dropdown values from: ', sourceUrl);
         }
     };
 
     const processOptions = (rawOptions, field) => {
         const items = sortBy(rawOptions?.map(rec => convertDataToOption(rec, field.source)) || [], ['label']);
         setOptions(items);
-        // return [{items}];
     };
 
     const getLicensees = (field, valuePath) => {
-        // needs to be moved to API side to make this generic
         const servicingRegion = (valuePath && form.getValues(valuePath)) || '';
 
         if (get(cache[field.source.url], servicingRegion, '')) {
             // licensees cache is per servicing region
             if (cache[field.source.url][servicingRegion] instanceof Promise) {
-                return cache[field.source.url][servicingRegion].then(() => {});
+                return cache[field.source.url][servicingRegion].then(res => processOptions(res, field));
             }
             processOptions(cache[field.source.url][servicingRegion], field);
         } else {
@@ -98,7 +94,7 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
         } else {
             label = dataSource[schema.label] || dataSource[schema.value];
         }
-        if (Array.isArray(schema.value) && schema.value.length > 1) {
+        if (schema.value && Array.isArray(schema.value) && schema.value.length > 1) {
             value = schema.value.reduce(function (result, item) {
                 result[item] = dataSource[item];
                 return result;
@@ -133,7 +129,6 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
                         {...formField}
                         id={elementSchema.id}
                         key={elementSchema.id}
-                        // value={value}
                         options={options}
                         onChange={change}
                         placeholder={elementSchema.description}

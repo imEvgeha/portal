@@ -13,7 +13,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
 
         if (elementsSchema?.misc?.fields?.length > 1) {
             const group = (values?.length ? values : newConfig).map((val, index) =>
-                elementsSchema?.misc?.fields.map((f, i) => ({
+                elementsSchema?.misc?.fields.map(f => ({
                     ...f,
                     name: `${elementsSchema.name}.${index}.${f.id}`,
                 }))
@@ -24,8 +24,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
         }
 
         return (values || newConfig).map(
-            (val, index) =>
-                elementsSchema?.misc?.fields.map((f, i) => ({...f, name: `${elementsSchema.name}.${index}`}))[0]
+            (val, index) => elementsSchema?.misc?.fields.map(f => ({...f, name: `${elementsSchema.name}.${index}`}))[0]
         );
     };
 
@@ -34,10 +33,14 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
 
         let tmpHeaders = {};
         if (Array.isArray(values)) {
-            values?.forEach(
-                (e, i) =>
-                    (tmpHeaders = {...tmpHeaders, [`${elementsSchema.id}.${i}.${labelPath}`]: values?.[i]?.[labelPath]})
-            );
+            values &&
+                values.forEach(
+                    (e, i) =>
+                        (tmpHeaders = {
+                            ...tmpHeaders,
+                            [`${elementsSchema.id}.${i}.${labelPath}`]: values?.[i]?.[labelPath],
+                        })
+                );
         } else {
             tmpHeaders = {[`${elementsSchema.id}.0.${labelPath}`]: values?.[labelPath]};
         }
@@ -46,12 +49,12 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
 
     const [formFields, setFormFields] = useState(constructFormFieldsState());
     const data = useRef({});
-    const fields = useRef(elementsSchema?.misc?.fields.map((f, i) => `${elementsSchema.name}.${i}`));
+    const fieldsRef = useRef(elementsSchema?.misc?.fields.map((f, i) => `${elementsSchema.name}.${i}`));
     const [headers, setHeaders] = useState(getInitHeader());
 
     React.useEffect(() => {
-        const subscription = form.watch((value, {name, type}) => {
-            if (fields.current.includes(name)) {
+        const subscription = form.watch((value, {name}) => {
+            if (fieldsRef.current.includes(name)) {
                 data.current = {...data.current, [name]: value[name]};
             }
         });
@@ -67,7 +70,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
             name: fieldName,
         });
 
-        fields.current = newFields.map(f => f.name);
+        fieldsRef.current = newFields.map(f => f.name);
         setFormFields(newFields);
     };
 
@@ -77,7 +80,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
 
         newFields.push(mapElementEntry(formFieldsTmp, formFields.length));
 
-        fields.current = newFields.map(f => f.name);
+        fieldsRef.current = newFields.map(f => f.name);
         setFormFields(newFields);
     };
 
@@ -103,7 +106,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
 
         Array.isArray(formValues) && formValues.splice(index, 1);
         form.setValue(formPath, formValues);
-        fields.current = newFormFields.map(f => f.name);
+        fieldsRef.current = newFormFields.map(f => f.name);
 
         newFormFields = isGroup
             ? newFormFields.map((group, index) => mapElementEntry(group, index))
@@ -179,7 +182,13 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
     };
 
     const constructElement = fieldSchema =>
-        constructFieldPerType(fieldSchema, form, values?.[fieldSchema?.name] || undefined, 'mb-2', onChange);
+        constructFieldPerType(
+            fieldSchema,
+            form,
+            form.getValues(fieldSchema.name) || values?.[fieldSchema?.name] || '',
+            'mb-2',
+            onChange
+        );
 
     const renderElement = fieldsIn => {
         return fieldsIn.map((fieldSchema, index) => {

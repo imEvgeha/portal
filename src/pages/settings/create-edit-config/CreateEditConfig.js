@@ -6,15 +6,19 @@ import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
 import {constructFieldPerType} from './dynamic-fields/FieldsPerType';
 
-const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmit, displayName, label}) => {
+const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayName, label}) => {
     const [isVisible, setIsVisible] = useState(visible);
     const form = useForm({mode: 'all', reValidateMode: 'onChange'});
 
-    const constructFields = (schema, form, value) => {
-        // console.log(schema);
-        // console.log(value);
+    const constructFields = (schema, form, values) => {
         return schema?.map(elementSchema => {
-            return constructFieldPerType(elementSchema, form, value?.[elementSchema?.name] || '', undefined, undefined);
+            return constructFieldPerType(
+                elementSchema,
+                form,
+                values?.[elementSchema?.name] || '',
+                undefined,
+                undefined
+            );
         });
     };
 
@@ -26,12 +30,10 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
     }, [isVisible]);
 
     const onHideDialog = () => {
-        form.reset();
         setIsVisible(false);
     };
 
     const submit = () => {
-        console.log(form.getValues());
         if (isEmpty(form.formState.errors)) {
             const tmp = pickBy(form.getValues());
             let formValues = {};
@@ -75,16 +77,15 @@ const CreateEditConfig = ({value, visible, onHide, onRemoveItem, schema, onSubmi
             closable={false}
         >
             <form>
-                <div className="row">{constructFields(schema, form, value)}</div>
+                <div className="row">{constructFields(schema, form, values)}</div>
             </form>
         </Dialog>
     );
 };
 
 CreateEditConfig.propTypes = {
-    value: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]).isRequired,
+    values: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]).isRequired,
     visible: PropTypes.bool,
-    onRemoveItem: PropTypes.func.isRequired,
     schema: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     onSubmit: PropTypes.func.isRequired,
     displayName: PropTypes.string,

@@ -13,6 +13,7 @@ import CreateEditConfigForm from './CreateEditConfigForm';
 import {Can, can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import './ConfigUI.scss';
 import CreateEditConfig from '../../../settings/create-edit-config/CreateEditConfig';
+import {cloneDeep} from 'lodash';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -186,8 +187,7 @@ export class EndpointContainer extends Component {
     };
 
     onEditRecord(rec) {
-        this.setState({currentRecord: rec});
-        this.setState({showEditConfigModal: true});
+        this.setState({currentRecord: rec, showEditConfigModal: true});
     }
 
     editRecord(val) {
@@ -215,8 +215,7 @@ export class EndpointContainer extends Component {
     }
 
     onNewRecord() {
-        this.setState({currentRecord: {}});
-        this.setState({showEditConfigModal: true});
+        this.setState({currentRecord: {}, showEditConfigModal: true});
     }
 
     onRemoveItem = item => {
@@ -244,6 +243,10 @@ export class EndpointContainer extends Component {
 
     onHideCreateEditConfigModal = () => {
         this.setState({showEditConfigModal: false, currentRecord: null});
+    };
+
+    getValues = () => {
+        return cloneDeep(this.state.currentRecord);
     };
 
     render() {
@@ -274,30 +277,32 @@ export class EndpointContainer extends Component {
 
                     <div style={{clear: 'both'}} />
                 </TextHeader>
-                {this.state.currentRecord && (
-                    <DataBody>
-                        {/*<CreateEditConfigForm*/}
-                        {/*    onRemoveItem={this.onRemoveItem}*/}
-                        {/*    schema={selectedApi && selectedApi.uiSchema}*/}
-                        {/*    label={this.getLabel(selectedApi, this.state.currentRecord, false)}*/}
-                        {/*    displayName={selectedApi && selectedApi.displayName}*/}
-                        {/*    value={this.state.currentRecord}*/}
-                        {/*    onSubmit={this.editRecord}*/}
-                        {/*    onCancel={() => this.setState({currentRecord: null})}*/}
-                        {/*/>*/}
-
-                        <CreateEditConfig
-                            visible={this.state.showEditConfigModal}
-                            onRemoveItem={this.onRemoveItem}
-                            schema={selectedApi && selectedApi.uiSchema}
-                            label={this.getLabel(selectedApi, this.state.currentRecord, false) || ''}
-                            displayName={selectedApi && selectedApi.displayName}
-                            value={{...this.state.currentRecord}}
-                            onSubmit={this.editRecord}
-                            onHide={this.onHideCreateEditConfigModal}
-                        />
-                    </DataBody>
+                {window.location.pathname.includes('settings/v2') && this.state.showEditConfigModal ? (
+                    <CreateEditConfig
+                        visible={this.state.showEditConfigModal}
+                        schema={selectedApi && selectedApi.uiSchema}
+                        label={this.getLabel(selectedApi, this.state.currentRecord, false) || ''}
+                        displayName={selectedApi && selectedApi.displayName}
+                        values={this.getValues()}
+                        onSubmit={this.editRecord}
+                        onHide={this.onHideCreateEditConfigModal}
+                    />
+                ) : (
+                    !!this.state.currentRecord && (
+                        <DataBody>
+                            <CreateEditConfigForm
+                                onRemoveItem={this.onRemoveItem}
+                                schema={selectedApi && selectedApi.uiSchema}
+                                label={this.getLabel(selectedApi, this.state.currentRecord, false)}
+                                displayName={selectedApi && selectedApi.displayName}
+                                value={this.state.currentRecord}
+                                onSubmit={this.editRecord}
+                                onCancel={() => this.setState({currentRecord: null})}
+                            />
+                        </DataBody>
+                    )
                 )}
+
                 <DataBody>
                     <CustomContainer left>
                         <QuickSearch
