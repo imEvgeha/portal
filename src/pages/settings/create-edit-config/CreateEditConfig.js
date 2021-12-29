@@ -39,7 +39,7 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
             let formValues = {};
             Object.keys(tmp).forEach(key => {
                 if (Array.isArray(tmp[key])) {
-                    const arr = without(tmp[key], null, undefined);
+                    const arr = without(tmp[key], null, undefined, '');
                     formValues = {...formValues, [key]: arr};
                 } else {
                     formValues = {...formValues, [key]: tmp[key]};
@@ -70,7 +70,7 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
             visible={isVisible}
             onHide={onHideDialog}
             breakpoints={{'960px': '75vw', '640px': '100vw'}}
-            style={{width: '50vw'}}
+            style={{width: '70vw'}}
             footer={footer}
             closeOnEscape={false}
             header={displayName}

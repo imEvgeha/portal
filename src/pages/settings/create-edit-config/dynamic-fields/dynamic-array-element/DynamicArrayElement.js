@@ -105,7 +105,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
         const formValues = form?.getValues(formPath);
 
         Array.isArray(formValues) && formValues.splice(index, 1);
-        form.setValue(formPath, formValues);
+        form.setValue(formPath, formValues, {shouldDirty: true});
         fieldsRef.current = newFormFields.map(f => f.name);
 
         newFormFields = isGroup

@@ -60,6 +60,7 @@ const getElement = (elementSchema, field, value, form, onChange) => {
                     onKeyPress={e => {
                         e.key === 'Enter' && e.preventDefault();
                     }}
+                    tooltip={elementSchema.description}
                     onChange={onChange}
                     placeholder={elementSchema.description}
                     disabled={elementSchema.disable}
@@ -67,6 +68,8 @@ const getElement = (elementSchema, field, value, form, onChange) => {
             );
         }
         case 'timestamp': {
+            const tmpDate = new Date(field.value);
+            const val = new Date(tmpDate.toLocaleString('en-US', {timeZone: 'UTC'}));
             return (
                 <Calendar
                     id={elementSchema.id}
@@ -75,6 +78,9 @@ const getElement = (elementSchema, field, value, form, onChange) => {
                     onChange={onChange}
                     placeholder={elementSchema.description}
                     disabled={elementSchema.disable}
+                    value={val}
+                    tooltip={elementSchema.description}
+                    hourFormat="12"
                     showTime
                     showSeconds
                     showIcon
@@ -97,6 +103,7 @@ const getElement = (elementSchema, field, value, form, onChange) => {
                         key={elementSchema.id}
                         id={elementSchema.id}
                         disabled={elementSchema.disable}
+                        tooltip={elementSchema.description}
                         onChange={onChange}
                         checked={field.value}
                     />

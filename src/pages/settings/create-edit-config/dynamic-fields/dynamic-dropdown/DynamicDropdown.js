@@ -117,6 +117,7 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
                         disabled={elementSchema.disable}
                         options={options}
                         onChange={change}
+                        tooltip={elementSchema.description}
                         filter={options.length > 10}
                         filterBy="label"
                     />
@@ -132,6 +133,7 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
                         onChange={change}
                         placeholder={elementSchema.description}
                         disabled={elementSchema.disable}
+                        tooltip={elementSchema.description}
                         filter={options.length > 10}
                         filterBy="label"
                     />

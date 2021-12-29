@@ -70,7 +70,7 @@ exports[`CreateEditConfig should match snapshot 1`] = `
   showHeader={true}
   style={
     Object {
-      "width": "50vw",
+      "width": "70vw",
     }
   }
   transitionOptions={null}
