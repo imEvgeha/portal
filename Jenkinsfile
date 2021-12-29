@@ -50,7 +50,6 @@ pipeline {
 }
 
 void successPostActions(){
-    echo PROMOTE_QA
     if (PROMOTE_QA == "true") {
         echo "Triggering promote-qa--portal"
         build job: 'promote-qa--portal'
