@@ -327,6 +327,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         dataType: 'string',
         searchDataType: 'string',
         width: 150,
+        sortable: false
     },
     {
         colId: 'uploadedAt',
@@ -337,6 +338,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         dataType: 'businessDateTime',
         searchDataType: 'businessDateTime',
         width: 250,
+        sortable: false
     },
     {
         colId: 'sourceFileName',
@@ -347,6 +349,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         dataType: 'string',
         cellRenderer: 'loadingCellRenderer',
         width: 380,
+        sortable: false
     },
     {
         colId: 'error',
@@ -356,6 +359,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         enableSearch: false,
         dataType: 'string',
         width: 225,
+        sortable: false
     },
     {
         colId: 'uploadedBy',
@@ -366,6 +370,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         dataType: 'string',
         searchDataType: 'string',
         width: 150,
+        sortable: false
     },
 ]
 
