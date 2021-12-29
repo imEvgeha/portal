@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalContent should match snapshot 1`] = `
+<div
+  className="nexus-c-modal-content"
+>
+  <div
+    className="nexus-c-modal-content__subtitle-container"
+  >
+    <span
+      className="nexus-c-modal-content__subtitle"
+    >
+      Test
+    </span>
+  </div>
+  <div
+    className="nexus-c-modal-content__fields"
+  />
+</div>
+`;

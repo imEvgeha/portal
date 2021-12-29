@@ -1,242 +1,233 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DownloadEmetModal should match snapshot 1`] = `
-<div
-  className="nexus-c-download-emet-modal"
+<ModalContent
+  subtitle="Select a version of Editorial Metadata to download."
 >
-  <h5
-    className="nexus-c-download-emet-modal__subtitle"
-  >
-    Select a version of Editorial Metadata to download.
-  </h5>
   <div
-    className="nexus-c-download-emet-modal__fields"
+    className="nexus-c-download-emet-modal__field"
+    key="language"
   >
-    <div
-      className="nexus-c-download-emet-modal__field"
-      key="language"
+    <label
+      className="nexus-c-download-emet-modal__label"
     >
-      <label
-        className="nexus-c-download-emet-modal__label"
-      >
-        language
-      </label>
-      <div
-        className="nexus-c-download-emet-modal__select-wrapper"
-      >
-        <Dropdown
-          appendTo={null}
-          ariaLabel={null}
-          ariaLabelledBy={null}
-          autoFocus={false}
-          className="nexus-c-download-emet-modal__select"
-          dataKey={null}
-          disabled={false}
-          dropdownIcon="pi pi-chevron-down"
-          editable={false}
-          emptyFilterMessage={null}
-          emptyMessage={null}
-          filter={true}
-          filterBy="label,value"
-          filterInputAutoFocus={true}
-          filterMatchMode="contains"
-          filterPlaceholder={null}
-          id={null}
-          inputId={null}
-          inputRef={null}
-          itemTemplate={null}
-          maxLength={null}
-          name={null}
-          onBlur={null}
-          onChange={[Function]}
-          onContextMenu={null}
-          onFilter={null}
-          onFocus={null}
-          onHide={null}
-          onMouseDown={null}
-          onShow={null}
-          optionDisabled={null}
-          optionGroupChildren={null}
-          optionGroupLabel={null}
-          optionGroupTemplate={null}
-          optionLabel="label"
-          optionValue={null}
-          options={Array []}
-          panelClassName={null}
-          panelStyle={null}
-          placeholder="Select Language..."
-          required={false}
-          resetFilterOnHide={false}
-          scrollHeight="200px"
-          showClear={false}
-          showFilterClear={false}
-          showOnFocus={false}
-          style={null}
-          tabIndex={null}
-          tooltip={null}
-          tooltipOptions={null}
-          transitionOptions={null}
-          value={null}
-          valueTemplate={null}
-          virtualScrollerOptions={null}
-        />
-      </div>
-    </div>
+      language
+    </label>
     <div
-      className="nexus-c-download-emet-modal__field"
-      key="locale"
+      className="nexus-c-download-emet-modal__select-wrapper"
     >
-      <label
-        className="nexus-c-download-emet-modal__label"
-      >
-        locale
-      </label>
-      <div
-        className="nexus-c-download-emet-modal__select-wrapper"
-      >
-        <Dropdown
-          appendTo={null}
-          ariaLabel={null}
-          ariaLabelledBy={null}
-          autoFocus={false}
-          className="nexus-c-download-emet-modal__select"
-          dataKey={null}
-          disabled={false}
-          dropdownIcon="pi pi-chevron-down"
-          editable={false}
-          emptyFilterMessage={null}
-          emptyMessage={null}
-          filter={true}
-          filterBy="label,value"
-          filterInputAutoFocus={true}
-          filterMatchMode="contains"
-          filterPlaceholder={null}
-          id={null}
-          inputId={null}
-          inputRef={null}
-          itemTemplate={null}
-          maxLength={null}
-          name={null}
-          onBlur={null}
-          onChange={[Function]}
-          onContextMenu={null}
-          onFilter={null}
-          onFocus={null}
-          onHide={null}
-          onMouseDown={null}
-          onShow={null}
-          optionDisabled={null}
-          optionGroupChildren={null}
-          optionGroupLabel={null}
-          optionGroupTemplate={null}
-          optionLabel="label"
-          optionValue={null}
-          options={Array []}
-          panelClassName={null}
-          panelStyle={null}
-          placeholder="Select Locale..."
-          required={false}
-          resetFilterOnHide={false}
-          scrollHeight="200px"
-          showClear={false}
-          showFilterClear={false}
-          showOnFocus={false}
-          style={null}
-          tabIndex={null}
-          tooltip={null}
-          tooltipOptions={null}
-          transitionOptions={null}
-          value={null}
-          valueTemplate={null}
-          virtualScrollerOptions={null}
-        />
-      </div>
-    </div>
-    <div
-      className="nexus-c-download-emet-modal__field"
-      key="status"
-    >
-      <label
-        className="nexus-c-download-emet-modal__label"
-      >
-        status
-      </label>
-      <div
-        className="nexus-c-download-emet-modal__select-wrapper"
-      >
-        <Dropdown
-          appendTo={null}
-          ariaLabel={null}
-          ariaLabelledBy={null}
-          autoFocus={false}
-          className="nexus-c-download-emet-modal__select"
-          dataKey={null}
-          disabled={false}
-          dropdownIcon="pi pi-chevron-down"
-          editable={false}
-          emptyFilterMessage={null}
-          emptyMessage={null}
-          filter={false}
-          filterBy="label,value"
-          filterInputAutoFocus={true}
-          filterMatchMode="contains"
-          filterPlaceholder={null}
-          id={null}
-          inputId={null}
-          inputRef={null}
-          itemTemplate={null}
-          maxLength={null}
-          name={null}
-          onBlur={null}
-          onChange={[Function]}
-          onContextMenu={null}
-          onFilter={null}
-          onFocus={null}
-          onHide={null}
-          onMouseDown={null}
-          onShow={null}
-          optionDisabled={null}
-          optionGroupChildren={null}
-          optionGroupLabel={null}
-          optionGroupTemplate={null}
-          optionLabel="label"
-          optionValue={null}
-          options={
-            Array [
-              Object {
-                "label": "Complete",
-                "value": "complete",
-              },
-              Object {
-                "label": "Pending",
-                "value": "pending",
-              },
-              Object {
-                "label": "With open DOP Tasks",
-                "value": "openDopTasks",
-              },
-            ]
-          }
-          panelClassName={null}
-          panelStyle={null}
-          placeholder="Select Metadata Status..."
-          required={false}
-          resetFilterOnHide={false}
-          scrollHeight="200px"
-          showClear={false}
-          showFilterClear={false}
-          showOnFocus={false}
-          style={null}
-          tabIndex={null}
-          tooltip={null}
-          tooltipOptions={null}
-          transitionOptions={null}
-          value={null}
-          valueTemplate={null}
-          virtualScrollerOptions={null}
-        />
-      </div>
+      <Dropdown
+        appendTo={null}
+        ariaLabel={null}
+        ariaLabelledBy={null}
+        autoFocus={false}
+        className="nexus-c-download-emet-modal__select"
+        dataKey={null}
+        disabled={false}
+        dropdownIcon="pi pi-chevron-down"
+        editable={false}
+        emptyFilterMessage={null}
+        emptyMessage={null}
+        filter={true}
+        filterBy="label,value"
+        filterInputAutoFocus={true}
+        filterMatchMode="contains"
+        filterPlaceholder={null}
+        id={null}
+        inputId={null}
+        inputRef={null}
+        itemTemplate={null}
+        maxLength={null}
+        name={null}
+        onBlur={null}
+        onChange={[Function]}
+        onContextMenu={null}
+        onFilter={null}
+        onFocus={null}
+        onHide={null}
+        onMouseDown={null}
+        onShow={null}
+        optionDisabled={null}
+        optionGroupChildren={null}
+        optionGroupLabel={null}
+        optionGroupTemplate={null}
+        optionLabel="label"
+        optionValue={null}
+        options={Array []}
+        panelClassName={null}
+        panelStyle={null}
+        placeholder="Select Language..."
+        required={false}
+        resetFilterOnHide={false}
+        scrollHeight="200px"
+        showClear={false}
+        showFilterClear={false}
+        showOnFocus={false}
+        style={null}
+        tabIndex={null}
+        tooltip={null}
+        tooltipOptions={null}
+        transitionOptions={null}
+        value={null}
+        valueTemplate={null}
+        virtualScrollerOptions={null}
+      />
     </div>
   </div>
-</div>
+  <div
+    className="nexus-c-download-emet-modal__field"
+    key="locale"
+  >
+    <label
+      className="nexus-c-download-emet-modal__label"
+    >
+      locale
+    </label>
+    <div
+      className="nexus-c-download-emet-modal__select-wrapper"
+    >
+      <Dropdown
+        appendTo={null}
+        ariaLabel={null}
+        ariaLabelledBy={null}
+        autoFocus={false}
+        className="nexus-c-download-emet-modal__select"
+        dataKey={null}
+        disabled={false}
+        dropdownIcon="pi pi-chevron-down"
+        editable={false}
+        emptyFilterMessage={null}
+        emptyMessage={null}
+        filter={true}
+        filterBy="label,value"
+        filterInputAutoFocus={true}
+        filterMatchMode="contains"
+        filterPlaceholder={null}
+        id={null}
+        inputId={null}
+        inputRef={null}
+        itemTemplate={null}
+        maxLength={null}
+        name={null}
+        onBlur={null}
+        onChange={[Function]}
+        onContextMenu={null}
+        onFilter={null}
+        onFocus={null}
+        onHide={null}
+        onMouseDown={null}
+        onShow={null}
+        optionDisabled={null}
+        optionGroupChildren={null}
+        optionGroupLabel={null}
+        optionGroupTemplate={null}
+        optionLabel="label"
+        optionValue={null}
+        options={Array []}
+        panelClassName={null}
+        panelStyle={null}
+        placeholder="Select Locale..."
+        required={false}
+        resetFilterOnHide={false}
+        scrollHeight="200px"
+        showClear={false}
+        showFilterClear={false}
+        showOnFocus={false}
+        style={null}
+        tabIndex={null}
+        tooltip={null}
+        tooltipOptions={null}
+        transitionOptions={null}
+        value={null}
+        valueTemplate={null}
+        virtualScrollerOptions={null}
+      />
+    </div>
+  </div>
+  <div
+    className="nexus-c-download-emet-modal__field"
+    key="status"
+  >
+    <label
+      className="nexus-c-download-emet-modal__label"
+    >
+      status
+    </label>
+    <div
+      className="nexus-c-download-emet-modal__select-wrapper"
+    >
+      <Dropdown
+        appendTo={null}
+        ariaLabel={null}
+        ariaLabelledBy={null}
+        autoFocus={false}
+        className="nexus-c-download-emet-modal__select"
+        dataKey={null}
+        disabled={false}
+        dropdownIcon="pi pi-chevron-down"
+        editable={false}
+        emptyFilterMessage={null}
+        emptyMessage={null}
+        filter={false}
+        filterBy="label,value"
+        filterInputAutoFocus={true}
+        filterMatchMode="contains"
+        filterPlaceholder={null}
+        id={null}
+        inputId={null}
+        inputRef={null}
+        itemTemplate={null}
+        maxLength={null}
+        name={null}
+        onBlur={null}
+        onChange={[Function]}
+        onContextMenu={null}
+        onFilter={null}
+        onFocus={null}
+        onHide={null}
+        onMouseDown={null}
+        onShow={null}
+        optionDisabled={null}
+        optionGroupChildren={null}
+        optionGroupLabel={null}
+        optionGroupTemplate={null}
+        optionLabel="label"
+        optionValue={null}
+        options={
+          Array [
+            Object {
+              "label": "Complete",
+              "value": "complete",
+            },
+            Object {
+              "label": "Pending",
+              "value": "pending",
+            },
+            Object {
+              "label": "With open DOP Tasks",
+              "value": "openDopTasks",
+            },
+          ]
+        }
+        panelClassName={null}
+        panelStyle={null}
+        placeholder="Select Metadata Status..."
+        required={false}
+        resetFilterOnHide={false}
+        scrollHeight="200px"
+        showClear={false}
+        showFilterClear={false}
+        showOnFocus={false}
+        style={null}
+        tabIndex={null}
+        tooltip={null}
+        tooltipOptions={null}
+        transitionOptions={null}
+        value={null}
+        valueTemplate={null}
+        virtualScrollerOptions={null}
+      />
+    </div>
+  </div>
+</ModalContent>
 `;

@@ -172,14 +172,14 @@ $button-font-size: 13px;
 
 // Dialog Related
 .p-dialog.p-component {
-    box-shadow: 0 8px 30px 0 palette(black, 2);
+    box-shadow: 0 8px 30px 0 palette(black, 20);
     border-radius: 8px;
 
     .p-dialog-header {
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         padding: 16px 32px;
-        border-bottom: 1px solid palette(black, 5);
+        border-bottom: 1px solid palette(black, 20);
         .p-dialog-title {
             font-weight: bold;
             font-size: 26px;
@@ -196,8 +196,18 @@ $button-font-size: 13px;
     .p-dialog-footer {
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
-        border-top: 1px solid palette(black, 5);
+        border-top: 1px solid palette(black, 20);
         padding: 16px 32px;
+
+        button:not(:last-child) {
+            margin: 0 16px 0 0;
+            width: auto;
+        }
+
+        button {
+            margin: 0 0 0 0;
+            width: auto;
+        }
     }
 }
 
