@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateEditConfig should match snapshot 1`] = `
+<Dialog
+  appendTo={null}
+  ariaCloseIconLabel="Close"
+  baseZIndex={0}
+  blockScroll={false}
+  breakpoints={
+    Object {
+      "640px": "100vw",
+      "960px": "75vw",
+    }
+  }
+  className={null}
+  closable={false}
+  closeOnEscape={false}
+  contentClassName={null}
+  contentStyle={null}
+  dismissableMask={false}
+  draggable={true}
+  focusOnShow={true}
+  footer={
+    <div
+      className="row"
+    >
+      <div
+        className="col-sm-12 text-end"
+      >
+        <ForwardRef
+          className="p-button-outlined p-button-secondary"
+          label="Cancel"
+          onClick={[Function]}
+        />
+        <ForwardRef
+          className="p-button-outlined"
+          disabled={true}
+          label="OK"
+          onClick={[Function]}
+        />
+      </div>
+    </div>
+  }
+  header="Display Name"
+  icons={null}
+  id={null}
+  keepInViewport={true}
+  key="dlgCreateEditConfig"
+  maskClassName={null}
+  maskStyle={null}
+  maximizable={false}
+  maximized={false}
+  minX={0}
+  minY={0}
+  modal={true}
+  onClick={null}
+  onDrag={null}
+  onDragEnd={null}
+  onDragStart={null}
+  onHide={[Function]}
+  onMaskClick={null}
+  onMaximize={null}
+  onResize={null}
+  onResizeEnd={null}
+  onResizeStart={null}
+  onShow={null}
+  position="center"
+  resizable={true}
+  rtl={false}
+  showHeader={true}
+  style={
+    Object {
+      "width": "50vw",
+    }
+  }
+  transitionOptions={null}
+  visible={true}
+>
+  <form>
+    <div
+      className="row"
+    >
+      <div
+        className="col-sm-6 mb-1"
+        key="id_col"
+      >
+        <Component
+          control={
+            Object {
+              "_defaultValues": Object {},
+              "_fields": Object {},
+              "_formState": Object {
+                "dirtyFields": Object {},
+                "errors": Object {},
+                "isDirty": false,
+                "isSubmitSuccessful": false,
+                "isSubmitted": false,
+                "isSubmitting": false,
+                "isValid": false,
+                "isValidating": false,
+                "submitCount": 0,
+                "touchedFields": Object {},
+              },
+              "_formValues": Object {},
+              "_getDirty": [Function],
+              "_getFieldArray": [Function],
+              "_getWatch": [Function],
+              "_names": Object {
+                "array": Set {},
+                "mount": Set {},
+                "unMount": Set {},
+                "watch": Set {},
+              },
+              "_options": Object {
+                "mode": "all",
+                "reValidateMode": "onChange",
+                "shouldFocusError": true,
+              },
+              "_proxyFormState": Object {
+                "dirtyFields": false,
+                "errors": false,
+                "isDirty": false,
+                "isValid": "all",
+                "isValidating": false,
+                "touchedFields": false,
+              },
+              "_removeUnmounted": [Function],
+              "_stateFlags": Object {
+                "action": false,
+                "mount": false,
+                "watch": false,
+              },
+              "_subjects": Object {
+                "array": ye {
+                  "observers": Array [],
+                },
+                "control": ye {
+                  "observers": Array [],
+                },
+                "state": ye {
+                  "observers": Array [
+                    me {
+                      "closed": false,
+                      "observer": Object {
+                        "next": [Function],
+                      },
+                    },
+                  ],
+                },
+                "watch": ye {
+                  "observers": Array [],
+                },
+              },
+              "_updateFieldArray": [Function],
+              "_updateValid": [Function],
+              "register": [Function],
+              "unregister": [Function],
+            }
+          }
+          defaultValue=""
+          key="id_controller"
+          name="id"
+          render={[Function]}
+          rules={Object {}}
+        />
+      </div>
+      <div
+        className="col-sm-6 mb-1"
+        key="createdAt_col"
+      >
+        <Component
+          control={
+            Object {
+              "_defaultValues": Object {},
+              "_fields": Object {},
+              "_formState": Object {
+                "dirtyFields": Object {},
+                "errors": Object {},
+                "isDirty": false,
+                "isSubmitSuccessful": false,
+                "isSubmitted": false,
+                "isSubmitting": false,
+                "isValid": false,
+                "isValidating": false,
+                "submitCount": 0,
+                "touchedFields": Object {},
+              },
+              "_formValues": Object {},
+              "_getDirty": [Function],
+              "_getFieldArray": [Function],
+              "_getWatch": [Function],
+              "_names": Object {
+                "array": Set {},
+                "mount": Set {},
+                "unMount": Set {},
+                "watch": Set {},
+              },
+              "_options": Object {
+                "mode": "all",
+                "reValidateMode": "onChange",
+                "shouldFocusError": true,
+              },
+              "_proxyFormState": Object {
+                "dirtyFields": false,
+                "errors": false,
+                "isDirty": false,
+                "isValid": "all",
+                "isValidating": false,
+                "touchedFields": false,
+              },
+              "_removeUnmounted": [Function],
+              "_stateFlags": Object {
+                "action": false,
+                "mount": false,
+                "watch": false,
+              },
+              "_subjects": Object {
+                "array": ye {
+                  "observers": Array [],
+                },
+                "control": ye {
+                  "observers": Array [],
+                },
+                "state": ye {
+                  "observers": Array [
+                    me {
+                      "closed": false,
+                      "observer": Object {
+                        "next": [Function],
+                      },
+                    },
+                  ],
+                },
+                "watch": ye {
+                  "observers": Array [],
+                },
+              },
+              "_updateFieldArray": [Function],
+              "_updateValid": [Function],
+              "register": [Function],
+              "unregister": [Function],
+            }
+          }
+          defaultValue=""
+          key="createdAt_controller"
+          name="createdAt"
+          render={[Function]}
+          rules={Object {}}
+        />
+      </div>
+    </div>
+  </form>
+</Dialog>
+`;
