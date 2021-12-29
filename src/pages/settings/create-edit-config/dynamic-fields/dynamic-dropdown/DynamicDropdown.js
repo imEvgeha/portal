@@ -55,7 +55,7 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
     };
 
     const getLicensees = (field, valuePath) => {
-        const servicingRegion = (valuePath && form.getValues(valuePath)) || '';
+        const servicingRegion = (valuePath && form?.getValues(valuePath)) || '';
 
         if (get(cache[field.source.url], servicingRegion, '')) {
             // licensees cache is per servicing region
@@ -113,7 +113,6 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
                         {...formField}
                         id={elementSchema.id}
                         key={elementSchema.id}
-                        // value={value}
                         placeholder={elementSchema.description}
                         disabled={elementSchema.disable}
                         options={options}

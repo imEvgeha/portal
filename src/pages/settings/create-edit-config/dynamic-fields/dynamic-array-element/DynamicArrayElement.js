@@ -102,7 +102,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
 
         newFormFields.splice(index, 1);
         const formPath = isGroup ? formFields[index]?.[0].name.split('.')[0] : formFields[index]?.name?.split('.')[0];
-        const formValues = form.getValues(formPath);
+        const formValues = form?.getValues(formPath);
 
         Array.isArray(formValues) && formValues.splice(index, 1);
         form.setValue(formPath, formValues);
@@ -176,7 +176,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
     const onChange = field => {
         const labelPath = elementsSchema?.misc?.idAttribute;
         if (field?.name?.includes(labelPath) && isGroup.current) {
-            const newHeaders = {...headers, [field?.name]: form.getValues(field?.name)};
+            const newHeaders = {...headers, [field?.name]: form?.getValues(field?.name)};
             setHeaders(newHeaders);
         }
     };
@@ -185,7 +185,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
         constructFieldPerType(
             fieldSchema,
             form,
-            form.getValues(fieldSchema.name) || values?.[fieldSchema?.name] || '',
+            form?.getValues(fieldSchema.name) || values?.[fieldSchema?.name] || '',
             'mb-2',
             onChange
         );
