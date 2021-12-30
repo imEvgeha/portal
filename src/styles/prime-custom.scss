@@ -77,11 +77,21 @@ $button-font-size: 13px;
 
             &:hover {
                 background: palette(black, 5);
+
+                svg {
+                    fill: palette(black, 100);
+                    color: palette(black, 100);
+                }
             }
 
             &:hover:active,
             &:active {
                 background-color: palette(black, 20);
+
+                svg {
+                    fill: palette(black, 100);
+                    color: palette(black, 100);
+                }
             }
 
             &:focus {
@@ -112,8 +122,8 @@ $button-font-size: 13px;
             width: 16px;
             height: 16px;
             margin: 0 4px;
-            fill: palette(black, 80);
-            color: palette(black, 80);
+            fill: palette(black, 55);
+            color: palette(black, 55);
         }
     }
 
