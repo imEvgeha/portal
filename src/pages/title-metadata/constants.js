@@ -36,7 +36,7 @@ export const UNMERGE_TITLE_SUCCESS = 'Title succesfully unmerged!';
 
 export const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded a Title.';
 
-export const COLUMN_MAPPINGS = [
+export const UPLOADED_EMETS_COLUMN_MAPPINGS = [
     {
         colId: 'id',
         field: 'id',
@@ -317,6 +317,63 @@ export const COLUMN_MAPPINGS = [
     },
 ];
 
+export const UPLOAD_COLUMN_MAPPINGS = [
+    {
+        colId: 'status',
+        field: 'status',
+        headerName: 'Ingest Status',
+        javaVariableName: 'status',
+        enableSearch: true,
+        dataType: 'string',
+        searchDataType: 'string',
+        width: 150,
+        sortable: false
+    },
+    {
+        colId: 'uploadedAt',
+        field: 'uploadedAt',
+        headerName: 'Upload date',
+        javaVariableName: 'uploadedAt',
+        enableSearch: true,
+        dataType: 'businessDateTime',
+        searchDataType: 'businessDateTime',
+        width: 250,
+        sortable: false
+    },
+    {
+        colId: 'sourceFileName',
+        field: 'sourceFileName',
+        headerName: 'File name',
+        javaVariableName: 'sourceFileName',
+        enableSearch: false,
+        dataType: 'string',
+        cellRenderer: 'loadingCellRenderer',
+        width: 380,
+        sortable: false
+    },
+    {
+        colId: 'error',
+        field: 'error',
+        headerName: 'Error',
+        javaVariableName: 'error',
+        enableSearch: false,
+        dataType: 'string',
+        width: 225,
+        sortable: false
+    },
+    {
+        colId: 'uploadedBy',
+        field: 'uploadedBy',
+        headerName: 'Uploaded by',
+        javaVariableName: 'uploadedBy',
+        enableSearch: true,
+        dataType: 'string',
+        searchDataType: 'string',
+        width: 150,
+        sortable: false
+    },
+]
+
 export const FIELDS_TO_REMOVE = ['editorial', 'territorial', 'movidaExternalIds', 'vzExternalIds'];
 export const UNABLE_PUBLISH =
     'Unable to Publish: Additional information required in EMets or some of the EMets are not in complete status';
@@ -336,3 +393,4 @@ export const TABLE_LABELS = {
 };
 
 export const TABLE_OPTIONS = [{label: 'All', value: 'all'}];
+
