@@ -26,6 +26,6 @@ describe('DownloadEmetModal', () => {
     });
 
     it('should render download metadata modal', () => {
-        expect(wrapper.find('ModalContent')).toHaveLength(1);
+        expect(wrapper.find('.nexus-c-download-emet-modal')).toHaveLength(1);
     });
 });

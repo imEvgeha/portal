@@ -199,12 +199,12 @@ $button-font-size: 13px;
         border-top: 1px solid palette(black, 20);
         padding: 16px 32px;
 
-        button:not(:last-child) {
+        .p-button:not(:last-child) {
             margin: 0 16px 0 0;
             width: auto;
         }
 
-        button {
+        .p-button {
             margin: 0 0 0 0;
             width: auto;
         }

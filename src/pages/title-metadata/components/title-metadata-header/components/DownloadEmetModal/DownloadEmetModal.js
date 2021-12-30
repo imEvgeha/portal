@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Dropdown} from 'primereact/dropdown';
 import {connect} from 'react-redux';
-import ModalContent from '../ModalContent/ModalContent';
 import {createLanguagesSelector, createCountrySelector} from './downloadEmetModalSelectors';
 import {downloadFormSubtitle, downloadFormFields} from '../constants';
 import './DownloadEmetModal.scss';
@@ -58,7 +57,14 @@ const DownloadEmetModal = ({languages, locale, values, setValues}) => {
     };
 
     return (
-        <ModalContent subtitle={downloadFormSubtitle}>{downloadFormFields.map(field => buildField(field))}</ModalContent>
+        <div className="nexus-c-download-emet-modal">
+            <div className="p-dialog-subheader">
+                <span className="nexus-c-modal-content__subtitle">{downloadFormSubtitle}</span>
+            </div>
+            <div className="nexus-c-download-emet-modal__fields">
+                {downloadFormFields.map(field => buildField(field))}
+            </div>
+        </div>
     );
 };
 
