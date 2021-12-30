@@ -350,16 +350,14 @@
                             "type": "datetime",
                             "dateType": "timestamp",
                             "path": "createdAt",
-                            "isReadOnly": true,
-                            "isRequired": true
+                            "isReadOnly": true
                         },
                         "updatedAt": {
                             "name": "Updated At",
                             "type": "datetime",
                             "dateType": "timestamp",
                             "path": "updatedAt",
-                            "isReadOnly": true,
-                            "isRequired": true
+                            "isReadOnly": true
                         },
                         "createdBy": {
                             "name": "Created By",
