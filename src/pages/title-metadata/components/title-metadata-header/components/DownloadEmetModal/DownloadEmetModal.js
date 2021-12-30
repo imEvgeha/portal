@@ -58,7 +58,9 @@ const DownloadEmetModal = ({languages, locale, values, setValues}) => {
 
     return (
         <div className="nexus-c-download-emet-modal">
-            <h5 className="nexus-c-download-emet-modal__subtitle">{downloadFormSubtitle}</h5>
+            <div className="p-dialog-subheader">
+                <span className="nexus-c-modal-content__subtitle">{downloadFormSubtitle}</span>
+            </div>
             <div className="nexus-c-download-emet-modal__fields">
                 {downloadFormFields.map(field => buildField(field))}
             </div>
