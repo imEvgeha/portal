@@ -351,7 +351,7 @@
                             "dateType": "timestamp",
                             "path": "createdAt",
                             "isReadOnly": true,
-                            "isRequired": true
+                            "isRequired": false
                         },
                         "updatedAt": {
                             "name": "Updated At",
@@ -359,7 +359,7 @@
                             "dateType": "timestamp",
                             "path": "updatedAt",
                             "isReadOnly": true,
-                            "isRequired": true
+                            "isRequired": false
                         },
                         "createdBy": {
                             "name": "Created By",
