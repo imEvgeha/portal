@@ -18,6 +18,7 @@ const initialState = {
     isPublishingMOV: false,
     gridState: {},
     filter: {},
+    uploadLogFilter: {},
     selectedId: '',
 };
 
@@ -142,6 +143,16 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 gridState: {...gridState, ...payload},
             };
         }
+        case actionTypes.SET_UPLOAD_LOG_TITLE_FILTER:
+            return {
+                ...state,
+                uploadLogFilter: payload,
+            };
+        case actionTypes.CLEAR_UPLOAD_LOG_TITLE_FILTER:
+            return {
+                ...state,
+                uploadLogFilter: {},
+            };
         case actionTypes.SET_TITLE_FILTER:
             return {
                 ...state,
