@@ -14,8 +14,8 @@ import {connect, useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {UPLOAD_COLUMN_MAPPINGS, DEFAULT_CATALOGUE_OWNER} from '../../constants';
 import { fetchUploadedEMETsLog } from '../../service/UploadLogService';
-import {setTitleMetadataFilter} from '../../titleMetadataActions';
-import {createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
+import {setUploadMetadataFilter} from '../../titleMetadataActions';
+import {createUploadLogMetadataFilterSelector} from '../../titleMetadataSelectors';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './UploadMetadataTable.scss';
 
@@ -76,7 +76,7 @@ const UploadMetadataTable = ({
 
                 const firstFilterModel = Object.keys(filterModel).shift();
                 const id = filterModel && filterModel[`${firstFilterModel}`]?.filter;
-                dispatch(setTitleMetadataFilter({...titleMetadataFilter, id, filterModel, sortModel, columnState}));
+                dispatch(setUploadMetadataFilter({...titleMetadataFilter, id, filterModel, sortModel, columnState}));
             }
         };
     }, [columnApi]);
@@ -155,7 +155,7 @@ UploadMetadataTable.defaultProps = {
 };
 
 const mapStateToProps = () => {
-    const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
+    const titleMetadataFilterSelector = createUploadLogMetadataFilterSelector();
     return state => ({
         titleMetadataFilter: titleMetadataFilterSelector(state),
     });

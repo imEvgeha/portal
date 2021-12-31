@@ -24,7 +24,7 @@ const RepositorySelectsAndButtons = ({
   if (getNameOfCurrentTab() === 'repository') {
       return (
         <Row className='nexus-c-title-metadata__select-container'>
-          <Col xs={5} className="d-flex justify-content-end">
+          <Col xs={12} xl={10} className="d-flex justify-content-end col-xxl-11">
               <NexusSavedTableDropdown
                   gridApi={gridApi}
                   columnApi={columnApi}
@@ -38,11 +38,9 @@ const RepositorySelectsAndButtons = ({
                   setBlockLastFilter={setBlockLastFilter}
                   isTitleMetadata={true}
               />
-            </Col>
-            <Col xs={5} className="d-flex justify-content-end">
               <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
             </Col>
-            <Col xs={2} className="d-flex align-items-center">
+            <Col xs={12} sm={12} md={12} lg={12} xl={2} className="d-flex align-items-center justify-content-end col-xxl-1">
               <Button
                 tooltip="Create New Title"
                 tooltipOptions={{ position: 'left'}}
