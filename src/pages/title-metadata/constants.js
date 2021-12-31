@@ -332,10 +332,10 @@ export const UPLOAD_COLUMN_MAPPINGS = [
     {
         colId: 'uploadedAt',
         field: 'uploadedAt',
-        headerName: 'Upload date',
+        headerName: 'Upload Date',
         javaVariableName: 'uploadedAt',
         enableSearch: true,
-        dataType: 'businessDateTime',
+        dataType: 'dateColumn',
         searchDataType: 'businessDateTime',
         width: 250,
         sortable: false
@@ -343,7 +343,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
     {
         colId: 'sourceFileName',
         field: 'sourceFileName',
-        headerName: 'File name',
+        headerName: 'File Name',
         javaVariableName: 'sourceFileName',
         enableSearch: false,
         dataType: 'string',
@@ -364,7 +364,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
     {
         colId: 'uploadedBy',
         field: 'uploadedBy',
-        headerName: 'Uploaded by',
+        headerName: 'Uploaded By',
         javaVariableName: 'uploadedBy',
         enableSearch: true,
         dataType: 'string',

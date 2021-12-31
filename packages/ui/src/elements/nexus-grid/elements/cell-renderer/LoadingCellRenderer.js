@@ -3,7 +3,7 @@ import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {downloadFile, getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
-import { downloadUploadedEMET } from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
+import { downloadUploadedEMETLog } from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
 import {renderTitleName} from './utils/utils';
 
 const LoadingCellRenderer = params => {
@@ -26,8 +26,9 @@ const LoadingCellRenderer = params => {
         linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
     }
     
-    const handleDownload = () => {
-        downloadUploadedEMET(idToFileDownloading).then(response => {
+    const handleDownload = (e) => {
+        e.preventDefault();
+        downloadUploadedEMETLog(idToFileDownloading).then(response => {
             downloadFile(response, 'Editorial_Metadata');
         }).catch((err) => console.error(err))
     };
