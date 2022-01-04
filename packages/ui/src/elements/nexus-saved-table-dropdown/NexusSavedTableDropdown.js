@@ -4,6 +4,7 @@ import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-
 import {FieldTextStateless} from '@atlaskit/field-text';
 import CheckIcon from '@atlaskit/icon/glyph/check';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import Tooltip from '@atlaskit/tooltip';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
@@ -143,9 +144,11 @@ const NexusSavedTableDropdown = ({
                     </DropdownItemGroup>
                     <DropdownItemGroup title={tableLabels.predifinedViewsLabel}>
                         {tableOptions.map(item => (
-                            <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
-                                {item.label}
-                            </DropdownItem>
+                            <Tooltip key={item.value} content={item.label}>
+                                <DropdownItem onClick={() => setPredefinedView(item)}>
+                                    {item.label}
+                                </DropdownItem>
+                            </Tooltip>
                         ))}
                     </DropdownItemGroup>
                 </DropdownMenu>
