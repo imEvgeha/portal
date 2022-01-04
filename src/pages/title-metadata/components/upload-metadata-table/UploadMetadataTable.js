@@ -126,7 +126,6 @@ const UploadMetadataTable = ({
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
                 externalFilter={externalFilter}
-                link="/metadata/detail"
                 onlyReceivedSize
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
