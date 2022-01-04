@@ -145,7 +145,7 @@ const NexusSavedTableDropdown = ({
                     <DropdownItemGroup title={tableLabels.predifinedViewsLabel}>
                         {tableOptions.map(item => (
                             <Tooltip key={item.value} content={item.label}>
-                                <DropdownItem shouldTitleWrap={true} onClick={() => setPredefinedView(item)}>
+                                <DropdownItem onClick={() => setPredefinedView(item)}>
                                     {item.label}
                                 </DropdownItem>
                             </Tooltip>
