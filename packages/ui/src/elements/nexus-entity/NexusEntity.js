@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import EntityActions from './entity-actions/EntityActions';
+import './NexusEntity.scss';
+import { NEXUS_ENTITY_TYPES } from './constants';
 
 // Actions Usage:
 // const actions = [
@@ -15,11 +17,11 @@ import EntityActions from './entity-actions/EntityActions';
 //     }),
 // ];
 
-const NexusEntity = ({heading, tag, flag1, flag2, actions}) => {
+const NexusEntity = ({type, heading, tag, flag1, flag2, actions}) => {
     return (
-        <div className="nexus-c-entity container-fluid">
-            <div className="row nexus-c-section align-items-center">
-                <div className="col-12 text-center text-sm-start col-sm-6">{heading}</div>
+        <div className='nexus-c-entity container-fluid nexus-c-entity'>
+            <div className={`row nexus-c-section align-items-center nexus-c-section-${type}`}>
+                <div className="col-12 nexus-c-heading text-center text-sm-start col-sm-6">{heading}</div>
                 <div className="col-12 text-center text-sm-start col-sm-6">
                     <EntityActions actions={actions} tag={tag} flag1={flag1} flag2={flag2} />
                 </div>
@@ -29,6 +31,7 @@ const NexusEntity = ({heading, tag, flag1, flag2, actions}) => {
 };
 
 NexusEntity.propTypes = {
+    type: PropTypes.string,
     heading: PropTypes.element,
     tag: PropTypes.string || PropTypes.element,
     flag1: PropTypes.string || PropTypes.element,
@@ -37,6 +40,7 @@ NexusEntity.propTypes = {
 };
 
 NexusEntity.defaultProps = {
+    type: NEXUS_ENTITY_TYPES.default,
     heading: <span />,
     tag: '',
     flag1: '',
