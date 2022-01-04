@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
@@ -61,7 +60,7 @@ const TitleDetails = ({
     updateTitle,
     selectValues,
     isLoadingSelectValues,
-    castCrewConfig,
+    configApiEndpoints,
     syncTitle,
     publishTitle,
     isSaving,
@@ -111,6 +110,9 @@ const TitleDetails = ({
 
     const onSubmit = (values, initialValues) => {
         handleDirtyValues(initialValues, values);
+
+        const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
+
         const {params} = match || {};
         const {id} = params;
         // remove fields under arrayWithTabs
@@ -135,7 +137,7 @@ const TitleDetails = ({
 
         prepareCategoryField(updatedValues);
         Promise.all([
-            updateTitle({...updatedValues, id: title.id}),
+            !isEmetUpdated && updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             updateEditorialMetadata(values, id),
             (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
@@ -203,7 +205,7 @@ const TitleDetails = ({
             ) : (
                 <>
                     <NexusDynamicForm
-                        castCrewConfig={castCrewConfig}
+                        castCrewConfig={configApiEndpoints.find(e => e.displayName === 'Persons')}
                         searchPerson={searchPerson}
                         schema={schema}
                         initialData={extendTitleWithExternalIds()}
@@ -211,7 +213,7 @@ const TitleDetails = ({
                         containerRef={containerRef}
                         selectValues={selectValues}
                         seasonPersons={propagateAddPersons}
-                        onSubmit={(values, initialValues) => onSubmit(values, initialValues)}
+                        onSubmit={onSubmit}
                         generateMsvIds={generateMsvIds}
                         regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                         hasButtons={isNexusTitle(title.id)}
@@ -274,7 +276,7 @@ TitleDetails.propTypes = {
     isVZTitlePublishing: PropTypes.bool,
     isMOVTitlePublishing: PropTypes.bool,
     fetchConfigApiEndpoints: PropTypes.func,
-    castCrewConfig: PropTypes.object,
+    configApiEndpoints: PropTypes.array,
     titleLoading: PropTypes.bool,
     emetLoading: PropTypes.bool,
     externalIdsLoading: PropTypes.bool,
@@ -307,7 +309,7 @@ TitleDetails.defaultProps = {
     titleLoading: true,
     emetLoading: true,
     externalIdsLoading: true,
-    castCrewConfig: {},
+    configApiEndpoints: [],
 };
 
 const mapStateToProps = () => {
@@ -340,7 +342,7 @@ const mapStateToProps = () => {
         isMOVTitleSyncing: isMOVTitleSyncingSelector(state, props),
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
-        castCrewConfig: settingsConfigEndpointsSelector(state, props).find(e => e.displayName === 'Persons'),
+        configApiEndpoints: settingsConfigEndpointsSelector(state, props),
     });
 };
 

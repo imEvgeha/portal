@@ -4,11 +4,15 @@ exports[`DownloadEmetModal should match snapshot 1`] = `
 <div
   className="nexus-c-download-emet-modal"
 >
-  <h5
-    className="nexus-c-download-emet-modal__subtitle"
+  <div
+    className="p-dialog-subheader"
   >
-    Select a version of Editorial Metadata to download.
-  </h5>
+    <span
+      className="nexus-c-modal-content__subtitle"
+    >
+      Select a version of Editorial Metadata to download.
+    </span>
+  </div>
   <div
     className="nexus-c-download-emet-modal__fields"
   >

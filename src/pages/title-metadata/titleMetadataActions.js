@@ -65,6 +65,15 @@ export const uploadMetadata = payload => ({
     payload,
 });
 
+export const setUploadMetadataFilter = payload => ({
+    type: actionTypes.SET_UPLOAD_LOG_TITLE_FILTER,
+    payload,
+});
+
+export const clearUploadMetadataFilter = () => ({
+    type: actionTypes.CLEAR_UPLOAD_LOG_TITLE_FILTER,
+});
+
 export const setTitleMetadataFilter = payload => ({
     type: actionTypes.SET_TITLE_FILTER,
     payload,

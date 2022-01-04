@@ -15,7 +15,7 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
   }
 >
   <Col
-    className="d-flex justify-content-end"
+    className="d-flex justify-content-end col-xs-12 col-xl-10 col-xxl-11"
     tag="div"
     widths={
       Array [
@@ -26,7 +26,6 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
         "xl",
       ]
     }
-    xs={5}
   >
     <NexusSavedTableDropdown
       applyPredefinedTableView={[Function]}
@@ -55,27 +54,12 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
       userDefinedGridStates={Array []}
       username=""
     />
-  </Col>
-  <Col
-    className="d-flex justify-content-end"
-    tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
-    xs={5}
-  >
     <CatalogueOwner
       setCatalogueOwner={[Function]}
     />
   </Col>
   <Col
-    className="d-flex align-items-center"
+    className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1"
     tag="div"
     widths={
       Array [
@@ -86,7 +70,6 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
         "xl",
       ]
     }
-    xs={2}
   >
     <ForwardRef
       className="p-button-text nexus-c-title-metadata__create-btn"
