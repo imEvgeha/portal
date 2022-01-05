@@ -40,7 +40,7 @@ export const getSortModel = columnApi => {
 };
 
 export const setSorting = (sortApply, columnApi) => {
-    const columnState = columnApi.getColumnState();
+    const columnState = columnApi.getColumnState() || [];
     let initialSortColumnState;
 
     get(sortApply, 'colId');

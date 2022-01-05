@@ -24,6 +24,7 @@ import {
 } from './components/title-metadata-header/components/constants';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
+import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
 import './TitleMetadataView.scss';
 import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
@@ -50,7 +51,7 @@ export const TitleMetadataView = ({
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
     const toast = useRef(null);
 
-    const showSuccess = (detail) => {
+    const showSuccess = detail => {
         toast.current.show({
             severity: 'success',
             summary: successDownloadTitle,
@@ -207,6 +208,17 @@ export const TitleMetadataView = ({
                 />
             ) : null}
             {isItTheSameTab('syncLog') ? <SyncLogTable /> : null}
+            {isItTheSameTab('uploadLog') ? (
+                <UploadMetadataTable
+                    history={history}
+                    catalogueOwner={catalogueOwner}
+                    setGridApi={setGridApi}
+                    setColumnApi={setColumnApi}
+                    columnApi={columnApi}
+                    gridApi={gridApi}
+                    className="nexus-c-title-metadata__table"
+                />
+            ) : null}
             <TitleCreate
                 display={showModal}
                 toggle={closeModalAndRefreshTable}

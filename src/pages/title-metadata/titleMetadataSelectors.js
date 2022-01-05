@@ -44,6 +44,9 @@ export const createExternalIdsLoadingSelector = () =>
 export const createGridStateSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.gridState || {});
 
+export const createUploadLogMetadataFilterSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.uploadLogFilter || {});
+
 export const createTitleMetadataFilterSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.filter || {});
 
