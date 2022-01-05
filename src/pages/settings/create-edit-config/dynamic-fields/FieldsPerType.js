@@ -3,12 +3,13 @@ import {Calendar} from 'primereact/calendar';
 import {Checkbox} from 'primereact/checkbox';
 import {InputText} from 'primereact/inputtext';
 import {Controller} from 'react-hook-form';
-import DynamicArrayElement from './dynamic-array-element/DynamicArrayElement';
+import ArrayElement from './array-element/ArrayElement';
 import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
+import DynamicElement from './dynamic-element/DynamicElement';
 import FieldError from './field-error/FieldError';
 import FieldLabel from './field-label/FieldLabel';
 
-export const constructFieldPerType = (elementSchema, form, value, className, customOnChange) => {
+export const constructFieldPerType = (elementSchema, form, value, className, customOnChange, cb) => {
     return (
         <div
             className={className || (elementSchema.type === 'array' ? 'col-sm-12' : 'col-sm-6 mb-1')}
@@ -33,10 +34,11 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
                                         <FieldLabel
                                             htmlFor={elementSchema.id}
                                             label={elementSchema.label}
+                                            additionalLabel={elementSchema.type === 'timestamp' ? ' (UTC)' : ''}
                                             isRequired={!!elementSchema.required}
                                         />
                                     )}
-                                    {getElement(elementSchema, field, value, form, onFormElementChanged)}
+                                    {getElement(elementSchema, field, value, form, onFormElementChanged, cb)}
                                     {elementSchema.type !== 'array' && <FieldError error={fieldState.error} />}
                                 </div>
                             </div>
@@ -48,7 +50,7 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
     );
 };
 
-const getElement = (elementSchema, field, value, form, onChange) => {
+const getElement = (elementSchema, field, value, form, onChange, cb) => {
     switch (elementSchema.type) {
         case 'text': {
             return (
@@ -88,7 +90,11 @@ const getElement = (elementSchema, field, value, form, onChange) => {
             );
         }
         case 'array':
-            return <DynamicArrayElement elementsSchema={elementSchema} form={form} values={value} />;
+            return elementSchema.dynamic ? (
+                <DynamicElement elementsSchema={elementSchema} form={form} values={value} onKeysChanged={cb} />
+            ) : (
+                <ArrayElement elementsSchema={elementSchema} form={form} values={value} />
+            );
         case 'multiselect':
         case 'select': {
             return <DynamicDropdown formField={field} elementSchema={elementSchema} change={onChange} form={form} />;

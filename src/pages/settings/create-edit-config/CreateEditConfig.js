@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {isEmpty, pickBy, without} from 'lodash';
+import {isEmpty, omitBy, pickBy, without} from 'lodash';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
@@ -9,6 +9,10 @@ import {constructFieldPerType} from './dynamic-fields/FieldsPerType';
 const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayName, label}) => {
     const [isVisible, setIsVisible] = useState(visible);
     const form = useForm({mode: 'all', reValidateMode: 'onChange'});
+    const activeDynamicKeys = useRef({});
+
+    const getActiveDynamicKeys = (schemaKey, keys) =>
+        (activeDynamicKeys.current = {...activeDynamicKeys.current, [schemaKey]: keys});
 
     const constructFields = (schema, form, values) => {
         return schema?.map(elementSchema => {
@@ -17,7 +21,8 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
                 form,
                 values?.[elementSchema?.name] || '',
                 undefined,
-                undefined
+                undefined,
+                elementSchema.dynamic ? getActiveDynamicKeys : undefined
             );
         });
     };
@@ -41,10 +46,15 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
                 if (Array.isArray(tmp[key])) {
                     const arr = without(tmp[key], null, undefined, '');
                     formValues = {...formValues, [key]: arr};
+                } else if (typeof tmp[key] === 'object' && activeDynamicKeys.current?.[key]) {
+                    let obj = pickBy(tmp[key], (value, childKey) => activeDynamicKeys.current[key].includes(childKey));
+                    obj = omitBy(obj, (value, childKey) => childKey === 'unset');
+                    formValues = {...formValues, [key]: obj};
                 } else {
                     formValues = {...formValues, [key]: tmp[key]};
                 }
             });
+
             onSubmit(formValues);
             onHideDialog();
         }

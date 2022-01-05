@@ -1,8 +1,8 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import DynamicArrayElement from './DynamicArrayElement';
+import ArrayElement from './ArrayElement';
 
-describe('DynamicArrayElement', () => {
+describe('ArrayElement', () => {
     let wrapper = null;
     const value = {};
     const form = {
@@ -39,7 +39,7 @@ describe('DynamicArrayElement', () => {
     };
 
     beforeEach(() => {
-        wrapper = shallow(<DynamicArrayElement elementsSchema={elementSchema} form={form} values={value} />);
+        wrapper = shallow(<ArrayElement elementsSchema={elementSchema} form={form} values={value} />);
     });
 
     it('should match snapshot', () => {

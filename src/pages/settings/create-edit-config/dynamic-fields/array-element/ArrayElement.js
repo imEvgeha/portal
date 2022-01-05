@@ -1,11 +1,13 @@
-import React, {useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import {debounce} from 'lodash';
 import {Button} from 'primereact/button';
 import {Panel} from 'primereact/panel';
+import {arrayElementButtons} from '../ArrayButtons';
 import {constructFieldPerType} from '../FieldsPerType';
-import './DynamicArrayElement.scss';
+import './ArrayElement.scss';
 
-const DynamicArrayElement = ({elementsSchema, form, values}) => {
+const ArrayElement = ({elementsSchema, form, values}) => {
     const isGroup = useRef(false);
     const constructFormFieldsState = () => {
         // Needed when adding new as no values still exist.
@@ -23,8 +25,11 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
             return group;
         }
 
-        return (values || newConfig).map(
-            (val, index) => elementsSchema?.misc?.fields.map(f => ({...f, name: `${elementsSchema.name}.${index}`}))[0]
+        return (Array.isArray(values) && values.length ? values : newConfig).map(
+            (val, index) =>
+                elementsSchema?.misc?.fields.map(f => {
+                    return {...f, name: `${elementsSchema.name}.${index}`};
+                })[0]
         );
     };
 
@@ -52,7 +57,22 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
     const fieldsRef = useRef(elementsSchema?.misc?.fields.map((f, i) => `${elementsSchema.name}.${i}`));
     const [headers, setHeaders] = useState(getInitHeader());
 
-    React.useEffect(() => {
+    const reconstructFormFields = useCallback(
+        debounce(() => {
+            const newFields = formFields.map((f, index) =>
+                Array.isArray(f)
+                    ? [...f]
+                    : {
+                          ...f,
+                          ...(f.name && {name: `${elementsSchema.name}.${index}`}),
+                      }
+            );
+            setFormFields(newFields);
+        }, 300),
+        [elementsSchema]
+    );
+
+    useEffect(() => {
         const subscription = form.watch((value, {name}) => {
             if (fieldsRef.current.includes(name)) {
                 data.current = {...data.current, [name]: value[name]};
@@ -62,10 +82,15 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
         return () => subscription.unsubscribe();
     }, [form.watch]);
 
+    useEffect(() => {
+        reconstructFormFields();
+    }, [elementsSchema]);
+
     const addField = () => {
         const newFields = [...formFields];
         const fieldName = `${elementsSchema.name}.${newFields.length}`;
         newFields.push({
+            ...(newFields?.[0] || {}),
             type: newFields?.[0]?.type,
             name: fieldName,
         });
@@ -87,8 +112,19 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
     const mapElementEntry = (group, index) =>
         group.map((f, i) => {
             const nameAttributes = f.name.split('.');
-            let name = `${nameAttributes[0]}.${index || i}`;
-            name = nameAttributes?.[2] ? `${name}.${nameAttributes[2]}` : name;
+            const tmp = [];
+            let indexFound = false;
+            nameAttributes.reverse();
+            for (let e of nameAttributes) {
+                if (!indexFound && Number.isInteger(+e)) {
+                    e = index ?? i;
+                    indexFound = true;
+                }
+                tmp.push(e);
+            }
+            tmp.reverse();
+            const name = tmp.join('.');
+
             return {...f, name};
         });
 
@@ -101,7 +137,14 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
         }
 
         newFormFields.splice(index, 1);
-        const formPath = isGroup ? formFields[index]?.[0].name.split('.')[0] : formFields[index]?.name?.split('.')[0];
+        let formPath = isGroup ? formFields[index]?.[0].name.split('.')[0] : formFields[index]?.name?.split('.')[0];
+
+        if (!isGroup) {
+            const pathParts = formFields[index]?.name?.split('.');
+            pathParts.splice(pathParts.length - 1, 1);
+            formPath = pathParts.join('.');
+        }
+
         const formValues = form?.getValues(formPath);
 
         Array.isArray(formValues) && formValues.splice(index, 1);
@@ -167,7 +210,7 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
                             {renderGroupElements(group)}
                         </Panel>
                     </div>
-                    {renderElementButtons(index, true)}
+                    {arrayElementButtons(index, formFields.length, addGroup, () => onRemove(index, true), false)}
                 </div>
             );
         });
@@ -195,52 +238,23 @@ const DynamicArrayElement = ({elementsSchema, form, values}) => {
             return (
                 <div className="row align-items-center my-2" key={`nexus-c-field-${index}`}>
                     <div className="col-10">{constructElement(fieldSchema)}</div>
-                    {renderElementButtons(index, false, true)}
+                    {arrayElementButtons(index, formFields.length, addField, () => onRemove(index, false), true)}
                 </div>
             );
         });
     };
 
-    const renderElementButtons = (index, isGroup, shouldAddMargin = false) => {
-        return (
-            <div className={`col-2 text-center ${shouldAddMargin ? 'nexus-c-col-margin-bottom' : ''}`}>
-                {formFields.length > 1 && (
-                    <Button
-                        className="p-button-text"
-                        icon="pi pi-trash"
-                        onClick={e => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            onRemove(index, isGroup);
-                        }}
-                    />
-                )}
-                {index === formFields.length - 1 && (
-                    <Button
-                        className="p-button-text"
-                        icon="pi pi-plus"
-                        onClick={e => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            isGroup ? addGroup(elementsSchema) : addField();
-                        }}
-                    />
-                )}
-            </div>
-        );
-    };
-
     return isGroup.current ? renderGroups() : renderElement(formFields);
 };
 
-DynamicArrayElement.propTypes = {
+ArrayElement.propTypes = {
     elementsSchema: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
     values: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
 };
 
-DynamicArrayElement.defaultProps = {
+ArrayElement.defaultProps = {
     values: undefined,
 };
 
-export default DynamicArrayElement;
+export default ArrayElement;
