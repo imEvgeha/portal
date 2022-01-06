@@ -6,6 +6,7 @@
         "DOPUrl": "https://vuapi.dev.vubiquity.com/vubiquity/dop",
         "eventApiUrl": "https://vuapi.dev.vubiquity.com/vubiquity/events",
         "kongUrl": "https://vuapi.dev.vubiquity.com/vubiquity",
+        "mediaImageUrl": "https://mediaimage.dev.vubiquity.com",
         "deteBaseUrl": "https://vuapi.dev.vubiquity.com/vubiquity/dete/rest",
         "publisher": "https://vuapi.dev.vubiquity.com/vubiquity/titlespublishermovida",
         "mediaStorageUrl": "https://mediastorage.dev.vubiquity.com/media-storage/v1",
@@ -35,7 +36,8 @@
             "publisher": "/publisher/v1",
             "kongMediaCatalog": "/mediacatalog/catalog/v1",
             "kongMediaStorage": "/mediastorage/media-storage/v1",
-            "kongVidispine": "/vidispine-api/API"
+            "kongVidispine": "/vidispine-api/API",
+            "mediaImageServices": "/image-services/v1"
         },
         "servicingOrdersUrl": "https://vuapi.dev.vubiquity.com/vubiquity/servicing-orders",
         "titleUrl": "https://vuapi.dev.vubiquity.com/vubiquity/titles",

@@ -1,13 +1,25 @@
+import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import config from 'react-global-configuration';
 
 export const fetchPosters = url => {
     const headers = new Headers();
-    headers.append('Accept', 'application/json');
+    // headers.append('Accept', 'application/json');
     headers.append('Authorization', `token ${localStorage.getItem('token')}`);
     return fetch(url, {
         method: 'GET',
         headers,
     }).then(response => response.json());
+};
+
+export const fetchNewPosters = url => {
+    const headers = new Headers();
+    const {token} = keycloak;
+    headers.append('Accept', 'application/json');
+    headers.append('Authorization', `Bearer ${token}`);
+    return fetch(url, {
+        method: 'GET',
+        headers,
+    }).then(response => response.json().then((resp) => resp));
 };
 
 export const fetchPoster = poster => {
