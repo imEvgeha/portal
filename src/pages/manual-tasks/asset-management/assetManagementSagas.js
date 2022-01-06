@@ -14,7 +14,7 @@ import {
     UPLOAD_ARTWORK_ERROR,
     UPLOAD_ARTWORK_SUCCESS,
 } from './assetManagementReducer';
-import {fetchNewPosters, fetchPosters} from './assetManagementService';
+import {fetchPosters} from './assetManagementService';
 
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded Artwork.';
 
@@ -23,20 +23,11 @@ function* resourcePosters({payload}) {
         const url = `${config.get('gateway.mediaImageUrl')}${config.get(
             'gateway.service.mediaImageServices'
         )}/AE/assets/${payload}/posters`;
-        const resource = yield call(fetchNewPosters, url);
-        const resourceURL = `${get(resource, 'uri[0]', '')}?url=true`;
+        const resource = yield call(fetchPosters, url);
         if (!isEmpty(resource)) {
-            console.log('timeFramesWORKS')
-
-            const timeFrames = yield call(fetchPosters, resourceURL);
-            console.log(timeFrames, 'timeFrames')
-            const posters = [];
-            get(timeFrames, 'uri', []).forEach(frame => {
-                posters.push(`${frame}`);
-            });
             yield put({
                 type: STORE_POSTERS,
-                payload: posters,
+                payload: resource,
             });
         }
     } catch (error) {

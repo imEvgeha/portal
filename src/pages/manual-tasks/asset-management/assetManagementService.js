@@ -3,16 +3,6 @@ import config from 'react-global-configuration';
 
 export const fetchPosters = url => {
     const headers = new Headers();
-    // headers.append('Accept', 'application/json');
-    headers.append('Authorization', `token ${localStorage.getItem('token')}`);
-    return fetch(url, {
-        method: 'GET',
-        headers,
-    }).then(response => response.json());
-};
-
-export const fetchNewPosters = url => {
-    const headers = new Headers();
     const {token} = keycloak;
     headers.append('Accept', 'application/json');
     headers.append('Authorization', `Bearer ${token}`);
