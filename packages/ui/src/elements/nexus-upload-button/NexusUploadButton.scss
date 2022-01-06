@@ -10,8 +10,7 @@
 }
 
 .ingest-upload {
-    padding: 0px 16px;
-
+    @include padding(2.5, 5);
 
     &__input {
         display: none;
