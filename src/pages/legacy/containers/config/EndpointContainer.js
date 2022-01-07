@@ -13,7 +13,10 @@ import CreateEditConfigForm from './CreateEditConfigForm';
 import {Can, can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import './ConfigUI.scss';
 import CreateEditConfig from '../../../settings/create-edit-config/CreateEditConfig';
-import {cloneDeep} from 'lodash';
+import {capitalize, cloneDeep} from 'lodash';
+import {store} from '../../../../index';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -100,6 +103,7 @@ export class EndpointContainer extends Component {
             isLoading: false,
             currentRecord: null,
             showEditConfigModal: false,
+            submitLoading: false,
             pageSize: defaultPageSize,
         };
 
@@ -193,24 +197,51 @@ export class EndpointContainer extends Component {
     editRecord(val) {
         const {selectedApi} = this.props;
         const newVal = {...this.state.currentRecord, ...val};
+        const successToast = {
+            title: 'Success',
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            description: `${capitalize(newVal.name)} config for ${selectedApi.displayName} successfully ${
+                newVal.id ? 'updated.' : 'added.'
+            }`,
+        };
+
+        this.setState({submitLoading: true});
+
         if (newVal.id) {
-            configService
-                .update(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal.id, newVal)
-                .then(response => {
+            configService.update(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal.id, newVal).then(
+                response => {
+                    store.dispatch(addToast(successToast));
                     const data = this.state.data.slice(0);
                     const index = data.findIndex(item => item.id === newVal.id);
                     data[index] = response;
-                    this.setState({data, currentRecord: null});
-                });
-        } else {
-            configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal).then(response => {
-                const data = this.state.data.slice(0);
-                data.unshift(response);
-                if (cache[selectedApi.urls['CRUD']]) {
-                    cache[selectedApi.urls['CRUD']] = data;
+                    this.setState({data, currentRecord: null, showEditConfigModal: false, submitLoading: false});
+                },
+                () => {
+                    this.setState({submitLoading: false});
                 }
-                this.setState(prevState => ({data, total: prevState.total + 1, currentRecord: null}));
-            });
+            );
+        } else {
+            configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal).then(
+                response => {
+                    store.dispatch(addToast(successToast));
+                    const data = this.state.data.slice(0);
+                    data.unshift(response);
+                    if (cache[selectedApi.urls['CRUD']]) {
+                        cache[selectedApi.urls['CRUD']] = data;
+                    }
+                    this.setState(prevState => ({
+                        data,
+                        total: prevState.total + 1,
+                        currentRecord: null,
+                        showEditConfigModal: false,
+                        submitLoading: false,
+                    }));
+                },
+                () => {
+                    this.setState({submitLoading: false});
+                }
+            );
         }
     }
 
@@ -286,6 +317,7 @@ export class EndpointContainer extends Component {
                         values={this.getValues()}
                         onSubmit={this.editRecord}
                         onHide={this.onHideCreateEditConfigModal}
+                        submitLoading={this.state.submitLoading}
                     />
                 ) : (
                     !!this.state.currentRecord && (

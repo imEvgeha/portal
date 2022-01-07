@@ -36,6 +36,7 @@ exports[`CreateEditConfig should match snapshot 1`] = `
           className="p-button-outlined"
           disabled={true}
           label="OK"
+          loading={false}
           onClick={[Function]}
         />
       </div>

@@ -6,7 +6,7 @@ import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
 import {constructFieldPerType} from './dynamic-fields/FieldsPerType';
 
-const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayName, label}) => {
+const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayName, label, submitLoading}) => {
     const [isVisible, setIsVisible] = useState(visible);
     const form = useForm({mode: 'all', reValidateMode: 'onChange'});
     const activeDynamicKeys = useRef({});
@@ -56,7 +56,7 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
             });
 
             onSubmit(formValues);
-            onHideDialog();
+            // onHideDialog();
         }
     };
 
@@ -69,6 +69,7 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
                     label="OK"
                     disabled={!form.formState.isValid || isEmpty(form.formState.dirtyFields)}
                     onClick={submit}
+                    loading={submitLoading}
                 />
             </div>
         </div>
@@ -101,12 +102,14 @@ CreateEditConfig.propTypes = {
     displayName: PropTypes.string,
     label: PropTypes.string,
     onHide: PropTypes.func.isRequired,
+    submitLoading: PropTypes.bool,
 };
 
 CreateEditConfig.defaultProps = {
     visible: false,
     displayName: '',
     label: '',
+    submitLoading: false,
 };
 
 export default CreateEditConfig;
