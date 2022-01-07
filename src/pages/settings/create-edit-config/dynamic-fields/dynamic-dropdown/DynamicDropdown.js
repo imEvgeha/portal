@@ -36,12 +36,15 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
         } else if (sourceUrl && cachedOption === undefined) {
             cachedOption = getConfigApiValues(sourceUrl, 0, 1000).then(response => {
                 cachedOption = response.data;
+                cache[sourceUrl] = response.data;
                 processOptions(response.data, elementSchema);
             });
+            cache[sourceUrl] = cachedOption;
         } else if (cachedOption) {
             if (cachedOption instanceof Promise) {
-                cachedOption.then(res => {
-                    processOptions(res, elementSchema);
+                cachedOption.then(() => {
+                    cachedOption = cache[sourceUrl];
+                    processOptions(cachedOption, elementSchema);
                 });
             } else {
                 processOptions(cachedOption, elementSchema);
