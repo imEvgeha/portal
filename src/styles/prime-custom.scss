@@ -297,3 +297,28 @@ $button-font-size: 13px;
         }
     }
 }
+
+//Badge related
+.p-badge {
+    &.p-badge-dot {
+        width: 8px;
+        height: 8px;
+        background-color: rgba(0, 0, 0, 0.2);
+
+        &.p-badge-success {
+            background-color: #2faf97;
+        }
+
+        &.p-badge-warning {
+            background-color: #dd9d10;
+        }
+
+        &.p-badge-danger {
+            background-color: #aa214b;
+        }
+
+        &.p-badge-info {
+            background-color: #1c90cc;
+        }
+    }
+}

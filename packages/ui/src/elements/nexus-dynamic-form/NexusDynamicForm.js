@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import NexusStatusDot from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-dot/NexusStatusDot';
 import classnames from 'classnames';
 import {mergeWith, set, get, isEmpty} from 'lodash';
 import moment from 'moment';
@@ -63,8 +64,8 @@ const NexusDynamicForm = ({
     };
 
     const formStatus = (dirty, errors) => {
-        if (errors > 0) return 'error';
-        if (dirty || !isEmpty(seasonPersons)) return 'updated';
+        if (errors > 0) return 'danger';
+        if (dirty || !isEmpty(seasonPersons)) return 'warning';
         return 'success';
     };
 
@@ -85,7 +86,11 @@ const NexusDynamicForm = ({
                 >
                     Discard
                 </Button>
-                <div className={`nexus-c-dynamic-form__status ${formStatus(dirty || !disableSubmit, errors)}`} />
+
+                <div className="nexus-c-dynamic-form__status">
+                    <NexusStatusDot severity={formStatus(dirty || !disableSubmit, errors)} />
+                </div>
+
                 <Button
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"

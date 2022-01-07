@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusStatusDot should match snapshot 1`] = `
+<div
+  className="nexus-c-status-dot"
+>
+  <div
+    className="row align-items-center"
+  >
+    <div
+      className="col-3 px-0 text-center"
+    >
+      <Badge
+        className={null}
+        severity="success"
+        size={null}
+        style={null}
+        value={null}
+      />
+    </div>
+    <div
+      className="col-9 px-0"
+    >
+      <ForwardRef
+        className="p-button-text"
+        disabled={false}
+        label="VZ"
+        loading={false}
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;
