@@ -13,7 +13,7 @@ import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect, useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {UPLOAD_COLUMN_MAPPINGS, DEFAULT_CATALOGUE_OWNER} from '../../constants';
-import { fetchUploadedEMETsLog } from '../../service/UploadLogService';
+import {fetchUploadedEMETsLog} from '../../service/UploadLogService';
 import {setUploadMetadataFilter} from '../../titleMetadataActions';
 import {createUploadLogMetadataFilterSelector} from '../../titleMetadataSelectors';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
@@ -126,7 +126,6 @@ const UploadMetadataTable = ({
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
                 externalFilter={externalFilter}
-                link="/metadata/detail"
                 onlyReceivedSize
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
