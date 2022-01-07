@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DynamicArrayElement should match snapshot 1`] = `
+exports[`ArrayElement should match snapshot 1`] = `
 <div
   className="row align-items-center my-2"
   key="nexus-c-field-group0"
