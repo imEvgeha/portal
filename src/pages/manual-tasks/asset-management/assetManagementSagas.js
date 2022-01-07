@@ -20,20 +20,14 @@ const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded Artwork.';
 
 function* resourcePosters({payload}) {
     try {
-        const url = `${config.get('gateway.kongUrl')}${config.get(
-            'gateway.service.kongVidispine'
-        )}/item/${payload}/posterresource`;
+        const url = `${config.get('gateway.mediaImageUrl')}${config.get(
+            'gateway.service.mediaImageServices'
+        )}/AE/assets/${payload}/posters`;
         const resource = yield call(fetchPosters, url);
-        const resourceURL = `${get(resource, 'uri[0]', '')}?url=true`;
         if (!isEmpty(resource)) {
-            const timeFrames = yield call(fetchPosters, resourceURL);
-            const posters = [];
-            get(timeFrames, 'uri', []).forEach(frame => {
-                posters.push(`${frame}`);
-            });
             yield put({
                 type: STORE_POSTERS,
-                payload: posters,
+                payload: resource,
             });
         }
     } catch (error) {

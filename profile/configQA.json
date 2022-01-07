@@ -11,6 +11,7 @@
         "DOPUrl": "https://dop.qa.vubiquity.com:8045",
         "publisher": "https://titlespublishermovida.qa.vubiquity.com",
         "kongUrl": "https://vuapi.qa.vubiquity.com/vubiquity",
+        "mediaImageUrl": "https://mediaimage.qa.vubiquity.com",
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
         "mediaStorageUrl": "https://mediastorage.qa.vubiquity.com/media-storage/v1",
         "service": {
@@ -39,7 +40,8 @@
             "publisher": "/publisher/v1",
             "kongMediaCatalog": "/mediacatalog/catalog/v1",
             "kongMediaStorage": "/mediastorage/media-storage/v1",
-            "kongVidispine": "/vidispine-api/API"
+            "kongVidispine": "/vidispine-api/API",
+            "mediaImageServices": "/image-services/v1"
         }
     },
     "DOP_base": "https://dop.qa.vubiquity.com:8045",
