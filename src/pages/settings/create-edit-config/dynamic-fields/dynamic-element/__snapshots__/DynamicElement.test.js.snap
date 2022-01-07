@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DynamicElement should match snapshot 1`] = `
+<div
+  className="row align-items-center my-2"
+  key="nexus-c-field-group0"
+>
+  <div
+    className="col-10"
+  >
+    <Panel
+      className={null}
+      collapseIcon="pi pi-minus"
+      collapsed={true}
+      expandIcon="pi pi-plus"
+      header={null}
+      headerTemplate={[Function]}
+      icons={null}
+      id={null}
+      onCollapse={null}
+      onExpand={null}
+      onToggle={null}
+      style={null}
+      toggleable={true}
+      transitionOptions={null}
+    >
+      <ForwardRef
+        id="element_0_inp_id"
+        key="element_0_inp_key"
+        name="type.unset_inp_name"
+        onChange={[Function]}
+        onKeyPress={[Function]}
+        placeholder="Section Key Name"
+        tooltip="Section Key Name"
+        value="unset"
+      />
+      <div
+        className="mb-2"
+        key="type.unset_col"
+      >
+        <Component
+          defaultValue={Array []}
+          key="type.unset_controller"
+          name="type.unset"
+          render={[Function]}
+          rules={
+            Object {
+              "required": "Value is required",
+            }
+          }
+        />
+      </div>
+    </Panel>
+  </div>
+  <div
+    className="col-2 text-center "
+  >
+    <ForwardRef
+      className="p-button-text"
+      icon="pi pi-plus"
+      onClick={[Function]}
+    />
+  </div>
+</div>
+`;

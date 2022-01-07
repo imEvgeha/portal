@@ -3,7 +3,7 @@ import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {downloadFile, getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
-import { downloadUploadedEMETLog } from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
+import {downloadUploadedEMETLog} from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
 import {renderTitleName} from './utils/utils';
 
 const LoadingCellRenderer = params => {
@@ -25,12 +25,14 @@ const LoadingCellRenderer = params => {
     if (data.type === 'title') {
         linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
     }
-    
-    const handleDownload = (e) => {
+
+    const handleDownload = e => {
         e.preventDefault();
-        downloadUploadedEMETLog(idToFileDownloading).then(response => {
-            downloadFile(response, 'Editorial_Metadata');
-        }).catch((err) => console.error(err))
+        downloadUploadedEMETLog(idToFileDownloading)
+            .then(response => {
+                downloadFile(response, 'Editorial_Metadata');
+            })
+            .catch(err => console.error(err));
     };
 
     let value = getDeepValue(data, field);
@@ -73,7 +75,7 @@ const LoadingCellRenderer = params => {
                 )}
             </div>
         );
-        
+
         if (linkTo) {
             return newTab ? (
                 <a href={linkTo} target="_blank">
@@ -81,13 +83,17 @@ const LoadingCellRenderer = params => {
                 </a>
             ) : (
                 <Link to={linkTo}>{displayValue}</Link>
-            )
-        } 
+            );
+        }
 
         if (idToFileDownloading) {
-            return <Link to='#'  onClick={handleDownload}>{displayValue}</Link>
+            return (
+                <Link to="#" onClick={handleDownload}>
+                    {displayValue}
+                </Link>
+            );
         }
-        
+
         return displayValue;
     }
 
