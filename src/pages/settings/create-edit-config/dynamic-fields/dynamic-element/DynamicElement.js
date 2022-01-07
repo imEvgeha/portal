@@ -28,17 +28,14 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
     const initLabels = () => {
         let tmpLabels = {};
         sections.forEach(s => (tmpLabels = {...tmpLabels, [s.elementId]: s.key}));
-
         return tmpLabels;
     };
 
     const [labels, setLabels] = useState(initLabels());
-    const inpToFocus = useRef(undefined);
     const labelsRef = useRef({...labels});
 
     const reInitSections = useCallback(
         debounce(() => {
-            console.log('typing');
             const newSections = sections.map(s => {
                 const value = labelsRef.current?.[s.elementId];
                 return {
@@ -59,33 +56,11 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
     };
 
     useEffect(() => {
-        // if (inpToFocus.current) {
-        //     document.getElementById(inpToFocus.current.event.target.id)?.focus();
-        //     const formValue = form.getValues(elementsSchema.name);
-        //     delete formValue[inpToFocus.current.section.key];
-        //     form.setValue(elementsSchema.name, {...formValue}, {shouldDirty: true});
-        //     form.unregister(`${elementsSchema.name}.${inpToFocus.current.section.key}`);
-        // }
-        //
         onKeysChanged(
             elementsSchema.name,
             sections.map(s => s.key)
         );
     }, [sections]);
-
-    const setKeyName = (e, section) => {
-        const value = e.target.value;
-        let tmpSections = [...sections];
-        tmpSections = tmpSections.map(s => {
-            if (s.elementId === section.elementId) {
-                return {...s, key: value, name: `${elementsSchema.name}.${value}`};
-            }
-            return s;
-        });
-        e.persist();
-        inpToFocus.current = {event: e, section};
-        setSections(tmpSections);
-    };
 
     const onLabelChange = (e, section) => {
         const lbls = {...labels, [section.elementId]: e.target.value};
@@ -100,12 +75,30 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
         setLabels(lbls);
     };
 
+    const panelHeaderTemplate = (options, header) => {
+        const toggleIcon = options.collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up';
+        return (
+            <div className="nexus-c-panel-header p-panel-header" onClick={options.onTogglerClick}>
+                <div className="row">
+                    <div className="col-12">
+                        <i onClick={options.onTogglerClick} className={`${toggleIcon} nexus-c-panel__icon`} />
+                        <span className="mx-2">{header}</span>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     const section = () => {
         return sections.map((section, index) => {
             return (
                 <div className="row align-items-center my-2" key={`nexus-c-field-group${index}`}>
                     <div className="col-10">
-                        <Panel header={labels[section.elementId]} toggleable collapsed={true}>
+                        <Panel
+                            headerTemplate={options => panelHeaderTemplate(options, labels[section.elementId])}
+                            toggleable
+                            collapsed={true}
+                        >
                             <InputText
                                 key={`${section.elementId}_inp_key`}
                                 id={`${section.elementId}_inp_id`}

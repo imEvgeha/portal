@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {debounce} from 'lodash';
-import {Button} from 'primereact/button';
 import {Panel} from 'primereact/panel';
 import {arrayElementButtons} from '../ArrayButtons';
 import {constructFieldPerType} from '../FieldsPerType';

@@ -56,7 +56,6 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
             });
 
             onSubmit(formValues);
-            // onHideDialog();
         }
     };
 
