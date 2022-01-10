@@ -197,7 +197,6 @@ const TitleDetails = ({
 
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
     const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
-
     return (
         <div className={classnames(loading ? 'nexus-c-title-details__loading' : 'nexus-c-title-details')}>
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
@@ -234,7 +233,6 @@ const TitleDetails = ({
                                 titleUpdatedAt={title.updatedAt}
                                 hasButtons={isNexusTitle(title.id)}
                             />
-
                             <SyncPublish
                                 externalSystem={MOVIDA}
                                 externalIds={externalIds}
