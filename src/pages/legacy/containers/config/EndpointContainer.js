@@ -12,6 +12,11 @@ import {getConfigApiValues} from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
 import {Can, can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import './ConfigUI.scss';
+import CreateEditConfig from '../../../settings/create-edit-config/CreateEditConfig';
+import {capitalize, cloneDeep} from 'lodash';
+import {store} from '../../../../index';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -97,6 +102,8 @@ export class EndpointContainer extends Component {
             searchValue: '',
             isLoading: false,
             currentRecord: null,
+            showEditConfigModal: false,
+            submitLoading: false,
             pageSize: defaultPageSize,
         };
 
@@ -184,35 +191,62 @@ export class EndpointContainer extends Component {
     };
 
     onEditRecord(rec) {
-        this.setState({currentRecord: rec});
+        this.setState({currentRecord: rec, showEditConfigModal: true});
     }
 
     editRecord(val) {
         const {selectedApi} = this.props;
         const newVal = {...this.state.currentRecord, ...val};
+        const successToast = {
+            title: 'Success',
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            description: `${capitalize(newVal.name)} config for ${selectedApi.displayName} successfully ${
+                newVal.id ? 'updated.' : 'added.'
+            }`,
+        };
+
+        this.setState({submitLoading: true});
+
         if (newVal.id) {
-            configService
-                .update(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal.id, newVal)
-                .then(response => {
+            configService.update(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal.id, newVal).then(
+                response => {
+                    store.dispatch(addToast(successToast));
                     const data = this.state.data.slice(0);
                     const index = data.findIndex(item => item.id === newVal.id);
                     data[index] = response;
-                    this.setState({data, currentRecord: null});
-                });
-        } else {
-            configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal).then(response => {
-                const data = this.state.data.slice(0);
-                data.unshift(response);
-                if (cache[selectedApi.urls['CRUD']]) {
-                    cache[selectedApi.urls['CRUD']] = data;
+                    this.setState({data, currentRecord: null, showEditConfigModal: false, submitLoading: false});
+                },
+                () => {
+                    this.setState({submitLoading: false});
                 }
-                this.setState(prevState => ({data, total: prevState.total + 1, currentRecord: null}));
-            });
+            );
+        } else {
+            configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal).then(
+                response => {
+                    store.dispatch(addToast(successToast));
+                    const data = this.state.data.slice(0);
+                    data.unshift(response);
+                    if (cache[selectedApi.urls['CRUD']]) {
+                        cache[selectedApi.urls['CRUD']] = data;
+                    }
+                    this.setState(prevState => ({
+                        data,
+                        total: prevState.total + 1,
+                        currentRecord: null,
+                        showEditConfigModal: false,
+                        submitLoading: false,
+                    }));
+                },
+                () => {
+                    this.setState({submitLoading: false});
+                }
+            );
         }
     }
 
     onNewRecord() {
-        this.setState({currentRecord: {}});
+        this.setState({currentRecord: {}, showEditConfigModal: true});
     }
 
     onRemoveItem = item => {
@@ -237,6 +271,14 @@ export class EndpointContainer extends Component {
             (noEmpty && '[id = ' + item.id + ']')
         );
     }
+
+    onHideCreateEditConfigModal = () => {
+        this.setState({showEditConfigModal: false, currentRecord: null});
+    };
+
+    getValues = () => {
+        return cloneDeep(this.state.currentRecord);
+    };
 
     render() {
         const {selectedApi} = this.props;
@@ -266,19 +308,33 @@ export class EndpointContainer extends Component {
 
                     <div style={{clear: 'both'}} />
                 </TextHeader>
-                {this.state.currentRecord && (
-                    <DataBody>
-                        <CreateEditConfigForm
-                            onRemoveItem={this.onRemoveItem}
-                            schema={selectedApi && selectedApi.uiSchema}
-                            label={this.getLabel(selectedApi, this.state.currentRecord, false)}
-                            displayName={selectedApi && selectedApi.displayName}
-                            value={this.state.currentRecord}
-                            onSubmit={this.editRecord}
-                            onCancel={() => this.setState({currentRecord: null})}
-                        />
-                    </DataBody>
+                {window.location.pathname.includes('settings/v2') && this.state.showEditConfigModal ? (
+                    <CreateEditConfig
+                        visible={this.state.showEditConfigModal}
+                        schema={selectedApi && selectedApi.uiSchema}
+                        label={this.getLabel(selectedApi, this.state.currentRecord, false) || ''}
+                        displayName={selectedApi && selectedApi.displayName}
+                        values={this.getValues()}
+                        onSubmit={this.editRecord}
+                        onHide={this.onHideCreateEditConfigModal}
+                        submitLoading={this.state.submitLoading}
+                    />
+                ) : (
+                    !!this.state.currentRecord && (
+                        <DataBody>
+                            <CreateEditConfigForm
+                                onRemoveItem={this.onRemoveItem}
+                                schema={selectedApi && selectedApi.uiSchema}
+                                label={this.getLabel(selectedApi, this.state.currentRecord, false)}
+                                displayName={selectedApi && selectedApi.displayName}
+                                value={this.state.currentRecord}
+                                onSubmit={this.editRecord}
+                                onCancel={() => this.setState({currentRecord: null})}
+                            />
+                        </DataBody>
+                    )
                 )}
+
                 <DataBody>
                     <CustomContainer left>
                         <QuickSearch

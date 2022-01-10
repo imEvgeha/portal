@@ -42,6 +42,10 @@ const restRoutes = [
         component: Settings,
     },
     {
+        path: '/settings/v2',
+        component: Settings,
+    },
+    {
         path: '/401',
         component: Unauthorized,
     },

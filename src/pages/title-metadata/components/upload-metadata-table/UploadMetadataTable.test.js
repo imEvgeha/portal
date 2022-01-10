@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import configureStore from 'redux-mock-store';
 import UploadMetadataTable from './UploadMetadataTable';
 
@@ -18,7 +18,11 @@ describe('UploadMetadataTable', () => {
     });
 
     beforeAll(() => {
-        wrapper = shallow(<Provider store={store}><UploadMetadataTable /></Provider>);
+        wrapper = shallow(
+            <Provider store={store}>
+                <UploadMetadataTable />
+            </Provider>
+        );
     });
 
     it('should match snapshot', () => {

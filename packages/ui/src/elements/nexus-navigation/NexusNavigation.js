@@ -113,6 +113,18 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
                         onClick: () => handleClick(SETTINGS),
                     },
                     {
+                        icon: 'pi pi-sliders-h',
+                        component: () => (
+                            <ComponentWrapper handleClick={() => handleClick('settings/v2')} link="settings/v2">
+                                <i className="pi pi-sliders-h" />
+                            </ComponentWrapper>
+                        ),
+                        id: 'settings/v2',
+                        tooltip: 'Settings V2',
+                        isSelected: selectedItem === 'settings/v2',
+                        onClick: () => handleClick('settings/v2'),
+                    },
+                    {
                         // eslint-disable-next-line react/prop-types
                         component: ({onClick}) => {
                             return (
