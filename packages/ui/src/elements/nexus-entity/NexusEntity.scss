@@ -1,0 +1,30 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
+.nexus-c-section-header {
+  border-top: solid 4px black;
+
+  .nexus-c-heading {
+    font-size: 26px;
+    font-weight: bold;
+    padding-top: 4px;
+    padding-left: 0px;
+  }
+}
+
+.nexus-c-section-subheader {
+  border-bottom: solid 2px black;
+
+  .nexus-c-heading {
+    font-size: 21px;
+    font-weight: bold;
+    padding-left: 0px;
+  }
+}
+
+.nexus-c-section-default {
+  .nexus-c-heading {
+    font-weight: bold;
+    padding-left: 0px;
+  }
+}

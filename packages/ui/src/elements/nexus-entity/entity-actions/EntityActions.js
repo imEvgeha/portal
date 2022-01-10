@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import {Button} from 'primereact/button';
 import {Tag} from 'primereact/tag';
 import {Action} from './Actions.class';
+import './EntityActions.scss';
 
-const EntityActions = ({tag, flag1, flag2, actions}) => {
+const EntityActions = ({tag, flag1, flag2, actions, totalEnabled}) => {
     const constructActions = () => {
         const maxActions = 6;
         let counter = 0;
@@ -30,8 +31,8 @@ const EntityActions = ({tag, flag1, flag2, actions}) => {
                             id={tmpActionItems[counter].buttonId}
                             icon={tmpActionItems[counter].icon}
                             onClick={tmpActionItems[counter].action}
-                            disabled={tmpActionItems[counter].disabled}
-                            className="p-button-text"
+                            disabled={!totalEnabled || tmpActionItems[counter].disabled}
+                            className="p-button-text nexus-c-entity-button"
                         />
                     )}
                 </div>
@@ -66,6 +67,7 @@ EntityActions.propTypes = {
     flag1: PropTypes.string || PropTypes.element,
     flag2: PropTypes.string || PropTypes.element,
     actions: PropTypes.array,
+    totalEnabled: PropTypes.bool,
 };
 
 EntityActions.defaultProps = {
@@ -73,6 +75,7 @@ EntityActions.defaultProps = {
     flag1: '',
     flag2: '',
     actions: [],
+    totalEnabled: false,
 };
 
 export default EntityActions;
