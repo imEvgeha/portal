@@ -406,22 +406,22 @@ $element-margin-bottom: 18px;
     &.p-badge-dot {
         width: 8px;
         height: 8px;
-        background-color: rgba(0, 0, 0, 0.2);
+        background-color: palette(black, 20);
 
         &.p-badge-success {
-            background-color: #2faf97;
+            background-color: palette(green, 100);
         }
 
         &.p-badge-warning {
-            background-color: #dd9d10;
+            background-color: palette(orange, 100);
         }
 
         &.p-badge-danger {
-            background-color: #aa214b;
+            background-color: palette(red, 100);
         }
 
         &.p-badge-info {
-            background-color: #1c90cc;
+            background-color: palette(blue, 100);
         }
     }
 }
