@@ -9,7 +9,7 @@ export const fetchPosters = url => {
     return fetch(url, {
         method: 'GET',
         headers,
-    }).then(response => response.json().then((resp) => resp));
+    }).then(response => response.json().then(resp => resp));
 };
 
 export const fetchPoster = poster => {

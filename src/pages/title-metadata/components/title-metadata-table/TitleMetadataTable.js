@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
@@ -9,17 +8,18 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
+import NexusStatusDot from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-dot/NexusStatusDot';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {
-    UPLOADED_EMETS_COLUMN_MAPPINGS,
-    NEXUS,
-    LEGACY_TOOLTIP_TEXT,
     DEFAULT_CATALOGUE_OWNER,
+    LEGACY_TOOLTIP_TEXT,
+    NEXUS,
     REPOSITORY_COLUMN_ID,
+    UPLOADED_EMETS_COLUMN_MAPPINGS,
 } from '../../constants';
 import {setTitleMetadataFilter} from '../../titleMetadataActions';
 import {createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
@@ -69,6 +69,7 @@ const TitleMetadataTable = ({
                     return (
                         <div className="nexus-c-title-metadata-table__repository">
                             <div>{value}</div>
+
                             {value !== NEXUS && (
                                 <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
                                     <div
@@ -79,7 +80,7 @@ const TitleMetadataTable = ({
                                             )
                                         }
                                     >
-                                        <EditorWarningIcon primaryColor="#0052CC" />
+                                        <NexusStatusDot severity="warning" />
                                     </div>
                                 </NexusTooltip>
                             )}

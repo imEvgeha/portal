@@ -29,8 +29,8 @@ exports[`NexusEntity should match snapshot 1`] = `
             },
           ]
         }
-        flag2="E1"
         flag1="S3"
+        flag2="E1"
         tag="Season"
       />
     </div>

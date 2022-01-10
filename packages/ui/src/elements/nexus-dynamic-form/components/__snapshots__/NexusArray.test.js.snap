@@ -87,7 +87,7 @@ exports[`NexusArray should match snapshot 1`] = `
             }
           }
           isClearable={false}
-          isEditable={false}
+          isEditable={true}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -147,7 +147,7 @@ exports[`NexusArray should match snapshot 1`] = `
             }
           }
           isClearable={false}
-          isEditable={false}
+          isEditable={true}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -220,7 +220,7 @@ exports[`NexusArray should match snapshot 1`] = `
             }
           }
           isClearable={false}
-          isEditable={false}
+          isEditable={true}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -280,7 +280,7 @@ exports[`NexusArray should match snapshot 1`] = `
             }
           }
           isClearable={false}
-          isEditable={false}
+          isEditable={true}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
