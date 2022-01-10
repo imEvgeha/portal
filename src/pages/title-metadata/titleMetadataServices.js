@@ -201,7 +201,9 @@ export const titleService = {
         });
     },
     getUploadedMetadata: async (dataForUploadedMetadata, tenantCode, page, size, sortedParams) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/importLog${prepareSortMatrixParamTitles(sortedParams)}`;
+        const url = `${config.get('gateway.titleUrl')}${config.get(
+            'gateway.service.title'
+        )}/importLog${prepareSortMatrixParamTitles(sortedParams)}`;
         const params = tenantCode ? {tenantCode} : {};
 
         return nexusFetch(url, {
@@ -210,7 +212,7 @@ export const titleService = {
             params: encodedSerialize({...params, page, size}),
         });
     },
-    getUploadLogMetadataFile: (id) => {
+    getUploadLogMetadataFile: id => {
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/importReport/${id}`;
         return nexusFetch(url, {
             method: 'get',

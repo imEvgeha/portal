@@ -51,7 +51,7 @@ export const TitleMetadataView = ({
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
     const toast = useRef(null);
 
-    const showSuccess = (detail) => {
+    const showSuccess = detail => {
         toast.current.show({
             severity: 'success',
             summary: successDownloadTitle,
@@ -208,16 +208,17 @@ export const TitleMetadataView = ({
                 />
             ) : null}
             {isItTheSameTab('syncLog') ? <SyncLogTable /> : null}
-            {isItTheSameTab('uploadLog') ? 
-            <UploadMetadataTable
-                history={history}
-                catalogueOwner={catalogueOwner}
-                setGridApi={setGridApi}
-                setColumnApi={setColumnApi}
-                columnApi={columnApi}
-                gridApi={gridApi}
-                className="nexus-c-title-metadata__table"
-            /> : null }
+            {isItTheSameTab('uploadLog') ? (
+                <UploadMetadataTable
+                    history={history}
+                    catalogueOwner={catalogueOwner}
+                    setGridApi={setGridApi}
+                    setColumnApi={setColumnApi}
+                    columnApi={columnApi}
+                    gridApi={gridApi}
+                    className="nexus-c-title-metadata__table"
+                />
+            ) : null}
             <TitleCreate
                 display={showModal}
                 toggle={closeModalAndRefreshTable}

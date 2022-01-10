@@ -10,7 +10,11 @@
 }
 
 .ingest-upload {
+<<<<<<< HEAD
     @include padding(2.5, 5);
+=======
+    padding: 0px 16px;
+>>>>>>> 89fb7d4f0e7c9978d5362f749f3c97d6fb0f352b
 
     &__input {
         display: none;

@@ -68,6 +68,14 @@ const NexusDynamicForm = ({
         return 'success';
     };
 
+    const compare = (fir, sec) => {
+        console.log(fir, sec, 'fir,sec')
+        if(fir === false) {
+            if (sec === false) return false;
+        } 
+        return true
+    }
+
     const buildButtons = (dirty, reset, errors, getValues) => (
         <>
             {errors > 0 && (
@@ -78,10 +86,11 @@ const NexusDynamicForm = ({
                 </div>
             )}
             <div className="nexus-c-dynamic-form__actions-container">
+                {console.log(((!dirty && disableSubmit) || !canEdit), isEmpty(seasonPersons), '||', compare(((!dirty && disableSubmit) || !canEdit), isEmpty(seasonPersons)))}
                 <Button
                     className="nexus-c-dynamic-form__discard-button"
                     onClick={() => onCancel(reset, getValues)}
-                    isDisabled={((!dirty && disableSubmit) || isSaving || !canEdit) && isEmpty(seasonPersons)}
+                    isDisabled={compare(((!dirty && disableSubmit) || isSaving || !canEdit), isEmpty(seasonPersons))}
                 >
                     Discard
                 </Button>
@@ -89,7 +98,9 @@ const NexusDynamicForm = ({
                 <Button
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"
-                    isDisabled={((!dirty && disableSubmit) || !canEdit) && isEmpty(seasonPersons)}
+                    isDisabled={
+                        compare(((!dirty && disableSubmit) || !canEdit), isEmpty(seasonPersons))
+                    }
                     // this is a form submit button and hence validation check will not work on submit function
                     onClick={showValidationError}
                     isLoading={isSaving}

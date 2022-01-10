@@ -1,17 +1,17 @@
 import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
-import {get, isEmpty} from 'lodash';
+import {isEmpty} from 'lodash';
 import config from 'react-global-configuration';
-import {call, put, all, takeEvery} from 'redux-saga/effects';
+import {all, call, put, takeEvery} from 'redux-saga/effects';
 import {nexusFetch} from '../../../util/http-client';
 import {
-    FETCH_POSTERS,
-    STORE_POSTERS,
     FETCH_ASSET,
     FETCH_ASSET_SUCCESS,
+    FETCH_POSTERS,
+    STORE_POSTERS,
     UPLOAD_ARTWORK,
-    UPLOAD_ARTWORK_REQUEST,
     UPLOAD_ARTWORK_ERROR,
+    UPLOAD_ARTWORK_REQUEST,
     UPLOAD_ARTWORK_SUCCESS,
 } from './assetManagementReducer';
 import {fetchPosters} from './assetManagementService';
@@ -20,20 +20,14 @@ const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded Artwork.';
 
 function* resourcePosters({payload}) {
     try {
-        const url = `${config.get('gateway.kongUrl')}${config.get(
-            'gateway.service.kongVidispine'
-        )}/item/${payload}/posterresource`;
+        const url = `${config.get('gateway.mediaImageUrl')}${config.get(
+            'gateway.service.mediaImageServices'
+        )}/AE/assets/${payload}/posters`;
         const resource = yield call(fetchPosters, url);
-        const resourceURL = `${get(resource, 'uri[0]', '')}?url=true`;
         if (!isEmpty(resource)) {
-            const timeFrames = yield call(fetchPosters, resourceURL);
-            const posters = [];
-            get(timeFrames, 'uri', []).forEach(frame => {
-                posters.push(`${frame}`);
-            });
             yield put({
                 type: STORE_POSTERS,
-                payload: posters,
+                payload: resource,
             });
         }
     } catch (error) {

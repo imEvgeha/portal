@@ -10392,10 +10392,10 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-config-nexus-react-app@1.0.9:
-  version "1.0.9"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/eslint-config-nexus-react-app/-/eslint-config-nexus-react-app-1.0.9.tgz#b12eb3e0671f3ff15defd42bb41816493e8788b2"
-  integrity sha512-gGZTJ9OlfABsH9gn8n1OtOxHoyfPsi/vIxD4x5g7tMPF6yIHHXDiwkdoci5HGZYtnWIGGwBlvs19JmMhRQenSQ==
+eslint-config-nexus-react-app@1.0.10:
+  version "1.0.10"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/eslint-config-nexus-react-app/-/eslint-config-nexus-react-app-1.0.10.tgz#cd58e4b46162dce355f2b2fe1f59861f95bb7d0c"
+  integrity sha512-3fA0bSkPAatvgzb9635ciyi1DXac384mS1wYAQdGA4E7L13NWSF1cKfF7qw854ChEwFSn72+0d52Kq9Rz3o05Q==
 
 eslint-config-prettier@3.0.1:
   version "3.0.1"
@@ -20238,10 +20238,10 @@ primeicons@^5.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/primeicons/-/primeicons-5.0.0.tgz#73a0b6028a77c58a9eeb331ad13aaf085e8451ee"
   integrity sha512-heygWF0X5HFI1otlZE62pp6ye7sZ8om78J9au2BRkg8O7Y8AHTZ9qKMRzchZUHLe8zUAvdi6hZzzm9XxgwIExw==
 
-primereact@^7.0.1:
-  version "7.0.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/primereact/-/primereact-7.0.1.tgz#4aa4750320c71c457e6cf76de6a185e4a9e1065b"
-  integrity sha512-Mq3gc7VXn5xk0vapMui4utjO5AYxdH5PN4ShK6AM3/CQEcv0hWpolqHfHxX5HytaHWLvnzXcWDw/iDCwCV8BmA==
+primereact@^7.1.0:
+  version "7.1.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/primereact/-/primereact-7.1.0.tgz#4fa417939f9466ea464e571aaf6232849ed1e8c6"
+  integrity sha512-0j9BHtHLQhKvl0TtORsyucNpR5FwWMbUd7qfTaz0FY2A0uJTLDxymPmRaosiwv6D7NO+xG1+hVJ/CHnWIE7VRg==
 
 prismjs@^1.8.4:
   version "1.23.0"
@@ -21026,6 +21026,11 @@ react-google-maps@9.4.5:
     recompose "^0.26.0"
     scriptjs "^2.5.8"
     warning "^3.0.0"
+
+react-hook-form@7.17.5:
+  version "7.17.5"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-hook-form/-/react-hook-form-7.17.5.tgz#3852f294159378d0b5893c9fcc89e313937c6f89"
+  integrity sha512-4bPtPGkpVhZlgtTbtMGi0RFphKHgxCj5u3AsGz3SBdleELlG1pDf9zRQOtfGlOGkZlc7u78RzD0xu9kOw7PYdQ==
 
 react-hot-loader@^4.12.20:
   version "4.13.0"

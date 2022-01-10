@@ -4,6 +4,12 @@
 // Variables
 $button-height: 32px;
 $button-font-size: 13px;
+$element-margin-bottom: 18px;
+
+// Field Wrapper
+.p-field {
+    position: relative;
+}
 
 // Buttons Related
 .p-button {
@@ -245,6 +251,66 @@ $button-font-size: 13px;
     background: palette(white, 100);
 }
 
+// Input Text
+.p-inputtext {
+    &.p-component {
+        width: 100%;
+        margin-bottom: $element-margin-bottom;
+    }
+}
+
+// Calendar
+.p-calendar {
+    &.p-component {
+        width: 100%;
+        margin-bottom: $element-margin-bottom;
+
+        .p-inputtext {
+            &.p-component {
+                margin-bottom: 0;
+            }
+        }
+
+        .p-button {
+            &.p-component {
+                &.p-datepicker-trigger {
+                    height: inherit;
+                }
+            }
+        }
+    }
+}
+
+// Dropdown
+.p-dropdown {
+    &.p-component {
+        width: 100%;
+        margin-bottom: $element-margin-bottom;
+    }
+}
+
+// Multiselect
+.p-multiselect {
+    &.p-component {
+        width: 100%;
+        margin-bottom: $element-margin-bottom;
+    }
+}
+
+// Field Error Message
+.p-error-message {
+    position: absolute;
+    left: 2px;
+    bottom: 0;
+    font-size: 12px;
+    color: rgb(222, 53, 11);
+}
+
+// Field Required Asterisk
+.p-field-required {
+    color: rgb(222, 53, 11);
+}
+
 // TabMenu Related
 .p-tabmenu {
     .p-tabmenu-nav {
@@ -296,4 +362,41 @@ $button-font-size: 13px;
             }
         }
     }
+}
+
+// Panel
+.p-panel {
+    &.p-component {
+        .p-panel-header {
+            border-radius: 5px;
+        }
+    }
+}
+
+// Checkbox
+.p-checkbox-wrapper {
+    margin-bottom: $element-margin-bottom;
+}
+
+// Scrollbar styling
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: blue orange;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #ebebeb;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background-color: #b3b3b3;
+    border: 1px solid #ebebeb;
 }
