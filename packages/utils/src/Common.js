@@ -11,13 +11,13 @@ import moment from 'moment';
  * @param {string} fileExtension - File extension
  * @param {boolean} showTime - Show time in file name timestamp
  */
-function downloadFile(data, fileNamePrefix = 'INT_avails_', fileExtension = '.xlsx', showTime = true) {
+function downloadFile(data, fileNamePrefix = 'INT_avails_', fileExtension = '.xlsx', showTime = true, showDate = true) {
     // TODO: Header containing filename sugestion is not accesible by javascript by default,
     // additional changes on server required.
     // For now we recreate the filename using the same syntax as server
     const currentTime = new Date();
     let filename = fileNamePrefix;
-    filename += `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}_${currentTime.getDate()}`;
+    filename += showDate ? `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}_${currentTime.getDate()}` : '';
     filename += showTime ? `_${currentTime.getHours()}_${currentTime.getMinutes()}_${currentTime.getSeconds()}` : '';
     filename += fileExtension;
 
