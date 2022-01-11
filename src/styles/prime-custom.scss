@@ -400,3 +400,28 @@ $element-margin-bottom: 18px;
     background-color: #b3b3b3;
     border: 1px solid #ebebeb;
 }
+
+//Badge related
+.p-badge {
+    &.p-badge-dot {
+        width: 8px;
+        height: 8px;
+        background-color: palette(black, 20);
+
+        &.p-badge-success {
+            background-color: palette(green, 100);
+        }
+
+        &.p-badge-warning {
+            background-color: palette(orange, 100);
+        }
+
+        &.p-badge-danger {
+            background-color: palette(red, 100);
+        }
+
+        &.p-badge-info {
+            background-color: palette(blue, 100);
+        }
+    }
+}
