@@ -30,7 +30,7 @@ const LoadingCellRenderer = params => {
         e.preventDefault();
         downloadUploadedEMETLog(idToFileDownloading)
             .then(response => {
-                downloadFile(response, 'Editorial_Metadata');
+                downloadFile(response, data.sourceFileName, '', false, false);
             })
             .catch(err => console.error(err));
     };
