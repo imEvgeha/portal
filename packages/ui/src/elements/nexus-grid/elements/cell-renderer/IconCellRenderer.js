@@ -35,11 +35,11 @@ const IconCellRenderer = params => {
     const handleClick = useCallback(
         debounce(() => {
             if(idToFileDownloading) {
+                store.dispatch(addToast(successToast));
                 downloadUploadedEMETLog(idToFileDownloading)
                     .then(response => {
                         const name = data.sourceFileName.includes('.xlsx') ? data.sourceFileName.replace('.xlsx', '') : data.sourceFileName;
                         downloadFile(response, `${name}_Report_`, '.xlsx', false);
-                        store.dispatch(addToast(successToast));
                     }) 
                     .catch(err => console.error(err));
             }
