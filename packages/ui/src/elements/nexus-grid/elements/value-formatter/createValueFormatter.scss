@@ -1,4 +1,5 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
 .nexus-c-withdrawn-icon {
     fill: map-get($mid-neutral-colors, mid-neutral-7);
@@ -18,4 +19,12 @@
 
 .nexus-c-warning-icon--is-active svg {
     color: map-get($yellows, Y500);
+}
+
+.nexus-c-download-icon {
+    color: palette(black, 55);
+
+    &--is-active {
+        color: palette(black, 100);
+    }
 }
