@@ -1,9 +1,8 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {downloadFile, getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Common';
 import { debounce } from 'lodash';
-import { Toast } from 'primereact/toast';
 import { store } from '../../../../../../../src';
 import { downloadUploadedEMETLog } from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
 import { SUCCESS_ICON } from '../../../../../lib/elements/nexus-toast-notification/constants';
@@ -12,7 +11,6 @@ import {getIcon} from '../value-formatter/createValueFormatter';
 import './IconCellRenderer.scss';
 
 const IconCellRenderer = params => {
-    const toast = useRef(null);
     const {
         data,
         colDef: {field},
@@ -51,7 +49,6 @@ const IconCellRenderer = params => {
 
     return (!valueToDisplay && value) || (valueToDisplay && value === valueToDisplay) ? (
         <NexusTooltip content={tooltip}>
-            <Toast ref={toast} position="bottom-left" />
             <span 
                 className={`nexus-c-repository-icon ${params.position === 'center' ? 'nexus-c-repository-icon-position-center' : ''}`} 
                 onClick={handleClick}
