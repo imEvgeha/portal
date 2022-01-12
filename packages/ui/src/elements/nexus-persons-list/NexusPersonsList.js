@@ -14,7 +14,7 @@ import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getDir, checkIfEmetIsEditorial} from '../nexus-dynamic-form/utils';
+import {getDir} from '../nexus-dynamic-form/utils';
 import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors';
 import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
