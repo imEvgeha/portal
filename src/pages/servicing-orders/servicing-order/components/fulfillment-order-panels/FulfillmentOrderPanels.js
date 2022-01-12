@@ -53,19 +53,22 @@ const FulfillmentOrderPanels = ({
 export default FulfillmentOrderPanels;
 
 FulfillmentOrderPanels.propTypes = {
-    sortDirection: PropTypes.object.isRequired,
+    sortDirection: PropTypes.object,
     orderDetails: PropTypes.object.isRequired,
     fulfillmentOrders: PropTypes.array,
     selectedFulfillmentOrder: PropTypes.string,
     handleFulfillmentOrderChange: PropTypes.func,
-    statusFilter: PropTypes.object.isRequired,
-    page: PropTypes.number.isRequired,
+    statusFilter: PropTypes.object,
+    page: PropTypes.number,
 };
 
 FulfillmentOrderPanels.defaultProps = {
+    sortDirection: {},
     fulfillmentOrders: [],
     selectedFulfillmentOrder: null,
     handleFulfillmentOrderChange: () => null,
+    statusFilter: {},
+    page: undefined,
 };
 
 export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrderChange, isChild = false) => {

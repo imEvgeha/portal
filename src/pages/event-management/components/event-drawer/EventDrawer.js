@@ -70,7 +70,7 @@ const EventDrawer = ({id, onDrawerClose}) => {
                     headers,
                     message,
                     metadata,
-                    attachments
+                    attachments,
                 });
                 setIsLoading(false);
             });
@@ -162,11 +162,12 @@ const EventDrawer = ({id, onDrawerClose}) => {
 };
 
 EventDrawer.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     onDrawerClose: PropTypes.func,
 };
 
 EventDrawer.defaultProps = {
+    id: '',
     onDrawerClose: () => null,
 };
 

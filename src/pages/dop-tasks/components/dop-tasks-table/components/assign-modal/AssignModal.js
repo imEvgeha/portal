@@ -41,13 +41,14 @@ const AssignModal = ({getOwners, selectedTasks, tasksOwners, onChange, action}) 
 
 AssignModal.propTypes = {
     getOwners: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     selectedTasks: PropTypes.array,
     tasksOwners: PropTypes.array,
     action: PropTypes.string,
 };
 
 AssignModal.defaultProps = {
+    onChange: () => null,
     selectedTasks: [],
     tasksOwners: [],
     action: TASK_ACTIONS_ASSIGN,
