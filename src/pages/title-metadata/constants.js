@@ -375,7 +375,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         colId: 'reportId',
         field: 'reportId',
         headerName: 'Report',
-        enableSearch: true,
+        enableSearch: false,
         cellRenderer: 'iconCellRenderer',
         cellRendererParams: {
             icon: 'download',
