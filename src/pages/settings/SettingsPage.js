@@ -1,39 +1,42 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
+import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/src/elements/nexus-entity/constants';
 import {TabMenu} from 'primereact/tabmenu';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchConfigApiEndpoints} from '../legacy/containers/settings/settingsActions';
 import * as selectors from '../legacy/containers/settings/settingsSelectors';
+import EndpointContainer from './enpoint-container/EndpointContainer';
 import NexusDataPanel from './nexus-data-panel/NexusDataPanel';
 import {SETTINGS_TABS} from './constants';
 import './SettingsPage.scss';
 
-const SettingsPage = ({}) => {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const ds = useRef(null);
-    const [configList, setConfigList] = useState([]);
+const SettingsPage = () => {
     const dispatch = useDispatch();
-    const result = useSelector((state, props) => selectors.createSettingsEndpointsSelector()(state, props));
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [selectedApi, setSelectedApi] = useState(undefined);
+    const [configList, setConfigList] = useState([]);
+    const fetchAPIConfigListResult = useSelector((state, props) =>
+        selectors.createSettingsEndpointsSelector()(state, props)
+    );
 
     useEffect(() => {
         dispatch(fetchConfigApiEndpoints());
     }, []);
 
     useEffect(() => {
-        console.log(result);
-        setConfigList(result);
-    }, [result]);
+        setConfigList(fetchAPIConfigListResult);
+        setSelectedApi(fetchAPIConfigListResult[0]);
+    }, [fetchAPIConfigListResult]);
 
     const configListItemTemplate = entry => (
-        <div className="row mb-3">
-            <div className="col-8">
-                <span>{entry.displayName}</span>
-            </div>
-            <div className="col-4">
-                <button>test</button>
-            </div>
+        <div className="entry" onClick={() => onApiSelected(entry)}>
+            <NexusEntity heading={<span>{entry.displayName}</span>} type={NEXUS_ENTITY_TYPES.default} />
         </div>
     );
+
+    const onApiSelected = entry => {
+        setSelectedApi(entry);
+    };
 
     const settingsHeader = () => (
         <div className="header">
@@ -56,7 +59,7 @@ const SettingsPage = ({}) => {
     const headerTemplate = () => {
         return (
             <div>
-                <NexusEntity heading="test" />
+                <NexusEntity heading={SETTINGS_TABS[activeIndex].listDisplayName} type={NEXUS_ENTITY_TYPES.subheader} />
             </div>
         );
     };
@@ -64,45 +67,19 @@ const SettingsPage = ({}) => {
     const settingsPanels = () => (
         <div className="nexus-c-settings-content ">
             <div className="h-100">
-                <div className="row h-100">
+                <div className="row w-100 h-100">
                     <div className="col-6 h-100">
                         <NexusDataPanel
                             header={headerTemplate()}
                             data={configList}
                             itemTemplate={configListItemTemplate}
-                            footer="footer-------------------"
                         />
                     </div>
 
-                    <div className="col-6 h-100">
-                        <div>test</div>
-                    </div>
+                    <div className="col-6 h-100">{selectedApi && <EndpointContainer endpoint={selectedApi} />}</div>
                 </div>
             </div>
         </div>
-
-        // <div className="row mt-5">
-        //     <div className="col-6">
-        //         <div className="nexus-c-config-options-wrapper">
-        //             {/*<DataScroller*/}
-        //             {/*    ref={ds}*/}
-        //             {/*    value={configList}*/}
-        //             {/*    itemTemplate={configListItemTemplate}*/}
-        //             {/*    rows={configList.length}*/}
-        //             {/*    inline={true}*/}
-        //             {/*    scrollHeight="100%"*/}
-        //             {/*    header="Click Load Button at Footer to Load More"*/}
-        //             {/*/>*/}
-        //
-        //             <NexusDataPanel
-        //                 header="header"
-        //                 data={configList}
-        //                 itemTemplate={configListItemTemplate}
-        //                 footer="footer-------------------"
-        //             />
-        //         </div>
-        //     </div>
-        // </div>
     );
 
     return (

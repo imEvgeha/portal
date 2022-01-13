@@ -1,6 +1,22 @@
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+
 .nexus-c-data-panel {
-    .content {
-        overflow-y: auto;
-        overflow-x: hidden;
+    position: relative;
+    .nexus-c-content {
+        &.nexus-c-overflow {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .nexus-c-data-panel__spinner {
+            width: 50px;
+            height: 50px;
+        }
+
+        .nexus-c-loading-wrapper {
+            position: absolute;
+            top: 50%;
+            left: calc(50% - 50px);
+        }
     }
 }

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import EntityActions from './entity-actions/EntityActions';
 import './NexusEntity.scss';
-import { NEXUS_ENTITY_TYPES } from './constants';
+import {NEXUS_ENTITY_TYPES} from './constants';
 
 // Actions Usage:
 // const actions = [
@@ -21,11 +21,23 @@ const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover}) 
     const [isMouseOver, setIsMouseOver] = useState(false);
 
     return (
-        <div className='nexus-c-entity container-fluid nexus-c-entity' onMouseEnter={() => setIsMouseOver(true)} onMouseLeave={() => setIsMouseOver(false)}>
-            <div className={`row nexus-c-section align-items-center nexus-c-section-${type}`}>
+        <div
+            className={`nexus-c-entity container-fluid nexus-c-entity ${
+                type === NEXUS_ENTITY_TYPES.default ? 'nexus-c-row-entity' : ''
+            }`}
+            onMouseEnter={() => setIsMouseOver(true)}
+            onMouseLeave={() => setIsMouseOver(false)}
+        >
+            <div className={`row nexus-c-section mx-0 align-items-center nexus-c-section-${type}`}>
                 <div className="col-12 nexus-c-heading text-center text-sm-start col-sm-6">{heading}</div>
                 <div className="col-12 text-center text-sm-start col-sm-6">
-                    <EntityActions actions={actions} tag={tag} flag1={flag1} flag2={flag2} totalEnabled={disableHover ? true : isMouseOver} />
+                    <EntityActions
+                        actions={actions}
+                        tag={tag}
+                        flag1={flag1}
+                        flag2={flag2}
+                        totalEnabled={disableHover ? true : isMouseOver}
+                    />
                 </div>
             </div>
         </div>
