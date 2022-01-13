@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as ErrorMessage} from '@atlaskit/form';
-import NexusStatusDot from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-dot/NexusStatusDot';
+import NexusStatusDot from '../../../nexus-status-dot/NexusStatusDot';
 
 const ButtonsBuilder = ({dirty, reset, errors, disableSubmit, isSaving, canEdit, isEmpty, onCancel, seasonPersons, setValidationErrorCount}) => {
   const formStatus = (dirty, errors) => {
