@@ -74,12 +74,13 @@ const NexusFeedback = ({addToast, currentPage, closeModal}) => {
 
 NexusFeedback.propTypes = {
     addToast: PropTypes.func,
-    closeModal: PropTypes.func.isRequired,
+    closeModal: PropTypes.func,
     currentPage: PropTypes.string,
 };
 
 NexusFeedback.defaultProps = {
     addToast: () => null,
+    closeModal: () => null,
     currentPage: '',
 };
 

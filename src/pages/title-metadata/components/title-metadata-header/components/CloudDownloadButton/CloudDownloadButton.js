@@ -26,7 +26,7 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
     const closeModal = () => {
         setDisplayModal(false);
         setValues(initialValues);
-    }
+    };
 
     const handleDownload = () => {
         closeModal();
@@ -82,8 +82,13 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
 };
 
 CloudDownloadButton.propTypes = {
-    showSuccess: PropTypes.func.isRequired,
-    showError: PropTypes.func.isRequired,
+    showSuccess: PropTypes.func,
+    showError: PropTypes.func,
+};
+
+CloudDownloadButton.defaultProps = {
+    showSuccess: () => null,
+    showError: () => null,
 };
 
 export default CloudDownloadButton;

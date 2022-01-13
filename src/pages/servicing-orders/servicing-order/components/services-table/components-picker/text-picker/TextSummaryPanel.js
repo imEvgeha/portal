@@ -38,9 +38,11 @@ const TextSummaryPanel = ({list = [], remove}) => {
 
 TextSummaryPanel.propTypes = {
     list: PropTypes.array.isRequired,
-    remove: PropTypes.func.isRequired,
+    remove: PropTypes.func,
 };
 
-TextSummaryPanel.defaultProps = {};
+TextSummaryPanel.defaultProps = {
+    remove: () => null,
+};
 
 export default TextSummaryPanel;
