@@ -142,7 +142,7 @@ DopTasksView.propTypes = {
     unAssignTasks: PropTypes.func,
     changePriority: PropTypes.func,
     gridState: PropTypes.object,
-    username: PropTypes.string.isRequired,
+    username: PropTypes.string,
 };
 
 DopTasksView.defaultProps = {
@@ -152,6 +152,7 @@ DopTasksView.defaultProps = {
     unAssignTasks: () => null,
     changePriority: () => null,
     gridState: {},
+    username: '',
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DopTasksView);

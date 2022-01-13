@@ -1,53 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NexusPersonsList should match snapshot 1`] = `
-<Fragment>
-  <div
-    className="nexus-c-nexus-persons-list__heading"
-  >
-    Cast
-  </div>
-  <NexusPersonRO
-    key="val-prs_Ac9oyaREip"
-    person={
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
+>
+  <NexusPersonsList
+    castCrewConfig={Object {}}
+    emetLanguage="en"
+    getValues={[Function]}
+    hasCharacter={true}
+    isEdit={false}
+    isEditable={true}
+    isVerticalLayout={false}
+    personsList={
+      Array [
+        Object {
+          "characterName": null,
+          "displayName": "Amaka Obi",
+          "firstName": null,
+          "id": "prs_Ac9oyaREip",
+          "lastName": null,
+          "middleName": null,
+          "personType": "Actor",
+        },
+        Object {
+          "characterName": null,
+          "displayName": "Ebube Nwagbo",
+          "firstName": null,
+          "id": "prs_airo586ETR",
+          "lastName": null,
+          "middleName": null,
+          "personType": "Actor",
+        },
+        Object {
+          "characterName": null,
+          "displayName": "Solomon Akiyesi",
+          "firstName": null,
+          "id": "prs_x9TX5AkETo",
+          "lastName": null,
+          "middleName": null,
+          "personType": "Actor",
+        },
+      ]
+    }
+    searchPerson={[Function]}
+    setFieldValue={[Function]}
+    setUpdate={[Function]}
+    uiConfig={
       Object {
-        "characterName": null,
-        "displayName": "Amaka Obi",
-        "firstName": null,
-        "id": "prs_Ac9oyaREip",
-        "lastName": null,
-        "middleName": null,
-        "personType": "Actor",
+        "htmlFor": "new-person-cast",
+        "listLabel": "Cast List",
+        "newLabel": "Add New Cast...",
+        "title": "Cast",
+        "type": "CAST",
       }
     }
+    updateCastCrew={[Function]}
   />
-  <NexusPersonRO
-    key="idx-1"
-    person={
-      Object {
-        "characterName": null,
-        "displayName": "Ebube Nwagbo",
-        "firstName": null,
-        "id": "prs_airo586ETR",
-        "lastName": null,
-        "middleName": null,
-        "personType": "Actor",
-      }
-    }
-  />
-  <NexusPersonRO
-    key="idx-2"
-    person={
-      Object {
-        "characterName": null,
-        "displayName": "Solomon Akiyesi",
-        "firstName": null,
-        "id": "prs_x9TX5AkETo",
-        "lastName": null,
-        "middleName": null,
-        "personType": "Actor",
-      }
-    }
-  />
-</Fragment>
+</ContextProvider>
 `;

@@ -440,7 +440,7 @@ ServicesTable.propTypes = {
     setUpdatedServices: PropTypes.func,
     components: PropTypes.array,
     recipientsOptions: PropTypes.object,
-    externalId: PropTypes.string.isRequired,
+    externalId: PropTypes.string,
 };
 
 ServicesTable.defaultProps = {
@@ -449,6 +449,7 @@ ServicesTable.defaultProps = {
     setUpdatedServices: () => null,
     components: [],
     recipientsOptions: {},
+    externalId: '',
 };
 
 export default ServicesTable;
