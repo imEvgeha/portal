@@ -1,5 +1,6 @@
 import React from 'react';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import CloudDownloadIcon from '@vubiquity-nexus/portal-assets/action-cloud-download.svg';
 import WithdrawnIcon from '@vubiquity-nexus/portal-assets/withdrawn.svg';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
@@ -21,6 +22,12 @@ export const getIcon = (value, isFocus) => {
                 <WithdrawnIcon
                     className={`nexus-c-withdrawn-icon ${isFocus ? 'nexus-c-withdrawn-icon--is-active' : ''}`}
                 />
+            );
+        case 'download':
+            return (
+                <span className={`nexus-c-download-icon ${isFocus ? 'nexus-c-download-icon--is-active' : ''}`}>
+                    <CloudDownloadIcon />
+                </span>
             );
         default:
             return value;
