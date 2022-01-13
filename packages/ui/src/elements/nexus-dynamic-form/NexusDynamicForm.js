@@ -1,9 +1,7 @@
 import React, {Fragment, useState, useEffect, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
-import {default as AKForm, ErrorMessage} from '@atlaskit/form';
+import {default as AKForm} from '@atlaskit/form';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import NexusStatusDot from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-dot/NexusStatusDot';
 import classnames from 'classnames';
 import {mergeWith, set, get, isEmpty} from 'lodash';
 import moment from 'moment';
@@ -11,6 +9,7 @@ import {useDispatch} from 'react-redux';
 import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
 import {clearTitleMetadataFilter} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import PropagateButton from '../nexus-person/elements/PropagateButton/PropagateButton';
+import ButtonsBuilder from './components/ButtonsBuilder/ButtonsBuilder';
 import {buildSection, getProperValues, getProperValue, getAllFields} from './utils';
 import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION, CAST_AND_CREW_TITLE, PROPAGATE_TITLE} from './constants';
 import './NexusDynamicForm.scss';
@@ -52,58 +51,11 @@ const NexusDynamicForm = ({
         if (firstErrorElement) firstErrorElement.scrollIntoView(false);
     }, [validationErrorCount]);
 
-    const showValidationError = () => {
-        const errorsCount = document.getElementsByClassName('nexus-c-field__error').length;
-        errorsCount && setValidationErrorCount(errorsCount);
-    };
-
     const onCancel = () => {
         setRefresh(prev => !prev);
         setUpdate(true);
         setValidationErrorCount(0);
     };
-
-    const formStatus = (dirty, errors) => {
-        if (errors > 0) return 'danger';
-        if (dirty || !isEmpty(seasonPersons)) return 'warning';
-        return 'success';
-    };
-
-    const buildButtons = (dirty, reset, errors, getValues) => (
-        <>
-            {errors > 0 && (
-                <div className="nexus-c-dynamic-form__validation-msg">
-                    <ErrorMessage>
-                        {errors} {errors === 1 ? 'error' : 'errors'} on page
-                    </ErrorMessage>
-                </div>
-            )}
-            <div className="nexus-c-dynamic-form__actions-container">
-                <Button
-                    className="nexus-c-dynamic-form__discard-button"
-                    onClick={() => onCancel(reset, getValues)}
-                    isDisabled={((!dirty && disableSubmit) || isSaving || !canEdit) && isEmpty(seasonPersons)}
-                >
-                    Discard
-                </Button>
-
-                <div className="nexus-c-dynamic-form__status">
-                    <NexusStatusDot severity={formStatus(dirty || !disableSubmit, errors)} />
-                </div>
-
-                <Button
-                    type="submit"
-                    className="nexus-c-dynamic-form__submit-button"
-                    isDisabled={((!dirty && disableSubmit) || !canEdit) && isEmpty(seasonPersons)}
-                    // this is a form submit button and hence validation check will not work on submit function
-                    onClick={showValidationError}
-                    isLoading={isSaving}
-                >
-                    Save
-                </Button>
-            </div>
-        </>
-    );
 
     const validDateRange = values => {
         let areValid = true;
@@ -198,7 +150,19 @@ const NexusDynamicForm = ({
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
                 {({formProps, dirty, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
-                        {hasButtons && buildButtons(dirty, reset, validationErrorCount, getValues)}
+                        {hasButtons && <ButtonsBuilder
+                            dirty={dirty}
+                            reset={reset}
+                            validationErrorCount={validationErrorCount}
+                            errors={validationErrorCount}
+                            disableSubmit={disableSubmit}
+                            canEdit={canEdit}
+                            isSaving={isSaving}
+                            isEmpty={isEmpty}
+                            onCancel={onCancel}
+                            seasonPersons={seasonPersons}
+                            setValidationErrorCount={setValidationErrorCount}
+                        />}
                         <div
                             ref={containerRef}
                             className={classnames('nexus-c-dynamic-form__tab-container', {

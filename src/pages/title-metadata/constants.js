@@ -347,7 +347,6 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         javaVariableName: 'sourceFileName',
         enableSearch: false,
         dataType: 'string',
-        cellRenderer: 'loadingCellRenderer',
         width: 380,
         sortable: false,
     },
@@ -370,6 +369,19 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         dataType: 'string',
         searchDataType: 'string',
         width: 150,
+        sortable: false,
+    },
+    {
+        colId: 'reportId',
+        field: 'reportId',
+        headerName: 'Report',
+        enableSearch: false,
+        cellRenderer: 'iconCellRenderer',
+        cellRendererParams: {
+            icon: 'download',
+            tooltip: 'Download',
+        },
+        width: 100,
         sortable: false,
     },
 ];
