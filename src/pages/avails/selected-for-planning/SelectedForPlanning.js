@@ -106,15 +106,17 @@ const SelectedForPlanning = ({
 };
 
 SelectedForPlanning.propTypes = {
-    activeTab: PropTypes.string.isRequired,
-    isPlanningTabRefreshed: PropTypes.bool.isRequired,
+    activeTab: PropTypes.string,
+    isPlanningTabRefreshed: PropTypes.bool,
     setSelectedForPlanningGridApi: PropTypes.func,
     setSelectedForPlanningColumnApi: PropTypes.func,
 };
 
 SelectedForPlanning.defaultProps = {
+    activeTab: '',
     setSelectedForPlanningGridApi: () => null,
     setSelectedForPlanningColumnApi: () => null,
+    isPlanningTabRefreshed: false,
 };
 
 export default SelectedForPlanning;

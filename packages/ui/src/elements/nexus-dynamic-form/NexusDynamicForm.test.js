@@ -1,10 +1,12 @@
 import React from 'react';
-import {default as AKForm} from '@atlaskit/form';
 import {shallow} from 'enzyme';
+import {Provider} from 'react-redux';
+import configureStore from 'redux-mock-store';
 import NexusDynamicForm from './NexusDynamicForm';
 
 describe('NexusDynamicForm', () => {
     let wrapper = null;
+    let store = null;
     const schema = [
         {
             title: 'Amazing Tab',
@@ -26,15 +28,16 @@ describe('NexusDynamicForm', () => {
     ];
 
     beforeEach(() => {
-        wrapper = shallow(<NexusDynamicForm schema={schema} isEdit />);
+        const mockStore = configureStore();
+        store = mockStore({});
+        wrapper = shallow(
+            <Provider store={store}>
+                <NexusDynamicForm schema={schema} isEdit />
+            </Provider>
+        );
     });
 
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('should render a form', () => {
-        const form = wrapper.find(AKForm);
-        expect(form.length).toEqual(1);
     });
 });

@@ -96,7 +96,7 @@ TitlesSection.propTypes = {
     isMatchAndCreateLoading: PropTypes.bool,
     isMatchLoading: PropTypes.bool,
     onMatchAndCreate: PropTypes.func.isRequired,
-    onMatch: PropTypes.func.isRequired,
+    onMatch: PropTypes.func,
     closeDrawer: PropTypes.func.isRequired,
     contentType: PropTypes.string,
     selectionList: PropTypes.object.isRequired,
@@ -107,6 +107,7 @@ TitlesSection.defaultProps = {
     isMatchAndCreateLoading: false,
     isMatchLoading: false,
     contentType: '',
+    onMatch: () => null,
 };
 
 export default TitlesSection;

@@ -1,6 +1,5 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {useSelector, useDispatch} from 'react-redux';
 import configureStore from 'redux-mock-store';
 import {TitleMetadataView} from './TitleMetadataView';
 
