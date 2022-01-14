@@ -192,7 +192,7 @@ const NexusField = ({
                     };
                 }
                 // set label to full text string (not code). label is used in select as display text
-                if (/locale/i.test(fieldProps.name)) {
+                if (/locale/i.test(fieldProps.name) || /countryOfOrigin/i.test(fieldProps.name)) {
                     const selectVal = getValueFromSelectValues('country', fieldProps.value);
                     selectFieldProps.value =
                         typeof selectVal === 'string'
