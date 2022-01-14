@@ -36,7 +36,6 @@ const NexusDynamicForm = ({
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
-    const [validationErrorCount, setValidationErrorCount] = useState(0);
 
     const view = canEdit ? VIEWS.EDIT : VIEWS.VIEW;
 
@@ -44,12 +43,6 @@ const NexusDynamicForm = ({
     useEffect(() => {
         update && setUpdate(false);
     }, [update]);
-
-    useEffect(() => {
-        // eslint-disable-next-line prefer-destructuring
-        const firstErrorElement = document.getElementsByClassName('nexus-c-field__error')[0];
-        if (firstErrorElement) firstErrorElement.scrollIntoView(false);
-    }, [validationErrorCount]);
 
     const onCancel = () => {
         setRefresh(prev => !prev);
@@ -153,15 +146,12 @@ const NexusDynamicForm = ({
                         {hasButtons && <ButtonsBuilder
                             dirty={dirty}
                             reset={reset}
-                            validationErrorCount={validationErrorCount}
-                            errors={validationErrorCount}
                             disableSubmit={disableSubmit}
                             canEdit={canEdit}
                             isSaving={isSaving}
                             isEmpty={isEmpty}
                             onCancel={onCancel}
                             seasonPersons={seasonPersons}
-                            setValidationErrorCount={setValidationErrorCount}
                         />}
                         <div
                             ref={containerRef}
