@@ -1,5 +1,5 @@
 export const DOT_TYPES = {
-    ERROR: 'error',
+    ERROR: 'danger',
     UPDATED: 'warning',
     SUCCESS: 'success',
 };
