@@ -1,14 +1,13 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {SAVED_TABLE_DROPDOWN_LABEL} from '../../pages/dop-tasks/constants';
-import SavedTableDropdown from './SavedTableDropdown';
+import NexusSavedTableDropdown from './NexusSavedTableDropdown';
 
 describe('NexusSavedTableDropdown', () => {
     let wrapper = null;
     let dropDownMenu = null;
 
     beforeEach(() => {
-        wrapper = shallow(<SavedTableDropdown />);
+        wrapper = shallow(<NexusSavedTableDropdown />);
         dropDownMenu = wrapper.find('DropdownMenu');
     });
 
@@ -18,10 +17,5 @@ describe('NexusSavedTableDropdown', () => {
 
     it('should render DropDownMenu', () => {
         expect(dropDownMenu.length).toEqual(1);
-    });
-
-    it('should display dropdown label', () => {
-        const label = wrapper.find('.nexus-c-dop-tasks-dropdown__label');
-        expect(label.text()).toEqual(SAVED_TABLE_DROPDOWN_LABEL);
     });
 });

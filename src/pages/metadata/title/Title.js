@@ -67,11 +67,12 @@ const Title = ({coreTitleData, editorialTitleData, castCrewConfig}) => {
 
 Title.propTypes = {
     coreTitleData: PropTypes.object.isRequired,
-    editorialTitleData: PropTypes.array.isRequired,
+    editorialTitleData: PropTypes.array,
     castCrewConfig: PropTypes.object,
 };
 
 Title.defaultProps = {
+    editorialTitleData: [],
     castCrewConfig: {},
 };
 
