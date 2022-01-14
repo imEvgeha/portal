@@ -101,7 +101,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
   externalFilter={Object {}}
   id="selectedForPlanningRepo"
   isGridHidden={true}
-  key="planning_table_undefined"
+  key="planning_table_false"
   mapping={
     Array [
       Object {

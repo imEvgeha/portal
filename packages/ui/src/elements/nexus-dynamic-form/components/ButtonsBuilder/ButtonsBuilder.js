@@ -22,7 +22,7 @@ const ButtonsBuilder = ({dirty, reset, errors, disableSubmit, isSaving, canEdit,
         <div className="nexus-c-dynamic-form__actions-container">
             <Button
                 className="nexus-c-dynamic-form__discard-button"
-                onClick={() => onCancel(reset)}
+                onClick={() => onCancel()}
                 isDisabled={((!dirty && disableSubmit) || isSaving || !canEdit) && isEmpty(seasonPersons)}
             >
                 Discard

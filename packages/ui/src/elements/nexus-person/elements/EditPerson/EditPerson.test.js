@@ -20,8 +20,8 @@ describe('EditPerson', () => {
         expect(wrapper.find('EditFilledIcon').length).toEqual(1);
     });
 
-    it('should render the Edit icon', () => {
-        wrapper.find('EditFilledIcon').props().onClick();
+    it('should click the Edit icon', () => {
+        wrapper.find('.nexus-c-person-action').props().onClick();
         expect(onClickMock.mock.calls.length).toEqual(1);
     });
 });
