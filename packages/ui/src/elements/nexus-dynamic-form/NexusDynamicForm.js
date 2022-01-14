@@ -41,21 +41,22 @@ const NexusDynamicForm = ({
     const view = canEdit ? VIEWS.EDIT : VIEWS.VIEW;
 
     const {fields} = schema;
+    
     useEffect(() => {
         update && setUpdate(false);
     }, [update]);
-
-    const onCancel = () => {
-        setRefresh(prev => !prev);
-        setUpdate(true);
-        setValidationErrorCount(0);
-    };
 
     useEffect(() => {
         // eslint-disable-next-line prefer-destructuring
         const firstErrorElement = document.getElementsByClassName('nexus-c-field__error')[0];
         if (firstErrorElement) firstErrorElement.scrollIntoView(false);
     }, [validationErrorCount]);
+    
+    const onCancel = () => {
+        setRefresh(prev => !prev);
+        setUpdate(true);
+        setValidationErrorCount(0);
+    };
 
     const showValidationError = () => {
         const errorsCount = document.getElementsByClassName('nexus-c-field__error').length;
