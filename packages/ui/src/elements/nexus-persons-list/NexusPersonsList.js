@@ -152,14 +152,15 @@ const NexusPersonsList = ({
             dispatch(removeSeasonPerson(payload));
         }
 
-        const updatedCastCrew = castCrew?.filter(entry => {
+        const updatedCastCrew = castCrew ? castCrew?.filter(entry => {
             return entry.id !== person.id || entry.personType !== person.personType;
-        });
+        }) : null;
 
-        const deletedCastCrew = castCrew?.filter(entry => entry.id === person.id);
+        const deletedCastCrew = persons?.filter(entry => entry.id === person.id);
+        const updatedDeletedCastCrew = deletedCastCrew ? deletedCastCrew?.map(elem => elem.id) : [];
 
         setFieldValue('castCrew', updatedCastCrew);
-        setDeletedPersonsIds([...deletedPersonsIds, ...deletedCastCrew.map(elem => elem.id)]);
+        setDeletedPersonsIds([...deletedPersonsIds, ...updatedDeletedCastCrew]);
         closeModal();
         setUpdate(prev => !prev);
     };
