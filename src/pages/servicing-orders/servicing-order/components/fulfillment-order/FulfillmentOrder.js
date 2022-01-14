@@ -212,7 +212,9 @@ export const FulfillmentOrder = ({
             )?.value;
 
             if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
-                const parametersWithoutSourceStandard = firstExternalServices?.parameters?.filter((elem) => elem.name !== SOURCE_STANDARD);
+                const parametersWithoutSourceStandard = firstExternalServices?.parameters?.filter(
+                    elem => elem.name !== SOURCE_STANDARD
+                );
                 updatedData.definition.deteServices[0].externalServices = {
                     ...firstExternalServices,
                     parameters: [
@@ -556,10 +558,10 @@ FulfillmentOrder.propTypes = {
     setSelectedFulfillmentOrderID: PropTypes.func,
     fetchFulfillmentOrders: PropTypes.func,
     serviceOrder: PropTypes.object,
-    updatedServices: PropTypes.object,
+    updatedServices: PropTypes.func,
     children: PropTypes.any,
     cancelEditing: PropTypes.func,
-    lastOrder: PropTypes.object.isRequired,
+    lastOrder: PropTypes.object,
     deteErrors: PropTypes.array,
 };
 
@@ -572,6 +574,7 @@ FulfillmentOrder.defaultProps = {
     updatedServices: () => null,
     children: null,
     cancelEditing: () => null,
+    lastOrder: {},
     deteErrors: [],
 };
 

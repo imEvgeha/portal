@@ -74,6 +74,12 @@ const rightsReducer = (state = initialState, action = {}) => {
                 },
             };
         }
+        case actionTypes.GET_RIGHT_REQUEST: {
+            return {
+                ...state,
+                right: {},
+            };
+        }
         case actionTypes.GET_RIGHT_SUCCESS: {
             return {
                 ...state,

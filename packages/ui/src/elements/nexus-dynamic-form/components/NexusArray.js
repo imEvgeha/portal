@@ -58,7 +58,7 @@ const NexusArray = ({
 
     const onRemove = index => {
         const values = getValues();
-        const editedData = values[path].filter((obj, i) => i !== index);
+        const editedData = path && values[path].filter((obj, i) => i !== index);
         setAllData(editedData);
         setFieldValue(path, editedData);
         closeModal && closeModal();
@@ -221,7 +221,7 @@ const NexusArray = ({
 
 NexusArray.propTypes = {
     name: PropTypes.string.isRequired,
-    path: PropTypes.string.isRequired,
+    path: PropTypes.string,
     view: PropTypes.string,
     tooltip: PropTypes.string,
     data: PropTypes.array,
@@ -242,6 +242,7 @@ NexusArray.propTypes = {
 };
 
 NexusArray.defaultProps = {
+    path: '',
     view: VIEWS.VIEW,
     tooltip: null,
     data: [],

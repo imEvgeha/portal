@@ -20,6 +20,7 @@ exports[`JuiceBoxSection Language Only test Should match snapshot 1`] = `
       <Memo(Textfield)
         className="nexus-jb-lang-input_textfield"
         id="jb-lang"
+        isDisabled={false}
         maxLength={50}
         name="juicebox-lang"
         onChange={[Function]}
@@ -53,6 +54,7 @@ exports[`JuiceBoxSection with Language Should match snapshot 1`] = `
       <Memo(Textfield)
         className="nexus-jb-lang-input_textfield"
         id="jb-lang"
+        isDisabled={false}
         maxLength={50}
         name="juicebox-lang"
         onChange={[Function]}

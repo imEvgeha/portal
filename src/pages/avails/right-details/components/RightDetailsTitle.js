@@ -19,11 +19,12 @@ const RightDetailsTitle = ({title, previousUrl}) => {
 
 RightDetailsTitle.propTypes = {
     title: PropTypes.string,
-    previousUrl: PropTypes.string.isRequired,
+    previousUrl: PropTypes.string,
 };
 
 RightDetailsTitle.defaultProps = {
     title: null,
+    previousUrl: '',
 };
 
 export default RightDetailsTitle;
