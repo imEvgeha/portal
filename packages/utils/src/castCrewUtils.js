@@ -8,6 +8,8 @@ export const PRODUCER = 'Producer';
 export const ANIMATED_CHARACTER = 'Animated Character';
 export const RECORDING_ARTIST = 'Recording Artist';
 export const VOICE_TALENT = 'Voice Talent';
+export const FEATURE_ARTIST = 'Feature Artist';
+export const DISPLAY_ARTIST = 'Display Artist';
 
 export const PERSONS_PER_REQUEST = 1000;
 
@@ -150,6 +152,10 @@ export const getFormatTypeName = personType => {
                 return 'Recording Artist:';
             case VOICE_TALENT.toLowerCase():
                 return 'Voice Talent:';
+            case FEATURE_ARTIST.toLowerCase():
+                return 'Feature Artist:';
+            case DISPLAY_ARTIST.toLowerCase():
+                return 'Display Artist:';
             default:
                 return 'Unknown';
         }
