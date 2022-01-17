@@ -19,10 +19,6 @@ describe('Localization', () => {
         wrapper = shallow(<Localization />);
     });
 
-    it('should match snapshot', () => {
-        expect(wrapper).toMatchSnapshot();
-    });
-
     it('should render localization panel', () => {
         expect(wrapper.find('.nexus-c-localization-panel')).toHaveLength(1);
     });
