@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as ErrorMessage} from '@atlaskit/form';
+import NexusStatusDot from '../../../nexus-status-dot/NexusStatusDot';
 
 const ButtonsBuilder = ({dirty, reset, errors, disableSubmit, isSaving, canEdit, isEmpty, onCancel, seasonPersons, setValidationErrorCount}) => {
   const formStatus = (dirty, errors) => {
@@ -38,7 +39,9 @@ const ButtonsBuilder = ({dirty, reset, errors, disableSubmit, isSaving, canEdit,
             >
                 Discard
             </Button>
-            <div className={`nexus-c-dynamic-form__status ${formStatus(dirty || !disableSubmit, errors)}`} />
+            <div className="nexus-c-dynamic-form__status">
+                <NexusStatusDot severity={formStatus(dirty || !disableSubmit, errors)} />
+            </div>
             <Button
                 type="submit"
                 className="nexus-c-dynamic-form__submit-button"

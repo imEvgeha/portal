@@ -166,8 +166,8 @@ const SavedTableDropdown = ({gridApi, columnApi, username, storeAvailsUserDefine
 };
 
 SavedTableDropdown.propTypes = {
-    gridApi: PropTypes.object.isRequired,
-    columnApi: PropTypes.object.isRequired,
+    gridApi: PropTypes.object,
+    columnApi: PropTypes.object,
     username: PropTypes.string,
     gridState: PropTypes.object,
     storeAvailsUserDefinedGrid: PropTypes.func.isRequired,
@@ -175,6 +175,8 @@ SavedTableDropdown.propTypes = {
 
 SavedTableDropdown.defaultProps = {
     gridState: {},
+    gridApi: {},
+    columnApi: {},
     username: '',
 };
 

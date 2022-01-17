@@ -2,13 +2,15 @@
 
 exports[`NexusEntity should match snapshot 1`] = `
 <div
-  className="nexus-c-entity container-fluid"
+  className="nexus-c-entity container-fluid nexus-c-entity"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
 >
   <div
-    className="row nexus-c-section align-items-center"
+    className="row nexus-c-section align-items-center nexus-c-section-default"
   >
     <div
-      className="col-12 text-center text-sm-start col-sm-6"
+      className="col-12 nexus-c-heading text-center text-sm-start col-sm-6"
     >
       <h1>
         Heading
@@ -32,6 +34,7 @@ exports[`NexusEntity should match snapshot 1`] = `
         flag1="S3"
         flag2="E1"
         tag="Season"
+        totalEnabled={false}
       />
     </div>
   </div>

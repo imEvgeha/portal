@@ -68,8 +68,8 @@ exports[`EntityActions should match snapshot 1`] = `
           key="action-icon_5"
         >
           <ForwardRef
-            className="p-button-text"
-            disabled={false}
+            className="p-button-text nexus-c-entity-button"
+            disabled={true}
             icon={[Function]}
             id="fileBtn"
             key="fileBtn"

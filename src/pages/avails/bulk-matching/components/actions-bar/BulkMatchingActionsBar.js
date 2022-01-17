@@ -59,7 +59,7 @@ const BulkMatchingActionsBar = ({
 };
 
 BulkMatchingActionsBar.propTypes = {
-    matchList: PropTypes.object,
+    matchList: PropTypes.array,
     onCancel: PropTypes.func,
     onMatch: PropTypes.func,
     onMatchAndCreate: PropTypes.func,
@@ -68,7 +68,7 @@ BulkMatchingActionsBar.propTypes = {
 };
 
 BulkMatchingActionsBar.defaultProps = {
-    matchList: {},
+    matchList: [],
     onCancel: () => null,
     onMatch: () => null,
     onMatchAndCreate: () => null,
