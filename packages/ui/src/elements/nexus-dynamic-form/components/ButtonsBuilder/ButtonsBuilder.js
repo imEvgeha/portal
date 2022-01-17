@@ -1,19 +1,14 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {default as ErrorMessage} from '@atlaskit/form';
 import NexusStatusDot from '../../../nexus-status-dot/NexusStatusDot';
+import { DOT_TYPES } from '../constants';
 
-const ButtonsBuilder = ({dirty, reset, errors, disableSubmit, isSaving, canEdit, isEmpty, onCancel, seasonPersons, setValidationErrorCount}) => {
+const ButtonsBuilder = ({dirty, reset, errors, disableSubmit, isSaving, canEdit, isEmpty, onCancel, seasonPersons, showValidationError}) => {
   const formStatus = (dirty, errors) => {
-    if (errors > 0) return 'error';
-    if (dirty || !isEmpty(seasonPersons)) return 'updated';
-    return 'success';
-  };
-
-  const showValidationError = () => {
-    const errorsCount = document.getElementsByClassName('nexus-c-field__error').length;
-    errorsCount && setValidationErrorCount(errorsCount);
+    if (errors > 0) return DOT_TYPES.ERROR;
+    if (dirty || !isEmpty(seasonPersons)) return DOT_TYPES.UPDATED;
+    return DOT_TYPES.SUCCESS;
   };
 
   useEffect(() => {
@@ -24,13 +19,6 @@ const ButtonsBuilder = ({dirty, reset, errors, disableSubmit, isSaving, canEdit,
 
   return (
     <>
-        {errors > 0 && (
-            <div className="nexus-c-dynamic-form__validation-msg">
-                <ErrorMessage>
-                    {errors} {errors === 1 ? 'error' : 'errors'} on page
-                </ErrorMessage>
-            </div>
-        )}
         <div className="nexus-c-dynamic-form__actions-container">
             <Button
                 className="nexus-c-dynamic-form__discard-button"
@@ -39,9 +27,11 @@ const ButtonsBuilder = ({dirty, reset, errors, disableSubmit, isSaving, canEdit,
             >
                 Discard
             </Button>
+
             <div className="nexus-c-dynamic-form__status">
                 <NexusStatusDot severity={formStatus(dirty || !disableSubmit, errors)} />
             </div>
+
             <Button
                 type="submit"
                 className="nexus-c-dynamic-form__submit-button"
@@ -67,7 +57,7 @@ ButtonsBuilder.propTypes = {
   isEmpty: PropTypes.func,
   onCancel: PropTypes.func,
   seasonPersons: PropTypes.any,
-  setValidationErrorCount: PropTypes.func,
+  showValidationError: PropTypes.func,
 };
 
 ButtonsBuilder.defaultProps = {
@@ -80,7 +70,7 @@ ButtonsBuilder.defaultProps = {
   isEmpty: () => null,
   onCancel: () => null,
   seasonPersons: null,
-  setValidationErrorCount: () => null,
+  showValidationError: () => null,
 };
 
 export default ButtonsBuilder;
