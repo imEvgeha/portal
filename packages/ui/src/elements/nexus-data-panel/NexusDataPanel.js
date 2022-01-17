@@ -27,7 +27,7 @@ const NexusDataPanel = ({header, data, itemTemplate, footer, loading, contentFoo
     return (
         <div className="nexus-c-data-panel h-100 d-flex flex-column">
             {header && (
-                <div className="row nexus-c-header">
+                <div className="row nexus-c-header mb-2">
                     <div className="col-12">{header}</div>
                 </div>
             )}

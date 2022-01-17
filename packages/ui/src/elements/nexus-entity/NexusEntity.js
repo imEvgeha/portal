@@ -17,12 +17,12 @@ import {NEXUS_ENTITY_TYPES} from './constants';
 //     }),
 // ];
 
-const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover}) => {
+const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, isActive}) => {
     const [isMouseOver, setIsMouseOver] = useState(false);
 
     return (
         <div
-            className={`nexus-c-entity container-fluid nexus-c-entity ${
+            className={`nexus-c-entity container-fluid nexus-c-entity ${isActive ? 'nexus-c-entity-active' : ''} ${
                 type === NEXUS_ENTITY_TYPES.default ? 'nexus-c-row-entity' : ''
             }`}
             onMouseEnter={() => setIsMouseOver(true)}
@@ -52,6 +52,7 @@ NexusEntity.propTypes = {
     flag2: PropTypes.string || PropTypes.element,
     actions: PropTypes.array,
     disableHover: PropTypes.bool,
+    isActive: PropTypes.bool,
 };
 
 NexusEntity.defaultProps = {
@@ -62,6 +63,7 @@ NexusEntity.defaultProps = {
     flag2: '',
     actions: [],
     disableHover: false,
+    isActive: false,
 };
 
 export default NexusEntity;

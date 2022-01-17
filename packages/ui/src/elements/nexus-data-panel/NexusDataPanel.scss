@@ -1,5 +1,3 @@
-@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
-
 .nexus-c-data-panel {
     position: relative;
     .nexus-c-content {
@@ -15,7 +13,7 @@
 
         .nexus-c-loading-wrapper {
             position: absolute;
-            top: 50%;
+            top: 55%;
             left: calc(50% - 50px);
         }
     }

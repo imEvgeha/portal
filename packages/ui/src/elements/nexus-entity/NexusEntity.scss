@@ -39,6 +39,11 @@
         border-radius: 8px;
     }
 
+    &.nexus-c-entity-active {
+        color: palette(black, 100);
+        background: palette(black, 5);
+    }
+
     &.nexus-c-row-entity {
         color: palette(black, 55);
         cursor: pointer;
