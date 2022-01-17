@@ -112,7 +112,6 @@ const TitleDetails = ({
         handleDirtyValues(initialValues, values);
 
         const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
-
         const {params} = match || {};
         const {id} = params;
         // remove fields under arrayWithTabs
@@ -137,9 +136,9 @@ const TitleDetails = ({
 
         prepareCategoryField(updatedValues);
         Promise.all([
-            !isEmetUpdated && updateTitle({...updatedValues, id: title.id}),
+            updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
-            updateEditorialMetadata(values, id),
+            isEmetUpdated &&  updateEditorialMetadata(values, id),
             (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
                 propagateSeasonsPersonsToEpisodes(
                     {

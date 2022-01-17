@@ -426,12 +426,16 @@ const handleDirtyEMETValues = (initialValues, values) => {
                 }
                 return false;
             });
-
+        
         if (index !== null && index >= 0) {
+            const cleanEditorial = cleanObject(editorial);
+            const isChanged = Object.keys(cleanEditorial).some(
+                item => !isEqual(initialValues.editorialMetadata[index][item], cleanEditorial[item])
+            );
             const updatedEmetRecord = {
                 ...values.editorialMetadata[index],
                 ...editorial,
-                isUpdated: true,
+                isUpdated: isChanged,
             };
             values.editorialMetadata[index] = updatedEmetRecord;
         }
