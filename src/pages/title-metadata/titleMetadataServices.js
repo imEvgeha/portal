@@ -161,7 +161,7 @@ export const titleService = {
             !(Object.keys(searchCriteria).length === 1 && get(searchCriteria, 'tenantCode'));
         const partialContentTypeSearch = searchCriteria.contentType
             ? CONTENT_TYPE.find(el => el.toLowerCase().includes(searchCriteria.contentType.toLowerCase()))
-            : '';
+            : 'init';
 
         // api only supports searching by single contentType value, and it has to be exact match otherwise it throws error
         if (!partialContentTypeSearch) {
@@ -190,7 +190,7 @@ export const titleService = {
         }${prepareSortMatrixParamTitles(sortedParams)}`;
 
         const params = encodedSerialize({...queryParams, page, size});
-        return nexusFetch(url, {params});
+        return partialContentTypeSearch && nexusFetch(url, {params});
     },
     addMsvAssociationIds: (id, licensor, licensee) => {
         const url = `${config.get('gateway.titleUrl')}${config.get(

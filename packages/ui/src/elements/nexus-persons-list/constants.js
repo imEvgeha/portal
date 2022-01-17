@@ -21,6 +21,8 @@ export const ANIMATED_CHARACTER = 'Animated Character';
 export const AWARD = 'Award';
 export const RECORDING_ARTIST = 'Recording Artist';
 export const VOICE_TALENT = 'Voice Talent';
+export const FEATURE_ARTIST = 'Feature Artist';
+export const DISPLAY_ARTIST = 'Display Artist';
 
 export const CREW_LIST = [DIRECTOR, WRITER, PRODUCER];
 
