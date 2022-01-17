@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusDataPanel should match snapshot 1`] = `
+<div
+  className="nexus-c-data-panel h-100 d-flex flex-column"
+>
+  <div
+    className="row nexus-c-content nexus-c-overflow"
+  >
+    <div
+      className="col-12"
+    >
+      <BlockUI
+        autoZIndex={true}
+        baseZIndex={0}
+        blocked={false}
+        className={null}
+        fullScreen={false}
+        id={null}
+        onBlocked={null}
+        onUnblocked={null}
+        style={null}
+        template={null}
+      />
+    </div>
+  </div>
+</div>
+`;

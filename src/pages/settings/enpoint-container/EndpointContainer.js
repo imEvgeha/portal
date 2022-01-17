@@ -163,7 +163,7 @@ const EndpointContainer = ({endpoint}) => {
         ];
 
         return (
-            <div className="nexus-c-endpoint-entry">
+            <div className="nexus-c-endpoint-entry" key={`item_${entry.id}`}>
                 <NexusEntity
                     heading={<span>{getLabel(entry)}</span>}
                     type={NEXUS_ENTITY_TYPES.default}

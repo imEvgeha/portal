@@ -2,12 +2,12 @@
 
 exports[`NexusEntity should match snapshot 1`] = `
 <div
-  className="nexus-c-entity container-fluid nexus-c-entity"
+  className="nexus-c-entity container-fluid nexus-c-entity  nexus-c-row-entity"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
   <div
-    className="row nexus-c-section align-items-center nexus-c-section-default"
+    className="row nexus-c-section mx-0 align-items-center nexus-c-section-default"
   >
     <div
       className="col-12 nexus-c-heading text-center text-sm-start col-sm-6"

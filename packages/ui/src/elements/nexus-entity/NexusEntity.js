@@ -46,7 +46,7 @@ const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, i
 
 NexusEntity.propTypes = {
     type: PropTypes.string,
-    heading: PropTypes.element,
+    heading: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     tag: PropTypes.string || PropTypes.element,
     flag1: PropTypes.string || PropTypes.element,
     flag2: PropTypes.string || PropTypes.element,
@@ -57,7 +57,7 @@ NexusEntity.propTypes = {
 
 NexusEntity.defaultProps = {
     type: NEXUS_ENTITY_TYPES.default,
-    heading: <span />,
+    heading: '',
     tag: '',
     flag1: '',
     flag2: '',

@@ -48,7 +48,7 @@ const SettingsPage = () => {
     }, [configList]);
 
     const configListItemTemplate = entry => (
-        <div className="nexus-c-settings-entry" onClick={() => onApiSelected(entry)}>
+        <div className="nexus-c-settings-entry" key={`entry_${entry.displayName}`} onClick={() => onApiSelected(entry)}>
             <NexusEntity
                 heading={<span>{entry.displayName}</span>}
                 type={NEXUS_ENTITY_TYPES.default}

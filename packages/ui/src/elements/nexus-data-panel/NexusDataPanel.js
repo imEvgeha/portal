@@ -5,9 +5,9 @@ import {ProgressSpinner} from 'primereact/progressspinner';
 import './NexusDataPanel.scss';
 
 const NexusDataPanel = ({header, data, itemTemplate, footer, loading, contentFooter}) => {
-    const defaultItemTemplate = item => {
+    const defaultItemTemplate = (item, index) => {
         return (
-            <div className="row">
+            <div className="row" key={`item_${index}`}>
                 <div className="col-12">{item}</div>
             </div>
         );
@@ -15,11 +15,11 @@ const NexusDataPanel = ({header, data, itemTemplate, footer, loading, contentFoo
 
     const renderItems = () => {
         if (Array.isArray(data)) {
-            return data.map(item => {
+            return data.map((item, index) => {
                 if (itemTemplate) {
                     return itemTemplate(item);
                 }
-                return defaultItemTemplate(item);
+                return defaultItemTemplate(item, index);
             });
         }
     };
