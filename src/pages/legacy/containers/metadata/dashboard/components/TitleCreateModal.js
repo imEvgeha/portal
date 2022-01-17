@@ -177,6 +177,7 @@ class TitleCreate extends React.Component {
                 this.setState({isCreatingTitle: false});
                 this.cleanFields();
                 this.toggle();
+                console.log('Created')
                 this.props.addToast({
                     title: SUCCESS_TITLE,
                     icon: SUCCESS_ICON,
@@ -629,10 +630,12 @@ TitleCreate.propTypes = {
     display: PropTypes.bool.isRequired,
     className: PropTypes.string,
     tenantCode: PropTypes.string,
+    addToast: PropTypes.func,
 };
 
 TitleCreate.defaultProps = {
     tenantCode: undefined,
+    addToast: () => null,
 };
 
 export default withToasts(TitleCreate);
