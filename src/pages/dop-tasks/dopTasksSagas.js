@@ -62,6 +62,15 @@ function* assignTasks({payload}) {
         yield put({type: TOGGLE_REFRESH_GRID_DATA, payload: true});
         let toastParams = {};
         switch (statusResponse.status) {
+            case jobStatus.IN_PROGRESS: {
+                toastParams = {
+                    title: SUCCESS_TITLE,
+                    icon: SUCCESS_ICON,
+                    isAutoDismiss: true,
+                    description: 'Request still in process, please refresh the data in a short while.',
+                };
+                break;
+            }
             case jobStatus.SUCCESS: {
                 toastParams = {
                     title: SUCCESS_TITLE,
