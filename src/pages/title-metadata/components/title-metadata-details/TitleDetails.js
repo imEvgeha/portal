@@ -111,6 +111,7 @@ const TitleDetails = ({
     const onSubmit = (values, initialValues) => {
         handleDirtyValues(initialValues, values);
 
+        const isTitleUpdated = values.isUpdated;
         const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
         const {params} = match || {};
         const {id} = params;
@@ -136,7 +137,7 @@ const TitleDetails = ({
 
         prepareCategoryField(updatedValues);
         Promise.all([
-            updateTitle({...updatedValues, id: title.id}),
+            isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
             isEmetUpdated &&  updateEditorialMetadata(values, id),
             (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
