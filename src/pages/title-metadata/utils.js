@@ -430,14 +430,24 @@ const handleDirtyEMETValues = (initialValues, values) => {
         if (index !== null && index >= 0) {
             const cleanEditorial = cleanObject(editorial);
             const isChanged = Object.keys(cleanEditorial).some(
-                item => !isEqual(initialValues.editorialMetadata[index][item], cleanEditorial[item])
+                item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
             );
+            const cleanValues = cleanObject(values);
+            const isTitleChanged = Object.keys(cleanValues).some(
+                item => {
+                    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'usBoxOffice', 'ratings', 'editorial']
+                    if(unnecessaryValues.includes(item)) return false;
+                    return !isEqual(initialValues?.[item], cleanValues?.[item])
+                }
+            );
+
             const updatedEmetRecord = {
                 ...values.editorialMetadata[index],
                 ...editorial,
                 isUpdated: isChanged,
             };
             values.editorialMetadata[index] = updatedEmetRecord;
+            values.isUpdated = isTitleChanged;
         }
 
         values.editorialMetadata.forEach((emet, i) => {
