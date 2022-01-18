@@ -1,0 +1,10 @@
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+
+.nexus-c-settings-page {
+    // TODO: Remove background
+    background: palette(white, 100);
+    gap: 20px;
+    .nexus-c-settings-content {
+        overflow: hidden;
+    }
+}

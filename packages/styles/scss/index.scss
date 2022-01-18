@@ -6,6 +6,7 @@
 @import './config';
 @import './utilities';
 @import './color-palette.scss';
+@import './atlaskit/mixins';
 
 // Basics
 html,
@@ -22,4 +23,8 @@ body,
 .required::after {
     content: ' * ';
     color: red;
+}
+
+.nexus-c-page-container {
+    @include padding(6, 6, 3, 6);
 }

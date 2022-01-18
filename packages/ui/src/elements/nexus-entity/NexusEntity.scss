@@ -1,30 +1,58 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
-.nexus-c-section-header {
-  border-top: solid 4px black;
+@mixin headingStyles {
+    .nexus-c-section-header {
+        border-top: solid 4px black;
 
-  .nexus-c-heading {
-    font-size: 26px;
-    font-weight: bold;
-    padding-top: 4px;
-    padding-left: 0px;
-  }
+        .nexus-c-heading {
+            font-size: 26px;
+            font-weight: bold;
+            padding-top: 4px;
+            padding-left: 0;
+        }
+    }
+
+    .nexus-c-section-subheader {
+        border-bottom: solid 2px black;
+
+        .nexus-c-heading {
+            font-size: 21px;
+            font-weight: bold;
+            padding-left: 0;
+        }
+    }
+
+    .nexus-c-section-default {
+        .nexus-c-heading {
+            font-weight: bold;
+            padding-left: 0;
+        }
+    }
 }
 
-.nexus-c-section-subheader {
-  border-bottom: solid 2px black;
+.nexus-c-entity {
+    &.container-fluid {
+        padding-left: 16px;
+        padding-right: 16px;
+        border-radius: 8px;
+    }
 
-  .nexus-c-heading {
-    font-size: 21px;
-    font-weight: bold;
-    padding-left: 0px;
-  }
-}
+    &.nexus-c-entity-active {
+        color: palette(black, 100);
+        background: palette(black, 5);
+    }
 
-.nexus-c-section-default {
-  .nexus-c-heading {
-    font-weight: bold;
-    padding-left: 0px;
-  }
+    &.nexus-c-row-entity {
+        color: palette(black, 55);
+        cursor: pointer;
+        &:hover {
+            color: palette(black, 100);
+            background: palette(black, 5);
+        }
+
+        @include headingStyles;
+    }
+    @include headingStyles;
 }

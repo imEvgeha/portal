@@ -94,7 +94,7 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
 };
 
 CreateEditConfig.propTypes = {
-    values: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]).isRequired,
+    values: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
     visible: PropTypes.bool,
     schema: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     onSubmit: PropTypes.func.isRequired,
@@ -105,6 +105,7 @@ CreateEditConfig.propTypes = {
 };
 
 CreateEditConfig.defaultProps = {
+    values: undefined,
     visible: false,
     displayName: '',
     label: '',

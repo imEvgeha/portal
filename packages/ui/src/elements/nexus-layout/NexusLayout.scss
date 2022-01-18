@@ -22,4 +22,5 @@
     background-color: map-get($colors, primary);
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
 }
