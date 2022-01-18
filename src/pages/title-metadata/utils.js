@@ -379,9 +379,9 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
+    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'usBoxOffice', 'ratings', 'editorial'];
     const isTitleChanged = Object.keys(cleanValues).some(
         item => {
-            const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'usBoxOffice', 'ratings', 'editorial']
             if(unnecessaryValues.includes(item)) return false;
             return !isEqual(initialValues?.[item], cleanValues?.[item])
         }
