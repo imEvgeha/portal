@@ -425,3 +425,11 @@ $element-margin-bottom: 18px;
         }
     }
 }
+
+// Progress Spinner
+.p-progress-spinner {
+    .p-progress-spinner-circle {
+        animation: none;
+        stroke: palette(black, 20);
+    }
+}
