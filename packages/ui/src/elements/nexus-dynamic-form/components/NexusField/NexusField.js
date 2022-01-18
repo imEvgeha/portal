@@ -86,7 +86,7 @@ const NexusField = ({
         return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, getCurrentValues});
     };
 
-    const [required, setRequired] = useState(!!(checkDependencies('required') || isRequired));
+    const [required] = useState(!!(checkDependencies('required') || isRequired));
 
     const addedProps = {
         isOptional,
@@ -192,7 +192,7 @@ const NexusField = ({
                     };
                 }
                 // set label to full text string (not code). label is used in select as display text
-                if (/locale/i.test(fieldProps.name)) {
+                if (/locale/i.test(fieldProps.name) || /countryOfOrigin/i.test(fieldProps.name)) {
                     const selectVal = getValueFromSelectValues('country', fieldProps.value);
                     selectFieldProps.value =
                         typeof selectVal === 'string'
@@ -557,7 +557,7 @@ NexusField.propTypes = {
     useCurrentDate: PropTypes.bool,
     isHighlighted: PropTypes.bool,
     isTitlePage: PropTypes.bool,
-    getCurrentValues: PropTypes.func.isRequired,
+    getCurrentValues: PropTypes.func,
     isReturningTime: PropTypes.bool,
     config: PropTypes.array,
     isEditable: PropTypes.bool,
@@ -603,6 +603,7 @@ NexusField.defaultProps = {
     setFieldValue: null,
     useCurrentDate: false,
     isHighlighted: false,
+    getCurrentValues: () => null,
     isReturningTime: true,
     isTitlePage: false,
     config: [],
@@ -620,8 +621,8 @@ NexusField.defaultProps = {
     showLocalized: false,
     localizationConfig: undefined,
     getValues: () => null,
-    setUpdatedValues: () => {},
-    setUpdatedCastCrew: () => {},
+    setUpdatedValues: () => null,
+    setUpdatedCastCrew: () => null,
     setUpdate: () => null,
     allData: {},
 };

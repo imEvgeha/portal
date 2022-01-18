@@ -294,10 +294,10 @@ export const PrePlanActions = ({
 PrePlanActions.propTypes = {
     selectedPrePlanRights: PropTypes.array,
     addToast: PropTypes.func,
-    setSelectedPrePlanRights: PropTypes.func.isRequired,
+    setSelectedPrePlanRights: PropTypes.func,
     prePlanRepoRights: PropTypes.array,
-    setPreplanRights: PropTypes.func.isRequired,
-    username: PropTypes.string.isRequired,
+    setPreplanRights: PropTypes.func,
+    username: PropTypes.string,
     singleRightMatch: PropTypes.array,
     setSingleRightMatch: PropTypes.func,
 };
@@ -305,7 +305,10 @@ PrePlanActions.propTypes = {
 PrePlanActions.defaultProps = {
     selectedPrePlanRights: [],
     addToast: () => null,
+    setSelectedPrePlanRights: () => null,
     prePlanRepoRights: [],
+    setPreplanRights: () => null,
+    username: '',
     singleRightMatch: [],
     setSingleRightMatch: () => null,
 };

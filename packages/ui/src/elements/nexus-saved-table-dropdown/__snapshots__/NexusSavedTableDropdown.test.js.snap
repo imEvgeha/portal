@@ -1,14 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SavedTableDropdown should match snapshot 1`] = `
+exports[`NexusSavedTableDropdown should match snapshot 1`] = `
 <div
   className="nexus-c-dop-tasks-dropdown"
 >
-  <div
-    className="nexus-c-dop-tasks-dropdown__label"
-  >
-    Saved Table View:
-  </div>
   <div
     className="nexus-c-dop-tasks-dropdown__elements"
   >
@@ -27,12 +22,9 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
       shouldAllowMultilineItems={false}
       shouldFitContainer={true}
       shouldFlip={true}
-      trigger="All"
       triggerType="button"
     >
-      <DropdownItemGroup
-        title="My Saved Views"
-      >
+      <DropdownItemGroup>
         <div
           className="nexus-c-dop-tasks-dropdown__textfield"
         >
@@ -46,6 +38,7 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
           />
         </div>
       </DropdownItemGroup>
+      <DropdownItemGroup />
     </DropdownMenu>
   </div>
 </div>

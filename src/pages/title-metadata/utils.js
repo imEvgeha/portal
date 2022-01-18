@@ -378,9 +378,19 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
 };
 
 export const handleDirtyValues = (initialValues, values) => {
+    const cleanValues = cleanObject(values);
+    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'usBoxOffice', 'ratings', 'editorial'];
+    const isTitleChanged = Object.keys(cleanValues).some(
+        item => {
+            if(unnecessaryValues.includes(item)) return false;
+            return !isEqual(initialValues?.[item], cleanValues?.[item])
+        }
+    );
+
     handleDirtyRatingsValues(values);
     handleDirtyEMETValues(initialValues, values);
     handleDirtyTMETValues(values);
+    values.isUpdated = isTitleChanged;
 };
 
 const handleDirtyRatingsValues = values => {
@@ -426,20 +436,18 @@ const handleDirtyEMETValues = (initialValues, values) => {
                 }
                 return false;
             });
-
+        
         if (index !== null && index >= 0) {
             const cleanEditorial = cleanObject(editorial);
-            const isChanged = initialValues?.editorialMetadata && initialValues?.editorialMetadata[index] && Object.keys(cleanEditorial).some(
-                item => !isEqual(initialValues.editorialMetadata[index][item], cleanEditorial[item])
+            const isChanged = Object.keys(cleanEditorial).some(
+                item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
             );
-            if (isChanged) {
-                const updatedEmetRecord = {
-                    ...values.editorialMetadata[index],
-                    ...editorial,
-                    isUpdated: true,
-                };
-                values.editorialMetadata[index] = updatedEmetRecord;
-            }
+            const updatedEmetRecord = {
+                ...values.editorialMetadata[index],
+                ...editorial,
+                isUpdated: isChanged,
+            };
+            values.editorialMetadata[index] = updatedEmetRecord;
         }
 
         values.editorialMetadata.forEach((emet, i) => {

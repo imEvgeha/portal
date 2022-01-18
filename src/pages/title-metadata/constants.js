@@ -327,7 +327,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         dataType: 'string',
         searchDataType: 'string',
         width: 150,
-        sortable: false
+        sortable: false,
     },
     {
         colId: 'uploadedAt',
@@ -338,7 +338,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         dataType: 'dateColumn',
         searchDataType: 'businessDateTime',
         width: 250,
-        sortable: false
+        sortable: false,
     },
     {
         colId: 'sourceFileName',
@@ -347,9 +347,8 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         javaVariableName: 'sourceFileName',
         enableSearch: false,
         dataType: 'string',
-        cellRenderer: 'loadingCellRenderer',
         width: 380,
-        sortable: false
+        sortable: false,
     },
     {
         colId: 'error',
@@ -359,7 +358,7 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         enableSearch: false,
         dataType: 'string',
         width: 225,
-        sortable: false
+        sortable: false,
     },
     {
         colId: 'uploadedBy',
@@ -370,9 +369,22 @@ export const UPLOAD_COLUMN_MAPPINGS = [
         dataType: 'string',
         searchDataType: 'string',
         width: 150,
-        sortable: false
+        sortable: false,
     },
-]
+    {
+        colId: 'reportId',
+        field: 'reportId',
+        headerName: 'Report',
+        enableSearch: false,
+        cellRenderer: 'iconCellRenderer',
+        cellRendererParams: {
+            icon: 'download',
+            tooltip: 'Download',
+        },
+        width: 100,
+        sortable: false,
+    },
+];
 
 export const FIELDS_TO_REMOVE = ['editorial', 'territorial', 'movidaExternalIds', 'vzExternalIds'];
 export const UNABLE_PUBLISH =
@@ -393,4 +405,3 @@ export const TABLE_LABELS = {
 };
 
 export const TABLE_OPTIONS = [{label: 'All', value: 'all'}];
-

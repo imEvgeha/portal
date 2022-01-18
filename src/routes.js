@@ -21,6 +21,9 @@ const Contract = React.lazy(() =>
 const Settings = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "Settings" */ './pages/legacy/containers/settings/Settings')
 );
+
+const SettingsPage = React.lazy(() => import('./pages/settings/SettingsPage'));
+
 const Unauthorized = React.lazy(() =>
     import(
         /* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/Unauthorized'
@@ -40,6 +43,10 @@ const restRoutes = [
     {
         path: '/settings',
         component: Settings,
+    },
+    {
+        path: '/settings/v2',
+        component: SettingsPage,
     },
     {
         path: '/401',

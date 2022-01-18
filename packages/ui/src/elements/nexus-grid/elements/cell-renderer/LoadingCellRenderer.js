@@ -1,9 +1,8 @@
 import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
-import {downloadFile, getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
-import { downloadUploadedEMETLog } from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
 import {renderTitleName} from './utils/utils';
 
 const LoadingCellRenderer = params => {
@@ -20,18 +19,10 @@ const LoadingCellRenderer = params => {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
 
-    const idToFileDownloading = data.reportId;
     let linkTo = link && URL.keepEmbedded(`${link}${data[linkId] || data.id || data[colId]}`);
     if (data.type === 'title') {
         linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
     }
-    
-    const handleDownload = (e) => {
-        e.preventDefault();
-        downloadUploadedEMETLog(idToFileDownloading).then(response => {
-            downloadFile(response, 'Editorial_Metadata');
-        }).catch((err) => console.error(err))
-    };
 
     let value = getDeepValue(data, field);
     if (isObject(value)) {
@@ -73,7 +64,7 @@ const LoadingCellRenderer = params => {
                 )}
             </div>
         );
-        
+
         if (linkTo) {
             return newTab ? (
                 <a href={linkTo} target="_blank">
@@ -81,13 +72,9 @@ const LoadingCellRenderer = params => {
                 </a>
             ) : (
                 <Link to={linkTo}>{displayValue}</Link>
-            )
-        } 
-
-        if (idToFileDownloading) {
-            return <Link to='#'  onClick={handleDownload}>{displayValue}</Link>
+            );
         }
-        
+
         return displayValue;
     }
 

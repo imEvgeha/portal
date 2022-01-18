@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import NexusStatusDot from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-dot/NexusStatusDot';
 import moment from 'moment';
-import {SUCCESS, ERROR, EMPTY, SYNC, PUBLISH} from '../../../constants';
+import {PUBLISH, SUCCESS, SYNC} from '../../../constants';
 import './SyncPublish.scss';
 
 const SyncPublish = ({
@@ -22,23 +22,21 @@ const SyncPublish = ({
     const needsSyncing = moment(publishedDate).isBefore(moment(titleUpdatedAt));
 
     const getStatus = () => {
-        if (needsSyncing) return SYNC;
-        if (externalData === undefined) return EMPTY;
-        if (externalData.status === SUCCESS) return SUCCESS;
-        return ERROR;
+        if (needsSyncing) return 'warning';
+        if (externalData === undefined) return 'neutral';
+        if (externalData.status === SUCCESS) return 'success';
+        return 'danger';
     };
 
     return (
         <div className="nexus-c-sync-publish">
-            <div className={`nexus-c-sync-publish__status--${getStatus()}`} />
-            <Button
+            <NexusStatusDot
+                label={externalSystem}
+                onAction={() => onSyncPublish(externalSystem, buttonType)}
+                severity={getStatus()}
                 isDisabled={!hasButtons || (isDisabled && publishedDate && !needsSyncing)}
-                appearance="subtle"
                 isLoading={isSyncing || isPublishing}
-                onClick={() => onSyncPublish(externalSystem, buttonType)}
-            >
-                {externalSystem}
-            </Button>
+            />
         </div>
     );
 };

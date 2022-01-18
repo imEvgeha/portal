@@ -6,39 +6,3 @@
     justify-content: center;
     align-items: center;
 }
-
-.nexus-c-sync-publish__status--sync {
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 16px;
-    background-color: map-get($yellows, Y14);
-}
-
-.nexus-c-sync-publish__status--success {
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 16px;
-    background-color: map-get($greens, G14);
-}
-
-.nexus-c-sync-publish__status--error {
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 16px;
-    background-color: map-get($reds, R14);
-}
-
-.nexus-c-sync-publish__status--empty {
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 16px;
-    background-color: rgba(0, 0, 0, 0.2);
-}

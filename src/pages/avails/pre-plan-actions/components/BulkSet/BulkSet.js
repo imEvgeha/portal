@@ -50,12 +50,14 @@ const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
 
 BulkSet.propTypes = {
     countryOptions: PropTypes.array,
-    setTerritories: PropTypes.func.isRequired,
-    setKeywords: PropTypes.func.isRequired,
+    setTerritories: PropTypes.func,
+    setKeywords: PropTypes.func,
 };
 
 BulkSet.defaultProps = {
     countryOptions: [],
+    setTerritories: () => null,
+    setKeywords: () => null,
 };
 
 const mapStateToProps = () => {

@@ -4,6 +4,7 @@ import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-
 import {FieldTextStateless} from '@atlaskit/field-text';
 import CheckIcon from '@atlaskit/icon/glyph/check';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import Tooltip from '@atlaskit/tooltip';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
@@ -100,8 +101,8 @@ const NexusSavedTableDropdown = ({
     return (
         <div className="nexus-c-dop-tasks-dropdown">
             <div className="nexus-c-dop-tasks-dropdown__elements">
-                <DropdownMenu shouldFitContainer appearance="tall" trigger={selectedItem.label} triggerType="button">
-                    <DropdownItemGroup title={tableLabels.savedViewslabel}>
+                <DropdownMenu shouldFitContainer appearance="tall" trigger={selectedItem?.label} triggerType="button">
+                    <DropdownItemGroup title={tableLabels?.savedViewslabel}>
                         <div className="nexus-c-dop-tasks-dropdown__textfield">
                             <FieldTextStateless
                                 shouldFitContainer
@@ -143,9 +144,9 @@ const NexusSavedTableDropdown = ({
                     </DropdownItemGroup>
                     <DropdownItemGroup title={tableLabels.predifinedViewsLabel}>
                         {tableOptions.map(item => (
-                            <DropdownItem key={item.value} onClick={() => setPredefinedView(item)}>
-                                {item.label}
-                            </DropdownItem>
+                            <Tooltip key={item.value} content={item.label}>
+                                <DropdownItem onClick={() => setPredefinedView(item)}>{item.label}</DropdownItem>
+                            </Tooltip>
                         ))}
                     </DropdownItemGroup>
                 </DropdownMenu>
@@ -167,7 +168,6 @@ NexusSavedTableDropdown.propTypes = {
     tableOptions: PropTypes.array,
     lastStoredFilter: PropTypes.object,
     setBlockLastFilter: PropTypes.func,
-    isTitleMetadata: PropTypes.bool,
 };
 
 NexusSavedTableDropdown.defaultProps = {
@@ -183,7 +183,6 @@ NexusSavedTableDropdown.defaultProps = {
     tableOptions: [],
     lastStoredFilter: {},
     setBlockLastFilter: () => null,
-    isTitleMetadata: false,
 };
 
 export default NexusSavedTableDropdown;

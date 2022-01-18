@@ -31,6 +31,7 @@ exports[`NexusArray should match snapshot 1`] = `
     }
     isDisabled={false}
     isRequired={false}
+    name=""
     validate={[Function]}
   >
     <Component />
@@ -73,7 +74,7 @@ exports[`NexusArray should match snapshot 1`] = `
           formData={Object {}}
           getCurrentValues={[Function]}
           getValues={[Function]}
-          id="undefined[0].selected"
+          id="[0].selected"
           initialData={
             Object {
               "comment": "yyyyy",
@@ -87,7 +88,7 @@ exports[`NexusArray should match snapshot 1`] = `
             }
           }
           isClearable={false}
-          isEditable={false}
+          isEditable={true}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -98,11 +99,11 @@ exports[`NexusArray should match snapshot 1`] = `
           isReturningTime={true}
           isTitlePage={false}
           isVerticalLayout={false}
-          key="undefined[0].selected"
+          key="[0].selected"
           label="Selected"
           labels={Array []}
           linkConfig={Object {}}
-          name="undefined[0].selected"
+          name="[0].selected"
           oneIsRequiredVZ={false}
           optionsConfig={Object {}}
           path="territory.selected"
@@ -133,7 +134,7 @@ exports[`NexusArray should match snapshot 1`] = `
           formData={Object {}}
           getCurrentValues={[Function]}
           getValues={[Function]}
-          id="undefined[0].country"
+          id="[0].country"
           initialData={
             Object {
               "comment": "yyyyy",
@@ -147,7 +148,7 @@ exports[`NexusArray should match snapshot 1`] = `
             }
           }
           isClearable={false}
-          isEditable={false}
+          isEditable={true}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -158,11 +159,11 @@ exports[`NexusArray should match snapshot 1`] = `
           isReturningTime={true}
           isTitlePage={false}
           isVerticalLayout={false}
-          key="undefined[0].country"
+          key="[0].country"
           label="Country"
           labels={Array []}
           linkConfig={Object {}}
-          name="undefined[0].country"
+          name="[0].country"
           oneIsRequiredVZ={false}
           optionsConfig={Object {}}
           path="territory.country"
@@ -206,7 +207,7 @@ exports[`NexusArray should match snapshot 1`] = `
           formData={Object {}}
           getCurrentValues={[Function]}
           getValues={[Function]}
-          id="undefined[1].selected"
+          id="[1].selected"
           initialData={
             Object {
               "comment": "",
@@ -220,7 +221,7 @@ exports[`NexusArray should match snapshot 1`] = `
             }
           }
           isClearable={false}
-          isEditable={false}
+          isEditable={true}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -231,11 +232,11 @@ exports[`NexusArray should match snapshot 1`] = `
           isReturningTime={true}
           isTitlePage={false}
           isVerticalLayout={false}
-          key="undefined[1].selected"
+          key="[1].selected"
           label="Selected"
           labels={Array []}
           linkConfig={Object {}}
-          name="undefined[1].selected"
+          name="[1].selected"
           oneIsRequiredVZ={false}
           optionsConfig={Object {}}
           path="territory.selected"
@@ -266,7 +267,7 @@ exports[`NexusArray should match snapshot 1`] = `
           formData={Object {}}
           getCurrentValues={[Function]}
           getValues={[Function]}
-          id="undefined[1].country"
+          id="[1].country"
           initialData={
             Object {
               "comment": "",
@@ -280,7 +281,7 @@ exports[`NexusArray should match snapshot 1`] = `
             }
           }
           isClearable={false}
-          isEditable={false}
+          isEditable={true}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -291,11 +292,11 @@ exports[`NexusArray should match snapshot 1`] = `
           isReturningTime={true}
           isTitlePage={false}
           isVerticalLayout={false}
-          key="undefined[1].country"
+          key="[1].country"
           label="Country"
           labels={Array []}
           linkConfig={Object {}}
-          name="undefined[1].country"
+          name="[1].country"
           oneIsRequiredVZ={false}
           optionsConfig={Object {}}
           path="territory.country"

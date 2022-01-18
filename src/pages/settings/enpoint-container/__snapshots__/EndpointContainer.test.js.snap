@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EndpointContainer should match snapshot 1`] = `
+<div
+  className="nexus-c-endpoint-container h-100"
+>
+  <NexusDataPanel
+    contentFooter={
+      <div
+        className="row mt-2"
+      >
+        <div
+          className="col-12 text-center"
+        />
+      </div>
+    }
+    data={Array []}
+    header={
+      <div>
+        <NexusEntity
+          actions={Array []}
+          disableHover={false}
+          flag1=""
+          flag2=""
+          heading=""
+          isActive={false}
+          tag=""
+          type="subheader"
+        />
+        <div
+          className="nexus-c-searchbox-wrapper container-fluid nexus-c-search-wrapper-padding-right"
+        >
+          <div
+            className="row my-2 align-items-center"
+          >
+            <div
+              className="col-10"
+            >
+              <ForwardRef
+                className="nexus-c-search__inputbox"
+                id="config_search_field__inp"
+                name="config_search_field__inp"
+                onChange={[Function]}
+              />
+            </div>
+            <div
+              className="col-2 text-end"
+            >
+              <ForwardRef
+                className="p-button-text"
+                icon={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+                id="add_new_config__btn"
+                onClick={[Function]}
+              />
+            </div>
+          </div>
+          <div
+            className="w-100 nexus-c-divider-wrapper"
+          >
+            <Divider
+              align={null}
+              className="m-0"
+              layout="horizontal"
+              style={null}
+              type="solid"
+            />
+          </div>
+        </div>
+      </div>
+    }
+    itemTemplate={[Function]}
+    loading={false}
+  />
+</div>
+`;
