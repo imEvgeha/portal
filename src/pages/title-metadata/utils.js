@@ -378,9 +378,19 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
 };
 
 export const handleDirtyValues = (initialValues, values) => {
+    const cleanValues = cleanObject(values);
+    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'usBoxOffice', 'ratings', 'editorial'];
+    const isTitleChanged = Object.keys(cleanValues).some(
+        item => {
+            if(unnecessaryValues.includes(item)) return false;
+            return !isEqual(initialValues?.[item], cleanValues?.[item])
+        }
+    );
+
     handleDirtyRatingsValues(values);
     handleDirtyEMETValues(initialValues, values);
     handleDirtyTMETValues(values);
+    values.isUpdated = isTitleChanged;
 };
 
 const handleDirtyRatingsValues = values => {
@@ -432,22 +442,12 @@ const handleDirtyEMETValues = (initialValues, values) => {
             const isChanged = Object.keys(cleanEditorial).some(
                 item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
             );
-            const cleanValues = cleanObject(values);
-            const isTitleChanged = Object.keys(cleanValues).some(
-                item => {
-                    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'usBoxOffice', 'ratings', 'editorial']
-                    if(unnecessaryValues.includes(item)) return false;
-                    return !isEqual(initialValues?.[item], cleanValues?.[item])
-                }
-            );
-
             const updatedEmetRecord = {
                 ...values.editorialMetadata[index],
                 ...editorial,
                 isUpdated: isChanged,
             };
             values.editorialMetadata[index] = updatedEmetRecord;
-            values.isUpdated = isTitleChanged;
         }
 
         values.editorialMetadata.forEach((emet, i) => {
