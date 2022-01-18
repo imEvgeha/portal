@@ -120,6 +120,8 @@ const TitleDetails = ({
         const allFields = getAllFields(fields, false);
         const valuesNoInnerFields = [];
 
+        console.log(isTitleUpdated, isEmetUpdated)
+
         // remove innerFields from values
         Object.keys(values).forEach(key => {
             const removeFromPayload = get(allFields, `${key}.removeFromPayload`);
