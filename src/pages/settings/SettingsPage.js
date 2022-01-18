@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import NexusDataPanel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-data-panel/NexusDataPanel';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
+import {Divider} from 'primereact/divider';
 import {TabMenu} from 'primereact/tabmenu';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchConfigApiEndpoints} from '../legacy/containers/settings/settingsActions';
@@ -54,6 +55,9 @@ const SettingsPage = () => {
                 type={NEXUS_ENTITY_TYPES.default}
                 isActive={entry?.displayName === selectedApi?.displayName}
             />
+            <div className="w-100 px-3">
+                <Divider className="m-0" />
+            </div>
         </div>
     );
 

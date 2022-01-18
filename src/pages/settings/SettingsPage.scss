@@ -2,12 +2,9 @@
 
 .nexus-c-settings-page {
     // TODO: Remove background
-    background: white;
+    background: palette(white, 100);
     gap: 20px;
     .nexus-c-settings-content {
         overflow: hidden;
-        .nexus-c-settings-entry {
-            border-bottom: 1px solid palette(black, 10);
-        }
     }
 }
