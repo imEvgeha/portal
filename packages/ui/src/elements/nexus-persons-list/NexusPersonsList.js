@@ -14,7 +14,7 @@ import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getDir} from '../nexus-dynamic-form/utils';
+import {checkIfEmetIsEditorial, getDir} from '../nexus-dynamic-form/utils';
 import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors';
 import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
@@ -47,7 +47,7 @@ const NexusPersonsList = ({
     const [deletedPersonsIds, setDeletedPersonsIds] = useState([]);
     const [searchText, setSearchText] = useState('');
     const propagateRemovePersons = useSelector(propagateRemovePersonsSelector);
-    const {title, contentType, castCrew} = getValues();
+    const {title, contentType, castCrew, editorialMetadata} = getValues();
 
     useEffect(() => {
         const updatedPersons = [...personsList.filter(elem => !deletedPersonsIds.includes(elem.id))];
@@ -152,6 +152,34 @@ const NexusPersonsList = ({
             dispatch(removeSeasonPerson(payload));
         }
 
+        const updateEditorialMetadata = editorialMetadata.map(emet => {
+            const updatedCastCrew =
+                emet?.castCrew &&
+                emet.castCrew.filter(entry => {
+                    return entry.id !== person.id || entry.personType !== person.personType;
+                });
+
+            const updatedEmet = {
+                ...emet,
+                castCrew: updatedCastCrew,
+            };
+
+            const {editorial} = getValues();
+
+            if (checkIfEmetIsEditorial(emet, editorial)) {
+                setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
+                if (isVerticalLayout) {
+                    return updatedEmet;
+                }
+            }
+
+            if (!isVerticalLayout) {
+                return updatedEmet;
+            } else {
+                return emet;
+            }
+        });
+
         const updatedCastCrew = castCrew ? castCrew?.filter(entry => {
             return entry.id !== person.id || entry.personType !== person.personType;
         }) : null;
@@ -159,7 +187,8 @@ const NexusPersonsList = ({
         const deletedCastCrew = persons?.filter(entry => entry.id === person.id);
         const updatedDeletedCastCrew = deletedCastCrew ? deletedCastCrew?.map(elem => elem.id) : [];
 
-        setFieldValue('castCrew', updatedCastCrew);
+        !isVerticalLayout && setFieldValue('castCrew', updatedCastCrew);
+        setFieldValue('editorialMetadata', updateEditorialMetadata);
         setDeletedPersonsIds([...deletedPersonsIds, ...updatedDeletedCastCrew]);
         closeModal();
         setUpdate(prev => !prev);
