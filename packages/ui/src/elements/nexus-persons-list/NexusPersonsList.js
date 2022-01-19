@@ -152,7 +152,7 @@ const NexusPersonsList = ({
             dispatch(removeSeasonPerson(payload));
         }
 
-        const updateEditorialMetadata = editorialMetadata.map(emet => {
+        const updateEditorialMetadata = editorialMetadata?.map(emet => {
             const updatedCastCrew =
                 emet?.castCrew &&
                 emet.castCrew.filter(entry => {
@@ -188,7 +188,7 @@ const NexusPersonsList = ({
         const updatedDeletedCastCrew = deletedCastCrew ? deletedCastCrew?.map(elem => elem.id) : [];
 
         !isVerticalLayout && setFieldValue('castCrew', updatedCastCrew);
-        setFieldValue('editorialMetadata', updateEditorialMetadata);
+        editorialMetadata && setFieldValue('editorialMetadata', updateEditorialMetadata);
         setDeletedPersonsIds([...deletedPersonsIds, ...updatedDeletedCastCrew]);
         closeModal();
         setUpdate(prev => !prev);
