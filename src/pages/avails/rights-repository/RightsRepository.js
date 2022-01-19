@@ -213,7 +213,7 @@ const RightsRepository = ({
             gridApi.forEachNode(node => {
                 const {data = {}} = node;
 
-                selectedIds.includes(data.id) && node.setSelected(true);
+                selectedIds.includes(data.id) ? node.setSelected(true) : node.setSelected(false);
             });
         }
         if (isMounted.current && selectedGridApi) {
@@ -594,7 +594,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    }, 200);
+    }, 1500);
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
         const prePlanIds = currentUserPrePlanRights.map(right => right.id);
@@ -629,17 +629,7 @@ const RightsRepository = ({
                     ?.getSelectedNodes()
                     ?.filter(({data = {}}) => toDeselectIds.includes(data.id));
 
-                // If row was unselected but it was not found via gridApi, then manually deselect it and
-                // update the store. Otherwise proceed with normal flow via gridApi and update the store via
-                // onRightsRepositoryGridEvent handler
-
-                if (api.getSelectedRows()?.length < selectedRepoRights.length) {
-                    setSelectedRights({
-                        [username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id)),
-                    });
-                } else {
-                    nodesToDeselect?.forEach(node => node?.setSelected(false));
-                }
+                nodesToDeselect?.forEach(node => node?.setSelected(false));
 
                 break;
             }
@@ -653,7 +643,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    }, 100);
+    }, 300);
 
     // Returns only selected rights that are also included in the selected ingest
     const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
