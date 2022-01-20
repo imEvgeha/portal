@@ -42,7 +42,7 @@ exports[`CreateEditConfig should match snapshot 1`] = `
       </div>
     </div>
   }
-  header="Display Name"
+  header="Label"
   icons={null}
   id={null}
   keepInViewport={true}
@@ -78,6 +78,24 @@ exports[`CreateEditConfig should match snapshot 1`] = `
   visible={true}
 >
   <form>
+    <div
+      className="row nexus-c-create-edit-config-summary-header"
+    >
+      <div
+        className="col-12"
+      >
+        <NexusEntity
+          actions={Array []}
+          disableHover={false}
+          flag1=""
+          flag2=""
+          heading="SUMMARY"
+          isActive={false}
+          tag=""
+          type="subsection"
+        />
+      </div>
+    </div>
     <div
       className="row"
     >

@@ -1,10 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
+import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
 import {isEmpty, omitBy, pickBy, without} from 'lodash';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
 import {constructFieldPerType} from './dynamic-fields/FieldsPerType';
+import './CreateEditConfig.scss';
 
 const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayName, label, submitLoading}) => {
     const [isVisible, setIsVisible] = useState(visible);
@@ -83,10 +86,15 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
             style={{width: '70vw'}}
             footer={footer}
             closeOnEscape={false}
-            header={displayName}
+            header={label || `Create ${displayName}`}
             closable={false}
         >
             <form>
+                <div className="row nexus-c-create-edit-config-summary-header">
+                    <div className="col-12">
+                        <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="SUMMARY" />
+                    </div>
+                </div>
                 <div className="row">{constructFields(schema, form, values)}</div>
             </form>
         </Dialog>

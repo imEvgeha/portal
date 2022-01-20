@@ -2,66 +2,90 @@
 
 exports[`ArrayElement should match snapshot 1`] = `
 <div
-  className="row align-items-center my-2"
-  key="nexus-c-field-group0"
+  className="nexus-c-array-element-wrapper"
 >
+  <NexusEntity
+    actions={
+      Array [
+        Action {
+          "action": [Function],
+          "buttonId": "btnEditConfig",
+          "disabled": false,
+          "icon": Object {
+            "process": [Function],
+          },
+          "position": 6,
+        },
+      ]
+    }
+    disableHover={false}
+    flag1=""
+    flag2=""
+    heading="TERRITORY METADATA"
+    isActive={false}
+    tag=""
+    type="subsection"
+  />
   <div
-    className="col-10"
+    className="row align-items-center nexus-c-entity-group my-2"
+    key="nexus-c-field-group0"
   >
-    <Panel
-      className={null}
-      collapseIcon="pi pi-minus"
-      collapsed={true}
-      expandIcon="pi pi-plus"
-      header="Header"
-      headerTemplate={[Function]}
-      icons={null}
-      id={null}
-      onCollapse={null}
-      onExpand={null}
-      onToggle={null}
-      style={null}
-      toggleable={true}
-      transitionOptions={null}
+    <div
+      className="col-12"
     >
-      <div
-        className="mb-2"
-        key="type_col"
-      >
-        <Component
-          defaultValue="value"
-          key="type_controller"
-          name="territoryMetadata.0.type"
-          render={[Function]}
-          rules={
-            Object {
-              "required": "Value is required",
-            }
-          }
-        />
-      </div>
-      <div
-        className="mb-2"
-        key="name_col"
-      >
-        <Component
-          defaultValue="value"
-          key="name_controller"
-          name="territoryMetadata.0.name"
-          render={[Function]}
-          rules={Object {}}
-        />
-      </div>
-    </Panel>
-  </div>
-  <div
-    className="col-2 text-center "
-  >
-    <ForwardRef
-      className="p-button-text"
-      icon="pi pi-plus"
-      onClick={[Function]}
-    />
+      <NexusEntity
+        actions={
+          Array [
+            Action {
+              "action": [Function],
+              "buttonId": "btnDeleteSection",
+              "disabled": false,
+              "icon": Object {
+                "process": [Function],
+              },
+              "position": 5,
+            },
+          ]
+        }
+        body={
+          <div
+            className="row"
+          >
+            <div
+              className="col-6 mb-2"
+            >
+              <Unknown
+                defaultValue="value"
+                name="territoryMetadata.0.type"
+                render={[Function]}
+                rules={
+                  Object {
+                    "required": "Value is required",
+                  }
+                }
+              />
+            </div>
+            <div
+              className="col-6 mb-2"
+            >
+              <Unknown
+                defaultValue="value"
+                name="territoryMetadata.0.name"
+                render={[Function]}
+                rules={Object {}}
+              />
+            </div>
+          </div>
+        }
+        disableHover={false}
+        flag1=""
+        flag2=""
+        heading="unset"
+        isActive={false}
+        tag=""
+        type="default"
+      />
+    </div>
   </div>
 </div>
 `;

@@ -11,6 +11,13 @@ $element-margin-bottom: 18px;
     position: relative;
 }
 
+.nexus-c-field-label {
+    margin-bottom: $element-margin-bottom;
+    color: palette(black, 100);
+    font-size: 10px;
+    font-weight: bold;
+}
+
 // Buttons Related
 .p-button {
     background: palette(black, 10);
