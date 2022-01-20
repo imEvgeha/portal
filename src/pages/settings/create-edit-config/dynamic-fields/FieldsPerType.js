@@ -1,4 +1,6 @@
 import React from 'react';
+import FieldError from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-error/FieldError';
+import FieldLabel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-label/FieldLabel';
 import {Calendar} from 'primereact/calendar';
 import {Checkbox} from 'primereact/checkbox';
 import {InputText} from 'primereact/inputtext';
@@ -6,8 +8,6 @@ import {Controller} from 'react-hook-form';
 import ArrayElement from './array-element/ArrayElement';
 import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import DynamicElement from './dynamic-element/DynamicElement';
-import FieldError from './field-error/FieldError';
-import FieldLabel from './field-label/FieldLabel';
 
 export const constructFieldPerType = (elementSchema, form, value, className, customOnChange, cb) => {
     return (
