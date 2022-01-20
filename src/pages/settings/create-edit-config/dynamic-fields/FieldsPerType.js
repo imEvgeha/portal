@@ -57,12 +57,13 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
 const getElement = (elementSchema, field, value, form, onChange, cb) => {
     switch (elementSchema.type) {
         case 'text': {
+            const newField = {...field, ...(field.value === null && {value: undefined})};
             return (
                 <InputText
                     key={elementSchema.id}
                     id={elementSchema.id}
                     name={elementSchema.name}
-                    {...field}
+                    {...newField}
                     onKeyPress={e => {
                         e.key === 'Enter' && e.preventDefault();
                     }}
