@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {capitalize} from 'lodash';
+import {toUpper} from 'lodash';
 import FieldRequired from '../field-required/FieldRequired';
 
 const FieldLabel = ({htmlFor, label, additionalLabel, isRequired}) => {
     return label ? (
-        <label htmlFor={htmlFor}>
-            {capitalize(label)}
-            {additionalLabel}
-            <FieldRequired required={!!isRequired} />
-        </label>
+        <div className="nexus-c-field-label">
+            <label htmlFor={htmlFor}>
+                {toUpper(label)}
+                {additionalLabel}
+                <FieldRequired required={!!isRequired} />
+            </label>
+        </div>
     ) : null;
 };
 

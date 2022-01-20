@@ -13,7 +13,6 @@ import {useDebounce} from '@vubiquity-nexus/portal-utils/lib/useDebounce';
 import {capitalize, cloneDeep} from 'lodash';
 import {Button} from 'primereact/button';
 import {confirmPopup} from 'primereact/confirmpopup';
-import {Divider} from 'primereact/divider';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
 import {getConfigApiValues} from '../../legacy/common/CommonConfigService';
@@ -122,9 +121,6 @@ const EndpointContainer = ({endpoint}) => {
                         />
                     </div>
                 </div>
-                <div className="w-100 nexus-c-divider-wrapper">
-                    <Divider className="m-0" />
-                </div>
             </div>
         );
     };
@@ -173,9 +169,6 @@ const EndpointContainer = ({endpoint}) => {
                     type={NEXUS_ENTITY_TYPES.default}
                     actions={actions}
                 />
-                <div className="w-100 px-3">
-                    <Divider className="m-0" />
-                </div>
             </div>
         );
     };
@@ -193,7 +186,8 @@ const EndpointContainer = ({endpoint}) => {
             }, []);
         return (
             (Array.isArray(result) && result.join(endpoint.displayValueDelimiter || ' ,')) ||
-            (noEmpty && `[id = ${item.id}]`)
+            (noEmpty && `[id = ${item.id}]`) ||
+            ''
         );
     };
 
@@ -282,7 +276,7 @@ const EndpointContainer = ({endpoint}) => {
                 <CreateEditConfig
                     visible={showEditConfigModal}
                     schema={endpoint?.uiSchema}
-                    label={getLabel(endpoint, selectedConfig, false) || ''}
+                    label={selectedConfig ? getLabel(selectedConfig, false) : ''}
                     displayName={endpoint?.displayName}
                     values={cloneDeep(selectedConfig)}
                     onSubmit={editRecord}
