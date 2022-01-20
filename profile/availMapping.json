@@ -4,8 +4,9 @@
             "javaVariableName": "id",
             "displayName": "Right ID",
             "dataType": "string",
+            "searchDataType": "string",
             "readOnly": true,
-            "enableSearch": false,
+            "enableSearch": true,
             "queryParamName": "id",
             "enableEdit": true,
             "required": false

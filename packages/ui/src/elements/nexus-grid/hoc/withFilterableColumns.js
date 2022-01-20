@@ -35,7 +35,7 @@ const withFilterableColumns = ({
     hocProps = [],
     filterableColumns = null,
     initialFilter = null,
-    notFilterableColumns = NOT_FILTERABLE_COLUMNS,
+    notFilterableColumns = [],
     useDatesWithTime = false,
     prepareFilterParams = params => params,
 } = {}) => WrappedComponent => {
@@ -476,7 +476,7 @@ const withFilterableColumns = ({
         customDateFilterParamSuffixes: [],
         fixedFilter: {},
         filterableColumns: null,
-        notFilterableColumns: null,
+        notFilterableColumns: [],
         initialFilter: {},
         onGridEvent: () => null,
     };
