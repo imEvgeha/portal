@@ -1,14 +1,34 @@
-.nexus-c-panel-header {
-    cursor: pointer;
-
-    .nexus-c-panel__icon {
-        text-align: center;
-        cursor: pointer;
-        width: 25px;
-        height: 20px;
+.nexus-c-array-element-wrapper {
+    .nexus-c-entity {
+        .nexus-c-entity-panel {
+            &.container-fluid {
+                padding: 0 0;
+            }
+        }
     }
-}
 
-.nexus-c-col-margin-bottom {
-    margin-bottom: 20px;
+    .nexus-c-entity-group {
+        .nexus-c-entity {
+            .nexus-c-entity-panel {
+                &.container-fluid {
+                    padding: 0 16px;
+                }
+            }
+        }
+    }
+
+    .nexus-c-panel-header {
+        cursor: pointer;
+
+        .nexus-c-panel__icon {
+            text-align: center;
+            cursor: pointer;
+            width: 25px;
+            height: 20px;
+        }
+    }
+
+    .nexus-c-col-margin-bottom {
+        margin-bottom: 20px;
+    }
 }

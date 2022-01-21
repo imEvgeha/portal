@@ -1,10 +1,14 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {debounce, isEmpty} from 'lodash';
+import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
+import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
+import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
+import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
+import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
+import {debounce, isEmpty, toUpper} from 'lodash';
 import {InputText} from 'primereact/inputtext';
-import {Panel} from 'primereact/panel';
-import {arrayElementButtons} from '../ArrayButtons';
 import {constructFieldPerType} from '../FieldsPerType';
+import './DynamicElement.scss';
 
 const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
     const initializeSections = () => {
@@ -56,10 +60,12 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
     };
 
     useEffect(() => {
-        onKeysChanged(
-            elementsSchema.name,
-            sections.map(s => s.key)
-        );
+        if (onKeysChanged) {
+            onKeysChanged(
+                elementsSchema.name,
+                sections.map(s => s.key)
+            );
+        }
     }, [sections]);
 
     const onLabelChange = (e, section) => {
@@ -75,46 +81,56 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
         setLabels(lbls);
     };
 
-    const panelHeaderTemplate = (options, header) => {
-        const toggleIcon = options.collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up';
-        return (
-            <div className="nexus-c-panel-header p-panel-header" onClick={options.onTogglerClick}>
-                <div className="row">
-                    <div className="col-12">
-                        <i onClick={options.onTogglerClick} className={`${toggleIcon} nexus-c-panel__icon`} />
-                        <span className="mx-2">{header}</span>
-                    </div>
-                </div>
+    const panelActions = index => [
+        new Action({
+            icon: ActionCrossCircle,
+            action: e => {
+                e.preventDefault();
+                e.stopPropagation();
+                removeSection(index);
+            },
+            position: 5,
+            disabled: false,
+            buttonId: 'btnDeleteSection',
+        }),
+    ];
+
+    const panelBody = section => (
+        <div className="row">
+            <div className="col-12">
+                <InputText
+                    key={`${section.elementId}_inp_key`}
+                    id={`${section.elementId}_inp_id`}
+                    name={`${section.name}_inp_name`}
+                    onKeyPress={e => {
+                        e.key === 'Enter' && e.preventDefault();
+                    }}
+                    value={labels[section.elementId]}
+                    tooltip="Section Key Name"
+                    onChange={e => onLabelChange(e, section)}
+                    placeholder="Section Key Name"
+                />
             </div>
-        );
-    };
+
+            {constructSectionElement(section)}
+        </div>
+    );
 
     const section = () => {
         return sections.map((section, index) => {
             return (
-                <div className="row align-items-center my-2" key={`nexus-c-field-group${index}`}>
-                    <div className="col-10">
-                        <Panel
-                            headerTemplate={options => panelHeaderTemplate(options, labels[section.elementId])}
-                            toggleable
-                            collapsed={true}
-                        >
-                            <InputText
-                                key={`${section.elementId}_inp_key`}
-                                id={`${section.elementId}_inp_id`}
-                                name={`${section.name}_inp_name`}
-                                onKeyPress={e => {
-                                    e.key === 'Enter' && e.preventDefault();
-                                }}
-                                value={labels[section.elementId]}
-                                tooltip="Section Key Name"
-                                onChange={e => onLabelChange(e, section)}
-                                placeholder="Section Key Name"
-                            />
-                            {constructSectionElement(section)}
-                        </Panel>
+                <div
+                    className="row align-items-center nexus-c-dynamic-element-entry my-2"
+                    key={`nexus-c-field-group${index}`}
+                >
+                    <div className="col-12">
+                        <NexusEntity
+                            type={NEXUS_ENTITY_TYPES.default}
+                            body={panelBody(section)}
+                            heading={labels[section.elementId]}
+                            actions={panelActions(index)}
+                        />
                     </div>
-                    {arrayElementButtons(index, sections.length, addSection, () => removeSection(index), false)}
                 </div>
             );
         });
@@ -158,7 +174,32 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
         setSections(tmpSections);
     };
 
-    return section();
+    const headerActions = () => [
+        new Action({
+            icon: IconActionAdd,
+            action: e => {
+                e.preventDefault();
+                e.stopPropagation();
+                addSection();
+            },
+            position: 6,
+            disabled: false,
+            buttonId: 'btnEditConfig',
+        }),
+    ];
+
+    return (
+        <div className="nexus-c-dynamic-element-wrapper">
+            {elementsSchema.label && (
+                <NexusEntity
+                    type={NEXUS_ENTITY_TYPES.subsection}
+                    heading={toUpper(elementsSchema.label)}
+                    actions={headerActions()}
+                />
+            )}
+            {section()}
+        </div>
+    );
 };
 
 DynamicElement.propTypes = {
@@ -170,6 +211,7 @@ DynamicElement.propTypes = {
 
 DynamicElement.defaultProps = {
     values: undefined,
+    onKeysChanged: undefined,
 };
 
 export default DynamicElement;

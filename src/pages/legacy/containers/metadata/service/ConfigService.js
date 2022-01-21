@@ -10,6 +10,8 @@ import {
     ANIMATED_CHARACTER,
     RECORDING_ARTIST,
     VOICE_TALENT,
+    FEATURE_ARTIST,
+    DISPLAY_ARTIST
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
 import {nexusFetch} from '../../../../../util/http-client';
@@ -44,7 +46,15 @@ export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = fal
     const sortPath = ';' + 'displayName' + '=ASC';
     let personTypePath;
     if (isMultiCastType) {
-        personTypePath = `personTypes=${ACTOR.toLowerCase()},${ANIMATED_CHARACTER.toLowerCase()},${AWARD.toLowerCase()},${RECORDING_ARTIST.toLowerCase()},${VOICE_TALENT.toLowerCase()}&`;
+        personTypePath = `personTypes=${
+            ACTOR.toLowerCase()},
+            ${ANIMATED_CHARACTER.toLowerCase()},
+            ${AWARD.toLowerCase()},
+            ${RECORDING_ARTIST.toLowerCase()},
+            ${VOICE_TALENT.toLowerCase()},
+            ${FEATURE_ARTIST.toLowerCase()},
+            ${DISPLAY_ARTIST.toLowerCase()}
+        &`;
     } else {
         personTypePath =
             castOrCrew === CAST

@@ -51,7 +51,7 @@ const NexusSelect = ({
 
     const addDeselectOption = options => {
         if (type === 'select' && !isRequired) {
-            const deselectOption = {label: 'Select...', value: ''};
+            const deselectOption = {label: 'Select...', value: null};
             options.unshift(deselectOption);
         }
     };
