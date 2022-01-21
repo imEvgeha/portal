@@ -6,7 +6,6 @@ import Error from '@atlaskit/icon/glyph/error';
 import Info from '@atlaskit/icon/glyph/info';
 import Warning from '@atlaskit/icon/glyph/warning';
 import {colors} from '@atlaskit/theme';
-import {switchCase} from '@vubiquity-nexus/portal-utils/lib/Common';
 import { Toast } from 'primereact/toast';
 import {SUCCESS_ICON, WARNING_ICON, INFO_ICON, ERROR_ICON} from './constants';
 
@@ -17,47 +16,24 @@ const icons = {
     [ERROR_ICON]: <Error label={`${ERROR_ICON} icon`} primaryColor={colors.R300} />,
 };
 
-const UpdatedToast = ({toastParam}) => {
-    console.log(toastParam, 'toastParam')
-    const toast = useRef(null);
-    const showSuccess = () => {
-        if(toast.current) toast.current.show({severity: 'success', summary: 'Success Message', detail: 'Order submitted'});
-    }
-
-    showSuccess();
-    return <Toast ref={toast} position="bottom-left" />;
-}
-
-UpdatedToast.propTypes = {
-    toastParam: PropTypes.object,
-};
-
-UpdatedToast.defaultProps = {
-    toastParam: {},
-};
-
-
 
 const NexusToastNotification = ({toasts, removeToast}) => {
+    const toast = useRef(null);
+    const showToast = (toastParam) => {
+        if(toast.current) toast.current.show({
+            severity: toastParam.icon || toastParam.type || toastParam.severity,
+            summary: toastParam.title || toastParam.summary,
+            detail: toastParam.description || toastParam.description,
+            life: toasts.life || 3000
+        });
+    }
 
-    return (
-        <FlagGroup onDismissed={removeToast}>
-            {toasts.map((toast, index) => {
-                {console.log(toasts, 'toasts')}
-                // const updatedToast = {
-                //     ...toast,
-                //     ...(toast.icon &&
-                //         !isValidElement(toast.icon) && {icon: switchCase(icons)(icons[INFO_ICON])(toast.icon)}),
-                // };
-                // if (toast.isAutoDismiss) {
-                //     // setTimeout(() => removeToast(index), 3000);
-                //     showSuccess();
-                //     return <Toast key={index} ref={toast} life={3000} />;
-                // }
-                return <UpdatedToast toastParam={toast} key={index} />
-            })}
-        </FlagGroup>
-    )
+    toasts.map((toast, index) => {
+        showToast(toast);
+        removeToast(index);
+    });
+    
+    return (<Toast ref={toast} position="bottom-left" />)
 };
 
 NexusToastNotification.propTypes = {
