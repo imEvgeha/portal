@@ -8,7 +8,7 @@ const NexusToastNotification = ({toasts, removeToast}) => {
         if(toast.current) toast.current.show({
             severity: toastParam.icon || toastParam.type || toastParam.severity,
             summary: toastParam.title || toastParam.summary,
-            detail: toastParam.description || toastParam.description,
+            detail: toastParam.description || toastParam.detail,
             life: toasts.life || 3000
         });
     }

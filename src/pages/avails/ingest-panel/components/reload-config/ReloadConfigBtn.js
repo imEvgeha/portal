@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
-import {SUCCESS_ICON, WARNING_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {reloadConfigurationService} from '../../../availsService';
 import './ReloadConfigBtn.scss';
@@ -39,16 +38,16 @@ const ReloadConfigBtn = ({addToast}) => {
 
         res[0].status === 'fulfilled' && res[1].status === 'fulfilled'
             ? addToast({
-                  title: 'Reload Configuration Status',
-                  description: statusDesc(),
-                  icon: SUCCESS_ICON,
+                  summary: 'Reload Configuration Status',
+                  detail: statusDesc(),
+                  severity: 'success',
                   isAutoDismiss: true,
                   isWithOverlay: false,
               })
             : addToast({
-                  title: 'Reload Configuration Status',
-                  description: statusDesc(),
-                  icon: WARNING_ICON,
+                  summary: 'Reload Configuration Status',
+                  detail: statusDesc(),
+                  severity: 'warn',
                   isAutoDismiss: false,
                   isWithOverlay: false,
               });
