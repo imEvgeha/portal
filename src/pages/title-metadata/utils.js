@@ -379,13 +379,11 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
-    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'usBoxOffice', 'ratings', 'editorial', 'totalNumberOfEpisodes'];
-    const isTitleChanged = Object.keys(cleanValues).some(
-        item => {
-            if(unnecessaryValues.includes(item)) return false;
-            return !isEqual(initialValues?.[item], cleanValues?.[item])
-        }
-    );
+    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'ratings', 'editorial'];
+    const isTitleChanged = Object.keys(cleanValues).some(item => {
+        if (unnecessaryValues.includes(item)) return false;
+        return !isEqual(initialValues?.[item], cleanValues?.[item]);
+    });
 
     handleDirtyRatingsValues(values);
     handleDirtyEMETValues(initialValues, values);
@@ -436,7 +434,7 @@ const handleDirtyEMETValues = (initialValues, values) => {
                 }
                 return false;
             });
-        
+
         if (index !== null && index >= 0) {
             const cleanEditorial = cleanObject(editorial);
             const isChanged = Object.keys(cleanEditorial).some(
