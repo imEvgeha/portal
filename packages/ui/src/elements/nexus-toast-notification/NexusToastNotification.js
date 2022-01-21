@@ -1,21 +1,6 @@
-import React, {isValidElement, useRef} from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
-import Flag, {FlagGroup} from '@atlaskit/flag';
-import Tick from '@atlaskit/icon/glyph/check-circle';
-import Error from '@atlaskit/icon/glyph/error';
-import Info from '@atlaskit/icon/glyph/info';
-import Warning from '@atlaskit/icon/glyph/warning';
-import {colors} from '@atlaskit/theme';
 import { Toast } from 'primereact/toast';
-import {SUCCESS_ICON, WARNING_ICON, INFO_ICON, ERROR_ICON} from './constants';
-
-const icons = {
-    [INFO_ICON]: <Info label={`${INFO_ICON} icon`} primaryColor={colors.P300} />,
-    [SUCCESS_ICON]: <Tick label={`${SUCCESS_ICON} icon`} primaryColor={colors.G300} />,
-    [WARNING_ICON]: <Warning label={`${WARNING_ICON} icon`} primaryColor={colors.Y300} />,
-    [ERROR_ICON]: <Error label={`${ERROR_ICON} icon`} primaryColor={colors.R300} />,
-};
-
 
 const NexusToastNotification = ({toasts, removeToast}) => {
     const toast = useRef(null);
