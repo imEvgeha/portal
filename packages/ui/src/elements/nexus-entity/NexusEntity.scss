@@ -16,9 +16,21 @@
 
     .nexus-c-section-subheader {
         border-bottom: solid 2px black;
-
+        padding-bottom: 0;
+        margin-bottom: 16px;
         .nexus-c-heading {
             font-size: 21px;
+            font-weight: bold;
+            padding-left: 0;
+        }
+    }
+
+    .nexus-c-section-subsection {
+        border-bottom: solid 1px black;
+        padding-bottom: 0;
+        margin-bottom: 16px;
+        .nexus-c-heading {
+            font-size: 13px;
             font-weight: bold;
             padding-left: 0;
         }
@@ -27,32 +39,39 @@
     .nexus-c-section-default {
         .nexus-c-heading {
             font-weight: bold;
+            font-size: 13px;
             padding-left: 0;
         }
     }
 }
 
 .nexus-c-entity {
-    &.container-fluid {
-        padding-left: 16px;
-        padding-right: 16px;
-        border-radius: 8px;
-    }
+    .nexus-c-entity-panel {
+        &.container-fluid {
+            padding: 0 16px;
+            border-radius: 8px;
+        }
 
-    &.nexus-c-entity-active {
-        color: palette(black, 100);
-        background: palette(black, 5);
-    }
-
-    &.nexus-c-row-entity {
-        color: palette(black, 55);
-        cursor: pointer;
-        &:hover {
+        &.nexus-c-entity-active {
             color: palette(black, 100);
             background: palette(black, 5);
         }
 
+        &.nexus-c-row-entity {
+            color: palette(black, 55);
+            cursor: pointer;
+            &:hover {
+                color: palette(black, 100);
+                background: palette(black, 5);
+            }
+
+            @include headingStyles;
+        }
         @include headingStyles;
     }
-    @include headingStyles;
+
+    .nexus-c-entity-body {
+        background: palette(black, 2);
+        border-radius: 8px;
+    }
 }

@@ -27,12 +27,12 @@ const NexusDataPanel = ({header, data, itemTemplate, footer, loading, contentFoo
     return (
         <div className="nexus-c-data-panel h-100 d-flex flex-column">
             {header && (
-                <div className="row nexus-c-header mb-2">
+                <div className="row nexus-c-header">
                     <div className="col-12">{header}</div>
                 </div>
             )}
 
-            <div className={`row nexus-c-content ${loading ? '' : 'nexus-c-overflow'}`}>
+            <div className={`row nexus-c-content pb-1 ${loading ? '' : 'nexus-c-overflow'}`}>
                 <div className="col-12">
                     <BlockUI blocked={loading}>{renderItems()}</BlockUI>
                     {!!contentFooter && contentFooter}

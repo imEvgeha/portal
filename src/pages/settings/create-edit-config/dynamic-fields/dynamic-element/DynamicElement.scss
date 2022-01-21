@@ -1,10 +1,30 @@
-.nexus-c-panel-header {
-    cursor: pointer;
+.nexus-c-dynamic-element-wrapper {
+    .nexus-c-entity {
+        .nexus-c-entity-panel {
+            &.container-fluid {
+                padding: 0 0;
+            }
+        }
+    }
 
-    .nexus-c-panel__icon {
-        text-align: center;
+    .nexus-c-dynamic-element-entry {
+        .nexus-c-entity {
+            .nexus-c-entity-panel {
+                &.container-fluid {
+                    padding: 0 16px;
+                }
+            }
+        }
+    }
+
+    .nexus-c-panel-header {
         cursor: pointer;
-        width: 25px;
-        height: 20px;
+
+        .nexus-c-panel__icon {
+            text-align: center;
+            cursor: pointer;
+            width: 25px;
+            height: 20px;
+        }
     }
 }

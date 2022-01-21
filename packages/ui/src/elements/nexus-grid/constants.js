@@ -25,7 +25,6 @@ const DEFAULT_HOC_PROPS = [
     'selectValues',
 ];
 
-const NOT_FILTERABLE_COLUMNS = ['id'];
 const DEFAULT_FILTER_PARAMS = {
     filterOptions: ['equals'],
     suppressAndOrCondition: true,
@@ -96,7 +95,6 @@ export {
     MULTISELECT_SEARCHABLE_DATA_TYPES,
     MAX_BLOCKS_IN_CACHE,
     MAX_CONCURRENT_DATASOURCE_REQUEST,
-    NOT_FILTERABLE_COLUMNS,
     PAGINATION_PAGE_SIZE,
     PAGINATION_SIZE_STEP,
     ROW_BUFFER,

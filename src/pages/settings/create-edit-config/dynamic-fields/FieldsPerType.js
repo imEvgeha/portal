@@ -1,4 +1,6 @@
 import React from 'react';
+import FieldError from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-error/FieldError';
+import FieldLabel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-label/FieldLabel';
 import {Calendar} from 'primereact/calendar';
 import {Checkbox} from 'primereact/checkbox';
 import {InputText} from 'primereact/inputtext';
@@ -6,8 +8,6 @@ import {Controller} from 'react-hook-form';
 import ArrayElement from './array-element/ArrayElement';
 import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import DynamicElement from './dynamic-element/DynamicElement';
-import FieldError from './field-error/FieldError';
-import FieldLabel from './field-label/FieldLabel';
 
 export const constructFieldPerType = (elementSchema, form, value, className, customOnChange, cb) => {
     return (
@@ -26,18 +26,22 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
                         field && field.onChange(e);
                         customOnChange && customOnChange(field);
                     };
+                    const shouldShowLabel =
+                        !['checkbox', 'array'].includes(elementSchema.type) && !!elementSchema.label;
                     return (
                         <div className="row align-items-center">
-                            <div className="col-sm-12">
+                            {shouldShowLabel && (
+                                <div className="col-sm-4">
+                                    <FieldLabel
+                                        htmlFor={elementSchema.id}
+                                        label={elementSchema.label}
+                                        additionalLabel={elementSchema.type === 'timestamp' ? ' (UTC)' : ''}
+                                        isRequired={!!elementSchema.required}
+                                    />
+                                </div>
+                            )}
+                            <div className={shouldShowLabel ? 'col-sm-8' : 'col-sm-12'}>
                                 <div className="p-field">
-                                    {elementSchema.type !== 'checkbox' && (
-                                        <FieldLabel
-                                            htmlFor={elementSchema.id}
-                                            label={elementSchema.label}
-                                            additionalLabel={elementSchema.type === 'timestamp' ? ' (UTC)' : ''}
-                                            isRequired={!!elementSchema.required}
-                                        />
-                                    )}
                                     {getElement(elementSchema, field, value, form, onFormElementChanged, cb)}
                                     {elementSchema.type !== 'array' && <FieldError error={fieldState.error} />}
                                 </div>
@@ -53,12 +57,13 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
 const getElement = (elementSchema, field, value, form, onChange, cb) => {
     switch (elementSchema.type) {
         case 'text': {
+            const newField = {...field, ...(field.value === null && {value: undefined})};
             return (
                 <InputText
                     key={elementSchema.id}
                     id={elementSchema.id}
                     name={elementSchema.name}
-                    {...field}
+                    {...newField}
                     onKeyPress={e => {
                         e.key === 'Enter' && e.preventDefault();
                     }}

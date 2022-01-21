@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import IconActionEdit from '@vubiquity-nexus/portal-assets/icon-action-edit.svg';
+import NexusConfirmationDialog from '@vubiquity-nexus/portal-ui/lib/elements/nexus-confirmation-dialog/NexusConfirmationDialog';
 import NexusDataPanel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-data-panel/NexusDataPanel';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
@@ -12,8 +13,6 @@ import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {useDebounce} from '@vubiquity-nexus/portal-utils/lib/useDebounce';
 import {capitalize, cloneDeep} from 'lodash';
 import {Button} from 'primereact/button';
-import {confirmPopup} from 'primereact/confirmpopup';
-import {Divider} from 'primereact/divider';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
 import {getConfigApiValues} from '../../legacy/common/CommonConfigService';
@@ -33,6 +32,8 @@ const EndpointContainer = ({endpoint}) => {
     const [showEditConfigModal, setShowEditConfigModal] = useState(false);
     const [selectedConfig, setSelectedConfig] = useState(undefined);
     const [submitLoading, setSubmitLoading] = useState(false);
+    const [entryToDelete, setEntryToDelete] = useState(undefined);
+    const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
     const loadEndpointData = (pageNo, searchField, searchValue, pageSize = 20) => {
         setEndpointsLoading(true);
@@ -122,24 +123,23 @@ const EndpointContainer = ({endpoint}) => {
                         />
                     </div>
                 </div>
-                <div className="w-100 nexus-c-divider-wrapper">
-                    <Divider className="m-0" />
-                </div>
             </div>
         );
     };
 
-    const confirmDeletion = (event, entry) => {
-        confirmPopup({
-            target: event.currentTarget,
-            message: 'Do you want to delete this record?',
-            icon: 'pi pi-info-circle',
-            acceptClassName: 'p-button-outlined',
-            accept: () => removeConfig(entry),
-        });
+    useEffect(() => {
+        entryToDelete && setDeleteDialogVisible(true);
+    }, [entryToDelete]);
+
+    const confirmDeletion = entry => setEntryToDelete(entry);
+
+    const onCloseConfirmDialog = () => {
+        setDeleteDialogVisible(false);
+        setEntryToDelete(undefined);
     };
 
     const removeConfig = entry => {
+        onCloseConfirmDialog();
         configService
             .delete(endpoint?.urls?.['CRUD'], entry.id)
             .then(() => (searchTerm ? searchTermDebounce() : initValues()));
@@ -159,7 +159,7 @@ const EndpointContainer = ({endpoint}) => {
             }),
             new Action({
                 icon: ActionCrossCircle,
-                action: e => confirmDeletion(e, entry),
+                action: () => confirmDeletion(entry),
                 position: 6,
                 disabled: false,
                 buttonId: 'btnDeleteConfig',
@@ -173,9 +173,6 @@ const EndpointContainer = ({endpoint}) => {
                     type={NEXUS_ENTITY_TYPES.default}
                     actions={actions}
                 />
-                <div className="w-100 px-3">
-                    <Divider className="m-0" />
-                </div>
             </div>
         );
     };
@@ -193,7 +190,8 @@ const EndpointContainer = ({endpoint}) => {
             }, []);
         return (
             (Array.isArray(result) && result.join(endpoint.displayValueDelimiter || ' ,')) ||
-            (noEmpty && `[id = ${item.id}]`)
+            (noEmpty && `[id = ${item.id}]`) ||
+            ''
         );
     };
 
@@ -282,12 +280,24 @@ const EndpointContainer = ({endpoint}) => {
                 <CreateEditConfig
                     visible={showEditConfigModal}
                     schema={endpoint?.uiSchema}
-                    label={getLabel(endpoint, selectedConfig, false) || ''}
+                    label={selectedConfig ? getLabel(selectedConfig, false) : ''}
                     displayName={endpoint?.displayName}
                     values={cloneDeep(selectedConfig)}
                     onSubmit={editRecord}
                     onHide={onHideCreateEditConfigModal}
                     submitLoading={submitLoading}
+                />
+            )}
+
+            {deleteDialogVisible && (
+                <NexusConfirmationDialog
+                    visible={deleteDialogVisible}
+                    header="Delete"
+                    message={`Would you like to delete ${entryToDelete ? getLabel(entryToDelete) : ''}?`}
+                    accept={() => removeConfig(entryToDelete)}
+                    reject={onCloseConfirmDialog}
+                    rejectLabel="Cancel"
+                    acceptLabel="Delete"
                 />
             )}
         </div>

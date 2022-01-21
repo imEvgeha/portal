@@ -60,7 +60,7 @@ describe('DynamicElement', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should render a Dropdown', () => {
-        expect(wrapper.find('Panel')).toHaveLength(1);
+    it('should render a NexusEntity Component', () => {
+        expect(wrapper.find('NexusEntity')).toHaveLength(2);
     });
 });
