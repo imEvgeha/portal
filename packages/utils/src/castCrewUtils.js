@@ -27,7 +27,6 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
     const configCastList = [];
     if (isMultiCastType) {
         const param = isConfig ? 'personTypes' : 'personType';
-        console.log(originalConfigCastList, 'originalConfigCastList')
         originalConfigCastList &&
             originalConfigCastList
                 .filter(f => {
