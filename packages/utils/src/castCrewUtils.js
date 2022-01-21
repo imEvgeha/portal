@@ -19,12 +19,15 @@ const allowedEditorialCastTypes = [
     ACTOR.toLowerCase(),
     RECORDING_ARTIST.toLowerCase(),
     VOICE_TALENT.toLowerCase(),
+    FEATURE_ARTIST.toLowerCase(),
+    DISPLAY_ARTIST.toLowerCase(),
 ];
 
 export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCastType = false) => {
     const configCastList = [];
     if (isMultiCastType) {
         const param = isConfig ? 'personTypes' : 'personType';
+        console.log(originalConfigCastList, 'originalConfigCastList')
         originalConfigCastList &&
             originalConfigCastList
                 .filter(f => {
@@ -64,7 +67,9 @@ export const isCastPersonType = (item, isConfig) => {
         item[param] &&
         (item[param].toLowerCase() === ACTOR.toLowerCase() ||
             item[param].toLowerCase() === ANIMATED_CHARACTER.toLowerCase() ||
-            item[param].toLowerCase() === VOICE_TALENT.toLowerCase())
+            item[param].toLowerCase() === VOICE_TALENT.toLowerCase() ||
+            item[param].toLowerCase() === FEATURE_ARTIST.toLowerCase() ||
+            item[param].toLowerCase() === DISPLAY_ARTIST.toLowerCase())
     );
 };
 
