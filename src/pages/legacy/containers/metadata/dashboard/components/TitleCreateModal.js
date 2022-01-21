@@ -177,7 +177,6 @@ class TitleCreate extends React.Component {
                 this.setState({isCreatingTitle: false});
                 this.cleanFields();
                 this.toggle();
-                console.log('Created')
                 this.props.addToast({
                     summary: SUCCESS_TITLE,
                     severity: 'success',
