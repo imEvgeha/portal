@@ -140,9 +140,18 @@ const EndpointContainer = ({endpoint}) => {
 
     const removeConfig = entry => {
         onCloseConfirmDialog();
-        configService
-            .delete(endpoint?.urls?.['CRUD'], entry.id)
-            .then(() => (searchTerm ? searchTermDebounce() : initValues()));
+
+        const successToast = {
+            title: 'DELETED',
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            description: `${capitalize(entry.name)} config for ${endpoint.displayName} has been successfully deleted!`,
+        };
+
+        configService.delete(endpoint?.urls?.['CRUD'], entry.id).then(() => {
+            searchTerm ? searchTermDebounce() : initValues();
+            dispatch(addToast(successToast));
+        });
     };
 
     const endpointListItemTemplate = entry => {
