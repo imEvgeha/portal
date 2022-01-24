@@ -4,7 +4,6 @@ import Button from '@atlaskit/button';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {
-    ERROR_ICON,
     ERROR_TITLE,
     LICENSOR_ERROR,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
@@ -51,10 +50,10 @@ const Licensors = ({selectValues, data, isEdit, onChange}) => {
 
         if (found) {
             const errorToast = {
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
+                summary: ERROR_TITLE,
+                severity: 'error',
                 isAutoDismiss: false,
-                description: LICENSOR_ERROR,
+                detail: LICENSOR_ERROR,
             };
             store.dispatch(addToast(errorToast));
         } else {

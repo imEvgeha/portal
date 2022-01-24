@@ -1,5 +1,5 @@
 import React from 'react';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {
     ModalFooter,
     ModalHeader,
@@ -156,10 +156,10 @@ class TitleCreate extends React.Component {
                         .registerTitle(response.id, isSyncVZ, isSyncMovida)
                         .then(response => {
                             this.props.addToast({
-                                title: SUCCESS_TITLE,
-                                icon: SUCCESS_ICON,
+                                summary: SUCCESS_TITLE,
+                                severity: 'success',
                                 isAutoDismiss: true,
-                                description: titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE,
+                                detail: titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE,
                             });
                         })
                         .catch(() => {
@@ -178,10 +178,10 @@ class TitleCreate extends React.Component {
                 this.cleanFields();
                 this.toggle();
                 this.props.addToast({
-                    title: SUCCESS_TITLE,
-                    icon: SUCCESS_ICON,
+                    summary: SUCCESS_TITLE,
+                    severity: 'success',
                     isAutoDismiss: true,
-                    description: titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
+                    detail: titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
                     actions: [{content: 'View title', onClick: () => onViewTitleClick(response)}],
                 });
             })
@@ -629,10 +629,12 @@ TitleCreate.propTypes = {
     display: PropTypes.bool.isRequired,
     className: PropTypes.string,
     tenantCode: PropTypes.string,
+    addToast: PropTypes.func,
 };
 
 TitleCreate.defaultProps = {
     tenantCode: undefined,
+    addToast: () => null,
 };
 
 export default withToasts(TitleCreate);

@@ -310,9 +310,9 @@ class RightCreate extends React.Component {
                 this.right = {};
                 this.setState({});
                 this.props.addToast({
-                    title: SUCCESS_TITLE,
-                    description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-                    icon: SUCCESS_ICON,
+                    summary: SUCCESS_TITLE,
+                    detail: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+                    severity: 'success',
                     isAutoDismiss: true,
                     isWithOverlay: false,
                 });

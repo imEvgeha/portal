@@ -7,8 +7,6 @@ import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-m
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
-    WARNING_ICON,
-    SUCCESS_ICON,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
@@ -201,11 +199,11 @@ export const BulkMatching = ({
 
     const dispatchSuccessToast = count => {
         addToast({
-            title: SUCCESS_TITLE,
-            description: isBonusRight
+            summary: SUCCESS_TITLE,
+            detail: isBonusRight
                 ? TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE(count, selectedTableData.length - count)
                 : TITLE_BULK_MATCH_SUCCESS_MESSAGE(affectedTableData.length),
-            icon: SUCCESS_ICON,
+            severity: 'success',
             isAutoDismiss: true,
             isWithOverlay: false,
         });
@@ -213,9 +211,9 @@ export const BulkMatching = ({
 
     const dispatchWarningToast = () => {
         addToast({
-            title: WARNING_TITLE,
-            description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-            icon: WARNING_ICON,
+            summary: WARNING_TITLE,
+            detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+            severity: 'warn',
             actions: [
                 {
                     content: 'Cancel',
