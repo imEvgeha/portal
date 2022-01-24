@@ -410,7 +410,7 @@ const handleDirtyRatingsValues = values => {
 const cleanObject = obj => {
     return JSON.parse(
         JSON.stringify(obj, (key, value) => {
-            return value === null ? undefined : value;
+            return value === undefined ? undefined : value;
         })
     );
 };
