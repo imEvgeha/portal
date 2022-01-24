@@ -12,6 +12,7 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
+import { Button as PrimeReactButton } from 'primereact/button';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
@@ -214,22 +215,29 @@ export const BulkMatching = ({
             summary: WARNING_TITLE,
             detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
             severity: 'warn',
-            actions: [
-                {
-                    content: 'Cancel',
-                    onClick: () => {
-                        removeToast();
-                        disableLoadingState();
-                    },
-                },
-                {
-                    content: 'Ok',
-                    onClick: () => {
-                        removeToast();
-                        mergeTitles(matchList);
-                    },
-                },
-            ],
+            content: (
+                <div className="flex flex-column" style={{flex: '1'}}>
+                    <div className="text-center">
+                        <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}} />
+                        <h4>{WARNING_TITLE}</h4>
+                        <p>{TITLE_MATCH_AND_CREATE_WARNING_MESSAGE}</p>
+                    </div>
+                    <div className="grid p-fluid">
+                        <div className="col-6">
+                            <PrimeReactButton onClick={() => {
+                                removeToast();
+                                mergeTitles(matchList);
+                            }} type="button" label="Ok" className="p-button-success" />
+                        </div>
+                        <div className="col-6">
+                            <PrimeReactButton onClick={() => {
+                                removeToast();
+                                disableLoadingState();
+                            }} type="button" label="Cancel" className="p-button-secondary" />
+                        </div>
+                    </div>
+                </div>
+            ),
             isAutoDismiss: false,
             isWithOverlay: true,
         });
