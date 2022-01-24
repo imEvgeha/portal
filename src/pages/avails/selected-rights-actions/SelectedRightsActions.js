@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
@@ -195,10 +194,10 @@ export const SelectedRightsActions = ({
 
                 // Show success toast
                 addToast({
-                    title: BULK_UNMATCH_SUCCESS_TOAST,
-                    description: `You have successfully unmatched ${unmatchedRights.length} right(s).
+                    summary: BULK_UNMATCH_SUCCESS_TOAST,
+                    detail: `You have successfully unmatched ${unmatchedRights.length} right(s).
                          Please validate title fields.`,
-                    icon: SUCCESS_ICON,
+                    severity: 'success',
                     isAutoDismiss: true,
                 });
             });

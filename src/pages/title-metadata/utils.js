@@ -1,7 +1,5 @@
 import {
-    ERROR_ICON,
     ERROR_TITLE,
-    SUCCESS_ICON,
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
@@ -219,19 +217,19 @@ export const updateTerritoryMetadata = async (values, titleId) => {
             const isMgm = isMgmTitle(titleId);
             store.dispatch(getTerritoryMetadata({id: titleId, isMgm}));
             const successToast = {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
+                summary: SUCCESS_TITLE,
+                severity: 'success',
                 isAutoDismiss: true,
-                description: UPDATE_TERRITORY_METADATA_SUCCESS,
+                detail: UPDATE_TERRITORY_METADATA_SUCCESS,
             };
             store.dispatch(addToast(successToast));
         }
     } catch (error) {
         const errorToast = {
-            title: ERROR_TITLE,
-            icon: ERROR_ICON,
+            summary: ERROR_TITLE,
+            severity: 'error',
             isAutoDismiss: false,
-            description: UPDATE_TERRITORY_METADATA_ERROR,
+            detail: UPDATE_TERRITORY_METADATA_ERROR,
         };
         store.dispatch(addToast(errorToast));
     }
@@ -311,10 +309,10 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
 export const updateEditorialMetadata = async (values, titleId) => {
     let response = [];
     const errorToast = {
-        title: ERROR_TITLE,
-        icon: ERROR_ICON,
+        summary: ERROR_TITLE,
+        severity: 'error',
         isAutoDismiss: false,
-        description: UPDATE_EDITORIAL_METADATA_ERROR,
+        detail: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
     const {catalogOwner: tenantCode} = values;
@@ -337,10 +335,10 @@ export const updateEditorialMetadata = async (values, titleId) => {
                 const isMgm = isMgmTitle(titleId);
                 store.dispatch(getEditorialMetadata({id: titleId, isMgm}));
                 toast = {
-                    title: SUCCESS_TITLE,
-                    icon: SUCCESS_ICON,
+                    summary: SUCCESS_TITLE,
+                    severity: 'success',
                     isAutoDismiss: true,
-                    description: UPDATE_EDITORIAL_METADATA_SUCCESS,
+                    detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
                 };
             }
             store.dispatch(addToast(toast));
@@ -359,19 +357,19 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
     if (response.error) {
         store.dispatch(
             addToast({
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
+                summary: ERROR_TITLE,
+                severity: 'error',
                 isAutoDismiss: false,
-                description: response.error,
+                detail: response.error,
             })
         );
     } else {
         store.dispatch(
             addToast({
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
+                summary: SUCCESS_TITLE,
+                severity: 'success',
                 isAutoDismiss: true,
-                description: PROPAGATE_SEASON_PERSONS_SUCCESS,
+                detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
             })
         );
     }

@@ -5,7 +5,6 @@ import {downloadFile, getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Comm
 import { debounce } from 'lodash';
 import { store } from '../../../../../../../src';
 import { downloadUploadedEMETLog } from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
-import { SUCCESS_ICON } from '../../../../../lib/elements/nexus-toast-notification/constants';
 import { addToast } from '../../../../../lib/toast/toastActions';
 import {getIcon} from '../value-formatter/createValueFormatter';
 import './IconCellRenderer.scss';
@@ -26,10 +25,10 @@ const IconCellRenderer = params => {
     const idToFileDownloading = data.reportId;
 
     const successToast = {
-        title: 'Success',
-        icon: SUCCESS_ICON,
+        summary: 'Success',
+        severity: 'success',
         isAutoDismiss: true,
-        description: 'File downloading started',
+        detail: 'File downloading started',
     };
 
     const handleClick = useCallback(

@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import {ERROR_ICON, ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
@@ -43,8 +43,8 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
         title: 'Unexpected error occurred. Please try again later',
     };
     const defaultErrorToast = {
-        title: ERROR_TITLE,
-        icon: ERROR_ICON,
+        summary: ERROR_TITLE,
+        severity: 'error',
         isAutoDismiss: false,
     };
 
@@ -64,9 +64,9 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
                   ...errorToast,
               }
             : {
-                  title: ERROR_MODAL.title,
-                  description: description || message || data.message || JSON.stringify(data),
-                  icon: ERROR_ICON,
+                  summary: ERROR_MODAL.title,
+                  detail: description || message || data.message || JSON.stringify(data),
+                  severity: 'error',
                   actions: ERROR_MODAL.codes.includes(status)
                       ? [{content: 'OK', onClick: () => store.dispatch(removeToast())}]
                       : [],
