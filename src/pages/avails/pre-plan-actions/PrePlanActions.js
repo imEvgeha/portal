@@ -4,9 +4,7 @@ import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {
-    SUCCESS_ICON,
     SUCCESS_TITLE,
-    WARNING_ICON,
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
@@ -86,9 +84,9 @@ export const PrePlanActions = ({
         });
         if (!selectedList) {
             addToast({
-                title: WARNING_TITLE,
-                description: NO_TERRITORIES_SELECTED,
-                icon: WARNING_ICON,
+                summary: WARNING_TITLE,
+                detail: NO_TERRITORIES_SELECTED,
+                severity: 'warn',
                 isAutoDismiss: false,
                 isWithOverlay: false,
             });
@@ -203,9 +201,9 @@ export const PrePlanActions = ({
 
     const dispatchSuccessToast = noOfItems => {
         addToast({
-            title: SUCCESS_TITLE,
-            description: getSuccessToastMsg(noOfItems),
-            icon: SUCCESS_ICON,
+            summary: SUCCESS_TITLE,
+            detail: getSuccessToastMsg(noOfItems),
+            severity: 'success',
             isAutoDismiss: true,
             isWithOverlay: false,
         });

@@ -1,8 +1,3 @@
-import {
-    ERROR_ICON,
-    WARNING_ICON,
-    SUCCESS_ICON,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {prepareSortMatrixParamTitles, encodedSerialize, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
@@ -87,19 +82,19 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
         if (failed.length) {
             const message = failed.map(e => e.description).join(' ');
             const errorToast = {
-                title: 'Regenerating Editorial Metadata Failed',
-                icon: WARNING_ICON,
+                summary: 'Regenerating Editorial Metadata Failed',
+                severity: 'warn',
                 isAutoDismiss: false,
-                description: message,
+                detail: message,
             };
             store.dispatch(addToast(errorToast));
             return false;
         }
         const successToast = {
-            title: 'Success',
-            icon: SUCCESS_ICON,
+            summary: 'Success',
+            severity: 'success',
             isAutoDismiss: true,
-            description: 'Editorial Metadata Successfully Regenerated!',
+            detail: 'Editorial Metadata Successfully Regenerated!',
         };
         store.dispatch(addToast(successToast));
         return true;
@@ -115,10 +110,10 @@ export const unmergeTitle = async id => {
             response.statusCodeValue === internalErrorCode || response.statusCodeValue === authorizationErrorCode;
         if (unmergeFailed) {
             const errorToast = {
-                title: 'Unmerge not available',
-                icon: ERROR_ICON,
+                summary: 'Unmerge not available',
+                severity: 'error',
                 isAutoDismiss: false,
-                description: response.body.description,
+                detail: response.body.description,
             };
             store.dispatch(addToast(errorToast));
             return false;
@@ -161,7 +156,7 @@ export const titleService = {
             !(Object.keys(searchCriteria).length === 1 && get(searchCriteria, 'tenantCode'));
         const partialContentTypeSearch = searchCriteria.contentType
             ? CONTENT_TYPE.find(el => el.toLowerCase().includes(searchCriteria.contentType.toLowerCase()))
-            : '';
+            : 'init';
 
         // api only supports searching by single contentType value, and it has to be exact match otherwise it throws error
         if (!partialContentTypeSearch) {
@@ -190,7 +185,7 @@ export const titleService = {
         }${prepareSortMatrixParamTitles(sortedParams)}`;
 
         const params = encodedSerialize({...queryParams, page, size});
-        return nexusFetch(url, {params});
+        return partialContentTypeSearch && nexusFetch(url, {params});
     },
     addMsvAssociationIds: (id, licensor, licensee) => {
         const url = `${config.get('gateway.titleUrl')}${config.get(

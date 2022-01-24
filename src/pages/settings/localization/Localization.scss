@@ -1,0 +1,15 @@
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+
+.nexus-c-localization-panel {
+    .nexus-c-localization-content {
+        padding: 0 16px;
+
+        .nexus-c-locale-wrapper {
+            border-top: 1px solid palette(black, 10);
+        }
+
+        .nexus-c-locale-preview-wrapper {
+            font-weight: bold;
+        }
+    }
+}

@@ -15,17 +15,6 @@ export const arrayElementButtons = (index, fieldsLength, onAdd, onRemove, should
                     }}
                 />
             )}
-            {index === fieldsLength - 1 && (
-                <Button
-                    className="p-button-text"
-                    icon="pi pi-plus"
-                    onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        onAdd();
-                    }}
-                />
-            )}
         </div>
     );
 };

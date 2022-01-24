@@ -8,6 +8,8 @@ export const PRODUCER = 'Producer';
 export const ANIMATED_CHARACTER = 'Animated Character';
 export const RECORDING_ARTIST = 'Recording Artist';
 export const VOICE_TALENT = 'Voice Talent';
+export const FEATURE_ARTIST = 'Feature Artist';
+export const DISPLAY_ARTIST = 'Display Artist';
 
 export const PERSONS_PER_REQUEST = 1000;
 
@@ -17,6 +19,8 @@ const allowedEditorialCastTypes = [
     ACTOR.toLowerCase(),
     RECORDING_ARTIST.toLowerCase(),
     VOICE_TALENT.toLowerCase(),
+    FEATURE_ARTIST.toLowerCase(),
+    DISPLAY_ARTIST.toLowerCase(),
 ];
 
 export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCastType = false) => {
@@ -62,7 +66,9 @@ export const isCastPersonType = (item, isConfig) => {
         item[param] &&
         (item[param].toLowerCase() === ACTOR.toLowerCase() ||
             item[param].toLowerCase() === ANIMATED_CHARACTER.toLowerCase() ||
-            item[param].toLowerCase() === VOICE_TALENT.toLowerCase())
+            item[param].toLowerCase() === VOICE_TALENT.toLowerCase() ||
+            item[param].toLowerCase() === FEATURE_ARTIST.toLowerCase() ||
+            item[param].toLowerCase() === DISPLAY_ARTIST.toLowerCase())
     );
 };
 
@@ -150,6 +156,10 @@ export const getFormatTypeName = personType => {
                 return 'Recording Artist:';
             case VOICE_TALENT.toLowerCase():
                 return 'Voice Talent:';
+            case FEATURE_ARTIST.toLowerCase():
+                return 'Feature Artist:';
+            case DISPLAY_ARTIST.toLowerCase():
+                return 'Display Artist:';
             default:
                 return 'Unknown';
         }

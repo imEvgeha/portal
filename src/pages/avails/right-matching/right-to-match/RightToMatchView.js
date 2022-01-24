@@ -8,7 +8,7 @@ import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/n
 import {defineActionButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
-import {WARNING_TITLE, WARNING_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
@@ -116,9 +116,9 @@ const RightToMatchView = ({
 
     const onUpdateRightClick = () => {
         addToast({
-            title: WARNING_TITLE,
-            description: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
-            icon: WARNING_ICON,
+            summary: WARNING_TITLE,
+            detail: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
+            severity: 'warn',
             actions: [
                 {content: 'Cancel', onClick: () => removeToast()},
                 {content: 'OK', onClick: onUpdateRight},

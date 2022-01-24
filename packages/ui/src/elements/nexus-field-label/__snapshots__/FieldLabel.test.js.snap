@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FieldLabel should match snapshot 1`] = `
+<div
+  className="nexus-c-field-label"
+>
+  <label
+    htmlFor="elementSchema.id"
+  >
+    ELEMENTSCHEMA.LABEL
+    <FieldRequired
+      required={true}
+    />
+  </label>
+</div>
+`;

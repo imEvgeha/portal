@@ -26,14 +26,15 @@ const CastCrew = ({
     isEditable,
     ...props
 }) => {
-    const [personsWithLocalization, setPersonsWithLocalization] = useState(persons || []);
-    const [cast, setCast] = useState(
-        persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
-    );
+    const [personsWithLocalization, setPersonsWithLocalization] = useState([]);
+    const [cast, setCast] = useState([]);
+    const [crew, setCrew] = useState([]);
 
-    const [crew, setCrew] = useState(
-        persons.filter(person => CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder)
-    );
+    useEffect(() => {
+        setPersonsWithLocalization(persons || []);
+        setCast(persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder));
+        setCrew(persons.filter(person => CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder));
+    }, [persons])
 
     useEffect(() => {
         resetPersons();

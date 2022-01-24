@@ -58,10 +58,6 @@ export function* loadTitle({payload}) {
     });
 
     try {
-        yield put({
-            type: actionTypes.CLEAR_TITLE,
-        });
-
         const response = yield call(getTitleById, {id: payload.id, isMgm: payload.isMgm});
         const updatedResponse = yield call(loadParentTitle, response);
         yield put({

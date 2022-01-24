@@ -363,6 +363,7 @@ export const jobStatus = {
     SUCCESS: 'COMPLETED',
     ERROR: 'ERRORED',
     PARTIAL: 'Partially Completed',
+    IN_PROGRESS: 'IN_PROGRESS',
 };
 export const TASK_ACTIONS_ASSIGN = 'Assign';
 export const TASK_ACTIONS_UNASSIGN = 'Un-Assign';
