@@ -13,7 +13,7 @@
         "kongUrl": "https://vuapi.qa.vubiquity.com/vubiquity",
         "mediaImageUrl": "https://mediaimage.qa.vubiquity.com",
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
-        "mediaStorageUrl": "https://mediastorage.qa.vubiquity.com/media-storage/v1",
+        "mediaStorageUrl": "https://vuapi.qa.vubiquity.com/vubiquity/mediastorage/media-storage/v1",
         "service": {
             "avails": "/avails-api/v1",
             "availsInjest": "/avails-ingest/v1",
