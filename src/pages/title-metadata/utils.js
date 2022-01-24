@@ -1,7 +1,4 @@
-import {
-    ERROR_TITLE,
-    SUCCESS_TITLE,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ERROR_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {cloneDeep, get, isObjectLike, isEqual} from 'lodash';
 import {store} from '../../index';
@@ -410,7 +407,7 @@ const handleDirtyRatingsValues = values => {
 const cleanObject = obj => {
     return JSON.parse(
         JSON.stringify(obj, (key, value) => {
-            return value === undefined ? undefined : value;
+            return value;
         })
     );
 };
