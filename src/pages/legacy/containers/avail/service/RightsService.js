@@ -159,7 +159,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                     (queryParamName === key || javaVariableName === key) && dataType !== 'icon'
             );
 
-            let keyValue = (map && map.queryParamName) || key;
+            let keyValue = map?.queryParamName || key;
             if (key === 'selected' || key === 'withdrawn') {
                 keyValue = `${key}FlattenList`;
                 value = value.split(',').map(v => `${v}true`.trim());
@@ -171,11 +171,11 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 if (typeof value === 'string') value = value.split(', ');
             }
 
-            if (map && map.searchDataType === 'boolean') {
+            if (map?.searchDataType === 'boolean') {
                 value = JSON.parse(value);
             }
 
-            if (map && map.searchDataType === 'string') {
+            if (map?.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
                 } else if (!map.nonMatchingValue) {
@@ -183,7 +183,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 }
             }
 
-            if (map && map.javaVariableName === 'id') {
+            if (map?.javaVariableName === 'id') {
                 value = value.split(',');
                 params[`${keyValue}sList`] = value;
             } else {
