@@ -158,7 +158,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 ({queryParamName, javaVariableName, dataType}) =>
                     (queryParamName === key || javaVariableName === key) && dataType !== 'icon'
             );
-            
+
             let keyValue = (map && map.queryParamName) || key;
             if (key === 'selected' || key === 'withdrawn') {
                 keyValue = `${key}FlattenList`;
@@ -182,7 +182,13 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                     keyValue += 'Match';
                 }
             }
-            params[keyValue] = value;
+
+            if (map && map.javaVariableName === 'id') {
+                value = value.split(',');
+                params[`${keyValue}sList`] = value;
+            } else {
+                params[keyValue] = value;
+            }
         }
     }
     return params;

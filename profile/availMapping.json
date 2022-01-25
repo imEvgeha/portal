@@ -9,7 +9,9 @@
             "enableSearch": true,
             "queryParamName": "id",
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "nonMatchingValue": true,
+            "readOnlyInDetails": true
         },
         {
             "javaVariableName": "rightStatus",
