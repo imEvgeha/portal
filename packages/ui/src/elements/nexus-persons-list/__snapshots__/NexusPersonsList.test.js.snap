@@ -35,11 +35,13 @@ exports[`NexusPersonsList should match snapshot 1`] = `
   <NexusPersonsList
     castCrewConfig={Object {}}
     emetLanguage="en"
+    forMetadata={true}
     getValues={[Function]}
     hasCharacter={true}
     isEdit={false}
     isEditable={true}
     isVerticalLayout={false}
+    path={null}
     personsList={
       Array [
         Object {
