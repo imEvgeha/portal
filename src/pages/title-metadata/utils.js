@@ -1,9 +1,4 @@
-import {
-    ERROR_ICON,
-    ERROR_TITLE,
-    SUCCESS_ICON,
-    SUCCESS_TITLE,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ERROR_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {cloneDeep, get, isObjectLike, isEqual} from 'lodash';
 import {store} from '../../index';
@@ -219,19 +214,19 @@ export const updateTerritoryMetadata = async (values, titleId) => {
             const isMgm = isMgmTitle(titleId);
             store.dispatch(getTerritoryMetadata({id: titleId, isMgm}));
             const successToast = {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
+                summary: SUCCESS_TITLE,
+                severity: 'success',
                 isAutoDismiss: true,
-                description: UPDATE_TERRITORY_METADATA_SUCCESS,
+                detail: UPDATE_TERRITORY_METADATA_SUCCESS,
             };
             store.dispatch(addToast(successToast));
         }
     } catch (error) {
         const errorToast = {
-            title: ERROR_TITLE,
-            icon: ERROR_ICON,
+            summary: ERROR_TITLE,
+            severity: 'error',
             isAutoDismiss: false,
-            description: UPDATE_TERRITORY_METADATA_ERROR,
+            detail: UPDATE_TERRITORY_METADATA_ERROR,
         };
         store.dispatch(addToast(errorToast));
     }
@@ -311,10 +306,10 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
 export const updateEditorialMetadata = async (values, titleId) => {
     let response = [];
     const errorToast = {
-        title: ERROR_TITLE,
-        icon: ERROR_ICON,
+        summary: ERROR_TITLE,
+        severity: 'error',
         isAutoDismiss: false,
-        description: UPDATE_EDITORIAL_METADATA_ERROR,
+        detail: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
     const {catalogOwner: tenantCode} = values;
@@ -337,10 +332,10 @@ export const updateEditorialMetadata = async (values, titleId) => {
                 const isMgm = isMgmTitle(titleId);
                 store.dispatch(getEditorialMetadata({id: titleId, isMgm}));
                 toast = {
-                    title: SUCCESS_TITLE,
-                    icon: SUCCESS_ICON,
+                    summary: SUCCESS_TITLE,
+                    severity: 'success',
                     isAutoDismiss: true,
-                    description: UPDATE_EDITORIAL_METADATA_SUCCESS,
+                    detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
                 };
             }
             store.dispatch(addToast(toast));
@@ -359,19 +354,19 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
     if (response.error) {
         store.dispatch(
             addToast({
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
+                summary: ERROR_TITLE,
+                severity: 'error',
                 isAutoDismiss: false,
-                description: response.error,
+                detail: response.error,
             })
         );
     } else {
         store.dispatch(
             addToast({
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
+                summary: SUCCESS_TITLE,
+                severity: 'success',
                 isAutoDismiss: true,
-                description: PROPAGATE_SEASON_PERSONS_SUCCESS,
+                detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
             })
         );
     }
@@ -379,13 +374,11 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
-    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'usBoxOffice', 'ratings', 'editorial', 'totalNumberOfEpisodes'];
-    const isTitleChanged = Object.keys(cleanValues).some(
-        item => {
-            if(unnecessaryValues.includes(item)) return false;
-            return !isEqual(initialValues?.[item], cleanValues?.[item])
-        }
-    );
+    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'ratings', 'editorial'];
+    const isTitleChanged = Object.keys(cleanValues).some(item => {
+        if (unnecessaryValues.includes(item)) return false;
+        return !isEqual(initialValues?.[item], cleanValues?.[item]);
+    });
 
     handleDirtyRatingsValues(values);
     handleDirtyEMETValues(initialValues, values);
@@ -414,7 +407,7 @@ const handleDirtyRatingsValues = values => {
 const cleanObject = obj => {
     return JSON.parse(
         JSON.stringify(obj, (key, value) => {
-            return value === null ? undefined : value;
+            return value;
         })
     );
 };
@@ -436,7 +429,7 @@ const handleDirtyEMETValues = (initialValues, values) => {
                 }
                 return false;
             });
-        
+
         if (index !== null && index >= 0) {
             const cleanEditorial = cleanObject(editorial);
             const isChanged = Object.keys(cleanEditorial).some(
@@ -453,6 +446,9 @@ const handleDirtyEMETValues = (initialValues, values) => {
         values.editorialMetadata.forEach((emet, i) => {
             if (!emet.isDeleted && i !== index && !isEqual(emet, initialValues.editorialMetadata[i])) {
                 values.editorialMetadata[i] = {...emet, isUpdated: true};
+            }
+            if (emet.isDeleted) {
+                values.editorialMetadata[i] = {...emet, metadataStatus: "deleted", isUpdated: true};
             }
         });
     }

@@ -212,7 +212,10 @@ $element-margin-bottom: 18px;
     .p-dialog-content {
         padding: 16px 32px 32px 32px;
         .p-dialog-subheader {
+            font-size: 16px;
+            font-weight: bold;
             min-height: 48px;
+            color: palette(black, 100);
         }
     }
 

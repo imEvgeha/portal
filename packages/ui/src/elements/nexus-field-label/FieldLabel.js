@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {toUpper} from 'lodash';
-import FieldRequired from '../field-required/FieldRequired';
+import FieldRequired from '../nexus-field-required/FieldRequired';
 
 const FieldLabel = ({htmlFor, label, additionalLabel, isRequired}) => {
     return label ? (
