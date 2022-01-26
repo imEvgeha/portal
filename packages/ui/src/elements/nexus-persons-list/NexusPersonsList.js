@@ -180,7 +180,7 @@ const NexusPersonsList = ({
 
             const {editorial} = getValues();
 
-            if (title) {
+            if (checkIfEmetIsEditorial(emet, editorial)) {
                 setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
                 if (isVerticalLayout) {
                     return updatedEmet;
@@ -205,7 +205,7 @@ const NexusPersonsList = ({
 
             const {editorial} = getValues();
 
-            if (title) {
+            if (checkIfEmetIsEditorial(emet, editorial)) {
                 setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
                 if (isVerticalLayout) {
                     return updatedEmet;
