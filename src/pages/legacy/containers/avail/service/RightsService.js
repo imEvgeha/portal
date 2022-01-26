@@ -168,7 +168,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 // change key - add List
                 keyValue = `${keyValue}List`;
                 //  Convert Comma Separated String into an Array
-                if (typeof value === 'string') value = value.split(', ');
+                if (typeof value === 'string') value = value.split(',');
             }
 
             if (map?.searchDataType === 'boolean') {
@@ -182,13 +182,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                     keyValue += 'Match';
                 }
             }
-
-            if (map?.javaVariableName === 'id') {
-                value = value.split(',');
-                params[`${keyValue}sList`] = value;
-            } else {
-                params[keyValue] = value;
-            }
+            params[keyValue] = value;
         }
     }
     return params;
