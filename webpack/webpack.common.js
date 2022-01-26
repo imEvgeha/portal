@@ -34,11 +34,24 @@ module.exports = envKeys => ({
                     },
                 ],
             },
-            {test: /\.(woff|woff2|eot|ttf)$/, loader: 'url-loader?limit=100000'},
+            {
+                test: /\.(woff|woff2|eot|ttf)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 100000,
+                        },
+                    },
+                ],
+            },
         ],
     },
     resolve: {
         extensions: ['.js', '.jsx', '.json'],
+        fallback: {
+            stream: require.resolve('stream-browserify'),
+        },
         alias: {
             'redux-persist-transform-filter': path.resolve(
                 __dirname,
