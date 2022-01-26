@@ -158,8 +158,8 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 ({queryParamName, javaVariableName, dataType}) =>
                     (queryParamName === key || javaVariableName === key) && dataType !== 'icon'
             );
-            
-            let keyValue = (map && map.queryParamName) || key;
+
+            let keyValue = map?.queryParamName || key;
             if (key === 'selected' || key === 'withdrawn') {
                 keyValue = `${key}FlattenList`;
                 value = value.split(',').map(v => `${v}true`.trim());
@@ -168,14 +168,14 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 // change key - add List
                 keyValue = `${keyValue}List`;
                 //  Convert Comma Separated String into an Array
-                if (typeof value === 'string') value = value.split(', ');
+                if (typeof value === 'string') value = value.split(',');
             }
 
-            if (map && map.searchDataType === 'boolean') {
+            if (map?.searchDataType === 'boolean') {
                 value = JSON.parse(value);
             }
 
-            if (map && map.searchDataType === 'string') {
+            if (map?.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
                 } else if (!map.nonMatchingValue) {
