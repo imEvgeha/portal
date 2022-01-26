@@ -17,7 +17,6 @@ exports[`NexusJsonView should match snapshot 1`] = `
       collapseStringsAfterLength={false}
       collapsed={false}
       defaultValue={null}
-      displayArrayKey={true}
       displayDataTypes={true}
       displayObjectSize={false}
       displayPropTypes={false}
