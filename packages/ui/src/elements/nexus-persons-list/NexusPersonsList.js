@@ -180,7 +180,7 @@ const NexusPersonsList = ({
 
             const {editorial} = getValues();
 
-            if (checkIfEmetIsEditorial(emet, editorial)) {
+            if (title) {
                 setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
                 if (isVerticalLayout) {
                     return updatedEmet;
@@ -195,12 +195,9 @@ const NexusPersonsList = ({
         };
 
         const getGeneralPersonsUpdated = editorialMetadata?.map(emet => {
-            const updatedCastCrew =
-                emet?.castCrew &&
-                emet.castCrew.filter(entry => {
+            const updatedCastCrew = emet?.castCrew && emet.castCrew.filter(entry => {
                     return entry.id !== person.id || entry.personType !== person.personType;
                 });
-
             const updatedEmet = {
                 ...emet,
                 castCrew: updatedCastCrew,
@@ -208,7 +205,7 @@ const NexusPersonsList = ({
 
             const {editorial} = getValues();
 
-            if (checkIfEmetIsEditorial(emet, editorial)) {
+            if (title) {
                 setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
                 if (isVerticalLayout) {
                     return updatedEmet;
