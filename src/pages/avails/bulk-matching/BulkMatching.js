@@ -12,7 +12,6 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
-import { Button as PrimeReactButton } from 'primereact/button';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
@@ -32,6 +31,7 @@ import BonusRightsReview from './components/bonus-rights-review/BonusRightsRevie
 import BulkMatchingReview from './components/bulk-match-review/BulkMatchingReview';
 import HeaderSection from './components/header-section/HeaderSection';
 import TitlesSection from './components/titles-section/TitlesSection';
+import WarningToastWithConfirmation from './components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {
     TITLE_MATCHING_MSG,
     TITLE_MATCHING_REVIEW_HEADER,
@@ -212,31 +212,20 @@ export const BulkMatching = ({
 
     const dispatchWarningToast = () => {
         addToast({
-            summary: WARNING_TITLE,
-            detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
             severity: 'warn',
             content: (
-                <div className="flex flex-column" style={{flex: '1'}}>
-                    <div className="text-center">
-                        <i className="pi pi-exclamation-triangle" style={{fontSize: '3rem'}} />
-                        <h4>{WARNING_TITLE}</h4>
-                        <p>{TITLE_MATCH_AND_CREATE_WARNING_MESSAGE}</p>
-                    </div>
-                    <div className="grid p-fluid">
-                        <div className="col-6">
-                            <PrimeReactButton onClick={() => {
-                                removeToast();
-                                mergeTitles(matchList);
-                            }} type="button" label="Ok" className="p-button-success" />
-                        </div>
-                        <div className="col-6">
-                            <PrimeReactButton onClick={() => {
-                                removeToast();
-                                disableLoadingState();
-                            }} type="button" label="Cancel" className="p-button-secondary" />
-                        </div>
-                    </div>
-                </div>
+                <WarningToastWithConfirmation
+                    title={WARNING_TITLE}
+                    subTitle={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE}
+                    onOkayButtonClick={() => {
+                        removeToast();
+                        mergeTitles(matchList);
+                    }}
+                    onCancelButtonClick={() => {
+                        removeToast();
+                        disableLoadingState();
+                    }}
+                />
             ),
             isAutoDismiss: false,
             isWithOverlay: true,

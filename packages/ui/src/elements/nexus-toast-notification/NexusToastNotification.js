@@ -9,7 +9,9 @@ const NexusToastNotification = ({toasts, removeToast}) => {
             severity: toastParam.icon || toastParam.type || toastParam.severity,
             summary: toastParam.title || toastParam.summary,
             detail: toastParam.description || toastParam.detail,
-            life: toasts.life || 3000
+            life: toasts.life,
+            sticky: !toasts.life,
+            content: toastParam.content,
         });
     }
 
