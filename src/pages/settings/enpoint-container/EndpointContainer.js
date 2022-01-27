@@ -54,6 +54,7 @@ const EndpointContainer = ({endpoint}) => {
     useEffect(() => {
         setSearchTerm('');
         initValues();
+        !endpointList.length && loadEndpointData(0, getSearchField(), '');
     }, [endpoint]);
 
     useEffect(() => {
@@ -80,12 +81,9 @@ const EndpointContainer = ({endpoint}) => {
         );
     };
 
-    const searchTermDebounce = useDebounce(
-        () => !!searchTerm && loadEndpointData(page, getSearchField(), searchTerm),
-        500
-    );
+    const searchTermDebounce = useDebounce(() => loadEndpointData(page, getSearchField(), searchTerm), 500);
 
-    useEffect(searchTermDebounce, [searchTerm]);
+    useEffect(() => (searchTerm ? searchTermDebounce : initValues()), [searchTerm]);
 
     const onSearchTermChanged = e => {
         initValues();

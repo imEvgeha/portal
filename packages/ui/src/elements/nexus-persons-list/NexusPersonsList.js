@@ -10,7 +10,7 @@ import {uid} from 'react-uid';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 
 import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
-import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
+import {NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
@@ -37,6 +37,8 @@ const NexusPersonsList = ({
     setUpdate,
     isVerticalLayout,
     isEditable,
+    path,
+    forMetadata,
     ...props
 }) => {
     const dispatch = useDispatch();
@@ -152,13 +154,50 @@ const NexusPersonsList = ({
             dispatch(removeSeasonPerson(payload));
         }
 
-        const updateEditorialMetadata = editorialMetadata?.map(emet => {
-            const updatedCastCrew =
-                emet?.castCrew &&
-                emet.castCrew.filter(entry => {
+        const getCurrentFormData = () => {
+            const formData = getValues();
+            const editorial = formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS.editorialMetadata];
+            const currentMetadata = editorialMetadata.find((elem) => elem.language === editorial.language &&
+                elem.locale === editorial.locale &&
+                elem.metadataStatus === editorial.metadataStatus
+            )
+            return currentMetadata ?? formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS.editorialMetadata];
+        };
+
+        const updatedEditorialMetadatas = [...editorialMetadata];
+        const indexOfEditorialMetadataToDelete = editorialMetadata.indexOf(getCurrentFormData());
+        if (indexOfEditorialMetadataToDelete > -1) updatedEditorialMetadatas.splice(indexOfEditorialMetadataToDelete, 1);
+        
+        const getOnlyEmetPersonsUpdated = () => {
+            const emet = getCurrentFormData();
+            const updatedCastCrew = emet?.castCrew && emet.castCrew.filter(entry => {
+                    return (entry.id !== person.id || entry.personType !== person.personType);
+                });
+            const updatedEmet = {
+                ...emet,
+                castCrew: updatedCastCrew,
+            };
+
+            const {editorial} = getValues();
+
+            if (checkIfEmetIsEditorial(emet, editorial)) {
+                setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
+                if (isVerticalLayout) {
+                    return updatedEmet;
+                }
+            }
+
+            if (!isVerticalLayout) {
+                return updatedEmet;
+            } else {
+                return emet;
+            }
+        };
+
+        const getGeneralPersonsUpdated = editorialMetadata?.map(emet => {
+            const updatedCastCrew = emet?.castCrew && emet.castCrew.filter(entry => {
                     return entry.id !== person.id || entry.personType !== person.personType;
                 });
-
             const updatedEmet = {
                 ...emet,
                 castCrew: updatedCastCrew,
@@ -180,15 +219,14 @@ const NexusPersonsList = ({
             }
         });
 
-        const updatedCastCrew = castCrew ? castCrew?.filter(entry => {
-            return entry.id !== person.id || entry.personType !== person.personType;
-        }) : null;
-
+        const updatedEditorialMetadata = forMetadata ?
+            [...updatedEditorialMetadatas, getOnlyEmetPersonsUpdated()] :
+            getGeneralPersonsUpdated;
+        
         const deletedCastCrew = persons?.filter(entry => entry.id === person.id);
         const updatedDeletedCastCrew = deletedCastCrew ? deletedCastCrew?.map(elem => elem.id) : [];
 
-        !isVerticalLayout && setFieldValue('castCrew', updatedCastCrew);
-        editorialMetadata && setFieldValue('editorialMetadata', updateEditorialMetadata);
+        editorialMetadata && setFieldValue('editorialMetadata', updatedEditorialMetadata);
         setDeletedPersonsIds([...deletedPersonsIds, ...updatedDeletedCastCrew]);
         closeModal();
         setUpdate(prev => !prev);
@@ -407,6 +445,8 @@ NexusPersonsList.propTypes = {
     setUpdate: PropTypes.func,
     isVerticalLayout: PropTypes.bool,
     isEditable: PropTypes.bool,
+    path: PropTypes.any,
+    forMetadata: PropTypes.bool,
 };
 
 NexusPersonsList.defaultProps = {
@@ -423,6 +463,8 @@ NexusPersonsList.defaultProps = {
     emetLanguage: 'en',
     isVerticalLayout: false,
     isEditable: true,
+    path: null,
+    forMetadata: true,
 };
 
 export default NexusPersonsList;
