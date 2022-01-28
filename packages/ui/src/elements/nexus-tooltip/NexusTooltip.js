@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Tooltip from '@atlaskit/tooltip';
-import {TooltipPrimitive} from '@atlaskit/tooltip/styled';
+import Tooltip, {TooltipPrimitive} from '@atlaskit/tooltip';
 import styled from 'styled-components';
 
 const NexusTooltip = ({content, isDisabled, children, hasWhiteBackground = false, ...restProps}) => {

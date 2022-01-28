@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button/dist/cjs/components/Button';
+import Button from '@atlaskit/button';
 import {get} from 'lodash';
 import TitleMatchingRightsTable from '../../../title-matching-rights-table/TitleMatchingRightsTable';
 import './BonusRightsReview.scss';
@@ -16,7 +16,7 @@ const BonusRightsReview = props => {
     // eslint-disable-next-line react/prop-types
     const Tab = ({tab}) => (
         <div
-            className={`nexus-c-bonus-rights-review__tabs--tab 
+            className={`nexus-c-bonus-rights-review__tabs--tab
         ${activeTab === tab ? 'active-tab' : ''}`}
             onClick={() => setActiveTab(tab)}
         >
