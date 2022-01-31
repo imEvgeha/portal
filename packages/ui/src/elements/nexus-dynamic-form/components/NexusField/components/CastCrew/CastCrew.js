@@ -24,6 +24,8 @@ const CastCrew = ({
     setUpdatedCastCrew,
     setUpdate,
     isEditable,
+    path,
+    forMetadata,
     ...props
 }) => {
     const [personsWithLocalization, setPersonsWithLocalization] = useState([]);
@@ -32,9 +34,17 @@ const CastCrew = ({
 
     useEffect(() => {
         setPersonsWithLocalization(persons || []);
-        setCast(persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder));
-        setCrew(persons.filter(person => CREW_LIST.includes(person.personType)).sort((a, b) => a.creditsOrder - b.creditsOrder));
-    }, [persons])
+        setCast(
+            persons
+                .filter(person => !CREW_LIST.includes(person.personType))
+                .sort((a, b) => a.creditsOrder - b.creditsOrder)
+        );
+        setCrew(
+            persons
+                .filter(person => CREW_LIST.includes(person.personType))
+                .sort((a, b) => a.creditsOrder - b.creditsOrder)
+        );
+    }, [persons]);
 
     useEffect(() => {
         resetPersons();
@@ -121,6 +131,8 @@ const CastCrew = ({
                     emetLanguage={language}
                     isVerticalLayout={isVerticalLayout}
                     setUpdate={setUpdate}
+                    path={path}
+                    forMetadata={forMetadata}
                     {...props}
                 />
             </div>
@@ -142,6 +154,8 @@ const CastCrew = ({
                     updateCastCrew={updateCastCrew}
                     emetLanguage={language}
                     setUpdate={setUpdate}
+                    path={path}
+                    forMetadata={forMetadata}
                     {...props}
                 />
             </div>
@@ -162,6 +176,8 @@ CastCrew.propTypes = {
     language: PropTypes.string,
     setUpdate: PropTypes.func,
     isEditable: PropTypes.bool,
+    path: PropTypes.any,
+    forMetadata: PropTypes.bool,
 };
 
 CastCrew.defaultProps = {
@@ -177,6 +193,8 @@ CastCrew.defaultProps = {
     castCrewConfig: {},
     language: 'en',
     isEditable: true,
+    path: null,
+    forMetadata: false,
 };
 
 export default CastCrew;

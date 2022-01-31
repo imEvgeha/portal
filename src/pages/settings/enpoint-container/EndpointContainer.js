@@ -15,6 +15,7 @@ import {capitalize, cloneDeep} from 'lodash';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
+import {showToastForErrors} from '../../../util/http-client/handleError';
 import {getConfigApiValues} from '../../legacy/common/CommonConfigService';
 import {configService} from '../../legacy/containers/config/service/ConfigService';
 import CreateEditConfig from '../create-edit-config/CreateEditConfig';
@@ -54,6 +55,7 @@ const EndpointContainer = ({endpoint}) => {
     useEffect(() => {
         setSearchTerm('');
         initValues();
+        !endpointList.length && loadEndpointData(0, getSearchField(), '');
     }, [endpoint]);
 
     useEffect(() => {
@@ -80,12 +82,9 @@ const EndpointContainer = ({endpoint}) => {
         );
     };
 
-    const searchTermDebounce = useDebounce(
-        () => !!searchTerm && loadEndpointData(page, getSearchField(), searchTerm),
-        500
-    );
+    const searchTermDebounce = useDebounce(() => loadEndpointData(page, getSearchField(), searchTerm), 500);
 
-    useEffect(searchTermDebounce, [searchTerm]);
+    useEffect(() => (searchTerm ? searchTermDebounce : initValues()), [searchTerm]);
 
     const onSearchTermChanged = e => {
         initValues();
@@ -140,9 +139,27 @@ const EndpointContainer = ({endpoint}) => {
 
     const removeConfig = entry => {
         onCloseConfirmDialog();
+
+        const successToast = {
+            title: 'DELETED',
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            description: `${capitalize(entry.name)} config for ${endpoint.displayName} has been successfully deleted!`,
+        };
+
         configService
             .delete(endpoint?.urls?.['CRUD'], entry.id)
-            .then(() => (searchTerm ? searchTermDebounce() : initValues()));
+            .then(() => {
+                searchTerm ? searchTermDebounce() : initValues();
+                dispatch(addToast(successToast));
+            })
+            .catch(error => {
+                showToastForErrors(error, {
+                    errorToast: {
+                        title: 'DELETED',
+                    },
+                });
+            });
     };
 
     const endpointListItemTemplate = entry => {

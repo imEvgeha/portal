@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
-import { Toast } from 'primereact/toast';
+import {Toast} from 'primereact/toast';
 
 const NexusToastNotification = ({toasts, removeToast}) => {
     const toast = useRef(null);

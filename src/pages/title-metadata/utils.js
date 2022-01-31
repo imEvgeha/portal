@@ -1,7 +1,4 @@
-import {
-    ERROR_TITLE,
-    SUCCESS_TITLE,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ERROR_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {cloneDeep, get, isObjectLike, isEqual} from 'lodash';
 import {store} from '../../index';
@@ -410,7 +407,7 @@ const handleDirtyRatingsValues = values => {
 const cleanObject = obj => {
     return JSON.parse(
         JSON.stringify(obj, (key, value) => {
-            return value === null ? undefined : value;
+            return value;
         })
     );
 };
@@ -449,6 +446,9 @@ const handleDirtyEMETValues = (initialValues, values) => {
         values.editorialMetadata.forEach((emet, i) => {
             if (!emet.isDeleted && i !== index && !isEqual(emet, initialValues.editorialMetadata[i])) {
                 values.editorialMetadata[i] = {...emet, isUpdated: true};
+            }
+            if (emet.isDeleted) {
+                values.editorialMetadata[i] = {...emet, metadataStatus: 'deleted', isUpdated: true};
             }
         });
     }
