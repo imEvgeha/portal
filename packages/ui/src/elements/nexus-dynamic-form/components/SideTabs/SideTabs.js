@@ -24,12 +24,13 @@ const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) =>
     }, [isRemoved]);
 
     const handleTabChanged = (key, tabIndex, subTabIndex = 0) => {
+        const oldTab = currentTab.tabIndex;
         const oldSubTab = currentTab.subTabIndex;
         setCurrentTab({
             tabIndex,
             subTabIndex,
         });
-        onChange(oldSubTab, key, subTabIndex);
+        onChange(oldSubTab, oldTab, key, tabIndex, subTabIndex);
     };
 
     const checkSubTabValues = obj => {
