@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import {ERROR_ICON, ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
@@ -44,8 +44,8 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
         title: errorMessage,
     };
     const defaultErrorToast = {
-        title: ERROR_TITLE,
-        icon: ERROR_ICON,
+        summary: ERROR_TITLE,
+        severity: 'error',
         isAutoDismiss: false,
     };
 
@@ -65,9 +65,9 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
                   ...errorToast,
               }
             : {
-                  title: ERROR_MODAL.title,
+                  summary: ERROR_MODAL.title,
                   description: description || message || data.message || JSON.stringify(data) || errorMessage,
-                  icon: ERROR_ICON,
+                  severity: 'error',
                   actions: ERROR_MODAL.codes.includes(status)
                       ? [{content: 'OK', onClick: () => store.dispatch(removeToast())}]
                       : [],

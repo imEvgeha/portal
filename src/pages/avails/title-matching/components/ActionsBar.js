@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
-import {
-    WARNING_TITLE,
-    SUCCESS_TITLE,
-    WARNING_ICON,
-    SUCCESS_ICON,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {WARNING_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     TITLE_MATCH_SUCCESS_MESSAGE,
@@ -54,9 +49,9 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
         }
 
         addToast({
-            title: SUCCESS_TITLE,
-            description: TITLE_MATCH_SUCCESS_MESSAGE,
-            icon: SUCCESS_ICON,
+            summary: SUCCESS_TITLE,
+            detail: TITLE_MATCH_SUCCESS_MESSAGE,
+            severity: 'success',
             actions: [{content: 'View Title', onClick: onViewTitleClick}],
             isAutoDismiss: true,
             isWithOverlay: true,
@@ -71,9 +66,9 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
     const onMatchAndCreate = () => {
         if (Object.keys(matchList).length === 1) {
             addToast({
-                title: WARNING_TITLE,
-                description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-                icon: WARNING_ICON,
+                summary: WARNING_TITLE,
+                detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+                severity: 'warn',
                 actions: [
                     {content: 'Cancel', onClick: removeToast},
                     {content: 'Ok', onClick: mergeSingle},

@@ -40,6 +40,7 @@ exports[`NexusPersonsList should match snapshot 1`] = `
     isEdit={false}
     isEditable={true}
     isVerticalLayout={false}
+    onChange={null}
     personsList={
       Array [
         Object {
