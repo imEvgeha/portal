@@ -9,9 +9,9 @@ import {defineActionButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/lib/toast/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
-import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
 import {get, isEmpty} from 'lodash';

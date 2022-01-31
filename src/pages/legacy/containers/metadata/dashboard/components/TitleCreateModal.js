@@ -35,7 +35,7 @@ import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import ToastWithLink from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/toast-with-link/ToastWithLink';
+import ToastWithLink from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-with-link/ToastWithLink';
 
 const onViewTitleClick = response => {
     const {id} = response || {};

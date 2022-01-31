@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import {WARNING_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import ToastWithLink from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-with-link/ToastWithLink';
+import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/lib/toast/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     TITLE_MATCH_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
-import ToastWithLink from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/toast-with-link/ToastWithLink';
-import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';

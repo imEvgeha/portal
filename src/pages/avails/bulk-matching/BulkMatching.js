@@ -6,9 +6,9 @@ import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/n
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {WARNING_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
+import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/lib/toast/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
-import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {get} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
