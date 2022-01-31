@@ -147,19 +147,10 @@ const EndpointContainer = ({endpoint}) => {
             description: `${capitalize(entry.name)} config for ${endpoint.displayName} has been successfully deleted!`,
         };
 
-        configService
-            .delete(endpoint?.urls?.['CRUD'], entry.id)
-            .then(() => {
-                searchTerm ? searchTermDebounce() : initValues();
-                dispatch(addToast(successToast));
-            })
-            .catch(error => {
-                showToastForErrors(error, {
-                    errorToast: {
-                        title: 'DELETED',
-                    },
-                });
-            });
+        configService.delete(endpoint?.urls?.['CRUD'], entry.id).then(() => {
+            searchTerm ? searchTermDebounce() : initValues();
+            dispatch(addToast(successToast));
+        });
     };
 
     const endpointListItemTemplate = entry => {
