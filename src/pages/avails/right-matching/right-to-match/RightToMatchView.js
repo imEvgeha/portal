@@ -11,6 +11,7 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
 import {get, isEmpty} from 'lodash';
@@ -116,13 +117,15 @@ const RightToMatchView = ({
 
     const onUpdateRightClick = () => {
         addToast({
-            summary: WARNING_TITLE,
-            detail: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
             severity: 'warn',
-            actions: [
-                {content: 'Cancel', onClick: () => removeToast()},
-                {content: 'OK', onClick: onUpdateRight},
-            ],
+            content: (
+                <WarningToastWithConfirmation
+                    title={WARNING_TITLE}
+                    subTitle={NEW_RIGHT_BUTTON_CLICK_MESSAGE}
+                    onOkayButtonClick={() => onUpdateRight()}
+                    onCancelButtonClick={() => removeToast()}
+                />
+            ),
             isAutoDismiss: false,
             isWithOverlay: true,
         });

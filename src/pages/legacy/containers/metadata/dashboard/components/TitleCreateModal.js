@@ -35,6 +35,7 @@ import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
+import ToastWithLink from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/toast-with-link/ToastWithLink';
 
 const onViewTitleClick = response => {
     const {id} = response || {};
@@ -156,10 +157,14 @@ class TitleCreate extends React.Component {
                         .registerTitle(response.id, isSyncVZ, isSyncMovida)
                         .then(response => {
                             this.props.addToast({
-                                summary: SUCCESS_TITLE,
                                 severity: 'success',
+                                content: (<ToastWithLink 
+                                    title={SUCCESS_TITLE}
+                                    subTitle={titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
+                                    linkTitle={'View Title'}
+                                    onLinkClick={() => onViewTitleClick(response)}
+                                />),
                                 isAutoDismiss: true,
-                                detail: titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE,
                             });
                         })
                         .catch(() => {
@@ -178,11 +183,14 @@ class TitleCreate extends React.Component {
                 this.cleanFields();
                 this.toggle();
                 this.props.addToast({
-                    summary: SUCCESS_TITLE,
                     severity: 'success',
+                    content: (<ToastWithLink 
+                        title={SUCCESS_TITLE}
+                        subTitle={titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
+                        linkTitle={'View Title'}
+                        onLinkClick={() => onViewTitleClick(response)}
+                    />),
                     isAutoDismiss: true,
-                    detail: titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                    actions: [{content: 'View title', onClick: () => onViewTitleClick(response)}],
                 });
             })
             .catch(e => {

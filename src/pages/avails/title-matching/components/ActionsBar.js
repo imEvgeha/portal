@@ -10,6 +10,8 @@ import {
     TITLE_MATCH_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import ToastWithLink from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/toast-with-link/ToastWithLink';
+import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
@@ -52,10 +54,13 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
         }
 
         addToast({
-            summary: SUCCESS_TITLE,
-            detail: TITLE_MATCH_SUCCESS_MESSAGE,
-            severity: 'success',
-            actions: [{content: 'View Title', onClick: onViewTitleClick}],
+            severity: 'success', 
+            content: (<ToastWithLink 
+                title={SUCCESS_TITLE}
+                subTitle={TITLE_MATCH_SUCCESS_MESSAGE}
+                linkTitle={'View Title'}
+                onLinkClick={onViewTitleClick}
+            />),
             isAutoDismiss: true,
             isWithOverlay: true,
         });
@@ -69,13 +74,15 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
     const onMatchAndCreate = () => {
         if (Object.keys(matchList).length === 1) {
             addToast({
-                summary: WARNING_TITLE,
-                detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
                 severity: 'warn',
-                actions: [
-                    {content: 'Cancel', onClick: removeToast},
-                    {content: 'Ok', onClick: mergeSingle},
-                ],
+                content: (
+                    <WarningToastWithConfirmation
+                        title={WARNING_TITLE}
+                        subTitle={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE}
+                        onOkayButtonClick={() => mergeSingle()}
+                        onCancelButtonClick={() => removeToast()}
+                    />
+                ),
                 isAutoDismiss: false,
                 isWithOverlay: true,
             });

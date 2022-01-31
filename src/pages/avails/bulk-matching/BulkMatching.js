@@ -11,6 +11,7 @@ import {
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {get} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -31,7 +32,6 @@ import BonusRightsReview from './components/bonus-rights-review/BonusRightsRevie
 import BulkMatchingReview from './components/bulk-match-review/BulkMatchingReview';
 import HeaderSection from './components/header-section/HeaderSection';
 import TitlesSection from './components/titles-section/TitlesSection';
-import WarningToastWithConfirmation from './components/warning-toast-with-confirmation/WarningToastWithConfirmation';
 import {
     TITLE_MATCHING_MSG,
     TITLE_MATCHING_REVIEW_HEADER,
@@ -228,7 +228,6 @@ export const BulkMatching = ({
                 />
             ),
             isAutoDismiss: false,
-            isWithOverlay: true,
         });
     };
 

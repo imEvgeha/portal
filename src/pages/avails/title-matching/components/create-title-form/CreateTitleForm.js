@@ -4,6 +4,7 @@ import Button from '@atlaskit/button';
 import {ErrorMessage} from '@atlaskit/form';
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import ToastWithLink from '@vubiquity-nexus/portal-ui/src/elements/nexus-toast-notification/components/toast-with-link/ToastWithLink';
 import {URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {Form, FormFragment} from 'react-forms-processor';
@@ -82,11 +83,14 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
             .then(res => {
                 const titleId = res.id;
                 addToast({
-                    summary: SUCCESS_TITLE,
                     severity: 'success',
+                    content: (<ToastWithLink
+                        title={SUCCESS_TITLE}
+                        subTitle={constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
+                        linkTitle={'View Title'}
+                        onLinkClick={() => onViewTitleClick(titleId)}
+                    />),
                     isAutoDismiss: true,
-                    detail: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                    actions: [{content: 'View title', onClick: () => onViewTitleClick(titleId)}],
                 });
                 if (URL.isEmbedded()) {
                     DOP.setErrorsCount(0);

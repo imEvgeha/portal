@@ -1,0 +1,23 @@
+
+.nexus-c-bulk-success-toast-container {
+    flex: 1;
+
+    h4, p {
+        color: #1ea97c;
+    }
+}
+
+.nexus-c-bulk-success-toast-button-container {
+    display: flex;
+    margin-top: 8px;
+}
+
+.nexus-c-bulk-success-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .nexus-c-bulk-success-toast-icon {
+        font-size: 2rem;
+    }
+}
