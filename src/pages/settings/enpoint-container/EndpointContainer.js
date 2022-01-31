@@ -15,6 +15,7 @@ import {capitalize, cloneDeep} from 'lodash';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
+import {showToastForErrors} from '../../../util/http-client/handleError';
 import {getConfigApiValues} from '../../legacy/common/CommonConfigService';
 import {configService} from '../../legacy/containers/config/service/ConfigService';
 import CreateEditConfig from '../create-edit-config/CreateEditConfig';
@@ -148,10 +149,19 @@ const EndpointContainer = ({endpoint}) => {
             description: `${capitalize(entry.name)} config for ${endpoint.displayName} has been successfully deleted!`,
         };
 
-        configService.delete(endpoint?.urls?.['CRUD'], entry.id).then(() => {
-            searchTerm ? searchTermDebounce() : initValues();
-            dispatch(addToast(successToast));
-        });
+        configService
+            .delete(endpoint?.urls?.['CRUD'], entry.id)
+            .then(() => {
+                searchTerm ? searchTermDebounce() : initValues();
+                dispatch(addToast(successToast));
+            })
+            .catch(error => {
+                showToastForErrors(error, {
+                    errorToast: {
+                        title: 'DELETED',
+                    },
+                });
+            });
     };
 
     const endpointListItemTemplate = entry => {
