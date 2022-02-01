@@ -36,12 +36,19 @@ exports[`EndpointContainer should match snapshot 1`] = `
             <div
               className="col-10"
             >
-              <ForwardRef
-                className="nexus-c-search__inputbox"
-                id="config_search_field__inp"
-                name="config_search_field__inp"
-                onChange={[Function]}
-              />
+              <span
+                className="p-input-icon-left"
+              >
+                <i
+                  className="pi pi-search"
+                />
+                <ForwardRef
+                  className="nexus-c-search__inputbox"
+                  id="config_search_field__inp"
+                  name="config_search_field__inp"
+                  onChange={[Function]}
+                />
+              </span>
             </div>
             <div
               className="col-2 text-end"
