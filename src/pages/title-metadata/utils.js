@@ -448,7 +448,7 @@ const handleDirtyEMETValues = (initialValues, values) => {
                 values.editorialMetadata[i] = {...emet, isUpdated: true};
             }
             if (emet.isDeleted) {
-                values.editorialMetadata[i] = {...emet, metadataStatus: "deleted", isUpdated: true};
+                values.editorialMetadata[i] = {...emet, metadataStatus: 'deleted', isUpdated: true};
             }
         });
     }

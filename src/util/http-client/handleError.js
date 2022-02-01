@@ -38,9 +38,10 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
     let {status, data = {}, message, description} = error || {};
     if (typeof error === 'string') message = error;
 
+    const errorMessage = 'Unexpected error occurred. Please try again later';
     const ERROR_MODAL = {
         codes: [503],
-        title: 'Unexpected error occurred. Please try again later',
+        title: errorMessage,
     };
     const defaultErrorToast = {
         summary: ERROR_TITLE,
@@ -55,7 +56,7 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
         toast = {
             ...defaultErrorToast,
             ...err,
-            description: err.description || data.message || message,
+            description: err.description || data.message || message || errorMessage,
         };
     } else {
         toast = errorToast
@@ -65,7 +66,7 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
               }
             : {
                   summary: ERROR_MODAL.title,
-                  detail: description || message || data.message || JSON.stringify(data),
+                  description: description || message || data.message || JSON.stringify(data) || errorMessage,
                   severity: 'error',
                   actions: ERROR_MODAL.codes.includes(status)
                       ? [{content: 'OK', onClick: () => store.dispatch(removeToast())}]

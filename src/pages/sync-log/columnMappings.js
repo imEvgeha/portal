@@ -36,7 +36,7 @@ export default [
     {
         colId: 'externalSystemId',
         field: 'externalSystemId',
-        headerName: 'Legacy System',
+        headerName: 'External System',
         width: 120,
     },
     {
