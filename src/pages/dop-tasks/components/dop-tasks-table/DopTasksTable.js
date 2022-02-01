@@ -229,15 +229,23 @@ const DopTasksTable = ({
     };
 
     const cellStyle = ({data}) => {
-        return data && [TASK_STATUS_ENUM.READY, TASK_STATUS_ENUM.IN_PROGRESS].includes(data.taskStatus)
-            ? ''
-            : {'pointer-events': 'none'};
+        if (
+            data &&
+            [TASK_STATUS_ENUM.COMPLETED, TASK_STATUS_ENUM.EXITED, TASK_STATUS_ENUM.OBSOLETE].includes(data.taskStatus)
+        ) {
+            return {'pointer-events': 'none'};
+        }
+        return '';
     };
 
     const cellClass = ({data}) => {
-        return data && [TASK_STATUS_ENUM.READY, TASK_STATUS_ENUM.IN_PROGRESS].includes(data.taskStatus)
-            ? ''
-            : 'nexus-c-grid-checkbox--is-disabled';
+        if (
+            data &&
+            [TASK_STATUS_ENUM.COMPLETED, TASK_STATUS_ENUM.EXITED, TASK_STATUS_ENUM.OBSOLETE].includes(data.taskStatus)
+        ) {
+            return 'nexus-c-grid-checkbox--is-disabled';
+        }
+        return '';
     };
 
     const checkboxColumn = {...defineCheckboxSelectionColumn(), cellStyle, cellClass};
