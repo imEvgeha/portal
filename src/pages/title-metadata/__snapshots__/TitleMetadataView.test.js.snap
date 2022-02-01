@@ -63,7 +63,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
                 "value": "repository",
               },
               Object {
-                "label": "Sync Log",
+                "label": "Sync Status",
                 "value": "syncLog",
               },
               Object {
