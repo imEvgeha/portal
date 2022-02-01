@@ -49,20 +49,24 @@ export const TitleMetadataView = ({
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
 
     const showSuccess = detail => {
-        store.dispatch(addToast({
-            severity: 'success',
-            summary: successDownloadTitle,
-            detail,
-            life: 3000,
-        }));
+        store.dispatch(
+            addToast({
+                severity: 'success',
+                summary: successDownloadTitle,
+                detail,
+                life: 3000,
+            })
+        );
     };
 
     const showError = err => {
-        store.dispatch(addToast({
-            severity: 'error',
-            summary: failureDownloadTitle,
-            detail: `${failureDownloadDesc} Details: ${err}`,
-        }));
+        store.dispatch(
+            addToast({
+                severity: 'error',
+                summary: failureDownloadTitle,
+                detail: `${failureDownloadDesc} Details: ${err}`,
+            })
+        );
     };
 
     useEffect(() => {
