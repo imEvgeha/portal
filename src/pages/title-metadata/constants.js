@@ -395,7 +395,7 @@ export const METADATA_UPLOAD_ERROR_TITLE = 'Upload Metadata error';
 
 export const TITLE_METADATA_TABS = [
     {label: 'Repository', value: 'repository'},
-    {label: 'Sync Log', value: 'syncLog'},
+    {label: 'Sync Status', value: 'syncLog'},
     {label: 'Upload Log', value: 'uploadLog'},
 ];
 
