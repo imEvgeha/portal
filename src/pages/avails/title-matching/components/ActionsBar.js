@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import {WARNING_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import ToastWithLink from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-with-link/ToastWithLink';
-import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/lib/toast/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     TITLE_MATCH_SUCCESS_MESSAGE,
@@ -35,7 +34,10 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
 
     const onMatch = () => {
         const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
-        const onViewTitleClick = () => window.open(url, '_blank');
+        const handleLinkClick = (e) => {
+            e.preventDefault();
+            window.open(url, '_blank');
+        }
 
         if (URL.isEmbedded()) {
             DOP.setErrorsCount(0);
@@ -52,33 +54,46 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
 
         addToast({
             severity: 'success', 
-            content: (<ToastWithLink 
+            content: (<ToastBody 
                 title={SUCCESS_TITLE}
                 subTitle={TITLE_MATCH_SUCCESS_MESSAGE}
-                linkTitle={'View Title'}
-                onLinkClick={onViewTitleClick}
-            />),
+                severity={'success'}
+            >
+                <a href='#' onClick={handleLinkClick}>View Title</a>
+            </ToastBody>),
             isAutoDismiss: true,
             isWithOverlay: true,
         });
     };
 
-    const mergeSingle = () => {
+    const mergeSingle = (e) => {
+        e.preventDefault();
         removeToast();
         mergeTitles();
     };
+
+    const onRemoveToast = (e) => {
+        e.preventDefault();
+        removeToast()
+    }
 
     const onMatchAndCreate = () => {
         if (Object.keys(matchList).length === 1) {
             addToast({
                 severity: 'warn',
+                closable: false,
                 content: (
-                    <WarningToastWithConfirmation
+                    <ToastBody
                         title={WARNING_TITLE}
                         subTitle={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE}
-                        onOkayButtonClick={() => mergeSingle()}
-                        onCancelButtonClick={() => removeToast()}
-                    />
+                        severity='warn'
+                    >
+                        <div className='d-flex align-items-center'>
+                            <a href='#' onClick={mergeSingle}>Ok</a>
+                            <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} />
+                            <a href='#' onClick={onRemoveToast}>Cancel</a>
+                        </div>
+                    </ToastBody>
                 ),
                 isAutoDismiss: false,
                 isWithOverlay: true,

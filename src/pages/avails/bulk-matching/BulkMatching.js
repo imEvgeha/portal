@@ -6,7 +6,7 @@ import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/n
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {WARNING_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/lib/toast/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
@@ -208,21 +208,32 @@ export const BulkMatching = ({
     };
 
     const dispatchWarningToast = () => {
+        const onOkayButtonClick = (e) => {
+            e.preventDefault();
+            removeToast();
+            mergeTitles(matchList);
+        }
+
+        const onCancelButtonClick = (e) => {
+            e.preventDefault();
+            removeToast();
+            disableLoadingState();
+        }
         addToast({
             severity: 'warn',
+            closable: false,
             content: (
-                <WarningToastWithConfirmation
+                <ToastBody
                     title={WARNING_TITLE}
                     subTitle={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE}
-                    onOkayButtonClick={() => {
-                        removeToast();
-                        mergeTitles(matchList);
-                    }}
-                    onCancelButtonClick={() => {
-                        removeToast();
-                        disableLoadingState();
-                    }}
-                />
+                    severity='warn'
+                >
+                    <div className='d-flex align-items-center'>
+                        <a href='#' onClick={onOkayButtonClick}>Ok</a>
+                        <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} />
+                        <a href='#' onClick={onCancelButtonClick}>Cancel</a>
+                    </div>
+                </ToastBody>
             ),
             isAutoDismiss: false,
         });

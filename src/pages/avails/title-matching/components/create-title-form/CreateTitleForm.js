@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {ErrorMessage} from '@atlaskit/form';
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import ToastWithLink from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-with-link/ToastWithLink';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
@@ -82,14 +82,19 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
             .createTitleWithoutErrorModal(title)
             .then(res => {
                 const titleId = res.id;
+                const onLinkClick = (e) => {
+                    e.preventDefault();
+                    onViewTitleClick(titleId);
+                }
                 addToast({
                     severity: 'success',
-                    content: (<ToastWithLink
+                    content: (<ToastBody
                         title={SUCCESS_TITLE}
                         subTitle={constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                        linkTitle={'View Title'}
-                        onLinkClick={() => onViewTitleClick(titleId)}
-                    />),
+                        severity={'success'}
+                    >
+                        <a href='#' onClick={onLinkClick}>View Title</a>
+                    </ToastBody>),
                     isAutoDismiss: true,
                 });
                 if (URL.isEmbedded()) {

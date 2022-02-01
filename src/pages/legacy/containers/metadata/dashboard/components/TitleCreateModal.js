@@ -35,7 +35,7 @@ import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import ToastWithLink from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-with-link/ToastWithLink';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 
 const onViewTitleClick = response => {
     const {id} = response || {};
@@ -156,14 +156,23 @@ class TitleCreate extends React.Component {
                     publisherService
                         .registerTitle(response.id, isSyncVZ, isSyncMovida)
                         .then(response => {
+                            const onLinkClick = (e) => {
+                                e.preventDefault();
+                                onViewTitleClick(response);
+                            }
                             this.props.addToast({
                                 severity: 'success',
-                                content: (<ToastWithLink 
-                                    title={SUCCESS_TITLE}
-                                    subTitle={titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
-                                    linkTitle={'View Title'}
-                                    onLinkClick={() => onViewTitleClick(response)}
-                                />),
+                                content: () => {
+                                    return (
+                                        <ToastBody 
+                                            title={SUCCESS_TITLE}
+                                            subTitle={titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
+                                            severity={'success'}
+                                        >
+                                            <a href='#' onClick={onLinkClick}>View Title</a>
+                                        </ToastBody>
+                                    )
+                                },
                                 isAutoDismiss: true,
                             });
                         })
@@ -184,12 +193,20 @@ class TitleCreate extends React.Component {
                 this.toggle();
                 this.props.addToast({
                     severity: 'success',
-                    content: (<ToastWithLink 
-                        title={SUCCESS_TITLE}
-                        subTitle={titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                        linkTitle={'View Title'}
-                        onLinkClick={() => onViewTitleClick(response)}
-                    />),
+                    content: () => {
+                        return (
+                            <ToastBody 
+                                title={SUCCESS_TITLE}
+                                subTitle={titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
+                                severity={'success'}
+                            >
+                                <a href='#' onClick={(e) => {
+                                    e.preventDefault();
+                                    onViewTitleClick(response);
+                                }}>View Title</a>
+                            </ToastBody>
+                        )
+                    },
                     isAutoDismiss: true,
                 });
             })

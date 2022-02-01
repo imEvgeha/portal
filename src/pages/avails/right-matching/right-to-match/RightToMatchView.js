@@ -9,7 +9,7 @@ import {defineActionButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import WarningToastWithConfirmation from '@vubiquity-nexus/portal-ui/lib/toast/components/warning-toast-with-confirmation/WarningToastWithConfirmation';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
@@ -108,23 +108,35 @@ const RightToMatchView = ({
         );
     };
 
-    const onUpdateRight = () => {
+    const onUpdateRight = (e) => {
+        e.preventDefault();
         removeToast();
         rightsService
             .updateRightWithFullData({...focusedRight, status: 'Ready'}, focusedRight.id, true)
             .then(() => history.push(URL.keepEmbedded(`/avails/rights/${focusedRight.id}`)));
     };
 
+    const onRemoveToast = (e) => {
+        e.preventDefault();
+        removeToast()
+    }
+
     const onUpdateRightClick = () => {
         addToast({
             severity: 'warn',
+            closable: false,
             content: (
-                <WarningToastWithConfirmation
+                <ToastBody
                     title={WARNING_TITLE}
                     subTitle={NEW_RIGHT_BUTTON_CLICK_MESSAGE}
-                    onOkayButtonClick={() => onUpdateRight()}
-                    onCancelButtonClick={() => removeToast()}
-                />
+                    severity='warn'
+                >
+                    <div className='d-flex align-items-center'>
+                        <a href='#' onClick={onUpdateRight}>Ok</a>
+                        <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} />
+                        <a href='#' onClick={onRemoveToast}>Cancel</a>
+                    </div>
+                </ToastBody>
             ),
             isAutoDismiss: false,
             isWithOverlay: true,
