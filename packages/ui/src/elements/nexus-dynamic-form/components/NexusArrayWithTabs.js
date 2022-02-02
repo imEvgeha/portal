@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {get, cloneDeep} from 'lodash';
+import {get, cloneDeep, isEqual} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import NexusArrayCreateModal from './NexusArrayCreateModal';
@@ -74,13 +74,23 @@ const NexusArrayWithTabs = ({
         return formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]];
     };
 
-    const changeTabData = (oldSubTab, key, index) => {
+    const changeTabData = (oldSubTab, oldTabIndex, key, index, subTabIndex) => {
         if (view === VIEWS.EDIT) {
             const currentFormData = getCurrentFormData();
             const current = currentData || currentFormData;
-            replaceRecordInGroupedData(currentFormData, current, oldSubTab, index, key);
+            replaceRecordInGroupedData(currentFormData, current, oldSubTab, subTabIndex, key);
+            const newData = replaceRecordInData(currentFormData, current);
+            const isUpdated = Object.keys(currentFormData).some((item) => {
+                const initialDataItem = initialData.editorialMetadata[oldTabIndex]?.[item];
+                const newDataItem = newData[oldTabIndex]?.[item];
+
+                return typeof newDataItem === "object" ? Object.keys(newDataItem).some((key) => {
+                    return !isEqual(initialDataItem?.[key], newDataItem?.[key])
+                }) :  !isEqual(initialDataItem, newDataItem)
+            });
+            isUpdated && setFieldValue(path, newData);
         } else {
-            const newCurrentData = groupedData[key][index];
+            const newCurrentData = groupedData[key][subTabIndex];
             setCurrentData(newCurrentData);
         }
     };

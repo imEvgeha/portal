@@ -1,6 +1,8 @@
 import React from 'react';
+import IconCalendar from '@vubiquity-nexus/portal-assets/calendar.svg';
 import FieldError from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-error/FieldError';
 import FieldLabel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-label/FieldLabel';
+import {isEmpty} from 'lodash';
 import {Calendar} from 'primereact/calendar';
 import {Checkbox} from 'primereact/checkbox';
 import {InputText} from 'primereact/inputtext';
@@ -41,7 +43,7 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
                                 </div>
                             )}
                             <div className={shouldShowLabel ? 'col-sm-8' : 'col-sm-12'}>
-                                <div className="p-field">
+                                <div className={!isEmpty(fieldState?.error) ? 'p-field p-field-error' : 'p-field'}>
                                     {getElement(elementSchema, field, value, form, onFormElementChanged, cb)}
                                     {elementSchema.type !== 'array' && <FieldError error={fieldState.error} />}
                                 </div>
@@ -91,6 +93,7 @@ const getElement = (elementSchema, field, value, form, onChange, cb) => {
                     showTime
                     showSeconds
                     showIcon
+                    icon={IconCalendar}
                 />
             );
         }
@@ -107,23 +110,27 @@ const getElement = (elementSchema, field, value, form, onChange, cb) => {
         case 'checkbox': {
             return (
                 <div className="p-checkbox-wrapper">
-                    <Checkbox
-                        {...field}
-                        inputId={`${elementSchema.name}_input`}
-                        name={elementSchema.name}
-                        key={elementSchema.id}
-                        id={elementSchema.id}
-                        disabled={elementSchema.disable}
-                        tooltip={elementSchema.description}
-                        onChange={onChange}
-                        checked={field.value}
-                    />
-                    <div className="d-inline-block mx-2">
-                        <FieldLabel
-                            htmlFor={elementSchema.name}
-                            label={elementSchema.label}
-                            isRequired={!!elementSchema.required}
-                        />
+                    <div className="row align-items-center">
+                        <div className="col-sm-4">
+                            <FieldLabel
+                                htmlFor={elementSchema.name}
+                                label={elementSchema.label}
+                                isRequired={!!elementSchema.required}
+                            />
+                        </div>
+                        <div className="col-sm-8">
+                            <Checkbox
+                                {...field}
+                                inputId={`${elementSchema.name}_input`}
+                                name={elementSchema.name}
+                                key={elementSchema.id}
+                                id={elementSchema.id}
+                                disabled={elementSchema.disable}
+                                tooltip={elementSchema.description}
+                                onChange={onChange}
+                                checked={field.value}
+                            />
+                        </div>
                     </div>
                 </div>
             );

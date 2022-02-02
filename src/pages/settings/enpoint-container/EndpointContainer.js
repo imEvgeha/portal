@@ -54,6 +54,7 @@ const EndpointContainer = ({endpoint}) => {
     useEffect(() => {
         setSearchTerm('');
         initValues();
+        !endpointList.length && loadEndpointData(0, getSearchField(), '');
     }, [endpoint]);
 
     useEffect(() => {
@@ -80,12 +81,9 @@ const EndpointContainer = ({endpoint}) => {
         );
     };
 
-    const searchTermDebounce = useDebounce(
-        () => !!searchTerm && loadEndpointData(page, getSearchField(), searchTerm),
-        500
-    );
+    const searchTermDebounce = useDebounce(() => loadEndpointData(page, getSearchField(), searchTerm), 500);
 
-    useEffect(searchTermDebounce, [searchTerm]);
+    useEffect(() => (searchTerm ? searchTermDebounce : initValues()), [searchTerm]);
 
     const onSearchTermChanged = e => {
         initValues();
@@ -101,14 +99,17 @@ const EndpointContainer = ({endpoint}) => {
             >
                 <div className="row my-2 align-items-center">
                     <div className="col-10">
-                        <InputText
-                            className="nexus-c-search__inputbox"
-                            key="config_search_field"
-                            id="config_search_field__inp"
-                            name="config_search_field__inp"
-                            value={searchTerm}
-                            onChange={onSearchTermChanged}
-                        />
+                        <span className="p-input-icon-left">
+                            <i className="pi pi-search" />
+                            <InputText
+                                className="nexus-c-search__inputbox"
+                                key="config_search_field"
+                                id="config_search_field__inp"
+                                name="config_search_field__inp"
+                                value={searchTerm}
+                                onChange={onSearchTermChanged}
+                            />
+                        </span>
                     </div>
                     <div className="col-2 text-end">
                         <Button
@@ -140,9 +141,18 @@ const EndpointContainer = ({endpoint}) => {
 
     const removeConfig = entry => {
         onCloseConfirmDialog();
-        configService
-            .delete(endpoint?.urls?.['CRUD'], entry.id)
-            .then(() => (searchTerm ? searchTermDebounce() : initValues()));
+
+        const successToast = {
+            title: 'DELETED',
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            description: `${capitalize(entry.name)} config for ${endpoint.displayName} has been successfully deleted!`,
+        };
+
+        configService.delete(endpoint?.urls?.['CRUD'], entry.id).then(() => {
+            searchTerm ? searchTermDebounce() : initValues();
+            dispatch(addToast(successToast));
+        });
     };
 
     const endpointListItemTemplate = entry => {
