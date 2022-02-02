@@ -1,4 +1,5 @@
 import React from 'react';
+import IconCalendar from '@vubiquity-nexus/portal-assets/calendar.svg';
 import FieldError from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-error/FieldError';
 import FieldLabel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-label/FieldLabel';
 import {isEmpty} from 'lodash';
@@ -92,6 +93,7 @@ const getElement = (elementSchema, field, value, form, onChange, cb) => {
                     showTime
                     showSeconds
                     showIcon
+                    icon={IconCalendar}
                 />
             );
         }

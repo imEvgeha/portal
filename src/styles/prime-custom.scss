@@ -16,21 +16,22 @@ $element-color-orange-80: palette(orange, 80);
 .p-field {
     position: relative;
 
+    .p-inputtext.p-component,
+    .p-dropdown.p-component.p-inputwrapper {
+        border: $element-border-20;
+    }
+
     &.p-field-error {
         .p-error-message {
             color: $element-color-orange-80;
         }
 
-        .p-inputtext.p-component {
+        > .p-inputtext.p-component {
             border: 1px solid $element-color-orange-80;
         }
 
-        .p-dropdown.p-component.p-inputwrapper {
+        > .p-dropdown.p-component.p-inputwrapper {
             border: 1px solid $element-color-orange-80;
-        }
-
-        .p-dropdown-trigger {
-            color: $element-color-orange-80;
         }
     }
 }
@@ -285,6 +286,10 @@ $element-color-orange-80: palette(orange, 80);
 
 // Input Text
 .p-inputtext {
+    &:enabled:hover {
+        border-color: palette(black, 5);
+    }
+
     &.p-component {
         width: 100%;
         margin-bottom: $element-margin-bottom;
@@ -300,9 +305,16 @@ $element-color-orange-80: palette(orange, 80);
         }
 
         &:focus {
-            border: solid 1px $element-background-color-20;
+            border: 1px solid $element-background-color-20;
             background-color: $element-background-color-2;
             box-shadow: none;
+        }
+
+        //search inputtext field
+        &.nexus-c-search__inputbox {
+            border-radius: 24px;
+            width: 640px;
+            object-fit: contain;
         }
     }
 }
@@ -314,6 +326,22 @@ $element-color-orange-80: palette(orange, 80);
     color: palette(black, 100);
 
     &.p-component {
+        .p-button {
+            &:focus {
+                box-shadow: none;
+            }
+
+            &.p-component {
+                &.p-datepicker-trigger {
+                    position: absolute;
+                    right: 0;
+                    border: none;
+                    background-color: transparent;
+                    color: palette(black, 100);
+                }
+            }
+        }
+
         width: 100%;
         margin-bottom: $element-margin-bottom;
         border-radius: 20px;
@@ -331,6 +359,16 @@ $element-color-orange-80: palette(orange, 80);
                 }
             }
         }
+    }
+}
+
+//spyglass for the inputs search field
+.p-input-icon-left {
+    .pi.pi-search {
+        font-weight: bold;
+        color: palette(black, 100);
+        width: 16px;
+        height: 16px;
     }
 }
 
@@ -372,6 +410,13 @@ $element-color-orange-80: palette(orange, 80);
 
 //responsible for the dropdown menu when clicked
 .p-dropdown-panel {
+    //spyglass icon
+    .p-dropdown-header {
+        .p-dropdown-filter-icon {
+            top: 21px;
+        }
+    }
+
     .p-dropdown-items {
         .p-dropdown-item {
             &.p-highlight {
@@ -394,6 +439,7 @@ $element-color-orange-80: palette(orange, 80);
 
     &:not(.p-disabled).p-focus {
         box-shadow: none;
+        border-color: $element-background-color-20;
     }
 
     &.p-component {
@@ -478,6 +524,16 @@ $element-color-orange-80: palette(orange, 80);
             &:hover {
                 border-color: $element-background-color-20;
                 background: palette(white, 100);
+            }
+        }
+    }
+}
+
+.p-multiselect-panel {
+    .p-multiselect-header {
+        .p-multiselect-filter-container {
+            .p-multiselect-filter-icon {
+                top: 21px;
             }
         }
     }
