@@ -14,6 +14,7 @@
         "mediaImageUrl": "https://mediaimage.qa.vubiquity.com",
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
         "mediaStorageUrl": "https://vuapi.qa.vubiquity.com/vubiquity/mediastorage/media-storage/v1",
+        "mediaIngestUrl": "https://vuapi.qa.vubiquity.com/vubiquity/mediaingest/media-ingest/v1",
         "service": {
             "avails": "/avails-api/v1",
             "availsInjest": "/avails-ingest/v1",
