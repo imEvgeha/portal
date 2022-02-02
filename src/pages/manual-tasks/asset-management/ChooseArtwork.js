@@ -6,11 +6,11 @@ import {URL as VuURL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {Skeleton} from 'primereact/skeleton';
 import {VirtualScroller} from 'primereact/virtualscroller';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import Loading from '../../static/Loading';
 import './ChooseArtwork.scss';
-import {fetchPosters, fetchAsset} from './assetManagementReducer';
-import {posterListSelector, assetDetailsSelector} from './assetManagementSelectors';
+import {fetchPosters, fetchAsset, removeMediaIngest} from './assetManagementReducer';
+import {posterListSelector, assetDetailsSelector, mediaIngestsSelector} from './assetManagementSelectors';
 import {fetchPoster, loginAssets} from './assetManagementService';
 import UploadArtworkForm from './components/UploadArtworkForm';
 import ArtworkItem from './components/artwork-item/ArtworkItem';
@@ -21,11 +21,12 @@ const DOP_POP_UP_MESSAGE = 'Please, select at least one thumbnail!';
 const IMG_WIDTH = 300;
 const IMG_HEIGHT = 200;
 
-const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) => {
+const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, mediaIngests}) => {
     const [selectedArtwork, setSelectedArtwork] = useState();
     const [posters, setPosters] = useState([]);
     const [lazyLoading, setLazyLoading] = useState(false);
     const [itemSize] = useState(Math.trunc((window.screen.width - 50) / IMG_WIDTH));
+    const dispatch = useDispatch();
 
     const {openModal, closeModal} = useContext(NexusModalContext);
     const sourceMediaAssetID = VuURL.getParamIfExists('sourceMediaAssetID', '');
@@ -72,12 +73,17 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
         setSelectedArtwork(id);
         DOP.setErrorsCount(0);
 
+        const ingestsLength = mediaIngests.length;
+        const ingestsLastIndex = ingestsLength - 1;
+        const importAssetJobID = ingestsLength ? mediaIngests[ingestsLastIndex].jobId : null;
         DOP.setData({
             chooseArtwork: {
                 sourceMediaAssetID,
                 selectedArtworkUri: uri,
+                importAssetJobID,
             },
         });
+        dispatch(removeMediaIngest());
     };
 
     const basicItemTemplate = item => {
@@ -166,16 +172,19 @@ ChooseArtwork.propTypes = {
     fetchAsset: PropTypes.func.isRequired,
     asset: PropTypes.object,
     posterList: PropTypes.array,
+    mediaIngests: PropTypes.array,
 };
 
 ChooseArtwork.defaultProps = {
     posterList: [],
     asset: null,
+    mediaIngests: [],
 };
 
 const mapStateToProps = state => ({
     posterList: posterListSelector(state),
     asset: assetDetailsSelector(state),
+    mediaIngests: mediaIngestsSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({

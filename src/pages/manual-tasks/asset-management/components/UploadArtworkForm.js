@@ -10,6 +10,7 @@ import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/load
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {uploadArtwork, UPLOAD_ARTWORK} from '../assetManagementReducer';
+import { assetDetailsSelector } from '../assetManagementSelectors';
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -21,7 +22,7 @@ const ButtonContainer = styled.div`
     }
 `;
 
-const UploadArtworkForm = ({asset, closeModal, uploadArtwork, isUploading, tenantId}) => {
+const UploadArtworkForm = ({asset, closeModal, uploadArtwork, isUploading, tenantId, details}) => {
     const [file, setFile] = useState(null);
 
     const handleSubmit = values => {
@@ -33,7 +34,7 @@ const UploadArtworkForm = ({asset, closeModal, uploadArtwork, isUploading, tenan
     };
 
     const handleUploadClick = () => {
-        uploadArtwork({file, closeModal, tenantId});
+        uploadArtwork({file, closeModal, tenantId, details});
     };
 
     const {providerAssetId, tenantId: assetTenantId, metadataGroups, type, renditions} = asset;
@@ -113,10 +114,12 @@ UploadArtworkForm.propTypes = {
     tenantId: PropTypes.string.isRequired,
     asset: PropTypes.object,
     isUploading: PropTypes.bool,
+    details: PropTypes.object,
 };
 
 UploadArtworkForm.defaultProps = {
     isUploading: false,
+    details: null,
     asset: null,
 };
 
@@ -125,6 +128,7 @@ const mapStateToProps = state => {
 
     return {
         isUploading: loadingSelector(state),
+        details: assetDetailsSelector(state),
     };
 };
 

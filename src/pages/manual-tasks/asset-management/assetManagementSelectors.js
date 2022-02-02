@@ -12,3 +12,4 @@ const getAssetManagementReducer = createSelector(getManualTasks, tasks => {
 
 export const posterListSelector = createSelector(getAssetManagementReducer, assets => assets?.posterList);
 export const assetDetailsSelector = createSelector(getAssetManagementReducer, assets => assets?.details);
+export const mediaIngestsSelector = createSelector(getAssetManagementReducer, assets => assets?.uploadedMediaIngests);

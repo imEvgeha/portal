@@ -1,5 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import ChooseArtwork from './ChooseArtwork';
 
@@ -15,16 +16,14 @@ describe('ChooseArtwork', () => {
     });
 
     beforeAll(() => {
-        wrapper = shallow(<ChooseArtwork store={store} />)
-            .find('ChooseArtwork')
-            .shallow();
+        wrapper = shallow(
+            <Provider store={store}>
+                <ChooseArtwork />
+            </Provider>
+        ).find('ChooseArtwork');
     });
 
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('should render 1 item', () => {
-        expect(wrapper.find('VirtualScroller').length).toEqual(1);
     });
 });
