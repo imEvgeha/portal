@@ -99,14 +99,17 @@ const EndpointContainer = ({endpoint}) => {
             >
                 <div className="row my-2 align-items-center">
                     <div className="col-10">
-                        <InputText
-                            className="nexus-c-search__inputbox"
-                            key="config_search_field"
-                            id="config_search_field__inp"
-                            name="config_search_field__inp"
-                            value={searchTerm}
-                            onChange={onSearchTermChanged}
-                        />
+                        <span className="p-input-icon-left">
+                            <i className="pi pi-search" />
+                            <InputText
+                                className="nexus-c-search__inputbox"
+                                key="config_search_field"
+                                id="config_search_field__inp"
+                                name="config_search_field__inp"
+                                value={searchTerm}
+                                onChange={onSearchTermChanged}
+                            />
+                        </span>
                     </div>
                     <div className="col-2 text-end">
                         <Button
