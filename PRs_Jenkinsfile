@@ -13,10 +13,13 @@ pipeline {
      stages {
          stage('build') {
              steps {
-               sh 'yarn'
-               sh 'yarn prebuild'
-               sh 'yarn build:local:prod'
-               sh 'yarn test'
+                sh 'pwd'
+                sh 'rm -Rf node_modules'
+                sh 'ls'
+                sh 'yarn'
+                sh 'yarn prebuild'
+                sh 'yarn build:local:prod'
+                sh 'yarn test'
              }
          }
      }
