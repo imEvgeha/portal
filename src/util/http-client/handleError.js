@@ -75,7 +75,11 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
                         subTitle={description || message || data.message || JSON.stringify(data) || errorMessage}
                         severity='error'
                     >
-                        <a href='#' onClick={() => store.dispatch(removeToast())}>Ok</a>
+                        {
+                            ERROR_MODAL.codes.includes(status) ? 
+                            <a href='#' onClick={() => store.dispatch(removeToast())}>Ok</a> : 
+                            null
+                        }
                     </ToastBody>
                 ),
                 isWithOverlay: ERROR_MODAL.codes.includes(status),
