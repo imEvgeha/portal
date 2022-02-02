@@ -3,6 +3,7 @@ import React from 'react';
 import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import { Button } from 'primereact/button';
 import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
 
@@ -48,7 +49,7 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
     const defaultErrorToast = {
         summary: ERROR_TITLE,
         severity: 'error',
-        isAutoDismiss: false,
+        sticky: true,
     };
 
     let toast = null;
@@ -68,17 +69,17 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
               }
             : {
                 severity: 'error',
-                isAutoDismiss: false,
+                sticky: true,
                 content: (
                     <ToastBody
-                        title={ERROR_MODAL.title}
-                        subTitle={description || message || data.message || JSON.stringify(data) || errorMessage}
+                        summary={ERROR_MODAL.title}
+                        detail={description || message || data.message || JSON.stringify(data) || errorMessage}
                         severity='error'
                     >
                         {
                             ERROR_MODAL.codes.includes(status) ? 
-                            <a href='#' onClick={() => store.dispatch(removeToast())}>Ok</a> : 
-                            null
+                                <Button label='Ok' className="p-button-link" onClick={() => store.dispatch(removeToast())} /> : 
+                                null
                         }
                     </ToastBody>
                 ),

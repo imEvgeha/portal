@@ -81,7 +81,6 @@ export const TitleMetadataView = ({
             const successToast = {
                 summary: 'Success',
                 severity: 'success',
-                isAutoDismiss: true,
                 detail: UNMERGE_TITLE_SUCCESS,
             };
 

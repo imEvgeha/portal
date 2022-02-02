@@ -200,7 +200,6 @@ export class EndpointContainer extends Component {
         const successToast = {
             summary: 'Success',
             severity: 'success',
-            isAutoDismiss: true,
             detail: `${capitalize(newVal.name)} config for ${selectedApi.displayName} successfully ${
                 newVal.id ? 'updated.' : 'added.'
             }`,

@@ -1,13 +1,16 @@
+import React from 'react';
 import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
     WARNING_ICON,
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push, goBack} from 'connected-react-router';
+import { Button } from 'primereact/button';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';
@@ -178,21 +181,24 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             yield put(push(URL.keepEmbedded(redirectPath)));
         }
 
+        const handleToastButtonClick = () => {
+            window.open(`/avails/rights/${focusedRight.id}`, '_blank');
+        }
+
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
-                actions: URL.isEmbedded()
-                    ? []
-                    : [
-                          {
-                              content: 'View Combined Right',
-                              onClick: () => window.open(`/avails/rights/${focusedRight.id}`, '_blank'),
-                          },
-                      ],
+                severity: SUCCESS_ICON,
+                content: (<ToastBody
+                    summary={SUCCESS_TITLE}
+                    detail={SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE}
+                    severity={'success'}
+                >
+                    {URL.isEmbedded()
+                        ?  <Button label="View Title" className="p-button-link" onClick={handleToastButtonClick} />
+                        : null
+                    }
+                </ToastBody>),
             },
         });
     } catch (error) {
@@ -261,10 +267,10 @@ export function* validateConflictingRights({payload}) {
             yield put({
                 type: ADD_TOAST,
                 payload: {
-                    title: WARNING_TITLE,
-                    icon: WARNING_ICON,
-                    description: WARNING_CONFLICTING_RIGHTS,
-                    isAutoDismiss: false,
+                    summary: WARNING_TITLE,
+                    severity: WARNING_ICON,
+                    detail: WARNING_CONFLICTING_RIGHTS,
+                    sticky: true,
                 },
             });
         }
@@ -272,10 +278,10 @@ export function* validateConflictingRights({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: WARNING_TITLE,
-                icon: WARNING_ICON,
-                description: WARNING_CONFLICTING_RIGHTS,
-                isAutoDismiss: false,
+                summary: WARNING_TITLE,
+                severity: WARNING_ICON,
+                detail: WARNING_CONFLICTING_RIGHTS,
+                sticky: true,
             },
         });
     }

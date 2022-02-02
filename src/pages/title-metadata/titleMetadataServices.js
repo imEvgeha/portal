@@ -84,7 +84,7 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
             const errorToast = {
                 summary: 'Regenerating Editorial Metadata Failed',
                 severity: 'warn',
-                isAutoDismiss: false,
+                sticky: true,
                 detail: message,
             };
             store.dispatch(addToast(errorToast));
@@ -93,7 +93,6 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
         const successToast = {
             summary: 'Success',
             severity: 'success',
-            isAutoDismiss: true,
             detail: 'Editorial Metadata Successfully Regenerated!',
         };
         store.dispatch(addToast(successToast));
@@ -112,7 +111,7 @@ export const unmergeTitle = async id => {
             const errorToast = {
                 summary: 'Unmerge not available',
                 severity: 'error',
-                isAutoDismiss: false,
+                sticky: true,
                 detail: response.body.description,
             };
             store.dispatch(addToast(errorToast));

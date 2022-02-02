@@ -41,14 +41,13 @@ const ReloadConfigBtn = ({addToast}) => {
                   summary: 'Reload Configuration Status',
                   detail: statusDesc(),
                   severity: 'success',
-                  isAutoDismiss: true,
                   isWithOverlay: false,
               })
             : addToast({
                   summary: 'Reload Configuration Status',
                   detail: statusDesc(),
                   severity: 'warn',
-                  isAutoDismiss: false,
+                  sticky: true,
                   isWithOverlay: false,
               });
     };

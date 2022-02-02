@@ -313,7 +313,6 @@ class RightCreate extends React.Component {
                     summary: SUCCESS_TITLE,
                     detail: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
                     severity: 'success',
-                    isAutoDismiss: true,
                     isWithOverlay: false,
                 });
                 if (response && response.id) {

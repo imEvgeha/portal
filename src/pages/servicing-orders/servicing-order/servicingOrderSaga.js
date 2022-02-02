@@ -42,10 +42,9 @@ function* saveFulfillmentOrder(requestMethod, {payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE,
             },
         });
     } catch (error) {

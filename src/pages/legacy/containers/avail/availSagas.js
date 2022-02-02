@@ -1,3 +1,4 @@
+import React from 'react';
 import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     EDIT_RIGHT_ERROR_TITLE,
@@ -16,6 +17,8 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {BLOCK_UI} from '../../constants/action-types';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {STORE_PENDING_RIGHT} from '../../../avails/right-matching/rightMatchingActionTypes';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
+import { Button } from 'primereact/button';
 
 export function* fetchAvailMapping(requestMethod) {
     try {
@@ -206,11 +209,11 @@ export function* handleMatchingRights({payload}) {
     const {error, right, isEdit, push, removeToast} = payload;
     const {message: {mergeRights, message, rightIDs} = {}, status} = error || {};
     const toastProps = {
-        title: isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE,
-        icon: ERROR_ICON,
-        isAutoDismiss: false,
+        summary: isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE,
+        severity: ERROR_ICON,
+        sticky: true,
         isWithOverlay: false,
-        description: message,
+        detail: message,
     };
     yield put({
         type: BLOCK_UI,
@@ -222,10 +225,19 @@ export function* handleMatchingRights({payload}) {
             type: ADD_TOAST,
             payload: {
                 ...toastProps,
-                actions: rightIDs.map(right => ({
-                    content: right,
-                    onClick: () => window.open(RightsURL.getRightUrl(right), '_blank'),
-                })),
+                content: (<ToastBody
+                    summary={isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE}
+                    detail={message}
+                    severity={'error'}
+                >
+                    {rightIDs.map(right => (
+                        <Button 
+                            label={right} 
+                            className="p-button-link" 
+                            onClick={() => window.open(RightsURL.getRightUrl(right), '_blank')}
+                        />
+                    ))}
+                </ToastBody>),
             },
         });
     } else if (status === 409 && mergeRights) {
@@ -237,15 +249,20 @@ export function* handleMatchingRights({payload}) {
             type: ADD_TOAST,
             payload: {
                 ...toastProps,
-                actions: [
-                    {
-                        content: RIGHT_ERROR_MSG_MERGED,
-                        onClick: () => {
+                content: (<ToastBody
+                    summary={SUCCESS_TITLE}
+                    detail={TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE}
+                    severity={'success'}
+                >
+                    <Button
+                        label={RIGHT_ERROR_MSG_MERGED}
+                        className="p-button-link" 
+                        onClick={() => {
                             removeToast();
                             push(URL.keepEmbedded('/avails/right-matching'));
-                        },
-                    },
-                ],
+                        }}
+                    />
+                </ToastBody>),
             },
         });
     } else {

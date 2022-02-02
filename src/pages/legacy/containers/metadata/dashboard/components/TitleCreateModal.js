@@ -31,6 +31,7 @@ import {
     SPORTS,
     SPECIAL,
 } from '../../../../../metadata/constants/contentType';
+import { Button as PrimeReactButton } from 'primereact/button';
 import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
@@ -156,24 +157,19 @@ class TitleCreate extends React.Component {
                     publisherService
                         .registerTitle(response.id, isSyncVZ, isSyncMovida)
                         .then(response => {
-                            const onLinkClick = (e) => {
-                                e.preventDefault();
-                                onViewTitleClick(response);
-                            }
                             this.props.addToast({
                                 severity: 'success',
                                 content: () => {
                                     return (
                                         <ToastBody 
-                                            title={SUCCESS_TITLE}
-                                            subTitle={titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
+                                            summary={SUCCESS_TITLE}
+                                            detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
                                             severity={'success'}
                                         >
-                                            <a href='#' onClick={onLinkClick}>View Title</a>
+                                            <PrimeReactButton label='View Title' className="p-button-link" onClick={() => onViewTitleClick(response)} />
                                         </ToastBody>
                                     )
                                 },
-                                isAutoDismiss: true,
                             });
                         })
                         .catch(() => {
@@ -196,18 +192,14 @@ class TitleCreate extends React.Component {
                     content: () => {
                         return (
                             <ToastBody 
-                                title={SUCCESS_TITLE}
-                                subTitle={titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
+                                summary={SUCCESS_TITLE}
+                                detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
                                 severity={'success'}
                             >
-                                <a href='#' onClick={(e) => {
-                                    e.preventDefault();
-                                    onViewTitleClick(response);
-                                }}>View Title</a>
+                                <PrimeReactButton label='View Title' className="p-button-link" onClick={() => onViewTitleClick(response)} />
                             </ToastBody>
                         )
                     },
-                    isAutoDismiss: true,
                 });
             })
             .catch(e => {

@@ -5,15 +5,16 @@ import {Toast} from 'primereact/toast';
 const NexusToastNotification = ({toasts, removeToast}) => {
     const toast = useRef(null);
     const showToast = (toastParam) => {
+        const {severity, summary, detail, life, sticky, content, closable} = toastParam;
         if(toast.current) {
             toast.current.show({
-                severity: toastParam.icon || toastParam.type || toastParam.severity,
-                summary: toastParam.title || toastParam.summary,
-                detail: toastParam.description || toastParam.detail,
-                life: toastParam.isAutoDismiss ? 3000 : toastParam.life,
-                sticky: !toastParam.life && !toastParam.isAutoDismiss ? true : false,
-                content: toastParam.content,
-                closable: toastParam.closable,
+                severity,
+                summary,
+                detail,
+                life,
+                sticky,
+                content,
+                closable,
             });
         }
     }

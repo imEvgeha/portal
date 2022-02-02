@@ -71,10 +71,9 @@ function* uploadArtwork({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: `${UPLOAD_SUCCESS_MESSAGE} ${resource.name}`,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: `${UPLOAD_SUCCESS_MESSAGE} ${resource.name}`,
             },
         });
 

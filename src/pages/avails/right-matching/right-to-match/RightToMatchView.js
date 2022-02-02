@@ -15,6 +15,7 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
 import {get, isEmpty} from 'lodash';
+import { Button as PrimeReactButton } from 'primereact/button';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
@@ -116,29 +117,24 @@ const RightToMatchView = ({
             .then(() => history.push(URL.keepEmbedded(`/avails/rights/${focusedRight.id}`)));
     };
 
-    const onRemoveToast = (e) => {
-        e.preventDefault();
-        removeToast()
-    }
-
     const onUpdateRightClick = () => {
         addToast({
             severity: 'warn',
             closable: false,
             content: (
                 <ToastBody
-                    title={WARNING_TITLE}
-                    subTitle={NEW_RIGHT_BUTTON_CLICK_MESSAGE}
+                    summary={WARNING_TITLE}
+                    detail={NEW_RIGHT_BUTTON_CLICK_MESSAGE}
                     severity='warn'
                 >
                     <div className='d-flex align-items-center'>
-                        <a href='#' onClick={onUpdateRight}>Ok</a>
+                        <PrimeReactButton label='Ok' className="p-button-link" onClick={onUpdateRight} />
                         <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} />
-                        <a href='#' onClick={onRemoveToast}>Cancel</a>
+                        <PrimeReactButton label='Cancel' className="p-button-link" onClick={() => removeToast()} />
                     </div>
                 </ToastBody>
             ),
-            isAutoDismiss: false,
+            sticky: true,
             isWithOverlay: true,
         });
     };

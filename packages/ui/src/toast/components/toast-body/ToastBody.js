@@ -4,8 +4,8 @@ import './ToastBody.scss';
 
 const ToastBody = ({
     severity,
-    title,
-    subTitle,
+    summary,
+    detail,
     children,
 }) => {
     const icons = {success: 'pi-check', warn: 'pi-exclamation-triangle', error: 'pi-times'};
@@ -17,10 +17,10 @@ const ToastBody = ({
                 </div>
                 <div className="col-9">
                     <div className='row'>
-                        <h4>{title}</h4>
+                        <h4>{summary}</h4>
                     </div>
                     <div className='row'>
-                        <p>{subTitle}</p>
+                        <p>{detail}</p>
                         {children}
                     </div>
                 </div>
@@ -31,14 +31,14 @@ const ToastBody = ({
 
 ToastBody.propTypes = {
     severity: PropTypes.string,
-    title: PropTypes.string,
-    subTitle: PropTypes.string,
+    summary: PropTypes.string,
+    detail: PropTypes.string,
 };
 
 ToastBody.defaultProps = {
     severity: 'success',
-    title: '',
-    subTitle: '',
+    summary: '',
+    detail: '',
 };
 
 export default ToastBody;
