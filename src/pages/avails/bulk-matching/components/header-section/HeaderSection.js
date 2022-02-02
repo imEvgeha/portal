@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button/dist/cjs/components/Button';
+import Button from '@atlaskit/button';
 import classNames from 'classnames';
 import {RIGHT_TABS} from '../../constants';
 

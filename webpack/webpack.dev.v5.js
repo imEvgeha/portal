@@ -1,10 +1,10 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const paths = require('./paths');
-
+// Webpack v5 config
 module.exports = envFile => ({
     mode: 'development',
-    devtool: 'eval-cheap-module-source-map',
+    devtool: envFile ? envFile.SOURCE_MAP : 'cheap-module-eval-source-map',
     module: {
         rules: [
             {
@@ -33,19 +33,25 @@ module.exports = envFile => ({
     devServer: {
         port: (envFile && envFile.PORT) || 3000,
         historyApiFallback: true,
-        watchOptions: {
-            ignored: /node_modules/,
+        static: {
+            watch: {
+                ignored: /node_modules/,
+            },
         },
-        clientLogLevel: 'info',
+
+        client: {
+            logging: 'info',
+        },
         hot: true,
-        inline: true,
         open: true,
-        stats: (envFile && envFile['BUILD_STATS']) || 'normal',
+        devMiddleware: {
+            stats: (envFile && envFile['BUILD_STATS']) || 'normal',
+        },
     },
     performance: {
         hints: false,
     },
     optimization: {
-        namedModules: true,
+        moduleIds: 'named',
     },
 });

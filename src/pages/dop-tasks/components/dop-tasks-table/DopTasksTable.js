@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Tag from '@atlaskit/tag/dist/cjs/Tag';
+import Tag from '@atlaskit/tag';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';

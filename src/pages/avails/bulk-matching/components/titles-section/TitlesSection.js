@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button/dist/cjs/components/Button';
+import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
 import useRowCountWithGridApiFix from '../../../../../util/hooks/useRowCountWithGridApiFix';

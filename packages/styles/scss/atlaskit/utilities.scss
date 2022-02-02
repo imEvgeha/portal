@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import './constants.scss';
 @import './theme.scss';
 
@@ -5,7 +7,7 @@
   Convert Pixels to Rems
 **/
 @function calculateRems($pixelSize, $base: $base-font-size) {
-    $remSize: $pixelSize / $base;
+    $remSize: math.div($pixelSize, $base);
     @return #{$remSize}rem;
 }
 
@@ -21,5 +23,5 @@
   Calculate spacing in rems based off multiples of fine grid size
 **/
 @function calcSpacingRems($val) {
-    @return #{$val * ($spacing-size / $base-font-size)}rem;
+    @return #{$val * math.div($spacing-size, $base-font-size)}rem;
 }
