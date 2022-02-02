@@ -9,7 +9,8 @@
         "mediaImageUrl": "https://mediaimage.dev.vubiquity.com",
         "deteBaseUrl": "https://vuapi.dev.vubiquity.com/vubiquity/dete/rest",
         "publisher": "https://vuapi.dev.vubiquity.com/vubiquity/titlespublishermovida",
-        "mediaStorageUrl": "https://mediastorage.dev.vubiquity.com/media-storage/v1",
+        "mediaStorageUrl": "https://vuapi.dev.vubiquity.com/vubiquity/mediastorage/media-storage/v1",
+        "mediaIngestUrl": "https://vuapi.dev.vubiquity.com/vubiquity/mediaingest/media-ingest/v1",
         "service": {
             "avails": "/avails-api/v1",
             "availsParser": "/avails-parser/v1",
