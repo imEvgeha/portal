@@ -4,7 +4,7 @@ import {NexusOverlayContext} from '../elements/nexus-overlay/NexusOverlay';
 import NexusToastNotification from '../elements/nexus-toast-notification/NexusToastNotification';
 import withToasts from './hoc/withToasts';
 
-const Toast = ({toasts, addToast, removeToast}) => {
+const Toast = ({toasts, removeToast}) => {
     const {setIsOverlayActive} = useContext(NexusOverlayContext);
 
     useEffect(() => {
@@ -12,12 +12,11 @@ const Toast = ({toasts, addToast, removeToast}) => {
         setIsOverlayActive(!!isWithOverlay);
     }, [toasts]);
 
-    return <NexusToastNotification toasts={toasts} addToast={addToast} removeToast={removeToast} />;
+    return <NexusToastNotification toasts={toasts} removeToast={removeToast} />;
 };
 
 Toast.propTypes = {
     toasts: PropTypes.array,
-    addToast: PropTypes.func.isRequired,
     removeToast: PropTypes.func.isRequired,
 };
 

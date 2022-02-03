@@ -143,10 +143,9 @@ const EndpointContainer = ({endpoint}) => {
         onCloseConfirmDialog();
 
         const successToast = {
-            title: 'DELETED',
-            icon: SUCCESS_ICON,
-            isAutoDismiss: true,
-            description: `${capitalize(entry.name)} config for ${endpoint.displayName} has been successfully deleted!`,
+            summary: 'DELETED',
+            severity: SUCCESS_ICON,
+            detail: `${capitalize(entry.name)} config for ${endpoint.displayName} has been successfully deleted!`,
         };
 
         configService.delete(endpoint?.urls?.['CRUD'], entry.id).then(() => {
@@ -229,10 +228,9 @@ const EndpointContainer = ({endpoint}) => {
     const editRecord = val => {
         const newVal = {...selectedConfig, ...val};
         const successToast = {
-            title: 'Success',
-            icon: SUCCESS_ICON,
-            isAutoDismiss: true,
-            description: `${capitalize(newVal.name)} config for ${endpoint.displayName} successfully ${
+            summary: SUCCESS_ICON,
+            
+            detail: `${capitalize(newVal.name)} config for ${endpoint.displayName} successfully ${
                 newVal.id ? 'updated.' : 'added.'
             }`,
         };

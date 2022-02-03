@@ -180,10 +180,9 @@ export function* updateTitle({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: UPDATE_TITLE_SUCCESS,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: UPDATE_TITLE_SUCCESS,
             },
         });
         yield put({
@@ -202,10 +201,10 @@ export function* updateTitle({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
-                isAutoDismiss: false,
-                description: UPDATE_TITLE_ERROR,
+                summary: ERROR_TITLE,
+                severity: ERROR_ICON,
+                sticky: true,
+                detail: UPDATE_TITLE_ERROR,
             },
         });
         yield put({
@@ -246,20 +245,19 @@ export function* syncTitle({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: 'Publish title',
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: `Successfully synced to ${payload.externalSystem}!`,
+                summary: 'Publish title',
+                severity: SUCCESS_ICON,
+                detail: `Successfully synced to ${payload.externalSystem}!`,
             },
         });
     } catch (err) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: 'Title Sync',
-                icon: ERROR_ICON,
-                isAutoDismiss: false,
-                description: err.message,
+                summary: 'Title Sync',
+                severity: ERROR_ICON,
+                sticky: true,
+                detail: err.message,
             },
         });
     } finally {
@@ -290,20 +288,19 @@ export function* publishTitle({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: 'Publish title',
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: `Successfully published to ${payload.externalSystem}!`,
+                summary: 'Publish title',
+                severity: SUCCESS_ICON,
+                detail: `Successfully published to ${payload.externalSystem}!`,
             },
         });
     } catch (err) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: 'Publish title',
-                icon: ERROR_ICON,
-                isAutoDismiss: false,
-                description: 'Unable to publish',
+                summary: 'Publish title',
+                severity: ERROR_ICON,
+                sticky: true,
+                detail: 'Unable to publish',
             },
         });
     } finally {
@@ -326,10 +323,9 @@ function* uploadMetadata({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: `${UPLOAD_SUCCESS_MESSAGE} ${response.id}`,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: `${UPLOAD_SUCCESS_MESSAGE} ${response.id}`,
             },
         });
 
@@ -346,10 +342,10 @@ function* uploadMetadata({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: METADATA_UPLOAD_ERROR_TITLE,
-                icon: ERROR_ICON,
-                isAutoDismiss: false,
-                description: `Type: ${e.type}`,
+                summary: METADATA_UPLOAD_ERROR_TITLE,
+                severity: ERROR_ICON,
+                sticky: true,
+                detail: `Type: ${e.type}`,
             },
         });
     }

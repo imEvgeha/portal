@@ -323,11 +323,10 @@ const NexusPersonsList = ({
         const endpoint = castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'];
 
         const successToast = {
-            title: 'Success',
+            summary: 'Success',
             icon: SUCCESS_ICON,
-            isAutoDismiss: true,
             // description: `Cast or Crew has been successfully ${newVal.id ? 'updated.' : 'added.'}`,
-            description: `${newVal.displayName} has been successfully ${newVal.id ? 'updated.' : 'added.'}`,
+            detail: `${newVal.displayName} has been successfully ${newVal.id ? 'updated.' : 'added.'}`,
         };
 
         setSubmitLoading(true);

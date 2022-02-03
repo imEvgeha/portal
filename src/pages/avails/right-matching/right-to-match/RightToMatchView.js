@@ -9,11 +9,13 @@ import {defineActionButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
 import {get, isEmpty} from 'lodash';
+import { Button as PrimeReactButton } from 'primereact/button';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
@@ -107,7 +109,8 @@ const RightToMatchView = ({
         );
     };
 
-    const onUpdateRight = () => {
+    const onUpdateRight = (e) => {
+        e.preventDefault();
         removeToast();
         rightsService
             .updateRightWithFullData({...focusedRight, status: 'Ready'}, focusedRight.id, true)
@@ -116,15 +119,22 @@ const RightToMatchView = ({
 
     const onUpdateRightClick = () => {
         addToast({
-            summary: WARNING_TITLE,
-            detail: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
             severity: 'warn',
-            actions: [
-                {content: 'Cancel', onClick: () => removeToast()},
-                {content: 'OK', onClick: onUpdateRight},
-            ],
-            isAutoDismiss: false,
-            isWithOverlay: true,
+            closable: false,
+            content: (
+                <ToastBody
+                    summary={WARNING_TITLE}
+                    detail={NEW_RIGHT_BUTTON_CLICK_MESSAGE}
+                    severity='warn'
+                >
+                    <div className='d-flex align-items-center'>
+                        <PrimeReactButton label='Ok' className="p-button-link" onClick={onUpdateRight} />
+                        <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} />
+                        <PrimeReactButton label='Cancel' className="p-button-link" onClick={() => removeToast()} />
+                    </div>
+                </ToastBody>
+            ),
+            sticky: true,
         });
     };
 

@@ -49,7 +49,7 @@ const Licensors = ({selectValues, data, isEdit, onChange}) => {
             const errorToast = {
                 summary: ERROR_TITLE,
                 severity: 'error',
-                isAutoDismiss: false,
+                sticky: true,
                 detail: LICENSOR_ERROR,
             };
             store.dispatch(addToast(errorToast));

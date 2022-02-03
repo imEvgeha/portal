@@ -72,10 +72,9 @@ export function* fetchLinkedToOriginalRights({payload}) {
             yield put({
                 type: ADD_TOAST,
                 payload: {
-                    title: SUCCESS_TITLE,
-                    icon: SUCCESS_ICON,
-                    isAutoDismiss: true,
-                    description: `${rightsWithoutDeps.length} ${
+                    summary: SUCCESS_TITLE,
+                    severity: SUCCESS_ICON,
+                    detail: `${rightsWithoutDeps.length} ${
                         rightsWithoutDeps.length === 1 ? 'Right' : 'Rights'
                     } deleted`,
                 },
@@ -108,10 +107,9 @@ export function* bulkDeleteSelectedRights({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: `${count} ${count === 1 ? 'Right' : 'Rights'} deleted`,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: `${count} ${count === 1 ? 'Right' : 'Rights'} deleted`,
             },
         });
     } catch (error) {
@@ -182,10 +180,9 @@ export function* updateRight({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: UPDATE_RIGHT_SUCCESS_MESSAGE,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: UPDATE_RIGHT_SUCCESS_MESSAGE,
             },
         });
     } catch (error) {
@@ -200,10 +197,10 @@ export function* updateRight({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: UPDATE_RIGHT_FAILED,
-                icon: ERROR_ICON,
-                isAutoDismiss: false,
-                description: `${error.message.message.slice(0, MAX_CHARS)}...`,
+                summary: UPDATE_RIGHT_FAILED,
+                severity: ERROR_ICON,
+                sticky: true,
+                detail: `${error.message.message.slice(0, MAX_CHARS)}...`,
             },
         });
     } finally {

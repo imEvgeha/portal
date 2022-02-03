@@ -25,8 +25,6 @@ const NexusFeedback = ({addToast, currentPage, closeModal}) => {
             summary: SUCCESS_TITLE,
             detail: THANKYOU_NOTE,
             severity: 'success',
-            isAutoDismiss: true,
-            isWithOverlay: false,
         });
     };
 
