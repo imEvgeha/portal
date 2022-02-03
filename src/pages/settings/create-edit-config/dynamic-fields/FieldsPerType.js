@@ -21,7 +21,7 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
                 name={elementSchema.name}
                 key={`${elementSchema.id}_controller`}
                 control={form.control}
-                defaultValue={value}
+                defaultValue={value || elementSchema.defaultValue}
                 rules={{...createRules(!!elementSchema.required, elementSchema.validWhen)}}
                 render={({field, fieldState}) => {
                     const onFormElementChanged = e => {
@@ -77,8 +77,14 @@ const getElement = (elementSchema, field, value, form, onChange, cb) => {
             );
         }
         case 'timestamp': {
-            const tmpDate = new Date(field.value);
-            const val = new Date(tmpDate.toLocaleString('en-US', {timeZone: 'UTC'}));
+            let tmpDate;
+            let val;
+
+            if (field.value) {
+                tmpDate = new Date(field.value);
+                val = new Date(tmpDate.toLocaleString('en-US', {timeZone: 'UTC'}));
+            }
+
             return (
                 <Calendar
                     id={elementSchema.id}
