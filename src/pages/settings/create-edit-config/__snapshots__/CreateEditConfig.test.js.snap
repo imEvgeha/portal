@@ -176,7 +176,6 @@ exports[`CreateEditConfig should match snapshot 1`] = `
               "unregister": [Function],
             }
           }
-          defaultValue=""
           key="id_controller"
           name="id"
           render={[Function]}
@@ -260,7 +259,6 @@ exports[`CreateEditConfig should match snapshot 1`] = `
               "unregister": [Function],
             }
           }
-          defaultValue=""
           key="createdAt_controller"
           name="createdAt"
           render={[Function]}
