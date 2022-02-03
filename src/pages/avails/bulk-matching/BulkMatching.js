@@ -203,8 +203,6 @@ export const BulkMatching = ({
                 ? TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE(count, selectedTableData.length - count)
                 : TITLE_BULK_MATCH_SUCCESS_MESSAGE(affectedTableData.length),
             severity: 'success',
-            
-            isWithOverlay: false,
         });
     };
 

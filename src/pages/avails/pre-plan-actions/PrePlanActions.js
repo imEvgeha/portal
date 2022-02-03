@@ -85,7 +85,6 @@ export const PrePlanActions = ({
                 detail: NO_TERRITORIES_SELECTED,
                 severity: 'warn',
                 sticky: true,
-                isWithOverlay: false,
             });
             return;
         }
@@ -201,8 +200,6 @@ export const PrePlanActions = ({
             summary: SUCCESS_TITLE,
             detail: getSuccessToastMsg(noOfItems),
             severity: 'success',
-            
-            isWithOverlay: false,
         });
     };
 

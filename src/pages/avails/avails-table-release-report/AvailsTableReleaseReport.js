@@ -37,7 +37,6 @@ const AvailsTableReleaseReport = ({addToast}) => {
                     summary: ERROR_MESSAGE,
                     severity: 'error',
                     sticky: true,
-                    isWithOverlay: false,
                 });
             });
     };

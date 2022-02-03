@@ -212,7 +212,6 @@ export function* handleMatchingRights({payload}) {
         summary: isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE,
         severity: ERROR_ICON,
         sticky: true,
-        isWithOverlay: false,
         detail: message,
     };
     yield put({

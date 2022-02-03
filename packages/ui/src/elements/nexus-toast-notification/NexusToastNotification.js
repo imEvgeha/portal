@@ -5,18 +5,7 @@ import {Toast} from 'primereact/toast';
 const NexusToastNotification = ({toasts, removeToast}) => {
     const toast = useRef(null);
     const showToast = (toastParam) => {
-        const {severity, summary, detail, life, sticky, content, closable} = toastParam;
-        if(toast.current) {
-            toast.current.show({
-                severity,
-                summary,
-                detail,
-                life,
-                sticky,
-                content,
-                closable,
-            });
-        }
+        if(toast.current) toast.current.show({...toastParam});
     }
 
     useEffect(() => {

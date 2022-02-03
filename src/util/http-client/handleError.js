@@ -83,7 +83,6 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
                         }
                     </ToastBody>
                 ),
-                isWithOverlay: ERROR_MODAL.codes.includes(status),
               };
     }
     store.dispatch(addToast(toast));

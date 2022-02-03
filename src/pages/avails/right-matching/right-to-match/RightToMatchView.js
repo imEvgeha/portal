@@ -135,7 +135,6 @@ const RightToMatchView = ({
                 </ToastBody>
             ),
             sticky: true,
-            isWithOverlay: true,
         });
     };
 

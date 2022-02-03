@@ -62,7 +62,6 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
             >
                 <PrimeReactButton label='View Title' className="p-button-link" onClick={handleLinkClick} />
             </ToastBody>),
-            isWithOverlay: true,
         });
     };
 
@@ -91,7 +90,6 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
                     </ToastBody>
                 ),
                 sticky: true,
-                isWithOverlay: true,
             });
         } else {
             mergeTitles();
