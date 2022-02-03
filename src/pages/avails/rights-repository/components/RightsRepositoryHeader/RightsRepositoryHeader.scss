@@ -1,17 +1,11 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 
 .nexus-c-rights-repository-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    
     @include padding(0, 0, 6, 0);
 
-    &__title {
-        display: flex;
-        align-items: center;
-    }
-
-    &__title-text {
-        @include margin(0, 4);
+    .nexus-c-rights-repository-header__title-text {
+        @include margin(0);
+        font-weight: bold;
     }
 }
