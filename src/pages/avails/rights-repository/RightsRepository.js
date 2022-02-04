@@ -83,6 +83,8 @@ const RightsRepository = ({
     setIsTableDataLoading,
     username,
     onFiltersChange,
+
+    fromSelectedTable,
 }) => {
     const isMounted = useRef(true);
     const [updatedMapping, setUpdatedMapping] = useState(null);
@@ -95,10 +97,6 @@ const RightsRepository = ({
     const [selectedForPlanningGridApi, setSelectedForPlanningGridApi] = useState(null);
     const [selectedForPlanningColumnApi, setSelectedForPlanningColumnApi] = useState(null);
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
-
-    console.log('%cselectedForPlanningGridApi', 'color: magenta; font-size: 12px;', selectedForPlanningGridApi);
-
-    console.log('%cselectedRepoRights', 'color: magenta; font-size: 12px;', selectedRepoRights);
 
     const [attachment, setAttachment] = useState();
     const {search} = location;
@@ -226,17 +224,7 @@ const RightsRepository = ({
         }
     }, [search, currentUserSelectedRights, selectedIngest, gridApi, isTableDataLoading]);
 
-    // useEffect(() => {
-    //     if (isMounted.current && selectedGridApi) {
-    //         if (isTableDataLoading) {
-    //             selectedGridApi.clearFocusedCell();
-    //             selectedGridApi.showLoadingOverlay();
-    //         } else {
-    //             selectedGridApi.hideOverlay();
-    //         }
-    //     }
-    // }, [isTableDataLoading, selectedGridApi]);
-
+    /** ****************TODO: CHECK THIS BELOW ** */
     useEffect(() => {
         if (isMounted.current && selectedGridApi && selectedRepoRights.length > 0) {
             const updatedPrePlanRights = [...currentUserPrePlanRights];
@@ -253,22 +241,6 @@ const RightsRepository = ({
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
-
-    // useEffect(() => {
-    //     if (isMounted.current && gridApi && selectedRepoRights.length > 0) {
-    //         const updatedPrePlanRights = [...currentUserPrePlanRights];
-    //         selectedRepoRights?.forEach(selectedRight => {
-    //             const index = currentUserPrePlanRights?.findIndex(right => right.id === selectedRight.id);
-    //             if (index >= 0) {
-    //                 updatedPrePlanRights[index] = {
-    //                     ...currentUserPrePlanRights[index],
-    //                     coreTitleId: selectedRight.coreTitleId,
-    //                 };
-    //             }
-    //         });
-    //         // gridApi.selectAll();
-    //     }
-    // }, [selectedRepoRights, selectedGridApi]);
 
     // Fetch and set DOP projects count for current user
     useEffect(() => {
@@ -298,6 +270,14 @@ const RightsRepository = ({
             setCurrentUserSelectedRights(Object.values(usersSelectedRights));
         }
     }, [JSON.stringify(selectedRights), username]);
+
+    // useEffect(() => {
+    //     if (isMounted.current && !isEmpty(fromSelectedTable) && username) {
+
+    //         const usersSelectedRights = get(fromSelectedTable, username, {});
+    //         usersSelectedRights !== currentUserSelectedRights && setCurrentUserSelectedRights(Object.values(usersSelectedRights));
+    //     }
+    // }, [activeTab]);
 
     const columnDefsClone = columnDefs.map(columnDef => {
         const updatedColumnDef = {
@@ -722,7 +702,6 @@ const RightsRepository = ({
                 selectedRepoRights={selectedRepoRights}
                 gridApi={gridApi}
                 selectedRights={selectedRights}
-                //  setSelectedRights={setSelectedRights}
                 username={username}
                 selectedGridApi={selectedGridApi}
                 setSelectedGridApi={setSelectedGridApi}
@@ -772,6 +751,7 @@ RightsRepository.propTypes = {
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
     onFiltersChange: PropTypes.func,
+    fromSelectedTable: PropTypes.object,
 };
 
 RightsRepository.defaultProps = {
@@ -783,7 +763,8 @@ RightsRepository.defaultProps = {
     rightsFilter: {},
     isTableDataLoading: false,
     setIsTableDataLoading: () => null,
-    onFiltersChange: PropTypes.func,
+    onFiltersChange: () => null,
+    fromSelectedTable: {},
 };
 
 const mapStateToProps = () => {
@@ -792,7 +773,7 @@ const mapStateToProps = () => {
     const selectedRightsSelector = selectors.createSelectedRightsSelector();
     const preplanRightsSelector = selectors.createPreplanRightsSelector();
     const rightsFilterSelector = selectors.createRightsFilterSelector();
-
+    const fromSelectedTableSelector = selectors.createFromSelectedTableSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
@@ -802,6 +783,7 @@ const mapStateToProps = () => {
         prePlanRights: preplanRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
         username: getUsername(state),
+        fromSelectedTable: fromSelectedTableSelector(state, props),
     });
 };
 

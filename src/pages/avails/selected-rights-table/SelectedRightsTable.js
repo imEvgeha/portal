@@ -11,7 +11,7 @@ import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
 import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridApiFix';
 import {RIGHTS_SELECTED_TAB} from '../rights-repository/constants';
-import {setSelectedRights} from '../rights-repository/rightsActions';
+import {setSelectedRights, storeFromSelectedTable} from '../rights-repository/rightsActions';
 
 // /* eslint-disable no-unused-expressions, no-magic-numbers, no-console */
 
@@ -25,9 +25,7 @@ const SelectedRightsGrid = compose(
 const SelectedRightsTable = ({
     columnDefs,
     mapping,
-    onGridEvent,
     activeTab,
-    rowData,
 
     selectedGridApi,
     setSelectedGridApi,
@@ -63,7 +61,7 @@ const SelectedRightsTable = ({
             // gridApi?.forEachNode(node => node?.setSelected(true));
             selectedGridApi?.forEachNode(node => node?.setSelected(true));
         }
-    }, [JSON.stringify(currentUserSelectedRights), activeTab, gridApi]);
+    }, [activeTab]);
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
@@ -112,14 +110,14 @@ const SelectedRightsTable = ({
 
                     const payload = updatedState.reduce((selectedRights, currentRight) => {
                         selectedRights[currentRight.id] = currentRight;
-                        delete selectedRights.undefined;
+                        // delete selectedRights.undefined;
                         return selectedRights;
                     }, {});
 
                     const formatedRights = {[username]: payload};
 
                     // dispatch(storeFromSelectedTable(formatedRights))
-                    // dispatch(setSelectedRights(formatedRights))
+                    dispatch(setSelectedRights(formatedRights));
                 }
 
                 break;
@@ -143,11 +141,9 @@ const SelectedRightsTable = ({
             suppressRowClickSelection={true}
             notFilterableColumns={['action', 'buttons']}
             columnDefs={columnDefs}
-            // onGridEvent={onGridEvent}
             onGridEvent={onSelectedRightsRepositoryGridEvent}
             rowSelection="multiple"
             mapping={mapping}
-            // rowData={rowData}
             rowData={currentUserSelectedRights}
             setSelectedColumnApi={setSelectedColumnApi}
             setSelectedGridApi={setSelectedGridApi}
