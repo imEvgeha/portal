@@ -45,7 +45,7 @@
         "url": "https://vuapi.qa.vubiquity.com/vubiquity/avails",
         "injestUrl": "https://vuapi.qa.vubiquity.com/vubiquity/avails-ingest"
     },
-    "DOP_base": "http://dop.qa.vubiquity.com:8045",
+    "DOP_base": "https://dop.qa.vubiquity.com:8045",
     "keycloak": {
         "clientId": "portalapp-public",
         "realm": "Vubiquity",
