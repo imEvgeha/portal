@@ -27,7 +27,6 @@ const IconCellRenderer = params => {
     const successToast = {
         summary: 'Success',
         severity: 'success',
-        isAutoDismiss: true,
         detail: 'File downloading started',
     };
 

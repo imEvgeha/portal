@@ -24,10 +24,9 @@ export function* replayEvent(requestMethod, {payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: REPLAY_EVENT_SUCCESS_MESSAGE,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: REPLAY_EVENT_SUCCESS_MESSAGE,
             },
         });
     } catch (error) {
@@ -55,10 +54,9 @@ export function* replicateEvent(requestMethod, {payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: REPLICATE_EVENT_SUCCESS_MESSAGE,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: REPLICATE_EVENT_SUCCESS_MESSAGE,
             },
         });
     } catch (error) {

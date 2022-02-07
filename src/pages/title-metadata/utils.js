@@ -216,7 +216,6 @@ export const updateTerritoryMetadata = async (values, titleId) => {
             const successToast = {
                 summary: SUCCESS_TITLE,
                 severity: 'success',
-                isAutoDismiss: true,
                 detail: UPDATE_TERRITORY_METADATA_SUCCESS,
             };
             store.dispatch(addToast(successToast));
@@ -225,7 +224,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
         const errorToast = {
             summary: ERROR_TITLE,
             severity: 'error',
-            isAutoDismiss: false,
+            sticky: true,
             detail: UPDATE_TERRITORY_METADATA_ERROR,
         };
         store.dispatch(addToast(errorToast));
@@ -308,7 +307,7 @@ export const updateEditorialMetadata = async (values, titleId) => {
     const errorToast = {
         summary: ERROR_TITLE,
         severity: 'error',
-        isAutoDismiss: false,
+        sticky: true,
         detail: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
@@ -334,7 +333,6 @@ export const updateEditorialMetadata = async (values, titleId) => {
                 toast = {
                     summary: SUCCESS_TITLE,
                     severity: 'success',
-                    isAutoDismiss: true,
                     detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
                 };
             }
@@ -356,7 +354,7 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
             addToast({
                 summary: ERROR_TITLE,
                 severity: 'error',
-                isAutoDismiss: false,
+                sticky: true,
                 detail: response.error,
             })
         );
@@ -365,7 +363,6 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
             addToast({
                 summary: SUCCESS_TITLE,
                 severity: 'success',
-                isAutoDismiss: true,
                 detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
             })
         );

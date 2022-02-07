@@ -36,8 +36,7 @@ const AvailsTableReleaseReport = ({addToast}) => {
                 addToast({
                     summary: ERROR_MESSAGE,
                     severity: 'error',
-                    isAutoDismiss: false,
-                    isWithOverlay: false,
+                    sticky: true,
                 });
             });
     };

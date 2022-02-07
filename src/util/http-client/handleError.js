@@ -1,6 +1,9 @@
 /* eslint-disable no-magic-numbers */
+import React from 'react';
 import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import { Button } from 'primereact/button';
 import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
 
@@ -46,7 +49,7 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
     const defaultErrorToast = {
         summary: ERROR_TITLE,
         severity: 'error',
-        isAutoDismiss: false,
+        sticky: true,
     };
 
     let toast = null;
@@ -65,18 +68,24 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
                   ...errorToast,
               }
             : {
-                  summary: ERROR_MODAL.title,
-                  description: description || message || data.message || JSON.stringify(data) || errorMessage,
-                  severity: 'error',
-                  actions: ERROR_MODAL.codes.includes(status)
-                      ? [{content: 'OK', onClick: () => store.dispatch(removeToast())}]
-                      : [],
-                  isWithOverlay: ERROR_MODAL.codes.includes(status),
-                  isAutoDismiss: false,
+                severity: 'error',
+                sticky: true,
+                content: (
+                    <ToastBody
+                        summary={ERROR_MODAL.title}
+                        detail={description || message || data.message || JSON.stringify(data) || errorMessage}
+                        severity='error'
+                    >
+                        {
+                            ERROR_MODAL.codes.includes(status) ? 
+                                <Button label='Ok' className="p-button-link" onClick={() => store.dispatch(removeToast())} /> : 
+                                null
+                        }
+                    </ToastBody>
+                ),
               };
     }
     store.dispatch(addToast(toast));
-    setTimeout(() => store.dispatch(removeToast()), 4000);
 };
 
 const handleError = (error, options = {isWithErrorHandling: true}) => {

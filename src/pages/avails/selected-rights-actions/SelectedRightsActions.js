@@ -198,7 +198,6 @@ export const SelectedRightsActions = ({
                     detail: `You have successfully unmatched ${unmatchedRights.length} right(s).
                          Please validate title fields.`,
                     severity: 'success',
-                    isAutoDismiss: true,
                 });
             });
         },

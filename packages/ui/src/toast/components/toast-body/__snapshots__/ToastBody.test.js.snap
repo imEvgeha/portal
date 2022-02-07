@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WarningToastWithConfirmation should match snapshot 1`] = `
+<div
+  className="flex flex-column nexus-c-toast__container"
+>
+  <div
+    className="row type-success"
+  >
+    <div
+      className="text-center col-3 nexus-c-toast__icon-container"
+    >
+      <i
+        className="pi pi-check pi-fluid nexus-c-toast__icon"
+      />
+    </div>
+    <div
+      className="col-9"
+    >
+      <div
+        className="row"
+      >
+        <h4 />
+      </div>
+      <div
+        className="row"
+      >
+        <p />
+      </div>
+    </div>
+  </div>
+</div>
+`;
