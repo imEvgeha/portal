@@ -468,7 +468,7 @@ const RightsRepository = ({
     const hiddenSelectedAtFilter = useMemo(() => setHiddenFilters(false), [mapping]);
 
     const updateMapping = api => {
-        const checkActiveFilter = filter => Boolean(api.getFilterInstance(filter).isFilterActive());
+        const checkActiveFilter = filter => Boolean(api?.getFilterInstance(filter)?.isFilterActive());
         const resetFilters = filters => {
             filters.forEach(filterName => {
                 const filterInstance = api.getFilterInstance(filterName);
