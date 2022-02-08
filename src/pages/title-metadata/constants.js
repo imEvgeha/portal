@@ -3,6 +3,7 @@ export const CREATE_NEW_TITLE = 'Create New Title';
 export const SYNC_LOG = 'Sync Log';
 export const NEXUS = 'NEXUS';
 export const MOVIDA = 'MOVIDA';
+export const MOVIDA_INTL = 'movida-uk';
 export const VZ = 'VZ';
 export const VU = 'vu';
 export const MGM = 'MGM';

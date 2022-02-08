@@ -1,5 +1,5 @@
 import * as actionTypes from './titleMetadataActionTypes';
-import {VZ, MOVIDA} from './constants';
+import {VZ, MOVIDA, MOVIDA_INTL} from './constants';
 
 const initialState = {
     title: {},
@@ -15,7 +15,9 @@ const initialState = {
     isSyncingVZ: false,
     isPublishingVZ: false,
     isSyncingMOV: false,
+    isSyncingMovInt: false,
     isPublishingMOV: false,
+    isPublishingMovInt: false,
     gridState: {},
     filter: {},
     uploadLogFilter: {},
@@ -117,24 +119,28 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 ...state,
                 isSyncingVZ: payload === VZ ? true : state.isSyncingVZ,
                 isSyncingMOV: payload === MOVIDA ? true : state.isSyncingMOV,
+                isSyncingMovInt: payload === MOVIDA_INTL ? true : state.isSyncingMovInt,
             };
         case actionTypes.TITLE_IS_SYNCING_END:
             return {
                 ...state,
                 isSyncingVZ: payload === VZ ? false : state.isSyncingVZ,
                 isSyncingMOV: payload === MOVIDA ? false : state.isSyncingMOV,
+                isSyncingMovInt: payload === MOVIDA_INTL ? false : state.isSyncingMovInt,
             };
         case actionTypes.TITLE_IS_PUBLISHING_START:
             return {
                 ...state,
                 isPublishingVZ: payload === VZ ? true : state.isPublishingVZ,
                 isPublishingMOV: payload === MOVIDA ? true : state.isPublishingMOV,
+                isPublishingMovInt: payload === MOVIDA_INTL ? true : state.isPublishingMovInt,
             };
         case actionTypes.TITLE_IS_PUBLISHING_END:
             return {
                 ...state,
                 isPublishingVZ: payload === VZ ? false : state.isPublishingVZ,
                 isPublishingMOV: payload === MOVIDA ? false : state.isPublishingMOV,
+                isPublishingMovInt: payload === MOVIDA_INTL ? false : state.isPublishingMovInt,
             };
         case actionTypes.SET_TITLE_USER_DEFINED_GRID_STATE: {
             const {gridState = {}} = state;

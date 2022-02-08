@@ -29,11 +29,17 @@ export const createVZTitleIsSyncingSelector = () =>
 export const createMOVTitleIsSyncingSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isSyncingMOV || false);
 
+export const createMovIntTitleIsSyncingSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isSyncingMovInt || false);
+
 export const createVZTitleIsPublishingSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isPublishingVZ || false);
 
 export const createMOVTitleIsPublishingSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isPublishingMOV || false);
+
+export const createMovIntTitleIsPublishingSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isPublishingMovInt || false);
 
 export const createInitialTitleDataSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.initialData || null);

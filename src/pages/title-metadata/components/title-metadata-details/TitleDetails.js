@@ -12,7 +12,7 @@ import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
 import Loading from '../../../static/Loading';
-import {FIELDS_TO_REMOVE, MOVIDA, SYNC, VZ} from '../../constants';
+import {FIELDS_TO_REMOVE, MOVIDA, SYNC, VZ, MOVIDA_INTL} from '../../constants';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -66,8 +66,10 @@ const TitleDetails = ({
     isSaving,
     isVZTitleSyncing,
     isMOVTitleSyncing,
+    isMovIntTitleSyncing,
     isVZTitlePublishing,
     isMOVTitlePublishing,
+    isMovIntTitlePublishing,
     titleLoading,
     emetLoading,
     clearSeasonPersons,
@@ -77,6 +79,7 @@ const TitleDetails = ({
     const [refresh, setRefresh] = useState(false);
     const [VZDisabled, setVZDisabled] = useState(true);
     const [MOVDisabled, setMOVDisabled] = useState(true);
+    const [MovIntDisabled, setMovIntDisabled] = useState(true);
     const [episodesCount, setEpisodesCount] = useState('0');
 
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
@@ -153,6 +156,7 @@ const TitleDetails = ({
             setRefresh(prev => !prev);
             setVZDisabled(false);
             setMOVDisabled(false);
+            setMovIntDisabled(false);
         });
     };
 
@@ -194,7 +198,20 @@ const TitleDetails = ({
             publishTitle({id, externalSystem});
         }
 
-        externalSystem === VZ ? setVZDisabled(true) : setMOVDisabled(true);
+        // externalSystem === VZ ? setVZDisabled(true) : setMOVDisabled(true);
+        switch (externalSystem) {
+            case VZ:
+                setVZDisabled(true);
+                break;
+            case MOVIDA:
+                setMOVDisabled(true);
+                break;
+            case MOVIDA_INTL:
+                setMovIntDisabled(true);
+                break;
+            default:
+                break;
+        }
     };
 
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
@@ -232,6 +249,16 @@ const TitleDetails = ({
                                 isSyncing={isVZTitleSyncing}
                                 isPublishing={isVZTitlePublishing}
                                 isDisabled={VZDisabled}
+                                titleUpdatedAt={title.updatedAt}
+                                hasButtons={isNexusTitle(title.id)}
+                            />
+                            <SyncPublish
+                                externalSystem={MOVIDA_INTL}
+                                externalIds={externalIds}
+                                onSyncPublish={syncPublishHandler}
+                                isSyncing={isMovIntTitleSyncing}
+                                isPublishing={isMovIntTitlePublishing || isVZTitlePublishing}
+                                isDisabled={MovIntDisabled}
                                 titleUpdatedAt={title.updatedAt}
                                 hasButtons={isNexusTitle(title.id)}
                             />
@@ -275,8 +302,10 @@ TitleDetails.propTypes = {
     isSaving: PropTypes.bool,
     isVZTitleSyncing: PropTypes.bool,
     isMOVTitleSyncing: PropTypes.bool,
+    isMovIntTitleSyncing: PropTypes.bool,
     isVZTitlePublishing: PropTypes.bool,
     isMOVTitlePublishing: PropTypes.bool,
+    isMovIntTitlePublishing: PropTypes.bool,
     fetchConfigApiEndpoints: PropTypes.func,
     configApiEndpoints: PropTypes.array,
     titleLoading: PropTypes.bool,
@@ -304,8 +333,10 @@ TitleDetails.defaultProps = {
     isSaving: false,
     isVZTitleSyncing: false,
     isMOVTitleSyncing: false,
+    isMovIntTitleSyncing: false,
     isVZTitlePublishing: false,
     isMOVTitlePublishing: false,
+    isMovIntTitlePublishing: false,
     fetchConfigApiEndpoints: () => null,
     clearSeasonPersons: () => null,
     titleLoading: true,
@@ -325,8 +356,10 @@ const mapStateToProps = () => {
     const editorialMetadataSelector = selectors.createEditorialMetadataSelector();
     const isVZTitleSyncingSelector = selectors.createVZTitleIsSyncingSelector();
     const isMOVTitleSyncingSelector = selectors.createMOVTitleIsSyncingSelector();
+    const isMovIntTitleSyncingSelector = selectors.createMovIntTitleIsSyncingSelector();
     const isVZTitlePublishingSelector = selectors.createVZTitleIsPublishingSelector();
     const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
+    const isMovIntTitlePublishingSelector = selectors.createMovIntTitleIsPublishingSelector();
     const settingsConfigEndpointsSelector = settingsSelectors.createSettingsEndpointsSelector();
 
     return (state, props) => ({
@@ -342,8 +375,10 @@ const mapStateToProps = () => {
         isSaving: detailsSelectors.isSavingSelector(state),
         isVZTitleSyncing: isVZTitleSyncingSelector(state, props),
         isMOVTitleSyncing: isMOVTitleSyncingSelector(state, props),
+        isMovIntTitleSyncing: isMovIntTitleSyncingSelector(state, props),
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
+        isMovIntTitlePublishing: isMovIntTitlePublishingSelector(state, props),
         configApiEndpoints: settingsConfigEndpointsSelector(state, props),
     });
 };
