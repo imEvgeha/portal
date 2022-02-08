@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Popup from '@atlaskit/popup';
 import Select from '@atlaskit/select';
+import AtlaskitMoreIcon from '@vubiquity-nexus/portal-assets/atlaskit-more-icon.svg';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
@@ -93,7 +94,7 @@ const AvailsTableReleaseReport = ({addToast}) => {
                 trigger={triggerProps => (
                     <Button {...triggerProps} isSelected={isOpen} onClick={() => setIsOpen(!isOpen)} shouldFitContainer>
                         <span className="nexus-c-right-repository-release-report-button__title">{NEW_RELEASE_REPORT}</span>
-                        <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M8.292 10.293a1.009 1.009 0 0 0 0 1.419l2.939 2.965c.218.215.5.322.779.322s.556-.107.769-.322l2.93-2.955a1.01 1.01 0 0 0 0-1.419.987.987 0 0 0-1.406 0l-2.298 2.317-2.307-2.327a.99.99 0 0 0-1.406 0z" fill="currentColor" fill-rule="evenodd"></path></svg>
+                        <AtlaskitMoreIcon />
                     </Button>
                 )}
             />
