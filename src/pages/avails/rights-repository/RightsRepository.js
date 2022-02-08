@@ -17,7 +17,7 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
-import {isEmpty, isEqual, get, debounce} from 'lodash';
+import {isEmpty, isEqual, get} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -106,6 +106,7 @@ const RightsRepository = ({
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
     const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
+
     const [singleRightMatch, setSingleRightMatch] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
@@ -115,8 +116,6 @@ const RightsRepository = ({
             isMounted.current = false;
         };
     }, []);
-
-    console.log('%cselectedRights STATE', 'color: lawngreen; font-size: 11px;', selectedRights);
 
     useEffect(() => {
         const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
@@ -224,7 +223,6 @@ const RightsRepository = ({
         }
     }, [search, currentUserSelectedRights, selectedIngest, gridApi, isTableDataLoading]);
 
-    /** ****************TODO: CHECK THIS BELOW ** */
     useEffect(() => {
         if (isMounted.current && selectedGridApi && selectedRepoRights.length > 0) {
             const updatedPrePlanRights = [...currentUserPrePlanRights];
@@ -238,7 +236,6 @@ const RightsRepository = ({
                 }
             });
             updatedPrePlanRights.length && setPreplanRights({[username]: updatedPrePlanRights});
-            selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
 
@@ -271,13 +268,13 @@ const RightsRepository = ({
         }
     }, [JSON.stringify(selectedRights), username]);
 
-    // useEffect(() => {
-    //     if (isMounted.current && !isEmpty(fromSelectedTable) && username) {
-
-    //         const usersSelectedRights = get(fromSelectedTable, username, {});
-    //         usersSelectedRights !== currentUserSelectedRights && setCurrentUserSelectedRights(Object.values(usersSelectedRights));
-    //     }
-    // }, [activeTab]);
+    // Update with state from SelectedRightsTable
+    useEffect(() => {
+        if (isMounted.current && !isEmpty(fromSelectedTable) && username) {
+            const usersSelectedRights = get(fromSelectedTable, username, {});
+            setCurrentUserSelectedRights(Object.values(usersSelectedRights));
+        }
+    }, [fromSelectedTable]);
 
     const columnDefsClone = columnDefs.map(columnDef => {
         const updatedColumnDef = {
@@ -496,8 +493,8 @@ const RightsRepository = ({
         api.refreshHeader();
     };
 
-    const onRightsRepositoryGridEvent = debounce(({type, api, columnApi: gridColumnApi}) => {
-        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED, ROW_DATA_CHANGED} = GRID_EVENTS;
+    const onRightsRepositoryGridEvent = ({type, api, columnApi: gridColumnApi}) => {
+        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
 
         switch (type) {
             case FIRST_DATA_RENDERED:
@@ -598,7 +595,7 @@ const RightsRepository = ({
             default:
                 break;
         }
-    }, 100);
+    };
 
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
@@ -621,7 +618,6 @@ const RightsRepository = ({
             : selectedRights;
     };
 
-    gridApi && selectedForPlanningGridApi && console.log('ZZZZZZZZZZZZ', isEqual(gridApi, selectedForPlanningGridApi));
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader gridApi={gridApi} columnApi={columnApi} username={username} activeTab={activeTab} />

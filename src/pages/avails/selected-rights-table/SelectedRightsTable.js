@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+/* eslint-disable no-unused-expressions, no-magic-numbers */
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
@@ -9,11 +10,8 @@ import {get, isEmpty} from 'lodash';
 import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
-import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridApiFix';
 import {RIGHTS_SELECTED_TAB} from '../rights-repository/constants';
-import {setSelectedRights, storeFromSelectedTable} from '../rights-repository/rightsActions';
-
-// /* eslint-disable no-unused-expressions, no-magic-numbers, no-console */
+import {storeFromSelectedTable} from '../rights-repository/rightsActions';
 
 const SelectedRightsGrid = compose(
     withColumnsResizing(),
@@ -26,39 +24,29 @@ const SelectedRightsTable = ({
     columnDefs,
     mapping,
     activeTab,
-
     selectedGridApi,
     setSelectedGridApi,
     selectedColumnApi,
     setSelectedColumnApi,
-    gridApi,
-
     selectedFilter,
     setSelectedFilter,
     selectedRepoRights,
-
     selectedRights,
     username,
 }) => {
-    // const { api: gridApi, setApi: setGridApi } = useRowCountWithGridApiFix()
-    // const [selectedGridApi, setSelectedGridApi] = useState(null);
-    //  const [selectedColumnApi, setSelectedColumnApi] = useState(null);
-
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
-    console.log('%ccurrentUserSelectedRights', 'color: lawngreen; font-size: 12px;', currentUserSelectedRights);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!isEmpty(selectedRights) && username && gridApi) {
+        if (!isEmpty(selectedRights) && username && selectedGridApi) {
             const usersSelectedRights = get(selectedRights, username, {});
             setCurrentUserSelectedRights(Object.values(usersSelectedRights));
         }
     }, [activeTab === 'Selected']);
 
     useEffect(() => {
-        if (!isEmpty(selectedRights) && username && currentUserSelectedRights && gridApi) {
-            // gridApi?.forEachNode(node => node?.setSelected(true));
+        if (!isEmpty(selectedRights) && username && currentUserSelectedRights && selectedGridApi) {
             selectedGridApi?.forEachNode(node => node?.setSelected(true));
         }
     }, [activeTab]);
@@ -71,18 +59,12 @@ const SelectedRightsTable = ({
                 !selectedGridApi && setSelectedGridApi(api);
                 !selectedColumnApi && setSelectedColumnApi(columnApi);
 
-                // setGridApi && setGridApi(api);
-                // !selectedColumnApi && setSelectedColumnApi(columnApi);
-
                 api?.forEachNode(node => node?.setSelected(true));
 
                 break;
             case READY:
                 !selectedGridApi && setSelectedGridApi(api);
                 !selectedColumnApi && setSelectedColumnApi(columnApi);
-
-                // setGridApi && setGridApi(api);
-                // !selectedColumnApi && setSelectedColumnApi(columnApi);
 
                 api?.forEachNode(node => node?.setSelected(true));
                 break;
@@ -110,16 +92,13 @@ const SelectedRightsTable = ({
 
                     const payload = updatedState.reduce((selectedRights, currentRight) => {
                         selectedRights[currentRight.id] = currentRight;
-                        // delete selectedRights.undefined;
                         return selectedRights;
                     }, {});
 
                     const formatedRights = {[username]: payload};
 
-                    // dispatch(storeFromSelectedTable(formatedRights))
-                    dispatch(setSelectedRights(formatedRights));
+                    dispatch(storeFromSelectedTable(formatedRights));
                 }
-
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -156,10 +135,7 @@ SelectedRightsTable.propTypes = {
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
     activeTab: PropTypes.string.isRequired,
-    onGridEvent: PropTypes.func,
-    rowData: PropTypes.array,
     selectedRepoRights: PropTypes.array,
-    gridApi: PropTypes.object,
     selectedGridApi: PropTypes.object,
     setSelectedGridApi: PropTypes.func,
     selectedColumnApi: PropTypes.object,
@@ -167,17 +143,13 @@ SelectedRightsTable.propTypes = {
     selectedFilter: PropTypes.object,
     setSelectedFilter: PropTypes.func,
     selectedRights: PropTypes.object,
-    setSelectedRights: PropTypes.func,
     username: PropTypes.string,
 };
 
 SelectedRightsTable.defaultProps = {
     columnDefs: [],
     mapping: null,
-    rowData: [],
-    onGridEvent: () => null,
     selectedRepoRights: [],
-    gridApi: {},
     selectedGridApi: {},
     setSelectedGridApi: () => null,
     selectedColumnApi: {},
@@ -185,7 +157,6 @@ SelectedRightsTable.defaultProps = {
     selectedFilter: {},
     setSelectedFilter: () => null,
     selectedRights: {},
-    setSelectedRights: () => null,
     username: {},
 };
 
