@@ -25,25 +25,4 @@ describe('NexusDownload', () => {
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
     });
-
-    it('should call downloadFile with proper arguments', () => {
-        const button = wrapper.find('.nexus-c-download');
-        expect(button.length).toEqual(1);
-
-        const spy = jest.spyOn(commonJs, 'downloadFile');
-
-        button.simulate('click');
-
-        expect(spy).toHaveBeenCalledWith(
-            {
-                content: [JSON.stringify(props.data, null, 2)],
-                options: {
-                    type: props.mimeType,
-                },
-            },
-            props.filename
-        );
-
-        spy.mockRestore();
-    });
 });
