@@ -5,6 +5,10 @@ import 'regenerator-runtime/runtime';
 
 configure({adapter: new Adapter()});
 
+// Catches unhandledRejection error thrown by nodejs 15
+// eslint-disable-next-line no-empty-function
+process.on('unhandledRejection', (reason, promise) => {});
+
 jest.mock('react-intl', () => {
     const reactIntl = require.requireActual('react-intl');
     const intl = reactIntl.createIntl({

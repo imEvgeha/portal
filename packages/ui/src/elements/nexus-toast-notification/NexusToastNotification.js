@@ -1,37 +1,29 @@
-import React, {isValidElement} from 'react';
+import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
-import Flag, {FlagGroup} from '@atlaskit/flag';
-import Tick from '@atlaskit/icon/glyph/check-circle';
-import Error from '@atlaskit/icon/glyph/error';
-import Info from '@atlaskit/icon/glyph/info';
-import Warning from '@atlaskit/icon/glyph/warning';
-import {colors} from '@atlaskit/theme';
-import {switchCase} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {SUCCESS_ICON, WARNING_ICON, INFO_ICON, ERROR_ICON} from './constants';
+import {Toast} from 'primereact/toast';
 
-const icons = {
-    [INFO_ICON]: <Info label={`${INFO_ICON} icon`} primaryColor={colors.P300} />,
-    [SUCCESS_ICON]: <Tick label={`${SUCCESS_ICON} icon`} primaryColor={colors.G300} />,
-    [WARNING_ICON]: <Warning label={`${WARNING_ICON} icon`} primaryColor={colors.Y300} />,
-    [ERROR_ICON]: <Error label={`${ERROR_ICON} icon`} primaryColor={colors.R300} />,
+const NexusToastNotification = ({toasts, removeToast}) => {
+    const toast = useRef(null);
+    const showToast = (toastParam) => {
+        if(toast.current) {
+            toast.current.show({...toastParam});
+        }
+    }
+
+    useEffect(() => {
+        if(!toasts.length) {
+            const lifeTime = toast.current?.state?.messages?.[0]?.life;
+            setTimeout(() => toast.current.clear(), lifeTime || 0) 
+        }
+    }, [toasts])
+
+    toasts.forEach((item, index) => {
+        showToast(item);
+        item.isAutoDismiss && removeToast(index);
+    });
+    
+    return (<Toast ref={toast} position="bottom-left" className='p-toast' />)
 };
-
-const NexusToastNotification = ({toasts, removeToast}) => (
-    <FlagGroup onDismissed={removeToast}>
-        {toasts.map((toast, index) => {
-            const updatedToast = {
-                ...toast,
-                ...(toast.icon &&
-                    !isValidElement(toast.icon) && {icon: switchCase(icons)(icons[INFO_ICON])(toast.icon)}),
-            };
-            if (toast.isAutoDismiss) {
-                setTimeout(() => removeToast(index), 3000);
-                return <Flag key={index} {...updatedToast} />;
-            }
-            return <Flag key={index} {...updatedToast} />;
-        })}
-    </FlagGroup>
-);
 
 NexusToastNotification.propTypes = {
     toasts: PropTypes.array,

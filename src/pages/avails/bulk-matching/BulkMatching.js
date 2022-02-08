@@ -4,16 +4,13 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {
-    WARNING_TITLE,
-    SUCCESS_TITLE,
-    WARNING_ICON,
-    SUCCESS_ICON,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {WARNING_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
+import { Button as PrimeReactButton } from 'primereact/button';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
@@ -201,39 +198,43 @@ export const BulkMatching = ({
 
     const dispatchSuccessToast = count => {
         addToast({
-            title: SUCCESS_TITLE,
-            description: isBonusRight
+            summary: SUCCESS_TITLE,
+            detail: isBonusRight
                 ? TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE(count, selectedTableData.length - count)
                 : TITLE_BULK_MATCH_SUCCESS_MESSAGE(affectedTableData.length),
-            icon: SUCCESS_ICON,
-            isAutoDismiss: true,
-            isWithOverlay: false,
+            severity: 'success',
         });
     };
 
     const dispatchWarningToast = () => {
+        const onOkayButtonClick = (e) => {
+            e.preventDefault();
+            removeToast();
+            mergeTitles(matchList);
+        }
+
+        const onCancelButtonClick = (e) => {
+            e.preventDefault();
+            removeToast();
+            disableLoadingState();
+        }
         addToast({
-            title: WARNING_TITLE,
-            description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-            icon: WARNING_ICON,
-            actions: [
-                {
-                    content: 'Cancel',
-                    onClick: () => {
-                        removeToast();
-                        disableLoadingState();
-                    },
-                },
-                {
-                    content: 'Ok',
-                    onClick: () => {
-                        removeToast();
-                        mergeTitles(matchList);
-                    },
-                },
-            ],
-            isAutoDismiss: false,
-            isWithOverlay: true,
+            severity: 'warn',
+            closable: false,
+            content: (
+                <ToastBody
+                    summary={WARNING_TITLE}
+                    detail={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE}
+                    severity='warn'
+                >
+                    <div className='d-flex align-items-center'>
+                        <PrimeReactButton label='Ok' className="p-button-link" onClick={onOkayButtonClick} />
+                        <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} />
+                        <PrimeReactButton label='Cancel' className="p-button-link" onClick={onCancelButtonClick} />
+                    </div>
+                </ToastBody>
+            ),
+            sticky: true,
         });
     };
 

@@ -5,10 +5,44 @@
 $button-height: 32px;
 $button-font-size: 13px;
 $element-margin-bottom: 18px;
+$element-border-radius: 4px;
+$element-height: 24px;
+$element-border-20: 1px solid palette(black, 20);
+$element-background-color-2: palette(black, 2);
+$element-background-color-20: palette(black, 20);
+$element-color-orange-80: palette(orange, 80);
 
 // Field Wrapper
 .p-field {
     position: relative;
+
+    .p-inputtext.p-component,
+    .p-dropdown.p-component.p-inputwrapper {
+        border: $element-border-20;
+    }
+
+    &.p-field-error {
+        .p-error-message {
+            color: $element-color-orange-80;
+        }
+
+        > .p-inputtext.p-component {
+            border: 1px solid $element-color-orange-80;
+        }
+
+        > .p-dropdown.p-component.p-inputwrapper {
+            border: 1px solid $element-color-orange-80;
+        }
+    }
+}
+
+.nexus-c-field-label {
+    margin-bottom: $element-margin-bottom;
+    color: palette(black, 100);
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: normal;
 }
 
 // Buttons Related
@@ -21,7 +55,7 @@ $element-margin-bottom: 18px;
     &.p-button-outlined {
         &:enabled {
             border-radius: 8px;
-            border: 1px solid palette(black, 20);
+            border: $element-border-20;
             background-color: palette(black, 10);
 
             &:hover {
@@ -30,8 +64,8 @@ $element-margin-bottom: 18px;
             }
             &:hover:active,
             &:active {
-                background-color: palette(black, 20);
-                border: 1px solid palette(black, 20);
+                background-color: $element-background-color-20;
+                border: $element-border-20;
             }
 
             &:focus {
@@ -49,8 +83,8 @@ $element-margin-bottom: 18px;
 
             svg,
             .p-button-label {
-                color: palette(black, 20);
-                fill: palette(black, 20);
+                color: $element-background-color-20;
+                fill: $element-background-color-20;
             }
         }
 
@@ -69,8 +103,8 @@ $element-margin-bottom: 18px;
                 }
                 &:hover:active,
                 &:active {
-                    background-color: palette(black, 20);
-                    border: 1px solid palette(black, 20);
+                    background-color: $element-background-color-20;
+                    border: $element-border-20;
                 }
             }
         }
@@ -92,7 +126,7 @@ $element-margin-bottom: 18px;
 
             &:hover:active,
             &:active {
-                background-color: palette(black, 20);
+                background-color: $element-background-color-20;
 
                 svg {
                     fill: palette(black, 100);
@@ -115,8 +149,8 @@ $element-margin-bottom: 18px;
 
             svg,
             .p-button-label {
-                color: palette(black, 20);
-                fill: palette(black, 20);
+                color: $element-background-color-20;
+                fill: $element-background-color-20;
             }
         }
 
@@ -144,7 +178,6 @@ $element-margin-bottom: 18px;
 }
 
 // Toggle Buttons
-
 .p-button.p-togglebutton {
     background-color: palette(white, 0);
     border: none;
@@ -152,7 +185,7 @@ $element-margin-bottom: 18px;
         background-color: palette(black, 5) !important;
     }
     &:hover:active {
-        background-color: palette(black, 20);
+        background-color: $element-background-color-20;
     }
     &:active {
         background-color: palette(black, 10) !important;
@@ -162,7 +195,7 @@ $element-margin-bottom: 18px;
     }
 
     &.p-disabled {
-        color: palette(black, 20);
+        color: $element-background-color-20;
     }
 
     &.p-highlight {
@@ -171,7 +204,7 @@ $element-margin-bottom: 18px;
             background-color: palette(black, 5);
         }
         &:hover:active {
-            background-color: palette(black, 20);
+            background-color: $element-background-color-20;
         }
         &:active {
             background-color: palette(black, 10);
@@ -188,14 +221,14 @@ $element-margin-bottom: 18px;
 
 // Dialog Related
 .p-dialog.p-component {
-    box-shadow: 0 8px 30px 0 palette(black, 20);
+    box-shadow: 0 8px 30px 0 $element-background-color-20;
     border-radius: 8px;
 
     .p-dialog-header {
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         padding: 16px 32px;
-        border-bottom: 1px solid palette(black, 20);
+        border-bottom: $element-border-20;
         .p-dialog-title {
             font-weight: bold;
             font-size: 26px;
@@ -212,7 +245,7 @@ $element-margin-bottom: 18px;
     .p-dialog-footer {
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
-        border-top: 1px solid palette(black, 20);
+        border-top: $element-border-20;
         padding: 16px 32px;
 
         .p-button:not(:last-child) {
@@ -246,6 +279,7 @@ $element-margin-bottom: 18px;
     }
 }
 
+.p-toast .p-toast-message.p-toast-message-warn,
 .p-toast .p-toast-message.p-toast-message-success,
 .p-toast .p-toast-message.p-toast-message-error {
     background: palette(white, 100);
@@ -253,17 +287,65 @@ $element-margin-bottom: 18px;
 
 // Input Text
 .p-inputtext {
+    &:enabled:hover {
+        border-color: palette(black, 5);
+    }
+
     &.p-component {
         width: 100%;
         margin-bottom: $element-margin-bottom;
+        border-radius: $element-border-radius;
+
+        font-size: 13px;
+        color: palette(black, 100);
+        line-height: normal;
+
+        &:hover:active {
+            border: $element-border-20;
+            background-color: $element-background-color-2;
+        }
+
+        &:focus {
+            border: 1px solid $element-background-color-20;
+            background-color: $element-background-color-2;
+            box-shadow: none;
+        }
+
+        //search inputtext field
+        &.nexus-c-search__inputbox {
+            border-radius: 24px;
+            width: 640px;
+            object-fit: contain;
+        }
     }
 }
 
 // Calendar
 .p-calendar {
+    font-size: 13px;
+    line-height: normal;
+    color: palette(black, 100);
+
     &.p-component {
+        .p-button {
+            &:focus {
+                box-shadow: none;
+            }
+
+            &.p-component {
+                &.p-datepicker-trigger {
+                    position: absolute;
+                    right: 0;
+                    border: none;
+                    background-color: transparent;
+                    color: palette(black, 100);
+                }
+            }
+        }
+
         width: 100%;
         margin-bottom: $element-margin-bottom;
+        border-radius: 20px;
 
         .p-inputtext {
             &.p-component {
@@ -281,20 +363,185 @@ $element-margin-bottom: 18px;
     }
 }
 
-// Dropdown
+//spyglass for the inputs search field
+.p-input-icon-left {
+    .pi.pi-search {
+        font-weight: bold;
+        color: palette(black, 100);
+        width: 16px;
+        height: 16px;
+    }
+}
+
+//Dropdown
 .p-dropdown {
     &.p-component {
         width: 100%;
         margin-bottom: $element-margin-bottom;
+        border-radius: $element-border-radius;
+        box-shadow: none;
+        font-size: 13px;
+        color: palette(black, 100);
+        letter-spacing: normal;
+
+        &:hover:active {
+            border: $element-border-20;
+            background-color: $element-background-color-2;
+        }
+        &:focus {
+            border: solid 1px $element-background-color-20;
+            background-color: $element-background-color-2;
+            box-shadow: none;
+        }
+    }
+
+    &.p-disabled {
+        opacity: 0.55;
+    }
+
+    &:not(.p-disabled) {
+        &.p-focus {
+            box-shadow: none;
+            border: $element-border-20;
+            background-color: $element-background-color-2;
+            color: palette(black, 100);
+        }
+    }
+}
+
+//responsible for the dropdown menu when clicked
+.p-dropdown-panel {
+    //spyglass icon
+    .p-dropdown-header {
+        .p-dropdown-filter-icon {
+            top: 21px;
+        }
+    }
+
+    .p-dropdown-items {
+        .p-dropdown-item {
+            &.p-highlight {
+                color: palette(black, 100);
+                background-color: $element-background-color-2;
+            }
+
+            &:not(.p-highlight):not(.p-disabled) {
+                color: palette(black, 100);
+            }
+        }
     }
 }
 
 // Multiselect
 .p-multiselect {
+    &:not(.p-disabled):hover {
+        border-color: $element-background-color-20;
+    }
+
+    &:not(.p-disabled).p-focus {
+        box-shadow: none;
+        border-color: $element-background-color-20;
+    }
+
     &.p-component {
         width: 100%;
         margin-bottom: $element-margin-bottom;
+        border-radius: $element-border-radius;
+
+        &.p-inputwrapper {
+            &.p-inputwrapper-filled {
+                box-shadow: none;
+                color: palette(black, 100);
+                letter-spacing: normal;
+
+                &.p-inputwrapper-focus {
+                    border: solid 1px $element-background-color-20;
+                    background-color: $element-background-color-2;
+                    box-shadow: none;
+                }
+            }
+
+            //responsible for the multiselect-tags
+            &.p-multiselect-chip {
+                font-size: 13px;
+
+                .p-multiselect-token {
+                    border-radius: 2px;
+                    background-color: palette(black, 5);
+                    color: palette(black, 100);
+                    font-weight: 600;
+
+                    .p-multiselect-token-icon {
+                        background-color: palette(black, 20);
+                        border-radius: 50%;
+                        color: palette(white, 100);
+                        font-size: 12px;
+                        box-shadow: none;
+
+                        &:hover {
+                            background-color: palette(black, 55);
+                        }
+                    }
+                }
+            }
+
+            &.p-multiselect-chip:not(.p-disabled).p-focus {
+                box-shadow: none;
+                border-color: $element-background-color-20;
+            }
+        }
     }
+}
+
+.p-multiselect-item {
+    font-size: 13px;
+}
+
+//responsible for the checkbox in the multiselect
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight {
+    box-shadow: none;
+    color: palette(black, 100);
+    background-color: palette(black, 5);
+
+    .p-checkbox .p-checkbox-box {
+        border-radius: $element-border-radius;
+        border: 2px solid $element-background-color-20;
+        width: 20px;
+        height: 20px;
+
+        &:hover {
+            border-color: palette(black, 55);
+        }
+
+        &.p-focus {
+            box-shadow: none;
+            border-color: palette(black, 55);
+        }
+
+        &.p-highlight {
+            border-color: $element-background-color-20;
+            background: palette(white, 100);
+
+            &:hover {
+                border-color: $element-background-color-20;
+                background: palette(white, 100);
+            }
+        }
+    }
+}
+
+.p-multiselect-panel {
+    .p-multiselect-header {
+        .p-multiselect-filter-container {
+            .p-multiselect-filter-icon {
+                top: 21px;
+            }
+        }
+    }
+}
+
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+    border-color: palette(black, 55);
 }
 
 // Field Error Message
@@ -340,7 +587,7 @@ $element-margin-bottom: 18px;
 
             .p-menuitem-link:active {
                 color: palette(black, 100);
-                background: palette(black, 20);
+                background: $element-background-color-20;
             }
 
             .p-menuitem-link:focus {
@@ -376,6 +623,68 @@ $element-margin-bottom: 18px;
 // Checkbox
 .p-checkbox-wrapper {
     margin-bottom: $element-margin-bottom;
+
+    *.nexus-c-field-label {
+        margin-bottom: 0;
+    }
+
+    .p-checkbox .p-checkbox-box {
+        border-radius: $element-border-radius;
+        border: 2px solid palette(black, 20);
+        width: 20px;
+        height: 20px;
+
+        &:hover {
+            border-color: palette(black, 55);
+        }
+
+        &.p-focus {
+            box-shadow: none;
+            border-color: palette(black, 55);
+        }
+
+        &.p-highlight {
+            border-color: $element-background-color-20;
+            background: palette(white, 100);
+
+            &:hover {
+                border-color: $element-background-color-20;
+                background: palette(white, 100);
+            }
+        }
+    }
+}
+
+.p-checkbox {
+    .p-checkbox-box {
+        &.p-highlight {
+            border-color: $element-background-color-20;
+            background: palette(white, 100);
+        }
+
+        .p-checkbox-icon {
+            font-size: 13px;
+            color: palette(blue, 80);
+            font-weight: 900;
+        }
+    }
+}
+
+.p-checkbox:not(.p-checkbox-disabled) {
+    .p-checkbox-box {
+        &.p-focus {
+            border-color: $element-background-color-20;
+        }
+
+        &.p-highlight {
+            box-shadow: none;
+
+            &:hover {
+                border-color: $element-background-color-20;
+                background: palette(white, 100);
+            }
+        }
+    }
 }
 
 // Scrollbar styling
@@ -406,7 +715,7 @@ $element-margin-bottom: 18px;
     &.p-badge-dot {
         width: 8px;
         height: 8px;
-        background-color: palette(black, 20);
+        background-color: $element-background-color-20;
 
         &.p-badge-success {
             background-color: palette(green, 100);
@@ -430,6 +739,6 @@ $element-margin-bottom: 18px;
 .p-progress-spinner {
     .p-progress-spinner-circle {
         animation: none;
-        stroke: palette(black, 20);
+        stroke: $element-background-color-20;
     }
 }

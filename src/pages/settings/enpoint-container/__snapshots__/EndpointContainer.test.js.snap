@@ -36,12 +36,19 @@ exports[`EndpointContainer should match snapshot 1`] = `
             <div
               className="col-10"
             >
-              <ForwardRef
-                className="nexus-c-search__inputbox"
-                id="config_search_field__inp"
-                name="config_search_field__inp"
-                onChange={[Function]}
-              />
+              <span
+                className="p-input-icon-left"
+              >
+                <i
+                  className="pi pi-search"
+                />
+                <ForwardRef
+                  className="nexus-c-search__inputbox"
+                  id="config_search_field__inp"
+                  name="config_search_field__inp"
+                  onChange={[Function]}
+                />
+              </span>
             </div>
             <div
               className="col-2 text-end"
@@ -57,17 +64,6 @@ exports[`EndpointContainer should match snapshot 1`] = `
                 onClick={[Function]}
               />
             </div>
-          </div>
-          <div
-            className="w-100 nexus-c-divider-wrapper"
-          >
-            <Divider
-              align={null}
-              className="m-0"
-              layout="horizontal"
-              style={null}
-              type="solid"
-            />
           </div>
         </div>
       </div>

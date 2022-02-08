@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Tag from '@atlaskit/tag/dist/cjs/Tag';
+import Tag from '@atlaskit/tag';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -229,15 +229,17 @@ const DopTasksTable = ({
     };
 
     const cellStyle = ({data}) => {
-        return data && [TASK_STATUS_ENUM.READY, TASK_STATUS_ENUM.IN_PROGRESS].includes(data.taskStatus)
-            ? ''
-            : {'pointer-events': 'none'};
+        return data &&
+            [TASK_STATUS_ENUM.COMPLETED, TASK_STATUS_ENUM.EXITED, TASK_STATUS_ENUM.OBSOLETE].includes(data.taskStatus)
+            ? {'pointer-events': 'none'}
+            : '';
     };
 
     const cellClass = ({data}) => {
-        return data && [TASK_STATUS_ENUM.READY, TASK_STATUS_ENUM.IN_PROGRESS].includes(data.taskStatus)
-            ? ''
-            : 'nexus-c-grid-checkbox--is-disabled';
+        return data &&
+            [TASK_STATUS_ENUM.COMPLETED, TASK_STATUS_ENUM.EXITED, TASK_STATUS_ENUM.OBSOLETE].includes(data.taskStatus)
+            ? 'nexus-c-grid-checkbox--is-disabled'
+            : '';
     };
 
     const checkboxColumn = {...defineCheckboxSelectionColumn(), cellStyle, cellClass};

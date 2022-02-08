@@ -13,6 +13,7 @@ import {
     UPLOAD_ARTWORK_ERROR,
     UPLOAD_ARTWORK_REQUEST,
     UPLOAD_ARTWORK_SUCCESS,
+    UPLOAD_MEDIA_INGEST_SUCCESS,
 } from './assetManagementReducer';
 import {fetchPosters} from './assetManagementService';
 
@@ -54,7 +55,8 @@ function* fetchAsset({payload}) {
 
 function* uploadArtwork({payload}) {
     try {
-        const {file, closeModal, tenantId} = payload || {};
+        const {file, closeModal, tenantId, details} = payload || {};
+        console.log(details, 'details');
 
         yield put({
             type: UPLOAD_ARTWORK_REQUEST,
@@ -71,16 +73,37 @@ function* uploadArtwork({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: `${UPLOAD_SUCCESS_MESSAGE} ${resource.name}`,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: `${UPLOAD_SUCCESS_MESSAGE} ${resource.name}`,
             },
         });
 
         yield put({
             type: UPLOAD_ARTWORK_SUCCESS,
             payload: {},
+        });
+        
+        const dataToSend = {
+            reservationRequired: false,
+            reservedAssetId: details.id,
+            renditions: [
+                {renditionId: details.renditions[0].id, files: [resource.id]}
+          ]
+        }
+
+        const mediaIngestUrl = `${config.get('gateway.mediaIngestUrl')}/${tenantId}/assets/import`;
+        const mediaIngestResource = yield call(() => nexusFetch(
+            mediaIngestUrl,
+            {
+                method: 'post',
+                body: JSON.stringify(dataToSend),
+            }
+        ));
+
+        yield put({
+            type: UPLOAD_MEDIA_INGEST_SUCCESS,
+            payload: mediaIngestResource,
         });
     } catch (error) {
         yield put({

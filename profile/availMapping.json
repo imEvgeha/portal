@@ -4,11 +4,14 @@
             "javaVariableName": "id",
             "displayName": "Right ID",
             "dataType": "string",
+            "searchDataType": "stringToArray",
             "readOnly": true,
-            "enableSearch": false,
-            "queryParamName": "id",
+            "enableSearch": true,
+            "queryParamName": "ids",
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "nonMatchingValue": true,
+            "readOnlyInDetails": true
         },
         {
             "javaVariableName": "rightStatus",

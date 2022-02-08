@@ -139,7 +139,7 @@ const TitleDetails = ({
         Promise.all([
             isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
             updateTerritoryMetadata(values, id),
-            isEmetUpdated &&  updateEditorialMetadata(values, id),
+            isEmetUpdated && updateEditorialMetadata(values, id),
             (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
                 propagateSeasonsPersonsToEpisodes(
                     {
@@ -170,6 +170,7 @@ const TitleDetails = ({
     const extendTitleWithExternalIds = () => {
         const [vzExternalIds] = getExternaIds('vz');
         const [movidaExternalIds] = getExternaIds('movida');
+        const [movidaUkExternalIds] = getExternaIds('movida-uk');
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
 
@@ -178,6 +179,7 @@ const TitleDetails = ({
             episodesCount: episodesCount.total ? episodesCount.total : '0',
             vzExternalIds,
             movidaExternalIds,
+            movidaUkExternalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
             territorialMetadata: territoryMetadata,
         };

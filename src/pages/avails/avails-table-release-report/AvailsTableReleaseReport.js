@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Popup from '@atlaskit/popup';
 import Select from '@atlaskit/select';
-import {ERROR_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
@@ -35,10 +34,9 @@ const AvailsTableReleaseReport = ({addToast}) => {
                 setIsLoading(false);
                 setIsOpen(false);
                 addToast({
-                    title: ERROR_MESSAGE,
-                    icon: ERROR_ICON,
-                    isAutoDismiss: false,
-                    isWithOverlay: false,
+                    summary: ERROR_MESSAGE,
+                    severity: 'error',
+                    sticky: true,
                 });
             });
     };

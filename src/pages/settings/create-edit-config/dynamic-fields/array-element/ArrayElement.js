@@ -1,7 +1,11 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {debounce} from 'lodash';
-import {Panel} from 'primereact/panel';
+import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
+import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
+import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
+import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
+import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
+import {debounce, toUpper} from 'lodash';
 import {arrayElementButtons} from '../ArrayButtons';
 import {constructFieldPerType} from '../FieldsPerType';
 import './ArrayElement.scss';
@@ -177,39 +181,38 @@ const ArrayElement = ({elementsSchema, form, values}) => {
         setHeaders(newHeaders);
     };
 
-    const template = (options, index) => {
-        const toggleIcon = options.collapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up';
-        const labelPath = elementsSchema?.misc?.idAttribute;
-        const header = (labelPath && headers?.[`${elementsSchema.id}.${index}.${labelPath}`]) || '';
-        return (
-            <div className="nexus-c-panel-header p-panel-header" onClick={options.onTogglerClick}>
-                <div className="row">
-                    <div className="col-12">
-                        <i onClick={options.onTogglerClick} className={`${toggleIcon} nexus-c-panel__icon`} />
-                        <span className="mx-2">{header}</span>
-                    </div>
-                </div>
-            </div>
-        );
-    };
+    const renderGroupElements = group => group.map(fieldSchema => constructElement(fieldSchema, 'col-6 mb-2'));
 
-    const renderGroupElements = group => group.map(fieldSchema => constructElement(fieldSchema));
+    const groupActions = index => [
+        new Action({
+            icon: ActionCrossCircle,
+            action: e => {
+                e.preventDefault();
+                e.stopPropagation();
+                onRemove(index, true);
+            },
+            position: 5,
+            disabled: false,
+            buttonId: 'btnDeleteSection',
+        }),
+    ];
 
     const renderGroups = () => {
         return formFields.map((group, index) => {
+            const body = <div className="row">{renderGroupElements(group)}</div>;
+            const labelPath = elementsSchema?.misc?.idAttribute;
+            const heading = (labelPath && headers?.[`${elementsSchema.id}.${index}.${labelPath}`]) || 'unset';
+
             return (
-                <div className="row align-items-center my-2" key={`nexus-c-field-group${index}`}>
-                    <div className="col-10">
-                        <Panel
-                            header="Header"
-                            headerTemplate={options => template(options, index)}
-                            toggleable
-                            collapsed={true}
-                        >
-                            {renderGroupElements(group)}
-                        </Panel>
+                <div className="row align-items-center nexus-c-entity-group my-2" key={`nexus-c-field-group${index}`}>
+                    <div className="col-12">
+                        <NexusEntity
+                            type={NEXUS_ENTITY_TYPES.default}
+                            body={body}
+                            heading={heading}
+                            actions={groupActions(index)}
+                        />
                     </div>
-                    {arrayElementButtons(index, formFields.length, addGroup, () => onRemove(index, true), false)}
                 </div>
             );
         });
@@ -223,12 +226,12 @@ const ArrayElement = ({elementsSchema, form, values}) => {
         }
     };
 
-    const constructElement = fieldSchema =>
+    const constructElement = (fieldSchema, className = 'mb-2') =>
         constructFieldPerType(
             fieldSchema,
             form,
             form?.getValues(fieldSchema.name) || values?.[fieldSchema?.name] || '',
-            'mb-2',
+            className,
             onChange
         );
 
@@ -243,7 +246,32 @@ const ArrayElement = ({elementsSchema, form, values}) => {
         });
     };
 
-    return isGroup.current ? renderGroups() : renderElement(formFields);
+    const constructActions = () => [
+        new Action({
+            icon: IconActionAdd,
+            action: e => {
+                e.preventDefault();
+                e.stopPropagation();
+                isGroup.current ? addGroup() : addField();
+            },
+            position: 6,
+            disabled: false,
+            buttonId: 'btnEditConfig',
+        }),
+    ];
+
+    return (
+        <div className="nexus-c-array-element-wrapper">
+            {elementsSchema.label && (
+                <NexusEntity
+                    type={NEXUS_ENTITY_TYPES.subsection}
+                    heading={toUpper(elementsSchema.label)}
+                    actions={constructActions()}
+                />
+            )}
+            {isGroup.current ? renderGroups() : renderElement(formFields)}
+        </div>
+    );
 };
 
 ArrayElement.propTypes = {

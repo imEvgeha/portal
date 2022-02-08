@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {
-    SUCCESS_ICON,
-    SUCCESS_TITLE,
-    WARNING_ICON,
-    WARNING_TITLE,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {SUCCESS_TITLE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
@@ -45,14 +40,28 @@ export const PrePlanActions = ({
     const [bulkUpdate, setBulkUpdate] = useState([]);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [headerText, setHeaderText] = useState('');
+    const node = useRef();
+
+    useEffect(() => {
+        window.addEventListener('click', removeMenu);
+
+        return () => {
+            window.removeEventListener('click', removeMenu);
+        };
+    }, []);
 
     useEffect(() => {
         bulkSetInTable();
     }, [bulkUpdate]);
 
-    const node = useRef();
     const {openModal, closeModal} = useContext(NexusModalContext);
     const clickHandler = () => setMenuOpened(!menuOpened);
+
+    const removeMenu = e => {
+        if (!node.current.contains(e.target)) {
+            setMenuOpened(false);
+        }
+    };
 
     const removeRightsFromPrePlan = keepUnselected => {
         const selectedRights = [];
@@ -86,11 +95,10 @@ export const PrePlanActions = ({
         });
         if (!selectedList) {
             addToast({
-                title: WARNING_TITLE,
-                description: NO_TERRITORIES_SELECTED,
-                icon: WARNING_ICON,
-                isAutoDismiss: false,
-                isWithOverlay: false,
+                summary: WARNING_TITLE,
+                detail: NO_TERRITORIES_SELECTED,
+                severity: 'warn',
+                sticky: true,
             });
             return;
         }
@@ -203,11 +211,9 @@ export const PrePlanActions = ({
 
     const dispatchSuccessToast = noOfItems => {
         addToast({
-            title: SUCCESS_TITLE,
-            description: getSuccessToastMsg(noOfItems),
-            icon: SUCCESS_ICON,
-            isAutoDismiss: true,
-            isWithOverlay: false,
+            summary: SUCCESS_TITLE,
+            detail: getSuccessToastMsg(noOfItems),
+            severity: 'success',
         });
     };
 

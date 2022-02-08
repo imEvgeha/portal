@@ -64,28 +64,26 @@ function* assignTasks({payload}) {
         switch (statusResponse.status) {
             case jobStatus.IN_PROGRESS: {
                 toastParams = {
-                    title: SUCCESS_TITLE,
-                    icon: SUCCESS_ICON,
-                    isAutoDismiss: true,
-                    description: 'Request still in process, please refresh the data in a short while.',
+                    summary: SUCCESS_TITLE,
+                    severity: SUCCESS_ICON,
+                    detail: 'Request still in process, please refresh the data in a short while.',
                 };
                 break;
             }
             case jobStatus.SUCCESS: {
                 toastParams = {
-                    title: SUCCESS_TITLE,
-                    icon: SUCCESS_ICON,
-                    isAutoDismiss: true,
-                    description: `${taskIds.length} tasks successfully ${action.toLowerCase()}ed to ${userId}.`,
+                    summary: SUCCESS_TITLE,
+                    severity: SUCCESS_ICON,
+                    detail: `${taskIds.length} tasks successfully ${action.toLowerCase()}ed to ${userId}.`,
                 };
                 break;
             }
             case jobStatus.ERROR: {
                 toastParams = {
-                    title: ERROR_TITLE,
-                    icon: ERROR_ICON,
-                    isAutoDismiss: false,
-                    description: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
+                    summary: ERROR_TITLE,
+                    severity: ERROR_ICON,
+                    sticky: true,
+                    detail: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
                 };
                 break;
             }
@@ -98,37 +96,36 @@ function* assignTasks({payload}) {
                     {success: 0, error: 0}
                 );
                 toastParams = {
-                    title: WARNING_TITLE,
-                    icon: WARNING_ICON,
-                    isAutoDismiss: false,
-                    description: `${jobDetails.success} tasks ${action.toLowerCase()}ed successfully to ${userId}.
+                    summary: WARNING_TITLE,
+                    severity: WARNING_ICON,
+                    sticky: true,
+                    detail: `${jobDetails.success} tasks ${action.toLowerCase()}ed successfully to ${userId}.
                     Error in ${action.toLowerCase()}ing ${jobDetails.error} tasks.`,
                 };
                 break;
             }
             default:
                 toastParams = {
-                    title: ERROR_TITLE,
-                    icon: ERROR_ICON,
-                    isAutoDismiss: false,
-                    description: `Status: ${statusResponse.status}`,
+                    summary: ERROR_TITLE,
+                    severity: ERROR_ICON,
+                    sticky: true,
+                    detail: `Status: ${statusResponse.status}`,
                 };
         }
         yield put({
             type: ADD_TOAST,
             payload: {
                 ...toastParams,
-                isAutoDismiss: true,
             },
         });
     } catch (error) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
-                isAutoDismiss: false,
-                description: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
+                summary: ERROR_TITLE,
+                severity: ERROR_ICON,
+                sticky: true,
+                detail: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
             },
         });
     } finally {
@@ -144,20 +141,19 @@ function* unAssignTasks({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: `${taskIds.length} tasks successfully un-assigned`,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: `${taskIds.length} tasks successfully un-assigned`,
             },
         });
     } catch (error) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
-                isAutoDismiss: false,
-                description: `Error in un-assigning ${taskIds.length} tasks.`,
+                summary: ERROR_TITLE,
+                severity: ERROR_ICON,
+                sticky: true,
+                detail: `Error in un-assigning ${taskIds.length} tasks.`,
             },
         });
     }
@@ -175,20 +171,19 @@ function* changeDOPPriority({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: `Changed priority of ${taskIds.length} tasks to ${priority}.`,
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: `Changed priority of ${taskIds.length} tasks to ${priority}.`,
             },
         });
     } catch (error) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
-                isAutoDismiss: false,
-                description: `Error in changing priority of ${taskIds.length} tasks.`,
+                summary: ERROR_TITLE,
+                severity: ERROR_ICON,
+                sticky: true,
+                detail: `Error in changing priority of ${taskIds.length} tasks.`,
             },
         });
     }

@@ -1,8 +1,3 @@
-import {
-    ERROR_ICON,
-    WARNING_ICON,
-    SUCCESS_ICON,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {prepareSortMatrixParamTitles, encodedSerialize, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
@@ -87,19 +82,18 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
         if (failed.length) {
             const message = failed.map(e => e.description).join(' ');
             const errorToast = {
-                title: 'Regenerating Editorial Metadata Failed',
-                icon: WARNING_ICON,
-                isAutoDismiss: false,
-                description: message,
+                summary: 'Regenerating Editorial Metadata Failed',
+                severity: 'warn',
+                sticky: true,
+                detail: message,
             };
             store.dispatch(addToast(errorToast));
             return false;
         }
         const successToast = {
-            title: 'Success',
-            icon: SUCCESS_ICON,
-            isAutoDismiss: true,
-            description: 'Editorial Metadata Successfully Regenerated!',
+            summary: 'Success',
+            severity: 'success',
+            detail: 'Editorial Metadata Successfully Regenerated!',
         };
         store.dispatch(addToast(successToast));
         return true;
@@ -115,10 +109,10 @@ export const unmergeTitle = async id => {
             response.statusCodeValue === internalErrorCode || response.statusCodeValue === authorizationErrorCode;
         if (unmergeFailed) {
             const errorToast = {
-                title: 'Unmerge not available',
-                icon: ERROR_ICON,
-                isAutoDismiss: false,
-                description: response.body.description,
+                summary: 'Unmerge not available',
+                severity: 'error',
+                sticky: true,
+                detail: response.body.description,
             };
             store.dispatch(addToast(errorToast));
             return false;
@@ -195,7 +189,7 @@ export const titleService = {
     addMsvAssociationIds: (id, licensor, licensee) => {
         const url = `${config.get('gateway.titleUrl')}${config.get(
             'gateway.service.title'
-        )}/titles/${id}/msvIds?licensor=${licensor}&licensee=${licensee}`;
+        )}/titles/${id}/msvIds?licensor=${licensor}&licensee=${licensee}&updateTitle=false`;
         return nexusFetch(url, {
             method: 'post',
         });

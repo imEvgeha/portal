@@ -13,6 +13,9 @@ pipeline {
                     tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
                     imageTag = "${tagTime}.${BUILD_NUMBER}"
                 }
+                sh 'pwd'
+                sh 'rm -Rf node_modules'
+                sh 'ls'
                 sh 'yarn'
                 sh 'yarn prebuild'
                 sh 'yarn build:prod'

@@ -1,7 +1,8 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {injectUser, logout} from '@vubiquity-nexus/portal-auth/authActions';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@vubiquity-nexus/portal-auth/keycloak';
-import {getValidToken, getTokenDuration, wait} from '@vubiquity-nexus/portal-auth/utils';
+import {getTokenDuration, getValidToken, wait} from '@vubiquity-nexus/portal-auth/utils';
 import {updateAbility} from '@vubiquity-nexus/portal-utils/lib/ability';
 import jwtDecode from 'jwt-decode';
 import config from 'react-global-configuration';
@@ -127,5 +128,23 @@ const mapDispatchToProps = dispatch => ({
     logoutUser: () => dispatch(logout()),
     getSelectValues: () => dispatch(getSelectValues()),
 });
+
+AuthProvider.defaultProps = {
+    options: undefined,
+    appOptions: undefined,
+    addUser: undefined,
+    getAppOptions: undefined,
+    logoutUser: undefined,
+    getSelectValues: undefined,
+};
+
+AuthProvider.propTypes = {
+    options: PropTypes.any,
+    appOptions: PropTypes.any,
+    addUser: PropTypes.any,
+    getAppOptions: PropTypes.any,
+    logoutUser: PropTypes.any,
+    getSelectValues: PropTypes.any,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthProvider);

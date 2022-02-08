@@ -1,27 +1,28 @@
-/* eslint-disable */
 import React, {useState, useEffect, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import {useDispatch, useSelector} from 'react-redux';
 import Button from '@atlaskit/button';
 import UserPicker from '@atlaskit/user-picker';
-import classnames from 'classnames';
-import {DragDropContext, Droppable} from 'react-beautiful-dnd';
-import {uid} from 'react-uid';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-
-import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
-import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
-import NexusPerson from '../nexus-person/NexusPerson';
-import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
+import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getDir} from '../nexus-dynamic-form/utils';
+import classnames from 'classnames';
+import {cloneDeep} from 'lodash';
+import {DragDropContext, Droppable} from 'react-beautiful-dnd';
+import {useDispatch, useSelector} from 'react-redux';
+import {uid} from 'react-uid';
+import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
+import CreateEditConfig from '../../../../../src/pages/settings/create-edit-config/CreateEditConfig';
+import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
 import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors';
-import CreateEditConfigForm from '../../../../../src/pages/legacy/containers/config/CreateEditConfigForm';
-import {CAST, CAST_CONFIG, SEASON} from './constants';
+import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
+import {checkIfEmetIsEditorial, getDir} from '../nexus-dynamic-form/utils';
+import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
+import NexusPerson from '../nexus-person/NexusPerson';
 import {loadOptions} from './utils';
+import {CAST, CAST_CONFIG, SEASON} from './constants';
 import './NexusPersonsList.scss';
-import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
 
 const NexusPersonsList = ({
     personsList,
@@ -47,13 +48,14 @@ const NexusPersonsList = ({
     const [deletedPersonsIds, setDeletedPersonsIds] = useState([]);
     const [searchText, setSearchText] = useState('');
     const propagateRemovePersons = useSelector(propagateRemovePersonsSelector);
-    const {title, contentType, castCrew} = getValues();
+    const {title, contentType, castCrew, editorialMetadata} = getValues();
+    const [submitLoading, setSubmitLoading] = useState(false);
 
     useEffect(() => {
         const updatedPersons = [...personsList.filter(elem => !deletedPersonsIds.includes(elem.id))];
 
         updatedPersons.forEach((person, index) => {
-            //Avails crew doesn't come with id so displayName is used instead
+            // Avails crew doesn't come with id so displayName is used instead
             !person.hasOwnProperty('id') ? (person.id = person.displayName) : person;
             person.creditsOrder = index;
         });
@@ -103,14 +105,14 @@ const NexusPersonsList = ({
     };
 
     const addPerson = person => {
-        let updatedPersons = [...persons];
+        const updatedPersons = [...persons];
 
         if (person['personTypes'] && Array.isArray(person['personTypes'])) {
-            let personWithType = {...person};
+            const personWithType = {...person};
             delete personWithType['personTypes'];
 
             person['personTypes'].map(personType => {
-                updatedPersons.push({...personWithType, personType: personType});
+                updatedPersons.push({...personWithType, personType});
             });
         } else {
             updatedPersons.push(person);
@@ -152,14 +154,44 @@ const NexusPersonsList = ({
             dispatch(removeSeasonPerson(payload));
         }
 
-        const updatedCastCrew = castCrew ? castCrew?.filter(entry => {
-            return entry.id !== person.id || entry.personType !== person.personType;
-        }) : null;
+        const updateEditorialMetadata = editorialMetadata?.map(emet => {
+            const updatedCastCrew =
+                emet?.castCrew &&
+                emet.castCrew.filter(entry => {
+                    return entry.id !== person.id || entry.personType !== person.personType;
+                });
+
+            const updatedEmet = {
+                ...emet,
+                castCrew: updatedCastCrew,
+            };
+
+            const {editorial} = getValues();
+
+            if (checkIfEmetIsEditorial(emet, editorial)) {
+                setFieldValue('editorial', {...editorial, castCrew: updatedCastCrew});
+                if (isVerticalLayout) {
+                    return updatedEmet;
+                }
+            }
+
+            if (!isVerticalLayout) {
+                return updatedEmet;
+            }
+            return emet;
+        });
+
+        const updatedCastCrew = castCrew
+            ? castCrew?.filter(entry => {
+                  return entry.id !== person.id || entry.personType !== person.personType;
+              })
+            : null;
 
         const deletedCastCrew = persons?.filter(entry => entry.id === person.id);
         const updatedDeletedCastCrew = deletedCastCrew ? deletedCastCrew?.map(elem => elem.id) : [];
 
-        setFieldValue('castCrew', updatedCastCrew);
+        !isVerticalLayout && setFieldValue('castCrew', updatedCastCrew);
+        editorialMetadata && setFieldValue('editorialMetadata', updateEditorialMetadata);
         setDeletedPersonsIds([...deletedPersonsIds, ...updatedDeletedCastCrew]);
         closeModal();
         setUpdate(prev => !prev);
@@ -174,13 +206,11 @@ const NexusPersonsList = ({
         const removeMessage = () => {
             if (isVerticalLayout) {
                 return `Remove ${person.displayName} from this Emet`;
-            } else {
-                if (contentType === SEASON) {
-                    return `Remove ${person.displayName} from this Season, it's Episodes and all related Emets?`;
-                } else {
-                    return `Remove ${person.displayName} from ${title}?`;
-                }
+            } else if (contentType === SEASON) {
+                return `Remove ${person.displayName} from this Season, it's Episodes and all related Emets?`;
             }
+
+            return `Remove ${person.displayName} from ${title}?`;
         };
 
         openModal(
@@ -188,7 +218,7 @@ const NexusPersonsList = ({
                 <p>{removeMessage()}</p>
                 <div className="nexus-c-nexus-persons-list__remove-modal-actions">
                     <Button onClick={closeModal}>Cancel</Button>
-                    <Button onClick={() => removePerson(person)}>{'Remove'}</Button>
+                    <Button onClick={() => removePerson(person)}>Remove</Button>
                 </div>
             </>,
             {
@@ -291,33 +321,57 @@ const NexusPersonsList = ({
     const editRecord = val => {
         const newVal = {...currentRecord, ...val};
         const endpoint = castCrewConfig && castCrewConfig.urls && castCrewConfig.urls['CRUD'];
+
+        const successToast = {
+            summary: 'Success',
+            icon: SUCCESS_ICON,
+            // description: `Cast or Crew has been successfully ${newVal.id ? 'updated.' : 'added.'}`,
+            detail: `${newVal.displayName} has been successfully ${newVal.id ? 'updated.' : 'added.'}`,
+        };
+
+        setSubmitLoading(true);
+
         if (newVal.id) {
-            configService.update(endpoint, newVal.id, newVal).then(response => {
-                const updatedList = persons.map(person => {
-                    if (person.id === newVal.id) {
-                        return {
-                            displayName: response.displayName,
-                            creditsOrder: person.creditsOrder,
-                            personType: person.personType,
-                            id: response.id,
-                            firstName: response.firstName,
-                            lastName: response.lastName,
-                        };
-                    }
-                    return person;
-                });
-                setPersons(updatedList);
-                setCurrentRecord({});
-                updateCastCrew(updatedList, uiConfig.type === CAST);
-                setOpenPersonModal(false);
-            });
+            configService.update(endpoint, newVal.id, newVal).then(
+                response => {
+                    dispatch(addToast(successToast));
+                    const updatedList = persons.map(person => {
+                        if (person.id === newVal.id) {
+                            return {
+                                displayName: response.displayName,
+                                creditsOrder: person.creditsOrder,
+                                personType: person.personType,
+                                id: response.id,
+                                firstName: response.firstName,
+                                lastName: response.lastName,
+                            };
+                        }
+                        return person;
+                    });
+                    setPersons(updatedList);
+                    setCurrentRecord({});
+                    updateCastCrew(updatedList, uiConfig.type === CAST);
+                    setOpenPersonModal(false);
+                    setSubmitLoading(false);
+                },
+                () => {
+                    setSubmitLoading(false);
+                }
+            );
         } else {
-            configService.create(endpoint, newVal).then(person => {
-                setCurrentRecord({});
-                setOpenPersonModal(false);
-                addPerson(person);
-                setSearchText('');
-            });
+            configService.create(endpoint, newVal).then(
+                person => {
+                    dispatch(addToast(successToast));
+                    setCurrentRecord({});
+                    setOpenPersonModal(false);
+                    addPerson(person);
+                    setSearchText('');
+                    setSubmitLoading(false);
+                },
+                () => {
+                    setSubmitLoading(false);
+                }
+            );
         }
     };
 
@@ -332,14 +386,15 @@ const NexusPersonsList = ({
             {isEdit ? (
                 <>
                     {castCrewConfig && openPersonModal && (
-                        <CreateEditConfigForm
-                            onRemoveItem={() => {}}
-                            schema={castCrewConfig && castCrewConfig.uiSchema}
-                            label={castCrewConfig && castCrewConfig.displayName}
-                            displayName={castCrewConfig && castCrewConfig.displayName}
-                            value={currentRecord}
+                        <CreateEditConfig
+                            visible={openPersonModal}
+                            schema={castCrewConfig?.uiSchema}
+                            label={castCrewConfig?.displayName}
+                            displayName={castCrewConfig?.displayName}
+                            values={cloneDeep(currentRecord)}
                             onSubmit={editRecord}
-                            onCancel={closePersonModal}
+                            submitLoading={submitLoading}
+                            onHide={closePersonModal}
                         />
                     )}
                     <div className="nexus-c-nexus-persons-list__add">
@@ -381,6 +436,7 @@ NexusPersonsList.propTypes = {
 };
 
 NexusPersonsList.defaultProps = {
+    onChange: null,
     personsList: [],
     uiConfig: CAST_CONFIG,
     hasCharacter: false,

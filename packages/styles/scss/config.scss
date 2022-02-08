@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $app-layout: (
     content-min-width: 300px,
     content-max-width: 1370px,
@@ -40,4 +42,4 @@ $nexus-font: Arial, Helvetica, sans-serif;
 // Vertical & Horizontal spacing
 $base-size: 14;
 $base-spacing-unit: 4;
-$base-relative-spacing: ($base-spacing-unit / $base-size);
+$base-relative-spacing: math.div($base-spacing-unit, $base-size);

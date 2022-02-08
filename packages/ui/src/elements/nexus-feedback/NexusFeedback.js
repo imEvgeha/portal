@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import TextArea from '@atlaskit/textarea';
 import withToasts from '../../toast/hoc/withToasts';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '../nexus-toast-notification/constants';
+import {SUCCESS_TITLE} from '../nexus-toast-notification/constants';
 import {options, THANKYOU_NOTE} from './constants';
 import './NexusFeedback.scss';
 
@@ -22,11 +22,9 @@ const NexusFeedback = ({addToast, currentPage, closeModal}) => {
         // call API and then close modal
         closeModal();
         addToast({
-            title: SUCCESS_TITLE,
-            description: THANKYOU_NOTE,
-            icon: SUCCESS_ICON,
-            isAutoDismiss: true,
-            isWithOverlay: false,
+            summary: SUCCESS_TITLE,
+            detail: THANKYOU_NOTE,
+            severity: 'success',
         });
     };
 

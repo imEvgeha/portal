@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
-import {
-    WARNING_TITLE,
-    SUCCESS_TITLE,
-    WARNING_ICON,
-    SUCCESS_ICON,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {WARNING_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     TITLE_MATCH_SUCCESS_MESSAGE,
@@ -14,6 +10,7 @@ import {
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
+import { Button as PrimeReactButton } from 'primereact/button';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import TitleSystems from '../../../metadata/constants/systems';
 
@@ -38,7 +35,10 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
 
     const onMatch = () => {
         const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
-        const onViewTitleClick = () => window.open(url, '_blank');
+        const handleLinkClick = (e) => {
+            e.preventDefault();
+            window.open(url, '_blank');
+        }
 
         if (URL.isEmbedded()) {
             DOP.setErrorsCount(0);
@@ -54,16 +54,19 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
         }
 
         addToast({
-            title: SUCCESS_TITLE,
-            description: TITLE_MATCH_SUCCESS_MESSAGE,
-            icon: SUCCESS_ICON,
-            actions: [{content: 'View Title', onClick: onViewTitleClick}],
-            isAutoDismiss: true,
-            isWithOverlay: true,
+            severity: 'success', 
+            content: (<ToastBody 
+                summary={SUCCESS_TITLE}
+                detail={TITLE_MATCH_SUCCESS_MESSAGE}
+                severity={'success'}
+            >
+                <PrimeReactButton label='View Title' className="p-button-link" onClick={handleLinkClick} />
+            </ToastBody>),
         });
     };
 
-    const mergeSingle = () => {
+    const mergeSingle = (e) => {
+        e.preventDefault();
         removeToast();
         mergeTitles();
     };
@@ -71,15 +74,22 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
     const onMatchAndCreate = () => {
         if (Object.keys(matchList).length === 1) {
             addToast({
-                title: WARNING_TITLE,
-                description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-                icon: WARNING_ICON,
-                actions: [
-                    {content: 'Cancel', onClick: removeToast},
-                    {content: 'Ok', onClick: mergeSingle},
-                ],
-                isAutoDismiss: false,
-                isWithOverlay: true,
+                severity: 'warn',
+                closable: false,
+                content: (
+                    <ToastBody
+                        summary={WARNING_TITLE}
+                        detail={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE}
+                        severity='warn'
+                    >
+                        <div className='d-flex align-items-center'>
+                            <PrimeReactButton label='Ok' className="p-button-link" onClick={mergeSingle} />
+                            <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} />
+                            <PrimeReactButton label='Cancel' className="p-button-link" onClick={() => removeToast()} />
+                        </div>
+                    </ToastBody>
+                ),
+                sticky: true,
             });
         } else {
             mergeTitles();

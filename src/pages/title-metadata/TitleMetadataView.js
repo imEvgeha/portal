@@ -1,14 +1,12 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
-import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {TITLE_METADATA} from '@vubiquity-nexus/portal-utils/lib/constants';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
 import {TabMenu} from 'primereact/tabmenu';
-import {Toast} from 'primereact/toast';
 import {connect} from 'react-redux';
 import {Col, Row} from 'reactstrap';
 import {store} from '../../index';
@@ -49,23 +47,26 @@ export const TitleMetadataView = ({
     const [columnApi, setColumnApi] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
-    const toast = useRef(null);
 
     const showSuccess = detail => {
-        toast.current.show({
-            severity: 'success',
-            summary: successDownloadTitle,
-            detail,
-            life: 3000,
-        });
+        store.dispatch(
+            addToast({
+                severity: 'success',
+                summary: successDownloadTitle,
+                detail,
+                life: 3000,
+            })
+        );
     };
 
     const showError = err => {
-        toast.current.show({
-            severity: 'error',
-            summary: failureDownloadTitle,
-            detail: `${failureDownloadDesc} Details: ${err}`,
-        });
+        store.dispatch(
+            addToast({
+                severity: 'error',
+                summary: failureDownloadTitle,
+                detail: `${failureDownloadDesc} Details: ${err}`,
+            })
+        );
     };
 
     useEffect(() => {
@@ -78,10 +79,9 @@ export const TitleMetadataView = ({
         resetTitleId();
         if (window.sessionStorage.getItem('unmerge')) {
             const successToast = {
-                title: 'Success',
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: UNMERGE_TITLE_SUCCESS,
+                summary: 'Success',
+                severity: 'success',
+                detail: UNMERGE_TITLE_SUCCESS,
             };
 
             window.sessionStorage.removeItem('unmerge');
@@ -154,7 +154,6 @@ export const TitleMetadataView = ({
 
     return (
         <div className="nexus-c-title-metadata">
-            <Toast ref={toast} position="bottom-left" />
             <TitleMetadataHeader>
                 <Row>
                     <Col xs="4">

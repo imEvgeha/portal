@@ -4,7 +4,7 @@ const paths = require('./paths');
 
 module.exports = envFile => ({
     mode: 'development',
-    devtool: (envFile && envFile.SOURCE_MAP) || 'cheap-module-eval-source-map',
+    devtool: 'eval-cheap-module-source-map',
     module: {
         rules: [
             {
