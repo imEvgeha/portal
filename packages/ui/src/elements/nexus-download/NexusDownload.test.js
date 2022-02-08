@@ -1,6 +1,6 @@
 import React from 'react';
+import * as commonJs from '@vubiquity-nexus/portal-utils/lib/Common';
 import {shallow} from 'enzyme';
-import FileSaver from 'file-saver';
 import NexusDownload from './NexusDownload';
 
 describe('NexusDownload', () => {
@@ -26,11 +26,11 @@ describe('NexusDownload', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should call file-saver with proper arguments', () => {
+    it('should call downloadFile with proper arguments', () => {
         const button = wrapper.find('.nexus-c-download');
         expect(button.length).toEqual(1);
 
-        const spy = jest.spyOn(FileSaver, 'saveAs');
+        const spy = jest.spyOn(commonJs, 'downloadFile');
 
         button.simulate('click');
 

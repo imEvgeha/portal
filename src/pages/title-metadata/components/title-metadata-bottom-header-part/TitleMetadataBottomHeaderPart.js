@@ -6,7 +6,6 @@ import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upl
 import moment from 'moment';
 import {Button} from 'primereact/button';
 import {connect} from 'react-redux';
-import {Col, Row} from 'reactstrap';
 import './TitleMetadataBottomHeaderPart.scss';
 import SyncLogDatePicker from '../../../sync-log/components/SyncLogDatePicker/SyncLogDatePicker';
 import {createSaveDateFromAction, createSaveDateToAction} from '../../../sync-log/syncLogActions';
@@ -29,16 +28,16 @@ const TitleMetadataBottomHeaderPart = ({
 
     if (isItTheSameTab('repository')) {
         return (
-            <Row>
-                <Col className="d-flex justify-content-end">
+            <div className="row">
+                <div className="col d-flex justify-content-end">
                     <NexusUploadButton
                         title={METADATA_UPLOAD_TITLE}
                         icon={CloudUploadIcon}
                         uploadCallback={uploadHandler}
                     />
                     <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 
@@ -61,9 +60,9 @@ const TitleMetadataBottomHeaderPart = ({
         };
 
         return (
-            <Row className="nexus-c-title-date-picker-container">
-                <Col xs={4} />
-                <Col xs={4} className="d-flex justify-content-center">
+            <div className="row nexus-c-title-date-picker-container">
+                <div className="col-4" />
+                <div className="col-4 d-flex justify-content-center">
                     <SyncLogDatePicker
                         onDateFromChange={onDateFromChange}
                         onDateToChange={onDateToChange}
@@ -71,8 +70,8 @@ const TitleMetadataBottomHeaderPart = ({
                         dateTo={dateTo}
                         dateError={dateError}
                     />
-                </Col>
-                <Col xs={4} className="d-flex justify-content-end align-items-center">
+                </div>
+                <div className="col-4 d-flex justify-content-end align-items-center">
                     <Button
                         icon={CloudDownloadIcon}
                         className="p-button-text"
@@ -80,8 +79,8 @@ const TitleMetadataBottomHeaderPart = ({
                         tooltip="Download"
                         tooltipOptions={{position: 'left'}}
                     />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
     return null;
