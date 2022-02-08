@@ -117,30 +117,30 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
         case actionTypes.TITLE_IS_SYNCING_START:
             return {
                 ...state,
-                isSyncingVZ: payload === VZ ? true : state.isSyncingVZ,
-                isSyncingMOV: payload === MOVIDA ? true : state.isSyncingMOV,
-                isSyncingMovInt: payload === MOVIDA_INTL ? true : state.isSyncingMovInt,
+                isSyncingVZ: payload === VZ?.value ? true : state.isSyncingVZ,
+                isSyncingMOV: payload === MOVIDA?.value ? true : state.isSyncingMOV,
+                isSyncingMovInt: payload === MOVIDA_INTL?.value ? true : state.isSyncingMovInt,
             };
         case actionTypes.TITLE_IS_SYNCING_END:
             return {
                 ...state,
-                isSyncingVZ: payload === VZ ? false : state.isSyncingVZ,
-                isSyncingMOV: payload === MOVIDA ? false : state.isSyncingMOV,
-                isSyncingMovInt: payload === MOVIDA_INTL ? false : state.isSyncingMovInt,
+                isSyncingVZ: payload === VZ?.value ? false : state.isSyncingVZ,
+                isSyncingMOV: payload === MOVIDA?.value ? false : state.isSyncingMOV,
+                isSyncingMovInt: payload === MOVIDA_INTL?.value ? false : state.isSyncingMovInt,
             };
         case actionTypes.TITLE_IS_PUBLISHING_START:
             return {
                 ...state,
-                isPublishingVZ: payload === VZ ? true : state.isPublishingVZ,
-                isPublishingMOV: payload === MOVIDA ? true : state.isPublishingMOV,
-                isPublishingMovInt: payload === MOVIDA_INTL ? true : state.isPublishingMovInt,
+                isPublishingVZ: payload === VZ?.value ? true : state.isPublishingVZ,
+                isPublishingMOV: payload === MOVIDA?.value ? true : state.isPublishingMOV,
+                isPublishingMovInt: payload === MOVIDA_INTL?.value ? true : state.isPublishingMovInt,
             };
         case actionTypes.TITLE_IS_PUBLISHING_END:
             return {
                 ...state,
-                isPublishingVZ: payload === VZ ? false : state.isPublishingVZ,
-                isPublishingMOV: payload === MOVIDA ? false : state.isPublishingMOV,
-                isPublishingMovInt: payload === MOVIDA_INTL ? false : state.isPublishingMovInt,
+                isPublishingVZ: payload === VZ?.value ? false : state.isPublishingVZ,
+                isPublishingMOV: payload === MOVIDA?.value ? false : state.isPublishingMOV,
+                isPublishingMovInt: payload === MOVIDA_INTL?.value ? false : state.isPublishingMovInt,
             };
         case actionTypes.SET_TITLE_USER_DEFINED_GRID_STATE: {
             const {gridState = {}} = state;

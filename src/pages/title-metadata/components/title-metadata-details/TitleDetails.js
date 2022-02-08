@@ -198,15 +198,14 @@ const TitleDetails = ({
             publishTitle({id, externalSystem});
         }
 
-        // externalSystem === VZ ? setVZDisabled(true) : setMOVDisabled(true);
         switch (externalSystem) {
-            case VZ:
+            case VZ.label:
                 setVZDisabled(true);
                 break;
-            case MOVIDA:
+            case MOVIDA.label:
                 setMOVDisabled(true);
                 break;
-            case MOVIDA_INTL:
+            case MOVIDA_INTL.label:
                 setMovIntDisabled(true);
                 break;
             default:
@@ -262,6 +261,7 @@ const TitleDetails = ({
                                 titleUpdatedAt={title.updatedAt}
                                 hasButtons={isNexusTitle(title.id)}
                             />
+                            <div className="line" />
                             <SyncPublish
                                 externalSystem={MOVIDA}
                                 externalIds={externalIds}
