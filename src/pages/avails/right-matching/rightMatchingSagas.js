@@ -192,7 +192,7 @@ export function* saveCombinedRight(requestMethod, {payload}) {
                 content: (<ToastBody
                     summary={SUCCESS_TITLE}
                     detail={SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE}
-                    severity={'success'}
+                    severity="success"
                 >
                     {URL.isEmbedded()
                         ?  <Button label="View Title" className="p-button-link" onClick={handleToastButtonClick} />

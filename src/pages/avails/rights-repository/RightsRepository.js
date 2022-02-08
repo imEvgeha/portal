@@ -97,6 +97,7 @@ const RightsRepository = ({
     const [prePlanGridApi, setPrePlanGridApi] = useState();
     const [prePlanColumnApi, setPrePlanColumnApi] = useState(null);
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
+    const [activeTabIndex, setActiveTabIndex] = useState(0);
     const [selectedGridApi, setSelectedGridApi] = useState(null);
     const [selectedForPlanningGridApi, setSelectedForPlanningGridApi] = useState(null);
     const [selectedForPlanningColumnApi, setSelectedForPlanningColumnApi] = useState(null);
@@ -669,23 +670,23 @@ const RightsRepository = ({
 
     return (
         <div className="nexus-c-rights-repository">
-            <RightsRepositoryHeader gridApi={gridApi} columnApi={columnApi} username={username} activeTab={activeTab} />
-            {!isEmpty(selectedIngest) && attachment && (
-                <Ingest
-                    ingest={selectedIngest}
-                    deselectIngest={deselectIngest}
-                    downloadIngestEmail={downloadIngestEmail}
-                    downloadIngestFile={downloadIngestFile}
-                    attachment={attachment}
-                    filterByStatus={filterByStatus}
-                />
-            )}
+            <RightsRepositoryHeader
+                gridApi={gridApi}
+                columnApi={columnApi} 
+                username={username} 
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                activeTabIndex={activeTabIndex}
+                setActiveTabIndex={setActiveTabIndex}
+            />
             <AvailsTableToolbar
                 totalRows={totalCount === 'One' ? 1 : totalCount}
                 selectedRightsCount={selectedRepoRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
+                activeTabIndex={activeTabIndex}
+                setActiveTabIndex={setActiveTabIndex}
                 selectedRows={currentUserSelectedRights}
                 setSelectedRights={payload => setSelectedRights({[username]: payload})}
                 gridApi={gridApi}
@@ -710,6 +711,16 @@ const RightsRepository = ({
                 selectedForPlanningColumnApi={selectedForPlanningColumnApi}
                 selectedForPlanningGridApi={selectedForPlanningGridApi}
             />
+            {!isEmpty(selectedIngest) && attachment && (
+                <Ingest
+                    ingest={selectedIngest}
+                    deselectIngest={deselectIngest}
+                    downloadIngestEmail={downloadIngestEmail}
+                    downloadIngestFile={downloadIngestFile}
+                    attachment={attachment}
+                    filterByStatus={filterByStatus}
+                />
+            )}
             <RightsRepositoryTable
                 id="rightsRepo"
                 columnDefs={updatedColumnDefs}

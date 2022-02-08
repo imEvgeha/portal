@@ -224,7 +224,7 @@ const AvailsTableExportDropdown = ({
             <DropdownMenu
                 className="nexus-c-button"
                 trigger={
-                    [PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download Report' : 'Export All'
+                    [PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download' : 'Export'
                 }
                 triggerType="button"
                 triggerButtonProps={{isDisabled}}

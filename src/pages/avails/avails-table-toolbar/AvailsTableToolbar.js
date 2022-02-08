@@ -6,8 +6,7 @@ import AvailsTableReleaseReport from '../avails-table-release-report/AvailsTable
 import PrePlanActions from '../pre-plan-actions/PrePlanActions';
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB} from '../rights-repository/constants';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
-import NexusTab from './components/NexusTab';
-import SelectedButton from './components/SelectedButton';
+import SelectedButton from './components/selected-button/SelectedButton';
 
 const AvailsTableToolbar = ({
     totalRows,
@@ -18,6 +17,7 @@ const AvailsTableToolbar = ({
     selectedRows,
     activeTab,
     setActiveTab,
+    setActiveTabIndex,
     setSelectedRights,
     rightsFilter,
     rightColumnApi,
@@ -40,76 +40,93 @@ const AvailsTableToolbar = ({
     selectedForPlanningColumnApi,
     selectedForPlanningGridApi,
 }) => {
-    return (
-        <div className="nexus-c-table-toolbar">
-            {activeTab === PRE_PLAN_TAB ? (
-                <PrePlanActions
-                    selectedPrePlanRights={selectedPrePlanRights}
-                    setSelectedPrePlanRights={setSelectedPrePlanRights}
-                    selectedRightGridApi={selectedRightGridApi}
-                    setSelectedRights={setSelectedRights}
-                    setPreplanRights={setPreplanRights}
-                    prePlanRepoRights={prePlanRepoRights}
-                    username={username}
-                    singleRightMatch={singleRightMatch}
-                    setSingleRightMatch={setSingleRightMatch}
-                />
-            ) : (
-                <SelectedRightsActions
-                    selectedRights={selectedRepoRights}
-                    selectedRightGridApi={selectedRightGridApi}
-                    setSelectedRights={setSelectedRights}
-                    setPrePlanRepoRights={setPrePlanRepoRights}
-                    gridApi={gridApi}
-                    activeTab={activeTab}
-                    singleRightMatch={singleRightMatch}
-                    setSingleRightMatch={setSingleRightMatch}
-                />
-            )}
-            <NexusTab title={RIGHTS_TAB} totalRows={totalRows} activeTab={activeTab} setActiveTab={setActiveTab} />
-            <NexusTab
-                title={PRE_PLAN_TAB}
-                totalRows={prePlanRightsCount}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-            />
-            <NexusTab
-                title={SELECTED_FOR_PLANNING_TAB}
-                totalRows={planningRightsCount}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                tooltip="Click to refresh"
-                onClick={() => setIsPlanningTabRefreshed(!isPlanningTabRefreshed)}
-            />
+    const isItSamePage = (tab) => activeTab === tab;
 
-            {hasDownloadButton && (
-                <div className="nexus-c-table-toolbar__button-container">
-                    {[RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && (
-                        <SelectedButton
-                            selectedRightsCount={selectedRightsCount}
-                            activeTab={activeTab}
-                            setActiveTab={setActiveTab}
-                        />
-                    )}
-                    <AvailsTableReleaseReport />
-                    <NexusTableExportDropdown
-                        activeTab={activeTab}
-                        selectedRows={selectedRows}
-                        rightsFilter={rightsFilter}
-                        rightColumnApi={rightColumnApi}
-                        selectedRightColumnApi={selectedRightColumnApi}
-                        selectedRightGridApi={selectedRightGridApi}
-                        prePlanColumnApi={prePlanColumnApi}
-                        prePlanGridApi={prePlanGridApi}
-                        selectedForPlanningColumnApi={selectedForPlanningColumnApi}
-                        selectedForPlanningGridApi={selectedForPlanningGridApi}
-                        totalRows={totalRows}
-                        prePlanRightsCount={prePlanRightsCount}
-                        planningRightsCount={planningRightsCount}
-                        username={username}
-                    />
+    const getAmountOfRowsForCurrentTab = () => {
+        if(isItSamePage(SELECTED_FOR_PLANNING_TAB)) {
+            return planningRightsCount;
+        }
+        if(isItSamePage(PRE_PLAN_TAB)) {
+            return prePlanRightsCount;
+        }
+        return totalRows;
+    };
+
+    return (
+        <div className="nexus-c-table-toolbar d-flex justify-content-between row">
+            <div className='col-xs-12 col-xl-8 d-flex align-items-center justify-content-xs-between justify-content-xl-start'>
+                <div className="nexus-c-table-toolbar__rights-counter-container">
+                    <span className="nexus-c-table-toolbar__total-rows">{getAmountOfRowsForCurrentTab()}</span>
                 </div>
-            )}
+                <div className='d-flex'>
+                    <div className="nexus-c-table-toolbar__selected-button-container">
+                        {[RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && (
+                            <SelectedButton
+                                selectedRightsCount={selectedRightsCount}
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                                setActiveTabIndex={setActiveTabIndex}
+                                inNewDesign
+                            />
+                        )}
+                    </div>
+                    
+                    {
+                        isItSamePage(SELECTED_FOR_PLANNING_TAB) ? null :
+                        <div className="nexus-c-table-toolbar__separation-line" />
+                    }
+
+                    {isItSamePage(RIGHTS_TAB) || isItSamePage(RIGHTS_SELECTED_TAB) ? (
+                        <SelectedRightsActions
+                            selectedRights={selectedRepoRights}
+                            selectedRightGridApi={selectedRightGridApi}
+                            setSelectedRights={setSelectedRights}
+                            setPrePlanRepoRights={setPrePlanRepoRights}
+                            gridApi={gridApi}
+                            activeTab={activeTab}
+                            singleRightMatch={singleRightMatch}
+                            setSingleRightMatch={setSingleRightMatch}
+                        />
+                    ) : null}
+                    {isItSamePage(PRE_PLAN_TAB) ? (
+                        <PrePlanActions
+                            selectedPrePlanRights={selectedPrePlanRights}
+                            setSelectedPrePlanRights={setSelectedPrePlanRights}
+                            selectedRightGridApi={selectedRightGridApi}
+                            setSelectedRights={setSelectedRights}
+                            setPreplanRights={setPreplanRights}
+                            prePlanRepoRights={prePlanRepoRights}
+                            username={username}
+                            singleRightMatch={singleRightMatch}
+                            setSingleRightMatch={setSingleRightMatch}
+                        />
+                    ) : null} 
+                    {isItSamePage(SELECTED_FOR_PLANNING_TAB) && null}
+                </div>
+            </div>
+            <div className='col-xs-12 col-xl-4'>
+                {hasDownloadButton && (
+                    <div className="nexus-c-table-toolbar__button-container">
+                        <AvailsTableReleaseReport />
+                        <NexusTableExportDropdown
+                            activeTab={activeTab}
+                            selectedRows={selectedRows}
+                            rightsFilter={rightsFilter}
+                            rightColumnApi={rightColumnApi}
+                            selectedRightColumnApi={selectedRightColumnApi}
+                            selectedRightGridApi={selectedRightGridApi}
+                            prePlanColumnApi={prePlanColumnApi}
+                            prePlanGridApi={prePlanGridApi}
+                            selectedForPlanningColumnApi={selectedForPlanningColumnApi}
+                            selectedForPlanningGridApi={selectedForPlanningGridApi}
+                            totalRows={totalRows}
+                            prePlanRightsCount={prePlanRightsCount}
+                            planningRightsCount={planningRightsCount}
+                            username={username}
+                        />
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
@@ -144,6 +161,7 @@ AvailsTableToolbar.propTypes = {
     prePlanGridApi: PropTypes.object,
     selectedForPlanningColumnApi: PropTypes.object,
     selectedForPlanningGridApi: PropTypes.object,
+    setActiveTabIndex: PropTypes.func,
 };
 
 AvailsTableToolbar.defaultProps = {
@@ -165,6 +183,7 @@ AvailsTableToolbar.defaultProps = {
     prePlanGridApi: {},
     selectedForPlanningColumnApi: {},
     selectedForPlanningGridApi: {},
+    setActiveTabIndex: () => null,
 };
 
 export default AvailsTableToolbar;

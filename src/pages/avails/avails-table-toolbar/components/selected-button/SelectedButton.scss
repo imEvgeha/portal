@@ -1,0 +1,13 @@
+@import '~@vubiquity-nexus/portal-styles/scss/config';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+
+.nexus-c-button__avails-selected {
+    @include margin(0, 3, 0, 9);
+    background: none;
+    font-weight: bold;
+    font-size: 13px;
+    color: palette(black, 55);
+    white-space: nowrap;
+}

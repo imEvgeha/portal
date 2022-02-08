@@ -1,10 +1,14 @@
 @import '~@vubiquity-nexus/portal-styles/scss/config';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
 .nexus-c-table-toolbar {
     display: flex;
     align-items: center;
-    width: 100%;
     color: map-get($colors, nexus-light-grey);
+
+    // @include padding(0, 0, 6, 0);
 }
 
 .nexus-c-table-toolbar__selected-option {
@@ -25,4 +29,24 @@
     flex-grow: 4;
     justify-content: flex-end;
     padding: 10px;
+}
+
+.nexus-c-table-toolbar__total-rows {
+    font-size: 13px;
+    font-weight: bold;
+    color: palette(black, 55);
+}
+
+.nexus-c-table-toolbar__separation-line {
+    width: 1px;
+    height: 32px;
+    background-color: palette(black, 55);
+}
+
+.nexus-c-table-toolbar__selected-button-container {
+    min-width: 162px;
+}
+
+.nexus-c-table-toolbar__rights-counter-container {
+    min-width: 50px;
 }

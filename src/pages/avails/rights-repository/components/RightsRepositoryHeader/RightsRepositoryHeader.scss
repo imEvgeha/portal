@@ -7,5 +7,10 @@
     .nexus-c-rights-repository-header__title-text {
         @include margin(0);
         font-weight: bold;
+        font-size: 26px;
+    }
+
+    .nexus-c-title-metadata__saved-table-wrapper {
+        @include margin(0, 8, 0, 0);
     }
 }
