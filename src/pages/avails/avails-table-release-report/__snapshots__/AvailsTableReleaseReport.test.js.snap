@@ -5,7 +5,10 @@ exports[`AvailsTableReleaseReport should match snapshot 1`] = `
   value={null}
 >
   <ComposedComponent
+    activeTab="Rights"
     addToast={[Function]}
+    planningRightsCount={0}
+    prePlanRightsCount={0}
     removeToast={[Function]}
     store={
       Object {
