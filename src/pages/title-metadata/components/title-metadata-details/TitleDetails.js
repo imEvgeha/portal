@@ -261,7 +261,7 @@ const TitleDetails = ({
                                 titleUpdatedAt={title.updatedAt}
                                 hasButtons={isNexusTitle(title.id)}
                             />
-                            <div className="line" />
+                            <div className="nexus-c-line" />
                             <SyncPublish
                                 externalSystem={MOVIDA}
                                 externalIds={externalIds}
