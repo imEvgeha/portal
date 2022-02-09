@@ -15,7 +15,7 @@ const SyncPublish = ({
     titleUpdatedAt,
     hasButtons,
 }) => {
-    const [externalData] = externalIds.filter(id => id.externalSystem === externalSystem.toLowerCase());
+    const [externalData] = externalIds.filter(id => id.externalSystem === externalSystem?.value);
     const buttonType = externalData ? SYNC : PUBLISH;
     let publishedDate = externalData && externalData.publishedAt ? externalData.publishedAt : null;
     publishedDate = moment(publishedDate).isValid() ? moment(publishedDate) : null;
@@ -31,8 +31,8 @@ const SyncPublish = ({
     return (
         <div className="nexus-c-sync-publish">
             <NexusStatusDot
-                label={externalSystem}
-                onAction={() => onSyncPublish(externalSystem, buttonType)}
+                label={externalSystem?.label}
+                onAction={() => onSyncPublish(externalSystem?.value, buttonType)}
                 severity={getStatus()}
                 isDisabled={!hasButtons || (isDisabled && publishedDate && !needsSyncing)}
                 isLoading={isSyncing || isPublishing}
@@ -42,7 +42,7 @@ const SyncPublish = ({
 };
 
 SyncPublish.propTypes = {
-    externalSystem: PropTypes.string.isRequired,
+    externalSystem: PropTypes.object.isRequired,
     externalIds: PropTypes.array,
     onSyncPublish: PropTypes.func,
     isSyncing: PropTypes.bool,
