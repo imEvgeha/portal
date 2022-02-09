@@ -106,7 +106,14 @@ const AvailsTableToolbar = ({
             <div className='col-xs-12 col-xl-4'>
                 {hasDownloadButton && (
                     <div className="nexus-c-table-toolbar__button-container">
-                        <AvailsTableReleaseReport />
+                        <AvailsTableReleaseReport 
+                            activeTab={activeTab}
+                            selectedRows={selectedRows}
+                            rightsFilter={rightsFilter}
+                            totalRows={totalRows}
+                            prePlanRightsCount={prePlanRightsCount}
+                            planningRightsCount={planningRightsCount}
+                        />
                         <NexusTableExportDropdown
                             activeTab={activeTab}
                             selectedRows={selectedRows}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Popup from '@atlaskit/popup';
@@ -8,14 +8,30 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
+import { PRE_PLAN_TAB, RIGHTS_SELECTED_TAB, RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB } from '../rights-repository/constants';
 import {CREATE_REPORT, ERROR_MESSAGE, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
 import './AvailsTableReleaseReport.scss';
 
-const AvailsTableReleaseReport = ({addToast}) => {
+const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows, prePlanRightsCount, planningRightsCount}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(moment().format('MMMM'));
     const [selectedYear, setSelectedYear] = useState(moment().format('YYYY'));
+
+    useEffect(() => {
+        let disable = false;
+        if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0) {
+            disable = true;
+        } else if ([SELECTED_FOR_PLANNING_TAB].includes(activeTab) ) {
+            disable = true;
+        } else if (activeTab === PRE_PLAN_TAB && prePlanRightsCount === 0) {
+            disable = true;
+        } else if (activeTab === SELECTED_FOR_PLANNING_TAB && planningRightsCount === 0) {
+            disable = true;
+        }
+        setIsDisabled(disable);
+    }, [activeTab, selectedRows, totalRows, prePlanRightsCount]);
 
     const onCreateReport = () => {
         const monthNumber = moment().month(selectedMonth).format('MM');
@@ -92,7 +108,7 @@ const AvailsTableReleaseReport = ({addToast}) => {
                 onClose={() => setIsOpen(false)}
                 content={() => getContent()}
                 trigger={triggerProps => (
-                    <Button {...triggerProps} isSelected={isOpen} onClick={() => setIsOpen(!isOpen)} shouldFitContainer>
+                    <Button {...triggerProps} isSelected={isOpen} onClick={() => setIsOpen(!isOpen)} isDisabled={isDisabled} shouldFitContainer>
                         <span className="nexus-c-right-repository-release-report-button__title">{NEW_RELEASE_REPORT}</span>
                         <AtlaskitMoreIcon />
                     </Button>
@@ -104,10 +120,18 @@ const AvailsTableReleaseReport = ({addToast}) => {
 
 AvailsTableReleaseReport.propTypes = {
     addToast: PropTypes.func,
+    activeTab: PropTypes.string,
+    selectedRows: PropTypes.array.isRequired,
+    totalRows: PropTypes.number.isRequired,
+    prePlanRightsCount: PropTypes.number,
+    planningRightsCount: PropTypes.number,
 };
 
 AvailsTableReleaseReport.defaultProps = {
     addToast: () => null,
+    activeTab: RIGHTS_TAB,
+    prePlanRightsCount: 0,
+    planningRightsCount: 0,
 };
 
 export default withToasts(AvailsTableReleaseReport);

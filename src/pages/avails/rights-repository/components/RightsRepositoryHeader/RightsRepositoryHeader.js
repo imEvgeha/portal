@@ -16,7 +16,7 @@ import {
     MY_PREDEFINED_VIEWS_LABEL,
     SAVED_TABLE_SELECT_OPTIONS,
 } from '../../../saved-table-dropdown/constants';
-import {CREATE_NEW_RIGHT, RIGHTS_REPOSITORY_TABS, RIGHTS_SELECTED_TAB, RIGHTS_TAB} from '../../constants';
+import {CREATE_NEW_RIGHT, RIGHTS_REPOSITORY_TABS, RIGHTS_SELECTED_TAB, RIGHTS_TAB, PRE_PLAN_TAB} from '../../constants';
 import './RightsRepositoryHeader.scss';
 import {storeAvailsUserDefinedGrid} from '../../rightsActions';
 import {createUserGridSelector} from '../../rightsSelectors';
@@ -73,9 +73,9 @@ export const RightsRepositoryHeader = ({
                     }}
                 /> 
             </div>
-            <div className="col-xs-12 col-xl-3 d-flex justify-content-end">
+            <div className="col-xs-12 col-xl-3 d-flex justify-content-end align-items-center">
                 <div className="nexus-c-title-metadata__saved-table-wrapper">
-                    {activeTab === RIGHTS_TAB && gridApi && columnApi ? (
+                    {(activeTab === RIGHTS_TAB || activeTab === PRE_PLAN_TAB) && gridApi && columnApi ? (
                         <NexusSavedTableDropdown
                             gridApi={gridApi}
                             columnApi={columnApi}
@@ -87,7 +87,7 @@ export const RightsRepositoryHeader = ({
                             tableLabels={tableLabels}
                             tableOptions={tableOptions}
                         />
-                    ) : activeTab === RIGHTS_TAB ? (
+                    ) : activeTab === RIGHTS_TAB || activeTab === PRE_PLAN_TAB? (
                         <Loading />
                     ) : null}
                 </div>

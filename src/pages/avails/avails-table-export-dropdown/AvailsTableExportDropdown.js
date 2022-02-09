@@ -51,11 +51,9 @@ const AvailsTableExportDropdown = ({
 
     useEffect(() => {
         let disable = false;
-        if (activeTab === RIGHTS_SELECTED_TAB) {
-            if (selectedRows.length === 0) {
-                setTooltipContent(TOOLTIP_MSG_NO_RIGHTS);
-                disable = true;
-            }
+        if (activeTab === RIGHTS_SELECTED_TAB && selectedRows.length === 0) {
+            setTooltipContent(TOOLTIP_MSG_NO_RIGHTS);
+            disable = true;
         } else if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0) {
             setTooltipContent(TOOLTIP_MSG_NO_RESULT);
             disable = true;
@@ -64,9 +62,7 @@ const AvailsTableExportDropdown = ({
             disable = true;
         } else if (activeTab === PRE_PLAN_TAB && prePlanRightsCount === 0) {
             disable = true;
-        } else if (activeTab === SELECTED_FOR_PLANNING_TAB && planningRightsCount === 0) {
-            disable = true;
-        }
+        } 
         setIsDisabled(disable);
     }, [activeTab, selectedRows, totalRows, prePlanRightsCount]);
 
