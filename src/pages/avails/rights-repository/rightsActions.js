@@ -47,3 +47,8 @@ export const storeAvailsUserDefinedGrid = payload => ({
 export const clearRight = () => ({
     type: actionTypes.CLEAR_RIGHT,
 });
+
+export const storeFromSelectedTable = payload => ({
+    type: actionTypes.STORE_FROM_SELECTED_TABLE,
+    payload,
+});

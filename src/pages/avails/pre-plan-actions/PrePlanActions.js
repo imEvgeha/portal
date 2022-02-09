@@ -39,14 +39,28 @@ export const PrePlanActions = ({
     const [bulkUpdate, setBulkUpdate] = useState([]);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [headerText, setHeaderText] = useState('');
+    const node = useRef();
+
+    useEffect(() => {
+        window.addEventListener('click', removeMenu);
+
+        return () => {
+            window.removeEventListener('click', removeMenu);
+        };
+    }, []);
 
     useEffect(() => {
         bulkSetInTable();
     }, [bulkUpdate]);
 
-    const node = useRef();
     const {openModal, closeModal} = useContext(NexusModalContext);
     const clickHandler = () => setMenuOpened(!menuOpened);
+
+    const removeMenu = e => {
+        if (!node.current.contains(e.target)) {
+            setMenuOpened(false);
+        }
+    };
 
     const removeRightsFromPrePlan = keepUnselected => {
         const selectedRights = [];
