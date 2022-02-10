@@ -13,6 +13,7 @@ const initialState = {
         external: {},
     },
     gridState: {},
+    fromSelected: {},
 };
 
 const filteringObject = (object, criteria) => {
@@ -116,6 +117,13 @@ const rightsReducer = (state = initialState, action = {}) => {
                 ...state,
                 gridState: {...state.gridState, ...payload},
             };
+        case actionTypes.STORE_FROM_SELECTED_TABLE: {
+            const {fromSelected = {}} = state;
+            return {
+                ...state,
+                fromSelected: {...fromSelected, ...payload},
+            };
+        }
         default:
             return state;
     }

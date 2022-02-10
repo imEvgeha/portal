@@ -29,7 +29,7 @@ export const isMgmTitle = titleId => {
 
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ && syncToMovida) {
-        return `${VZ},${MOVIDA}`;
+        return `${VZ?.value},${MOVIDA?.value}`;
     } else if (syncToVZ) {
         return VZ;
     } else if (syncToMovida) {
@@ -59,7 +59,7 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                 externalIds = {},
                 episodic = {},
             } = obj || {};
-            const repository = id.includes('vztitl_') ? VZ : id.includes('movtitl_') ? MOVIDA : NEXUS;
+            const repository = id.includes('vztitl_') ? VZ?.value : id.includes('movtitl_') ? MOVIDA?.value : NEXUS;
             const {
                 assetName = '',
                 eidrTitleId = '',
