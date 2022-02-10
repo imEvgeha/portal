@@ -1,25 +1,21 @@
 {
     "gateway": {
-        "url": "https://availsapi.qa.vubiquity.com",
-        "injestUrl": "https://avails-ingest.qa.vubiquity.com",
-        "availsParserUrl": "https://avails-parser.qa.vubiquity.com",
-        "titleUrl": "https://titlesapi.qa.vubiquity.com",
-        "configuration": "https://configapi.qa.vubiquity.com",
         "assetManagementURL": "https://asset-management-api.qa.vubiquity.com",
-        "eventApiUrl": "https://eventapi.qa.vubiquity.com",
-        "servicingOrdersUrl": "https://servicing-order-manager.qa.vubiquity.com",
-        "DOPUrl": "https://dop.qa.vubiquity.com:8045",
-        "publisher": "https://titlespublishermovida.qa.vubiquity.com",
+        "availsParserUrl": "https://avails-parser.qa.vubiquity.com",
+        "configuration": "https://vuapi.qa.vubiquity.com/vubiquity/configuration",
+        "DOPUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dop",
+        "eventApiUrl": "https://vuapi.qa.vubiquity.com/vubiquity/events",
         "kongUrl": "https://vuapi.qa.vubiquity.com/vubiquity",
         "mediaImageUrl": "https://mediaimage.qa.vubiquity.com",
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
+        "publisher": "https://vuapi.qa.vubiquity.com/vubiquity/titlespublishermovida",
         "mediaStorageUrl": "https://vuapi.qa.vubiquity.com/vubiquity/mediastorage/media-storage/v1",
         "mediaIngestUrl": "https://vuapi.qa.vubiquity.com/vubiquity/mediaingest/media-ingest/v1",
         "service": {
             "avails": "/avails-api/v1",
+            "availsParser": "/avails-parser/v1",
             "availsInjest": "/avails-ingest/v1",
             "clearCache": "/cache/clear",
-            "availsParser": "/avails-parser/v1",
             "title": "/titles-api/v1",
             "titleV2": "/titles-api/v2",
             "configuration": "/configuration-api/v1",
@@ -43,7 +39,11 @@
             "kongMediaStorage": "/mediastorage/media-storage/v1",
             "kongVidispine": "/vidispine-api/API",
             "mediaImageServices": "/image-services/v1"
-        }
+        },
+        "servicingOrdersUrl": "https://vuapi.qa.vubiquity.com/vubiquity/servicing-orders",
+        "titleUrl": "https://vuapi.qa.vubiquity.com/vubiquity/titles",
+        "url": "https://vuapi.qa.vubiquity.com/vubiquity/avails",
+        "injestUrl": "https://vuapi.qa.vubiquity.com/vubiquity/avails-ingest"
     },
     "DOP_base": "https://dop.qa.vubiquity.com:8045",
     "keycloak": {
