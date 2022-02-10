@@ -35,5 +35,3 @@ const mapStateToProps = () => {
 };
 
 export default connect(mapStateToProps)(NexusToastNotification);
-
-// export default React.memo(NexusToastNotification);
