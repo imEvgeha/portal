@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {Button} from 'primereact/button';
-import {Col, Row} from 'reactstrap';
 import './TitleMetadataRepoSelectsAndButtons.scss';
 import {TABLE_LABELS, TABLE_OPTIONS} from '../../constants';
 import CatalogueOwner from '../catalogue-owner/CatalogueOwner';
@@ -23,8 +22,8 @@ const RepositorySelectsAndButtons = ({
 }) => {
     if (getNameOfCurrentTab() === 'repository') {
         return (
-            <Row className="nexus-c-title-metadata__select-container">
-                <Col className="d-flex justify-content-end col-xs-12 col-xl-10 col-xxl-11">
+            <div className="row nexus-c-title-metadata__select-container">
+                <div className="d-flex justify-content-end col-xs-12 col-xl-10 col-xxl-11">
                     <NexusSavedTableDropdown
                         gridApi={gridApi}
                         columnApi={columnApi}
@@ -39,8 +38,8 @@ const RepositorySelectsAndButtons = ({
                         isTitleMetadata={true}
                     />
                     <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
-                </Col>
-                <Col className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1">
+                </div>
+                <div className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1">
                     <Button
                         tooltip="Create New Title"
                         tooltipOptions={{position: 'left'}}
@@ -48,8 +47,8 @@ const RepositorySelectsAndButtons = ({
                         onClick={() => setShowModal(true)}
                         className="p-button-text nexus-c-title-metadata__create-btn"
                     />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 

@@ -1,4 +1,6 @@
 import React from 'react';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
 import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
 import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';

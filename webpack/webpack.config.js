@@ -2,8 +2,8 @@ const fs = require('fs'); // to check if the file exists
 const path = require('path'); // to get the current path
 const dotenv = require('dotenv');
 const moment = require('moment');
-const webpackMerge = require('webpack-merge');
-// const {merge} = require('webpack-merge');
+// const webpackMerge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const packageJSON = require('../package');
 const commonConfig = require('./webpack.common.js');
 
@@ -47,5 +47,5 @@ module.exports = ({env, addon}) => {
     }, {});
     const envConfig = require(`./webpack.${env}.js`);
 
-    return webpackMerge(commonConfig(envKeys), envConfig(envFile), ...getAddons(addon));
+    return merge(commonConfig(envKeys), envConfig(envFile), ...getAddons(addon));
 };

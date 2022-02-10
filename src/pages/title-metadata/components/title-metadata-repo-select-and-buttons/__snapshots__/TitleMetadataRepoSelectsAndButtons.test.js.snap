@@ -1,31 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
-<Row
-  className="nexus-c-title-metadata__select-container"
-  tag="div"
-  widths={
-    Array [
-      "xs",
-      "sm",
-      "md",
-      "lg",
-      "xl",
-    ]
-  }
+<div
+  className="row nexus-c-title-metadata__select-container"
 >
-  <Col
+  <div
     className="d-flex justify-content-end col-xs-12 col-xl-10 col-xxl-11"
-    tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <NexusSavedTableDropdown
       applyPredefinedTableView={[Function]}
@@ -57,19 +37,9 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
     <CatalogueOwner
       setCatalogueOwner={[Function]}
     />
-  </Col>
-  <Col
+  </div>
+  <div
     className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1"
-    tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <ForwardRef
       className="p-button-text nexus-c-title-metadata__create-btn"
@@ -86,6 +56,6 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
         }
       }
     />
-  </Col>
-</Row>
+  </div>
+</div>
 `;
