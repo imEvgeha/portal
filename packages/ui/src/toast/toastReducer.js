@@ -1,7 +1,7 @@
 import {ADD_TOAST, REMOVE_TOAST} from './toastActionTypes';
 
 const initialState = {
-    list: [],
+    toast: null,
 };
 
 const toastReducer = (state = initialState, action) => {
@@ -10,13 +10,12 @@ const toastReducer = (state = initialState, action) => {
         case ADD_TOAST:
             return {
                 ...state,
-                list: [payload, ...state.list],
+                toast: payload,
             };
         case REMOVE_TOAST: {
-            const newList = state.list.filter((toast, i) => i !== (payload || 0));
             return {
                 ...state,
-                list: newList,
+                toast: null,
             };
         }
         default:

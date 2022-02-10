@@ -1,38 +1,39 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {Toast} from 'primereact/toast';
+import {connect} from 'react-redux';
+import { createToastSelector } from './NexusToastNotificationSelectors';
 
-const NexusToastNotification = ({toasts, removeToast}) => {
-    const toast = useRef(null);
-    const showToast = (toastParam) => {
-        if(toast.current) {
-            toast.current.show({...toastParam});
-        }
-    }
+const NexusToastNotification = ({toast}) => {
+    const toastRef = useRef(null);
 
     useEffect(() => {
-        if(!toasts.length) {
-            const lifeTime = toast.current?.state?.messages?.[0]?.life;
-            setTimeout(() => toast.current.clear(), lifeTime || 0) 
+        if(toastRef.current && toast) {
+            toastRef.current.show(toast);
+        } if (toast === null) {
+            toastRef.current.clear();
         }
-    }, [toasts])
+    }, [toast])
 
-    toasts.forEach((item, index) => {
-        showToast(item);
-        item.isAutoDismiss && removeToast(index);
-    });
-    
-    return (<Toast ref={toast} position="bottom-left" className='p-toast' />)
+    return (<Toast ref={toastRef} position="bottom-left" className='p-toast' />)
 };
 
 NexusToastNotification.propTypes = {
-    toasts: PropTypes.array,
-    removeToast: PropTypes.func,
+    toast: PropTypes.any,
 };
 
 NexusToastNotification.defaultProps = {
-    toasts: [],
-    removeToast: () => null,
+    toast: null,
 };
 
-export default React.memo(NexusToastNotification);
+const mapStateToProps = () => {
+    const toastSelector = createToastSelector();
+
+    return (state, props) => ({
+        toast: toastSelector(state, props),
+    });
+};
+
+export default connect(mapStateToProps)(NexusToastNotification);
+
+// export default React.memo(NexusToastNotification);
