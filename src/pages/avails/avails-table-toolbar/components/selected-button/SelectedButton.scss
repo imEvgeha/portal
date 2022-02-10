@@ -4,7 +4,7 @@
 @import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
 .nexus-c-button__avails-selected {
-    @include margin(0, 3, 0, 9);
+    @include margin(0, 0, 0, 9);
     background: none;
     font-weight: bold;
     font-size: 13px;

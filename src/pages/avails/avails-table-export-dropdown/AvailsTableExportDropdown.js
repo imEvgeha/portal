@@ -14,11 +14,10 @@ import {
     PREPLAN_REPORT,
     SELECTED_FOR_PLANNING_REPORT,
     IN_PROGRESS,
+    STATUS_TAB,
 } from '../rights-repository/constants';
-import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_MAX_ROWS} from './constants';
+import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT} from './constants';
 import './AvailsTableExportDropdown.scss';
-
-const MAX_ROWS = 50000;
 
 const AvailsTableExportDropdown = ({
     activeTab,
@@ -51,18 +50,23 @@ const AvailsTableExportDropdown = ({
 
     useEffect(() => {
         let disable = false;
-        if (activeTab === RIGHTS_SELECTED_TAB && selectedRows.length === 0) {
+        const isItEmptySelectedRightsTab = [RIGHTS_SELECTED_TAB].includes(activeTab) && selectedRows.length === 0;
+        const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
+        const isItEmptyPrePlanTab = [PRE_PLAN_TAB].includes(activeTab) && prePlanRightsCount === 0;
+        const isItStatusTab = [STATUS_TAB].includes(activeTab);
+
+        const handleDisable = () => {disable = true};
+
+        if (isItEmptySelectedRightsTab) {
             setTooltipContent(TOOLTIP_MSG_NO_RIGHTS);
-            disable = true;
-        } else if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0) {
+            handleDisable();
+        } else if (isItEmptyRightsTab) {
             setTooltipContent(TOOLTIP_MSG_NO_RESULT);
-            disable = true;
-        } else if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows > MAX_ROWS) {
-            setTooltipContent(TOOLTIP_MSG_MAX_ROWS);
-            disable = true;
-        } else if (activeTab === PRE_PLAN_TAB && prePlanRightsCount === 0) {
-            disable = true;
-        } 
+            handleDisable();
+        }  else if (isItEmptyPrePlanTab || isItStatusTab) {
+            handleDisable();
+        }
+
         setIsDisabled(disable);
     }, [activeTab, selectedRows, totalRows, prePlanRightsCount]);
 

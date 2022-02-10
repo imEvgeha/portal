@@ -36,9 +36,10 @@
 }
 
 .nexus-c-table-toolbar__separation-line {
+    @include margin(0, 3);
     width: 1px;
     height: 32px;
-    background-color: palette(black, 55);
+    background-color: palette(black, 20);
 }
 
 .nexus-c-table-toolbar__selected-button-container {

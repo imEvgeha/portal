@@ -74,7 +74,7 @@ export const RightsRepositoryHeader = ({
             </div>
             <div className="col-xs-12 col-xl-3 d-flex justify-content-end align-items-center">
                 <div className="nexus-c-title-metadata__saved-table-wrapper">
-                    {(activeTab === RIGHTS_TAB || activeTab === PRE_PLAN_TAB) && gridApi && columnApi ? (
+                    {gridApi && columnApi ? (
                         <NexusSavedTableDropdown
                             gridApi={gridApi}
                             columnApi={columnApi}

@@ -1,0 +1,23 @@
+@import '~@vubiquity-nexus/portal-styles/scss/config';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+
+.nexus-c-status-rights-actions {
+    position: relative;
+
+    .nexus-c-status-rights-actions__menu-item {
+        @include margin(0, 3);
+        color: palette(black, 20);
+        white-space: nowrap; // Keep each option in one line
+        padding-bottom: 0px;
+        font-weight: bold;
+        cursor: not-allowed;
+
+        &--is-active {
+            color: map-get($colors, nexus-secondary-color);
+            color: palette(black, 55);
+            cursor: pointer;
+        }
+    }
+}

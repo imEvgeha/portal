@@ -8,7 +8,7 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
-import { PRE_PLAN_TAB, RIGHTS_SELECTED_TAB, RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB } from '../rights-repository/constants';
+import { PRE_PLAN_TAB, RIGHTS_SELECTED_TAB, RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB } from '../rights-repository/constants';
 import {CREATE_REPORT, ERROR_MESSAGE, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
 import './AvailsTableReleaseReport.scss';
 
@@ -21,15 +21,17 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
 
     useEffect(() => {
         let disable = false;
-        if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0) {
-            disable = true;
-        } else if ([SELECTED_FOR_PLANNING_TAB].includes(activeTab) ) {
-            disable = true;
-        } else if (activeTab === PRE_PLAN_TAB && prePlanRightsCount === 0) {
-            disable = true;
-        } else if (activeTab === SELECTED_FOR_PLANNING_TAB && planningRightsCount === 0) {
-            disable = true;
-        }
+        const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
+        const isItDisabledForCurrentTab = [SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
+        const isItEmptyPrePlanTab = [PRE_PLAN_TAB].includes(activeTab) && prePlanRightsCount === 0;
+        const isItEmtySelectedForPlaningTab = [SELECTED_FOR_PLANNING_TAB].includes(activeTab) && planningRightsCount === 0;
+        
+        const handleDisable = () => {disable = true};
+
+        if (isItEmptyRightsTab || isItDisabledForCurrentTab || isItEmptyPrePlanTab || isItEmtySelectedForPlaningTab) {
+            handleDisable();
+        } 
+        
         setIsDisabled(disable);
     }, [activeTab, selectedRows, totalRows, prePlanRightsCount]);
 
