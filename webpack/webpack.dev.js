@@ -33,14 +33,24 @@ module.exports = envFile => ({
     devServer: {
         port: (envFile && envFile.PORT) || 3000,
         historyApiFallback: true,
-        watchOptions: {
-            ignored: /node_modules/,
+        static: {
+            watch: {
+                ignored: /node_modules/,
+            },
         },
-        clientLogLevel: 'info',
-        hot: true,
-        inline: true,
+
+        client: {
+            logging: 'info',
+            overlay: {
+                warnings: true,
+                errors: true,
+            },
+        },
+        hot: 'only',
         open: true,
-        stats: (envFile && envFile['BUILD_STATS']) || 'normal',
+        devMiddleware: {
+            stats: (envFile && envFile['BUILD_STATS']) || 'normal',
+        },
     },
     performance: {
         hints: false,

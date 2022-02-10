@@ -16,7 +16,7 @@ module.exports = envFile => ({
         rules: [
             {
                 test: /\.(scss|css)/,
-                loader: [MiniCssExtractPlugin.loader, require.resolve('css-loader'), require.resolve('sass-loader')],
+                use: [MiniCssExtractPlugin.loader, require.resolve('css-loader'), require.resolve('sass-loader')],
             },
         ],
     },
@@ -56,7 +56,6 @@ module.exports = envFile => ({
         },
         minimizer: [
             new TerserPlugin({
-                sourceMap: (envFile && envFile.SOURCE_MAP) || false,
                 terserOptions: {
                     compress: {
                         warnings: false,
