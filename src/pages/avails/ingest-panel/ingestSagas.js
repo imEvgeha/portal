@@ -1,4 +1,3 @@
-
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import { SUCCESS_ICON, SUCCESS_TITLE } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL, normalizeDataForStore} from '@vubiquity-nexus/portal-utils/lib/Common';
