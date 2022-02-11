@@ -1,6 +1,5 @@
 import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {SUCCESS_TITLE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
@@ -254,30 +253,22 @@ export const PrePlanActions = ({
 
     return (
         <>
-            <div className="nexus-c-selected-rights-actions" ref={node}>
-                <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
-                <div
-                    className={classNames(
-                        'nexus-c-selected-rights-actions__menu',
-                        menuOpened && 'nexus-c-selected-rights-actions__menu--is-open'
-                    )}
-                >
-                    {actions.map(({id, label, onClick}) => (
-                        <div
-                            className={classNames(
-                                'nexus-c-selected-rights-actions__menu-item',
-                                selectedPrePlanRights.length &&
-                                    isFetchDOP === false &&
-                                    'nexus-c-selected-rights-actions__menu-item--is-active'
-                            )}
-                            key={id}
-                            data-test-id={id}
-                            onClick={selectedPrePlanRights.length ? onClick : null}
-                        >
-                            <div>{label}</div>
-                        </div>
-                    ))}
-                </div>
+            <div className="nexus-c-selected-rights-actions d-flex align-items-center" ref={node}>
+                {actions.map(({id, label, onClick}) => (
+                    <div
+                        className={classNames(
+                            'nexus-c-selected-rights-actions__menu-item',
+                            selectedPrePlanRights.length &&
+                                isFetchDOP === false &&
+                                'nexus-c-selected-rights-actions__menu-item--is-active'
+                        )}
+                        key={id}
+                        data-test-id={id}
+                        onClick={selectedPrePlanRights.length ? onClick : null}
+                    >
+                        <div>{label}</div>
+                    </div>
+                ))}
             </div>
             <NexusDrawer
                 onClose={closeDrawer}

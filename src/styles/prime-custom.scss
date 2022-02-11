@@ -576,6 +576,7 @@ $element-color-orange-80: palette(orange, 80);
             .p-menuitem-link {
                 border: none;
                 background: none;
+                white-space: nowrap;
                 color: palette(black, 55);
                 padding: 1.25rem;
                 font-weight: 700;
