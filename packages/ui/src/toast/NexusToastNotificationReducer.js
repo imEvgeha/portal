@@ -1,4 +1,4 @@
-import {ADD_TOAST, REMOVE_TOAST} from './toastActionTypes';
+import {ADD_TOAST, REMOVE_TOAST} from './NexusToastNotificationActionTypes';
 
 const initialState = {
     toast: null,

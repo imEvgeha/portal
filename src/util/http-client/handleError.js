@@ -2,7 +2,7 @@
 import React from 'react';
 import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import { Button } from 'primereact/button';
 import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';

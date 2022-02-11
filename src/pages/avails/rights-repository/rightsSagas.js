@@ -6,7 +6,7 @@ import {
     UPDATE_RIGHT_SUCCESS_MESSAGE,
     MAX_CHARS,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {history} from '../../../index';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';

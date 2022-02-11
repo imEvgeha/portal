@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import UserPicker from '@atlaskit/user-picker';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
 import {cloneDeep} from 'lodash';

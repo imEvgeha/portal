@@ -13,3 +13,21 @@ export const TITLE_MATCH_AND_CREATE_ERROR_MESSAGE =
 export const REPLAY_EVENT_SUCCESS_MESSAGE = 'You have successfully replayed the event.';
 export const REPLICATE_EVENT_SUCCESS_MESSAGE = 'You have successfully replicated the event.';
 export const SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE = 'Success - Fulfillment Order successfully saved';
+
+export const CREATE_NEW_RIGHT_SUCCESS_MESSAGE = 'You have successfully declared a new right.';
+export const CREATE_NEW_RIGHT_ERROR_TITLE = 'Right creation failed!';
+export const EDIT_RIGHT_ERROR_TITLE = 'Editing right failed!';
+export const RIGHT_ERROR_MSG_MERGED = 'Review and merge rights';
+export const LICENSOR_ERROR = 'Licensor already exists!';
+
+export const WARNING_TITLE = 'Warning';
+export const ERROR_TITLE = 'Error';
+export const SUCCESS_TITLE = 'Success';
+export const SUCCESS_ICON = 'success';
+export const WARNING_ICON = 'warning';
+export const INFO_ICON = 'info';
+export const ERROR_ICON = 'error';
+
+export const UPDATE_RIGHT_SUCCESS_MESSAGE = 'Right is successfully updated.';
+export const UPDATE_RIGHT_FAILED = 'Right update failed.';
+export const MAX_CHARS = 330;

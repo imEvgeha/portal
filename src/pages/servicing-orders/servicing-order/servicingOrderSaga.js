@@ -1,6 +1,6 @@
 import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {all, call, put, takeLatest} from 'redux-saga/effects';
 import {
     saveFulfillmentOrder as saveFulfillmentOrderAPI,

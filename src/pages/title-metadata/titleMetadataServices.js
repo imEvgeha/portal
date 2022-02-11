@@ -1,4 +1,4 @@
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {prepareSortMatrixParamTitles, encodedSerialize, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
 import config from 'react-global-configuration';

@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {Toast} from 'primereact/toast';
 import {connect} from 'react-redux';
-import { createToastSelector } from './NexusToastNotificationSelectors';
+import { getToasts } from '../../lib/toast/toastSelectors';
 
 const NexusToastNotification = ({toast}) => {
     const toastRef = useRef(null);
@@ -10,7 +10,7 @@ const NexusToastNotification = ({toast}) => {
     useEffect(() => {
         if(toastRef.current && toast) {
             toastRef.current.show(toast);
-        } if (toast === null) {
+        } else if (toastRef.current && !toast) {
             toastRef.current.clear();
         }
     }, [toast])
@@ -27,10 +27,8 @@ NexusToastNotification.defaultProps = {
 };
 
 const mapStateToProps = () => {
-    const toastSelector = createToastSelector();
-
     return (state, props) => ({
-        toast: toastSelector(state, props),
+        toast: getToasts(state, props),
     });
 };
 

@@ -7,7 +7,7 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push, goBack} from 'connected-react-router';
 import { Button } from 'primereact/button';

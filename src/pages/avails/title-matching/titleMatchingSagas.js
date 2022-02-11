@@ -10,7 +10,7 @@ import {
     TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
     TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {isEmpty} from 'lodash';

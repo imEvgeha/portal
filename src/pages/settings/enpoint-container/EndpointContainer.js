@@ -9,7 +9,7 @@ import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/Ne
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
 import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {useDebounce} from '@vubiquity-nexus/portal-utils/lib/useDebounce';
 import {capitalize, cloneDeep} from 'lodash';
 import {Button} from 'primereact/button';

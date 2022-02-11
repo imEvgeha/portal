@@ -7,7 +7,7 @@ import {
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {TOGGLE_REFRESH_GRID_DATA} from '@vubiquity-nexus/portal-ui/lib/grid/gridActionTypes';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {uniqBy} from 'lodash';
 import {call, put, all, takeLatest} from 'redux-saga/effects';
 import DopTasksService from './dopTasks-services';

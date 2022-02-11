@@ -4,7 +4,7 @@ import {
     ERROR_TITLE,
     ERROR_ICON,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {history} from '../../index';
 import {showToastForErrors} from '../../util/http-client/handleError';
