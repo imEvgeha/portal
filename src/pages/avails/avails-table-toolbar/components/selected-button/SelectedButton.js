@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
-import Tooltip from '@atlaskit/tooltip';
 import { ToggleButton } from 'primereact/togglebutton';
 import {RIGHTS_SELECTED_TAB, RIGHTS_TAB} from '../../../rights-repository/constants';
 import './SelectedButton.scss';
