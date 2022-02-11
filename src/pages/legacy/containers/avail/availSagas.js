@@ -5,7 +5,7 @@ import {
     CREATE_NEW_RIGHT_ERROR_TITLE,
     ERROR_ICON,
     RIGHT_ERROR_MSG_MERGED,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {call, put, all, take, fork, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './availActionTypes';
 import {profileService} from './service/ProfileService';
@@ -251,7 +251,7 @@ export function* handleMatchingRights({payload}) {
                 content: (<ToastBody
                     summary={SUCCESS_TITLE}
                     detail={TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE}
-                    severity={'success'}
+                    severity='success'
                 >
                     <Button
                         label={RIGHT_ERROR_MSG_MERGED}

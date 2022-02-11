@@ -7,7 +7,6 @@ import NexusDropdown, {
     DropdownToggle,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import styled from 'styled-components';
 import {unmergeTitle} from '../../../titleMetadataServices';
 import './ActionMenu.scss';
 

@@ -1,5 +1,5 @@
-import {ERROR_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {ERROR_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {cloneDeep, get, isObjectLike, isEqual} from 'lodash';
 import {store} from '../../index';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';

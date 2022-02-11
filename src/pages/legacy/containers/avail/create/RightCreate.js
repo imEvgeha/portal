@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     SUCCESS_TITLE,
-    SUCCESS_ICON,
     CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {connect} from 'react-redux';

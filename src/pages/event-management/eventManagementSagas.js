@@ -1,9 +1,10 @@
-import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {
+    SUCCESS_ICON, 
+    SUCCESS_TITLE,
     REPLAY_EVENT_SUCCESS_MESSAGE,
     REPLICATE_EVENT_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {all, call, put, takeLatest} from 'redux-saga/effects';
 import * as actionTypes from './eventManagementActionTypes';
 import {replayEvent as replayEventAPI, replicateEvent as replicateEventAPI} from './eventManagementService';

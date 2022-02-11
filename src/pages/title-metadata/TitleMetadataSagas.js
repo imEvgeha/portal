@@ -1,10 +1,10 @@
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
     ERROR_TITLE,
     ERROR_ICON,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
+} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {history} from '../../index';
 import {showToastForErrors} from '../../util/http-client/handleError';
