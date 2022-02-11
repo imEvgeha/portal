@@ -10,42 +10,37 @@ const TOOLTIP_BUTTON_UNSELECTED_MSG = 'Click to view selected items';
 const TOOLTIP_BUTTON_SELECTED_MSG = 'Click to view all items';
 
 const SelectedButton = ({activeTab, setActiveTab, selectedRightsCount, inNewDesign, setActiveTabIndex}) => {
+    const disabled = selectedRightsCount === 0;
+    const amountOfSelectedRowsTitle = `${selectedRightsCount ? `(${selectedRightsCount})` : null} Selected`;
+    const getTooltipTitle = () => {
+        if(!disabled) {
+            return activeTab === RIGHTS_SELECTED_TAB ? TOOLTIP_BUTTON_SELECTED_MSG : TOOLTIP_BUTTON_UNSELECTED_MSG
+        }
+        return null;
+    }
+
     const onClick = () => {
-        if (activeTab !== RIGHTS_SELECTED_TAB) {
-            setActiveTab(RIGHTS_SELECTED_TAB);
-            setActiveTabIndex(-1);
-        } else {
-            setActiveTab(RIGHTS_TAB);
-            setActiveTabIndex(0);
+        if(!disabled) {
+            if (activeTab !== RIGHTS_SELECTED_TAB) {
+                setActiveTab(RIGHTS_SELECTED_TAB);
+                setActiveTabIndex(-1);
+            } else {
+                setActiveTab(RIGHTS_TAB);
+                setActiveTabIndex(0);
+            }
         }
     };
 
     return (
-        <Tooltip
-            content={activeTab === RIGHTS_SELECTED_TAB ? TOOLTIP_BUTTON_SELECTED_MSG : TOOLTIP_BUTTON_UNSELECTED_MSG}
-            position="top"
-        >
-            {inNewDesign ?
-                <ToggleButton 
-                    className='nexus-c-button__avails-selected'
-                    onLabel={`(${selectedRightsCount}) Selected`}
-                    offLabel={`(${selectedRightsCount}) Selected`}
-                    checked={activeTab === RIGHTS_SELECTED_TAB} 
-                    onChange={onClick}
-                    onIcon=""
-                    offIcon=""
-                />
-                : 
-                <Button
-                    className="nexus-c-button"
-                    isSelected={activeTab === RIGHTS_SELECTED_TAB}
-                    onClick={onClick}
-                    isDisabled={selectedRightsCount === 0}
-                >
-                    ({selectedRightsCount}) Selected
-                </Button>
-            }
-        </Tooltip>
+        <ToggleButton 
+            className={disabled ? 'nexus-c-button__avails-disabled' : 'nexus-c-button__avails-selected'}
+            onLabel={amountOfSelectedRowsTitle}
+            offLabel={amountOfSelectedRowsTitle}
+            checked={activeTab === RIGHTS_SELECTED_TAB} 
+            onChange={onClick}
+            tooltip={getTooltipTitle()}
+            tooltipOptions={{position: 'top'}}
+        />
     );
 };
 

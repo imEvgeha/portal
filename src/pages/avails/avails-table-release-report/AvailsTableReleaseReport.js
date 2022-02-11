@@ -26,10 +26,8 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
         const isItEmptyPrePlanTab = [PRE_PLAN_TAB].includes(activeTab) && prePlanRightsCount === 0;
         const isItEmtySelectedForPlaningTab = [SELECTED_FOR_PLANNING_TAB].includes(activeTab) && planningRightsCount === 0;
         
-        const handleDisable = () => {disable = true};
-
         if (isItEmptyRightsTab || isItDisabledForCurrentTab || isItEmptyPrePlanTab || isItEmtySelectedForPlaningTab) {
-            handleDisable();
+            disable = true
         } 
         
         setIsDisabled(disable);
