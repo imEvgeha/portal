@@ -36,13 +36,17 @@ const EndpointContainer = ({endpoint}) => {
     const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
     const loadEndpointData = (pageNo, searchField, searchValue, pageSize = 20) => {
-        setEndpointsLoading(true);
-        getConfigApiValues(endpoint?.urls?.['search'], pageNo, pageSize, null, searchField, searchValue).then(res => {
-            setEndpointList([...endpointList, ...res.data]);
-            setTotalRecords(res.total);
-            setEndpointsLoading(false);
-            setPage(pageNo + 1);
-        });
+        if (endpoint?.urls) {
+            setEndpointsLoading(true);
+            getConfigApiValues(endpoint?.urls?.['search'], pageNo, pageSize, null, searchField, searchValue).then(
+                res => {
+                    setEndpointList([...endpointList, ...res.data]);
+                    setTotalRecords(res.total);
+                    setEndpointsLoading(false);
+                    setPage(pageNo + 1);
+                }
+            );
+        }
     };
 
     const initValues = () => {
@@ -229,7 +233,7 @@ const EndpointContainer = ({endpoint}) => {
         const newVal = {...selectedConfig, ...val};
         const successToast = {
             summary: SUCCESS_ICON,
-            
+
             detail: `${capitalize(newVal.name)} config for ${endpoint.displayName} successfully ${
                 newVal.id ? 'updated.' : 'added.'
             }`,

@@ -7,50 +7,20 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
   <TitleMetadataHeader
     label="Title Metadata"
   >
-    <Row
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      className="row"
     >
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-        xs="4"
+      <div
+        className="col-4"
       >
         <div
           className="nexus-c-title-metadata-header__label"
         >
           Title Metadata
         </div>
-      </Col>
-      <Col
-        className="d-flex justify-content-center"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-        xs="4"
+      </div>
+      <div
+        className="col-4 d-flex justify-content-center"
       >
         <TabMenu
           activeIndex={0}
@@ -75,19 +45,9 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
           onTabChange={[Function]}
           style={null}
         />
-      </Col>
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-        xs="4"
+      </div>
+      <div
+        className="col-4"
       >
         <RepositorySelectsAndButtons
           applyPredefinedTableView={[Function]}
@@ -106,31 +66,13 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
           userDefinedGridStates={Array []}
           username=""
         />
-      </Col>
-    </Row>
-    <Row
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+      </div>
+    </div>
+    <div
+      className="row"
     >
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        className="col"
       >
         <Connect(TitleMetadataBottomHeaderPart)
           className="nexus-c-title-metadata-header__bottom"
@@ -139,8 +81,8 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
           showSuccess={[Function]}
           uploadHandler={[Function]}
         />
-      </Col>
-    </Row>
+      </div>
+    </div>
   </TitleMetadataHeader>
   <Connect(TitleMetadataTable)
     catalogueOwner={

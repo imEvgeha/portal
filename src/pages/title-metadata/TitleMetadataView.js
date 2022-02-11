@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
@@ -8,7 +8,6 @@ import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
 import {TabMenu} from 'primereact/tabmenu';
 import {connect} from 'react-redux';
-import {Col, Row} from 'reactstrap';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
@@ -16,9 +15,9 @@ import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import {
-    successDownloadTitle,
     failureDownloadDesc,
     failureDownloadTitle,
+    successDownloadTitle,
 } from './components/title-metadata-header/components/constants';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
@@ -155,19 +154,19 @@ export const TitleMetadataView = ({
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
-                <Row>
-                    <Col xs="4">
+                <div className="row">
+                    <div className="col-4">
                         <div className="nexus-c-title-metadata-header__label">{TITLE_METADATA}</div>
-                    </Col>
-                    <Col xs="4" className="d-flex justify-content-center">
+                    </div>
+                    <div className="col-4 d-flex justify-content-center">
                         <TabMenu
                             className="nexus-c-title-metadata__tab-menu"
                             model={TITLE_METADATA_TABS}
                             activeIndex={activeIndex}
                             onTabChange={e => setActiveIndex(e.index)}
                         />
-                    </Col>
-                    <Col xs="4">
+                    </div>
+                    <div className="col-4">
                         <RepositorySelectsAndButtons
                             getNameOfCurrentTab={getNameOfCurrentTab}
                             gridApi={gridApi}
@@ -181,10 +180,10 @@ export const TitleMetadataView = ({
                             changeCatalogueOwner={changeCatalogueOwner}
                             setShowModal={setShowModal}
                         />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
                         <TitleMetadataBottomHeaderPart
                             className="nexus-c-title-metadata-header__bottom"
                             showSuccess={showSuccess}
@@ -192,8 +191,8 @@ export const TitleMetadataView = ({
                             uploadHandler={uploadHandler}
                             isItTheSameTab={isItTheSameTab}
                         />
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </TitleMetadataHeader>
             {isItTheSameTab('repository') ? (
                 <TitleMetadataTable

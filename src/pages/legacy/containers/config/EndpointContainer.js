@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
-import FontAwesome from 'react-fontawesome';
 import styled, {css} from 'styled-components';
 import Pagination from '@atlaskit/pagination';
 import {QuickSearch} from '@atlaskit/quick-search';
@@ -16,7 +14,6 @@ import CreateEditConfig from '../../../settings/create-edit-config/CreateEditCon
 import {capitalize, cloneDeep} from 'lodash';
 import {store} from '../../../../index';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -290,16 +287,16 @@ export class EndpointContainer extends Component {
                     {`${selectedApi && selectedApi.displayName} (${this.state.total})`}
                     {canCreate && this.state.currentRecord === null && (
                         <CustomButton onClick={this.onNewRecord}>
-                            <FontAwesome
-                                name="plus"
+                            <i
+                                className="pi pi-plus nexus-c-add__icon"
                                 style={{
                                     marginTop: '5px',
                                     cursor: 'pointer',
                                     color: '#666',
-                                    fontSize: '15px',
+                                    fontSize: '14px',
                                     marginRight: '5px',
+                                    fontWeight: 'bold',
                                 }}
-                                color="#111"
                             />
                             Add
                         </CustomButton>
@@ -363,15 +360,15 @@ export class EndpointContainer extends Component {
                                                 <span className="text-truncate">{label}</span>
                                             )}
                                             <Can I="delete" a="ConfigUI">
-                                                <FontAwesome
-                                                    name="times"
+                                                <i
+                                                    className="pi pi-times"
                                                     style={{
                                                         marginTop: '5px',
                                                         cursor: 'pointer',
                                                         color: '#666',
-                                                        fontSize: '16px',
+                                                        fontSize: '14px',
+                                                        fontWeight: 'bold',
                                                     }}
-                                                    color="#111"
                                                     onClick={() => this.onRemoveItem(item)}
                                                 />
                                             </Can>
