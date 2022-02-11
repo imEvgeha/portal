@@ -9,20 +9,20 @@ const withToasts = WrappedComponent => {
 
     ComposedComponent.propTypes = {
         ...WrappedComponent.propTypes,
-        toasts: PropTypes.array,
+        toast: PropTypes.array,
         addToast: PropTypes.func,
         removeToast: PropTypes.func,
     };
 
     ComposedComponent.defaultProps = {
         ...WrappedComponent.defaultProps,
-        toasts: [],
+        toast: null,
         addToast: () => null,
         removeToast: () => null,
     };
 
     const mapStateToProps = state => ({
-        toasts: selectors.getToasts(state),
+        toast: selectors.getToasts(state),
     });
 
     const mapDispatchToProps = dispatch => ({

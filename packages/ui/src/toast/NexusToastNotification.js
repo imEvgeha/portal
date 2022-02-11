@@ -1,8 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {Toast} from 'primereact/toast';
-import {connect} from 'react-redux';
-import { getToasts } from '../../lib/toast/toastSelectors';
+import withToasts from './hoc/withToasts';
 
 const NexusToastNotification = ({toast}) => {
     const toastRef = useRef(null);
@@ -26,10 +25,4 @@ NexusToastNotification.defaultProps = {
     toast: null,
 };
 
-const mapStateToProps = () => {
-    return (state, props) => ({
-        toast: getToasts(state, props),
-    });
-};
-
-export default connect(mapStateToProps)(NexusToastNotification);
+export default withToasts(NexusToastNotification);
