@@ -115,7 +115,7 @@ function* mergeAndStoreTitles({payload}) {
                 content: (<ToastBody
                     summary={SUCCESS_TITLE}
                     detail={TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE}
-                    severity={'success'}
+                    severity="success"
                 >
                     <Button label="View Title" className="p-button-link" onClick={() => window.open(url, '_blank')} />
                 </ToastBody>),

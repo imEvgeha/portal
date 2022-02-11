@@ -3,116 +3,108 @@
 exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] = `
 <Fragment>
   <div
-    className="nexus-c-selected-rights-actions"
+    className="nexus-c-selected-rights-actions d-flex align-items-center"
   >
-    <[object Object]
-      fill="#A5ADBA"
-      onClick={[Function]}
-    />
-    <div
-      className="nexus-c-selected-rights-actions__menu"
+    <r
+      I="read"
+      a="DopTasks"
     >
-      <r
-        I="read"
-        a="DopTasks"
-      >
-        <div
-          className="nexus-c-selected-rights-actions__menu-item"
-          data-test-id="view-history"
-          onClick={[Function]}
-        >
-          <div>
-            View Audit History
-          </div>
-        </div>
-      </r>
       <div
         className="nexus-c-selected-rights-actions__menu-item"
-        data-test-id="bulk-match"
+        data-test-id="view-history"
         onClick={[Function]}
       >
-        <NexusTooltip
-          content="This feature is enabled when:
+        <div>
+          History
+        </div>
+      </div>
+    </r>
+    <div
+      className="nexus-c-selected-rights-actions__menu-item"
+      data-test-id="bulk-match"
+      onClick={[Function]}
+    >
+      <NexusTooltip
+        content="This feature is enabled when:
 All selected rights have same content type,
 have Core Title IDs un-populated,
 either all are bonus rights(with unique sourceRightId) or none"
-          hasWhiteBackground={false}
-          isDisabled={false}
-        >
-          <div>
-            Match Rights to Titles
-          </div>
-        </NexusTooltip>
-      </div>
-      <div
-        className="nexus-c-selected-rights-actions__menu-item"
-        data-test-id="bulk-unmatch"
-        onClick={[Function]}
+        hasWhiteBackground={false}
+        isDisabled={false}
       >
-        <NexusTooltip
-          content="This feature is enabled when:
+        <div>
+          Match
+        </div>
+      </NexusTooltip>
+    </div>
+    <div
+      className="nexus-c-selected-rights-actions__menu-item"
+      data-test-id="bulk-unmatch"
+      onClick={[Function]}
+    >
+      <NexusTooltip
+        content="This feature is enabled when:
 All selected rights have Core Title IDs populated,
 either all are bonus rights(with unique sourceRightId) or none"
-          hasWhiteBackground={false}
-          isDisabled={false}
-        >
-          <div>
-            Unmatch Rights from Titles
-          </div>
-        </NexusTooltip>
-      </div>
-      <div
-        className="nexus-c-selected-rights-actions__menu-item"
-        data-test-id="bonus-rights"
-        onClick={[Function]}
+        hasWhiteBackground={false}
+        isDisabled={false}
       >
-        <NexusTooltip
-          content="This feature is enabled when selected
+        <div>
+          Unmatch
+        </div>
+      </NexusTooltip>
+    </div>
+    <div
+      className="nexus-c-selected-rights-actions__menu-item"
+      data-test-id="bonus-rights"
+      onClick={[Function]}
+    >
+      <NexusTooltip
+        content="This feature is enabled when selected
 rights are licensed,
 have the same Core Title IDs (not blank),
 empty Source Right IDs,
 Status is Ready/ReadyNew,
 Removed from Catalogue = No
 and Temporary Price Reduction = false"
-          hasWhiteBackground={false}
-          isDisabled={false}
-        >
-          <div>
-            Create Bonus Rights
-          </div>
-        </NexusTooltip>
-      </div>
-      <div
-        className="nexus-c-selected-rights-actions__menu-item"
-        data-test-id="add-to-preplan"
-        onClick={[Function]}
+        hasWhiteBackground={false}
+        isDisabled={false}
       >
-        <NexusTooltip
-          content="Select Right to enable this feature"
-          hasWhiteBackground={false}
-          isDisabled={false}
-        >
-          <div>
-            Add to Pre-Plan
-          </div>
-        </NexusTooltip>
-      </div>
-      <div
-        className="nexus-c-selected-rights-actions__menu-item"
-        data-test-id="mark-as-deleted"
-        onClick={[Function]}
+        <div>
+          Bonus
+        </div>
+      </NexusTooltip>
+    </div>
+    <div
+      className="nexus-c-selected-rights-actions__menu-item"
+      data-test-id="add-to-preplan"
+      onClick={[Function]}
+    >
+      <NexusTooltip
+        content="Select Right to enable this feature"
+        hasWhiteBackground={false}
+        isDisabled={false}
       >
-        <NexusTooltip
-          content="This option will mark a right as deleted and can no longer be used.
+        <div>
+          Pre-Plan
+        </div>
+      </NexusTooltip>
+    </div>
+    <div
+      className="nexus-c-selected-rights-actions__menu-item"
+      data-test-id="mark-as-deleted"
+      onClick={[Function]}
+    >
+      <NexusTooltip
+        content="This option will mark a right as deleted and can no longer be used.
 Alternatively you may withdraw a right which can be re-instantiated later."
-          hasWhiteBackground={false}
-          isDisabled={false}
-        >
-          <div>
-            Mark Rights as Deleted
-          </div>
-        </NexusTooltip>
-      </div>
+        hasWhiteBackground={false}
+        isDisabled={false}
+      >
+        <div>
+          Delete
+        </div>
+      </NexusTooltip>
     </div>
   </div>
   <NexusDrawer

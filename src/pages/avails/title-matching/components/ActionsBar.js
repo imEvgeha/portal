@@ -58,7 +58,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
             content: (<ToastBody 
                 summary={SUCCESS_TITLE}
                 detail={TITLE_MATCH_SUCCESS_MESSAGE}
-                severity={'success'}
+                severity="success"
             >
                 <PrimeReactButton label='View Title' className="p-button-link" onClick={handleLinkClick} />
             </ToastBody>),

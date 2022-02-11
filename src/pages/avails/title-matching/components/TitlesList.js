@@ -14,7 +14,7 @@ import {compose} from 'redux';
 import mappings from '../../../../../profile/titleMatchingMappings.json';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
-import SelectedButton from '../../avails-table-toolbar/components/SelectedButton';
+import SelectedButton from '../../avails-table-toolbar/components/selected-button/SelectedButton';
 import MatchedCombinedTitlesTable from '../../matched-combined-titles-table/MatchedCombinedTitlesTable';
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../rights-repository/constants';
 import {getRepositoryCell} from '../../utils';

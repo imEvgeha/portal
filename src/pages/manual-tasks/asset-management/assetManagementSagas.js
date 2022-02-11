@@ -56,7 +56,6 @@ function* fetchAsset({payload}) {
 function* uploadArtwork({payload}) {
     try {
         const {file, closeModal, tenantId, details} = payload || {};
-        console.log(details, 'details');
 
         yield put({
             type: UPLOAD_ARTWORK_REQUEST,

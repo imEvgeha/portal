@@ -1,5 +1,9 @@
 .nexus-c-right-repository-release-report {
     margin-left: 10px;
+
+    .nexus-c-right-repository-release-report-button__title {
+        margin: 0 4px;
+    }
 }
 #nexus-c-right-repository-release-report__popup {
     overflow: unset;

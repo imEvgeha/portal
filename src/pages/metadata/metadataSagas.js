@@ -203,7 +203,7 @@ export function* reconcileTitles({payload}) {
                     summary={SUCCESS_TITLE}
                     detail={`You have successfully ${mLength ? 'created a new Nexus title' : ''}
                     ${(mLength && dLength && ' and ') || ''}${dLength ? `marked ${dLength} titles as duplicates.` : ''}`}
-                    severity={'success'}
+                    severity="success"
                 >
                     <Button
                         label='View title'

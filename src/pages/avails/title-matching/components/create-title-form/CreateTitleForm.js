@@ -88,7 +88,7 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
                     content: (<ToastBody
                         summary={SUCCESS_TITLE}
                         detail={constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                        severity={'success'}
+                        severity="success"
                     >
                         <PrimeReactButton label='View Title' className="p-button-link" onClick={() => onViewTitleClick(titleId)} />
                     </ToastBody>),
