@@ -5,6 +5,7 @@ import {
     CREATE_NEW_RIGHT_ERROR_TITLE,
     ERROR_ICON,
     RIGHT_ERROR_MSG_MERGED,
+    SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {call, put, all, take, fork, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './availActionTypes';
