@@ -16,8 +16,10 @@ import {
     IN_PROGRESS,
     STATUS_TAB,
 } from '../rights-repository/constants';
-import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT} from './constants';
+import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_MAX_ROWS} from './constants';
 import './AvailsTableExportDropdown.scss';
+
+const MAX_ROWS = 50000;
 
 const AvailsTableExportDropdown = ({
     activeTab,
@@ -52,6 +54,7 @@ const AvailsTableExportDropdown = ({
         let disable = false;
         const isItEmptySelectedRightsTab = [RIGHTS_SELECTED_TAB].includes(activeTab) && selectedRows.length === 0;
         const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
+        const isItRightsTabOverflowed = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows > MAX_ROWS;
         const isItEmptyPrePlanTab = [PRE_PLAN_TAB].includes(activeTab) && prePlanRightsCount === 0;
         const isItStatusTab = [STATUS_TAB].includes(activeTab);
 
@@ -63,7 +66,10 @@ const AvailsTableExportDropdown = ({
         } else if (isItEmptyRightsTab) {
             setTooltipContent(TOOLTIP_MSG_NO_RESULT);
             handleDisable();
-        }  else if (isItEmptyPrePlanTab || isItStatusTab) {
+        } else if (isItRightsTabOverflowed) {
+            setTooltipContent(TOOLTIP_MSG_MAX_ROWS);
+            handleDisable();
+        } else if (isItEmptyPrePlanTab || isItStatusTab) {
             handleDisable();
         }
 
