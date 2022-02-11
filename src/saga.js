@@ -5,6 +5,7 @@ import {titleMatchingWatcher} from './pages/avails/title-matching/titleMatchingS
 import dopTasksWatcher from './pages/dop-tasks/dopTasksSagas';
 import {eventManagementWatcher} from './pages/event-management/eventManagementSagas';
 import {availWatcher} from './pages/legacy/containers/avail/availSagas';
+import {endpointConfigWatcher} from './pages/legacy/containers/avail/service/endpointConfigSagas';
 import {settingsWatcher} from './pages/legacy/containers/settings/settingsSagas';
 import {assetManagementWatcher} from './pages/manual-tasks/asset-management/assetManagementSagas';
 import {metadataWatcher} from './pages/metadata/metadataSagas';
@@ -24,5 +25,6 @@ export default function* rootSaga() {
         fork(titleMetadataWatcher),
         fork(dopTasksWatcher),
         fork(assetManagementWatcher),
+        fork(endpointConfigWatcher),
     ]);
 }

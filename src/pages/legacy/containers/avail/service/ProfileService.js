@@ -4,16 +4,24 @@ import {store} from '../../../../../index';
 import {loadAvailsMapping, loadSelectLists} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {processOptions} from '../util/ProcessSelectOptions';
+import {storeConfigValues} from './endpointConfigActions';
 
 const getAvailsMapping = () => {
     return nexusFetch('/availMapping.json', {isWithErrorHandling: false});
 };
 
 const getSelectValues = field => {
+    // store.dispatch(storeConfigValues());
+
     const url = `${config.get('gateway.configuration')}${config.get(
         'gateway.service.configuration'
     )}${field}?page=0&size=10000`;
-    return nexusFetch(url, {isWithErrorHandling: false});
+
+    let store = {endpointConfigValues: {}};
+    const key = field.replace('/', '');
+    return nexusFetch(url, {isWithErrorHandling: false}).then(response => {
+        store.dispatch(storeConfigValues({[key]: response.data}));
+    });
 };
 
 export const profileService = {
