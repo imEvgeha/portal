@@ -9,7 +9,7 @@ const withToasts = WrappedComponent => {
 
     ComposedComponent.propTypes = {
         ...WrappedComponent.propTypes,
-        toast: PropTypes.array,
+        toast: PropTypes.any,
         addToast: PropTypes.func,
         removeToast: PropTypes.func,
     };
