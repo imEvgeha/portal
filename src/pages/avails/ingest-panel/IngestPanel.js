@@ -5,6 +5,7 @@ import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-m
 import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import {debounce} from 'lodash';
 import {connect} from 'react-redux';
+import {getConfig} from '../../../config';
 import Bundle from './components/bundle/Bundle';
 import Ingest from './components/ingest/Ingest';
 import PanelHeader from './components/panel-header/PanelHeader';
@@ -124,6 +125,7 @@ const IngestPanel = ({
                     title={UPLOAD_TITLE}
                     icon={AddIcon}
                     withModal
+                    extensionsAccepted={getConfig('avails.upload.extensions')}
                 />
                 <RefreshConfigBtn />
             </div>

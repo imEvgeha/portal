@@ -4,13 +4,13 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {identity, pickBy} from 'lodash';
-import config from 'react-global-configuration'; // config returns error for gateway
+import {getConfig} from '../../../config';
 import {nexusFetch} from '../../../util/http-client/index';
 
 export const getRightMatchingList = (searchCriteria = {}, page, size, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
     const params = queryParams.status ? {...queryParams, page, size} : {status: 'pending', ...queryParams, page, size};
-    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(
+    const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights${prepareSortMatrixParam(
         sortedParams
     )}`;
 
@@ -18,7 +18,7 @@ export const getRightMatchingList = (searchCriteria = {}, page, size, sortedPara
 };
 
 export const getCombinedRight = (rightIds, right) => {
-    const url = `${config.get('gateway.url')}${config.get(
+    const url = `${getConfig('gateway.url')}${getConfig(
         'gateway.service.avails'
     )}/rights/match/combined?rightIds=${rightIds}`;
     return nexusFetch(url, {
@@ -28,7 +28,7 @@ export const getCombinedRight = (rightIds, right) => {
 };
 
 export const putCombinedRight = (rightIds, combinedRight) => {
-    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
+    const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
     const errorToast = {
         description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
     };
@@ -41,7 +41,7 @@ export const putCombinedRight = (rightIds, combinedRight) => {
 };
 
 export const createRightById = id => {
-    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match`;
+    const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights/${id}/match`;
     const errorCodesToast = [
         {
             status: 400,
@@ -61,7 +61,7 @@ export const createRightById = id => {
 export const getMatchingCandidates = (id, tpr = false, rightData) => {
     let query = `?tpr=${tpr}`;
     query += id ? `&rightId=${id}` : '';
-    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/candidates${query}`;
+    const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights/match/candidates${query}`;
     return nexusFetch(url, {
         method: 'put',
         body: rightData && JSON.stringify(rightData),

@@ -10,7 +10,7 @@ import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/li
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push, goBack} from 'connected-react-router';
-import { Button } from 'primereact/button';
+import {Button} from 'primereact/button';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';
@@ -183,22 +183,19 @@ export function* saveCombinedRight(requestMethod, {payload}) {
 
         const handleToastButtonClick = () => {
             window.open(`/avails/rights/${focusedRight.id}`, '_blank');
-        }
+        };
 
         yield put({
             type: ADD_TOAST,
             payload: {
                 severity: SUCCESS_ICON,
-                content: (<ToastBody
-                    summary={SUCCESS_TITLE}
-                    detail={SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE}
-                    severity={'success'}
-                >
-                    {URL.isEmbedded()
-                        ?  <Button label="View Title" className="p-button-link" onClick={handleToastButtonClick} />
-                        : null
-                    }
-                </ToastBody>),
+                content: (
+                    <ToastBody summary={SUCCESS_TITLE} detail={SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} severity="success">
+                        {URL.isEmbedded() ? (
+                            <Button label="View Title" className="p-button-link" onClick={handleToastButtonClick} />
+                        ) : null}
+                    </ToastBody>
+                ),
             },
         });
     } catch (error) {
