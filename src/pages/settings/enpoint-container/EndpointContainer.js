@@ -12,13 +12,13 @@ import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {useDebounce} from '@vubiquity-nexus/portal-utils/lib/useDebounce';
 import {capitalize, cloneDeep} from 'lodash';
+import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
 import {getConfigApiValues} from '../../legacy/common/CommonConfigService';
 import {configService} from '../../legacy/containers/config/service/ConfigService';
 import CreateEditConfig from '../create-edit-config/CreateEditConfig';
 import './EndpointContainer.scss';
-import {Button} from 'primereact/button';
 
 export const cache = {};
 
@@ -36,7 +36,6 @@ const EndpointContainer = ({endpoint}) => {
     const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
     const loadEndpointData = (pageNo, searchField, searchValue, pageSize = 20) => {
-        console.log('test');
         if (endpoint?.urls) {
             setEndpointsLoading(true);
             getConfigApiValues(endpoint?.urls?.['search'], pageNo, pageSize, null, searchField, searchValue).then(

@@ -7680,10 +7680,10 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-nexus-react-app@1.0.10:
-  version "1.0.10"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/eslint-config-nexus-react-app/-/eslint-config-nexus-react-app-1.0.10.tgz#cd58e4b46162dce355f2b2fe1f59861f95bb7d0c"
-  integrity sha512-3fA0bSkPAatvgzb9635ciyi1DXac384mS1wYAQdGA4E7L13NWSF1cKfF7qw854ChEwFSn72+0d52Kq9Rz3o05Q==
+eslint-config-nexus-react-app@1.0.11:
+  version "1.0.11"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/eslint-config-nexus-react-app/-/eslint-config-nexus-react-app-1.0.11.tgz#8daf8ff1c0243de2e08e137195e1d460e5a011e2"
+  integrity sha512-5hQBCOH/dYQilui+qCcaDuyERpDxHXyO7GsEutX2euP8Sl1kOZGu2FYrHllO0zDfyxojzk6Kdc6p/XSdvYUVtg==
 
 eslint-config-prettier@^6.11.0:
   version "6.15.0"

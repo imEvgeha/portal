@@ -7,7 +7,7 @@ import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-bod
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
-import { Button as PrimeReactButton } from 'primereact/button';
+import {Button as PrimeReactButton} from 'primereact/button';
 import {Form, FormFragment} from 'react-forms-processor';
 import {renderer} from 'react-forms-processor-atlaskit';
 import './CreateTitleForm.scss';
@@ -85,13 +85,19 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
                 const titleId = res.id;
                 addToast({
                     severity: 'success',
-                    content: (<ToastBody
-                        summary={SUCCESS_TITLE}
-                        detail={constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                        severity={'success'}
-                    >
-                        <PrimeReactButton label='View Title' className="p-button-link" onClick={() => onViewTitleClick(titleId)} />
-                    </ToastBody>),
+                    content: (
+                        <ToastBody
+                            summary={SUCCESS_TITLE}
+                            detail={constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
+                            severity="success"
+                        >
+                            <PrimeReactButton
+                                label="View Title"
+                                className="p-button-link"
+                                onClick={() => onViewTitleClick(titleId)}
+                            />
+                        </ToastBody>
+                    ),
                 });
                 if (URL.isEmbedded()) {
                     DOP.setErrorsCount(0);

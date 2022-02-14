@@ -14,7 +14,7 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {isEmpty} from 'lodash';
-import { Button } from 'primereact/button';
+import {Button} from 'primereact/button';
 import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
 import mappings from '../../../../profile/titleMatchingMappings.json';
 import {
@@ -112,13 +112,19 @@ function* mergeAndStoreTitles({payload}) {
             type: ADD_TOAST,
             payload: {
                 severity: SUCCESS_ICON,
-                content: (<ToastBody
-                    summary={SUCCESS_TITLE}
-                    detail={TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE}
-                    severity={'success'}
-                >
-                    <Button label="View Title" className="p-button-link" onClick={() => window.open(url, '_blank')} />
-                </ToastBody>),
+                content: (
+                    <ToastBody
+                        summary={SUCCESS_TITLE}
+                        detail={TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE}
+                        severity="success"
+                    >
+                        <Button
+                            label="View Title"
+                            className="p-button-link"
+                            onClick={() => window.open(url, '_blank')}
+                        />
+                    </ToastBody>
+                ),
             },
         });
         yield put({

@@ -57,9 +57,9 @@ const CandidatesList = ({
     return (
         <div className="nexus-c-candidates-list">
             <div className="nexus-c-candidates-list__header">
-                <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${
-                    totalCount === 'One' ? 1 : totalCount
-                })`}</NexusTitle>
+                <NexusTitle isSubTitle={true}>
+                    {`${CANDIDATES_LIST_TITLE} (${totalCount === 'One' ? 1 : totalCount})`}
+                </NexusTitle>
                 <div className="nexus-c-candidates-toolbar">
                     <Button className="nexus-c-button" onClick={handleClearFilterClick} isDisabled={!gridApi}>
                         {CLEAR_FILTER}
