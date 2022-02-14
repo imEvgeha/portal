@@ -14,7 +14,7 @@ import './CandidatesList.scss';
 import mappings from '../../../../../profile/titleMatchingMappings.json';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import useRowCountWithGridApiFix from '../../../../util/hooks/useRowCountWithGridApiFix';
-import SelectedButton from '../../../avails/avails-table-toolbar/components/SelectedButton';
+import SelectedButton from '../../../avails/avails-table-toolbar/components/selected-button/SelectedButton';
 import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/constants';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';

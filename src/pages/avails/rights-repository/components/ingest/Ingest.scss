@@ -7,7 +7,8 @@
     justify-content: space-between;
     border: 1px solid map-get($mid-neutral-colors, mid-neutral-7);
     @include padding(3);
-    @include addSpacing(margin-bottom, 5);
+    @include addSpacing(margin-bottom, 1);
+    @include addSpacing(margin-top, 4);
 
     &__avail-id {
         @include addSpacing(padding-left, 7.5);

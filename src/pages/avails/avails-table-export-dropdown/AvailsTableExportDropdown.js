@@ -14,6 +14,7 @@ import {
     PREPLAN_REPORT,
     SELECTED_FOR_PLANNING_REPORT,
     IN_PROGRESS,
+    STATUS_TAB,
 } from '../rights-repository/constants';
 import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_MAX_ROWS} from './constants';
 import './AvailsTableExportDropdown.scss';
@@ -51,22 +52,27 @@ const AvailsTableExportDropdown = ({
 
     useEffect(() => {
         let disable = false;
-        if (activeTab === RIGHTS_SELECTED_TAB) {
-            if (selectedRows.length === 0) {
-                setTooltipContent(TOOLTIP_MSG_NO_RIGHTS);
-                disable = true;
-            }
-        } else if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0) {
+        const isItEmptySelectedRightsTab = [RIGHTS_SELECTED_TAB].includes(activeTab) && selectedRows.length === 0;
+        const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
+        const isItRightsTabOverflowed = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows > MAX_ROWS;
+        const isItEmptyPrePlanTab = [PRE_PLAN_TAB].includes(activeTab) && prePlanRightsCount === 0;
+        const isItStatusTab = [STATUS_TAB].includes(activeTab);
+
+        const handleDisable = () => {disable = true};
+
+        if (isItEmptySelectedRightsTab) {
+            setTooltipContent(TOOLTIP_MSG_NO_RIGHTS);
+            handleDisable();
+        } else if (isItEmptyRightsTab) {
             setTooltipContent(TOOLTIP_MSG_NO_RESULT);
-            disable = true;
-        } else if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows > MAX_ROWS) {
+            handleDisable();
+        } else if (isItRightsTabOverflowed) {
             setTooltipContent(TOOLTIP_MSG_MAX_ROWS);
-            disable = true;
-        } else if (activeTab === PRE_PLAN_TAB && prePlanRightsCount === 0) {
-            disable = true;
-        } else if (activeTab === SELECTED_FOR_PLANNING_TAB && planningRightsCount === 0) {
-            disable = true;
+            handleDisable();
+        } else if (isItEmptyPrePlanTab || isItStatusTab) {
+            handleDisable();
         }
+
         setIsDisabled(disable);
     }, [activeTab, selectedRows, totalRows, prePlanRightsCount]);
 
@@ -224,7 +230,7 @@ const AvailsTableExportDropdown = ({
             <DropdownMenu
                 className="nexus-c-button"
                 trigger={
-                    [PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download Report' : 'Export All'
+                    [PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download' : 'Export'
                 }
                 triggerType="button"
                 triggerButtonProps={{isDisabled}}

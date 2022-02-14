@@ -13,7 +13,7 @@ import './ConfigUI.scss';
 import CreateEditConfig from '../../../settings/create-edit-config/CreateEditConfig';
 import {capitalize, cloneDeep} from 'lodash';
 import {store} from '../../../../index';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 
 const DataContainer = styled.div`
     width: 65%;

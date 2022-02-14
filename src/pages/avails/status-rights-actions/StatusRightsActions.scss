@@ -3,28 +3,10 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 @import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
-.nexus-c-selected-rights-actions {
+.nexus-c-status-rights-actions {
     position: relative;
 
-    svg {
-        cursor: pointer;
-    }
-
-    .nexus-c-selected-rights-actions__menu {
-        position: absolute;
-        top: 30px;
-        border: 1px solid #a5adba;
-        background: #ffffff;
-        z-index: 2; // 1 goes above ag-grid, 2 goes above ag-grid's separators...
-        padding: 10px;
-        display: none;
-
-        &--is-open {
-            display: block;
-        }
-    }
-
-    .nexus-c-selected-rights-actions__menu-item {
+    .nexus-c-status-rights-actions__menu-item {
         @include margin(0, 3);
         color: palette(black, 20);
         white-space: nowrap; // Keep each option in one line
@@ -38,8 +20,4 @@
             cursor: pointer;
         }
     }
-}
-
-.Tooltip {
-    white-space: pre-wrap;
 }
