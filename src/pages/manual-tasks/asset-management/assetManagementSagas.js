@@ -1,5 +1,8 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+// import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
+import {URL as VuURL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {isEmpty} from 'lodash';
 import config from 'react-global-configuration';
 import {all, call, put, takeEvery} from 'redux-saga/effects';
@@ -99,6 +102,17 @@ function* uploadArtwork({payload}) {
                 body: JSON.stringify(dataToSend),
             }
         ));
+        const {jobId} = mediaIngestResource;
+        const artworkAssetID = VuURL.getParamIfExists('artworkAssetID', '');
+
+        DOP.setErrorsCount(0);
+        DOP.setData({
+            chooseArtwork: {
+                assetID: artworkAssetID,
+                selectedArtworkUri: null,
+                importAssetJobID: jobId,
+            },
+        });
 
         yield put({
             type: UPLOAD_MEDIA_INGEST_SUCCESS,
