@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_METADATA} from '@vubiquity-nexus/portal-utils/lib/constants';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';

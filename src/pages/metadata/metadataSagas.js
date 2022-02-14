@@ -1,7 +1,7 @@
 import React from 'react';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {normalizeDataForStore, URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {get} from 'lodash';
@@ -203,7 +203,7 @@ export function* reconcileTitles({payload}) {
                     summary={SUCCESS_TITLE}
                     detail={`You have successfully ${mLength ? 'created a new Nexus title' : ''}
                     ${(mLength && dLength && ' and ') || ''}${dLength ? `marked ${dLength} titles as duplicates.` : ''}`}
-                    severity="success"
+                    severity='success'
                 >
                     <Button
                         label='View title'

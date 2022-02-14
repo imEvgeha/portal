@@ -2,7 +2,7 @@ import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {SUCCESS_TITLE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {SUCCESS_TITLE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';

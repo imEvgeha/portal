@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
-import {WARNING_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     TITLE_MATCH_SUCCESS_MESSAGE,
+    WARNING_TITLE,
+    SUCCESS_TITLE
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
@@ -58,7 +59,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
             content: (<ToastBody 
                 summary={SUCCESS_TITLE}
                 detail={TITLE_MATCH_SUCCESS_MESSAGE}
-                severity="success"
+                severity='success'
             >
                 <PrimeReactButton label='View Title' className="p-button-link" onClick={handleLinkClick} />
             </ToastBody>),

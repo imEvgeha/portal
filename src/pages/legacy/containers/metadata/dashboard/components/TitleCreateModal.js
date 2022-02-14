@@ -1,5 +1,5 @@
 import React from 'react';
-import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {Alert, Container, FormGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import Button from '@atlaskit/button';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
@@ -152,7 +152,7 @@ class TitleCreate extends React.Component {
                                         <ToastBody
                                             summary={SUCCESS_TITLE}
                                             detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
-                                            severity="success"
+                                            severity='success'
                                         >
                                             <PrimeReactButton
                                                 label="View Title"
@@ -186,7 +186,7 @@ class TitleCreate extends React.Component {
                             <ToastBody
                                 summary={SUCCESS_TITLE}
                                 detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                                severity="success"
+                                severity='success'
                             >
                                 <PrimeReactButton
                                     label="View Title"

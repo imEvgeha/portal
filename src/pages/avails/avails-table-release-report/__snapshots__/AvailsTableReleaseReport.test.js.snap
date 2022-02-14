@@ -20,7 +20,7 @@ exports[`AvailsTableReleaseReport should match snapshot 1`] = `
         "subscribe": [Function],
       }
     }
-    toasts={Array []}
+    toast={null}
   />
 </ContextProvider>
 `;
