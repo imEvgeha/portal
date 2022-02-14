@@ -1,8 +1,8 @@
 /* eslint-disable no-magic-numbers */
 import React from 'react';
-import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import { Button } from 'primereact/button';
 import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';

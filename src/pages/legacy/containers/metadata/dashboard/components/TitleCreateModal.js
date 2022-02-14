@@ -1,20 +1,8 @@
 import React from 'react';
-import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {
-    ModalFooter,
-    ModalHeader,
-    Modal,
-    ModalBody,
-    Alert,
-    Row,
-    Col,
-    Label,
-    Container,
-    Progress,
-    FormGroup,
-} from 'reactstrap';
+import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {Alert, Container, FormGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import Button from '@atlaskit/button';
-import {AvForm, AvField} from 'availity-reactstrap-validation';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
@@ -28,10 +16,10 @@ import {
     MOVIE,
     SEASON,
     SERIES,
-    SPORTS,
     SPECIAL,
+    SPORTS,
 } from '../../../../../metadata/constants/contentType';
-import { Button as PrimeReactButton } from 'primereact/button';
+import {Button as PrimeReactButton} from 'primereact/button';
 import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
@@ -161,14 +149,18 @@ class TitleCreate extends React.Component {
                                 severity: 'success',
                                 content: () => {
                                     return (
-                                        <ToastBody 
+                                        <ToastBody
                                             summary={SUCCESS_TITLE}
                                             detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
-                                            severity={'success'}
+                                            severity='success'
                                         >
-                                            <PrimeReactButton label='View Title' className="p-button-link" onClick={() => onViewTitleClick(response)} />
+                                            <PrimeReactButton
+                                                label="View Title"
+                                                className="p-button-link"
+                                                onClick={() => onViewTitleClick(response)}
+                                            />
                                         </ToastBody>
-                                    )
+                                    );
                                 },
                             });
                         })
@@ -191,14 +183,18 @@ class TitleCreate extends React.Component {
                     severity: 'success',
                     content: () => {
                         return (
-                            <ToastBody 
+                            <ToastBody
                                 summary={SUCCESS_TITLE}
                                 detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                                severity={'success'}
+                                severity='success'
                             >
-                                <PrimeReactButton label='View Title' className="p-button-link" onClick={() => onViewTitleClick(response)} />
+                                <PrimeReactButton
+                                    label="View Title"
+                                    className="p-button-link"
+                                    onClick={() => onViewTitleClick(response)}
+                                />
                             </ToastBody>
-                        )
+                        );
                     },
                 });
             })
@@ -375,8 +371,8 @@ class TitleCreate extends React.Component {
     renderSyncCheckBoxes = () => {
         const {isSyncVZ, isSyncMovida} = this.state;
         return (
-            <Row>
-                <Col>
+            <div className="row">
+                <div className="col">
                     <Checkbox
                         id="syncVZ"
                         label="Publish to VZ"
@@ -389,8 +385,8 @@ class TitleCreate extends React.Component {
                         onChange={event => this.setState({isSyncMovida: event.currentTarget.checked})}
                         isChecked={isSyncMovida}
                     />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     };
 
@@ -408,14 +404,11 @@ class TitleCreate extends React.Component {
                 <AvForm onValidSubmit={this.onSubmit} id="titleCreateForm" ref={c => (this.form = c)}>
                     <ModalHeader toggle={this.props.toggle}>Create Title</ModalHeader>
                     <ModalBody>
-                        <Row>
-                            {/*<Col xs="4">*/}
-                            {/*<img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22800%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20800%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa20%20text%20%7B%20fill%3A%23444%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A40pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa20%22%3E%3Crect%20width%3D%22800%22%20height%3D%22400%22%20fill%3D%22%23666%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22247.3203125%22%20y%3D%22218.3%22%3ESecond%20slide%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Slide" />*/}
-                            {/*</Col>*/}
-                            <Col>
+                        <div className="row">
+                            <div className="col">
                                 <Container>
-                                    <Row>
-                                        <Col>
+                                    <div className="row">
+                                        <div className="col">
                                             {/* eslint-disable-next-line react/no-adjacent-inline-elements */}
                                             <Label for="title">
                                                 Title<span style={{color: 'red'}}>*</span>
@@ -432,10 +425,10 @@ class TitleCreate extends React.Component {
                                                     maxLength: {value: MAX_TITLE_LENGTH},
                                                 }}
                                             />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col">
                                             {/* eslint-disable-next-line react/no-adjacent-inline-elements */}
                                             <Label for="contentType">
                                                 Content Type<span style={{color: 'red'}}>*</span>
@@ -458,11 +451,11 @@ class TitleCreate extends React.Component {
                                                 <option value={ADVERTISEMENT.apiName}>{ADVERTISEMENT.name}</option>
                                                 <option value={SPECIAL.apiName}>{SPECIAL.name}</option>
                                             </AvField>
-                                        </Col>
-                                    </Row>
+                                        </div>
+                                    </div>
                                     {!this.state.seriesChecked ? (
-                                        <Row>
-                                            <Col>
+                                        <div className="row">
+                                            <div className="col">
                                                 <Label for="titleSeriesName">
                                                     Series
                                                     {this.state.isSeriesCompleted ? (
@@ -480,12 +473,12 @@ class TitleCreate extends React.Component {
                                                     onChange={this.handleChangeSeries}
                                                     required={this.state.isSeriesCompleted}
                                                 />
-                                            </Col>
-                                        </Row>
+                                            </div>
+                                        </div>
                                     ) : null}
                                     {!this.state.seasonChecked ? (
-                                        <Row>
-                                            <Col>
+                                        <div className="row">
+                                            <div className="col">
                                                 <FormGroup>
                                                     <Label for="titleSeasonNumber">
                                                         Season
@@ -511,9 +504,9 @@ class TitleCreate extends React.Component {
                                                         }}
                                                     />
                                                 </FormGroup>
-                                            </Col>
+                                            </div>
                                             {!this.state.episodeChecked ? (
-                                                <Col>
+                                                <div className="col">
                                                     <FormGroup>
                                                         <Label for="titleEpisodeNumber">
                                                             Episode
@@ -539,13 +532,13 @@ class TitleCreate extends React.Component {
                                                             }}
                                                         />
                                                     </FormGroup>
-                                                </Col>
+                                                </div>
                                             ) : null}
-                                        </Row>
+                                        </div>
                                     ) : null}
                                     {!this.state.episodeChecked && (
-                                        <Row>
-                                            <Col>
+                                        <div className="row">
+                                            <div className="col">
                                                 <Checkbox
                                                     id="addCrew"
                                                     label="Add Cast Crew from Season to episode"
@@ -556,11 +549,11 @@ class TitleCreate extends React.Component {
                                                     }
                                                     isChecked={this.state.copyCastCrewFromSeason}
                                                 />
-                                            </Col>
-                                        </Row>
+                                            </div>
+                                        </div>
                                     )}
-                                    <Row style={{marginTop: '15px'}}>
-                                        <Col>
+                                    <div className="row" style={{marginTop: '15px'}}>
+                                        <div className="col">
                                             <Label for="titleReleaseYear">
                                                 Release Year
                                                 {!this.state.isReleaseYearRequired ? null : (
@@ -584,11 +577,11 @@ class TitleCreate extends React.Component {
                                                 value={this.state.titleForm.releaseYear}
                                                 onChange={this.handleChange}
                                             />
-                                        </Col>
-                                    </Row>
+                                        </div>
+                                    </div>
                                     {this.props.tenantCode && (
-                                        <Row>
-                                            <Col>
+                                        <div className="row">
+                                            <div className="col">
                                                 {/* eslint-disable-next-line react/no-adjacent-inline-elements */}
                                                 <Label for="catalogueOwner">
                                                     Catalogue Owner<span style={{color: 'red'}}>*</span>
@@ -604,13 +597,13 @@ class TitleCreate extends React.Component {
                                                         {this.props.tenantCode === 'vu' ? 'Vubiquity' : 'MGM'}
                                                     </option>
                                                 </AvField>
-                                            </Col>
-                                        </Row>
+                                            </div>
+                                        </div>
                                     )}
                                     {this.renderSyncCheckBoxes()}
                                 </Container>
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
                     </ModalBody>
                     <ModalFooter>
                         {this.state.errorMessage && (

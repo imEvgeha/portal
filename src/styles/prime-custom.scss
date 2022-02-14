@@ -279,6 +279,11 @@ $element-color-orange-80: palette(orange, 80);
     }
 }
 
+.p-toast .p-toast-message .p-toast-message-content .p-toast-message-text {
+    width: 242px;
+    display: inline-block;
+    overflow-wrap: break-word;
+}
 .p-toast .p-toast-message.p-toast-message-warn,
 .p-toast .p-toast-message.p-toast-message-success,
 .p-toast .p-toast-message.p-toast-message-error {
@@ -571,6 +576,7 @@ $element-color-orange-80: palette(orange, 80);
             .p-menuitem-link {
                 border: none;
                 background: none;
+                white-space: nowrap;
                 color: palette(black, 55);
                 padding: 1.25rem;
                 font-weight: 700;

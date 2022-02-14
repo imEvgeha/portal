@@ -8,8 +8,8 @@ import NexusDataPanel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-data-p
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
 import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
-import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {useDebounce} from '@vubiquity-nexus/portal-utils/lib/useDebounce';
 import {capitalize, cloneDeep} from 'lodash';
 import {Button} from 'primereact/button';
@@ -36,13 +36,17 @@ const EndpointContainer = ({endpoint}) => {
     const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
     const loadEndpointData = (pageNo, searchField, searchValue, pageSize = 20) => {
-        setEndpointsLoading(true);
-        getConfigApiValues(endpoint?.urls?.['search'], pageNo, pageSize, null, searchField, searchValue).then(res => {
-            setEndpointList([...endpointList, ...res.data]);
-            setTotalRecords(res.total);
-            setEndpointsLoading(false);
-            setPage(pageNo + 1);
-        });
+        if (endpoint?.urls) {
+            setEndpointsLoading(true);
+            getConfigApiValues(endpoint?.urls?.['search'], pageNo, pageSize, null, searchField, searchValue).then(
+                res => {
+                    setEndpointList([...endpointList, ...res.data]);
+                    setTotalRecords(res.total);
+                    setEndpointsLoading(false);
+                    setPage(pageNo + 1);
+                }
+            );
+        }
     };
 
     const initValues = () => {
@@ -229,7 +233,7 @@ const EndpointContainer = ({endpoint}) => {
         const newVal = {...selectedConfig, ...val};
         const successToast = {
             summary: SUCCESS_ICON,
-            
+
             detail: `${capitalize(newVal.name)} config for ${endpoint.displayName} successfully ${
                 newVal.id ? 'updated.' : 'added.'
             }`,

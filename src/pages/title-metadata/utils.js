@@ -1,5 +1,5 @@
-import {ERROR_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {ERROR_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {cloneDeep, get, isObjectLike, isEqual} from 'lodash';
 import {store} from '../../index';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
@@ -29,7 +29,7 @@ export const isMgmTitle = titleId => {
 
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ && syncToMovida) {
-        return `${VZ},${MOVIDA}`;
+        return `${VZ?.value},${MOVIDA?.value}`;
     } else if (syncToVZ) {
         return VZ;
     } else if (syncToMovida) {
@@ -59,7 +59,7 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                 externalIds = {},
                 episodic = {},
             } = obj || {};
-            const repository = id.includes('vztitl_') ? VZ : id.includes('movtitl_') ? MOVIDA : NEXUS;
+            const repository = id.includes('vztitl_') ? VZ?.value : id.includes('movtitl_') ? MOVIDA?.value : NEXUS;
             const {
                 assetName = '',
                 eidrTitleId = '',

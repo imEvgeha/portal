@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {saveAs} from 'file-saver';
+import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DOWNLOAD, JSON_INDENT_SPACE, JSON_MIME, XML_MIME} from './constants';
 
 const NexusDownload = ({data, filename, mimeType, label, ...restProps}) => {
@@ -23,7 +23,7 @@ const NexusDownload = ({data, filename, mimeType, label, ...restProps}) => {
                 ? new Blob([prettifyXML(parsedData)], {type: mimeType})
                 : new Blob([JSON.stringify(parsedData, null, JSON_INDENT_SPACE)], {type: mimeType});
 
-        saveAs(blob, filename);
+        downloadFile(blob, filename, '.json', false, false);
     };
 
     const prettifyXML = sourceXml => {

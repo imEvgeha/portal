@@ -1,8 +1,10 @@
 import React from 'react';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
 import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
 import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
-import Toast from '@vubiquity-nexus/portal-ui/lib/toast/Toast';
+import Toast from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotification';
 import {LicenseManager} from 'ag-grid-enterprise';
 import {ConnectedRouter} from 'connected-react-router';
 import {createBrowserHistory} from 'history';

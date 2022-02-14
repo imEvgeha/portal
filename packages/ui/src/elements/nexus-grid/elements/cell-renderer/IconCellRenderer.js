@@ -5,7 +5,7 @@ import {downloadFile, getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Comm
 import {debounce} from 'lodash';
 import {store} from '../../../../../../../src';
 import {downloadUploadedEMETLog} from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
-import {addToast} from '../../../../../lib/toast/toastActions';
+import {addToast} from '../../../../../lib/toast/NexusToastNotificationActions';
 import {getIcon} from '../value-formatter/createValueFormatter';
 import './IconCellRenderer.scss';
 

@@ -1,13 +1,13 @@
 import React from 'react';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {
+    SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
     WARNING_ICON,
     WARNING_TITLE,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
+} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push, goBack} from 'connected-react-router';
 import { Button } from 'primereact/button';
@@ -192,7 +192,7 @@ export function* saveCombinedRight(requestMethod, {payload}) {
                 content: (<ToastBody
                     summary={SUCCESS_TITLE}
                     detail={SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE}
-                    severity={'success'}
+                    severity='success'
                 >
                     {URL.isEmbedded()
                         ?  <Button label="View Title" className="p-button-link" onClick={handleToastButtonClick} />

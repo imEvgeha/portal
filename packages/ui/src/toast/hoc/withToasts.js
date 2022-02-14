@@ -1,28 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {addToast, removeToast} from '../toastActions';
-import * as selectors from '../toastSelectors';
+import * as selectors from '../NexusToastNotificatioSelectors';
+import {addToast, removeToast} from '../NexusToastNotificationActions';
 
 const withToasts = WrappedComponent => {
     const ComposedComponent = props => <WrappedComponent {...props} />;
 
     ComposedComponent.propTypes = {
         ...WrappedComponent.propTypes,
-        toasts: PropTypes.array,
+        toast: PropTypes.any,
         addToast: PropTypes.func,
         removeToast: PropTypes.func,
     };
 
     ComposedComponent.defaultProps = {
         ...WrappedComponent.defaultProps,
-        toasts: [],
+        toast: null,
         addToast: () => null,
         removeToast: () => null,
     };
 
     const mapStateToProps = state => ({
-        toasts: selectors.getToasts(state),
+        toast: selectors.getToasts(state),
     });
 
     const mapDispatchToProps = dispatch => ({

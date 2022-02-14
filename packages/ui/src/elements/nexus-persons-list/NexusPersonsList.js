@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import UserPicker from '@atlaskit/user-picker';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
 import {cloneDeep} from 'lodash';
@@ -324,7 +323,6 @@ const NexusPersonsList = ({
 
         const successToast = {
             summary: 'Success',
-            icon: SUCCESS_ICON,
             // description: `Cast or Crew has been successfully ${newVal.id ? 'updated.' : 'added.'}`,
             detail: `${newVal.displayName} has been successfully ${newVal.id ? 'updated.' : 'added.'}`,
         };

@@ -2,25 +2,120 @@
 
 exports[`RightsRepositoryHeader should match snapshot 1`] = `
 <div
-  className="nexus-c-rights-repository-header"
+  className="nexus-c-rights-repository-header row d-flex align-items-center"
 >
   <div
-    className="nexus-c-rights-repository-header__title"
+    className="nexus-c-rights-repository-header__title col-2 d-flex align-items-center"
   >
-    <[object Object]
-      fill="#42526E"
-    />
-    <h1
+    <span
       className="nexus-c-rights-repository-header__title-text"
     >
       Rights
-    </h1>
+    </span>
   </div>
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
-    appearance="primary"
-    onClick={[Function]}
+  <div
+    className="col-md-10 col-xl-7 d-flex justify-content-center"
   >
-    Create New Right
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <TabMenu
+      activeIndex={0}
+      className="nexus-c-title-metadata__tab-menu"
+      id={null}
+      model={
+        Array [
+          Object {
+            "label": "Repository",
+            "tab": "Rights",
+            "value": "repository",
+          },
+          Object {
+            "label": "Pre-Plan",
+            "tab": "Pre-Plan",
+            "value": "prePlan",
+          },
+          Object {
+            "label": "Planning",
+            "tab": "Selected for Planning",
+            "value": "planning",
+          },
+          Object {
+            "label": "Status",
+            "tab": "Status",
+            "value": "status",
+          },
+        ]
+      }
+      onTabChange={[Function]}
+      style={null}
+    />
+  </div>
+  <div
+    className="col-xs-12 col-xl-3 d-flex justify-content-end align-items-center"
+  >
+    <div
+      className="nexus-c-title-metadata__saved-table-wrapper"
+    >
+      <NexusSavedTableDropdown
+        applyPredefinedTableView={[Function]}
+        columnApi={Object {}}
+        externalFilter={Object {}}
+        gridApi={Object {}}
+        gridState={Object {}}
+        lastStoredFilter={Object {}}
+        onUserDefinedViewSelected={[Function]}
+        setBlockLastFilter={[Function]}
+        setUserDefinedGridState={[Function]}
+        tableLabels={
+          Object {
+            "predifinedViewsLabel": "Predefined Views",
+            "savedDropdownLabel": "Saved Table View:",
+            "savedViewslabel": "My Saved Views",
+          }
+        }
+        tableOptions={
+          Array [
+            Object {
+              "label": "All",
+              "value": "all",
+            },
+            Object {
+              "label": "In Error",
+              "value": "in-error",
+            },
+            Object {
+              "label": "Ready/Pending",
+              "value": "ready-or-pending",
+            },
+            Object {
+              "label": "Withdrawn",
+              "value": "Withdrawn",
+            },
+            Object {
+              "label": "Removed from Catalog",
+              "value": "Removed from Catalog",
+            },
+          ]
+        }
+        userDefinedGridStates={Array []}
+        username=""
+      />
+    </div>
+    <div>
+      <ForwardRef
+        className="p-button-text"
+        icon={
+          Object {
+            "process": [Function],
+          }
+        }
+        onClick={[Function]}
+        tooltip="Create New Right"
+        tooltipOptions={
+          Object {
+            "position": "left",
+          }
+        }
+      />
+    </div>
+  </div>
 </div>
 `;

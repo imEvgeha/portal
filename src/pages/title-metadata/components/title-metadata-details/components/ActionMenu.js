@@ -1,21 +1,14 @@
 import React, {useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
+import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import NexusDropdown, {
     DropdownOptions,
     DropdownOption,
     DropdownToggle,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import styled from 'styled-components';
-import {keycloak} from '../../../../../../packages/auth/keycloak';
 import {unmergeTitle} from '../../../titleMetadataServices';
-
-const ActionMenuContainer = styled.div`
-    padding-left: 48px;
-    display: flex;
-    justify-content: flex-end;
-    border-left: 1px solid ${({theme}) => theme.colors.grays.dark};
-`;
+import './ActionMenu.scss';
 
 const UNMERGE_TITLE = 'Unmerge';
 const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
@@ -48,7 +41,7 @@ const ActionMenu = ({titleId}) => {
     }, [titleId]);
 
     return isAbleSeeUnmergeBtn ? (
-        <ActionMenuContainer>
+        <div className="nexus-c-actions-menu-container">
             <NexusDropdown>
                 <DropdownToggle label="Actions" isMobile />
                 <DropdownOptions isMobile align="top">
@@ -57,7 +50,7 @@ const ActionMenu = ({titleId}) => {
                     </DropdownOption>
                 </DropdownOptions>
             </NexusDropdown>
-        </ActionMenuContainer>
+        </div>
     ) : null;
 };
 

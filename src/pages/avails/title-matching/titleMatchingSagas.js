@@ -1,16 +1,14 @@
 import React from 'react';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
+import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {
     ERROR_ICON,
     ERROR_TITLE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {
     TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
     TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {isEmpty} from 'lodash';
@@ -115,7 +113,7 @@ function* mergeAndStoreTitles({payload}) {
                 content: (<ToastBody
                     summary={SUCCESS_TITLE}
                     detail={TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE}
-                    severity={'success'}
+                    severity='success'
                 >
                     <Button label="View Title" className="p-button-link" onClick={() => window.open(url, '_blank')} />
                 </ToastBody>),

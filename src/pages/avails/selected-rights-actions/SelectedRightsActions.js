@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
@@ -66,7 +65,6 @@ export const SelectedRightsActions = ({
     bulkDeleteRights,
     deletedRightsCount,
 }) => {
-    const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
     const [isBonusRightCreatable, setIsBonusRightCreatable] = useState(false);
@@ -82,11 +80,8 @@ export const SelectedRightsActions = ({
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     useEffect(() => {
-        window.addEventListener('click', removeMenu);
-
         return () => {
             clearLinkedRights();
-            window.removeEventListener('click', removeMenu);
         };
     }, []);
 
@@ -158,16 +153,7 @@ export const SelectedRightsActions = ({
         return selectedRights.every(({coreTitleId}) => !!coreTitleId);
     };
 
-    const clickHandler = () => setMenuOpened(!menuOpened);
-
-    const removeMenu = e => {
-        if (!node.current.contains(e.target)) {
-            setMenuOpened(false);
-        }
-    };
-
     const openDrawer = () => {
-        setMenuOpened(false);
         setDrawerOpen(true);
         setHeaderText(HEADER_TITLE_TITLE_MATCHING);
     };
@@ -205,7 +191,6 @@ export const SelectedRightsActions = ({
     );
 
     const openBulkUnmatchModal = () => {
-        setMenuOpened(false);
         const selectedRightsIds = selectedRights.map(({id}) => id);
         getAffectedRights(selectedRightsIds).then(rights => {
             const actions = [
@@ -249,7 +234,6 @@ export const SelectedRightsActions = ({
     };
 
     const openDeleteConfirmationModal = () => {
-        setMenuOpened(false);
         openModal(
             <BulkDeleteConfirmation
                 onSubmit={() => getLinkedRights({rights: selectedRights, closeModal, toggleRefreshGridData})}
@@ -279,7 +263,6 @@ export const SelectedRightsActions = ({
     }, []);
 
     const openAuditHistoryModal = () => {
-        setMenuOpened(false);
         const title = `Audit History (${selectedRights.length})`;
 
         const actions = [
@@ -299,7 +282,6 @@ export const SelectedRightsActions = ({
     };
 
     const prepareRightsForPrePlan = () => {
-        setMenuOpened(false);
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
             setPrePlanRepoRights(filterOutUnselectedTerritories(selectedRights));
@@ -320,7 +302,6 @@ export const SelectedRightsActions = ({
     };
 
     const createBonusRights = () => {
-        setMenuOpened(false);
         setIsBonusRight(true);
         setHeaderText(HEADER_TITLE_BONUS_RIGHT);
         setDrawerOpen(true);
@@ -376,13 +357,7 @@ export const SelectedRightsActions = ({
 
     return (
         <>
-            <div className="nexus-c-selected-rights-actions" ref={node}>
-                <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
-                <div
-                    className={classNames('nexus-c-selected-rights-actions__menu', {
-                        'nexus-c-selected-rights-actions__menu--is-open': menuOpened,
-                    })}
-                >
+            <div className="nexus-c-selected-rights-actions d-flex align-items-center" ref={node}>
                     <Can I="read" a="DopTasks">
                         <div
                             className={classNames('nexus-c-selected-rights-actions__menu-item', {
@@ -471,7 +446,6 @@ export const SelectedRightsActions = ({
                             </div>
                         </>
                     )}
-                </div>
             </div>
             <NexusDrawer
                 onClose={closeDrawer}

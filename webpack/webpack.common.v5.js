@@ -11,7 +11,7 @@ const esLintOptions = {
 };
 
 module.exports = envKeys => ({
-    entry: [require.resolve('@babel/polyfill'), 'abortcontroller-polyfill', 'whatwg-fetch', appPaths.appIndexJs],
+    entry: [appPaths.appIndexJs],
     module: {
         strictExportPresence: true,
         rules: [
@@ -36,16 +36,7 @@ module.exports = envKeys => ({
             },
             {
                 test: /\.(gif|png|jpe?g)$/i,
-                use: [
-                    'file-loader',
-                    {
-                        loader: 'image-webpack-loader',
-                        options: {
-                            bypassOnDebug: true, // webpack@1.x
-                            disable: true, // webpack@2.x and newer
-                        },
-                    },
-                ],
+                use: ['file-loader'],
             },
             {
                 test: /\.(woff|woff2|eot|ttf)$/,
