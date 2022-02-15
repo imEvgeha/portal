@@ -154,9 +154,9 @@ const TitleDetails = ({
             clearSeasonPersons(),
         ]).then(() => {
             setRefresh(prev => !prev);
-            setVZDisabled(false);
-            setMOVDisabled(false);
-            setMovIntDisabled(false);
+            setVZDisabled(true);
+            setMOVDisabled(true);
+            setMovIntDisabled(true);
         });
     };
 
@@ -199,13 +199,13 @@ const TitleDetails = ({
         }
 
         switch (externalSystem) {
-            case VZ.label:
+            case VZ?.value:
                 setVZDisabled(true);
                 break;
-            case MOVIDA.label:
+            case MOVIDA?.value:
                 setMOVDisabled(true);
                 break;
-            case MOVIDA_INTL.label:
+            case MOVIDA_INTL?.value:
                 setMovIntDisabled(true);
                 break;
             default:
@@ -256,7 +256,7 @@ const TitleDetails = ({
                                 externalIds={externalIds}
                                 onSyncPublish={syncPublishHandler}
                                 isSyncing={isMovIntTitleSyncing}
-                                isPublishing={isMovIntTitlePublishing || isVZTitlePublishing}
+                                isPublishing={isMovIntTitlePublishing}
                                 isDisabled={MovIntDisabled}
                                 titleUpdatedAt={title.updatedAt}
                                 hasButtons={isNexusTitle(title.id)}

@@ -17,7 +17,7 @@ const SyncPublish = ({
 }) => {
     const [externalData] = externalIds.filter(id => id.externalSystem === externalSystem?.value);
     const buttonType = externalData ? SYNC : PUBLISH;
-    let publishedDate = externalData && externalData.publishedAt ? externalData.publishedAt : null;
+    let publishedDate = externalData?.publishedAt || null;
     publishedDate = moment(publishedDate).isValid() ? moment(publishedDate) : null;
     const needsSyncing = moment(publishedDate).isBefore(moment(titleUpdatedAt));
 
