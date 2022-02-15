@@ -12,8 +12,6 @@ const getAvailsMapping = () => {
 };
 
 const getSelectValues = field => {
-    // store.dispatch(storeConfigValues());
-
     const url = `${config.get('gateway.configuration')}${config.get(
         'gateway.service.configuration'
     )}${field}?page=0&size=10000`;
