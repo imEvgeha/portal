@@ -5,6 +5,7 @@ import {loadAvailsMapping, loadSelectLists} from '../../../stores/actions/index'
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {processOptions} from '../util/ProcessSelectOptions';
 import {storeConfigValues} from './endpointConfigActions';
+import {isEmpty} from 'lodash';
 
 const getAvailsMapping = () => {
     return nexusFetch('/availMapping.json', {isWithErrorHandling: false});
@@ -17,11 +18,15 @@ const getSelectValues = field => {
         'gateway.service.configuration'
     )}${field}?page=0&size=10000`;
 
-    let store = {endpointConfigValues: {}};
     const key = field.replace('/', '');
-    return nexusFetch(url, {isWithErrorHandling: false}).then(response => {
-        store.dispatch(storeConfigValues({[key]: response.data}));
-    });
+
+    if (!isEmpty(store.getState().endpointConfigValues?.[key])) {
+        return nexusFetch(url, {isWithErrorHandling: false}).then(response => {
+            store.dispatch(storeConfigValues({[key]: response.data}));
+        });
+    } else {
+        return store.getState().endpointConfigValues?.[key];
+    }
 };
 
 export const profileService = {

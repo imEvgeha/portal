@@ -6,7 +6,7 @@ import {
     HANDLE_CONFIG_ENDPOINT_VALUES,
 } from './endpointConfigActions';
 
-export function* fetchAndStoreEndpointConfig(payload) {
+export function* fetchAndStoreEndpointConfig({payload}) {
     try {
         yield put({
             type: HANDLE_CONFIG_ENDPOINT_SUCCESS,
