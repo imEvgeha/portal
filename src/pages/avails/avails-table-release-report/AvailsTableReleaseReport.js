@@ -8,7 +8,14 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
-import { PRE_PLAN_TAB, RIGHTS_SELECTED_TAB, RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB } from '../rights-repository/constants';
+import {
+    PRE_PLAN_SELECTED_TAB,
+    PRE_PLAN_TAB,
+    RIGHTS_SELECTED_TAB,
+    RIGHTS_TAB,
+    SELECTED_FOR_PLANNING_TAB,
+    STATUS_TAB
+} from '../rights-repository/constants';
 import {CREATE_REPORT, ERROR_MESSAGE, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
 import './AvailsTableReleaseReport.scss';
 
@@ -23,7 +30,7 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
         let disable = false;
         const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
         const isItDisabledForCurrentTab = [SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
-        const isItEmptyPrePlanTab = [PRE_PLAN_TAB].includes(activeTab) && prePlanRightsCount === 0;
+        const isItEmptyPrePlanTab = [PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab) && prePlanRightsCount === 0;
         const isItEmtySelectedForPlaningTab = [SELECTED_FOR_PLANNING_TAB].includes(activeTab) && planningRightsCount === 0;
         
         if (isItEmptyRightsTab || isItDisabledForCurrentTab || isItEmptyPrePlanTab || isItEmtySelectedForPlaningTab) {

@@ -28,6 +28,7 @@ const PreplanRightsTable = ({
     prePlanRepoRights,
     activeTab,
     username,
+    context,
     setPreplanRights,
     setSelectedPrePlanRights,
     setPrePlanColumnApi,
@@ -149,6 +150,7 @@ const PreplanRightsTable = ({
             suppressRowClickSelection={true}
             mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
             rowData={prePlanRepoRights}
+            context={context}
             isGridHidden={activeTab !== PRE_PLAN_TAB}
             onGridEvent={onGridReady}
             notFilterableColumns={['action', 'buttons']}
@@ -166,6 +168,7 @@ PreplanRightsTable.propTypes = {
     setSelectedPrePlanRights: PropTypes.func.isRequired,
     setPrePlanColumnApi: PropTypes.func,
     setPrePlanGridApi: PropTypes.func,
+    context: PropTypes.object,
 };
 
 PreplanRightsTable.defaultProps = {
@@ -174,6 +177,7 @@ PreplanRightsTable.defaultProps = {
     prePlanRepoRights: [],
     setPrePlanColumnApi: () => null,
     setPrePlanGridApi: () => null,
+    context: {},
 };
 
 export default PreplanRightsTable;
