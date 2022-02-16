@@ -21,12 +21,12 @@ const DOP_POP_UP_MESSAGE = 'Please, select at least one thumbnail!';
 const IMG_WIDTH = 300;
 const IMG_HEIGHT = 200;
 
-const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, mediaIngests}) => {
+const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, jobIds}) => {
+    const dispatch = useDispatch();
     const [selectedArtwork, setSelectedArtwork] = useState();
     const [posters, setPosters] = useState([]);
     const [lazyLoading, setLazyLoading] = useState(false);
     const [itemSize] = useState(Math.trunc((window.screen.width - 50) / IMG_WIDTH));
-    const dispatch = useDispatch();
 
     const {openModal, closeModal} = useContext(NexusModalContext);
     const sourceMediaAssetID = VuURL.getParamIfExists('sourceMediaAssetID', '');
@@ -66,21 +66,17 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, med
     }, []);
 
     useEffect(() => {
-        DOP.setDOPMessageCallback(selectedArtwork ? null : () => openDOPPopUp());
+        DOP.setDOPMessageCallback(selectedArtwork || jobIds.length !== 0 ? null : () => openDOPPopUp());
     }, [selectedArtwork, openDOPPopUp]);
 
     const artworkClick = (id, uri) => {
         setSelectedArtwork(id);
         DOP.setErrorsCount(0);
 
-        const ingestsLength = mediaIngests.length;
-        const ingestsLastIndex = ingestsLength - 1;
-        const importAssetJobID = ingestsLength ? mediaIngests[ingestsLastIndex].jobId : null;
         DOP.setData({
             chooseArtwork: {
                 sourceMediaAssetID,
                 selectedArtworkUri: uri,
-                importAssetJobID,
             },
         });
         dispatch(removeMediaIngest());
@@ -172,19 +168,19 @@ ChooseArtwork.propTypes = {
     fetchAsset: PropTypes.func.isRequired,
     asset: PropTypes.object,
     posterList: PropTypes.array,
-    mediaIngests: PropTypes.array,
+    jobIds: PropTypes.array,
 };
 
 ChooseArtwork.defaultProps = {
     posterList: [],
     asset: null,
-    mediaIngests: [],
+    jobIds: [],
 };
 
 const mapStateToProps = state => ({
     posterList: posterListSelector(state),
     asset: assetDetailsSelector(state),
-    mediaIngests: mediaIngestsSelector(state),
+    jobIds: mediaIngestsSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
