@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions, no-magic-numbers */
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
