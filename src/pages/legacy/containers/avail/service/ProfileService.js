@@ -18,7 +18,7 @@ const getSelectValues = field => {
 
     const key = field.replace('/', '');
 
-    if (!isEmpty(store.getState().endpointConfigValues?.[key])) {
+    if (isEmpty(store.getState().endpointConfigValues?.[key])) {
         return nexusFetch(url, {isWithErrorHandling: false}).then(response => {
             store.dispatch(storeConfigValues({[key]: response.data}));
         });
