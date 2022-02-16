@@ -54,12 +54,14 @@ module.exports = envKeys => ({
         new webpack.DefinePlugin(envKeys),
         new CleanWebpackPlugin(),
         new ESLintPlugin(esLintOptions),
-        new CopyWebpackPlugin([
-            {from: 'profile/config.json'},
-            {from: 'profile/configQA.json'},
-            {from: 'profile/availMapping.json'},
-            {from: 'profile/titleMatchingMappings.json'},
-            {from: 'profile/titleMatchingRightMappings.json'},
-        ]),
+        new CopyWebpackPlugin({
+            patterns: [
+                'profile/config.json',
+                'profile/configQA.json',
+                'profile/availMapping.json',
+                'profile/titleMatchingMappings.json',
+                'profile/titleMatchingRightMappings.json',
+            ],
+        }),
     ],
 });
