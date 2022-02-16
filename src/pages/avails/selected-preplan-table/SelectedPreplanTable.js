@@ -40,8 +40,14 @@ const SelectedPreplanTable = ({
     }, [activeTab === PRE_PLAN_SELECTED_TAB]);
 
     useEffect(() => {
-        if (!isEmpty(selectedRights) && username && currentUserSelectedRights && selectedGridApi) {
-            selectedGridApi?.forEachNode(node => node?.setSelected(true));
+        if (
+            !isEmpty(selectedRights) &&
+            username &&
+            currentUserSelectedRights &&
+            selectedGridApi &&
+            selectedGridApi?.forEachNode
+        ) {
+            selectedGridApi.forEachNode(node => node?.setSelected(true));
         }
     }, [activeTab]);
 
@@ -53,14 +59,18 @@ const SelectedPreplanTable = ({
                 !selectedGridApi && setSelectedGridApi(api);
                 !selectedColumnApi && setSelectedColumnApi(columnApi);
 
-                api?.forEachNode(node => node?.setSelected(true));
+                if(api && api?.forEachNode) {
+                    api.forEachNode(node => node?.setSelected(true));
+                }
 
                 break;
             case READY:
                 !selectedGridApi && setSelectedGridApi(api);
                 !selectedColumnApi && setSelectedColumnApi(columnApi);
 
-                api?.forEachNode(node => node?.setSelected(true));
+                if(api && api?.forEachNode) {
+                    api.forEachNode(node => node?.setSelected(true));
+                }
                 break;
             case SELECTION_CHANGED: {
                 if (activeTab === PRE_PLAN_SELECTED_TAB) {
@@ -76,7 +86,9 @@ const SelectedPreplanTable = ({
                         ?.getSelectedNodes()
                         ?.filter(({data = {}}) => toDeselectIds.includes(data.id));
 
-                    nodesToDeselect?.forEach(node => node?.setSelected(false));
+                    if(nodesToDeselect) {
+                        nodesToDeselect.forEach(node => node?.setSelected(false));
+                    }
 
                     const updateSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
 
