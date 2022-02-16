@@ -44,6 +44,7 @@ import {
 import DOPService from '../selected-for-planning/DOP-services';
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
+import {StatusLogRightsTable} from '../status-log-rights-table/StatusLogRightsTable';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
@@ -713,7 +714,7 @@ const RightsRepository = ({
                 selectedGridApi={selectedGridApi}
                 setSelectedGridApi={setSelectedGridApi}
             />
-            <PreplanRightsTable
+            <PreplanRightsTable 
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 prePlanRepoRights={currentUserPrePlanRights}
                 activeTab={activeTab}
@@ -723,6 +724,12 @@ const RightsRepository = ({
                 setPrePlanGridApi={setPrePlanGridApi}
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
                 username={username}
+            />
+            <StatusLogRightsTable
+                setDateFrom={() => null}
+                dateFrom=""
+                dateTo=""
+                activeTab={activeTab}
             />
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
                 <SelectedForPlanning
