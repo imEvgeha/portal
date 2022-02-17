@@ -5,6 +5,7 @@ import {combineReducers} from 'redux';
 import availsReducer from './pages/avails/availsReducer';
 import dopTasksReducer from './pages/dop-tasks/dopTasksReducer';
 import eventManagementReducer from './pages/event-management/eventManagementReducer';
+import endpointConfigReducer from './pages/legacy/containers/avail/service/endpointConfigReducer';
 import settings from './pages/legacy/containers/settings/settingsReducer';
 import dopReducer from './pages/legacy/stores/reducers/DOP/dopReducer';
 import dashboard from './pages/legacy/stores/reducers/avail/dashboard';
@@ -50,6 +51,7 @@ const createRootReducer = routerHistory =>
         ui: uiReducer,
         auth: createPersistReducer(authPersistConfig, authReducer),
         titleMetadata: createPersistReducer(titleMetadataPersistConfig, titleMetadataReducer),
+        endpointConfigValues: endpointConfigReducer,
     });
 
 export default createRootReducer;

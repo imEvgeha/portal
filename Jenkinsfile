@@ -15,6 +15,7 @@ pipeline {
                 }
                 sh 'pwd'
                 sh 'rm -Rf node_modules'
+                sh 'rm -Rf packages/ui/lib'
                 sh 'ls'
                 sh 'yarn'
                 sh 'yarn prebuild'
