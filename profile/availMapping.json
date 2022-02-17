@@ -84,7 +84,7 @@
             "displayName": "Right Status",
             "dataType": "select",
             "searchDataType": "multiselect",
-            "options": ["Pending", "Confirmed", "Tentative", "Canceled", "Withdrawn"],
+            "options": ["Confirmed", "Tentative", "Canceled", "Withdrawn"],
             "queryParamName": "rightStatus",
             "readOnly": false,
             "enableSearch": true,
