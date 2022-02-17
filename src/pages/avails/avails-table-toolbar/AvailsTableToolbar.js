@@ -4,7 +4,14 @@ import './AvailsTableToolbar.scss';
 import NexusTableExportDropdown from '../avails-table-export-dropdown/AvailsTableExportDropdown';
 import AvailsTableReleaseReport from '../avails-table-release-report/AvailsTableReleaseReport';
 import PrePlanActions from '../pre-plan-actions/PrePlanActions';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB} from '../rights-repository/constants';
+import {
+    RIGHTS_TAB,
+    RIGHTS_SELECTED_TAB,
+    PRE_PLAN_TAB,
+    SELECTED_FOR_PLANNING_TAB,
+    STATUS_TAB,
+    PRE_PLAN_SELECTED_TAB
+} from '../rights-repository/constants';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import { StatusRightsActions } from '../status-rights-actions/StatusRightsActions';
 import SelectedButton from './components/selected-button/SelectedButton';
@@ -57,6 +64,16 @@ const AvailsTableToolbar = ({
         return totalRows;
     };
 
+    const getAmountOfSelectedRowsForCurrentTab = () => {
+        if([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab)) {
+            return selectedRightsCount;
+        }
+        if([PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab)) {
+            return selectedPrePlanRights.length;
+        }
+        return 0;
+    };
+
     return (
         <div className="nexus-c-table-toolbar d-flex justify-content-between row">
             <div className='col-xs-12 col-xl-8 d-flex align-items-center justify-content-xs-between justify-content-xl-start'>
@@ -65,9 +82,9 @@ const AvailsTableToolbar = ({
                 </div>
                 <div className='d-flex'>
                     <div className="nexus-c-table-toolbar__selected-button-container d-flex justify-content-end">
-                        {[RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && (
+                        {[RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab) && (
                             <SelectedButton
-                                selectedRightsCount={selectedRightsCount}
+                                selectedRightsCount={getAmountOfSelectedRowsForCurrentTab()}
                                 activeTab={activeTab}
                                 setActiveTab={setActiveTab}
                                 setActiveTabIndex={setActiveTabIndex}
@@ -92,7 +109,7 @@ const AvailsTableToolbar = ({
                             setSingleRightMatch={setSingleRightMatch}
                         />
                     ) : null}
-                    {isItSamePage(PRE_PLAN_TAB) ? (
+                    {isItSamePage(PRE_PLAN_TAB) || isItSamePage(PRE_PLAN_SELECTED_TAB) ? (
                         <PrePlanActions
                             selectedPrePlanRights={selectedPrePlanRights}
                             setSelectedPrePlanRights={setSelectedPrePlanRights}

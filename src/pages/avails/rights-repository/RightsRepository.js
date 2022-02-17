@@ -43,6 +43,7 @@ import {
 } from '../right-matching/rightMatchingSelectors';
 import DOPService from '../selected-for-planning/DOP-services';
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
+import SelectedPreplanTable from '../selected-preplan-table/SelectedPreplanTable';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
@@ -716,6 +717,7 @@ const RightsRepository = ({
             <PreplanRightsTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 prePlanRepoRights={currentUserPrePlanRights}
+                context={{selectedRows: selectedPrePlanRights}}
                 activeTab={activeTab}
                 mapping={mapping}
                 setPreplanRights={setPreplanRights}
@@ -723,6 +725,20 @@ const RightsRepository = ({
                 setPrePlanGridApi={setPrePlanGridApi}
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
                 username={username}
+            />
+            <SelectedPreplanTable
+                columnDefs={updatedColumnDefsCheckBoxHeader}
+                mapping={mapping}
+                rowData={selectedPrePlanRights}
+                activeTab={activeTab}
+                selectedColumnApi={selectedColumnApi}
+                setSelectedColumnApi={setSelectedColumnApi}
+                selectedRepoRights={selectedPrePlanRights}
+                gridApi={gridApi}
+                selectedRights={selectedPrePlanRights}
+                username={username}
+                selectedGridApi={selectedGridApi}
+                setSelectedGridApi={setSelectedGridApi}
             />
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
                 <SelectedForPlanning
