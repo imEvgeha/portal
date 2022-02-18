@@ -28,7 +28,7 @@ export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
     delete params.publishedAt;
 
     const qs = querystring.stringify({...queryParams, ...updatedAtParams, ...params});
-    const url = `${config.get('gateway.kongUrl')}${config.get('gateway.service.titlePlanning')}/publishInfo/search`;
+    const url = `${config.get('gateway.titlePlanning')}/publishInfo/search`;
 
-    return nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK?`);
+    return nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK&entityId=rght_McLk8BEXiB`);
 };
