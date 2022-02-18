@@ -11,6 +11,7 @@
         "publisher": "https://vuapi.qa.vubiquity.com/vubiquity/titlespublishermovida",
         "mediaStorageUrl": "https://vuapi.qa.vubiquity.com/vubiquity/mediastorage/media-storage/v1",
         "mediaIngestUrl": "https://vuapi.qa.vubiquity.com/vubiquity/mediaingest/media-ingest/v1",
+        "titlePlanning": "https://titleplanning.qa.vubiquity.com",
         "service": {
             "avails": "/avails-api/v1",
             "availsParser": "/avails-parser/v1",
@@ -38,7 +39,8 @@
             "kongMediaCatalog": "/mediacatalog/catalog/v1",
             "kongMediaStorage": "/mediastorage/media-storage/v1",
             "kongVidispine": "/vidispine-api/API",
-            "mediaImageServices": "/image-services/v1"
+            "mediaImageServices": "/image-services/v1",
+            "titlePlanning": "/title-planning-api/v1"
         },
         "servicingOrdersUrl": "https://vuapi.qa.vubiquity.com/vubiquity/servicing-orders",
         "titleUrl": "https://vuapi.qa.vubiquity.com/vubiquity/titles",

@@ -1,42 +1,32 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-// import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
+import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {dateToISO} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
-// import {connect} from 'react-redux';
 import {compose} from 'redux';
 import { STATUS_TAB } from '../rights-repository/constants';
+import { getStatusLog } from './StatusLogService';
 import columnMappings from './columnMappings';
-// import PublishErrors from './components/PublishErrors/PublishErrors';
-// import Status from './components/Status/Status';
-// import TitleNameCellRenderer from './components/TitleNamecCellRenderer/TitleNameCellRenderer';
-// import {createSaveDateFromAction} from './syncLogActions';
-// import {ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from './syncLogConstants';
-// import {selectSyncLogDateFrom, selectSyncLogDateTo} from './syncLogSelectors';
-// import {getSyncLog} from './syncLogService';
 import './StatusLogRightsTable.scss';
 
-const StatusLogRightsGrid = compose(withColumnsResizing(), withInfiniteScrolling())(NexusGrid);
+const StatusLogRightsGrid = compose(
+    withSideBar(),
+    withColumnsResizing(), 
+    withFilterableColumns(),
+    withColumnsResizing(),
+    withInfiniteScrolling({fetchData: getStatusLog})
+)(NexusGrid);
 
 const StatusLogRightsTable = ({setDateFrom, dateFrom, dateTo, activeTab}) => {
-    // const [showDrawer, setShowDrawer] = useState(false);
-    // const [errorsData, setErrorsData] = useState([]);
-
-    // const setErrors = data => {
-    //     setErrorsData(data);
-    //     setShowDrawer(true);
-    // };
 
     const getColumnDefs = () => {
         return columnMappings.map(col => ({
             ...col,
-            // cellRendererParams: {
-            //     setErrors,
-            // },
         }));
     };
 
@@ -50,8 +40,6 @@ const StatusLogRightsTable = ({setDateFrom, dateFrom, dateTo, activeTab}) => {
                 break;
         }
     };
-
-    // const closeDrawer = () => setShowDrawer(false);
 
     useEffect(() => {
         if (dateFrom === '') {
@@ -68,47 +56,11 @@ const StatusLogRightsTable = ({setDateFrom, dateFrom, dateTo, activeTab}) => {
                 rowSelection="single"
                 onGridEvent={onGridEvent}
                 isGridHidden={activeTab !== STATUS_TAB}
-                externalFilter={{
-                    dateFrom,
-                    dateTo,
-                }}
-                // frameworkComponents={{
-                //     publishErrors: PublishErrors,
-                //     titleNameCellRenderer: TitleNameCellRenderer,
-                //     status: Status,
-                // }}
             />
-
-            {/* <NexusDrawer onClose={closeDrawer} isOpen={showDrawer} title={ERROR_TABLE_TITLE} width="wider">
-                <div className="nexus-c-sync-log-table__errors-table">
-                    {ERROR_TABLE_COLUMNS.map(column => (
-                        <div className="nexus-c-sync-log-table__errors-table--header-cell" key={column}>
-                            {column.toUpperCase()}
-                        </div>
-                    ))}
-                    {errorsData.map((error, i) =>
-                        ERROR_TABLE_COLUMNS.map(key => (
-                            <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i - key}`}>
-                                {error.split(' - ')[key === 'type' ? 0 : 1]}
-                            </div>
-                        ))
-                    )}
-                </div>
-            </NexusDrawer> */}
         </div>
     );
 };
 
-// const mapStateToProps = state => ({
-//     dateFrom: selectSyncLogDateFrom(state),
-//     dateTo: selectSyncLogDateTo(state),
-// });
-
-// const mapDispatchToProps = dispatch => ({
-//     setDateFrom: dateFrom => dispatch(createSaveDateFromAction(dateFrom)),
-// });
-
-// export default connect(mapStateToProps, mapDispatchToProps)(StatusLogRightsTable);
 export {StatusLogRightsTable};
 
 StatusLogRightsTable.propTypes = {

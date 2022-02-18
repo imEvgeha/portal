@@ -7,8 +7,8 @@ import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusG
 import NexusMultiInstanceField from '@vubiquity-nexus/portal-ui/lib/elements/nexus-multi-instance-field/NexusMultiInstanceField';
 import NexusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tag/NexusTag';
 import NexusTitle from '@vubiquity-nexus/portal-ui/lib/elements/nexus-title/NexusTitle';
-import NexusToastNotification from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/NexusToastNotification';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
+import NexusToastNotification from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotification';
 
 export {
     NexusCheckboxSelect,
