@@ -4,7 +4,7 @@
 
 $border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
 
-.nexus-c-sync-log-table {
+.nexus-c-status-log-table {
     @include padding(0, 0, 10, 0);
     height: 100%;
     display: flex;
@@ -54,7 +54,7 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
     }
 }
 
-.nexus-c-sync-log-table__actions {
+.nexus-c-status-log-table__actions {
     display: flex;
     width: 100%;
     justify-content: space-between;

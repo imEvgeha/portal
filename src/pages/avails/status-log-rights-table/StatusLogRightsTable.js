@@ -55,10 +55,10 @@ const StatusLogRightsTable = ({activeTab}) => {
     };
 
     return (
-        <div className="nexus-c-sync-log-table">
+        <div className="nexus-c-status-log-table">
             <StatusLogRightsGrid
                 suppressRowClickSelection
-                className="nexus-c-sync-log-grid"
+                className="nexus-c-status-log-grid"
                 columnDefs={getColumnDefs()}
                 mapping={columnMappings}
                 rowSelection="single"

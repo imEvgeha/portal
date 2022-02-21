@@ -85,7 +85,7 @@ const RightsRepository = ({
     setIsTableDataLoading,
     username,
     onFiltersChange,
-
+    statusLogCount,
     fromSelectedTable,
 }) => {
     const isMounted = useRef(true);
@@ -663,6 +663,7 @@ const RightsRepository = ({
                 prePlanGridApi={prePlanGridApi}
                 selectedForPlanningColumnApi={selectedForPlanningColumnApi}
                 selectedForPlanningGridApi={selectedForPlanningGridApi}
+                statusRightsCount={statusLogCount}
             />
             {!isEmpty(selectedIngest) && attachment && (
                 <Ingest
@@ -715,7 +716,7 @@ const RightsRepository = ({
                 selectedGridApi={selectedGridApi}
                 setSelectedGridApi={setSelectedGridApi}
             />
-            <PreplanRightsTable 
+            <PreplanRightsTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 prePlanRepoRights={currentUserPrePlanRights}
                 context={{selectedRows: selectedPrePlanRights}}
@@ -742,12 +743,7 @@ const RightsRepository = ({
                 setSelectedGridApi={setSelectedGridApi}
             />
             {activeTab === STATUS_TAB && (
-                <StatusLogRightsTable
-                    setDateFrom={() => null}
-                    dateFrom=""
-                    dateTo=""
-                    activeTab={activeTab}
-                />
+                <StatusLogRightsTable activeTab={activeTab} />
             )}
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
                 <SelectedForPlanning
@@ -784,6 +780,7 @@ RightsRepository.propTypes = {
     setIsTableDataLoading: PropTypes.func,
     onFiltersChange: PropTypes.func,
     fromSelectedTable: PropTypes.object,
+    statusLogCount: PropTypes.number,
 };
 
 RightsRepository.defaultProps = {
@@ -797,6 +794,7 @@ RightsRepository.defaultProps = {
     setIsTableDataLoading: () => null,
     onFiltersChange: () => null,
     fromSelectedTable: {},
+    statusLogCount: 0,
 };
 
 const mapStateToProps = () => {
@@ -806,6 +804,7 @@ const mapStateToProps = () => {
     const preplanRightsSelector = selectors.createPreplanRightsSelector();
     const rightsFilterSelector = selectors.createRightsFilterSelector();
     const fromSelectedTableSelector = selectors.createFromSelectedTableSelector();
+    const statusLogCountSelector = selectors.createStatusLogCountSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
@@ -816,6 +815,7 @@ const mapStateToProps = () => {
         rightsFilter: rightsFilterSelector(state, props),
         username: getUsername(state),
         fromSelectedTable: fromSelectedTableSelector(state, props),
+        statusLogCount: statusLogCountSelector(state, props),
     });
 };
 

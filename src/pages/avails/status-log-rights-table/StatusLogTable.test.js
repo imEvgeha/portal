@@ -17,7 +17,7 @@ describe('StatusLogRightsTable', () => {
     });
 
     it('should render StatusLogRights table wrapper', () => {
-        expect(wrapper.find('.nexus-c-sync-log-table').length).toEqual(1);
+        expect(wrapper.find('.nexus-c-status-log-table').length).toEqual(1);
     });
 
     it('should render NexusDrawer', () => {

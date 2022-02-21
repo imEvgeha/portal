@@ -1,7 +1,9 @@
 import querystring from 'querystring';
 import moment from 'moment';
 import config from 'react-global-configuration';
+import { store } from '../../../index';
 import { nexusFetch } from '../../../util/http-client';
+import { saveStatusDataAction } from './statusLogActions';
 
 const PAGESIZE = 100;
 
@@ -35,6 +37,10 @@ export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
 
     const qs = querystring.stringify({...queryParams, ...updatedAtParams, ...params});
     const url = `${config.get('gateway.titlePlanning')}/publishInfo/search`;
+    const response = nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK&entityId=rght_McLk8BEXiB`);
+    response.then((data) => {
+        store.dispatch(saveStatusDataAction(data));
+    })
 
-    return nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK&entityId=rght_McLk8BEXiB`);
+    return response;
 };

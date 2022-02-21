@@ -2,10 +2,10 @@
 
 exports[`StatusLogRightsTable should match snapshot 1`] = `
 <div
-  className="nexus-c-sync-log-table"
+  className="nexus-c-status-log-table"
 >
   <Component
-    className="nexus-c-sync-log-grid"
+    className="nexus-c-status-log-grid"
     columnDefs={
       Array [
         Object {
