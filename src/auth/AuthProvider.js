@@ -22,6 +22,7 @@ const AuthProvider = ({
     children,
     options = KEYCLOAK_INIT_OPTIONS,
     appOptions,
+    configEndpointsLoading,
     addUser,
     getAppOptions,
     logoutUser,
@@ -30,6 +31,12 @@ const AuthProvider = ({
     // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (!configEndpointsLoading) {
+            getAppOptions();
+        }
+    }, [configEndpointsLoading]);
 
     useEffect(() => {
         if (isAuthenticatedUser) {
@@ -54,9 +61,6 @@ const AuthProvider = ({
                     addUser({token, refreshToken});
                     loadUserAccount();
                     loadProfileInfo();
-                    // get config options for app
-                    getAppOptions();
-
                     updateUserToken(token);
                     getSelectValues();
                 } else {
@@ -118,10 +122,12 @@ const AuthProvider = ({
     return children;
 };
 
-const mapStateToProps = ({root}) => ({
-    appOptions: root.selectValues,
-});
-
+const mapStateToProps = state => {
+    return {
+        appOptions: state.root?.selectValues,
+        configEndpointsLoading: state.avails?.rightDetailsOptions?.endpointsLoading,
+    };
+};
 const mapDispatchToProps = dispatch => ({
     getAppOptions: () => dispatch(fetchAvailMapping()),
     addUser: payload => dispatch(injectUser(payload)),
