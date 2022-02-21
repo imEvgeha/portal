@@ -1,6 +1,6 @@
 import querystring from 'querystring';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
-import config from 'react-global-configuration';
+import {getConfig} from '../../config';
 import {nexusFetch} from '../../util/http-client';
 
 const PAGESIZE = 100;
@@ -16,13 +16,13 @@ export const getSyncLog = (params, page = 0, size = PAGESIZE) => {
 
     const qs = querystring.stringify(queryParams);
 
-    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/publishInfo/search`;
+    const url = `${getConfig('gateway.publisher')}${getConfig('gateway.service.publisher')}/publishInfo/search`;
 
     return nexusFetch(`${url}?${qs}`);
 };
 
 const fetchSyncLog = (startDate, endDate) => {
-    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/publishInfo/export`;
+    const url = `${getConfig('gateway.publisher')}${getConfig('gateway.service.publisher')}/publishInfo/export`;
     const qs = querystring.stringify({
         startDate,
         endDate,

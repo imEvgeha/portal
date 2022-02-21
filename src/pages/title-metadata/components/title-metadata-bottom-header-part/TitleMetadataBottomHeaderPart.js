@@ -7,6 +7,7 @@ import moment from 'moment';
 import {Button} from 'primereact/button';
 import {connect} from 'react-redux';
 import './TitleMetadataBottomHeaderPart.scss';
+import {getConfig} from '../../../../config';
 import SyncLogDatePicker from '../../../sync-log/components/SyncLogDatePicker/SyncLogDatePicker';
 import {createSaveDateFromAction, createSaveDateToAction} from '../../../sync-log/syncLogActions';
 import {selectSyncLogDateFrom, selectSyncLogDateTo} from '../../../sync-log/syncLogSelectors';
@@ -34,6 +35,7 @@ const TitleMetadataBottomHeaderPart = ({
                         title={METADATA_UPLOAD_TITLE}
                         icon={CloudUploadIcon}
                         uploadCallback={uploadHandler}
+                        extensionsAccepted={getConfig('avails.upload.extensions')}
                     />
                     <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
                 </div>

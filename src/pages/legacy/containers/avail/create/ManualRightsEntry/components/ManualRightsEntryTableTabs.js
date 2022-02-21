@@ -1,19 +1,19 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import config from 'react-global-configuration';
 import {ManualRightEntryTab, TabContainer} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-table-tab/TableTab';
 import {
+    ATTACHMENTS_TAB,
+    ERRORS,
     FATAL,
+    SUCCESS,
     TOTAL_RIGHTS,
     UNMATCHED,
-    ERRORS,
-    SUCCESS,
-    ATTACHMENTS_TAB,
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 import Constants from '../../../../../../../pages/avails/ingest-panel/constants';
+import {getConfig} from '../../../../../../../config';
 
 const {
     attachmentTypes: {EXCEL, PDF},
@@ -68,7 +68,7 @@ const ManualRightEntryTableTabs = ({
     };
 
     const viewJSON = () => {
-        const url = `${config.get('gateway.url')}${config.get(
+        const url = `${getConfig('gateway.url')}${getConfig(
             'gateway.service.avails'
         )}/avails/ingest/history/${availHistoryId}?appendErrorReports=true`;
         window.open(url, '_blank');

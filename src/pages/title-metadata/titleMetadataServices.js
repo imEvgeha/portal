@@ -1,7 +1,7 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import {prepareSortMatrixParamTitles, encodedSerialize, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {encodedSerialize, getDomainName, prepareSortMatrixParamTitles} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
-import config from 'react-global-configuration';
+import {getConfig} from '../../config';
 import {store} from '../../index';
 import {nexusFetch} from '../../util/http-client/index';
 import {BASE_PATH} from './titleMetadataRoutes';
@@ -10,7 +10,7 @@ import {CONTENT_TYPE} from './constants';
 
 export const getTitleById = payload => {
     const {id, isMgm} = payload;
-    const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${id}`;
+    const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/titles/${id}`;
     const params = isMgm ? {tenantCode: 'mgm'} : {};
     return nexusFetch(url, {
         params: encodedSerialize(params),
@@ -19,20 +19,20 @@ export const getTitleById = payload => {
 };
 
 export const getEpisodesCount = id => {
-    const url = `${config.get('gateway.titleUrl')}${config.get(
+    const url = `${getConfig('gateway.titleUrl')}${getConfig(
         'gateway.service.title'
     )}/titles/search?parentId=${id}&contentType=EPISODE`;
     return nexusFetch(url);
 };
 
 export const getExternalIds = id => {
-    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/getPublishInfo/${id}`;
+    const url = `${getConfig('gateway.publisher')}${getConfig('gateway.service.publisher')}/getPublishInfo/${id}`;
     return nexusFetch(url);
 };
 
 export const getTerritoryMetadataById = payload => {
     const {id, isMgm} = payload;
-    const api = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+    const api = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/territorymetadata`;
     const url = `${api}?includeDeleted=false&titleId=${id}`;
     const params = isMgm ? {tenantCode: 'mgm'} : {};
     return nexusFetch(url, {
@@ -42,7 +42,7 @@ export const getTerritoryMetadataById = payload => {
 
 export const getEditorialMetadataByTitleId = payload => {
     const {id, isMgm} = payload;
-    const url = `${config.get('gateway.titleUrl')}${config.get(
+    const url = `${getConfig('gateway.titleUrl')}${getConfig(
         'gateway.service.title'
     )}/editorialmetadata?titleId=${id}&includeDeleted=false`;
     const params = isMgm ? {tenantCode: 'mgm'} : {};
@@ -55,7 +55,7 @@ export const updateTitle = (title, syncToVZ, syncToMovida) => {
     const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
     const {catalogOwner: tenantCode} = title;
     const params = legacySystemNames ? {legacySystemNames, tenantCode} : {tenantCode};
-    const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${title.id}`;
+    const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/titles/${title.id}`;
 
     return nexusFetch(url, {
         method: 'put',
@@ -128,7 +128,7 @@ export const unmergeTitle = async id => {
 export const syncTitle = payload => {
     const {id: titleId, externalSystem} = payload;
     const params = {externalSystem, titleId};
-    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/syncTitle`;
+    const url = `${getConfig('gateway.publisher')}${getConfig('gateway.service.publisher')}/syncTitle`;
 
     return nexusFetch(url, {
         method: 'post',
@@ -139,7 +139,7 @@ export const syncTitle = payload => {
 export const registerTitle = payload => {
     const {id: titleId, externalSystem: externalSystems} = payload;
     const params = {externalSystems, titleId};
-    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/registerTitle`;
+    const url = `${getConfig('gateway.publisher')}${getConfig('gateway.service.publisher')}/registerTitle`;
 
     return nexusFetch(url, {
         method: 'post',
@@ -179,7 +179,7 @@ export const titleService = {
                 }
             }
         }
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/titles/${
             filterIsActive ? 'search' : ''
         }${prepareSortMatrixParamTitles(sortedParams)}`;
 
@@ -187,7 +187,7 @@ export const titleService = {
         return partialContentTypeSearch && nexusFetch(url, {params});
     },
     addMsvAssociationIds: (id, licensor, licensee) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get(
+        const url = `${getConfig('gateway.titleUrl')}${getConfig(
             'gateway.service.title'
         )}/titles/${id}/msvIds?licensor=${licensor}&licensee=${licensee}&updateTitle=false`;
         return nexusFetch(url, {
@@ -195,7 +195,7 @@ export const titleService = {
         });
     },
     getUploadedMetadata: async (dataForUploadedMetadata, tenantCode, page, size, sortedParams) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get(
+        const url = `${getConfig('gateway.titleUrl')}${getConfig(
             'gateway.service.title'
         )}/importLog${prepareSortMatrixParamTitles(sortedParams)}`;
         const params = tenantCode ? {tenantCode} : {};
@@ -207,13 +207,13 @@ export const titleService = {
         });
     },
     getUploadLogMetadataFile: id => {
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/importReport/${id}`;
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/importReport/${id}`;
         return nexusFetch(url, {
             method: 'get',
         });
     },
     addEditorialMetadata: (editorialMetadata, tenantCode) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/editorialmetadata`;
         const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
             method: 'post',
@@ -222,7 +222,7 @@ export const titleService = {
         });
     },
     updateEditorialMetadata: (editedEditorialMetadata, tenantCode) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/editorialmetadata`;
         const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
             method: 'put',
@@ -231,7 +231,7 @@ export const titleService = {
         });
     },
     addTerritoryMetadata: (territoryMetadata, tenantCode) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/territorymetadata`;
         const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
             method: 'post',
@@ -240,7 +240,7 @@ export const titleService = {
         });
     },
     updateTerritoryMetadata: (editedTerritoryMetadata, tenantCode) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/territorymetadata`;
         const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
             method: 'put',
@@ -249,7 +249,7 @@ export const titleService = {
         });
     },
     propagateSeasonsPersonsToEpisodes: seasonPersons => {
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/seasonsPersonsToEpisodes`;
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/seasonsPersonsToEpisodes`;
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(seasonPersons),
@@ -257,7 +257,7 @@ export const titleService = {
     },
     regenerateAutoDecoratedMetadata: masterEmetId => {
         const url = `${
-            config.get('gateway.titleUrl') + config.get('gateway.service.titleV2')
+            getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2')
         }/regenerateEmets/${masterEmetId}`;
         return nexusFetch(url, {
             method: 'put',
@@ -265,7 +265,7 @@ export const titleService = {
     },
 
     unmerge: id => {
-        const url = `${config.get('gateway.titleUrl')}${config.get(
+        const url = `${getConfig('gateway.titleUrl')}${getConfig(
             'gateway.service.title'
         )}/titles/unmerge?titleId=${id}`;
         return nexusFetch(url, {

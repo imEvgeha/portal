@@ -48,7 +48,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
       Object {
         "cellRenderer": "loadingCellRenderer",
         "cellRendererParams": Object {
-          "link": "null/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=",
+          "link": "undefined/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=",
         },
         "colId": "projectId",
         "enableSearch": false,

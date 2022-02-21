@@ -1,8 +1,8 @@
 import {uniqBy} from 'lodash';
-import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
-import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {encodedSerialize, prepareSortMatrixParamTitles} from '@vubiquity-nexus/portal-utils/lib/Common';
 import TitleSystems from '../../../../metadata/constants/systems';
+import {getConfig} from '../../../../../config';
 
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ || syncToMovida) {
@@ -26,8 +26,8 @@ export const titleService = {
             }
         }
         const url =
-            config.get('gateway.titleUrl') +
-            config.get('gateway.service.title') +
+            getConfig('gateway.titleUrl') +
+            getConfig('gateway.service.title') +
             '/titles/search' +
             prepareSortMatrixParamTitles(sortedParams);
         const params = encodedSerialize({...queryParams, page, size});
@@ -81,8 +81,8 @@ export const titleService = {
         }
 
         const url =
-            config.get('gateway.titleUrl') +
-            config.get('gateway.service.title') +
+            getConfig('gateway.titleUrl') +
+            getConfig('gateway.service.title') +
             '/titles' +
             prepareSortMatrixParamTitles(sortedParams);
         const params = encodedSerialize({...queryParams, page, size});
@@ -91,7 +91,7 @@ export const titleService = {
     },
 
     createTitle: (title, params) => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles';
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/titles';
         const queryParams = params ? params : {};
         return nexusFetch(url, {
             method: 'post',
@@ -102,7 +102,7 @@ export const titleService = {
     },
 
     createTitleWithoutErrorModal: title => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles';
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/titles';
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(title),
@@ -113,7 +113,7 @@ export const titleService = {
     updateTitle: (title, syncToVZ, syncToMovida) => {
         const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/titles/${title.id}`;
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + `/titles/${title.id}`;
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(title),
@@ -122,12 +122,12 @@ export const titleService = {
     },
 
     getTitleById: id => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/titles/${id}`;
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + `/titles/${id}`;
         return nexusFetch(url);
     },
 
     bulkGetTitles: ids => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ';
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/titles?operationType=READ';
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(ids),
@@ -138,7 +138,7 @@ export const titleService = {
         const LANGUAGES = ['English', 'en'];
         const LOCALE = ['US'];
         const GENRE_KEY = 'editorialGenres';
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ';
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/titles?operationType=READ';
 
         return nexusFetch(url, {
             method: 'put',
@@ -168,7 +168,7 @@ export const titleService = {
     },
 
     addTerritoryMetadata: territoryMetadata => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata';
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/territorymetadata';
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(territoryMetadata),
@@ -176,13 +176,13 @@ export const titleService = {
     },
 
     getTerritoryMetadataById: id => {
-        const api = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        const api = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/territorymetadata`;
         const url = `${api}?includeDeleted=false&titleId=${id}`;
         return nexusFetch(url);
     },
 
     updateTerritoryMetadata: editedTerritoryMetadata => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata';
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/territorymetadata';
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(editedTerritoryMetadata),
@@ -190,7 +190,7 @@ export const titleService = {
     },
 
     addEditorialMetadata: editorialMetadata => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/editorialmetadata';
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/editorialmetadata';
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(editorialMetadata),
@@ -199,14 +199,14 @@ export const titleService = {
 
     getEditorialMetadataByTitleId: id => {
         const url =
-            config.get('gateway.titleUrl') +
-            config.get('gateway.service.title') +
+            getConfig('gateway.titleUrl') +
+            getConfig('gateway.service.title') +
             `/editorialmetadata?titleId=${id}&includeDeleted=false`;
         return nexusFetch(url);
     },
 
     updateEditorialMetadata: editedEditorialMetadata => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/editorialmetadata';
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/editorialmetadata';
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(editedEditorialMetadata),
@@ -215,14 +215,14 @@ export const titleService = {
 
     regenerateAutoDecoratedMetadata: masterEmetId => {
         const url =
-            config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/regenerateEmets/' + masterEmetId;
+            getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/regenerateEmets/' + masterEmetId;
         return nexusFetch(url, {
             method: 'put',
         });
     },
 
     mergeTitles: query => {
-        const url = `${config.get('gateway.titleUrl')}${config.get(
+        const url = `${getConfig('gateway.titleUrl')}${getConfig(
             'gateway.service.title'
         )}/titles/legacyTitleMerge?${query}`;
         return nexusFetch(url, {
@@ -231,7 +231,7 @@ export const titleService = {
     },
 
     bulkMergeTitles: ({idsToMerge, idsToHide}) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get(
+        const url = `${getConfig('gateway.titleUrl')}${getConfig(
             'gateway.service.title'
         )}/titles/legacyTitleMerge?idsToMerge=${idsToMerge}&idsToHide=${idsToHide}`;
         return nexusFetch(url, {
@@ -240,7 +240,7 @@ export const titleService = {
     },
 
     addMsvAssociationIds: (id, licensor, licensee) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get(
+        const url = `${getConfig('gateway.titleUrl')}${getConfig(
             'gateway.service.title'
         )}/titles/${id}/msvIds?licensor=${licensor}&licensee=${licensee}`;
         return nexusFetch(url, {

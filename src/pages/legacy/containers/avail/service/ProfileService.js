@@ -1,9 +1,9 @@
 import {nexusFetch} from '../../../../../util/http-client';
-import config from 'react-global-configuration';
 import {store} from '../../../../../index';
 import {loadAvailsMapping, loadSelectLists} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {processOptions} from '../util/ProcessSelectOptions';
+import {getConfig} from '../../../../../config';
 import {storeConfigValues} from './endpointConfigActions';
 import {isEmpty} from 'lodash';
 
@@ -12,7 +12,7 @@ const getAvailsMapping = () => {
 };
 
 const getSelectValues = field => {
-    const url = `${config.get('gateway.configuration')}${config.get(
+    const url = `${getConfig('gateway.configuration')}${getConfig(
         'gateway.service.configuration'
     )}${field}?page=0&size=10000`;
 

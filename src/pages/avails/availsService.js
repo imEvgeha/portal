@@ -1,9 +1,9 @@
-import config from 'react-global-configuration';
+import {getConfig} from '../../config';
 import {nexusFetch} from '../../util/http-client';
 import {rightsService} from '../legacy/containers/avail/service/RightsService';
 
 export const getRightsHistory = rightId => {
-    const url = `${config.get('gateway.eventApiUrl')}${config.get(
+    const url = `${getConfig('gateway.eventApiUrl')}${getConfig(
         'gateway.service.eventApiV2'
     )}/search/diff?objectId=${rightId}&eventSource=avails-api`;
 
@@ -25,12 +25,12 @@ export const getLinkedToOriginalRightsV2 = selectedRightIds => {
 };
 
 export const reloadConfigurationService = () => {
-    const availsClearCache = `${config.get('gateway.url')}${config.get('gateway.service.avails')}${config.get(
+    const availsClearCache = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}${getConfig(
         'gateway.service.clearCache'
     )}`;
-    const injestClearCache = `${config.get('gateway.injestUrl')}${config.get(
-        'gateway.service.availsInjest'
-    )}${config.get('gateway.service.clearCache')}`;
+    const injestClearCache = `${getConfig('gateway.injestUrl')}${getConfig('gateway.service.availsInjest')}${getConfig(
+        'gateway.service.clearCache'
+    )}`;
 
     return Promise.allSettled([
         nexusFetch(availsClearCache, {method: 'get'}),

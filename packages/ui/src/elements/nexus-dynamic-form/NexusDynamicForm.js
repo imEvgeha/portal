@@ -41,7 +41,7 @@ const NexusDynamicForm = ({
     const view = canEdit ? VIEWS.EDIT : VIEWS.VIEW;
 
     const {fields} = schema;
-    
+
     useEffect(() => {
         update && setUpdate(false);
     }, [update]);
@@ -51,7 +51,7 @@ const NexusDynamicForm = ({
         const firstErrorElement = document.getElementsByClassName('nexus-c-field__error')[0];
         if (firstErrorElement) firstErrorElement.scrollIntoView(false);
     }, [validationErrorCount]);
-    
+
     const onCancel = () => {
         setRefresh(prev => !prev);
         setUpdate(true);
@@ -87,7 +87,7 @@ const NexusDynamicForm = ({
                     showValidationError={showValidationError}
                 />
             </>
-        )
+        );
     };
 
     const validDateRange = values => {
