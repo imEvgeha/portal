@@ -75,14 +75,12 @@ export async function setEnvConfiguration(env) {
         }
     };
     try {
-        // config.set(defaultConfiguration, {freeze: false});
         configuration = mergeDeep(configuration, defaultConfiguration);
 
         const configFile = getConfigFile(env);
         const data = await nexusFetch(configFile);
 
         if (isObject(data)) {
-            // config.set(mergeDeep(JSON.parse(config.serialize()), data), {freeze: false});
             configuration = mergeDeep(configuration, data);
             return true;
         }
