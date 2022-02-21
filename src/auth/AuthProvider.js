@@ -5,8 +5,8 @@ import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@vubiquity-nexus/portal-auth/keyc
 import {getTokenDuration, getValidToken, wait} from '@vubiquity-nexus/portal-auth/utils';
 import {updateAbility} from '@vubiquity-nexus/portal-utils/lib/ability';
 import jwtDecode from 'jwt-decode';
-import config from 'react-global-configuration';
 import {connect} from 'react-redux';
+import {getConfig} from '../config';
 import {store} from '../index';
 import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions';
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
@@ -22,6 +22,7 @@ const AuthProvider = ({
     children,
     options = KEYCLOAK_INIT_OPTIONS,
     appOptions,
+    configEndpointsLoading,
     addUser,
     getAppOptions,
     logoutUser,
@@ -30,6 +31,12 @@ const AuthProvider = ({
     // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (!configEndpointsLoading) {
+            getAppOptions();
+        }
+    }, [configEndpointsLoading]);
 
     useEffect(() => {
         if (isAuthenticatedUser) {
@@ -44,8 +51,8 @@ const AuthProvider = ({
                 const {token, refreshToken} = store.getState().auth;
                 const isAuthenticated = await keycloak.init({
                     ...options,
-                    token: getValidToken(token, config.get('keycloak.url')),
-                    refreshToken: getValidToken(refreshToken, config.get('keycloak.url')),
+                    token: getValidToken(token, getConfig('keycloak.url')),
+                    refreshToken: getValidToken(refreshToken, getConfig('keycloak.url')),
                 });
                 if (isAuthenticated) {
                     const {realmAccess, token, refreshToken} = keycloak;
@@ -54,9 +61,6 @@ const AuthProvider = ({
                     addUser({token, refreshToken});
                     loadUserAccount();
                     loadProfileInfo();
-                    // get config options for app
-                    getAppOptions();
-
                     updateUserToken(token);
                     getSelectValues();
                 } else {
@@ -118,10 +122,12 @@ const AuthProvider = ({
     return children;
 };
 
-const mapStateToProps = ({root}) => ({
-    appOptions: root.selectValues,
-});
-
+const mapStateToProps = state => {
+    return {
+        appOptions: state.root?.selectValues,
+        configEndpointsLoading: state.avails?.rightDetailsOptions?.endpointsLoading,
+    };
+};
 const mapDispatchToProps = dispatch => ({
     getAppOptions: () => dispatch(fetchAvailMapping()),
     addUser: payload => dispatch(injectUser(payload)),

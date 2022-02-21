@@ -33,6 +33,7 @@ import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
 import InputForm from '../../../../../avails/ingest-panel/components/upload-ingest/InputForm/InputForm';
+import {getConfig} from '../../../../../../config';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON, UPLOAD_TITLE} = Constants;
 
@@ -346,6 +347,7 @@ class RightsCreateFromAttachment extends React.Component {
                                 ingestData={this.state.historyData}
                                 icon={AddIcon}
                                 withModal
+                                extensionsAccepted={getConfig('avails.upload.extensions')}
                             />
                         </Can>
                     </div>

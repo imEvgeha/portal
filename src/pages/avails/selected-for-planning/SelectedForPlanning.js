@@ -9,8 +9,8 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep} from 'lodash';
-import config from 'react-global-configuration';
 import {compose} from 'redux';
+import {getConfig} from '../../../config';
 import {prepareSelectForPlanningData} from './utils';
 import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
 
@@ -36,7 +36,7 @@ const SelectedForPlanning = ({
             ? {
                   ...col,
                   cellRendererParams: {
-                      link: `${config.get('DOP_base')}${DOP_PROJECT_URL}`,
+                      link: `${getConfig('DOP_base')}${DOP_PROJECT_URL}`,
                   },
               }
             : col

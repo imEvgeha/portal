@@ -19,7 +19,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import '@vubiquity-nexus/portal-styles/scss/index.scss';
 import AppProviders from './AppProviders';
 import Router from './Router';
-import {setEnvConfiguration} from './config';
+import {getConfig, setEnvConfiguration} from './config';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
 import configureStore from './store';
@@ -71,7 +71,7 @@ const App = () => (
 );
 
 function renderApp() {
-    createKeycloakInstance();
+    createKeycloakInstance(getConfig('keycloak'));
     initializeTracker();
     store.runSaga(rootSaga);
     render(<App />, document.getElementById('app'));

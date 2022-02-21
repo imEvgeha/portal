@@ -1,6 +1,6 @@
-import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
-import {prepareSortMatrixParam, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getConfig} from '../../../../../config';
 
 export const historyService = {
     advancedSearch: (searchCriteria, page, size, sortedParams) => {
@@ -12,8 +12,8 @@ export const historyService = {
         }
 
         return nexusFetch(
-            config.get('gateway.url') +
-                config.get('gateway.service.avails') +
+            getConfig('gateway.url') +
+                getConfig('gateway.service.avails') +
                 '/avails/ingest/history/search' +
                 prepareSortMatrixParam(sortedParams),
             {
@@ -25,17 +25,13 @@ export const historyService = {
     getHistory: (id, appendErrorReports) => {
         const queryParam = appendErrorReports ? '?appendErrorReports=true' : '';
         return nexusFetch(
-            config.get('gateway.url') +
-                config.get('gateway.service.avails') +
-                `/avails/ingest/history/${id}${queryParam}`
+            getConfig('gateway.url') + getConfig('gateway.service.avails') + `/avails/ingest/history/${id}${queryParam}`
         );
     },
 
     getAvailHistoryAttachment: id => {
         return nexusFetch(
-            config.get('gateway.url') +
-                config.get('gateway.service.avails') +
-                `/avails/ingest/history/attachments/${id}`
+            getConfig('gateway.url') + getConfig('gateway.service.avails') + `/avails/ingest/history/attachments/${id}`
         );
     },
 };

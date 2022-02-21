@@ -1,9 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-
-import config from 'react-global-configuration';
 
 // image import
 import LoadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
@@ -16,17 +14,18 @@ import './RightsResultTable.scss';
 
 import {connect} from 'react-redux';
 import {
-    manualRightsResultPageSelect,
-    manualRightsResultPageUpdate,
     manualRightsResultPageLoading,
+    manualRightsResultPageSelect,
     manualRightsResultPageSort,
+    manualRightsResultPageUpdate,
     updateManualRightsEntryColumns,
 } from '../../../../stores/actions/avail/manualRightEntry';
 import {rightServiceManager} from '../../service/RightServiceManager';
-import {getDeepValue, equalOrIncluded} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {equalOrIncluded, getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Common';
 import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
+import {getConfig} from '../../../../../../config';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -68,7 +67,7 @@ class RightsResultTable extends React.Component {
         super(props);
         this.state = {
             originalData: this.props.tabPageSelection.selected.slice(0),
-            pageSize: config.get('avails.page.size'),
+            pageSize: getConfig('avails.page.size'),
             cols: [],
             defaultColDef: {
                 resizable: true,

@@ -1,6 +1,6 @@
 import {cloneDeep, uniqBy} from 'lodash';
-import config from 'react-global-configuration';
-import {put, all, call, takeEvery, select} from 'redux-saga/effects';
+import {all, call, put, select, takeEvery} from 'redux-saga/effects';
+import {getConfig} from '../../../config';
 import {nexusFetch} from '../../../util/http-client/index';
 import configEndpoints from './configEndpoints.json';
 import * as actionTypes from './rightDetailsActionTypes';
@@ -34,13 +34,13 @@ export function* getSelectValuesSaga() {
         const selectValues = formatSelectValues(options);
         yield put({
             type: actionTypes.STORE_SELECT_VALUES,
-            payload: selectValues,
+            payload: {selectValues, endpointsLoading: false},
         });
     }
 }
 
 const fetchSelectValues = endpoint => {
-    const url = `${config.get('gateway.configuration')}${config.get(
+    const url = `${getConfig('gateway.configuration')}${getConfig(
         'gateway.service.configuration'
     )}${endpoint}?page=0&size=10000`;
     return nexusFetch(url, {isWithErrorHandling: false});

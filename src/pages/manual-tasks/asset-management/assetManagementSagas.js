@@ -3,8 +3,8 @@ import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/
 import {URL as VuURL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {isEmpty} from 'lodash';
-import config from 'react-global-configuration';
 import {all, call, put, takeEvery} from 'redux-saga/effects';
+import {getConfig} from '../../../config';
 import {nexusFetch} from '../../../util/http-client';
 import {
     FETCH_ASSET,
@@ -23,7 +23,7 @@ const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded Artwork.';
 
 function* resourcePosters({payload}) {
     try {
-        const url = `${config.get('gateway.mediaImageUrl')}${config.get(
+        const url = `${getConfig('gateway.mediaImageUrl')}${getConfig(
             'gateway.service.mediaImageServices'
         )}/AE/assets/${payload}/posters`;
         const resource = yield call(fetchPosters, url);
@@ -40,7 +40,7 @@ function* resourcePosters({payload}) {
 
 function* fetchAsset({payload}) {
     try {
-        const url = `${config.get('gateway.kongUrl')}${config.get(
+        const url = `${getConfig('gateway.kongUrl')}${getConfig(
             'gateway.service.kongMediaCatalog'
         )}/AE/assets/${payload}?returnMetadataGroups=all`;
 
@@ -64,7 +64,7 @@ function* uploadArtwork({payload}) {
             payload: {},
         });
 
-        const url = `${config.get('gateway.mediaStorageUrl')}/${tenantId}/files/upload`;
+        const url = `${getConfig('gateway.mediaStorageUrl')}/${tenantId}/files/upload`;
         const data = new FormData();
         data.append('file', file, file.name);
 
@@ -84,19 +84,16 @@ function* uploadArtwork({payload}) {
             type: UPLOAD_ARTWORK_SUCCESS,
             payload: {},
         });
-        
+
         const dataToSend = {
             reservationRequired: false,
             reservedAssetId: details.id,
-            renditions: [
-                {renditionId: details.renditions[0].id, files: [resource.id]}
-          ]
-        }
+            renditions: [{renditionId: details.renditions[0].id, files: [resource.id]}],
+        };
 
-        const mediaIngestUrl = `${config.get('gateway.mediaIngestUrl')}/${tenantId}/assets/import`;
-        const mediaIngestResource = yield call(() => nexusFetch(
-            mediaIngestUrl,
-            {
+        const mediaIngestUrl = `${getConfig('gateway.mediaIngestUrl')}/${tenantId}/assets/import`;
+        const mediaIngestResource = yield call(() =>
+            nexusFetch(mediaIngestUrl, {
                 method: 'post',
                 body: JSON.stringify(dataToSend),
             }

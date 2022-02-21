@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    SUCCESS_TITLE,
-    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {SUCCESS_TITLE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {connect} from 'react-redux';
@@ -39,6 +36,7 @@ const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
         selectValues: state.root.selectValues,
+        availsSelectValues: state.avails?.rightDetailsOptions?.selectValues,
         blocking: state.root.blocking,
     };
 };
@@ -101,6 +99,19 @@ class RightCreate extends React.Component {
 
         this.setState({});
     }
+
+    getConfigValues = (field, key) => {
+        const {selectValues, availsSelectValues, availsMapping} = this.props;
+
+        const defaultOptions = availsMapping?.mappings?.find(
+            x => x.javaVariableName === field && x.dataType !== 'icon'
+        )?.options;
+        if (defaultOptions) {
+            return defaultOptions.map(opt => ({id: opt, type: field, value: opt}));
+        }
+
+        return selectValues?.[key] || availsSelectValues?.[key];
+    };
 
     handleChange({target}, val) {
         const value = val || (target.value ? safeTrim(target.value) : '');
@@ -670,11 +681,8 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderMultiSelectField = (name, displayName, required, value) => {
-            let options = [];
-            if (this.props.selectValues && this.props.selectValues[name]) {
-                options = this.props.selectValues[name];
-            }
+        const renderMultiSelectField = (name, displayName, required, value, alternateSelector) => {
+            let options = this.getConfigValues(name, alternateSelector) || [];
 
             //fields with endpoints (these have ids)
             const filterKeys = Object.keys(this.right).filter(key => {
@@ -755,13 +763,10 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderSelectField = (name, displayName, required, value, filterBy) => {
-            let options = [];
+        const renderSelectField = (name, displayName, required, value, filterBy, alternateSelector) => {
+            let options = this.getConfigValues(name, alternateSelector) || [];
             let val;
 
-            if (this.props.selectValues && this.props.selectValues[name]) {
-                options = this.props.selectValues[name];
-            }
             if (filterBy) {
                 options = options.filter(o => this.right[filterBy] && o[filterBy] === this.right[filterBy].value);
             }
@@ -827,16 +832,9 @@ class RightCreate extends React.Component {
         };
 
         const renderPriceField = (name, displayName, required, value) => {
-            let priceTypeOptions = [],
-                priceCurrencyOptions = [];
+            let priceTypeOptions = this.getConfigValues(name, 'priceType') || [];
+            let priceCurrencyOptions = this.getConfigValues(name, 'currencies') || [];
             let val;
-
-            if (this.props.selectValues && this.props.selectValues['pricing.priceType']) {
-                priceTypeOptions = this.props.selectValues['pricing.priceType'];
-            }
-            if (this.props.selectValues && this.props.selectValues['pricing.priceCurrency']) {
-                priceCurrencyOptions = this.props.selectValues['pricing.priceCurrency'];
-            }
 
             priceTypeOptions = createAliasValue(priceTypeOptions);
 
@@ -876,12 +874,9 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderTerritoryField = (name, displayName, required, value) => {
-            let options = [];
+        const renderTerritoryField = (name, displayName, required, value, alternateSelector) => {
+            let options = this.getConfigValues(name, alternateSelector) || [];
             let val;
-            if (this.props.selectValues && this.props.selectValues[name]) {
-                options = this.props.selectValues[name];
-            }
 
             options = createAliasValue(options);
 
@@ -922,15 +917,9 @@ class RightCreate extends React.Component {
         };
 
         const renderAudioLanguageField = (name, displayName, required, value) => {
-            let options = [],
-                audioTypeOptions = [];
+            let options = this.getConfigValues(name, 'language') || [];
+            let audioTypeOptions = this.getConfigValues(name, 'audioType') || [];
             let val;
-            if (this.props.selectValues && this.props.selectValues['languageAudioTypes.language']) {
-                options = this.props.selectValues['languageAudioTypes.language'];
-            }
-            if (this.props.selectValues && this.props.selectValues['languageAudioTypes.audioType']) {
-                audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
-            }
 
             options = createAliasValue(options);
 
@@ -1106,7 +1095,8 @@ class RightCreate extends React.Component {
                                         mapping.displayName,
                                         required,
                                         value,
-                                        mapping.filterBy
+                                        mapping.filterBy,
+                                        mapping.alternateSelector
                                     )
                                 );
                                 break;
@@ -1116,7 +1106,8 @@ class RightCreate extends React.Component {
                                         mapping.javaVariableName,
                                         mapping.displayName,
                                         required,
-                                        value
+                                        value,
+                                        mapping.alternateSelector
                                     )
                                 );
                                 break;
@@ -1190,7 +1181,13 @@ class RightCreate extends React.Component {
                                 break;
                             case 'territoryType':
                                 renderFields.push(
-                                    renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value)
+                                    renderTerritoryField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        required,
+                                        value,
+                                        mapping.alternateSelector
+                                    )
                                 );
                                 break;
                             case 'audioLanguageType':
@@ -1268,6 +1265,7 @@ class RightCreate extends React.Component {
 
 RightCreate.propTypes = {
     selectValues: PropTypes.object,
+    availsSelectValues: PropTypes.object,
     availsMapping: PropTypes.any,
     blocking: PropTypes.bool,
     match: PropTypes.object,

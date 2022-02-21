@@ -1,2 +1,3 @@
 /webpack
 /src/pages/legacy
+**/node_modules/

@@ -323,6 +323,7 @@ const NexusPersonsList = ({
 
         const successToast = {
             summary: 'Success',
+            severity: 'success',
             // description: `Cast or Crew has been successfully ${newVal.id ? 'updated.' : 'added.'}`,
             detail: `${newVal.displayName} has been successfully ${newVal.id ? 'updated.' : 'added.'}`,
         };

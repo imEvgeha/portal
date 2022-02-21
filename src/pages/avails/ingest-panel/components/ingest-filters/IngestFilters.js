@@ -58,7 +58,7 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
         <div className="ingest-filters">
             <div className="ingest-filters__row1">
                 <div className="ingest-filters__section">
-                    Licensor
+                    <span>Licensor</span>
                     <input
                         placeholder="Enter Licensor"
                         value={filters.licensor}
@@ -104,7 +104,7 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                 {filters.ingestType?.value === Constants.ingestTypes.EMAIL.toUpperCase() && (
                     <>
                         <div className="ingest-filters__section">
-                            Email Subject
+                            <span>Email Subject</span>
                             <input
                                 placeholder="Enter subject"
                                 value={filters.emailSubject}
@@ -113,7 +113,7 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                             />
                         </div>
                         <div className="ingest-filters__section ingest-filters__section--filename">
-                            Attachment File Name
+                            <span>Attachment File Name</span>
                             <input
                                 placeholder="Enter file name"
                                 value={filters[FILE_NAME]}

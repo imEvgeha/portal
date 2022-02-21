@@ -3,6 +3,15 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const appPaths = require('./paths');
+const ESLintPlugin = require('eslint-webpack-plugin');
+
+const esLintOptions = {
+    files: ['src/**/*.jsx', 'src/**/*.js'],
+    extensions: ['js', 'jsx'],
+    exclude: ['**/node_modules/'],
+    eslintPath: require.resolve('eslint'),
+    useEslintrc: true,
+};
 
 module.exports = envKeys => ({
     entry: [appPaths.appIndexJs],
@@ -18,7 +27,7 @@ module.exports = envKeys => ({
                 test: /\.(js|jsx)$/,
                 include: appPaths.appSrc,
                 exclude: /node_modules/,
-                use: ['babel-loader', 'eslint-loader'],
+                use: ['babel-loader'],
             },
             {
                 test: /\.(gif|png|jpe?g)$/i,
@@ -44,12 +53,15 @@ module.exports = envKeys => ({
     plugins: [
         new webpack.DefinePlugin(envKeys),
         new CleanWebpackPlugin(),
-        new CopyWebpackPlugin([
-            {from: 'profile/config.json'},
-            {from: 'profile/configQA.json'},
-            {from: 'profile/availMapping.json'},
-            {from: 'profile/titleMatchingMappings.json'},
-            {from: 'profile/titleMatchingRightMappings.json'},
-        ]),
+        new ESLintPlugin(esLintOptions),
+        new CopyWebpackPlugin({
+            patterns: [
+                'profile/config.json',
+                'profile/configQA.json',
+                'profile/availMapping.json',
+                'profile/titleMatchingMappings.json',
+                'profile/titleMatchingRightMappings.json',
+            ],
+        }),
     ],
 });
