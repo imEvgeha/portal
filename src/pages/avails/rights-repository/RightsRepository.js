@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions, no-magic-numbers */
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useState, useRef, useMemo, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
@@ -17,9 +17,11 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
+import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {isEmpty, isEqual, get} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import {createGetGridResponseData} from '../../../../packages/ui/src/grid/gridSelectors';
 import {NexusGrid} from '../../../ui/elements';
 import usePrevious from '../../../util/hooks/usePrevious';
 import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridApiFix';
@@ -84,8 +86,9 @@ const RightsRepository = ({
     setIsTableDataLoading,
     username,
     onFiltersChange,
-
     fromSelectedTable,
+    getGridResponseData,
+    toggleRefreshGridData,
 }) => {
     const isMounted = useRef(true);
     const [updatedMapping, setUpdatedMapping] = useState(null);
@@ -102,10 +105,12 @@ const RightsRepository = ({
 
     const [attachment, setAttachment] = useState();
     const {search} = location;
+
     const [selectedFilter, setSelectedFilter] = useState({});
     const [planningRightsCount, setPlanningRightsCount] = useState(0);
     const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
+
     const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
 
@@ -113,11 +118,35 @@ const RightsRepository = ({
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
 
+    const [fetchedTableContent, setFetchedTableContent] = useState();
+    const {preparedParams, pageNumber, pageSize, sortParams, body} = getGridResponseData;
+    const fetchedTableRights = fetchedTableContent?.data;
+    const gotFromGridRights = getGridResponseData?.response?.data;
+
     useEffect(() => {
         return () => {
             isMounted.current = false;
         };
     }, []);
+
+    // Two effect below are used for fetching and comparing rights for for changes in background
+    useLayoutEffect(() => {
+        const timer = setInterval(() => {
+            getGridResponseData &&
+                rightsService
+                    .advancedSearchV2(preparedParams, pageNumber, pageSize, sortParams, body)
+                    .then(res => setFetchedTableContent(res));
+        }, 10000);
+
+        return () => clearInterval(timer);
+    }, [getGridResponseData, activeTab]);
+
+    useEffect(() => {
+        fetchedTableRights &&
+            gotFromGridRights &&
+            !isEqual(fetchedTableRights, gotFromGridRights) &&
+            toggleRefreshGridData(true);
+    }, [fetchedTableRights]);
 
     useEffect(() => {
         const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
@@ -624,8 +653,8 @@ const RightsRepository = ({
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader
                 gridApi={gridApi}
-                columnApi={columnApi} 
-                username={username} 
+                columnApi={columnApi}
+                username={username}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 activeTabIndex={activeTabIndex}
@@ -775,6 +804,8 @@ RightsRepository.propTypes = {
     setIsTableDataLoading: PropTypes.func,
     onFiltersChange: PropTypes.func,
     fromSelectedTable: PropTypes.object,
+    getGridResponseData: PropTypes.object,
+    toggleRefreshGridData: PropTypes.func,
 };
 
 RightsRepository.defaultProps = {
@@ -788,6 +819,9 @@ RightsRepository.defaultProps = {
     setIsTableDataLoading: () => null,
     onFiltersChange: () => null,
     fromSelectedTable: {},
+    getGridResponseData: {},
+
+    toggleRefreshGridData: () => null,
 };
 
 const mapStateToProps = () => {
@@ -797,6 +831,7 @@ const mapStateToProps = () => {
     const preplanRightsSelector = selectors.createPreplanRightsSelector();
     const rightsFilterSelector = selectors.createRightsFilterSelector();
     const fromSelectedTableSelector = selectors.createFromSelectedTableSelector();
+
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
@@ -807,6 +842,7 @@ const mapStateToProps = () => {
         rightsFilter: rightsFilterSelector(state, props),
         username: getUsername(state),
         fromSelectedTable: fromSelectedTableSelector(state, props),
+        getGridResponseData: createGetGridResponseData(state),
     });
 };
 
@@ -821,6 +857,7 @@ const mapDispatchToProps = dispatch => ({
     downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
     onFiltersChange: payload => dispatch(fetchIngests(payload)),
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
