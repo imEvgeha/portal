@@ -37,6 +37,11 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
             "tab": "Selected for Planning",
             "value": "planning",
           },
+          Object {
+            "label": "Status",
+            "tab": "Status",
+            "value": "status",
+          },
         ]
       }
       onTabChange={[Function]}

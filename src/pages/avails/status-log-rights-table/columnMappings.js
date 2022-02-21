@@ -39,9 +39,9 @@ export default [
         minWidth: 150,
     },
     {
-        colId: 'externalSystemId',
-        field: 'externalSystemId',
-        javaVariableName: 'externalSystemId',
+        colId: 'externalSystem',
+        field: 'externalSystem',
+        javaVariableName: 'externalSystem',
         headerName: 'External System',
         minWidth: 120,
     },

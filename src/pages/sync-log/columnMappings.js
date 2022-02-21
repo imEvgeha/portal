@@ -48,8 +48,8 @@ export default [
         minWidth: 150,
     },
     {
-        colId: 'publishErrors',
-        field: 'publishErrors',
+        colId: 'errors',
+        field: 'errors',
         headerName: 'Publish Errors',
         minWidth: 150,
         cellRenderer: 'publishErrors',

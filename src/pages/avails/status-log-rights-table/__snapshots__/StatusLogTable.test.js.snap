@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SyncLogTable should match snapshot 1`] = `
+exports[`StatusLogRightsTable should match snapshot 1`] = `
 <div
   className="nexus-c-sync-log-table"
 >
-  <Connect(ComposedComponent)
+  <Component
     className="nexus-c-sync-log-grid"
     columnDefs={
       Array [
@@ -14,57 +14,60 @@ exports[`SyncLogTable should match snapshot 1`] = `
             "setErrors": [Function],
           },
           "colId": "status",
-          "field": "publishErrors",
-          "headerName": "Error/Success",
-          "width": 120,
-        },
-        Object {
-          "cellRendererParams": Object {
-            "setErrors": [Function],
-          },
-          "colId": "updatedAt",
-          "dataType": "timestamp",
-          "field": "updatedAt",
-          "headerName": "UpdatedAt",
-          "javaVariableName": "updatedAt",
-          "minWidth": 150,
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "status",
+          "headerName": "Status",
+          "javaVariableName": "status",
+          "minWidth": 100,
+          "searchDataType": "string",
         },
         Object {
           "cellRenderer": "titleNameCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
-          "colId": "titleName",
-          "field": "titleName",
-          "headerName": "Title Name",
+          "colId": "rightTitle",
+          "field": "rightTitle",
+          "headerName": "Right Title",
+          "javaVariableName": "rightTitle",
           "minWidth": 150,
         },
         Object {
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
-          "colId": "coreTitleId",
-          "field": "coreTitleId",
+          "colId": "entityId",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "entityId",
+          "headerName": "Right ID",
+          "javaVariableName": "entityId",
+          "minWidth": 150,
+          "searchDataType": "string",
+        },
+        Object {
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
+          "colId": "titleId",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "titleId",
           "headerName": "Title ID",
-          "width": 150,
+          "javaVariableName": "titleId",
+          "minWidth": 150,
+          "searchDataType": "string",
         },
         Object {
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
-          "colId": "type",
-          "field": "type",
-          "headerName": "Document Type",
-          "width": 150,
-        },
-        Object {
-          "cellRendererParams": Object {
-            "setErrors": [Function],
-          },
-          "colId": "externalSystemId",
-          "field": "externalSystemId",
+          "colId": "externalSystem",
+          "field": "externalSystem",
           "headerName": "External System",
-          "width": 120,
+          "javaVariableName": "externalSystem",
+          "minWidth": 120,
         },
         Object {
           "cellRendererParams": Object {
@@ -72,97 +75,103 @@ exports[`SyncLogTable should match snapshot 1`] = `
           },
           "colId": "publishedAt",
           "dataType": "timestamp",
+          "enableSearch": true,
           "field": "publishedAt",
-          "headerName": "Published At",
+          "headerName": "Publish date",
           "javaVariableName": "publishedAt",
           "minWidth": 150,
+          "searchDataType": "regionalMidnight",
         },
         Object {
           "cellRenderer": "publishErrors",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
-          "colId": "errors",
-          "field": "errors",
-          "headerName": "Publish Errors",
+          "colId": "publishErrors",
+          "field": "publishErrors",
+          "headerName": "Errors",
+          "javaVariableName": "publishErrors",
           "minWidth": 150,
         },
       ]
     }
-    externalFilter={
-      Object {
-        "dateFrom": "",
-        "dateTo": "",
-      }
-    }
     frameworkComponents={
       Object {
         "publishErrors": [Function],
-        "status": [Function],
-        "titleNameCellRenderer": [Function],
       }
     }
+    isGridHidden={false}
     mapping={
       Array [
         Object {
           "cellRenderer": "status",
           "colId": "status",
-          "field": "publishErrors",
-          "headerName": "Error/Success",
-          "width": 120,
-        },
-        Object {
-          "colId": "updatedAt",
-          "dataType": "timestamp",
-          "field": "updatedAt",
-          "headerName": "UpdatedAt",
-          "javaVariableName": "updatedAt",
-          "minWidth": 150,
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "status",
+          "headerName": "Status",
+          "javaVariableName": "status",
+          "minWidth": 100,
+          "searchDataType": "string",
         },
         Object {
           "cellRenderer": "titleNameCellRenderer",
-          "colId": "titleName",
-          "field": "titleName",
-          "headerName": "Title Name",
+          "colId": "rightTitle",
+          "field": "rightTitle",
+          "headerName": "Right Title",
+          "javaVariableName": "rightTitle",
           "minWidth": 150,
         },
         Object {
-          "colId": "coreTitleId",
-          "field": "coreTitleId",
+          "colId": "entityId",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "entityId",
+          "headerName": "Right ID",
+          "javaVariableName": "entityId",
+          "minWidth": 150,
+          "searchDataType": "string",
+        },
+        Object {
+          "colId": "titleId",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "titleId",
           "headerName": "Title ID",
-          "width": 150,
+          "javaVariableName": "titleId",
+          "minWidth": 150,
+          "searchDataType": "string",
         },
         Object {
-          "colId": "type",
-          "field": "type",
-          "headerName": "Document Type",
-          "width": 150,
-        },
-        Object {
-          "colId": "externalSystemId",
-          "field": "externalSystemId",
+          "colId": "externalSystem",
+          "field": "externalSystem",
           "headerName": "External System",
-          "width": 120,
+          "javaVariableName": "externalSystem",
+          "minWidth": 120,
         },
         Object {
           "colId": "publishedAt",
           "dataType": "timestamp",
+          "enableSearch": true,
           "field": "publishedAt",
-          "headerName": "Published At",
+          "headerName": "Publish date",
           "javaVariableName": "publishedAt",
           "minWidth": 150,
+          "searchDataType": "regionalMidnight",
         },
         Object {
           "cellRenderer": "publishErrors",
-          "colId": "errors",
-          "field": "errors",
-          "headerName": "Publish Errors",
+          "colId": "publishErrors",
+          "field": "publishErrors",
+          "headerName": "Errors",
+          "javaVariableName": "publishErrors",
           "minWidth": 150,
         },
       ]
     }
     onGridEvent={[Function]}
     rowSelection="single"
+    suppressRowClickSelection={true}
   />
   <NexusDrawer
     direction="fromRight"

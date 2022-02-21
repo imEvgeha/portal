@@ -51,7 +51,7 @@ import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights, setPreplanRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
-import {RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB} from './constants';
+import {RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB} from './constants';
 import constants from '../constants';
 import './RightsRepository.scss';
 
@@ -741,12 +741,14 @@ const RightsRepository = ({
                 selectedGridApi={selectedGridApi}
                 setSelectedGridApi={setSelectedGridApi}
             />
-            <StatusLogRightsTable
-                setDateFrom={() => null}
-                dateFrom=""
-                dateTo=""
-                activeTab={activeTab}
-            />
+            {activeTab === STATUS_TAB && (
+                <StatusLogRightsTable
+                    setDateFrom={() => null}
+                    dateFrom=""
+                    dateTo=""
+                    activeTab={activeTab}
+                />
+            )}
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
                 <SelectedForPlanning
                     activeTab={activeTab}
