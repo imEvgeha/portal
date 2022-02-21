@@ -29,11 +29,9 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
     useEffect(() => {
         let disable = false;
         const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
-        const isItDisabledForCurrentTab = [SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
-        const isItEmptyPrePlanTab = [PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab) && prePlanRightsCount === 0;
-        const isItEmtySelectedForPlaningTab = [SELECTED_FOR_PLANNING_TAB].includes(activeTab) && planningRightsCount === 0;
+        const isItDisabledForCurrentTab = [PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
         
-        if (isItEmptyRightsTab || isItDisabledForCurrentTab || isItEmptyPrePlanTab || isItEmtySelectedForPlaningTab) {
+        if (isItEmptyRightsTab || isItDisabledForCurrentTab) {
             disable = true
         } 
         

@@ -34,6 +34,7 @@ const NexusSavedTableDropdown = ({
     tableOptions,
     lastStoredFilter,
     setBlockLastFilter,
+    isDisabled,
 }) => {
     const [selectedItem, setSelectedItem] = useState(lastStoredFilter.label ? lastStoredFilter : tableOptions[0]);
 
@@ -101,7 +102,13 @@ const NexusSavedTableDropdown = ({
     return (
         <div className="nexus-c-dop-tasks-dropdown">
             <div className="nexus-c-dop-tasks-dropdown__elements">
-                <DropdownMenu shouldFitContainer appearance="tall" trigger={selectedItem?.label} triggerType="button">
+                <DropdownMenu 
+                    shouldFitContainer
+                    appearance="tall"
+                    triggerButtonProps={{isDisabled}}
+                    trigger={selectedItem?.label}
+                    triggerType="button"
+                >
                     <DropdownItemGroup title={tableLabels?.savedViewslabel}>
                         <div className="nexus-c-dop-tasks-dropdown__textfield">
                             <FieldTextStateless
@@ -168,6 +175,7 @@ NexusSavedTableDropdown.propTypes = {
     tableOptions: PropTypes.array,
     lastStoredFilter: PropTypes.object,
     setBlockLastFilter: PropTypes.func,
+    isDisabled: PropTypes.bool,
 };
 
 NexusSavedTableDropdown.defaultProps = {
@@ -183,6 +191,7 @@ NexusSavedTableDropdown.defaultProps = {
     tableOptions: [],
     lastStoredFilter: {},
     setBlockLastFilter: () => null,
+    isDisabled: false,
 };
 
 export default NexusSavedTableDropdown;
