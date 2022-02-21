@@ -232,8 +232,8 @@ const EndpointContainer = ({endpoint}) => {
     const editRecord = val => {
         const newVal = {...selectedConfig, ...val};
         const successToast = {
-            summary: SUCCESS_ICON,
-
+            severity: 'success',
+            summary: 'Success',
             detail: `${capitalize(newVal.name)} config for ${endpoint.displayName} successfully ${
                 newVal.id ? 'updated.' : 'added.'
             }`,
