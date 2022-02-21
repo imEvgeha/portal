@@ -84,12 +84,12 @@ export function* fetchAndStoreSelectItems(payload, type) {
     // TODO - make this in background via FORK effect
     const fields = [];
     const fetchedSelectedItems = yield all(
-        mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint}) => {
+        mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint, alternateSelector}) => {
             if (!fields.includes(configEndpoint)) {
                 fields.push(configEndpoint);
                 return call(
                     fetchAvailSelectValuesRequest,
-                    profileService.getSelectValues,
+                    profileService.getSelectValues(configEndpoint, alternateSelector),
                     configEndpoint,
                     javaVariableName
                 );
