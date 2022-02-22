@@ -6,8 +6,8 @@ const getColumnsSize = state => {
 };
 
 const getSelectValues = state => {
-    const {root} = state;
-    return root && root.selectValues;
+    const {root, avails} = state;
+    return avails?.rightDetailsOptions?.selectValues || root?.selectValues || [];
 };
 
 export const createColumnsSizeSelector = () => createSelector(getColumnsSize, columnsSize => columnsSize);

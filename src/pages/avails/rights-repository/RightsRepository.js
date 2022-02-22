@@ -620,12 +620,13 @@ const RightsRepository = ({
             : selectedRights;
     };
 
+    // console.log(updatedMapping || mapping);
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader
                 gridApi={gridApi}
-                columnApi={columnApi} 
-                username={username} 
+                columnApi={columnApi}
+                username={username}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 activeTabIndex={activeTabIndex}
