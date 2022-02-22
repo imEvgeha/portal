@@ -17,21 +17,6 @@ const IconButton = ({icon, onClick, label, isDisabled}) => {
                     onClick={onClick}
                     isDisabled={isDisabled}
                     iconBefore={<Icon label={label} />}
-                    theme={(currentTheme, themeProps) => {
-                        const {buttonStyles, ...rest} = currentTheme(themeProps);
-                        return {
-                            buttonStyles: {
-                                ...buttonStyles,
-                                width: gridSize() * GRID_SIZE_MULTIPLIER,
-                                height: gridSize() * GRID_SIZE_MULTIPLIER,
-                                padding: 0,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            },
-                            ...rest,
-                        };
-                    }}
                 />
             </Tooltip>
         </div>

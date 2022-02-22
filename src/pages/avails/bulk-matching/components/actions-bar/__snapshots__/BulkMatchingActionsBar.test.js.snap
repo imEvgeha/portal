@@ -5,14 +5,14 @@ exports[`BulkMatchingActionsBar should match snapshot 1`] = `
   className="nexus-c-bulk-actions-bar"
 >
   <ButtonGroup>
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    <Button
       className="nexus-c-bulk-actions-bar__btn"
       isDisabled={false}
       onClick={[Function]}
     >
       Cancel
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    </Button>
+    <Button
       appearance="primary"
       className="nexus-c-bulk-actions-bar__btn"
       isDisabled={true}
@@ -20,8 +20,8 @@ exports[`BulkMatchingActionsBar should match snapshot 1`] = `
       onClick={[Function]}
     >
       Match
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    </Button>
+    <Button
       appearance="primary"
       className="nexus-c-bulk-actions-bar__btn"
       isDisabled={true}
@@ -29,7 +29,7 @@ exports[`BulkMatchingActionsBar should match snapshot 1`] = `
       onClick={[Function]}
     >
       Match & Create
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </Button>
   </ButtonGroup>
 </div>
 `;

@@ -22,14 +22,14 @@ exports[`BulkMatching should match snapshot 1`] = `
       appearance="info"
     >
       Select titles from the repositories that match the incoming right or declare a 
-      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      <Button
         appearance="link"
         isDisabled={false}
         onClick={[Function]}
         spacing="none"
       >
         New Title
-      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+      </Button>
     </SectionMessage>
     <TitlesSection
       closeDrawer={[Function]}

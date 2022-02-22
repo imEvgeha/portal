@@ -189,7 +189,7 @@
     memoize-one "^3.0.1"
     tslib "^1.9.3"
 
-"@atlaskit/button@^13.1.1", "@atlaskit/button@^13.3.12", "@atlaskit/button@^13.3.7", "@atlaskit/button@^13.4.0":
+"@atlaskit/button@^13.3.12", "@atlaskit/button@^13.3.7", "@atlaskit/button@^13.4.0":
   version "13.4.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-13.4.2.tgz#c0afe579465d16949432a42d8d73d8f6aa650ad0"
   integrity sha512-qLxbnnuSDr+arM8NIRva9J2H3YU6kvpWYw0lzQiW59iCQIjsRlo5EQqrGPd9l4nDL/shvdNzAuEQTVC+21t/pg==
@@ -201,7 +201,7 @@
     memoize-one "^5.1.0"
     tslib "^1.9.3"
 
-"@atlaskit/button@^16.1.0":
+"@atlaskit/button@^16.1.0", "@atlaskit/button@^16.1.6":
   version "16.1.6"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-16.1.6.tgz#cac80c08c14950c80ebbe0e9f559125baa62d51d"
   integrity sha512-RX86Uc7CEOqgWi60sRO8W64KK/4r31gFZu1JHk34z7FzVkC1caH3rE/GhBH1uYtb4VAbyJF9NHSXMZmwZaUkbw==

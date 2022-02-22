@@ -31,20 +31,20 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             className="fulfillment-order__save-buttons"
           >
             <ButtonGroup>
-              <WithAnalyticsContext(WithAnalyticsEvents(Button))
+              <Button
                 isDisabled={true}
                 onClick={[Function]}
               >
                 Cancel
-              </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-              <WithAnalyticsContext(WithAnalyticsEvents(Button))
+              </Button>
+              <Button
                 appearance="primary"
                 isDisabled={true}
                 isLoading={Object {}}
                 onClick={[Function]}
               >
                 Save
-              </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+              </Button>
             </ButtonGroup>
           </div>
         </div>
