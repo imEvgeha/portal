@@ -2,7 +2,7 @@
 
 exports[`NexusDrawer should match snapshot 1`] = `
 <Fragment>
-  <WithAnalyticsContext(WithAnalyticsEvents(Blanket))
+  <Blanket
     canClickThrough={false}
     isTinted={true}
     onBlanketClicked={[Function]}
