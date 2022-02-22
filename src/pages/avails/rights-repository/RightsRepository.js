@@ -24,6 +24,7 @@ import {NexusGrid} from '../../../ui/elements';
 import usePrevious from '../../../util/hooks/usePrevious';
 import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridApiFix';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
+import {processOptions} from '../../legacy/containers/avail/util/ProcessSelectOptions';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {
     deselectIngest,
@@ -56,7 +57,7 @@ import './RightsRepository.scss';
 
 const RightsRepositoryTable = compose(
     withSideBar(),
-    withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
+    withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2, filtersMapping: processOptions}),
     withColumnsResizing(),
     withInfiniteScrolling({fetchData: rightsService.advancedSearchV2, filtersInBody: true}),
     withSorting(constants.INITIAL_SORT)
@@ -624,8 +625,8 @@ const RightsRepository = ({
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader
                 gridApi={gridApi}
-                columnApi={columnApi} 
-                username={username} 
+                columnApi={columnApi}
+                username={username}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 activeTabIndex={activeTabIndex}

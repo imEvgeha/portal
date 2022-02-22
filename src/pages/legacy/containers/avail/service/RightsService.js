@@ -185,6 +185,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
             params[keyValue] = value;
         }
     }
+
     return params;
 };
 
