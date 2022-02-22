@@ -25,6 +25,7 @@ exports[`DopTasksView should match snapshot 1`] = `
         }
       }
       gridApi={null}
+      isDisabled={false}
       lastStoredFilter={Object {}}
       onUserDefinedViewSelected={[Function]}
       setBlockLastFilter={[Function]}

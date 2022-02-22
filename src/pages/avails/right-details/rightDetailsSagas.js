@@ -34,7 +34,7 @@ export function* getSelectValuesSaga() {
         const selectValues = formatSelectValues(options);
         yield put({
             type: actionTypes.STORE_SELECT_VALUES,
-            payload: selectValues,
+            payload: {selectValues, endpointsLoading: false},
         });
     }
 }
