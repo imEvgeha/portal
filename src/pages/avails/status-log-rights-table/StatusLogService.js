@@ -36,8 +36,8 @@ export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
     delete params.publishedAt;
 
     const qs = querystring.stringify({...queryParams, ...updatedAtParams, ...params});
-    const url = `${config.get('gateway.titlePlanning')}/publishInfo/search`;
-    const response = nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK&entityId=rght_McLk8BEXiB`);
+    const url = `${config.get('gateway.titlePlanning')}${config.get('gateway.service.titlePlanning')}/publishInfo/search`;
+    const response = nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK`);
     response.then((data) => {
         store.dispatch(saveStatusDataAction(data));
     })

@@ -8,17 +8,17 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {compose} from 'redux';
-import PublishErrors from '../../sync-log/components/PublishErrors/PublishErrors';
 import { ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE } from '../../sync-log/syncLogConstants';
 import { STATUS_TAB } from '../rights-repository/constants';
 import { getStatusLog } from './StatusLogService';
 import columnMappings from './columnMappings';
 import './StatusLogRightsTable.scss';
+import StatusLogErrors from './components/PublishErrors/StatusLogErrors';
 
 const StatusLogRightsGrid = compose(
     withSideBar(),
     withColumnsResizing(), 
-    withFilterableColumns(),
+    withFilterableColumns({frameworkComponents: { publishErrors: StatusLogErrors }}),
     withColumnsResizing(),
     withInfiniteScrolling({fetchData: getStatusLog})
 )(NexusGrid);
@@ -64,9 +64,6 @@ const StatusLogRightsTable = ({activeTab}) => {
                 rowSelection="single"
                 onGridEvent={onGridEvent}
                 isGridHidden={activeTab !== STATUS_TAB}
-                frameworkComponents={{
-                    publishErrors: PublishErrors,
-                }}
             />
 
             <NexusDrawer onClose={closeDrawer} isOpen={showDrawer} title={ERROR_TABLE_TITLE} width="wider">

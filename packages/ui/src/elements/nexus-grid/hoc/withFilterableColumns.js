@@ -38,6 +38,7 @@ const withFilterableColumns = ({
     notFilterableColumns = [],
     useDatesWithTime = false,
     prepareFilterParams = params => params,
+    frameworkComponents = {},
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const {
@@ -421,6 +422,7 @@ const withFilterableColumns = ({
                 columnDefs={filterableColumnDefs}
                 onGridEvent={onGridEvent}
                 frameworkComponents={{
+                    ...frameworkComponents,
                     customDateFloatingFilter: CustomDateFloatingFilter,
                     customDateFilter: CustomDateFilter,
                     customIconFilter: CustomIconFilter,

@@ -11,7 +11,7 @@
         "publisher": "https://vuapi.dev.vubiquity.com/vubiquity/titlespublishermovida",
         "mediaStorageUrl": "https://vuapi.dev.vubiquity.com/vubiquity/mediastorage/media-storage/v1",
         "mediaIngestUrl": "https://vuapi.dev.vubiquity.com/vubiquity/mediaingest/media-ingest/v1",
-        "titlePlanning": "https://vuapi.dev.vubiquity.com/title-planning-api/v1",
+        "titlePlanning": "https://vuapi.dev.vubiquity.com/vubiquity/title-planning",
         "service": {
             "avails": "/avails-api/v1",
             "availsParser": "/avails-parser/v1",

@@ -82,8 +82,8 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
-          "colId": "errors",
-          "field": "errors",
+          "colId": "publishErrors",
+          "field": "publishErrors",
           "headerName": "Publish Errors",
           "minWidth": 150,
         },
@@ -154,8 +154,8 @@ exports[`SyncLogTable should match snapshot 1`] = `
         },
         Object {
           "cellRenderer": "publishErrors",
-          "colId": "errors",
-          "field": "errors",
+          "colId": "publishErrors",
+          "field": "publishErrors",
           "headerName": "Publish Errors",
           "minWidth": 150,
         },

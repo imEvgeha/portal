@@ -9,7 +9,6 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
-          "cellRenderer": "status",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -23,7 +22,6 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "searchDataType": "string",
         },
         Object {
-          "cellRenderer": "titleNameCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -95,16 +93,10 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
         },
       ]
     }
-    frameworkComponents={
-      Object {
-        "publishErrors": [Function],
-      }
-    }
     isGridHidden={false}
     mapping={
       Array [
         Object {
-          "cellRenderer": "status",
           "colId": "status",
           "dataType": "string",
           "enableSearch": true,
@@ -115,7 +107,6 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "searchDataType": "string",
         },
         Object {
-          "cellRenderer": "titleNameCellRenderer",
           "colId": "rightTitle",
           "field": "rightTitle",
           "headerName": "Right Title",

@@ -29,8 +29,6 @@ const SelectedPreplanTable = ({
     selectedRights,
     username,
 }) => {
-    // eslint-disable-next-line no-console
-    console.log(selectedRights, 'selectedRights')
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
 
     const dispatch = useDispatch();

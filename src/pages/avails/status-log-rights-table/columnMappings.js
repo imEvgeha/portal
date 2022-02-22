@@ -8,7 +8,6 @@ export default [
         searchDataType: 'string',
         dataType: 'string',
         minWidth: 100,
-        cellRenderer: 'status',
     },
     {
         colId: 'rightTitle',
@@ -16,7 +15,6 @@ export default [
         headerName: 'Right Title',
         javaVariableName: 'rightTitle',
         minWidth: 150,
-        cellRenderer: 'titleNameCellRenderer',
     },
     {
         colId: 'entityId',
