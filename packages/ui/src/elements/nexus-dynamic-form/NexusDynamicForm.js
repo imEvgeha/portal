@@ -60,7 +60,7 @@ const NexusDynamicForm = ({
 
     const showValidationError = () => {
         const errorsCount = document.getElementsByClassName('nexus-c-field--error').length;
-        return errorsCount && setValidationErrorCount(errorsCount);
+        setValidationErrorCount(errorsCount);
     };
 
     const buttonsBuilder = (dirty, reset, errors) => {
