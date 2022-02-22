@@ -1,15 +1,15 @@
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import moment from 'moment';
-import config from 'react-global-configuration';
+import {getConfig} from '../../../config';
 import {store} from '../../../index';
 import {nexusFetch} from '../../../util/http-client/index';
-import {PAGE_SIZE, getInitialSearchPayload, PROJECT_ID, TABLE_FIELDS} from './constants';
+import {getInitialSearchPayload, PAGE_SIZE, PROJECT_ID, TABLE_FIELDS} from './constants';
 
 const DEFAULT_TIMEOUT = 60000;
 
 const DOPService = {
     getSecurityTicket: token => {
-        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPLoginWithKeycloak')}`;
+        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPLoginWithKeycloak')}`;
         return nexusFetch(
             url,
             {method: 'post', credentials: 'include', body: JSON.stringify(token)},
@@ -18,9 +18,7 @@ const DOPService = {
         );
     },
     getUsersProjectsList: (externalFilter, offset = 1, limit = PAGE_SIZE) => {
-        const url = `${config.get('gateway.DOPUrl')}${config.get(
-            'gateway.service.DOPProjectManagementProject'
-        )}/search`;
+        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPProjectManagementProject')}/search`;
         const payload = getInitialSearchPayload(getUsername(store.getState()), offset, limit);
         const body = prepareFilters(payload, externalFilter);
         return nexusFetch(
@@ -31,7 +29,7 @@ const DOPService = {
         );
     },
     getProjectAttributes: (projectIds = []) => {
-        const url = `${config.get('gateway.DOPUrl')}${config.get(
+        const url = `${getConfig('gateway.DOPUrl')}${getConfig(
             'gateway.service.DOPProjectManagementBase'
         )}/projectAttribute`;
         const body = {
@@ -81,7 +79,7 @@ const DOPService = {
         };
     },
     createProject: data => {
-        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagementProject')}`;
+        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPProjectManagementProject')}`;
         return nexusFetch(url, {
             method: 'POST',
             credentials: 'include',
@@ -89,14 +87,14 @@ const DOPService = {
         });
     },
     startProject: projectId => {
-        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagementProject')}`;
+        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPProjectManagementProject')}`;
         // TODO: Error handling if necessary
         return nexusFetch(`${url}/${projectId}/start`, {method: 'post', credentials: 'include'});
     },
 
     logout: () => {
         const timestamp = moment().utc().unix();
-        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPLogout')}`;
+        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPLogout')}`;
         return nexusFetch(`${url}?_=${timestamp}`, {method: 'get', credentials: 'include'});
     },
 };

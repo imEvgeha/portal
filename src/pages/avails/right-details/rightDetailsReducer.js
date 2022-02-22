@@ -3,6 +3,7 @@ import * as actionTypes from './rightDetailsActionTypes';
 
 const initialState = {
     selectValues: {},
+    endpointsLoading: true,
     areValid: true,
     isSaving: false,
 };
@@ -41,7 +42,7 @@ const rightDetailsOptionsReducer = (state = initialState, action = {}) => {
         case actionTypes.STORE_SELECT_VALUES:
             return {
                 ...state,
-                selectValues: cloneDeep(payload),
+                ...cloneDeep(payload),
             };
         default:
             return state;

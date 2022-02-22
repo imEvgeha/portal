@@ -2,8 +2,8 @@ import React, {useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import NexusDropdown, {
-    DropdownOptions,
     DropdownOption,
+    DropdownOptions,
     DropdownToggle,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';

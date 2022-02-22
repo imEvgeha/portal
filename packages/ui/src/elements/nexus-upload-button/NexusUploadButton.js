@@ -1,10 +1,18 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Button} from 'primereact/button';
-import config from 'react-global-configuration';
 import './NexusUploadButton.scss';
 
-const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon, uploadCallback, modalContext}) => {
+const NexusUploadButton = ({
+    title,
+    buttonTitle,
+    ingestData,
+    modalCallback,
+    icon,
+    uploadCallback,
+    modalContext,
+    extensionsAccepted,
+}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const contextFromModal = useContext(modalContext);
@@ -50,7 +58,7 @@ const NexusUploadButton = ({title, buttonTitle, ingestData, modalCallback, icon,
             <input
                 className="ingest-upload__input"
                 type="file"
-                accept={config.get('avails.upload.extensions')}
+                accept={extensionsAccepted}
                 ref={inputRef}
                 onInput={handleUpload}
             />
@@ -79,6 +87,7 @@ NexusUploadButton.propTypes = {
     icon: PropTypes.any.isRequired,
     uploadCallback: PropTypes.func,
     modalContext: PropTypes.any,
+    extensionsAccepted: PropTypes.string.isRequired,
 };
 
 NexusUploadButton.defaultProps = {

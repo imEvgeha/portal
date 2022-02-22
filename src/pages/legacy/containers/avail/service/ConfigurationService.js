@@ -1,10 +1,10 @@
-import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {store} from '../../../../../index';
 import {loadReports, setReportName} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
-import {resultPageUpdateColumnsOrder, resultPageSort} from '../../../stores/actions/avail/dashboard';
+import {resultPageSort, resultPageUpdateColumnsOrder} from '../../../stores/actions/avail/dashboard';
+import {getConfig} from '../../../../../config';
 
 const loadReportToStore = report => {
     store.dispatch(setReportName(report.name));
@@ -50,13 +50,13 @@ const readReportFromStore = () => {
 };
 
 const getConfiguration = () => {
-    const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/configuration';
+    const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + '/configuration';
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 
 const putConfiguration = configuration => {
     return nexusFetch(
-        config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/configuration',
+        getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + '/configuration',
         {
             method: 'put',
             body: JSON.stringify(configuration),

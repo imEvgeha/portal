@@ -1,7 +1,7 @@
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
-import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {isString} from 'lodash';
+import {getConfig} from '../../../../../config';
 
 // currently FETCH API doesn't support upload progress calculation
 // for upload progress we should switch upload to XHR (XMLHttpRequest) or
@@ -28,11 +28,11 @@ export const uploadService = {
 
         const queryParams = new URLSearchParams({...params}).toString();
         const url =
-            config.get('gateway.url') +
-            config.get('gateway.service.avails') +
+            getConfig('gateway.url') +
+            getConfig('gateway.service.avails') +
             '/avails/upload' +
             (queryParams && `?${queryParams}`);
-        const abortAfter = config.get('avails.upload.http.timeout');
+        const abortAfter = getConfig('avails.upload.http.timeout');
 
         return nexusFetch(
             url,

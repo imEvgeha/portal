@@ -12,20 +12,20 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
-import config from 'react-global-configuration';
 import {compose} from 'redux';
+import {getConfig} from '../../../../config';
 import {
+    CHANGE_PRIORITY_TITLE,
     COLUMN_MAPPINGS,
-    USER,
-    INITIAL_SEARCH_PARAMS,
     DOP_GUIDED_TASK_URL,
     DOP_PROJECT_URL,
+    INITIAL_SEARCH_PARAMS,
     PROJECT_STATUS_ENUM,
     TASK_ACTIONS_ASSIGN,
-    TASK_ACTIONS_UNASSIGN,
     TASK_ACTIONS_FORWARD,
+    TASK_ACTIONS_UNASSIGN,
     TASK_STATUS_ENUM,
-    CHANGE_PRIORITY_TITLE,
+    USER,
 } from '../../constants';
 import {fetchDopTasksData} from '../../utils';
 import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
@@ -87,7 +87,7 @@ const DopTasksTable = ({
             return {
                 ...col,
                 cellRendererParams: {
-                    link: `${config.get('DOP_base')}${DOP_GUIDED_TASK_URL}`,
+                    link: `${getConfig('DOP_base')}${DOP_GUIDED_TASK_URL}`,
                 },
             };
         }
@@ -123,7 +123,7 @@ const DopTasksTable = ({
             return {
                 ...col,
                 cellRendererParams: {
-                    link: `${config.get('DOP_base')}${DOP_PROJECT_URL}`,
+                    link: `${getConfig('DOP_base')}${DOP_PROJECT_URL}`,
                     linkId: 'projectId',
                 },
             };
