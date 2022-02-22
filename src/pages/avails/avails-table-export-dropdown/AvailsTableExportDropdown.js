@@ -56,7 +56,7 @@ const AvailsTableExportDropdown = ({
         const isItDisabledForCurrentTab = [PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
         const isItEmptySelectedRightsTab = [RIGHTS_SELECTED_TAB].includes(activeTab) && selectedRows.length === 0;
         const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
-        const isItRightsTabOverflowed = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows > MAX_ROWS;
+        const isItRightsTabOverflowed = [RIGHTS_TAB].includes(activeTab) && totalRows > MAX_ROWS;
 
         const handleDisable = () => {disable = true};
 
@@ -229,9 +229,7 @@ const AvailsTableExportDropdown = ({
         return (
             <DropdownMenu
                 className="nexus-c-button"
-                trigger={
-                    [PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download' : 'Export'
-                }
+                trigger='Export'
                 triggerType="button"
                 triggerButtonProps={{isDisabled}}
             >
