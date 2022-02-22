@@ -2,7 +2,6 @@ import {nexusFetch} from '../../../../../util/http-client';
 import {store} from '../../../../../index';
 import {loadAvailsMapping, loadSelectLists} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
-import {processOptions} from '../util/ProcessSelectOptions';
 import {getConfig} from '../../../../../config';
 import {storeConfigValues} from './endpointConfigActions';
 import {isEmpty} from 'lodash';
@@ -25,8 +24,7 @@ const getSelectValues = (field, alternateSelector, isInitAvailsMappingFlow = fal
     ) {
         return nexusFetch(url, {isWithErrorHandling: false}).then(response => {
             if (isInitAvailsMappingFlow) {
-                const options = processOptions(response.data, field);
-                store.dispatch(loadSelectLists(alternateSelector, options));
+                store.dispatch(loadSelectLists(alternateSelector, response.data));
             } else {
                 store.dispatch(storeConfigValues({[key]: response.data}));
             }

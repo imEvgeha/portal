@@ -39,6 +39,7 @@ const withFilterableColumns =
         notFilterableColumns = [],
         useDatesWithTime = false,
         prepareFilterParams = params => params,
+        filtersMapping = undefined,
     } = {}) =>
     WrappedComponent => {
         const ComposedComponent = props => {
@@ -421,8 +422,14 @@ const withFilterableColumns =
                 const alternateSelector =
                     mapping.find(m => m.javaVariableName === field && m.dataType !== 'icon')?.alternateSelector ||
                     field;
+
+                const endpoint = mapping.find(
+                    m => m.javaVariableName === field && m.dataType !== 'icon'
+                )?.configEndpoint;
                 // TODO: refresh and show values when loaded
-                const options = get(selectValues, alternateSelector, []);
+                const tmpOptions = get(selectValues, alternateSelector, []);
+                const options = !!filtersMapping && tmpOptions ? filtersMapping(tmpOptions, endpoint) : tmpOptions;
+
                 return options.map(option => {
                     if (isObject(option)) {
                         // TODO: This is just a temporary solution for territory fields
