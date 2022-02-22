@@ -620,7 +620,6 @@ const RightsRepository = ({
             : selectedRights;
     };
 
-    // console.log(updatedMapping || mapping);
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader

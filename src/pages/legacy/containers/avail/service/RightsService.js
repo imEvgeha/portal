@@ -186,7 +186,6 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
         }
     }
 
-    console.log(params);
     return params;
 };
 
