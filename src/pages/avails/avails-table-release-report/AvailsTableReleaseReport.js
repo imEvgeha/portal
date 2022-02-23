@@ -58,7 +58,6 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
                 addToast({
                     summary: ERROR_MESSAGE,
                     severity: 'error',
-                    sticky: true,
                 });
             });
     };

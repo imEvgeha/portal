@@ -167,6 +167,16 @@ $element-color-orange-80: palette(orange, 80);
         }
     }
 
+    &.p-toast-button-link {
+        width: fit-content;
+        margin-top: 8px;
+
+        .p-button-label {
+            font-size: 13px;
+            font-weight: bold;
+        }
+    }
+
     // Icons
     &.p-button-icon-only.p-button-rounded {
         height: $button-height;

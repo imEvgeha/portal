@@ -214,7 +214,6 @@ export function* handleMatchingRights({payload}) {
     const toastProps = {
         summary: isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE,
         severity: ERROR_ICON,
-        sticky: true,
         detail: message,
     };
     yield put({
@@ -236,7 +235,7 @@ export function* handleMatchingRights({payload}) {
                         {rightIDs.map(right => (
                             <Button
                                 label={right}
-                                className="p-button-link"
+                                className="p-button-link p-toast-button-link"
                                 onClick={() => window.open(RightsURL.getRightUrl(right), '_blank')}
                             />
                         ))}
@@ -261,7 +260,7 @@ export function* handleMatchingRights({payload}) {
                     >
                         <Button
                             label={RIGHT_ERROR_MSG_MERGED}
-                            className="p-button-link"
+                            className="p-button-link p-toast-button-link"
                             onClick={() => {
                                 removeToast();
                                 push(URL.keepEmbedded('/avails/right-matching'));

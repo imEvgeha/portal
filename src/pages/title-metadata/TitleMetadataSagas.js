@@ -203,7 +203,6 @@ export function* updateTitle({payload}) {
             payload: {
                 summary: ERROR_TITLE,
                 severity: ERROR_ICON,
-                sticky: true,
                 detail: UPDATE_TITLE_ERROR,
             },
         });
@@ -256,7 +255,6 @@ export function* syncTitle({payload}) {
             payload: {
                 summary: 'Title Sync',
                 severity: ERROR_ICON,
-                sticky: true,
                 detail: err.message,
             },
         });
@@ -299,7 +297,6 @@ export function* publishTitle({payload}) {
             payload: {
                 summary: 'Publish title',
                 severity: ERROR_ICON,
-                sticky: true,
                 detail: 'Unable to publish',
             },
         });
@@ -344,7 +341,6 @@ function* uploadMetadata({payload}) {
             payload: {
                 summary: METADATA_UPLOAD_ERROR_TITLE,
                 severity: ERROR_ICON,
-                sticky: true,
                 detail: `Type: ${e.type}`,
             },
         });

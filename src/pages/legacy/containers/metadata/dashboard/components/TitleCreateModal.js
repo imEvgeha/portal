@@ -156,7 +156,7 @@ class TitleCreate extends React.Component {
                                         >
                                             <PrimeReactButton
                                                 label="View Title"
-                                                className="p-button-link"
+                                                className="p-button-link p-toast-button-link"
                                                 onClick={() => onViewTitleClick(response)}
                                             />
                                         </ToastBody>
@@ -190,7 +190,7 @@ class TitleCreate extends React.Component {
                             >
                                 <PrimeReactButton
                                     label="View Title"
-                                    className="p-button-link"
+                                    className="p-button-link p-toast-button-link"
                                     onClick={() => onViewTitleClick(response)}
                                 />
                             </ToastBody>

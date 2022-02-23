@@ -49,7 +49,6 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
     const defaultErrorToast = {
         summary: ERROR_TITLE,
         severity: 'error',
-        sticky: true,
     };
 
     let toast = null;
@@ -69,7 +68,6 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
               }
             : {
                 severity: 'error',
-                sticky: true,
                 content: (
                     <ToastBody
                         summary={ERROR_MODAL.title}
@@ -77,9 +75,13 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
                         severity='error'
                     >
                         {
-                            ERROR_MODAL.codes.includes(status) ? 
-                                <Button label='Ok' className="p-button-link" onClick={() => store.dispatch(removeToast())} /> : 
-                                null
+                            ERROR_MODAL.codes.includes(status) ? (
+                                <Button
+                                    label='Ok'
+                                    className="p-button-link p-toast-button-link"
+                                    onClick={() => store.dispatch(removeToast())} 
+                                />
+                              ) : null
                         }
                     </ToastBody>
                 ),

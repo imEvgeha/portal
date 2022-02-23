@@ -127,9 +127,9 @@ const RightToMatchView = ({
                     severity='warn'
                 >
                     <div className='d-flex align-items-center'>
-                        <PrimeReactButton label='Ok' className="p-button-link" onClick={onUpdateRight} />
-                        <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} />
-                        <PrimeReactButton label='Cancel' className="p-button-link" onClick={() => removeToast()} />
+                        <PrimeReactButton label='Ok' className="p-button-link p-toast-button-link" onClick={onUpdateRight} />
+                        {/* <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} /> */}
+                        <PrimeReactButton label='Cancel' className="p-button-link p-toast-button-link" onClick={() => removeToast()} />
                     </div>
                 </ToastBody>
             ),

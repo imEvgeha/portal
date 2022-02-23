@@ -17,10 +17,10 @@ const ToastBody = ({
                 </div>
                 <div className="col-9">
                     <div className='row'>
-                        <h4>{summary}</h4>
+                        <span className="nexus-c-toast__summary-title">{summary}</span>
                     </div>
                     <div className='row'>
-                        <p>{detail}</p>
+                        <span className="nexus-c-toast__detail-title">{detail}</span>
                         {children}
                     </div>
                 </div>

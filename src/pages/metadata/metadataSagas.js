@@ -210,7 +210,7 @@ export function* reconcileTitles({payload}) {
                     >
                         <Button
                             label="View title"
-                            className="p-button-link"
+                            className="p-button-link p-toast-button-link"
                             onClick={() => window.open(`${getDomainName()}/metadata/detail/${newTitleId}`, '_blank')}
                         />
                     </ToastBody>
