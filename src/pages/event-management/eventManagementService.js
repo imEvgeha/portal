@@ -1,6 +1,6 @@
 import {get, isEmpty, isObject, merge} from 'lodash';
 import moment from 'moment';
-import config from 'react-global-configuration';
+import {getConfig} from '../../config';
 import {nexusFetch} from '../../util/http-client';
 
 const FETCH_PAGE_SIZE = 100;
@@ -76,7 +76,7 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
             }, paramString);
     }
 
-    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/search/fts`;
+    const url = `${getConfig('gateway.eventApiUrl')}${getConfig('gateway.service.eventApiV2')}/search/fts`;
 
     return nexusFetch(`${url}${paramString}`).then(response => {
         const {data = []} = response || {};
@@ -106,14 +106,14 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
 };
 
 export const replayEvent = ({docId}) => {
-    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/admin/replay/${docId}`;
+    const url = `${getConfig('gateway.eventApiUrl')}${getConfig('gateway.service.eventApiV2')}/admin/replay/${docId}`;
     return nexusFetch(url, {
         method: 'post',
     });
 };
 
 export const replicateEvent = ({docId}) => {
-    const url = `${config.get('gateway.eventApiUrl')}${config.get(
+    const url = `${getConfig('gateway.eventApiUrl')}${getConfig(
         'gateway.service.eventApiV2'
     )}/admin/replicate/${docId}`;
     return nexusFetch(url, {
@@ -126,7 +126,7 @@ export const replicateEvent = ({docId}) => {
  * @param {Event} docId
  */
 export const getEventById = docId => {
-    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/event/${docId}`;
+    const url = `${getConfig('gateway.eventApiUrl')}${getConfig('gateway.service.eventApiV2')}/event/${docId}`;
     return nexusFetch(url, {
         method: 'get',
     });

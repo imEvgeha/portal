@@ -60,6 +60,7 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
         externalFilter={Object {}}
         gridApi={Object {}}
         gridState={Object {}}
+        isDisabled={false}
         lastStoredFilter={Object {}}
         onUserDefinedViewSelected={[Function]}
         setBlockLastFilter={[Function]}

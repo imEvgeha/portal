@@ -1,13 +1,13 @@
-import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {parseAdvancedFilter} from './RightsService';
-import {prepareSortMatrixParam, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
+import {getConfig} from '../../../../../config';
 
 export const exportService = {
     exportAvails: (rightsIDs, columns) => {
-        const abortAfter = config.get('avails.export.http.timeout');
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + '/avails/export';
+        const abortAfter = getConfig('avails.export.http.timeout');
+        const url = getConfig('gateway.url') + getConfig('gateway.service.avails') + '/avails/export';
         const data = {columnNames: columns, rightIds: rightsIDs};
 
         return nexusFetch(
@@ -23,11 +23,11 @@ export const exportService = {
     bulkExportAvails: (searchCriteria, columns, sortedParams) => {
         const params = parseAdvancedFilter(searchCriteria);
         const url =
-            config.get('gateway.url') +
-            config.get('gateway.service.avails') +
+            getConfig('gateway.url') +
+            getConfig('gateway.service.avails') +
             '/avails/export/bulk' +
             prepareSortMatrixParam(sortedParams);
-        const abortAfter = config.get('avails.export.http.timeout');
+        const abortAfter = getConfig('avails.export.http.timeout');
         const data = {columnNames: columns};
 
         return nexusFetch(
@@ -42,8 +42,8 @@ export const exportService = {
     },
 
     getReleaseReport: searchCriteria => {
-        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/report-new-release`;
-        const abortAfter = config.get('avails.export.http.timeout');
+        const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights/report-new-release`;
+        const abortAfter = getConfig('avails.export.http.timeout');
         return nexusFetch(
             url,
             {
@@ -62,11 +62,11 @@ export const exportService = {
         const {locale, language, status} = params;
         const statusUrl = status !== 'openDopTasks' ? `&emetStatus=${status}` : ``;
         const url = `${
-            config.get('gateway.titleUrl') + config.get('gateway.service.title')
+            getConfig('gateway.titleUrl') + getConfig('gateway.service.title')
         }/editorialmetadata/download?locale=${locale}&language=${language}&byDopEmtTasks=${
             status === 'openDopTasks'
         }${statusUrl}`;
-        const abortAfter = config.get('avails.export.http.timeout');
+        const abortAfter = getConfig('avails.export.http.timeout');
 
         return nexusFetch(url, {
             method: 'get',

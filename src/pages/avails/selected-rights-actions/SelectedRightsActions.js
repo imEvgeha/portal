@@ -358,94 +358,90 @@ export const SelectedRightsActions = ({
     return (
         <>
             <div className="nexus-c-selected-rights-actions d-flex align-items-center" ref={node}>
-                    <Can I="read" a="DopTasks">
+                <Can I="read" a="DopTasks">
+                    <div
+                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                            'nexus-c-selected-rights-actions__menu-item--is-active': selectedRights.length,
+                        })}
+                        data-test-id="view-history"
+                        onClick={() => (selectedRights.length ? openAuditHistoryModal() : null)}
+                    >
+                        <div>{VIEW_AUDIT_HISTORY}</div>
+                    </div>
+                </Can>
+                <div
+                    className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                        'nexus-c-selected-rights-actions__menu-item--is-active': isMatchable && !statusDeleteMerged,
+                    })}
+                    data-test-id="bulk-match"
+                    onClick={() => (isMatchable ? openDrawer() : null)}
+                >
+                    <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable && !statusDeleteMerged}>
+                        <div>{BULK_MATCH}</div>
+                    </NexusTooltip>
+                </div>
+                <div
+                    className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                        'nexus-c-selected-rights-actions__menu-item--is-active': isUnmatchable && !statusDeleteMerged,
+                    })}
+                    data-test-id="bulk-unmatch"
+                    onClick={() => (isUnmatchable ? openBulkUnmatchModal() : null)}
+                >
+                    <NexusTooltip
+                        content={BULK_UNMATCH_DISABLED_TOOLTIP}
+                        isDisabled={isUnmatchable && !statusDeleteMerged}
+                    >
+                        <div>{BULK_UNMATCH}</div>
+                    </NexusTooltip>
+                </div>
+                <div
+                    className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                        'nexus-c-selected-rights-actions__menu-item--is-active':
+                            isBonusRightCreatable && !statusDeleteMerged,
+                    })}
+                    data-test-id="bonus-rights"
+                    onClick={() => (isBonusRightCreatable ? createBonusRights() : null)}
+                >
+                    <NexusTooltip
+                        content={CREATE_BONUS_RIGHT_TOOLTIP}
+                        isDisabled={isBonusRightCreatable && !statusDeleteMerged}
+                    >
+                        <div>{CREATE_BONUS_RIGHT}</div>
+                    </NexusTooltip>
+                </div>
+                {activeTab !== PRE_PLAN_TAB && (
+                    <>
                         <div
                             className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                                'nexus-c-selected-rights-actions__menu-item--is-active': selectedRights.length,
+                                'nexus-c-selected-rights-actions__menu-item--is-active':
+                                    !!selectedRights.length && !statusDeleteMerged,
                             })}
-                            data-test-id="view-history"
-                            onClick={() => (selectedRights.length ? openAuditHistoryModal() : null)}
+                            data-test-id="add-to-preplan"
+                            onClick={() => (selectedRights.length ? prepareRightsForPrePlan() : null)}
                         >
-                            <div>{VIEW_AUDIT_HISTORY}</div>
+                            <NexusTooltip
+                                content={PREPLAN_TOOLTIP}
+                                isDisabled={!!selectedRights.length && !statusDeleteMerged}
+                            >
+                                <div>{ADD_TO_PREPLAN}</div>
+                            </NexusTooltip>
                         </div>
-                    </Can>
-                    <div
-                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                            'nexus-c-selected-rights-actions__menu-item--is-active': isMatchable && !statusDeleteMerged,
-                        })}
-                        data-test-id="bulk-match"
-                        onClick={() => (isMatchable ? openDrawer() : null)}
-                    >
-                        <NexusTooltip
-                            content={BULK_MATCH_DISABLED_TOOLTIP}
-                            isDisabled={isMatchable && !statusDeleteMerged}
+                        <div
+                            className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                                'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
+                            })}
+                            data-test-id="mark-as-deleted"
+                            onClick={() => (isDeletable ? openDeleteConfirmationModal() : null)}
                         >
-                            <div>{BULK_MATCH}</div>
-                        </NexusTooltip>
-                    </div>
-                    <div
-                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                            'nexus-c-selected-rights-actions__menu-item--is-active':
-                                isUnmatchable && !statusDeleteMerged,
-                        })}
-                        data-test-id="bulk-unmatch"
-                        onClick={() => (isUnmatchable ? openBulkUnmatchModal() : null)}
-                    >
-                        <NexusTooltip
-                            content={BULK_UNMATCH_DISABLED_TOOLTIP}
-                            isDisabled={isUnmatchable && !statusDeleteMerged}
-                        >
-                            <div>{BULK_UNMATCH}</div>
-                        </NexusTooltip>
-                    </div>
-                    <div
-                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                            'nexus-c-selected-rights-actions__menu-item--is-active':
-                                isBonusRightCreatable && !statusDeleteMerged,
-                        })}
-                        data-test-id="bonus-rights"
-                        onClick={() => (isBonusRightCreatable ? createBonusRights() : null)}
-                    >
-                        <NexusTooltip
-                            content={CREATE_BONUS_RIGHT_TOOLTIP}
-                            isDisabled={isBonusRightCreatable && !statusDeleteMerged}
-                        >
-                            <div>{CREATE_BONUS_RIGHT}</div>
-                        </NexusTooltip>
-                    </div>
-                    {activeTab !== PRE_PLAN_TAB && (
-                        <>
-                            <div
-                                className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                                    'nexus-c-selected-rights-actions__menu-item--is-active':
-                                        !!selectedRights.length && !statusDeleteMerged,
-                                })}
-                                data-test-id="add-to-preplan"
-                                onClick={() => (selectedRights.length ? prepareRightsForPrePlan() : null)}
+                            <NexusTooltip
+                                content={isSelectedForPlanning ? BULK_DELETE_TOOLTIP_SFP : BULK_DELETE_TOOLTIP}
+                                isDisabled={isDeletable}
                             >
-                                <NexusTooltip
-                                    content={PREPLAN_TOOLTIP}
-                                    isDisabled={!!selectedRights.length && !statusDeleteMerged}
-                                >
-                                    <div>{ADD_TO_PREPLAN}</div>
-                                </NexusTooltip>
-                            </div>
-                            <div
-                                className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                                    'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
-                                })}
-                                data-test-id="mark-as-deleted"
-                                onClick={() => (isDeletable ? openDeleteConfirmationModal() : null)}
-                            >
-                                <NexusTooltip
-                                    content={isSelectedForPlanning ? BULK_DELETE_TOOLTIP_SFP : BULK_DELETE_TOOLTIP}
-                                    isDisabled={isDeletable}
-                                >
-                                    <div>{MARK_DELETED}</div>
-                                </NexusTooltip>
-                            </div>
-                        </>
-                    )}
+                                <div>{MARK_DELETED}</div>
+                            </NexusTooltip>
+                        </div>
+                    </>
+                )}
             </div>
             <NexusDrawer
                 onClose={closeDrawer}

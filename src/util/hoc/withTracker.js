@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import GoogleAnalytics from 'react-ga';
-import config from 'react-global-configuration';
+import {getConfig} from '../../config';
 
 export function initializeTracker() {
-    const googleAnalyticsId = config.get('googleAnalytics.propertyId');
+    const googleAnalyticsId = getConfig('googleAnalytics.propertyId');
 
     if (googleAnalyticsId) {
         GoogleAnalytics.initialize(googleAnalyticsId);

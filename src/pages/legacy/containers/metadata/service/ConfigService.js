@@ -1,20 +1,20 @@
-import config from 'react-global-configuration';
 import {store} from '../../../../../index';
 import {loadConfigData} from '../../../stores/actions/metadata';
 import {
     ACTOR,
+    ANIMATED_CHARACTER,
     CAST,
     DIRECTOR,
+    DISPLAY_ARTIST,
+    FEATURE_ARTIST,
     PRODUCER,
-    WRITER,
-    ANIMATED_CHARACTER,
     RECORDING_ARTIST,
     VOICE_TALENT,
-    FEATURE_ARTIST,
-    DISPLAY_ARTIST
+    WRITER,
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
 import {nexusFetch} from '../../../../../util/http-client';
+import {getConfig} from '../../../../../config';
 
 export const configFields = {
     LOCALE: 'countries',
@@ -46,8 +46,7 @@ export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = fal
     const sortPath = ';' + 'displayName' + '=ASC';
     let personTypePath;
     if (isMultiCastType) {
-        personTypePath = `personTypes=${
-            ACTOR.toLowerCase()},
+        personTypePath = `personTypes=${ACTOR.toLowerCase()},
             ${ANIMATED_CHARACTER.toLowerCase()},
             ${AWARD.toLowerCase()},
             ${RECORDING_ARTIST.toLowerCase()},
@@ -63,7 +62,7 @@ export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = fal
     }
     // TODO: Lazy scrolling should be implemented as a feature to make use of 'page=X' parameter, so that PORT-728 is avoided
     const path = `/persons${sortPath}${displayNamePath}${personTypePath}page=0&size=${size}`;
-    const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + path;
+    const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + path;
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 

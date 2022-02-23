@@ -1,11 +1,10 @@
 import Keycloak from 'keycloak-js';
-import config from 'react-global-configuration';
 
 // eslint-disable-next-line import/no-mutable-exports
 export let keycloak = {};
 
-export const createKeycloakInstance = () => {
-    keycloak = new Keycloak(config.get('keycloak'));
+export const createKeycloakInstance = keycloakConfig => {
+    keycloak = new Keycloak(keycloakConfig);
 };
 
 export const KEYCLOAK_INIT_OPTIONS = {

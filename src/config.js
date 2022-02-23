@@ -1,5 +1,5 @@
 import {isObject, mergeDeep} from '@vubiquity-nexus/portal-utils/lib/Common';
-import config from 'react-global-configuration';
+import {get} from 'lodash';
 import {nexusFetch} from './util/http-client';
 
 export const defaultConfiguration = {
@@ -60,6 +60,8 @@ export const defaultConfiguration = {
     },
 };
 
+let configuration = {};
+
 // temporary solution - replace it with env variables
 export async function setEnvConfiguration(env) {
     const getConfigFile = env => {
@@ -73,13 +75,13 @@ export async function setEnvConfiguration(env) {
         }
     };
     try {
-        config.set(defaultConfiguration, {freeze: false});
+        configuration = mergeDeep(configuration, defaultConfiguration);
 
         const configFile = getConfigFile(env);
         const data = await nexusFetch(configFile);
 
         if (isObject(data)) {
-            config.set(mergeDeep(JSON.parse(config.serialize()), data), {freeze: false});
+            configuration = mergeDeep(configuration, data);
             return true;
         }
         return JSON.parse(data);
@@ -87,6 +89,8 @@ export async function setEnvConfiguration(env) {
         throw error;
     }
 }
+
+export const getConfig = key => get(configuration, key);
 
 // App config
 export const appConfig = {

@@ -5,7 +5,7 @@ import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/
 import {normalizeDataForStore, URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {get} from 'lodash';
-import { Button } from 'primereact/button';
+import {Button} from 'primereact/button';
 import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
 import {titleService} from '../legacy/containers/metadata/service/TitleService';
 import * as actionTypes from './metadataActionTypes';
@@ -199,18 +199,22 @@ export function* reconcileTitles({payload}) {
             type: ADD_TOAST,
             payload: {
                 severity: SUCCESS_ICON,
-                content: (<ToastBody
-                    summary={SUCCESS_TITLE}
-                    detail={`You have successfully ${mLength ? 'created a new Nexus title' : ''}
-                    ${(mLength && dLength && ' and ') || ''}${dLength ? `marked ${dLength} titles as duplicates.` : ''}`}
-                    severity='success'
-                >
-                    <Button
-                        label='View title'
-                        className="p-button-link" 
-                        onClick={() => window.open(`${getDomainName()}/metadata/detail/${newTitleId}`, '_blank')}
-                    />
-                </ToastBody>)
+                content: (
+                    <ToastBody
+                        summary={SUCCESS_TITLE}
+                        detail={`You have successfully ${mLength ? 'created a new Nexus title' : ''}
+                    ${(mLength && dLength && ' and ') || ''}${
+                            dLength ? `marked ${dLength} titles as duplicates.` : ''
+                        }`}
+                        severity="success"
+                    >
+                        <Button
+                            label="View title"
+                            className="p-button-link"
+                            onClick={() => window.open(`${getDomainName()}/metadata/detail/${newTitleId}`, '_blank')}
+                        />
+                    </ToastBody>
+                ),
             },
         });
         query = `duplicateIds=${duplicateIds.join(',')}&masterIds=${masterIds.join(',')}&mergedId=${newTitleId}`;
