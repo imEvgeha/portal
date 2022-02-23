@@ -12,6 +12,7 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
       columnApi={null}
       externalFilter={Object {}}
       gridApi={null}
+      isDisabled={false}
       isTitleMetadata={true}
       lastStoredFilter={Object {}}
       onUserDefinedViewSelected={[Function]}
