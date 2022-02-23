@@ -17,6 +17,18 @@ const WordsCellRenderer = params => {
 
         const msg = [];
         let severityType = '';
+
+        const columnDefinitionSeverity = (backgroundColor, children) => {
+            return (
+                <div style={{background: backgroundColor}}>
+                    {value.map(item => item).join(', ')}
+                    <span style={{float: 'right'}} title={msg.join(', ')}>
+                        {children}
+                    </span>
+                </div>
+            );
+        };
+
         params.data.validationErrors.forEach(function (validation) {
             const fieldName = validation.fieldName.includes('[')
                 ? validation.fieldName.split('[')[0]
@@ -32,23 +44,9 @@ const WordsCellRenderer = params => {
         });
 
         if (severityType === 'Error') {
-            return (
-                <div style={{background: '#FF8F73'}}>
-                    {value.map(item => item).join(', ')}
-                    <span style={{float: 'right'}} title={msg.join(', ')}>
-                        <Error />
-                    </span>
-                </div>
-            );
+            return columnDefinitionSeverity('#FF8F73', <Error />);
         } else if (severityType === 'Warning') {
-            return (
-                <div style={{background: '#FFE380'}}>
-                    {value.map(item => item).join(', ')}
-                    <span style={{float: 'right'}} title={msg.join(', ')}>
-                        <Warning />
-                    </span>
-                </div>
-            );
+            return columnDefinitionSeverity('#FFE380', <Warning />);
         } else if ((severityType === '' && !valueToDisplay && value) || (valueToDisplay && value === valueToDisplay)) {
             return (
                 <NexusTooltip content={tooltip}>
