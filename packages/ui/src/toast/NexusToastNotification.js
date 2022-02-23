@@ -21,8 +21,6 @@ const NexusToastNotification = ({toast}) => {
 
         return toast;
     }
-    // eslint-disable-next-line no-console
-    console.log(getUpdatedToast(), 'getUpdatedToast()')
 
     useEffect(() => {
         if(toastRef.current && toast) {
