@@ -14,11 +14,8 @@ const NexusToastNotification = ({toast}) => {
             }
         } else if (toast && toast.severity === 'success') {
             return {
-                // ...toast,
-                // life: 3000
-                content: toast.content,
-                severity: toast.severity,
-                sticky: true,
+                ...toast,
+                life: 3000
             }
         }
 
