@@ -30,7 +30,7 @@ import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {PLATFORM_INFORM_MSG} from './RightConstants';
 import {handleMatchingRightsAction} from '../availActions';
-import {createAliasValue} from '../util/ProcessSelectOptions';
+import {createAliasValue, processOptions} from '../util/ProcessSelectOptions';
 
 const mapStateToProps = state => {
     return {
@@ -100,7 +100,7 @@ class RightCreate extends React.Component {
         this.setState({});
     }
 
-    getConfigValues = (field, key) => {
+    getConfigValues = (field, key, endpoint) => {
         const {selectValues, availsSelectValues, availsMapping} = this.props;
 
         const defaultOptions = availsMapping?.mappings?.find(
@@ -110,7 +110,8 @@ class RightCreate extends React.Component {
             return defaultOptions.map(opt => ({id: opt, type: field, value: opt}));
         }
 
-        return selectValues?.[key] || availsSelectValues?.[key];
+        const tmpOptions = selectValues?.[key] || availsSelectValues?.[key];
+        return !!endpoint && !!tmpOptions ? processOptions(tmpOptions, endpoint) : tmpOptions;
     };
 
     handleChange({target}, val) {
@@ -681,8 +682,8 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderMultiSelectField = (name, displayName, required, value, alternateSelector) => {
-            let options = this.getConfigValues(name, alternateSelector) || [];
+        const renderMultiSelectField = (name, displayName, required, value, alternateSelector, endpoint) => {
+            let options = this.getConfigValues(name, alternateSelector, endpoint) || [];
 
             //fields with endpoints (these have ids)
             const filterKeys = Object.keys(this.right).filter(key => {
@@ -763,8 +764,8 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderSelectField = (name, displayName, required, value, filterBy, alternateSelector) => {
-            let options = this.getConfigValues(name, alternateSelector) || [];
+        const renderSelectField = (name, displayName, required, value, filterBy, alternateSelector, endpoint) => {
+            let options = this.getConfigValues(name, alternateSelector, endpoint) || [];
             let val;
 
             if (filterBy) {
@@ -832,8 +833,8 @@ class RightCreate extends React.Component {
         };
 
         const renderPriceField = (name, displayName, required, value) => {
-            let priceTypeOptions = this.getConfigValues(name, 'priceType') || [];
-            let priceCurrencyOptions = this.getConfigValues(name, 'currencies') || [];
+            let priceTypeOptions = this.getConfigValues(name, 'priceType', '/price-types') || [];
+            let priceCurrencyOptions = this.getConfigValues(name, 'currencies', '/currencies') || [];
             let val;
 
             priceTypeOptions = createAliasValue(priceTypeOptions);
@@ -874,8 +875,8 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderTerritoryField = (name, displayName, required, value, alternateSelector) => {
-            let options = this.getConfigValues(name, alternateSelector) || [];
+        const renderTerritoryField = (name, displayName, required, value, alternateSelector, endpoint) => {
+            let options = this.getConfigValues(name, alternateSelector, endpoint) || [];
             let val;
 
             options = createAliasValue(options);
@@ -917,8 +918,8 @@ class RightCreate extends React.Component {
         };
 
         const renderAudioLanguageField = (name, displayName, required, value) => {
-            let options = this.getConfigValues(name, 'language') || [];
-            let audioTypeOptions = this.getConfigValues(name, 'audioType') || [];
+            let options = this.getConfigValues(name, 'language', '/languages') || [];
+            let audioTypeOptions = this.getConfigValues(name, 'audioType', '/audio-types') || [];
             let val;
 
             options = createAliasValue(options);
@@ -1096,7 +1097,8 @@ class RightCreate extends React.Component {
                                         required,
                                         value,
                                         mapping.filterBy,
-                                        mapping.alternateSelector
+                                        mapping.alternateSelector,
+                                        mapping.configEndpoint
                                     )
                                 );
                                 break;
@@ -1107,7 +1109,8 @@ class RightCreate extends React.Component {
                                         mapping.displayName,
                                         required,
                                         value,
-                                        mapping.alternateSelector
+                                        mapping.alternateSelector,
+                                        mapping.configEndpoint
                                     )
                                 );
                                 break;
@@ -1186,7 +1189,8 @@ class RightCreate extends React.Component {
                                         mapping.displayName,
                                         required,
                                         value,
-                                        mapping.alternateSelector
+                                        mapping.alternateSelector,
+                                        mapping.configEndpoint
                                     )
                                 );
                                 break;

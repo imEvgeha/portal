@@ -16,7 +16,7 @@ export const getIngestById = createSelector(
     (ingests, id) => ingests.find(ingest => ingest.id === id)
 );
 
-const getRoot = state => state.root;
+const getRoot = state => state.avails?.rightDetailsOptions || state.root;
 
 export const getSelectValues = createSelector(getRoot, root => root.selectValues);
 
@@ -26,6 +26,9 @@ export const getLicensees = createSelector(getSelectValues, selectValues => sele
 
 export const getLicenseTypes = createSelector(getSelectValues, selectValues => selectValues.licenseType || []);
 
-export const getTerritories = createSelector(getSelectValues, selectValues => selectValues.territory || []);
+export const getTerritories = createSelector(
+    getSelectValues,
+    selectValues => selectValues.country || selectValues.territory || []
+);
 
 export const getFilterLoadingState = createSelector(getIngestReducer, ingest => ingest.isFilterLoading);

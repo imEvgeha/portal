@@ -15,7 +15,16 @@ import {
     MY_PREDEFINED_VIEWS_LABEL,
     SAVED_TABLE_SELECT_OPTIONS,
 } from '../../../saved-table-dropdown/constants';
-import {CREATE_NEW_RIGHT, RIGHTS_REPOSITORY_TABS, RIGHTS_SELECTED_TAB, RIGHTS_TAB, PRE_PLAN_TAB} from '../../constants';
+import {
+    CREATE_NEW_RIGHT,
+    RIGHTS_REPOSITORY_TABS,
+    RIGHTS_SELECTED_TAB,
+    RIGHTS_TAB,
+    PRE_PLAN_TAB,
+    PRE_PLAN_SELECTED_TAB,
+    SELECTED_FOR_PLANNING_TAB,
+    STATUS_TAB
+} from '../../constants';
 import './RightsRepositoryHeader.scss';
 import {storeAvailsUserDefinedGrid} from '../../rightsActions';
 import {createUserGridSelector} from '../../rightsSelectors';
@@ -55,6 +64,7 @@ export const RightsRepositoryHeader = ({
         predifinedViewsLabel: MY_PREDEFINED_VIEWS_LABEL,
     };
     const tableOptions = SAVED_TABLE_SELECT_OPTIONS;
+    const isItDisabledForCurrentTab = [PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
 
     return (
         <div className="nexus-c-rights-repository-header row d-flex align-items-center">
@@ -85,6 +95,7 @@ export const RightsRepositoryHeader = ({
                             applyPredefinedTableView={applyPredefinedTableView}
                             tableLabels={tableLabels}
                             tableOptions={tableOptions}
+                            isDisabled={isItDisabledForCurrentTab}
                         />
                     ) : activeTab === RIGHTS_TAB || activeTab === PRE_PLAN_TAB? (
                         <Loading />

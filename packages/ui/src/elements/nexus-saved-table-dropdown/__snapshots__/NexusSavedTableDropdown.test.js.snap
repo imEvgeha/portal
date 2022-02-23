@@ -22,6 +22,11 @@ exports[`NexusSavedTableDropdown should match snapshot 1`] = `
       shouldAllowMultilineItems={false}
       shouldFitContainer={true}
       shouldFlip={true}
+      triggerButtonProps={
+        Object {
+          "isDisabled": false,
+        }
+      }
       triggerType="button"
     >
       <DropdownItemGroup>
