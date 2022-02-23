@@ -26,7 +26,6 @@ const WordsCellRenderer = params => {
                 msg.push(validation.message);
 
                 if (severityType === '' || (validation.severityType === 'Error' && severityType === 'Warning')) {
-                    // eslint-disable-next-line prefer-destructuring
                     severityType = validation.severityType;
                 }
             }
