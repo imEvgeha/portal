@@ -31,68 +31,27 @@ import {
 } from '../constants';
 import './hoc.scss';
 
-const withFilterableColumns = ({
-    hocProps = [],
-    filterableColumns = null,
-    initialFilter = null,
-    notFilterableColumns = [],
-    useDatesWithTime = false,
-    prepareFilterParams = params => params,
-    frameworkComponents = {},
-    filtersMapping = undefined,
-} = {}) => WrappedComponent => {
-    const ComposedComponent = props => {
-        const {
-            columnDefs,
-            mapping,
-            selectValues,
-            fetchAvailMapping,
-            fixedFilter,
-            customDateFilterParamSuffixes = [],
-        } = props;
-
-        const isMounted = useRef(true);
-        const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
-        const [gridApi, setGridApi] = useState();
-        const columns = props.filterableColumns || filterableColumns;
-        const filters = pickBy(
-            props.initialFilter || initialFilter || {},
-            val => !EXCLUDED_INITIAL_FILTER_VALUES.includes(val)
-        );
-        // eslint-disable-next-line react/destructuring-assignment
-        const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
-        const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
-
-        useEffect(() => {
-            return () => {
-                isMounted.current = false;
-            };
-        }, []);
-
-        useEffect(() => {
-            if (
-                isMounted.current &&
-                isObject(selectValues) &&
-                !!Object.keys(selectValues).length &&
-                !!columnDefs.length
-            ) {
-                setFilterableColumnDefs(updateColumnDefs(columnDefs));
-            }
-        }, [columnDefs, selectValues]);
-
-        useEffect(() => {
-            if (
-                isMounted.current &&
-                !!columnDefs.length &&
-                isObject(selectValues) &&
-                !!Object.keys(selectValues).length
-            ) {
-                setFilterableColumnDefs(updateColumnDefs(columnDefs));
-                setTimeout(() => {
-                    initializeValues();
-                }, 0);
-            }
-        }, [fixedFilter]);
+const withFilterableColumns =
+    ({
+        hocProps = [],
+        filterableColumns = null,
+        initialFilter = null,
+        notFilterableColumns = [],
+        useDatesWithTime = false,
+        prepareFilterParams = params => params,
+        filtersMapping = undefined,
+        frameworkComponents = {},
+    } = {}) =>
+    WrappedComponent => {
+        const ComposedComponent = props => {
+            const {
+                columnDefs,
+                mapping,
+                selectValues,
+                fetchAvailMapping,
+                fixedFilter,
+                customDateFilterParamSuffixes = [],
+            } = props;
 
             const isMounted = useRef(true);
             const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
