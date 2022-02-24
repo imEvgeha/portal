@@ -93,7 +93,7 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
                         >
                             <PrimeReactButton
                                 label="View Title"
-                                className="p-button-link"
+                                className="p-button-link p-toast-button-link"
                                 onClick={() => onViewTitleClick(titleId)}
                             />
                         </ToastBody>
