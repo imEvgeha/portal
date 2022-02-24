@@ -7,6 +7,7 @@ import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
+import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
@@ -183,6 +184,10 @@ const TitleDetails = ({
     const movidaPublishedAt = getPublishedAt('movida');
     const movidaUkPublishedAt = getPublishedAt('movida-uk');
 
+    const getDateTime = dateTime => {
+        return dateTime ? `Updated At: ${moment(dateTime[0]?.publishedAt).utc().format('YYYY/MM/DD, h:mm:ss a')}` : '';
+    };
+
     const extendTitleWithExternalIds = () => {
         const [vzExternalIds] = getExternaIds('vz');
         const [movidaExternalIds] = getExternaIds('movida');
@@ -254,7 +259,7 @@ const TitleDetails = ({
                     />
                     <NexusStickyFooter>
                         <NexusStickyFooter.LeftActions>
-                            <NexusTooltip content={vzPublishedAt ? vzPublishedAt[0]?.publishedAt : ''}>
+                            <NexusTooltip content={getDateTime(vzPublishedAt)}>
                                 <SyncPublish
                                     externalSystem={VZ}
                                     externalIds={externalIds}
@@ -267,7 +272,7 @@ const TitleDetails = ({
                                 />
                             </NexusTooltip>
 
-                            <NexusTooltip content={movidaUkPublishedAt ? movidaUkPublishedAt[0]?.publishedAt : ''}>
+                            <NexusTooltip content={getDateTime(movidaUkPublishedAt)}>
                                 <SyncPublish
                                     externalSystem={MOVIDA_INTL}
                                     externalIds={externalIds}
@@ -280,7 +285,7 @@ const TitleDetails = ({
                                 />
                             </NexusTooltip>
                             <div className="nexus-c-line" />
-                            <NexusTooltip content={movidaPublishedAt ? movidaPublishedAt[0]?.publishedAt : ''}>
+                            <NexusTooltip content={getDateTime(movidaPublishedAt)}>
                                 <SyncPublish
                                     externalSystem={MOVIDA}
                                     externalIds={externalIds}
