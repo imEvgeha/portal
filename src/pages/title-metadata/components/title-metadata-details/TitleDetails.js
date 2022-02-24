@@ -176,7 +176,7 @@ const TitleDetails = ({
 
     const getPublishedAt = repo => {
         if (isNexusTitle(title.id)) {
-            return externalIds.filter(ids => ids.externalSystem === repo);
+            return externalIds.find(ids => ids.externalSystem === repo);
         }
     };
 
@@ -185,7 +185,7 @@ const TitleDetails = ({
     const movidaUkPublishedAt = getPublishedAt('movida-uk');
 
     const getDateTime = dateTime => {
-        return dateTime ? `Updated At: ${moment(dateTime[0]?.publishedAt).utc().format('YYYY/MM/DD, h:mm:ss a')}` : '';
+        return dateTime ? `Updated At: ${moment(dateTime?.publishedAt).utc().format('YYYY/MM/DD, h:mm:ss a')}` : '';
     };
 
     const extendTitleWithExternalIds = () => {
