@@ -5,6 +5,6 @@ exports[`StatusLogErrors should match snapshot 1`] = `
   className="nexus-c-status-log-table__error-cell"
   onClick={[Function]}
 >
-  Show Errors
+  ...
 </div>
 `;
