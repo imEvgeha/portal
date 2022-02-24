@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {gridSize} from '@atlaskit/theme';
 import Tooltip from '@atlaskit/tooltip';
-
-const GRID_SIZE_MULTIPLIER = 4;
 
 const IconButton = ({icon, onClick, label, isDisabled}) => {
     const Icon = icon;
