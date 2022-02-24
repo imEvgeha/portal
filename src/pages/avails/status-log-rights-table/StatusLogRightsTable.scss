@@ -43,8 +43,6 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
         }
     }
     &__error-cell {
-        text-decoration: underline;
-        color: map-get($colors, nexus-link);
         cursor: pointer;
     }
 
