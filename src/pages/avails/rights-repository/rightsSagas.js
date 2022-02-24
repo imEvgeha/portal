@@ -199,7 +199,6 @@ export function* updateRight({payload}) {
             payload: {
                 summary: UPDATE_RIGHT_FAILED,
                 severity: ERROR_ICON,
-                sticky: true,
                 detail: `${error.message.message.slice(0, MAX_CHARS)}...`,
             },
         });

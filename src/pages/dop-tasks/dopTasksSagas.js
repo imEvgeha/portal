@@ -82,7 +82,6 @@ function* assignTasks({payload}) {
                 toastParams = {
                     summary: ERROR_TITLE,
                     severity: ERROR_ICON,
-                    sticky: true,
                     detail: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
                 };
                 break;
@@ -108,7 +107,6 @@ function* assignTasks({payload}) {
                 toastParams = {
                     summary: ERROR_TITLE,
                     severity: ERROR_ICON,
-                    sticky: true,
                     detail: `Status: ${statusResponse.status}`,
                 };
         }
@@ -124,7 +122,6 @@ function* assignTasks({payload}) {
             payload: {
                 summary: ERROR_TITLE,
                 severity: ERROR_ICON,
-                sticky: true,
                 detail: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
             },
         });
@@ -152,7 +149,6 @@ function* unAssignTasks({payload}) {
             payload: {
                 summary: ERROR_TITLE,
                 severity: ERROR_ICON,
-                sticky: true,
                 detail: `Error in un-assigning ${taskIds.length} tasks.`,
             },
         });
@@ -182,7 +178,6 @@ function* changeDOPPriority({payload}) {
             payload: {
                 summary: ERROR_TITLE,
                 severity: ERROR_ICON,
-                sticky: true,
                 detail: `Error in changing priority of ${taskIds.length} tasks.`,
             },
         });

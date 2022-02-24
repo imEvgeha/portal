@@ -8,24 +8,28 @@ exports[`WarningToastWithConfirmation should match snapshot 1`] = `
     className="row type-success"
   >
     <div
-      className="text-center col-3 nexus-c-toast__icon-container"
+      className="text-center col-2 nexus-c-toast__icon-container"
     >
       <i
         className="pi pi-check pi-fluid nexus-c-toast__icon"
       />
     </div>
     <div
-      className="col-9"
+      className="col-10"
     >
       <div
         className="row"
       >
-        <h4 />
+        <span
+          className="nexus-c-toast__summary-title"
+        />
       </div>
       <div
         className="row"
       >
-        <p />
+        <span
+          className="nexus-c-toast__detail-title"
+        />
       </div>
     </div>
   </div>

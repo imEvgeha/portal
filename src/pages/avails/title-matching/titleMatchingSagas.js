@@ -118,7 +118,7 @@ function* mergeAndStoreTitles({payload}) {
                     >
                         <Button
                             label="View Title"
-                            className="p-button-link"
+                            className="p-button-link p-toast-button-link"
                             onClick={() => window.open(url, '_blank')}
                         />
                     </ToastBody>
@@ -141,7 +141,6 @@ function* mergeAndStoreTitles({payload}) {
             payload: {
                 summary: ERROR_TITLE,
                 severity: ERROR_ICON,
-                sticky: true,
                 detail: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
             },
         });
