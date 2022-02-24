@@ -5,7 +5,7 @@ import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {store} from '../../../../../../../../../src';
-import { ERROR_TITLE, LICENSOR_ERROR } from '../../../../../../toast/constants';
+import {ERROR_TITLE, LICENSOR_ERROR} from '../../../../../../toast/constants';
 import {sortOptions} from '../../../../utils';
 import './Licensors.scss';
 import AddLicensorModal from './AddLincensorModal';

@@ -14,12 +14,19 @@ import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
     SELECTED_FOR_PLANNING_TAB,
-    STATUS_TAB
+    STATUS_TAB,
 } from '../rights-repository/constants';
 import {CREATE_REPORT, ERROR_MESSAGE, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
 import './AvailsTableReleaseReport.scss';
 
-const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows, prePlanRightsCount, planningRightsCount}) => {
+const AvailsTableReleaseReport = ({
+    addToast,
+    activeTab,
+    selectedRows,
+    totalRows,
+    prePlanRightsCount,
+    planningRightsCount,
+}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
@@ -29,12 +36,17 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
     useEffect(() => {
         let disable = false;
         const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
-        const isItDisabledForCurrentTab = [PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
-        
+        const isItDisabledForCurrentTab = [
+            PRE_PLAN_TAB,
+            PRE_PLAN_SELECTED_TAB,
+            SELECTED_FOR_PLANNING_TAB,
+            STATUS_TAB,
+        ].includes(activeTab);
+
         if (isItEmptyRightsTab || isItDisabledForCurrentTab) {
-            disable = true
-        } 
-        
+            disable = true;
+        }
+
         setIsDisabled(disable);
     }, [activeTab, selectedRows, totalRows, prePlanRightsCount]);
 
@@ -112,8 +124,16 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
                 onClose={() => setIsOpen(false)}
                 content={() => getContent()}
                 trigger={triggerProps => (
-                    <Button {...triggerProps} isSelected={isOpen} onClick={() => setIsOpen(!isOpen)} isDisabled={isDisabled} shouldFitContainer>
-                        <span className="nexus-c-right-repository-release-report-button__title">{NEW_RELEASE_REPORT}</span>
+                    <Button
+                        {...triggerProps}
+                        isSelected={isOpen}
+                        onClick={() => setIsOpen(!isOpen)}
+                        isDisabled={isDisabled}
+                        shouldFitContainer
+                    >
+                        <span className="nexus-c-right-repository-release-report-button__title">
+                            {NEW_RELEASE_REPORT}
+                        </span>
                         <AtlaskitMoreIcon />
                     </Button>
                 )}

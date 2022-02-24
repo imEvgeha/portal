@@ -48,12 +48,13 @@ import DOPService from '../selected-for-planning/DOP-services';
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import SelectedPreplanTable from '../selected-preplan-table/SelectedPreplanTable';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
+import {StatusLogRightsTable} from '../status-log-rights-table/StatusLogRightsTable';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights, setPreplanRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
-import {RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB} from './constants';
+import {RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB} from './constants';
 import constants from '../constants';
 import './RightsRepository.scss';
 
@@ -87,6 +88,7 @@ const RightsRepository = ({
     setIsTableDataLoading,
     username,
     onFiltersChange,
+    statusLogCount,
     fromSelectedTable,
     getGridResponseData,
     toggleRefreshGridData,
@@ -692,6 +694,7 @@ const RightsRepository = ({
                 prePlanGridApi={prePlanGridApi}
                 selectedForPlanningColumnApi={selectedForPlanningColumnApi}
                 selectedForPlanningGridApi={selectedForPlanningGridApi}
+                statusRightsCount={statusLogCount}
             />
             {!isEmpty(selectedIngest) && attachment && (
                 <Ingest
@@ -770,6 +773,7 @@ const RightsRepository = ({
                 selectedGridApi={selectedGridApi}
                 setSelectedGridApi={setSelectedGridApi}
             />
+            {activeTab === STATUS_TAB && <StatusLogRightsTable activeTab={activeTab} />}
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
                 <SelectedForPlanning
                     activeTab={activeTab}
@@ -805,6 +809,7 @@ RightsRepository.propTypes = {
     setIsTableDataLoading: PropTypes.func,
     onFiltersChange: PropTypes.func,
     fromSelectedTable: PropTypes.object,
+    statusLogCount: PropTypes.number,
     getGridResponseData: PropTypes.object,
     toggleRefreshGridData: PropTypes.func,
 };
@@ -820,8 +825,8 @@ RightsRepository.defaultProps = {
     setIsTableDataLoading: () => null,
     onFiltersChange: () => null,
     fromSelectedTable: {},
+    statusLogCount: 0,
     getGridResponseData: {},
-
     toggleRefreshGridData: () => null,
 };
 
@@ -832,7 +837,7 @@ const mapStateToProps = () => {
     const preplanRightsSelector = selectors.createPreplanRightsSelector();
     const rightsFilterSelector = selectors.createRightsFilterSelector();
     const fromSelectedTableSelector = selectors.createFromSelectedTableSelector();
-
+    const statusLogCountSelector = selectors.createStatusLogCountSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
@@ -844,6 +849,7 @@ const mapStateToProps = () => {
         username: getUsername(state),
         fromSelectedTable: fromSelectedTableSelector(state, props),
         getGridResponseData: createGetGridResponseData(state),
+        statusLogCount: statusLogCountSelector(state, props),
     });
 };
 

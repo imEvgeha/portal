@@ -1,10 +1,5 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
-import {
-    SUCCESS_ICON,
-    SUCCESS_TITLE,
-    ERROR_TITLE,
-    ERROR_ICON,
-} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {SUCCESS_ICON, SUCCESS_TITLE, ERROR_TITLE, ERROR_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {history} from '../../index';
 import {showToastForErrors} from '../../util/http-client/handleError';
@@ -21,7 +16,12 @@ import {
     registerTitle,
 } from './titleMetadataServices';
 import {isMgmTitle} from './utils';
-import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR, UPLOAD_SUCCESS_MESSAGE, METADATA_UPLOAD_ERROR_TITLE} from './constants';
+import {
+    UPDATE_TITLE_SUCCESS,
+    UPDATE_TITLE_ERROR,
+    UPLOAD_SUCCESS_MESSAGE,
+    METADATA_UPLOAD_ERROR_TITLE,
+} from './constants';
 
 export function* loadParentTitle(title) {
     const {parentIds} = title;
