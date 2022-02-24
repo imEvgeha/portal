@@ -825,7 +825,7 @@ RightsRepository.defaultProps = {
     onFiltersChange: () => null,
     fromSelectedTable: {},
     statusLogCount: 0,
-    getGridResponseData: [],
+    getGridResponseData: {},
     toggleRefreshGridData: () => null,
 };
 
