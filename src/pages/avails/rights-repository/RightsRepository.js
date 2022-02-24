@@ -21,6 +21,7 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import {isEmpty, isEqual, get} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import {createGetGridResponseData} from '../../../../packages/ui/src/grid/gridSelectors';
 import {NexusGrid} from '../../../ui/elements';
 import usePrevious from '../../../util/hooks/usePrevious';
 import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridApiFix';
@@ -836,6 +837,7 @@ const mapStateToProps = () => {
     const preplanRightsSelector = selectors.createPreplanRightsSelector();
     const rightsFilterSelector = selectors.createRightsFilterSelector();
     const fromSelectedTableSelector = selectors.createFromSelectedTableSelector();
+    const statusLogCountSelector = selectors.createStatusLogCountSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
@@ -846,6 +848,8 @@ const mapStateToProps = () => {
         rightsFilter: rightsFilterSelector(state, props),
         username: getUsername(state),
         fromSelectedTable: fromSelectedTableSelector(state, props),
+        getGridResponseData: createGetGridResponseData(state),
+        statusLogCount: statusLogCountSelector(state, props),
     });
 };
 
