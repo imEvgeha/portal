@@ -21,6 +21,7 @@ const NexusGrid = ({
     dragStopped,
     onGridReady,
     link,
+    id,
     ...restProps
 }) => {
     const isMounted = useRef(true);
@@ -46,6 +47,7 @@ const NexusGrid = ({
 
     return (
         <div
+            id={id}
             className={`
             ag-theme-balham ${isGridHidden ? 'd-none' : ''}
             nexus-c-nexus-grid
@@ -94,6 +96,7 @@ NexusGrid.propTypes = {
     dragStopped: PropTypes.func,
     onGridReady: PropTypes.func,
     link: PropTypes.string,
+    id: PropTypes.string,
 };
 
 NexusGrid.defaultProps = {
@@ -106,6 +109,7 @@ NexusGrid.defaultProps = {
     dragStopped: null,
     onGridReady: null,
     link: null,
+    id: '',
 };
 
 export default NexusGrid;
