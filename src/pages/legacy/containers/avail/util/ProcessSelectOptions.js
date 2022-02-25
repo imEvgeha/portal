@@ -51,17 +51,17 @@ export const processOptions = (value, configEndpoint) => {
             options = getSortedData(options, SORT_TYPE, true);
             break;
         default:
-            options = value.map(item => {
+            options = value?.map(item => {
                 return {...item, value: item.name || item.value, label: item.name || item.value};
             });
-            options = getSortedData(options, SORT_TYPE, true);
+            options = !!value ? getSortedData(options, SORT_TYPE, true) : value;
     }
     return options;
 };
 
 export const createAliasValue = (options = []) => {
     return options
-        .filter(rec => rec.value)
+        .filter(rec => rec.value !== undefined)
         .map(rec => {
             return {
                 ...rec,

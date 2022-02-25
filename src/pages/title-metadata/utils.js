@@ -224,7 +224,6 @@ export const updateTerritoryMetadata = async (values, titleId) => {
         const errorToast = {
             summary: ERROR_TITLE,
             severity: 'error',
-            sticky: true,
             detail: UPDATE_TERRITORY_METADATA_ERROR,
         };
         store.dispatch(addToast(errorToast));
@@ -307,7 +306,6 @@ export const updateEditorialMetadata = async (values, titleId) => {
     const errorToast = {
         summary: ERROR_TITLE,
         severity: 'error',
-        sticky: true,
         detail: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
@@ -354,7 +352,6 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
             addToast({
                 summary: ERROR_TITLE,
                 severity: 'error',
-                sticky: true,
                 detail: response.error,
             })
         );

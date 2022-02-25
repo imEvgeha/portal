@@ -1,0 +1,60 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/config';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+
+$border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
+
+.nexus-c-status-log-table {
+    @include padding(0, 0, 10, 0);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    &__errors-table {
+        margin: 20px;
+        display: grid;
+        grid-template-rows: 2em repeat(auto-fill, minmax(0, auto));
+        grid-template-columns: repeat(2, minmax(0, auto));
+        border: $border;
+        border-right: none;
+        &--header-cell {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            color: map-get($colors, nexus-title-color);
+            text-align: left;
+            border-bottom: $border;
+            border-right: $border;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        &--cell {
+            padding: 5px;
+            border-right: $border;
+            border-bottom: $border;
+            background: rgba(map_get($colors, nexus-title-color), 0.1);
+
+            // fixes content leaking from all table cells
+            // see http://agile.vubiquity.com/browse/PORT-2513
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-all;
+            hyphens: auto;
+        }
+    }
+    &__error-cell {
+        cursor: pointer;
+    }
+
+    .ag-cell {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+.nexus-c-status-log-table__actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+}
