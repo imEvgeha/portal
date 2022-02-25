@@ -17,7 +17,6 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
         "Option": [Function],
       }
     }
-    enableAnimation={true}
     onChange={[Function]}
     onClickPreventDefault={true}
     onCreateOption={[Function]}
@@ -56,6 +55,7 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
     }
     placeholder="Search Saved Views"
     spacing="default"
+    styles={Object {}}
     tabSelectsValue={false}
     validationState="default"
     value={null}

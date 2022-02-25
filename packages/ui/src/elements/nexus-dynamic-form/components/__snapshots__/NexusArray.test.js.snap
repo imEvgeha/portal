@@ -29,7 +29,6 @@ exports[`NexusArray should match snapshot 1`] = `
         },
       ]
     }
-    isDisabled={false}
     isRequired={false}
     name=""
     validate={[Function]}

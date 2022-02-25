@@ -1,14 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
-<AkPage
-  bannerHeight={52}
-  isBannerOpen={false}
->
+<Page>
   <div
     className="fulfillment-order__section"
   >
-    <WithTheme(AkGridColumn)>
+    <GridColumn>
       <div
         className="fulfillment-order"
       >
@@ -48,10 +45,10 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             </ButtonGroup>
           </div>
         </div>
-        <WithTheme(AkGrid)
+        <GridWrapper
           layout="fluid"
         >
-          <WithTheme(AkGridColumn)
+          <GridColumn
             medium={3}
           >
             <div
@@ -61,8 +58,6 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                
               <Lozenge
                 appearance="new"
-                isBold={false}
-                maxWidth={200}
               />
             </div>
             <div
@@ -70,11 +65,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             >
               Start Date:
                
-              <Lozenge
-                appearance="default"
-                isBold={false}
-                maxWidth={200}
-              >
+              <Lozenge>
                 Invalid date
               </Lozenge>
             </div>
@@ -83,11 +74,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             >
               Due Date:
                
-              <Lozenge
-                appearance="default"
-                isBold={false}
-                maxWidth={200}
-              >
+              <Lozenge>
                 Invalid date
               </Lozenge>
             </div>
@@ -142,8 +129,8 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 </label>
               </div>
             </div>
-          </WithTheme(AkGridColumn)>
-          <WithTheme(AkGridColumn)
+          </GridColumn>
+          <GridColumn
             medium={3}
           >
             <div
@@ -212,8 +199,8 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 }
               />
             </div>
-          </WithTheme(AkGridColumn)>
-          <WithTheme(AkGridColumn)
+          </GridColumn>
+          <GridColumn
             medium={3}
           >
             <div
@@ -267,8 +254,8 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 />
               </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
             </div>
-          </WithTheme(AkGridColumn)>
-          <WithTheme(AkGridColumn)
+          </GridColumn>
+          <GridColumn
             medium={3}
           >
             <div
@@ -348,11 +335,11 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               onTextChange={[Function]}
               resize="smart"
             />
-          </WithTheme(AkGridColumn)>
-        </WithTheme(AkGrid)>
+          </GridColumn>
+        </GridWrapper>
         <hr />
       </div>
-    </WithTheme(AkGridColumn)>
+    </GridColumn>
   </div>
-</AkPage>
+</Page>
 `;
