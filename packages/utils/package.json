@@ -10,8 +10,8 @@
     "peerDependencies": {
         "@casl/ability": "^2.5.1",
         "@casl/react": "^0.8.1",
-        "lodash": "^4.17.15",
-        "moment": "^2.22.2",
+        "lodash": "^4.17.21",
+        "moment": "^2.29.1",
         "prop-types": "15.x",
         "react": "16.14.0",
         "react-router-dom": "^4.3.1"

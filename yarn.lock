@@ -11689,7 +11689,7 @@ modify-values@^1.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-moment@^2.22.2:
+moment@^2.22.2, moment@^2.29.1:
   version "2.29.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
@@ -13198,10 +13198,10 @@ primeicons@^5.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/primeicons/-/primeicons-5.0.0.tgz#73a0b6028a77c58a9eeb331ad13aaf085e8451ee"
   integrity sha512-heygWF0X5HFI1otlZE62pp6ye7sZ8om78J9au2BRkg8O7Y8AHTZ9qKMRzchZUHLe8zUAvdi6hZzzm9XxgwIExw==
 
-primereact@^7.1.0:
-  version "7.2.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/primereact/-/primereact-7.2.0.tgz#43312059e57bef59df6082c5ea85c0be30de06c5"
-  integrity sha512-gxSkaF+VkT4LQuzo7umHs6bEMzHh0zX6in5s6scBOqQX1mMUlLIG7okPHUD1hPBi6zTJi4o4c/RYENDgsVwlAg==
+primereact@^7.2.1:
+  version "7.2.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/primereact/-/primereact-7.2.1.tgz#2464ede90c96061d0a39c92dbfc839dc363619a0"
+  integrity sha512-7GU8ZyPbP3yDd53X4hmJpz/162c8iM4dGVGZTUo5er1kHAtNJpvelXrcPaN3ELrTIF7VH4LCxpTsqHvTxn0EsQ==
 
 private@^0.1.6, private@~0.1.5:
   version "0.1.8"
