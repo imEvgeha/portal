@@ -288,6 +288,13 @@ export const SelectedRightsActions = ({
             gridApi.deselectAll();
             setSelectedRights([]);
             toggleRefreshGridData(true);
+
+            addToast({
+                summary: 'Right(s) added to Pre-Plan',
+                detail: `You have successfully added ${selectedRights.length} Right(s) to Pre-Plan`,
+                severity: 'success',
+            });
+
             return;
         }
 
