@@ -152,6 +152,11 @@ const RightsRepository = ({
     }, [fetchedTableRights]);
 
     useEffect(() => {
+        // deselect the selected ingest when the user changes tab
+        deselectIngest();
+    }, [activeTab]);
+
+    useEffect(() => {
         const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
         const timer = setInterval(() => {
             if (updatedAttachment?.status === 'PENDING' && attachment?.status === 'PENDING')
