@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {StatusLogRightsTable} from './StatusLogRightsTable';
+import StatusLogRightsTable from './StatusLogRightsTable';
 
 describe('StatusLogRightsTable', () => {
     let wrapper = null;

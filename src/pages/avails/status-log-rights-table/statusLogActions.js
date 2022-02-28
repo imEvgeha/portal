@@ -1,11 +1,16 @@
-import {SAVE_STATUS_DATA, REMOVE_STATUS_DATA} from './statusLogActionTypes';
+import * as actionTypes from './statusLogActionTypes';
 
 export const saveStatusDataAction = payload => ({
-    type: SAVE_STATUS_DATA,
+    type: actionTypes.SAVE_STATUS_DATA,
     payload,
 });
 
 export const removeStatusDataAction = payload => ({
     type: REMOVE_STATUS_DATA,
+    payload,
+});
+
+export const storeResyncRights = payload => ({
+    type: actionTypes.STORE_RESYNC_RIGHTS,
     payload,
 });

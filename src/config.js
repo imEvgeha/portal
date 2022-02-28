@@ -11,6 +11,7 @@ export const defaultConfiguration = {
         assetManagementURL: 'https://asset-management-api.dev.vubiquity.com',
         eventApiUrl: 'https://eventapi.dev.vubiquity.com',
         servicingOrdersUrl: 'https://service-order-manager.dev.vubiquity.com',
+        titleResync: 'https://vuapi.dev.vubiquity.com/vubiquity/title-planning/title-planning-api/v1/rights/sync',
         service: {
             avails: '/avails-api/v1',
             availsParser: '/avails-parser/v1',
