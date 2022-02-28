@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const StatusLogErrors = ({setErrors, data}) => {
-    
     const {errors} = data;
-    const value = errors ? errors.map((item) => `${item.errorType} - ${item.description}`) : [];
+    const value = errors ? errors.map(item => `${item.errorType} - ${item.description}`) : [];
     const setErrorsData = () => setErrors(value);
 
     return value && value.length ? (
         <div className="nexus-c-status-log-table__error-cell" onClick={setErrorsData}>
-            Show Errors
+            ...
         </div>
     ) : (
         ''
@@ -22,7 +21,7 @@ StatusLogErrors.propTypes = {
 };
 
 StatusLogErrors.defaultProps = {
-    data: {}
-}
+    data: {},
+};
 
 export default StatusLogErrors;

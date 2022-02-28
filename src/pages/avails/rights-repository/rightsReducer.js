@@ -14,6 +14,7 @@ const initialState = {
     },
     gridState: {},
     fromSelected: {},
+    gridData: {},
 };
 
 const filteringObject = (object, criteria) => {

@@ -6,15 +6,31 @@ import withToasts from './hoc/withToasts';
 const NexusToastNotification = ({toast}) => {
     const toastRef = useRef(null);
 
+    const getUpdatedToast = () => {
+        if (toast && toast.severity === 'error') {
+            return {
+                ...toast,
+                sticky: true,
+            };
+        } else if (toast && toast.severity === 'success') {
+            return {
+                ...toast,
+                life: 3000,
+            };
+        }
+
+        return toast;
+    };
+
     useEffect(() => {
-        if(toastRef.current && toast) {
-            toastRef.current.show(toast);
+        if (toastRef.current && toast) {
+            toastRef.current.show(getUpdatedToast());
         } else if (toastRef.current && !toast) {
             toastRef.current.clear();
         }
-    }, [toast])
+    }, [toast]);
 
-    return (<Toast ref={toastRef} position="bottom-left" className='p-toast' />)
+    return <Toast ref={toastRef} position="bottom-left" className="p-toast" />;
 };
 
 NexusToastNotification.propTypes = {

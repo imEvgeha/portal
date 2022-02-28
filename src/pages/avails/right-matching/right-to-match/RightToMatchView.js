@@ -14,7 +14,7 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
 import {get, isEmpty} from 'lodash';
-import { Button as PrimeReactButton } from 'primereact/button';
+import {Button as PrimeReactButton} from 'primereact/button';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
@@ -108,7 +108,7 @@ const RightToMatchView = ({
         );
     };
 
-    const onUpdateRight = (e) => {
+    const onUpdateRight = e => {
         e.preventDefault();
         removeToast();
         rightsService
@@ -121,15 +121,18 @@ const RightToMatchView = ({
             severity: 'warn',
             closable: false,
             content: (
-                <ToastBody
-                    summary={WARNING_TITLE}
-                    detail={NEW_RIGHT_BUTTON_CLICK_MESSAGE}
-                    severity='warn'
-                >
-                    <div className='d-flex align-items-center'>
-                        <PrimeReactButton label='Ok' className="p-button-link" onClick={onUpdateRight} />
-                        <i className='pi pi-circle-fill' style={{'fontSize': '5px', 'padding': '0px 8px'}} />
-                        <PrimeReactButton label='Cancel' className="p-button-link" onClick={() => removeToast()} />
+                <ToastBody summary={WARNING_TITLE} detail={NEW_RIGHT_BUTTON_CLICK_MESSAGE} severity="warn">
+                    <div className="d-flex align-items-center">
+                        <PrimeReactButton
+                            label="Ok"
+                            className="p-button-link p-toast-confirm-button"
+                            onClick={onUpdateRight}
+                        />
+                        <PrimeReactButton
+                            label="Cancel"
+                            className="p-button-link p-toast-cancel-button"
+                            onClick={() => removeToast()}
+                        />
                     </div>
                 </ToastBody>
             ),
@@ -237,18 +240,8 @@ const RightToMatchView = ({
         if (matchingCandidates === null) return;
 
         const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
-        const {
-            ACTIONS,
-            RIGHT_ID,
-            REMOVED_CATALOG,
-            TITLE,
-            TERRITORY,
-            FORMAT,
-            AVAIL_START,
-            AVAIL_END,
-            START,
-            END,
-        } = TABLE_HEADERS;
+        const {ACTIONS, RIGHT_ID, REMOVED_CATALOG, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} =
+            TABLE_HEADERS;
         const headerNames = [RIGHT_ID, REMOVED_CATALOG, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
 
         let columnDefinitions = columnDefs?.filter(elem => elem);
