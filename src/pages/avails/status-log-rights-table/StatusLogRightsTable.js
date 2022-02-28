@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
@@ -8,17 +8,17 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {compose} from 'redux';
-import { ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE } from '../../sync-log/syncLogConstants';
-import { STATUS_TAB } from '../rights-repository/constants';
-import { getStatusLog } from './StatusLogService';
+import {ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../sync-log/syncLogConstants';
+import {STATUS_TAB} from '../rights-repository/constants';
+import {getStatusLog} from './StatusLogService';
 import columnMappings from './columnMappings';
 import './StatusLogRightsTable.scss';
 import StatusLogErrors from './components/PublishErrors/StatusLogErrors';
 
 const StatusLogRightsGrid = compose(
     withSideBar(),
-    withColumnsResizing(), 
-    withFilterableColumns({frameworkComponents: { publishErrors: StatusLogErrors }}),
+    withColumnsResizing(),
+    withFilterableColumns({frameworkComponents: {publishErrors: StatusLogErrors}}),
     withColumnsResizing(),
     withInfiniteScrolling({fetchData: getStatusLog})
 )(NexusGrid);
@@ -75,7 +75,7 @@ const StatusLogRightsTable = ({activeTab}) => {
                     ))}
                     {errorsData.map((error, i) =>
                         ERROR_TABLE_COLUMNS.map(key => (
-                            <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i - key}`}>
+                            <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i}-${key}`}>
                                 {error.split(' - ')[key === 'type' ? 0 : 1]}
                             </div>
                         ))
