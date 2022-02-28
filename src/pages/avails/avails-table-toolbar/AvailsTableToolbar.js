@@ -10,10 +10,10 @@ import {
     PRE_PLAN_TAB,
     SELECTED_FOR_PLANNING_TAB,
     STATUS_TAB,
-    PRE_PLAN_SELECTED_TAB
+    PRE_PLAN_SELECTED_TAB,
 } from '../rights-repository/constants';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
-import { StatusRightsActions } from '../status-rights-actions/StatusRightsActions';
+import {StatusRightsActions} from '../status-rights-actions/StatusRightsActions';
 import SelectedButton from './components/selected-button/SelectedButton';
 
 const AvailsTableToolbar = ({
@@ -48,27 +48,29 @@ const AvailsTableToolbar = ({
     prePlanGridApi,
     selectedForPlanningColumnApi,
     selectedForPlanningGridApi,
+    isSelected,
+    setIsSelected,
 }) => {
-    const isItSamePage = (tab) => activeTab === tab;
+    const isItSamePage = tab => activeTab === tab;
 
     const getAmountOfRowsForCurrentTab = () => {
-        if(isItSamePage(SELECTED_FOR_PLANNING_TAB)) {
+        if (isItSamePage(SELECTED_FOR_PLANNING_TAB)) {
             return planningRightsCount;
         }
-        if(isItSamePage(PRE_PLAN_TAB)) {
+        if (isItSamePage(PRE_PLAN_TAB)) {
             return prePlanRightsCount;
         }
-        if(isItSamePage(STATUS_TAB)) {
+        if (isItSamePage(STATUS_TAB)) {
             return statusRightsCount;
         }
         return totalRows;
     };
 
     const getAmountOfSelectedRowsForCurrentTab = () => {
-        if([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab)) {
+        if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab)) {
             return selectedRightsCount;
         }
-        if([PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab)) {
+        if ([PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab)) {
             return selectedPrePlanRights.length;
         }
         return 0;
@@ -76,11 +78,11 @@ const AvailsTableToolbar = ({
 
     return (
         <div className="nexus-c-table-toolbar d-flex justify-content-between row">
-            <div className='col-xs-12 col-xl-8 d-flex align-items-center justify-content-xs-between justify-content-xl-start'>
+            <div className="col-xs-12 col-xl-8 d-flex align-items-center justify-content-xs-between justify-content-xl-start">
                 <div className="nexus-c-table-toolbar__rights-counter-container">
                     <span className="nexus-c-table-toolbar__total-rows">{getAmountOfRowsForCurrentTab()}</span>
                 </div>
-                <div className='d-flex'>
+                <div className="d-flex">
                     <div className="nexus-c-table-toolbar__selected-button-container d-flex justify-content-end">
                         {[RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab) && (
                             <SelectedButton
@@ -88,14 +90,16 @@ const AvailsTableToolbar = ({
                                 activeTab={activeTab}
                                 setActiveTab={setActiveTab}
                                 setActiveTabIndex={setActiveTabIndex}
+                                setIsSelected={setIsSelected}
+                                isSelected={isSelected}
                                 inNewDesign
                             />
                         )}
                     </div>
-                    
-                    {isItSamePage(SELECTED_FOR_PLANNING_TAB) ? 
-                        null : <div className="nexus-c-table-toolbar__separation-line" />
-                    }
+
+                    {isItSamePage(SELECTED_FOR_PLANNING_TAB) ? null : (
+                        <div className="nexus-c-table-toolbar__separation-line" />
+                    )}
 
                     {isItSamePage(RIGHTS_TAB) || isItSamePage(RIGHTS_SELECTED_TAB) ? (
                         <SelectedRightsActions
@@ -121,16 +125,16 @@ const AvailsTableToolbar = ({
                             singleRightMatch={singleRightMatch}
                             setSingleRightMatch={setSingleRightMatch}
                         />
-                    ) : null} 
-                    
+                    ) : null}
+
                     {isItSamePage(STATUS_TAB) ? <StatusRightsActions /> : null}
                     {isItSamePage(SELECTED_FOR_PLANNING_TAB) && null}
                 </div>
             </div>
-            <div className='col-xs-12 col-xl-4'>
+            <div className="col-xs-12 col-xl-4">
                 {hasDownloadButton && (
                     <div className="nexus-c-table-toolbar__button-container">
-                        <AvailsTableReleaseReport 
+                        <AvailsTableReleaseReport
                             activeTab={activeTab}
                             selectedRows={selectedRows}
                             rightsFilter={rightsFilter}
@@ -193,6 +197,8 @@ AvailsTableToolbar.propTypes = {
     selectedForPlanningColumnApi: PropTypes.object,
     selectedForPlanningGridApi: PropTypes.object,
     setActiveTabIndex: PropTypes.func,
+    isSelected: PropTypes.bool.isRequired,
+    setIsSelected: PropTypes.func.isRequired,
 };
 
 AvailsTableToolbar.defaultProps = {

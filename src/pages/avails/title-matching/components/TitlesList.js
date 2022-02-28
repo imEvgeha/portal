@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {
-    getLinkableColumnDefs,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import {getLinkableColumnDefs} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -12,11 +10,10 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import classNames from 'classnames';
 import {compose} from 'redux';
 import mappings from '../../../../../profile/titleMatchingMappings.json';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements';
+import {NexusGrid, NexusTitle} from '../../../../ui/elements';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
 import SelectedButton from '../../avails-table-toolbar/components/selected-button/SelectedButton';
 import MatchedCombinedTitlesTable from '../../matched-combined-titles-table/MatchedCombinedTitlesTable';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../rights-repository/constants';
 import {getRepositoryCell} from '../../utils';
 import ActionsBar from './ActionsBar';
 import './TitlesList.scss';
@@ -43,7 +40,7 @@ const TitlesList = ({
     isMerging,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
-    const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
+    const [isSelected, setIsSelected] = useState(false);
 
     const onGridReady = ({type, columnApi}) => {
         if (GRID_EVENTS.READY === type) {
@@ -69,14 +66,14 @@ const TitlesList = ({
                 <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
                 <SelectedButton
                     selectedRightsCount={selectedItems.length}
-                    activeTab={activeTab}
-                    setActiveTab={setActiveTab}
+                    isSelected={isSelected}
+                    setIsSelected={setIsSelected}
                 />
             </div>
             <div
                 className={classNames(
                     'nexus-c-single-matching__titles-table',
-                    activeTab === RIGHTS_TAB && 'nexus-c-single-matching__titles-table--active'
+                    !isSelected && 'nexus-c-single-matching__titles-table--active'
                 )}
             >
                 <TitleRepositoriesTable
@@ -92,7 +89,7 @@ const TitlesList = ({
             <div
                 className={classNames(
                     'nexus-c-single-matching__selected-table',
-                    activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-single-matching__selected-table--active'
+                    isSelected && 'nexus-c-single-matching__selected-table--active'
                 )}
             >
                 <MatchedCombinedTitlesTable data={selectedItems} isFullHeight />
