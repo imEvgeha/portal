@@ -40,6 +40,7 @@ const withFilterableColumns =
         useDatesWithTime = false,
         prepareFilterParams = params => params,
         filtersMapping = undefined,
+        frameworkComponents = {},
     } = {}) =>
     WrappedComponent => {
         const ComposedComponent = props => {
@@ -448,6 +449,7 @@ const withFilterableColumns =
                     columnDefs={filterableColumnDefs}
                     onGridEvent={onGridEvent}
                     frameworkComponents={{
+                        ...frameworkComponents,
                         customDateFloatingFilter: CustomDateFloatingFilter,
                         customDateFilter: CustomDateFilter,
                         customIconFilter: CustomIconFilter,

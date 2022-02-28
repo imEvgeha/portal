@@ -111,7 +111,6 @@ export const unmergeTitle = async id => {
             const errorToast = {
                 summary: 'Unmerge not available',
                 severity: 'error',
-                sticky: true,
                 detail: response.body.description,
             };
             store.dispatch(addToast(errorToast));

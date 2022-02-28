@@ -152,11 +152,11 @@ class TitleCreate extends React.Component {
                                         <ToastBody
                                             summary={SUCCESS_TITLE}
                                             detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
-                                            severity='success'
+                                            severity="success"
                                         >
                                             <PrimeReactButton
                                                 label="View Title"
-                                                className="p-button-link"
+                                                className="p-button-link p-toast-button-link"
                                                 onClick={() => onViewTitleClick(response)}
                                             />
                                         </ToastBody>
@@ -186,11 +186,11 @@ class TitleCreate extends React.Component {
                             <ToastBody
                                 summary={SUCCESS_TITLE}
                                 detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                                severity='success'
+                                severity="success"
                             >
                                 <PrimeReactButton
                                     label="View Title"
-                                    className="p-button-link"
+                                    className="p-button-link p-toast-button-link"
                                     onClick={() => onViewTitleClick(response)}
                                 />
                             </ToastBody>

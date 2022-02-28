@@ -139,7 +139,7 @@ SelectedPreplanTable.propTypes = {
     setSelectedGridApi: PropTypes.func,
     selectedColumnApi: PropTypes.object,
     setSelectedColumnApi: PropTypes.func,
-    selectedRights: PropTypes.object,
+    selectedRights: PropTypes.array,
     username: PropTypes.string,
 };
 
@@ -151,7 +151,7 @@ SelectedPreplanTable.defaultProps = {
     setSelectedGridApi: () => null,
     selectedColumnApi: {},
     setSelectedColumnApi: () => null,
-    selectedRights: {},
+    selectedRights: [],
     username: {},
 };
 

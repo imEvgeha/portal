@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
+import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
@@ -171,10 +173,26 @@ const TitleDetails = ({
             },
         ];
     };
+
+    const getPublishedAt = repo => {
+        if (isNexusTitle(title.id)) {
+            return externalIds.find(ids => ids.externalSystem === repo);
+        }
+    };
+
+    const vzPublishedAt = getPublishedAt('vz');
+    const movidaPublishedAt = getPublishedAt('movida');
+    const movidaUkPublishedAt = getPublishedAt('movida-uk');
+
+    const getDateTime = dateTime => {
+        return dateTime ? `Updated At: ${moment(dateTime?.publishedAt).utc().format('YYYY/MM/DD, h:mm:ss a')}` : '';
+    };
+
     const extendTitleWithExternalIds = () => {
         const [vzExternalIds] = getExternaIds('vz');
         const [movidaExternalIds] = getExternaIds('movida');
         const [movidaUkExternalIds] = getExternaIds('movida-uk');
+
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
 
@@ -241,37 +259,44 @@ const TitleDetails = ({
                     />
                     <NexusStickyFooter>
                         <NexusStickyFooter.LeftActions>
-                            <SyncPublish
-                                externalSystem={VZ}
-                                externalIds={externalIds}
-                                onSyncPublish={syncPublishHandler}
-                                isSyncing={isVZTitleSyncing}
-                                isPublishing={isVZTitlePublishing}
-                                isDisabled={VZDisabled}
-                                titleUpdatedAt={title.updatedAt}
-                                hasButtons={isNexusTitle(title.id)}
-                            />
-                            <SyncPublish
-                                externalSystem={MOVIDA_INTL}
-                                externalIds={externalIds}
-                                onSyncPublish={syncPublishHandler}
-                                isSyncing={isMovIntTitleSyncing}
-                                isPublishing={isMovIntTitlePublishing}
-                                isDisabled={MovIntDisabled}
-                                titleUpdatedAt={title.updatedAt}
-                                hasButtons={isNexusTitle(title.id)}
-                            />
+                            <NexusTooltip content={getDateTime(vzPublishedAt)}>
+                                <SyncPublish
+                                    externalSystem={VZ}
+                                    externalIds={externalIds}
+                                    onSyncPublish={syncPublishHandler}
+                                    isSyncing={isVZTitleSyncing}
+                                    isPublishing={isVZTitlePublishing}
+                                    isDisabled={VZDisabled}
+                                    titleUpdatedAt={title.updatedAt}
+                                    hasButtons={isNexusTitle(title.id)}
+                                />
+                            </NexusTooltip>
+
+                            <NexusTooltip content={getDateTime(movidaUkPublishedAt)}>
+                                <SyncPublish
+                                    externalSystem={MOVIDA_INTL}
+                                    externalIds={externalIds}
+                                    onSyncPublish={syncPublishHandler}
+                                    isSyncing={isMovIntTitleSyncing}
+                                    isPublishing={isMovIntTitlePublishing}
+                                    isDisabled={MovIntDisabled}
+                                    titleUpdatedAt={title.updatedAt}
+                                    hasButtons={isNexusTitle(title.id)}
+                                />
+                            </NexusTooltip>
                             <div className="nexus-c-line" />
-                            <SyncPublish
-                                externalSystem={MOVIDA}
-                                externalIds={externalIds}
-                                onSyncPublish={syncPublishHandler}
-                                isSyncing={isMOVTitleSyncing}
-                                isPublishing={isMOVTitlePublishing}
-                                isDisabled={MOVDisabled}
-                                titleUpdatedAt={title.updatedAt}
-                                hasButtons={isNexusTitle(title.id)}
-                            />
+                            <NexusTooltip content={getDateTime(movidaPublishedAt)}>
+                                <SyncPublish
+                                    externalSystem={MOVIDA}
+                                    externalIds={externalIds}
+                                    onSyncPublish={syncPublishHandler}
+                                    isSyncing={isMOVTitleSyncing}
+                                    isPublishing={isMOVTitlePublishing}
+                                    isDisabled={MOVDisabled}
+                                    titleUpdatedAt={title.updatedAt}
+                                    hasButtons={isNexusTitle(title.id)}
+                                />
+                            </NexusTooltip>
                             {title.id && <ActionMenu titleId={title.id} />}
                         </NexusStickyFooter.LeftActions>
                     </NexusStickyFooter>
