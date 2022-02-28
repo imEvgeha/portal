@@ -43,19 +43,6 @@ const SelectedRightsTable = ({
         selectedGridApi?.forEachNode(node => node?.setSelected(true));
     }, []);
 
-    // useEffect(() => {
-    //     if (!isEmpty(selectedRights) && username && selectedGridApi) {
-    //         const usersSelectedRights = get(selectedRights, username, {});
-    //         setCurrentUserSelectedRights(Object.values(usersSelectedRights));
-    //     }
-    // }, [activeTab === 'Selected']);
-    //
-    // useEffect(() => {
-    //     if (!isEmpty(selectedRights) && username && currentUserSelectedRights && selectedGridApi) {
-    //         selectedGridApi?.forEachNode(node => node?.setSelected(true));
-    //     }
-    // }, [activeTab]);
-
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
 
