@@ -1,26 +1,24 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+import {Provider} from 'react-redux';
+import configureStore from 'redux-mock-store';
 import {StatusRightsActions} from './StatusRightsActions';
-
 
 describe('StatusRightsActions', () => {
     let wrapper = null;
+    let store = null;
 
     beforeEach(() => {
+        const mockStore = configureStore();
+        store = mockStore({});
         wrapper = shallow(
-            <StatusRightsActions />
+            <Provider store={store}>
+                <StatusRightsActions />
+            </Provider>
         );
     });
 
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('should render status actions wrapper', () => {
-        expect(wrapper.find('.nexus-c-status-rights-actions')).toHaveLength(1);
-    });
-
-    it('should render status action item', () => {
-        expect(wrapper.find('.nexus-c-status-rights-actions__menu-item')).toHaveLength(1);
     });
 });

@@ -6,7 +6,7 @@ export const saveStatusDataAction = payload => ({
 });
 
 export const removeStatusDataAction = payload => ({
-    type: REMOVE_STATUS_DATA,
+    type: actionTypes.REMOVE_STATUS_DATA,
     payload,
 });
 

@@ -1,25 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StatusRightsActions should match snapshot 1`] = `
-<Fragment>
-  <div
-    className="nexus-c-status-rights-actions d-flex align-items-center"
-  >
-    <div
-      className="nexus-c-status-rights-actions__menu-item"
-      data-test-id="bulk-match"
-      onClick={[Function]}
-    >
-      <NexusTooltip
-        content="Re-Sync tooltip example"
-        hasWhiteBackground={false}
-        isDisabled={false}
-      >
-        <div>
-          Re-Sync
-        </div>
-      </NexusTooltip>
-    </div>
-  </div>
-</Fragment>
+<ContextProvider
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Object {
+        "addNestedSub": [Function],
+        "getListeners": [Function],
+        "handleChangeWrapper": [Function],
+        "isSubscribed": [Function],
+        "notifyNestedSubs": [Function],
+        "onStateChange": [Function],
+        "trySubscribe": [Function],
+        "tryUnsubscribe": [Function],
+      },
+    }
+  }
+>
+  <StatusRightsActions
+    statusLogResyncRights={Object {}}
+  />
+</ContextProvider>
 `;

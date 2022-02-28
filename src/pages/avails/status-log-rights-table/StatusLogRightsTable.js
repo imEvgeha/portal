@@ -12,8 +12,7 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../sync-log/syncLogConstants';
 import {STATUS_TAB} from '../rights-repository/constants';
-import {createStatusLogResyncRightsSelector} from '../rights-repository/rightsSelectors';
-import {getStatusLog, postReSync} from './StatusLogService';
+import {getStatusLog} from './StatusLogService';
 import columnMappings from './columnMappings';
 import './StatusLogRightsTable.scss';
 import StatusLogErrors from './components/PublishErrors/StatusLogErrors';
@@ -27,7 +26,7 @@ const StatusLogRightsGrid = compose(
     withInfiniteScrolling({fetchData: getStatusLog})
 )(NexusGrid);
 
-const StatusLogRightsTable = ({activeTab, storeResyncRights, statusLogResyncRights}) => {
+const StatusLogRightsTable = ({activeTab, storeResyncRights}) => {
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
 
@@ -81,7 +80,6 @@ const StatusLogRightsTable = ({activeTab, storeResyncRights, statusLogResyncRigh
 
     return (
         <div className="nexus-c-status-log-table">
-            <h2 onClick={() => postReSync(statusLogResyncRights)}>RESYNC</h2>
             <StatusLogRightsGrid
                 suppressRowClickSelection
                 className="nexus-c-status-log-grid"
@@ -112,26 +110,17 @@ const StatusLogRightsTable = ({activeTab, storeResyncRights, statusLogResyncRigh
     );
 };
 
-const mapStateToProps = () => {
-    const statusLogResyncRightsSelector = createStatusLogResyncRightsSelector();
-    return (state, props) => ({
-        statusLogResyncRights: statusLogResyncRightsSelector(state, props),
-    });
-};
-
 const mapDispatchToProps = dispatch => ({
     storeResyncRights: payload => dispatch(storeResyncRights(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(StatusLogRightsTable);
+export default connect(null, mapDispatchToProps)(StatusLogRightsTable);
 
 StatusLogRightsTable.propTypes = {
     storeResyncRights: PropTypes.func,
     activeTab: PropTypes.string.isRequired,
-    statusLogResyncRights: PropTypes.object,
 };
 
 StatusLogRightsTable.defaultProps = {
     storeResyncRights: () => null,
-    statusLogResyncRights: {},
 };
