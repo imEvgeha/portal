@@ -29,7 +29,7 @@ const WordsCellRenderer = params => {
             );
         };
 
-        params.data.validationErrors.forEach(function (validation) {
+        params.data.validationErrors.forEach(validation => {
             const fieldName = validation.fieldName.includes('[')
                 ? validation.fieldName.split('[')[0]
                 : validation.fieldName;
