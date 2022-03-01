@@ -11,7 +11,7 @@ export const defaultConfiguration = {
         assetManagementURL: 'https://asset-management-api.dev.vubiquity.com',
         eventApiUrl: 'https://eventapi.dev.vubiquity.com',
         servicingOrdersUrl: 'https://service-order-manager.dev.vubiquity.com',
-        titleResync: 'https://vuapi.dev.vubiquity.com/vubiquity/title-planning/title-planning-api/v1/rights/sync',
+        titlePlanning: 'https://titleplanning.dev.vubiquity.com/',
         service: {
             avails: '/avails-api/v1',
             availsParser: '/avails-parser/v1',
@@ -20,6 +20,7 @@ export const defaultConfiguration = {
             assetManagement: '/api/asset-management/v1',
             eventApiV2: '/api/event-api/v2',
             servicingOrder: '',
+            titlePlanning: '/title-planning-api/v1',
         },
     },
     avails: {
