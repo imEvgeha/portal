@@ -362,6 +362,8 @@ $element-color-orange-80: palette(orange, 80);
 
 // Input Text
 .p-inputtext {
+    line-height: normal;
+
     &:enabled:hover {
         border-color: palette(black, 5);
     }
@@ -373,7 +375,6 @@ $element-color-orange-80: palette(orange, 80);
 
         font-size: 13px;
         color: palette(black, 100);
-        line-height: normal;
 
         &:hover:active {
             border: $element-border-20;
@@ -451,7 +452,8 @@ $element-color-orange-80: palette(orange, 80);
 //Dropdown
 .p-dropdown {
     &.p-component {
-        margin: 2px 8px;
+        width: 100%;
+        margin-bottom: 18px;
         border-radius: $element-border-radius;
         box-shadow: none;
         font-size: 13px;
@@ -506,14 +508,24 @@ $element-color-orange-80: palette(orange, 80);
     }
 }
 
-//removing the bold border black from the calendar
-.p-datepicker-calendar {
-    thead {
-        border: none;
+//calendar month/year dropdown menu
+.p-datepicker-group {
+    .p-datepicker-header {
+        .p-dropdown {
+            width: auto;
+            margin: 2px 8px;
+        }
     }
 
-    tbody {
-        border: none;
+    //removing the bold border black from the calendar
+    .p-datepicker-calendar {
+        thead {
+            border: none;
+        }
+
+        tbody {
+            border: none;
+        }
     }
 }
 
