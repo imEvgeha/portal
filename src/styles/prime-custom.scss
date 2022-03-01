@@ -178,7 +178,7 @@ $element-color-orange-80: palette(orange, 80);
         }
     }
 
-    &.p-toast-confirm-button {
+    &.p-toast-left-button {
         @include padding(0, 0, 0, 0);
         @include margin(2, 8, 0, 0);
 
@@ -193,7 +193,7 @@ $element-color-orange-80: palette(orange, 80);
         }
     }
 
-    &.p-toast-cancel-button {
+    &.p-toast-right-button {
         @include padding(0, 0, 0, 0);
         @include margin(2, 0, 0, 0);
 

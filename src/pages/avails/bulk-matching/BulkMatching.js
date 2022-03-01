@@ -227,12 +227,12 @@ export const BulkMatching = ({
                     <div className="d-flex align-items-center">
                         <PrimeReactButton
                             label="Cancel"
-                            className="p-button-link p-toast-cancel-button"
+                            className="p-button-link p-toast-right-button"
                             onClick={onCancelButtonClick}
                         />
                         <PrimeReactButton
                             label="Continue"
-                            className="p-button-link p-toast-confirm-button"
+                            className="p-button-link p-toast-left-button"
                             onClick={onOkayButtonClick}
                         />
                     </div>
