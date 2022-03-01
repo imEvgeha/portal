@@ -124,14 +124,14 @@ const RightToMatchView = ({
                 <ToastBody summary={WARNING_TITLE} detail={NEW_RIGHT_BUTTON_CLICK_MESSAGE} severity="warn">
                     <div className="d-flex align-items-center">
                         <PrimeReactButton
-                            label="Ok"
-                            className="p-button-link p-toast-confirm-button"
-                            onClick={onUpdateRight}
-                        />
-                        <PrimeReactButton
                             label="Cancel"
                             className="p-button-link p-toast-cancel-button"
                             onClick={() => removeToast()}
+                        />
+                        <PrimeReactButton
+                            label="Continue"
+                            className="p-button-link p-toast-confirm-button"
+                            onClick={onUpdateRight}
                         />
                     </div>
                 </ToastBody>

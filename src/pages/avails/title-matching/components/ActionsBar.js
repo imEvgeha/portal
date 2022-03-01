@@ -83,14 +83,14 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
                     <ToastBody summary={WARNING_TITLE} detail={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} severity="warn">
                         <div className="d-flex align-items-center">
                             <PrimeReactButton
-                                label="Ok"
-                                className="p-button-link p-toast-confirm-button"
-                                onClick={mergeSingle}
-                            />
-                            <PrimeReactButton
                                 label="Cancel"
                                 className="p-button-link p-toast-cancel-button"
                                 onClick={() => removeToast()}
+                            />
+                            <PrimeReactButton
+                                label="Continue"
+                                className="p-button-link p-toast-confirm-button"
+                                onClick={mergeSingle}
                             />
                         </div>
                     </ToastBody>

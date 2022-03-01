@@ -147,7 +147,6 @@ const EndpointContainer = ({endpoint}) => {
         onCloseConfirmDialog();
 
         const successToast = {
-            summary: 'DELETED',
             severity: SUCCESS_ICON,
             detail: `${capitalize(entry.name)} config for ${endpoint.displayName} has been successfully deleted!`,
         };
@@ -233,7 +232,6 @@ const EndpointContainer = ({endpoint}) => {
         const newVal = {...selectedConfig, ...val};
         const successToast = {
             severity: 'success',
-            summary: 'Success',
             detail: `${capitalize(newVal.name)} config for ${endpoint.displayName} successfully ${
                 newVal.id ? 'updated.' : 'added.'
             }`,
