@@ -40,8 +40,7 @@
             "kongMediaStorage": "/mediastorage/media-storage/v1",
             "kongVidispine": "/vidispine-api/API",
             "mediaImageServices": "/image-services/v1",
-            "titlePlanning": "/title-planning-api/v1",
-            "titleResync": "/title-planning-api/v1/rights/sync"
+            "titlePlanning": "/title-planning-api/v1"
         },
         "servicingOrdersUrl": "https://vuapi.dev.vubiquity.com/vubiquity/servicing-orders",
         "titleUrl": "https://vuapi.dev.vubiquity.com/vubiquity/titles",

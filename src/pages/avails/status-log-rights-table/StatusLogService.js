@@ -46,7 +46,7 @@ export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
 };
 
 export const postReSync = data => {
-    const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titleResync')}`;
+    const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/rights/sync`;
     const response = nexusFetch(url, {method: 'post', body: JSON.stringify(data)});
     return response;
 };
