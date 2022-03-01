@@ -451,8 +451,7 @@ $element-color-orange-80: palette(orange, 80);
 //Dropdown
 .p-dropdown {
     &.p-component {
-        width: 100%;
-        margin-bottom: $element-margin-bottom;
+        margin: 2px 8px;
         border-radius: $element-border-radius;
         box-shadow: none;
         font-size: 13px;
@@ -504,6 +503,17 @@ $element-color-orange-80: palette(orange, 80);
                 color: palette(black, 100);
             }
         }
+    }
+}
+
+//removing the bold border black from the calendar
+.p-datepicker-calendar {
+    thead {
+        border: none;
+    }
+
+    tbody {
+        border: none;
     }
 }
 
