@@ -243,7 +243,7 @@ const RightsRepository = ({
 
             //     // Filter selected rights only when ingest is selected
             if (selectedIngest) {
-                gridApi.getSelectedRows()?.forEach(row => {
+                gridApi?.getSelectedRows()?.forEach(row => {
                     if (selectedIds?.includes(row.id)) {
                         loadedSelectedRights.push(row);
                     }
@@ -757,16 +757,11 @@ const RightsRepository = ({
                     rowData={selectedRepoRights}
                     notFilterableColumns={['action', 'buttons']}
                     activeTab={activeTab}
-                    selectedColumnApi={selectedColumnApi}
-                    setSelectedColumnApi={setSelectedColumnApi}
                     selectedFilter={selectedFilter}
                     setSelectedFilter={setSelectedFilter}
                     selectedRepoRights={selectedRepoRights}
-                    gridApi={gridApi}
                     selectedRights={selectedRights}
                     username={username}
-                    selectedGridApi={selectedGridApi}
-                    setSelectedGridApi={setSelectedGridApi}
                 />
             )}
             <PreplanRightsTable

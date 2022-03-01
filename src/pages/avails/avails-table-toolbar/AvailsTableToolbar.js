@@ -144,6 +144,7 @@ const AvailsTableToolbar = ({
                         />
                         <NexusTableExportDropdown
                             activeTab={activeTab}
+                            isSelected={isSelected}
                             selectedRows={selectedRows}
                             rightsFilter={rightsFilter}
                             rightColumnApi={rightColumnApi}

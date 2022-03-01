@@ -13,9 +13,8 @@ import {
     SELECTED_FOR_PLANNING_TAB,
     PREPLAN_REPORT,
     SELECTED_FOR_PLANNING_REPORT,
-    IN_PROGRESS,
     STATUS_TAB,
-    PRE_PLAN_SELECTED_TAB,
+    IN_PROGRESS,
 } from '../rights-repository/constants';
 import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_MAX_ROWS} from './constants';
 import './AvailsTableExportDropdown.scss';
@@ -38,6 +37,7 @@ const AvailsTableExportDropdown = ({
     planningRightsCount,
     mapping,
     username,
+    isSelected,
 }) => {
     const [mappingColumnNames, setMappingColumnNames] = useState();
     const [tooltipContent, setTooltipContent] = useState();
@@ -53,24 +53,21 @@ const AvailsTableExportDropdown = ({
 
     useEffect(() => {
         let disable = false;
-        const isItDisabledForCurrentTab = [PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
-        const isItEmptySelectedRightsTab = [RIGHTS_SELECTED_TAB].includes(activeTab) && selectedRows.length === 0;
-        const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
-        const isItRightsTabOverflowed = [RIGHTS_TAB].includes(activeTab) && totalRows > MAX_ROWS;
+        const prePlanHasNoData = activeTab === PRE_PLAN_TAB && prePlanRightsCount === 0;
+        const planningHasNoData = activeTab === SELECTED_FOR_PLANNING_TAB && planningRightsCount === 0;
+        const isRightsRepo = [RIGHTS_TAB].includes(activeTab);
 
-        const handleDisable = () => {disable = true};
-
-        if (isItDisabledForCurrentTab) {
-            handleDisable();
-        } else if (isItEmptySelectedRightsTab) {
+        if (STATUS_TAB === activeTab || prePlanHasNoData || planningHasNoData) {
+            disable = true;
+        } else if (isRightsRepo && isSelected && selectedRows.length === 0) {
             setTooltipContent(TOOLTIP_MSG_NO_RIGHTS);
-            handleDisable();
-        } else if (isItEmptyRightsTab) {
+            disable = true;
+        } else if (isRightsRepo && !isSelected && totalRows === 0) {
             setTooltipContent(TOOLTIP_MSG_NO_RESULT);
-            handleDisable();
-        } else if (isItRightsTabOverflowed) {
+            disable = true;
+        } else if (isRightsRepo && !isSelected && totalRows > MAX_ROWS) {
             setTooltipContent(TOOLTIP_MSG_MAX_ROWS);
-            handleDisable();
+            disable = true;
         }
 
         setIsDisabled(disable);
@@ -229,7 +226,7 @@ const AvailsTableExportDropdown = ({
         return (
             <DropdownMenu
                 className="nexus-c-button"
-                trigger='Export'
+                trigger="Export"
                 triggerType="button"
                 triggerButtonProps={{isDisabled}}
             >
@@ -264,6 +261,7 @@ AvailsTableExportDropdown.propTypes = {
     prePlanRightsCount: PropTypes.number,
     planningRightsCount: PropTypes.number,
     username: PropTypes.string,
+    isSelected: PropTypes.bool.isRequired,
 };
 
 AvailsTableExportDropdown.defaultProps = {
