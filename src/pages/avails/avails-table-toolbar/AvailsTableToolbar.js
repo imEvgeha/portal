@@ -51,6 +51,8 @@ const AvailsTableToolbar = ({
     selectedForPlanningColumnApi,
     selectedForPlanningGridApi,
     statusLogResyncRights,
+    isSelected,
+    setIsSelected,
 }) => {
     const isItSamePage = tab => activeTab === tab;
 
@@ -91,6 +93,8 @@ const AvailsTableToolbar = ({
                                 activeTab={activeTab}
                                 setActiveTab={setActiveTab}
                                 setActiveTabIndex={setActiveTabIndex}
+                                setIsSelected={setIsSelected}
+                                isSelected={isSelected}
                                 inNewDesign
                             />
                         )}
@@ -199,6 +203,8 @@ AvailsTableToolbar.propTypes = {
     selectedForPlanningGridApi: PropTypes.object,
     setActiveTabIndex: PropTypes.func,
     statusLogResyncRights: PropTypes.object,
+    isSelected: PropTypes.bool.isRequired,
+    setIsSelected: PropTypes.func.isRequired,
 };
 
 AvailsTableToolbar.defaultProps = {

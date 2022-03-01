@@ -12,11 +12,10 @@ import classNames from 'classnames';
 import {compose} from 'redux';
 import './CandidatesList.scss';
 import mappings from '../../../../../profile/titleMatchingMappings.json';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements';
+import {NexusGrid, NexusTitle} from '../../../../ui/elements';
 import useRowCountWithGridApiFix from '../../../../util/hooks/useRowCountWithGridApiFix';
 import SelectedButton from '../../../avails/avails-table-toolbar/components/selected-button/SelectedButton';
 import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/constants';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
 import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 
@@ -37,7 +36,7 @@ const CandidatesList = ({
     onCellValueChanged,
     selectedItems,
 }) => {
-    const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
+    const [isSelected, setIsSelected] = useState(false);
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
 
     const updatedColumnDefs = getLinkableColumnDefs(columnDefs);
@@ -66,15 +65,15 @@ const CandidatesList = ({
                     </Button>
                     <SelectedButton
                         selectedRightsCount={selectedItems.length}
-                        activeTab={activeTab}
-                        setActiveTab={setActiveTab}
+                        isSelected={isSelected}
+                        setIsSelected={setIsSelected}
                     />
                 </div>
             </div>
             <div
                 className={classNames(
                     'nexus-c-candidates-titles-table',
-                    activeTab === RIGHTS_TAB && 'nexus-c-candidates-titles-table--active'
+                    !isSelected && 'nexus-c-candidates-titles-table--active'
                 )}
             >
                 {queryParams.title && (
@@ -92,7 +91,7 @@ const CandidatesList = ({
             <div
                 className={classNames(
                     'nexus-c-candidates-selected-table',
-                    activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-candidates-selected-table--active'
+                    isSelected && 'nexus-c-candidates-selected-table--active'
                 )}
             >
                 <MatchedCombinedTitlesTable data={selectedItems} isFullHeight />

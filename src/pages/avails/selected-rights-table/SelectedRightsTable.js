@@ -1,16 +1,15 @@
 /* eslint-disable no-unused-expressions, no-magic-numbers */
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
-import {get, isEmpty} from 'lodash';
+import {get} from 'lodash';
 import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
-import {RIGHTS_SELECTED_TAB} from '../rights-repository/constants';
 import {storeFromSelectedTable} from '../rights-repository/rightsActions';
 
 const SelectedRightsGrid = compose(
@@ -39,17 +38,10 @@ const SelectedRightsTable = ({
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!isEmpty(selectedRights) && username && selectedGridApi) {
-            const usersSelectedRights = get(selectedRights, username, {});
-            setCurrentUserSelectedRights(Object.values(usersSelectedRights));
-        }
-    }, [activeTab === 'Selected']);
-
-    useEffect(() => {
-        if (!isEmpty(selectedRights) && username && currentUserSelectedRights && selectedGridApi) {
-            selectedGridApi?.forEachNode(node => node?.setSelected(true));
-        }
-    }, [activeTab]);
+        const usersSelectedRights = get(selectedRights, username, {});
+        setCurrentUserSelectedRights(Object.values(usersSelectedRights));
+        selectedGridApi?.forEachNode(node => node?.setSelected(true));
+    }, []);
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
@@ -69,36 +61,35 @@ const SelectedRightsTable = ({
                 api?.forEachNode(node => node?.setSelected(true));
                 break;
             case SELECTION_CHANGED: {
-                if (activeTab === RIGHTS_SELECTED_TAB) {
-                    const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
+                const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
 
-                    // Get ID of a right to be deselected
-                    const toDeselectIds = selectedRepoRights
-                        .map(({id}) => id)
-                        .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
+                // Get ID of a right to be deselected
+                const toDeselectIds = selectedRepoRights
+                    .map(({id}) => id)
+                    .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
 
-                    // Get all selected nodes from main ag-grid table and filter only ones to deselect
-                    const nodesToDeselect = api
-                        ?.getSelectedNodes()
-                        ?.filter(({data = {}}) => toDeselectIds.includes(data.id));
+                // Get all selected nodes from main ag-grid table and filter only ones to deselect
+                const nodesToDeselect = api
+                    ?.getSelectedNodes()
+                    ?.filter(({data = {}}) => toDeselectIds.includes(data.id));
 
-                    nodesToDeselect?.forEach(node => node?.setSelected(false));
+                nodesToDeselect?.forEach(node => node?.setSelected(false));
 
-                    const updateSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
+                const updateSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
 
-                    const updatedState = currentUserSelectedRights.filter(right =>
-                        updateSelectedRowsIds.includes(right.id)
-                    );
+                const updatedState = currentUserSelectedRights.filter(right =>
+                    updateSelectedRowsIds.includes(right.id)
+                );
 
-                    const payload = updatedState.reduce((selectedRights, currentRight) => {
-                        selectedRights[currentRight.id] = currentRight;
-                        return selectedRights;
-                    }, {});
+                const payload = updatedState.reduce((selectedRights, currentRight) => {
+                    selectedRights[currentRight.id] = currentRight;
+                    return selectedRights;
+                }, {});
 
-                    const formatedRights = {[username]: payload};
+                const formatedRights = {[username]: payload};
 
-                    dispatch(storeFromSelectedTable(formatedRights));
-                }
+                dispatch(storeFromSelectedTable(formatedRights));
+
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -126,7 +117,7 @@ const SelectedRightsTable = ({
             rowData={currentUserSelectedRights}
             setSelectedColumnApi={setSelectedColumnApi}
             setSelectedGridApi={setSelectedGridApi}
-            isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
+            // isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
         />
     );
 };
