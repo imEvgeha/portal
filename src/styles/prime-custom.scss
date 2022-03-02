@@ -155,10 +155,11 @@ $element-color-orange-80: palette(orange, 80);
         }
 
         &.p-button-icon-only {
-            width: 41px;
+            width: 32px;
+            margin-left: 12px;
 
             @media (max-width: 1600px) {
-                width: 32px;
+                margin-left: 0;
             }
         }
 
