@@ -63,7 +63,6 @@ const NexusArray = ({
         const editedData = path && values[path].filter((obj, i) => {
             if(i === index && obj.selected) {
                 store.dispatch(addToast({
-                    summary: "Warning",
                     detail: 'Selected territory cannot be removed',
                     severity: 'error',
                 }));
