@@ -34,7 +34,6 @@ export function* resyncUpdate({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: `Successfully updated`,
             },
