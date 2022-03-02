@@ -48,7 +48,7 @@ const NexusDynamicForm = ({
 
     useEffect(() => {
         // eslint-disable-next-line prefer-destructuring
-        const firstErrorElement = document.getElementsByClassName('nexus-c-field__error')[0];
+        const firstErrorElement = document.getElementsByClassName('nexus-c-field--error')[0];
         if (firstErrorElement) firstErrorElement.scrollIntoView(false);
     }, [validationErrorCount]);
 
@@ -59,8 +59,8 @@ const NexusDynamicForm = ({
     };
 
     const showValidationError = () => {
-        const errorsCount = document.getElementsByClassName('nexus-c-field__error').length;
-        errorsCount && setValidationErrorCount(errorsCount);
+        const errorsCount = document.getElementsByClassName('nexus-c-field--error').length;
+        setValidationErrorCount(errorsCount);
     };
 
     const buttonsBuilder = (dirty, reset, errors) => {
@@ -84,7 +84,7 @@ const NexusDynamicForm = ({
                     isEmpty={isEmpty}
                     onCancel={onCancel}
                     seasonPersons={seasonPersons}
-                    showValidationError={showValidationError}
+                    showValidationError={showValidationError()}
                 />
             </>
         );
