@@ -7,6 +7,8 @@ import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {CANCEL, DELETE, REMOVE_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tag/constants';
 import {get} from 'lodash';
+import { store } from '../../../../../../src/index';
+import { addToast } from '../../../../lib/toast/NexusToastNotificationActions';
 import {
     buildSection,
     checkFieldDependencies,
@@ -58,7 +60,19 @@ const NexusArray = ({
 
     const onRemove = index => {
         const values = getValues();
-        const editedData = path && values[path].filter((obj, i) => i !== index);
+        const editedData = path && values[path].filter((obj, i) => {
+            if(i === index && obj.selected) {
+                store.dispatch(addToast({
+                    summary: "Warning",
+                    detail: 'Selected territory cannot be removed',
+                    severity: 'error',
+                }));
+                return true;
+            };
+            
+            return i !== index;
+        });
+
         setAllData(editedData);
         setFieldValue(path, editedData);
         closeModal && closeModal();
