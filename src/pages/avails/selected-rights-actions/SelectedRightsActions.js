@@ -43,7 +43,6 @@ import {
     BULK_DELETE_TOOLTIP_SFP,
     MARK_DELETED,
     BULK_DELETE_HEADER,
-    BULK_UNMATCH_SUCCESS_TOAST,
 } from './constants';
 import './SelectedRightsActions.scss';
 
@@ -180,7 +179,6 @@ export const SelectedRightsActions = ({
 
                 // Show success toast
                 addToast({
-                    summary: BULK_UNMATCH_SUCCESS_TOAST,
                     detail: `You have successfully unmatched ${unmatchedRights.length} right(s).
                          Please validate title fields.`,
                     severity: 'success',
@@ -290,7 +288,6 @@ export const SelectedRightsActions = ({
             toggleRefreshGridData(true);
 
             addToast({
-                summary: 'Right(s) added to Pre-Plan',
                 detail: `You have successfully added ${selectedRights.length} Right(s) to Pre-Plan`,
                 severity: 'success',
             });

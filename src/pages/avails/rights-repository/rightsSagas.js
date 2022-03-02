@@ -1,7 +1,6 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {
     SUCCESS_ICON,
-    SUCCESS_TITLE,
     ERROR_ICON,
     UPDATE_RIGHT_FAILED,
     UPDATE_RIGHT_SUCCESS_MESSAGE,
@@ -88,7 +87,6 @@ export function* fetchLinkedToOriginalRights({payload}) {
             yield put({
                 type: ADD_TOAST,
                 payload: {
-                    summary: SUCCESS_TITLE,
                     severity: SUCCESS_ICON,
                     detail: `${rightsWithoutDeps.length} ${
                         rightsWithoutDeps.length === 1 ? 'Right' : 'Rights'
@@ -123,7 +121,6 @@ export function* bulkDeleteSelectedRights({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: `${count} ${count === 1 ? 'Right' : 'Rights'} deleted`,
             },
@@ -196,7 +193,6 @@ export function* updateRight({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: UPDATE_RIGHT_SUCCESS_MESSAGE,
             },
@@ -213,9 +209,8 @@ export function* updateRight({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: UPDATE_RIGHT_FAILED,
                 severity: ERROR_ICON,
-                detail: `${error.message.message.slice(0, MAX_CHARS)}...`,
+                detail: `${UPDATE_RIGHT_FAILED} Detail: ${error.message.message.slice(0, MAX_CHARS)}...`,
             },
         });
     } finally {

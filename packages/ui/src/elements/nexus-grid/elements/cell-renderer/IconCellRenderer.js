@@ -25,7 +25,6 @@ const IconCellRenderer = params => {
     const idToFileDownloading = data.reportId;
 
     const successToast = {
-        summary: 'Success',
         severity: 'success',
         detail: 'File downloading started',
     };

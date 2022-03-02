@@ -15,7 +15,7 @@ exports[`TitlesSection should match snapshot 1`] = `
         0
         )
       </div>
-      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      <Button
         className="nexus-c-bulk-matching__titles-table-selected-btn"
         isDisabled={false}
         isSelected={false}
@@ -24,7 +24,7 @@ exports[`TitlesSection should match snapshot 1`] = `
         Selected (
         0
         )
-      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+      </Button>
     </div>
     <div
       className="nexus-c-bulk-matching__titles-table nexus-c-bulk-matching__titles-table--active"

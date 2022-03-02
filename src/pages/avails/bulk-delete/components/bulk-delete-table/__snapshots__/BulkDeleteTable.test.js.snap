@@ -7,7 +7,7 @@ exports[`BulkDeleteTable should match snapshot 1`] = `
   <div
     className="nexus-c-bulk-delete-table__entry-header"
   >
-    <WithAnalyticsContext(WithAnalyticsEvents(Checkbox))
+    <Checkbox
       isChecked={false}
       onChange={[Function]}
     />

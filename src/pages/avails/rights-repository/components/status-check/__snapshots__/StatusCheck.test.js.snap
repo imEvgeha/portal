@@ -156,14 +156,14 @@ exports[`StatusCheck should match snapshot 1`] = `
   <div
     className="nexus-c-status-check__btn-wrapper"
   >
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    <Button
       appearance="primary"
       className="nexus-c-status-check__button"
       isDisabled={false}
       onClick={[Function]}
     >
       OK
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </Button>
   </div>
 </div>
 `;

@@ -1,5 +1,5 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
-import { SUCCESS_ICON, SUCCESS_TITLE } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import { SUCCESS_ICON } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL, normalizeDataForStore} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {call, put, all, takeLatest, select, delay} from 'redux-saga/effects';
@@ -196,7 +196,6 @@ function* uploadIngest({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: `${UPLOAD_SUCCESS_MESSAGE} ${response.fileName}`,
             },

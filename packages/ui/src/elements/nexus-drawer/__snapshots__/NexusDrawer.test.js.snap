@@ -2,7 +2,7 @@
 
 exports[`NexusDrawer should match snapshot 1`] = `
 <Fragment>
-  <WithAnalyticsContext(WithAnalyticsEvents(Blanket))
+  <Blanket
     canClickThrough={false}
     isTinted={true}
     onBlanketClicked={[Function]}
@@ -10,14 +10,11 @@ exports[`NexusDrawer should match snapshot 1`] = `
   <div
     className="nexus-c-drawer nexus-c-drawer--from-right nexus-c-drawer--is-narrow-open"
   >
-    <AkPage
-      bannerHeight={52}
-      isBannerOpen={false}
-    >
-      <WithTheme(AkGrid)
+    <Page>
+      <GridWrapper
         layout="fluid"
       >
-        <WithTheme(AkGridColumn)>
+        <GridColumn>
           <div
             className="nexus-c-drawer__header nexus-c-drawer__header--from-right nexus-c-drawer__header--is-open"
           >
@@ -35,9 +32,9 @@ exports[`NexusDrawer should match snapshot 1`] = `
               onClick={[Function]}
             />
           </div>
-        </WithTheme(AkGridColumn)>
-      </WithTheme(AkGrid)>
-    </AkPage>
+        </GridColumn>
+      </GridWrapper>
+    </Page>
   </div>
 </Fragment>
 `;

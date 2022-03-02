@@ -4,7 +4,7 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Lozenge from '@atlaskit/lozenge';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
-import Select from '@atlaskit/select/dist/cjs/Select';
+import Select from '@atlaskit/select';
 import Textfield from '@atlaskit/textfield';
 import Tooltip from '@atlaskit/tooltip';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';

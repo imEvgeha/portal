@@ -38,20 +38,20 @@ exports[`IngestConfirmation should match snapshot 1`] = `
     <div
       className="nexus-c-ingest-confirmation__btn-wrapper"
     >
-      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      <Button
         appearance="subtle"
         className="nexus-c-ingest-confirmation__cancel-btn"
         onClick={[MockFunction]}
       >
         Cancel
-      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      </Button>
+      <Button
         appearance="primary"
         className="nexus-c-ingest-confirmation__continue-btn"
         onClick={[MockFunction]}
       >
         Continue
-      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+      </Button>
     </div>
   </div>
 </div>
