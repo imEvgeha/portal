@@ -11,6 +11,8 @@ import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {history} from '../../../index';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getLinkedToOriginalRightsV2, bulkDeleteRights} from '../availsService';
+import {postReSync} from '../status-log-rights-table/StatusLogService';
+import {POST_RESYNC_RIGHTS} from '../status-log-rights-table/statusLogActionTypes';
 import * as actionTypes from './rightsActionTypes';
 
 export function* storeRightsFilter({payload}) {
@@ -25,6 +27,20 @@ export function* storeRightsFilter({payload}) {
             payload: error,
         });
     }
+}
+
+export function* resyncUpdate({payload}) {
+    try {
+        yield call(postReSync, payload);
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                summary: SUCCESS_TITLE,
+                severity: SUCCESS_ICON,
+                detail: `Successfully updated`,
+            },
+        });
+    } catch (error) {}
 }
 
 export function* fetchLinkedToOriginalRights({payload}) {
@@ -217,5 +233,6 @@ export function* rightsWatcher() {
         takeEvery(actionTypes.ADD_RIGHTS_FILTER, storeRightsFilter),
         takeEvery(actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS, fetchLinkedToOriginalRights),
         takeEvery(actionTypes.BULK_DELETE_SELECTED_RIGHTS, bulkDeleteSelectedRights),
+        takeEvery(POST_RESYNC_RIGHTS, resyncUpdate),
     ]);
 }

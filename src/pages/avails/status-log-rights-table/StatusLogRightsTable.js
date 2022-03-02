@@ -8,7 +8,7 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../sync-log/syncLogConstants';
 import {STATUS_TAB} from '../rights-repository/constants';
@@ -26,7 +26,9 @@ const StatusLogRightsGrid = compose(
     withInfiniteScrolling({fetchData: getStatusLog})
 )(NexusGrid);
 
-const StatusLogRightsTable = ({activeTab, storeResyncRights}) => {
+const StatusLogRightsTable = ({activeTab}) => {
+    const dispatch = useDispatch();
+
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
 
@@ -61,7 +63,7 @@ const StatusLogRightsTable = ({activeTab, storeResyncRights}) => {
                     }, {});
 
                     const formated = {rights: Object.values(payload)};
-                    storeResyncRights(formated);
+                    dispatch(storeResyncRights(formated));
                 }
                 break;
 
@@ -110,17 +112,8 @@ const StatusLogRightsTable = ({activeTab, storeResyncRights}) => {
     );
 };
 
-const mapDispatchToProps = dispatch => ({
-    storeResyncRights: payload => dispatch(storeResyncRights(payload)),
-});
-
-export default connect(null, mapDispatchToProps)(StatusLogRightsTable);
-
 StatusLogRightsTable.propTypes = {
-    storeResyncRights: PropTypes.func,
     activeTab: PropTypes.string.isRequired,
 };
 
-StatusLogRightsTable.defaultProps = {
-    storeResyncRights: () => null,
-};
+export default StatusLogRightsTable;

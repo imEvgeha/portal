@@ -1,52 +1,34 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import classNames from 'classnames';
 import {isEmpty} from 'lodash';
 import {useDispatch} from 'react-redux';
-import {postReSync} from '../status-log-rights-table/StatusLogService';
+import {postReSyncRights} from '../status-log-rights-table/statusLogActions';
 import {RE_SYNC, RE_SYNC_TOOLTIP} from './constants';
 import './StatusRightsActions.scss';
 
 export const StatusRightsActions = ({statusLogResyncRights}) => {
     const node = useRef();
     const dispatch = useDispatch();
-    const [isReSyncActive, setIsReSyncActive] = useState(false);
 
-    useEffect(() => {
-        statusLogResyncRights && !isEmpty(statusLogResyncRights.rights)
-            ? setIsReSyncActive(true)
-            : setIsReSyncActive(false);
-    }, [statusLogResyncRights]);
-
-    const successToast = {
-        summary: 'Success',
-        severity: 'success',
-        detail: ' Successfully updated',
-    };
-
-    const reSync = statusLogResyncRights => {
-        postReSync(statusLogResyncRights).then(res => {
-            dispatch(addToast(successToast));
-        });
-    };
+    const isReSyncInactive = isEmpty(statusLogResyncRights.rights);
 
     return (
         <>
             <div
                 className={`${
-                    !isReSyncActive ? 'nexus-c-status-rights-actions' : 'nexus-c-status-rights-actions--is-active'
-                } d-flex align-items-center`}
+                    isReSyncInactive ? 'nexus-c-status-rights-actions' : 'nexus-c-status-rights-actions--is-active'
+                }
+                     d-flex align-items-center`}
                 ref={node}
             >
                 <div
                     className={classNames('nexus-c-status-rights-actions__menu-item', {
-                        'nexus-c-status-rights-actions__menu-item--is-active': isReSyncActive,
+                        'nexus-c-status-rights-actions__menu-item--is-active': !isReSyncInactive,
                     })}
                     data-test-id="bulk-match"
-                    onClick={() => reSync(statusLogResyncRights)}
+                    onClick={() => dispatch(postReSyncRights(statusLogResyncRights))}
                 >
                     <NexusTooltip content={RE_SYNC_TOOLTIP} isDisabled={false}>
                         <div>{RE_SYNC}</div>
@@ -57,7 +39,7 @@ export const StatusRightsActions = ({statusLogResyncRights}) => {
     );
 };
 
-export default withToasts(StatusRightsActions);
+export default StatusRightsActions;
 
 StatusRightsActions.propTypes = {
     statusLogResyncRights: PropTypes.object,

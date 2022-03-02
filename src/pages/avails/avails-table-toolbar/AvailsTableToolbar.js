@@ -76,6 +76,10 @@ const AvailsTableToolbar = ({
         if ([PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab)) {
             return selectedPrePlanRights.length;
         }
+        if ([STATUS_TAB].includes(activeTab)) {
+            return statusLogResyncRights['rights']?.length;
+        }
+
         return 0;
     };
 
@@ -96,6 +100,18 @@ const AvailsTableToolbar = ({
                                 setIsSelected={setIsSelected}
                                 isSelected={isSelected}
                                 inNewDesign
+                            />
+                        )}
+                        {activeTab === STATUS_TAB && (
+                            <SelectedButton
+                                selectedRightsCount={getAmountOfSelectedRowsForCurrentTab()}
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                                setActiveTabIndex={setActiveTabIndex}
+                                setIsSelected={setIsSelected}
+                                isSelected={isSelected}
+                                inNewDesign
+                                showTooltip={false}
                             />
                         )}
                     </div>

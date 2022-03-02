@@ -1,17 +1,212 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StatusLogRightsTable should match snapshot 1`] = `
-<StatusLogRightsTable
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
+<div
+  className="nexus-c-status-log-table"
+>
+  <Component
+    className="nexus-c-status-log-grid"
+    columnDefs={
+      Array [
+        Object {
+          "cellStyle": [Function],
+          "checkboxSelection": true,
+          "field": "action",
+          "filter": false,
+          "headerName": "",
+          "lockPinned": true,
+          "lockPosition": true,
+          "lockVisible": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
+          "colId": "status",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "status",
+          "headerName": "Status",
+          "javaVariableName": "status",
+          "minWidth": 100,
+          "searchDataType": "string",
+        },
+        Object {
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
+          "colId": "rightTitle",
+          "field": "rightTitle",
+          "headerName": "Right Title",
+          "javaVariableName": "rightTitle",
+          "minWidth": 150,
+        },
+        Object {
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
+          "colId": "entityId",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "entityId",
+          "headerName": "Right ID",
+          "javaVariableName": "entityId",
+          "minWidth": 150,
+          "searchDataType": "string",
+        },
+        Object {
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
+          "colId": "titleId",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "titleId",
+          "headerName": "Title ID",
+          "javaVariableName": "titleId",
+          "minWidth": 150,
+          "searchDataType": "string",
+        },
+        Object {
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
+          "colId": "externalSystem",
+          "field": "externalSystem",
+          "headerName": "External System",
+          "javaVariableName": "externalSystem",
+          "minWidth": 120,
+        },
+        Object {
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
+          "colId": "publishedAt",
+          "dataType": "timestamp",
+          "enableSearch": true,
+          "field": "publishedAt",
+          "headerName": "Publish date",
+          "javaVariableName": "publishedAt",
+          "minWidth": 150,
+          "searchDataType": "regionalMidnight",
+        },
+        Object {
+          "cellRenderer": "publishErrors",
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
+          "colId": "publishErrors",
+          "field": "publishErrors",
+          "headerName": "Errors",
+          "javaVariableName": "publishErrors",
+          "minWidth": 150,
+        },
+      ]
     }
-  }
-  storeResyncRights={[Function]}
-/>
+    isGridHidden={true}
+    mapping={
+      Array [
+        Object {
+          "colId": "status",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "status",
+          "headerName": "Status",
+          "javaVariableName": "status",
+          "minWidth": 100,
+          "searchDataType": "string",
+        },
+        Object {
+          "colId": "rightTitle",
+          "field": "rightTitle",
+          "headerName": "Right Title",
+          "javaVariableName": "rightTitle",
+          "minWidth": 150,
+        },
+        Object {
+          "colId": "entityId",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "entityId",
+          "headerName": "Right ID",
+          "javaVariableName": "entityId",
+          "minWidth": 150,
+          "searchDataType": "string",
+        },
+        Object {
+          "colId": "titleId",
+          "dataType": "string",
+          "enableSearch": true,
+          "field": "titleId",
+          "headerName": "Title ID",
+          "javaVariableName": "titleId",
+          "minWidth": 150,
+          "searchDataType": "string",
+        },
+        Object {
+          "colId": "externalSystem",
+          "field": "externalSystem",
+          "headerName": "External System",
+          "javaVariableName": "externalSystem",
+          "minWidth": 120,
+        },
+        Object {
+          "colId": "publishedAt",
+          "dataType": "timestamp",
+          "enableSearch": true,
+          "field": "publishedAt",
+          "headerName": "Publish date",
+          "javaVariableName": "publishedAt",
+          "minWidth": 150,
+          "searchDataType": "regionalMidnight",
+        },
+        Object {
+          "cellRenderer": "publishErrors",
+          "colId": "publishErrors",
+          "field": "publishErrors",
+          "headerName": "Errors",
+          "javaVariableName": "publishErrors",
+          "minWidth": 150,
+        },
+      ]
+    }
+    onGridEvent={[Function]}
+    rowSelection="multiple"
+    suppressRowClickSelection={true}
+  />
+  <NexusDrawer
+    direction="fromRight"
+    headerContent={null}
+    isClosedOnBlur={true}
+    isLoading={false}
+    isOpen={false}
+    onClose={[Function]}
+    title="Publish Errors"
+    width="wider"
+  >
+    <div
+      className="nexus-c-sync-log-table__errors-table"
+    >
+      <div
+        className="nexus-c-sync-log-table__errors-table--header-cell"
+        key="type"
+      >
+        TYPE
+      </div>
+      <div
+        className="nexus-c-sync-log-table__errors-table--header-cell"
+        key="description"
+      >
+        DESCRIPTION
+      </div>
+    </div>
+  </NexusDrawer>
+</div>
 `;
