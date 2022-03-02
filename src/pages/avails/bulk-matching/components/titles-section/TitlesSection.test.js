@@ -36,6 +36,6 @@ describe('TitlesSection', () => {
         wrapper.setProps({
             isTitlesTableLoading: true,
         });
-        expect(wrapper.find('Spinner').length).toEqual(1);
+        expect(wrapper.find('.nexus-c-bulk-matching__spinner').length).toEqual(1);
     });
 });

@@ -7,7 +7,7 @@ exports[`IconButton should match snapshot 1`] = `
   <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
     content="Icon Button Label"
   >
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    <Button
       appearance="subtle"
       iconBefore={
         <CrossIcon
@@ -16,7 +16,6 @@ exports[`IconButton should match snapshot 1`] = `
       }
       isDisabled={false}
       onClick={[Function]}
-      theme={[Function]}
     />
   </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
 </div>
