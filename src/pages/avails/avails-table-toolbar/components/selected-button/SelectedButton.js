@@ -6,7 +6,7 @@ import './SelectedButton.scss';
 const TOOLTIP_BUTTON_UNSELECTED_MSG = 'Click to view selected items';
 const TOOLTIP_BUTTON_SELECTED_MSG = 'Click to view all items';
 
-const SelectedButton = ({selectedRightsCount, isSelected, setIsSelected}) => {
+const SelectedButton = ({selectedRightsCount, isSelected, setIsSelected, showTooltip}) => {
     const disabled = selectedRightsCount === 0 && !isSelected;
 
     const amountOfSelectedRowsTitle = `${selectedRightsCount ? `(${selectedRightsCount})` : ''} Selected`;
@@ -30,7 +30,7 @@ const SelectedButton = ({selectedRightsCount, isSelected, setIsSelected}) => {
             offLabel={amountOfSelectedRowsTitle}
             checked={isSelected}
             onChange={onClick}
-            tooltip={getTooltipTitle()}
+            tooltip={showTooltip ? getTooltipTitle() : ''}
             tooltipOptions={{position: 'top'}}
         />
     );
@@ -40,10 +40,12 @@ SelectedButton.propTypes = {
     isSelected: PropTypes.bool.isRequired,
     setIsSelected: PropTypes.func.isRequired,
     selectedRightsCount: PropTypes.number,
+    showTooltip: PropTypes.bool,
 };
 
 SelectedButton.defaultProps = {
     selectedRightsCount: 0,
+    showTooltip: true,
 };
 
 export default SelectedButton;

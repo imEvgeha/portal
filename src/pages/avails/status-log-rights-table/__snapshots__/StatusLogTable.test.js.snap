@@ -9,6 +9,23 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
+          "cellStyle": [Function],
+          "checkboxSelection": true,
+          "field": "action",
+          "filter": false,
+          "headerName": "",
+          "lockPinned": true,
+          "lockPosition": true,
+          "lockVisible": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -93,7 +110,7 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
         },
       ]
     }
-    isGridHidden={false}
+    isGridHidden={true}
     mapping={
       Array [
         Object {
@@ -161,7 +178,7 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
       ]
     }
     onGridEvent={[Function]}
-    rowSelection="single"
+    rowSelection="multiple"
     suppressRowClickSelection={true}
   />
   <NexusDrawer

@@ -46,7 +46,7 @@ import DOPService from '../selected-for-planning/DOP-services';
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import SelectedPreplanTable from '../selected-preplan-table/SelectedPreplanTable';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
-import {StatusLogRightsTable} from '../status-log-rights-table/StatusLogRightsTable';
+import StatusLogRightsTable from '../status-log-rights-table/StatusLogRightsTable';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
