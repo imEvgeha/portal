@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import './AvailsTableToolbar.scss';
 import NexusTableExportDropdown from '../avails-table-export-dropdown/AvailsTableExportDropdown';
 import AvailsTableReleaseReport from '../avails-table-release-report/AvailsTableReleaseReport';
@@ -12,6 +13,7 @@ import {
     STATUS_TAB,
     PRE_PLAN_SELECTED_TAB,
 } from '../rights-repository/constants';
+import {createStatusLogResyncRightsSelector} from '../rights-repository/rightsSelectors';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import {StatusRightsActions} from '../status-rights-actions/StatusRightsActions';
 import SelectedButton from './components/selected-button/SelectedButton';
@@ -48,6 +50,7 @@ const AvailsTableToolbar = ({
     prePlanGridApi,
     selectedForPlanningColumnApi,
     selectedForPlanningGridApi,
+    statusLogResyncRights,
     isSelected,
     setIsSelected,
 }) => {
@@ -73,6 +76,10 @@ const AvailsTableToolbar = ({
         if ([PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab)) {
             return selectedPrePlanRights.length;
         }
+        if ([STATUS_TAB].includes(activeTab)) {
+            return statusLogResyncRights['rights']?.length;
+        }
+
         return 0;
     };
 
@@ -93,6 +100,18 @@ const AvailsTableToolbar = ({
                                 setIsSelected={setIsSelected}
                                 isSelected={isSelected}
                                 inNewDesign
+                            />
+                        )}
+                        {activeTab === STATUS_TAB && (
+                            <SelectedButton
+                                selectedRightsCount={getAmountOfSelectedRowsForCurrentTab()}
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                                setActiveTabIndex={setActiveTabIndex}
+                                setIsSelected={setIsSelected}
+                                isSelected={isSelected}
+                                inNewDesign
+                                showTooltip={false}
                             />
                         )}
                     </div>
@@ -127,7 +146,9 @@ const AvailsTableToolbar = ({
                         />
                     ) : null}
 
-                    {isItSamePage(STATUS_TAB) ? <StatusRightsActions /> : null}
+                    {isItSamePage(STATUS_TAB) ? (
+                        <StatusRightsActions statusLogResyncRights={statusLogResyncRights} />
+                    ) : null}
                     {isItSamePage(SELECTED_FOR_PLANNING_TAB) && null}
                 </div>
             </div>
@@ -197,6 +218,7 @@ AvailsTableToolbar.propTypes = {
     selectedForPlanningColumnApi: PropTypes.object,
     selectedForPlanningGridApi: PropTypes.object,
     setActiveTabIndex: PropTypes.func,
+    statusLogResyncRights: PropTypes.object,
     isSelected: PropTypes.bool.isRequired,
     setIsSelected: PropTypes.func.isRequired,
 };
@@ -222,6 +244,14 @@ AvailsTableToolbar.defaultProps = {
     selectedForPlanningColumnApi: {},
     selectedForPlanningGridApi: {},
     setActiveTabIndex: () => null,
+    statusLogResyncRights: {},
 };
 
-export default AvailsTableToolbar;
+const mapStateToProps = () => {
+    const statusLogResyncRightsSelector = createStatusLogResyncRightsSelector();
+    return (state, props) => ({
+        statusLogResyncRights: statusLogResyncRightsSelector(state, props),
+    });
+};
+
+export default connect(mapStateToProps)(AvailsTableToolbar);

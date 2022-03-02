@@ -5,9 +5,29 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
   <div
     className="nexus-c-selected-rights-actions d-flex align-items-center"
   >
-    <r
+    <e
       I="read"
       a="DopTasks"
+      ability={
+        e {
+          Symbol(private): Object {
+            "RuleType": [Function],
+            "aliases": Object {
+              "crud": Array [
+                "create",
+                "read",
+                "update",
+                "delete",
+              ],
+            },
+            "events": Object {},
+            "hasPerFieldRules": false,
+            "indexedRules": Object {},
+            "mergedRules": Object {},
+            "originalRules": Array [],
+          },
+        }
+      }
     >
       <div
         className="nexus-c-selected-rights-actions__menu-item"
@@ -18,7 +38,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
           History
         </div>
       </div>
-    </r>
+    </e>
     <div
       className="nexus-c-selected-rights-actions__menu-item"
       data-test-id="bulk-match"

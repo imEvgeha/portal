@@ -2,7 +2,6 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotifica
 import {
     SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE,
     SUCCESS_ICON,
-    SUCCESS_TITLE
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {all, call, put, takeLatest} from 'redux-saga/effects';
 import {
@@ -45,7 +44,6 @@ function* saveFulfillmentOrder(requestMethod, {payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE,
             },

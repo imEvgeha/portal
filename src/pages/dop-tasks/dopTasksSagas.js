@@ -2,11 +2,8 @@ import {TOGGLE_REFRESH_GRID_DATA} from '@vubiquity-nexus/portal-ui/lib/grid/grid
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {
     SUCCESS_ICON,
-    SUCCESS_TITLE,
     ERROR_ICON,
-    ERROR_TITLE,
     WARNING_ICON,
-    WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {uniqBy} from 'lodash';
 import {call, put, all, takeLatest} from 'redux-saga/effects';
@@ -64,7 +61,6 @@ function* assignTasks({payload}) {
         switch (statusResponse.status) {
             case jobStatus.IN_PROGRESS: {
                 toastParams = {
-                    summary: SUCCESS_TITLE,
                     severity: SUCCESS_ICON,
                     detail: 'Request still in process, please refresh the data in a short while.',
                 };
@@ -72,7 +68,6 @@ function* assignTasks({payload}) {
             }
             case jobStatus.SUCCESS: {
                 toastParams = {
-                    summary: SUCCESS_TITLE,
                     severity: SUCCESS_ICON,
                     detail: `${taskIds.length} tasks successfully ${action.toLowerCase()}ed to ${userId}.`,
                 };
@@ -80,7 +75,6 @@ function* assignTasks({payload}) {
             }
             case jobStatus.ERROR: {
                 toastParams = {
-                    summary: ERROR_TITLE,
                     severity: ERROR_ICON,
                     detail: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
                 };
@@ -95,7 +89,6 @@ function* assignTasks({payload}) {
                     {success: 0, error: 0}
                 );
                 toastParams = {
-                    summary: WARNING_TITLE,
                     severity: WARNING_ICON,
                     sticky: true,
                     detail: `${jobDetails.success} tasks ${action.toLowerCase()}ed successfully to ${userId}.
@@ -105,7 +98,6 @@ function* assignTasks({payload}) {
             }
             default:
                 toastParams = {
-                    summary: ERROR_TITLE,
                     severity: ERROR_ICON,
                     detail: `Status: ${statusResponse.status}`,
                 };
@@ -120,7 +112,6 @@ function* assignTasks({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: ERROR_TITLE,
                 severity: ERROR_ICON,
                 detail: `Error in ${action.toLowerCase()}ing ${taskIds.length} tasks to ${userId}.`,
             },
@@ -138,7 +129,6 @@ function* unAssignTasks({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: `${taskIds.length} tasks successfully un-assigned`,
             },
@@ -147,7 +137,6 @@ function* unAssignTasks({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: ERROR_TITLE,
                 severity: ERROR_ICON,
                 detail: `Error in un-assigning ${taskIds.length} tasks.`,
             },
@@ -167,7 +156,6 @@ function* changeDOPPriority({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: `Changed priority of ${taskIds.length} tasks to ${priority}.`,
             },
@@ -176,7 +164,6 @@ function* changeDOPPriority({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: ERROR_TITLE,
                 severity: ERROR_ICON,
                 detail: `Error in changing priority of ${taskIds.length} tasks.`,
             },

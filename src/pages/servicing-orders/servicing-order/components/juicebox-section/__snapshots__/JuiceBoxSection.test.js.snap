@@ -27,9 +27,9 @@ exports[`JuiceBoxSection Language Only test Should match snapshot 1`] = `
         value="SPANISH"
       />
     </div>
-    <Component>
+    <HelperMessage>
       Type to change language
-    </Component>
+    </HelperMessage>
   </div>
 </div>
 `;
@@ -61,9 +61,9 @@ exports[`JuiceBoxSection with Language Should match snapshot 1`] = `
         value="English"
       />
     </div>
-    <Component>
+    <HelperMessage>
       Type to change language
-    </Component>
+    </HelperMessage>
   </div>
 </div>
 `;
@@ -77,7 +77,6 @@ exports[`JuiceBoxSection without Language Should match snapshot 1`] = `
     className="nexus-jb-lang-label"
   >
     <SectionMessage
-      appearance="info"
       title="Data not available"
     >
       <p>

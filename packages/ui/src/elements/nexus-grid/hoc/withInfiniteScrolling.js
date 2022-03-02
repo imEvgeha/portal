@@ -5,7 +5,7 @@ import {cleanObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {omit, isEqual, debounce} from 'lodash';
 import {connect} from 'react-redux';
 import {useDateTimeContext} from '../../../../lib/elements/nexus-date-time-context/NexusDateTimeProvider';
-import {toggleRefreshGridData, exportGridResponseData} from '../../../grid/gridActions';
+import {toggleRefreshGridData} from '../../../grid/gridActions';
 import {getShouldGridRefresh} from '../../../grid/gridSelectors';
 import {filterBy, sortBy} from '../utils';
 import usePrevious from './hooks/usePrevious';
@@ -39,12 +39,6 @@ const withInfiniteScrolling =
             const previousParams = usePrevious(props.params);
             const [gridApi, setGridApi] = useState();
             const {isLocal} = useDateTimeContext();
-
-            const [responseData, setResponseData] = useState();
-
-            useEffect(() => {
-                responseData && props.exportGridResponseData(responseData);
-            }, [responseData]);
 
             useEffect(() => {
                 return () => {
@@ -133,8 +127,6 @@ const withInfiniteScrolling =
 
                 fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
                     .then(response => {
-                        const allData = {response, preparedParams, pageNumber, pageSize, sortParams, body};
-                        setResponseData(allData);
                         const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
 
                         if (typeof props.setTotalCount === 'function' && isMounted.current) {
@@ -258,7 +250,6 @@ const withInfiniteScrolling =
 
         const mapDispatchToProps = dispatch => ({
             toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
-            exportGridResponseData: payload => dispatch(exportGridResponseData(payload)),
         });
 
         return connect(mapStateToProps, mapDispatchToProps)(ComposedComponent);

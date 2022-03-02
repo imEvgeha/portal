@@ -1,7 +1,7 @@
 import React, {useState, useEffect, memo} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import Tag from '@atlaskit/tag';
+import {SimpleTag as Tag} from '@atlaskit/tag';
 import {isEmpty} from 'lodash';
 import RightsURL from '../../legacy/containers/avail/util/RightsURL';
 import BulkDeleteActions from './components/bulk-delete-actions/BulkDeleteActions';

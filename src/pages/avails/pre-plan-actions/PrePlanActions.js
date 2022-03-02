@@ -2,7 +2,6 @@ import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {SUCCESS_TITLE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
@@ -94,7 +93,6 @@ export const PrePlanActions = ({
         });
         if (!selectedList) {
             addToast({
-                summary: WARNING_TITLE,
                 detail: NO_TERRITORIES_SELECTED,
                 severity: 'warn',
                 sticky: true,
@@ -210,7 +208,6 @@ export const PrePlanActions = ({
 
     const dispatchSuccessToast = noOfItems => {
         addToast({
-            summary: SUCCESS_TITLE,
             detail: getSuccessToastMsg(noOfItems),
             severity: 'success',
         });

@@ -22,8 +22,6 @@ exports[`NexusPersonRO should match snapshot 1`] = `
       >
         <Lozenge
           appearance="default"
-          isBold={false}
-          maxWidth={200}
         >
           Actor:
         </Lozenge>

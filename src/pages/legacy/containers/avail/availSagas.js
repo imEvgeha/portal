@@ -1,9 +1,8 @@
 import React from 'react';
 import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
-    EDIT_RIGHT_ERROR_TITLE,
-    CREATE_NEW_RIGHT_ERROR_TITLE,
     ERROR_ICON,
+    ERROR_TITLE,
     RIGHT_ERROR_MSG_MERGED,
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
@@ -212,7 +211,6 @@ export function* handleMatchingRights({payload}) {
     const {error, right, isEdit, push, removeToast} = payload;
     const {message: {mergeRights, message, rightIDs} = {}, status} = error || {};
     const toastProps = {
-        summary: isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE,
         severity: ERROR_ICON,
         detail: message,
     };
@@ -228,7 +226,7 @@ export function* handleMatchingRights({payload}) {
                 ...toastProps,
                 content: (
                     <ToastBody
-                        summary={isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE}
+                        summary={ERROR_TITLE}
                         detail={message}
                         severity={'error'}
                     >

@@ -68,7 +68,7 @@ const AvailsTableReleaseReport = ({
                 setIsLoading(false);
                 setIsOpen(false);
                 addToast({
-                    summary: ERROR_MESSAGE,
+                    detail: ERROR_MESSAGE,
                     severity: 'error',
                 });
             });
