@@ -128,11 +128,8 @@ const RightsRepository = ({
     }, []);
 
     useEffect(() => {
-        // deselect the selected ingest when the user changes tab
-        deselectIngest();
-    }, [activeTab]);
-
-    useEffect(() => {
+        setActiveTabIndex(0);
+        setActiveTab(RIGHTS_TAB);
         const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
         const timer = setInterval(() => {
             if (updatedAttachment?.status === 'PENDING' && attachment?.status === 'PENDING')
@@ -686,7 +683,7 @@ const RightsRepository = ({
                 selectedForPlanningGridApi={selectedForPlanningGridApi}
                 statusRightsCount={statusLogCount}
             />
-            {!isEmpty(selectedIngest) && attachment && (
+            {!isEmpty(selectedIngest) && attachment && activeTab === RIGHTS_TAB && (
                 <Ingest
                     ingest={selectedIngest}
                     deselectIngest={deselectIngest}
