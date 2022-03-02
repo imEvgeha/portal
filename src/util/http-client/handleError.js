@@ -2,7 +2,7 @@
 import React from 'react';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import { ERROR_TITLE } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {Button} from 'primereact/button';
 import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
@@ -47,7 +47,6 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
         title: errorMessage,
     };
     const defaultErrorToast = {
-        summary: ERROR_TITLE,
         severity: 'error',
     };
 
@@ -70,7 +69,7 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
                   severity: 'error',
                   content: (
                       <ToastBody
-                          summary={ERROR_MODAL.title}
+                          summary={ERROR_TITLE}
                           detail={description || message || data.message || JSON.stringify(data) || errorMessage}
                           severity="error"
                       >

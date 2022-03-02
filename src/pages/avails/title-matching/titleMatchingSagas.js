@@ -3,7 +3,6 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotifica
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {
     ERROR_ICON,
-    ERROR_TITLE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
     TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
@@ -139,7 +138,6 @@ function* mergeAndStoreTitles({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: ERROR_TITLE,
                 severity: ERROR_ICON,
                 detail: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
             },

@@ -1,7 +1,6 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {
     SUCCESS_ICON, 
-    SUCCESS_TITLE,
     REPLAY_EVENT_SUCCESS_MESSAGE,
     REPLICATE_EVENT_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
@@ -25,7 +24,6 @@ export function* replayEvent(requestMethod, {payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: REPLAY_EVENT_SUCCESS_MESSAGE,
             },
@@ -55,7 +53,6 @@ export function* replicateEvent(requestMethod, {payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: REPLICATE_EVENT_SUCCESS_MESSAGE,
             },
