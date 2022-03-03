@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
@@ -28,6 +28,10 @@ const StatusLogRightsGrid = compose(
 
 const StatusLogRightsTable = ({activeTab}) => {
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(storeResyncRights({}));
+    }, []);
 
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
