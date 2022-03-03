@@ -128,6 +128,10 @@ const RightsRepository = ({
     }, []);
 
     useEffect(() => {
+        setIsSelected(false);
+    }, [activeTab]);
+
+    useEffect(() => {
         setActiveTabIndex(0);
         setActiveTab(RIGHTS_TAB);
         const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
@@ -212,7 +216,7 @@ const RightsRepository = ({
 
             //     // Filter selected rights only when ingest is selected
             if (selectedIngest) {
-                gridApi.getSelectedRows()?.forEach(row => {
+                gridApi?.getSelectedRows()?.forEach(row => {
                     if (selectedIds?.includes(row.id)) {
                         loadedSelectedRights.push(row);
                     }
@@ -253,17 +257,19 @@ const RightsRepository = ({
 
     // Fetch and set DOP projects count for current user
     useEffect(() => {
-        DOPService.getUsersProjectsList(1, 1)
-            .then(([response, headers]) => {
-                const total = parseInt(headers.get('X-Total-Count') || response.length);
-                if (isMounted.current) {
-                    setPlanningRightsCount(total);
-                }
-            })
-            .catch(error => {
-                // error-handling here
-            });
-    }, [activeTab, get(prePlanRights, `[${username}].length`, 0), isPlanningTabRefreshed]);
+        if (activeTab === SELECTED_FOR_PLANNING_TAB) {
+            DOPService.getUsersProjectsList(1, 1)
+                .then(([response, headers]) => {
+                    const total = parseInt(headers.get('X-Total-Count') || response.length);
+                    if (isMounted.current) {
+                        setPlanningRightsCount(total);
+                    }
+                })
+                .catch(error => {
+                    // error-handling here
+                });
+        }
+    }, [activeTab]);
 
     // Fetch only pre-plan rights from the current user
     useEffect(() => {
@@ -427,7 +433,7 @@ const RightsRepository = ({
 
         if (Object.keys(data).length > 0 && data.validationErrors.length > 0 && colDef.colId !== 'icon') {
             let severityType = '';
-            data.validationErrors.forEach(function (validation) {
+            data?.validationErrors?.forEach(function (validation) {
                 const fieldName = validation.fieldName.includes('[')
                     ? validation.fieldName.split('[')[0]
                     : validation.fieldName;
@@ -515,10 +521,10 @@ const RightsRepository = ({
                 setColumnApi(gridColumnApi);
                 break;
             case READY:
-                setGridApi(api);
+                api && setGridApi(api);
                 setColumnApi(gridColumnApi);
                 if (repositoryFilterModel.current) {
-                    api.setFilterModel(repositoryFilterModel.current);
+                    api?.setFilterModel(repositoryFilterModel.current);
                 }
                 break;
             case SELECTION_CHANGED: {
@@ -726,30 +732,27 @@ const RightsRepository = ({
                     rowData={selectedRepoRights}
                     notFilterableColumns={['action', 'buttons']}
                     activeTab={activeTab}
-                    selectedColumnApi={selectedColumnApi}
-                    setSelectedColumnApi={setSelectedColumnApi}
                     selectedFilter={selectedFilter}
                     setSelectedFilter={setSelectedFilter}
                     selectedRepoRights={selectedRepoRights}
-                    gridApi={gridApi}
                     selectedRights={selectedRights}
                     username={username}
-                    selectedGridApi={selectedGridApi}
-                    setSelectedGridApi={setSelectedGridApi}
                 />
             )}
-            <PreplanRightsTable
-                columnDefs={updatedColumnDefsCheckBoxHeader}
-                prePlanRepoRights={currentUserPrePlanRights}
-                context={{selectedRows: selectedPrePlanRights}}
-                activeTab={activeTab}
-                mapping={mapping}
-                setPreplanRights={setPreplanRights}
-                setPrePlanColumnApi={setPrePlanColumnApi}
-                setPrePlanGridApi={setPrePlanGridApi}
-                setSelectedPrePlanRights={setSelectedPrePlanRights}
-                username={username}
-            />
+            {activeTab === PRE_PLAN_TAB && !isSelected && (
+                <PreplanRightsTable
+                    columnDefs={updatedColumnDefsCheckBoxHeader}
+                    prePlanRepoRights={currentUserPrePlanRights}
+                    context={{selectedRows: selectedPrePlanRights}}
+                    activeTab={activeTab}
+                    mapping={mapping}
+                    setPreplanRights={setPreplanRights}
+                    setPrePlanColumnApi={setPrePlanColumnApi}
+                    setPrePlanGridApi={setPrePlanGridApi}
+                    setSelectedPrePlanRights={setSelectedPrePlanRights}
+                    username={username}
+                />
+            )}
             {activeTab === PRE_PLAN_TAB && isSelected && (
                 <SelectedPreplanTable
                     columnDefs={updatedColumnDefsCheckBoxHeader}
