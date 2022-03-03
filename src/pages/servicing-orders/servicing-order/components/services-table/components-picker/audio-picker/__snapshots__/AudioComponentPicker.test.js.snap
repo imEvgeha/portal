@@ -16,7 +16,7 @@ exports[`AudioChannelsTable should match snapshot 1`] = `
         Object {
           "cells": Array [
             Object {
-              "content": <WithAnalyticsContext(WithAnalyticsEvents(Checkbox))
+              "content": <Memo(Checkbox)
                 id="header-check"
                 isChecked={false}
                 name="header-check"

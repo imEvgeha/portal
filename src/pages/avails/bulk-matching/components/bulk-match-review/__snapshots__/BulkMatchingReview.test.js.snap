@@ -22,12 +22,12 @@ exports[`BulkMatchingReview should match snapshot 1`] = `
     data={Array []}
     isFullHeight={false}
   />
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+  <Button
     appearance="primary"
     className="nexus-c-bulk-matching-review__btn"
     onClick={[Function]}
   >
     Done
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </Button>
 </div>
 `;

@@ -46,7 +46,7 @@ import DOPService from '../selected-for-planning/DOP-services';
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import SelectedPreplanTable from '../selected-preplan-table/SelectedPreplanTable';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
-import {StatusLogRightsTable} from '../status-log-rights-table/StatusLogRightsTable';
+import StatusLogRightsTable from '../status-log-rights-table/StatusLogRightsTable';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
@@ -128,12 +128,12 @@ const RightsRepository = ({
     }, []);
 
     useEffect(() => {
-        // deselect the selected ingest when the user changes tab
-        deselectIngest();
         setIsSelected(false);
     }, [activeTab]);
 
     useEffect(() => {
+        setActiveTabIndex(0);
+        setActiveTab(RIGHTS_TAB);
         const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
         const timer = setInterval(() => {
             if (updatedAttachment?.status === 'PENDING' && attachment?.status === 'PENDING')
@@ -689,7 +689,7 @@ const RightsRepository = ({
                 selectedForPlanningGridApi={selectedForPlanningGridApi}
                 statusRightsCount={statusLogCount}
             />
-            {!isEmpty(selectedIngest) && attachment && (
+            {!isEmpty(selectedIngest) && attachment && activeTab === RIGHTS_TAB && (
                 <Ingest
                     ingest={selectedIngest}
                     deselectIngest={deselectIngest}

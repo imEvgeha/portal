@@ -517,7 +517,7 @@ const NexusField = ({
                     }
                     {...props}
                 >
-                    {({fieldProps, error}) => (
+                    {({fieldProps}) => (
                         <>
                             {!FIELDS_WITHOUT_LABEL.includes(type) &&
                                 renderLabel(label, required, tooltip, isGridLayout, isRequiredVZ, oneIsRequiredVZ)}
@@ -527,7 +527,7 @@ const NexusField = ({
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
-                                {error && renderError({...fieldProps}, error)}
+                                {validationError && renderError(validationError)}
                             </div>
                         </>
                     )}

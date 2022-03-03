@@ -10,7 +10,7 @@ exports[`BulkDeleteSelectedRight should match snapshot 1`] = `
     <div
       className="nexus-c-bulk-delete-selected-right__checkbox"
     >
-      <WithAnalyticsContext(WithAnalyticsEvents(Checkbox))
+      <Checkbox
         isChecked={true}
         onChange={[Function]}
       />

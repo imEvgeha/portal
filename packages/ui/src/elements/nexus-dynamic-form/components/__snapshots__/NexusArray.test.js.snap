@@ -29,7 +29,6 @@ exports[`NexusArray should match snapshot 1`] = `
         },
       ]
     }
-    isDisabled={false}
     isRequired={false}
     name=""
     validate={[Function]}
@@ -39,12 +38,12 @@ exports[`NexusArray should match snapshot 1`] = `
   <div
     className="nexus-c-array__add"
   >
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    <Button
       className="nexus-c-dynamic-form__add-button"
       onClick={[Function]}
     >
       + Add territory
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </Button>
   </div>
   <div
     className="nexus-c-array__objects"

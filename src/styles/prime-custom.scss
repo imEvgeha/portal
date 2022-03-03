@@ -178,7 +178,7 @@ $element-color-orange-80: palette(orange, 80);
         }
     }
 
-    &.p-toast-confirm-button {
+    &.p-toast-left-button {
         @include padding(0, 0, 0, 0);
         @include margin(2, 8, 0, 0);
 
@@ -193,7 +193,7 @@ $element-color-orange-80: palette(orange, 80);
         }
     }
 
-    &.p-toast-cancel-button {
+    &.p-toast-right-button {
         @include padding(0, 0, 0, 0);
         @include margin(2, 0, 0, 0);
 
@@ -357,6 +357,12 @@ $element-color-orange-80: palette(orange, 80);
             font-weight: bold;
             color: palette(black, 100);
         }
+    }
+
+    .p-toast-message.p-toast-message-error {
+        color: #aa214b;
+        border: solid #aa214b;
+        border-width: 0 0 0 6px;
     }
 }
 

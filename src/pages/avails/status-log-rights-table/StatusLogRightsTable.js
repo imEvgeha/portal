@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import {defineCheckboxSelectionColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
+import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../sync-log/syncLogConstants';
 import {STATUS_TAB} from '../rights-repository/constants';
@@ -14,6 +16,7 @@ import {getStatusLog} from './StatusLogService';
 import columnMappings from './columnMappings';
 import './StatusLogRightsTable.scss';
 import StatusLogErrors from './components/PublishErrors/StatusLogErrors';
+import {storeResyncRights} from './statusLogActions';
 
 const StatusLogRightsGrid = compose(
     withSideBar(),
@@ -24,6 +27,8 @@ const StatusLogRightsGrid = compose(
 )(NexusGrid);
 
 const StatusLogRightsTable = ({activeTab}) => {
+    const dispatch = useDispatch();
+
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
 
@@ -34,34 +39,55 @@ const StatusLogRightsTable = ({activeTab}) => {
 
     const closeDrawer = () => setShowDrawer(false);
 
-    const getColumnDefs = () => {
-        return columnMappings.map(col => ({
-            ...col,
-            cellRendererParams: {
-                setErrors,
-            },
-        }));
-    };
+    const columnDefs = columnMappings.map(col => ({
+        ...col,
+        cellRendererParams: {
+            setErrors,
+        },
+    }));
 
     const onGridEvent = ({type, api}) => {
-        const {READY} = GRID_EVENTS;
+        const {READY, SELECTION_CHANGED} = GRID_EVENTS;
         switch (type) {
             case READY:
                 api.sizeColumnsToFit();
+
                 break;
+
+            case SELECTION_CHANGED:
+                {
+                    const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.entityId);
+                    const payload = allSelectedRowsIds.reduce((selectedRights, currentRight, i) => {
+                        selectedRights[i] = {id: currentRight};
+                        return selectedRights;
+                    }, {});
+
+                    const formated = {rights: Object.values(payload)};
+                    dispatch(storeResyncRights(formated));
+                }
+                break;
+
             default:
                 break;
         }
     };
+
+    const cellStyle = ({data}) => {
+        return data && ['SUCCESS', 'DELETED'].includes(data.status)
+            ? {'pointer-events': 'none', cursor: 'notAllowed'}
+            : '';
+    };
+
+    const checkboxColumn = {...defineCheckboxSelectionColumn(), cellStyle};
 
     return (
         <div className="nexus-c-status-log-table">
             <StatusLogRightsGrid
                 suppressRowClickSelection
                 className="nexus-c-status-log-grid"
-                columnDefs={getColumnDefs()}
+                columnDefs={[checkboxColumn, ...columnDefs]}
                 mapping={columnMappings}
-                rowSelection="single"
+                rowSelection="multiple"
                 onGridEvent={onGridEvent}
                 isGridHidden={activeTab !== STATUS_TAB}
             />
@@ -86,8 +112,8 @@ const StatusLogRightsTable = ({activeTab}) => {
     );
 };
 
-export {StatusLogRightsTable};
-
 StatusLogRightsTable.propTypes = {
     activeTab: PropTypes.string.isRequired,
 };
+
+export default StatusLogRightsTable;

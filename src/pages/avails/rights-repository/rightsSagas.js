@@ -1,7 +1,6 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {
     SUCCESS_ICON,
-    SUCCESS_TITLE,
     ERROR_ICON,
     UPDATE_RIGHT_FAILED,
     UPDATE_RIGHT_SUCCESS_MESSAGE,
@@ -11,6 +10,8 @@ import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {history} from '../../../index';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getLinkedToOriginalRightsV2, bulkDeleteRights} from '../availsService';
+import {postReSync} from '../status-log-rights-table/StatusLogService';
+import {POST_RESYNC_RIGHTS} from '../status-log-rights-table/statusLogActionTypes';
 import * as actionTypes from './rightsActionTypes';
 
 export function* storeRightsFilter({payload}) {
@@ -25,6 +26,19 @@ export function* storeRightsFilter({payload}) {
             payload: error,
         });
     }
+}
+
+export function* resyncUpdate({payload}) {
+    try {
+        yield call(postReSync, payload);
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                severity: SUCCESS_ICON,
+                detail: `Successfully updated`,
+            },
+        });
+    } catch (error) {}
 }
 
 export function* fetchLinkedToOriginalRights({payload}) {
@@ -72,7 +86,6 @@ export function* fetchLinkedToOriginalRights({payload}) {
             yield put({
                 type: ADD_TOAST,
                 payload: {
-                    summary: SUCCESS_TITLE,
                     severity: SUCCESS_ICON,
                     detail: `${rightsWithoutDeps.length} ${
                         rightsWithoutDeps.length === 1 ? 'Right' : 'Rights'
@@ -107,7 +120,6 @@ export function* bulkDeleteSelectedRights({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: `${count} ${count === 1 ? 'Right' : 'Rights'} deleted`,
             },
@@ -180,7 +192,6 @@ export function* updateRight({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: SUCCESS_TITLE,
                 severity: SUCCESS_ICON,
                 detail: UPDATE_RIGHT_SUCCESS_MESSAGE,
             },
@@ -197,9 +208,8 @@ export function* updateRight({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: UPDATE_RIGHT_FAILED,
                 severity: ERROR_ICON,
-                detail: `${error.message.message.slice(0, MAX_CHARS)}...`,
+                detail: `${UPDATE_RIGHT_FAILED} Detail: ${error.message.message.slice(0, MAX_CHARS)}...`,
             },
         });
     } finally {
@@ -217,5 +227,6 @@ export function* rightsWatcher() {
         takeEvery(actionTypes.ADD_RIGHTS_FILTER, storeRightsFilter),
         takeEvery(actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS, fetchLinkedToOriginalRights),
         takeEvery(actionTypes.BULK_DELETE_SELECTED_RIGHTS, bulkDeleteSelectedRights),
+        takeEvery(POST_RESYNC_RIGHTS, resyncUpdate),
     ]);
 }

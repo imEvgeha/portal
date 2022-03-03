@@ -105,12 +105,6 @@ exports[`ServicingOrdersTableStatusTooltip should match the loading snapshot - s
 <div
   className="nexus-c-servicing-orders-table-status-tooltip"
 >
-  <Spinner
-    delay={100}
-    invertColor={false}
-    isCompleting={false}
-    onComplete={[Function]}
-    size="medium"
-  />
+  <Memo(ForwardRef(Spinner)) />
 </div>
 `;

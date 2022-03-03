@@ -6,7 +6,6 @@ import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
     WARNING_ICON,
-    WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push, goBack} from 'connected-react-router';
@@ -268,7 +267,6 @@ export function* validateConflictingRights({payload}) {
             yield put({
                 type: ADD_TOAST,
                 payload: {
-                    summary: WARNING_TITLE,
                     severity: WARNING_ICON,
                     detail: WARNING_CONFLICTING_RIGHTS,
                     sticky: true,
@@ -279,7 +277,6 @@ export function* validateConflictingRights({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: WARNING_TITLE,
                 severity: WARNING_ICON,
                 detail: WARNING_CONFLICTING_RIGHTS,
                 sticky: true,
