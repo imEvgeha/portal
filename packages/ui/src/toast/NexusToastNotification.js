@@ -19,7 +19,7 @@ const NexusToastNotification = ({toast}) => {
                 summary: 'Success',
                 life: 3000,
             };
-        } else if (toast && toast.severity === 'info') {
+        } else if (toast && toast.severity === 'warn') {
             return {
                 ...toast,
                 summary: 'Alert',
