@@ -1,23 +1,19 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
 .nexus-c-toast__container {
     flex: 1;
-
-    .type-success {
-        h4, p {
-            color: #1ea97c;
-        }
+    .nexus-c-toast__summary-title {
+        font-size: 13px;
+        font-weight: bold;
+        color: palette(black, 100);
     }
 
-    .type-warn {
-        h4, p {
-            color: #cc8925;
-        }
-    }
-
-    .type-error {
-        h4, p {
-            color: #ef4444;
-        }
+    .nexus-c-toast__detail-title {
+        font-size: 10px;
+        font-weight: bold;
+        color: palette(black, 100);
     }
 }
 

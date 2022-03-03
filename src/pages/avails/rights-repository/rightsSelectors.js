@@ -6,6 +6,11 @@ const getRightsReducer = state => {
     return avails.rights;
 };
 
+const getStatusLogReducer = state => {
+    const {avails = {}} = state || {};
+    return avails.statusLog;
+};
+
 export const getRightDetailsRightsSelector = () =>
     createSelector(getRightsReducer, rights => get(rights, 'right') || {});
 
@@ -25,3 +30,9 @@ export const createUserGridSelector = () => createSelector(getRightsReducer, rig
 
 export const createFromSelectedTableSelector = () =>
     createSelector(getRightsReducer, rights => rights.fromSelected || {});
+
+export const createStatusLogCountSelector = () =>
+    createSelector(getStatusLogReducer, statusLog => statusLog.count || 0);
+
+export const createStatusLogResyncRightsSelector = () =>
+    createSelector(getStatusLogReducer, statusLog => statusLog.resyncRights || 0);

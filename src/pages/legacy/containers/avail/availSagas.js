@@ -1,9 +1,8 @@
 import React from 'react';
 import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
-    EDIT_RIGHT_ERROR_TITLE,
-    CREATE_NEW_RIGHT_ERROR_TITLE,
     ERROR_ICON,
+    ERROR_TITLE,
     RIGHT_ERROR_MSG_MERGED,
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
@@ -19,7 +18,7 @@ import {BLOCK_UI} from '../../constants/action-types';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {STORE_PENDING_RIGHT} from '../../../avails/right-matching/rightMatchingActionTypes';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import { Button } from 'primereact/button';
+import {Button} from 'primereact/button';
 
 export function* fetchAvailMapping(requestMethod) {
     try {
@@ -84,14 +83,16 @@ export function* fetchAndStoreSelectItems(payload, type) {
     // TODO - make this in background via FORK effect
     const fields = [];
     const fetchedSelectedItems = yield all(
-        mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint}) => {
-            fields.push(configEndpoint);
-            return call(
-                fetchAvailSelectValuesRequest,
-                profileService.getSelectValues,
-                configEndpoint,
-                javaVariableName
-            );
+        mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint, alternateSelector}) => {
+            if (!fields.includes(configEndpoint)) {
+                fields.push(configEndpoint);
+                return call(
+                    fetchAvailSelectValuesRequest,
+                    profileService.getSelectValues(configEndpoint, alternateSelector),
+                    configEndpoint,
+                    javaVariableName
+                );
+            }
         })
     );
 
@@ -210,9 +211,7 @@ export function* handleMatchingRights({payload}) {
     const {error, right, isEdit, push, removeToast} = payload;
     const {message: {mergeRights, message, rightIDs} = {}, status} = error || {};
     const toastProps = {
-        summary: isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE,
         severity: ERROR_ICON,
-        sticky: true,
         detail: message,
     };
     yield put({
@@ -225,19 +224,21 @@ export function* handleMatchingRights({payload}) {
             type: ADD_TOAST,
             payload: {
                 ...toastProps,
-                content: (<ToastBody
-                    summary={isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE}
-                    detail={message}
-                    severity={'error'}
-                >
-                    {rightIDs.map(right => (
-                        <Button 
-                            label={right} 
-                            className="p-button-link" 
-                            onClick={() => window.open(RightsURL.getRightUrl(right), '_blank')}
-                        />
-                    ))}
-                </ToastBody>),
+                content: (
+                    <ToastBody
+                        summary={ERROR_TITLE}
+                        detail={message}
+                        severity={'error'}
+                    >
+                        {rightIDs.map(right => (
+                            <Button
+                                label={right}
+                                className="p-button-link p-toast-button-link"
+                                onClick={() => window.open(RightsURL.getRightUrl(right), '_blank')}
+                            />
+                        ))}
+                    </ToastBody>
+                ),
             },
         });
     } else if (status === 409 && mergeRights) {
@@ -249,20 +250,22 @@ export function* handleMatchingRights({payload}) {
             type: ADD_TOAST,
             payload: {
                 ...toastProps,
-                content: (<ToastBody
-                    summary={SUCCESS_TITLE}
-                    detail={TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE}
-                    severity='success'
-                >
-                    <Button
-                        label={RIGHT_ERROR_MSG_MERGED}
-                        className="p-button-link" 
-                        onClick={() => {
-                            removeToast();
-                            push(URL.keepEmbedded('/avails/right-matching'));
-                        }}
-                    />
-                </ToastBody>),
+                content: (
+                    <ToastBody
+                        summary={SUCCESS_TITLE}
+                        detail={TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE}
+                        severity="success"
+                    >
+                        <Button
+                            label={RIGHT_ERROR_MSG_MERGED}
+                            className="p-button-link p-toast-button-link"
+                            onClick={() => {
+                                removeToast();
+                                push(URL.keepEmbedded('/avails/right-matching'));
+                            }}
+                        />
+                    </ToastBody>
+                ),
             },
         });
     } else {

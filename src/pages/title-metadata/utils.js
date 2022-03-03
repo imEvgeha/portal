@@ -1,5 +1,4 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import {ERROR_TITLE, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {cloneDeep, get, isObjectLike, isEqual} from 'lodash';
 import {store} from '../../index';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
@@ -214,7 +213,6 @@ export const updateTerritoryMetadata = async (values, titleId) => {
             const isMgm = isMgmTitle(titleId);
             store.dispatch(getTerritoryMetadata({id: titleId, isMgm}));
             const successToast = {
-                summary: SUCCESS_TITLE,
                 severity: 'success',
                 detail: UPDATE_TERRITORY_METADATA_SUCCESS,
             };
@@ -222,9 +220,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
         }
     } catch (error) {
         const errorToast = {
-            summary: ERROR_TITLE,
             severity: 'error',
-            sticky: true,
             detail: UPDATE_TERRITORY_METADATA_ERROR,
         };
         store.dispatch(addToast(errorToast));
@@ -305,9 +301,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
 export const updateEditorialMetadata = async (values, titleId) => {
     let response = [];
     const errorToast = {
-        summary: ERROR_TITLE,
         severity: 'error',
-        sticky: true,
         detail: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
@@ -331,7 +325,6 @@ export const updateEditorialMetadata = async (values, titleId) => {
                 const isMgm = isMgmTitle(titleId);
                 store.dispatch(getEditorialMetadata({id: titleId, isMgm}));
                 toast = {
-                    summary: SUCCESS_TITLE,
                     severity: 'success',
                     detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
                 };
@@ -352,16 +345,13 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
     if (response.error) {
         store.dispatch(
             addToast({
-                summary: ERROR_TITLE,
                 severity: 'error',
-                sticky: true,
                 detail: response.error,
             })
         );
     } else {
         store.dispatch(
             addToast({
-                summary: SUCCESS_TITLE,
                 severity: 'success',
                 detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
             })

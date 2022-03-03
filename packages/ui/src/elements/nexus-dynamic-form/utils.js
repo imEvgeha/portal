@@ -62,7 +62,7 @@ export const getValidationError = (validationErrors, field) => {
             if (fieldValidationError.sourceDetails.originalValue)
                 error = `${error}, original value: ${fieldValidationError.sourceDetails.originalValue}`;
             if (fieldValidationError.sourceDetails.fileName) {
-                error = `${error}, in file ${fieldValidationError.sourceDetails.fileName}, row number ${fieldValidationError.sourceDetails.rowId}, column ${fieldValidationError.sourceDetails.originalFieldName}`;
+                error = `${error}, in file ${fieldValidationError.sourceDetails.fileName}, row number ${fieldValidationError.sourceDetails?.rowId}, column ${fieldValidationError.sourceDetails.originalFieldName}`;
             }
         }
     }
@@ -513,10 +513,10 @@ export const renderLabel = (label, isRequired, tooltip, isGridLayout, isRequired
     );
 };
 
-export const renderError = (fieldProps, error) => {
+export const renderError = validationError => {
     return (
         <div className="nexus-c-field__error">
-            <ErrorMessage>{error}</ErrorMessage>
+            <ErrorMessage>{validationError}</ErrorMessage>
         </div>
     );
 };

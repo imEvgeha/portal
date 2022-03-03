@@ -1,18 +1,18 @@
-import config from 'react-global-configuration';
 import moment from 'moment';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {store} from '../../../../../index';
 import {
+    encodedSerialize,
     momentToISO,
     prepareSortMatrixParam,
     safeTrim,
-    encodedSerialize,
 } from '@vubiquity-nexus/portal-utils/lib/Common';
 import {
-    STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS,
-    MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
     ARRAY_OF_OBJECTS,
+    MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
+    STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS,
 } from './Constants';
+import {getConfig} from '../../../../../config';
 
 const isNotEmpty = function (obj) {
     if (Array.isArray(obj)) {
@@ -185,6 +185,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
             params[keyValue] = value;
         }
     }
+
     return params;
 };
 
@@ -195,8 +196,8 @@ export const rightsService = {
             queryParams.text = searchCriteria.text;
         }
         const url =
-            config.get('gateway.url') +
-            config.get('gateway.service.avails') +
+            getConfig('gateway.url') +
+            getConfig('gateway.service.avails') +
             '/rights' +
             prepareSortMatrixParam(sortedParams);
         const params = encodedSerialize({...queryParams, page, size});
@@ -205,7 +206,7 @@ export const rightsService = {
 
     advancedSearch: (searchCriteria, page, size, sortedParams) => {
         const queryParams = parseAdvancedFilter(searchCriteria);
-        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(
+        const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights${prepareSortMatrixParam(
             sortedParams
         )}`;
         const params = encodedSerialize({...queryParams, page, size});
@@ -214,8 +215,8 @@ export const rightsService = {
 
     advancedSearchV2: (queryParams, page, size, sortedParams, body) => {
         const url =
-            config.get('gateway.url') +
-            config.get('gateway.service.avails') +
+            getConfig('gateway.url') +
+            getConfig('gateway.service.avails') +
             '/rights/search' +
             prepareSortMatrixParam(sortedParams);
         const params = encodedSerialize({...queryParams, page, size});
@@ -223,7 +224,7 @@ export const rightsService = {
     },
 
     create: (right, options = {isWithErrorHandling: true}) => {
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + '/rights';
+        const url = getConfig('gateway.url') + getConfig('gateway.service.avails') + '/rights';
         const data = prepareRight(right);
         const {isWithErrorHandling} = options || {};
         return nexusFetch(url, {
@@ -234,13 +235,13 @@ export const rightsService = {
     },
 
     get: (id, options = {isWithErrorHandling: false}) => {
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + '/rights/' + id;
+        const url = getConfig('gateway.url') + getConfig('gateway.service.avails') + '/rights/' + id;
         const {isWithErrorHandling} = options || {};
         return nexusFetch(url, isWithErrorHandling);
     },
 
     update: (rightDiff, id) => {
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}`;
+        const url = getConfig('gateway.url') + getConfig('gateway.service.avails') + `/rights/${id}`;
         const data = prepareRight(rightDiff, true);
         return nexusFetch(url, {
             method: 'PATCH',
@@ -249,7 +250,7 @@ export const rightsService = {
     },
 
     bulkUpdate: payload => {
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/bulk-partial-update`;
+        const url = getConfig('gateway.url') + getConfig('gateway.service.avails') + `/rights/bulk-partial-update`;
         return nexusFetch(url, {
             method: 'PATCH',
             body: JSON.stringify(payload),
@@ -257,7 +258,7 @@ export const rightsService = {
     },
 
     updateRightWithFullData: (right, id, isFormatted = false, isWithErrorHandling = false) => {
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}`;
+        const url = getConfig('gateway.url') + getConfig('gateway.service.avails') + `/rights/${id}`;
         const data = isFormatted ? right : prepareRight(right, true);
         return nexusFetch(url, {
             method: 'PUT',
@@ -267,7 +268,7 @@ export const rightsService = {
     },
 
     delete: (selectedRightIds, impactedRightIds) => {
-        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/delete`;
+        const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights/delete`;
         const data = {
             selectedRightIds,
             impactedRightIds,
@@ -276,7 +277,7 @@ export const rightsService = {
     },
 
     findBonusAndTPRsToBeDeleted: selectedRightIds => {
-        const url = `${config.get('gateway.url')}${config.get(
+        const url = `${getConfig('gateway.url')}${getConfig(
             'gateway.service.avails'
         )}/rights/findBonusAndTPRsToBeDeleted`;
         const data = {

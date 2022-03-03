@@ -14,11 +14,7 @@ import {resetTitle} from '../metadata/metadataActions';
 import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
-import {
-    failureDownloadDesc,
-    failureDownloadTitle,
-    successDownloadTitle,
-} from './components/title-metadata-header/components/constants';
+import { failureDownloadDesc } from './components/title-metadata-header/components/constants';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
@@ -51,7 +47,6 @@ export const TitleMetadataView = ({
         store.dispatch(
             addToast({
                 severity: 'success',
-                summary: successDownloadTitle,
                 detail,
                 life: 3000,
             })
@@ -62,7 +57,6 @@ export const TitleMetadataView = ({
         store.dispatch(
             addToast({
                 severity: 'error',
-                summary: failureDownloadTitle,
                 detail: `${failureDownloadDesc} Details: ${err}`,
             })
         );
@@ -78,7 +72,6 @@ export const TitleMetadataView = ({
         resetTitleId();
         if (window.sessionStorage.getItem('unmerge')) {
             const successToast = {
-                summary: 'Success',
                 severity: 'success',
                 detail: UNMERGE_TITLE_SUCCESS,
             };

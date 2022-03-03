@@ -47,25 +47,25 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
         }
       />
     </div>
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    <Button
       isSelected={false}
       onClick={[Function]}
     >
       Hide Ready
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    </Button>
+    <Button
       isSelected={false}
       onClick={[Function]}
     >
       Hide Completed
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    </Button>
+    <Button
       isDisabled={true}
       isLoading={false}
       onClick={[Function]}
     >
       Export
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </Button>
   </div>
   <ServicingOrdersTable
     dataRefreshComplete={[Function]}

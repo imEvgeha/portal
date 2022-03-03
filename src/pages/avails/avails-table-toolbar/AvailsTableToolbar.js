@@ -1,12 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import './AvailsTableToolbar.scss';
 import NexusTableExportDropdown from '../avails-table-export-dropdown/AvailsTableExportDropdown';
 import AvailsTableReleaseReport from '../avails-table-release-report/AvailsTableReleaseReport';
 import PrePlanActions from '../pre-plan-actions/PrePlanActions';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB} from '../rights-repository/constants';
+import {
+    RIGHTS_TAB,
+    RIGHTS_SELECTED_TAB,
+    PRE_PLAN_TAB,
+    SELECTED_FOR_PLANNING_TAB,
+    STATUS_TAB,
+    PRE_PLAN_SELECTED_TAB,
+} from '../rights-repository/constants';
+import {createStatusLogResyncRightsSelector} from '../rights-repository/rightsSelectors';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
-import { StatusRightsActions } from '../status-rights-actions/StatusRightsActions';
+import {StatusRightsActions} from '../status-rights-actions/StatusRightsActions';
 import SelectedButton from './components/selected-button/SelectedButton';
 
 const AvailsTableToolbar = ({
@@ -41,44 +50,75 @@ const AvailsTableToolbar = ({
     prePlanGridApi,
     selectedForPlanningColumnApi,
     selectedForPlanningGridApi,
+    statusLogResyncRights,
+    isSelected,
+    setIsSelected,
 }) => {
-    const isItSamePage = (tab) => activeTab === tab;
+    const isItSamePage = tab => activeTab === tab;
 
     const getAmountOfRowsForCurrentTab = () => {
-        if(isItSamePage(SELECTED_FOR_PLANNING_TAB)) {
+        if (isItSamePage(SELECTED_FOR_PLANNING_TAB)) {
             return planningRightsCount;
         }
-        if(isItSamePage(PRE_PLAN_TAB)) {
+        if (isItSamePage(PRE_PLAN_TAB)) {
             return prePlanRightsCount;
         }
-        if(isItSamePage(STATUS_TAB)) {
+        if (isItSamePage(STATUS_TAB)) {
             return statusRightsCount;
         }
         return totalRows;
     };
 
+    const getAmountOfSelectedRowsForCurrentTab = () => {
+        if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab)) {
+            return selectedRightsCount;
+        }
+        if ([PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab)) {
+            return selectedPrePlanRights.length;
+        }
+        if ([STATUS_TAB].includes(activeTab)) {
+            return statusLogResyncRights['rights']?.length;
+        }
+
+        return 0;
+    };
+
     return (
         <div className="nexus-c-table-toolbar d-flex justify-content-between row">
-            <div className='col-xs-12 col-xl-8 d-flex align-items-center justify-content-xs-between justify-content-xl-start'>
+            <div className="col-xs-12 col-xl-8 d-flex align-items-center justify-content-xs-between justify-content-xl-start">
                 <div className="nexus-c-table-toolbar__rights-counter-container">
                     <span className="nexus-c-table-toolbar__total-rows">{getAmountOfRowsForCurrentTab()}</span>
                 </div>
-                <div className='d-flex'>
+                <div className="d-flex">
                     <div className="nexus-c-table-toolbar__selected-button-container d-flex justify-content-end">
-                        {[RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && (
+                        {[RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab) && (
                             <SelectedButton
-                                selectedRightsCount={selectedRightsCount}
+                                selectedRightsCount={getAmountOfSelectedRowsForCurrentTab()}
                                 activeTab={activeTab}
                                 setActiveTab={setActiveTab}
                                 setActiveTabIndex={setActiveTabIndex}
+                                setIsSelected={setIsSelected}
+                                isSelected={isSelected}
                                 inNewDesign
                             />
                         )}
+                        {activeTab === STATUS_TAB && (
+                            <SelectedButton
+                                selectedRightsCount={getAmountOfSelectedRowsForCurrentTab()}
+                                activeTab={activeTab}
+                                setActiveTab={setActiveTab}
+                                setActiveTabIndex={setActiveTabIndex}
+                                setIsSelected={setIsSelected}
+                                isSelected={isSelected}
+                                inNewDesign
+                                showTooltip={false}
+                            />
+                        )}
                     </div>
-                    
-                    {isItSamePage(SELECTED_FOR_PLANNING_TAB) ? 
-                        null : <div className="nexus-c-table-toolbar__separation-line" />
-                    }
+
+                    {isItSamePage(SELECTED_FOR_PLANNING_TAB) ? null : (
+                        <div className="nexus-c-table-toolbar__separation-line" />
+                    )}
 
                     {isItSamePage(RIGHTS_TAB) || isItSamePage(RIGHTS_SELECTED_TAB) ? (
                         <SelectedRightsActions
@@ -92,7 +132,7 @@ const AvailsTableToolbar = ({
                             setSingleRightMatch={setSingleRightMatch}
                         />
                     ) : null}
-                    {isItSamePage(PRE_PLAN_TAB) ? (
+                    {isItSamePage(PRE_PLAN_TAB) || isItSamePage(PRE_PLAN_SELECTED_TAB) ? (
                         <PrePlanActions
                             selectedPrePlanRights={selectedPrePlanRights}
                             setSelectedPrePlanRights={setSelectedPrePlanRights}
@@ -104,16 +144,18 @@ const AvailsTableToolbar = ({
                             singleRightMatch={singleRightMatch}
                             setSingleRightMatch={setSingleRightMatch}
                         />
-                    ) : null} 
-                    
-                    {isItSamePage(STATUS_TAB) ? <StatusRightsActions /> : null}
+                    ) : null}
+
+                    {isItSamePage(STATUS_TAB) ? (
+                        <StatusRightsActions statusLogResyncRights={statusLogResyncRights} />
+                    ) : null}
                     {isItSamePage(SELECTED_FOR_PLANNING_TAB) && null}
                 </div>
             </div>
-            <div className='col-xs-12 col-xl-4'>
+            <div className="col-xs-12 col-xl-4">
                 {hasDownloadButton && (
                     <div className="nexus-c-table-toolbar__button-container">
-                        <AvailsTableReleaseReport 
+                        <AvailsTableReleaseReport
                             activeTab={activeTab}
                             selectedRows={selectedRows}
                             rightsFilter={rightsFilter}
@@ -123,6 +165,7 @@ const AvailsTableToolbar = ({
                         />
                         <NexusTableExportDropdown
                             activeTab={activeTab}
+                            isSelected={isSelected}
                             selectedRows={selectedRows}
                             rightsFilter={rightsFilter}
                             rightColumnApi={rightColumnApi}
@@ -176,6 +219,9 @@ AvailsTableToolbar.propTypes = {
     selectedForPlanningColumnApi: PropTypes.object,
     selectedForPlanningGridApi: PropTypes.object,
     setActiveTabIndex: PropTypes.func,
+    statusLogResyncRights: PropTypes.object,
+    isSelected: PropTypes.bool.isRequired,
+    setIsSelected: PropTypes.func.isRequired,
 };
 
 AvailsTableToolbar.defaultProps = {
@@ -199,6 +245,14 @@ AvailsTableToolbar.defaultProps = {
     selectedForPlanningColumnApi: {},
     selectedForPlanningGridApi: {},
     setActiveTabIndex: () => null,
+    statusLogResyncRights: {},
 };
 
-export default AvailsTableToolbar;
+const mapStateToProps = () => {
+    const statusLogResyncRightsSelector = createStatusLogResyncRightsSelector();
+    return (state, props) => ({
+        statusLogResyncRights: statusLogResyncRightsSelector(state, props),
+    });
+};
+
+export default connect(mapStateToProps)(AvailsTableToolbar);

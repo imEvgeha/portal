@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusLogErrors should match snapshot 1`] = `
+<div
+  className="nexus-c-status-log-table__error-cell"
+  onClick={[Function]}
+>
+  <h3>
+    ...
+  </h3>
+</div>
+`;

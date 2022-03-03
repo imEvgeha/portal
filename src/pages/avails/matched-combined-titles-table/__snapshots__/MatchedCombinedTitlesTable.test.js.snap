@@ -259,6 +259,7 @@ exports[`MatchedCombinedTitlesTable should match snapshot 1`] = `
     domLayout="autoHeight"
     dragStopped={null}
     frameworkComponents={Object {}}
+    id=""
     isGridHidden={false}
     link={null}
     mapping={

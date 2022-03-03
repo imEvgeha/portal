@@ -6,11 +6,11 @@ import {URL as VuURL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {Skeleton} from 'primereact/skeleton';
 import {VirtualScroller} from 'primereact/virtualscroller';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import Loading from '../../static/Loading';
 import './ChooseArtwork.scss';
-import {fetchPosters, fetchAsset} from './assetManagementReducer';
-import {posterListSelector, assetDetailsSelector} from './assetManagementSelectors';
+import {fetchPosters, fetchAsset, removeMediaIngest} from './assetManagementReducer';
+import {posterListSelector, assetDetailsSelector, mediaIngestsSelector} from './assetManagementSelectors';
 import {fetchPoster, loginAssets} from './assetManagementService';
 import UploadArtworkForm from './components/UploadArtworkForm';
 import ArtworkItem from './components/artwork-item/ArtworkItem';
@@ -21,7 +21,8 @@ const DOP_POP_UP_MESSAGE = 'Please, select at least one thumbnail!';
 const IMG_WIDTH = 300;
 const IMG_HEIGHT = 200;
 
-const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) => {
+const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, jobIds}) => {
+    const dispatch = useDispatch();
     const [selectedArtwork, setSelectedArtwork] = useState();
     const [posters, setPosters] = useState([]);
     const [lazyLoading, setLazyLoading] = useState(false);
@@ -65,7 +66,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
     }, []);
 
     useEffect(() => {
-        DOP.setDOPMessageCallback(selectedArtwork ? null : () => openDOPPopUp());
+        DOP.setDOPMessageCallback(selectedArtwork || jobIds.length !== 0 ? null : () => openDOPPopUp());
     }, [selectedArtwork, openDOPPopUp]);
 
     const artworkClick = (id, uri) => {
@@ -78,6 +79,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset}) =>
                 selectedArtworkUri: uri,
             },
         });
+        dispatch(removeMediaIngest());
     };
 
     const basicItemTemplate = item => {
@@ -166,16 +168,19 @@ ChooseArtwork.propTypes = {
     fetchAsset: PropTypes.func.isRequired,
     asset: PropTypes.object,
     posterList: PropTypes.array,
+    jobIds: PropTypes.array,
 };
 
 ChooseArtwork.defaultProps = {
     posterList: [],
     asset: null,
+    jobIds: [],
 };
 
 const mapStateToProps = state => ({
     posterList: posterListSelector(state),
     asset: assetDetailsSelector(state),
+    jobIds: mediaIngestsSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({

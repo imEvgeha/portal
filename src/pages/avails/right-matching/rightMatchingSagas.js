@@ -6,11 +6,10 @@ import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
     WARNING_ICON,
-    WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push, goBack} from 'connected-react-router';
-import { Button } from 'primereact/button';
+import {Button} from 'primereact/button';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';
@@ -183,22 +182,23 @@ export function* saveCombinedRight(requestMethod, {payload}) {
 
         const handleToastButtonClick = () => {
             window.open(`/avails/rights/${focusedRight.id}`, '_blank');
-        }
+        };
 
         yield put({
             type: ADD_TOAST,
             payload: {
                 severity: SUCCESS_ICON,
-                content: (<ToastBody
-                    summary={SUCCESS_TITLE}
-                    detail={SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE}
-                    severity='success'
-                >
-                    {URL.isEmbedded()
-                        ?  <Button label="View Title" className="p-button-link" onClick={handleToastButtonClick} />
-                        : null
-                    }
-                </ToastBody>),
+                content: (
+                    <ToastBody summary={SUCCESS_TITLE} detail={SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} severity="success">
+                        {URL.isEmbedded() ? (
+                            <Button
+                                label="View Title"
+                                className="p-button-link p-toast-button-link"
+                                onClick={handleToastButtonClick}
+                            />
+                        ) : null}
+                    </ToastBody>
+                ),
             },
         });
     } catch (error) {
@@ -267,7 +267,6 @@ export function* validateConflictingRights({payload}) {
             yield put({
                 type: ADD_TOAST,
                 payload: {
-                    summary: WARNING_TITLE,
                     severity: WARNING_ICON,
                     detail: WARNING_CONFLICTING_RIGHTS,
                     sticky: true,
@@ -278,7 +277,6 @@ export function* validateConflictingRights({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                summary: WARNING_TITLE,
                 severity: WARNING_ICON,
                 detail: WARNING_CONFLICTING_RIGHTS,
                 sticky: true,

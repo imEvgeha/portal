@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Tag from '@atlaskit/tag';
+import {SimpleTag as Tag} from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -143,32 +143,32 @@ const ServicesTable = ({
             setUpdatedServices(update);
         };
 
+        const renderComponentsPicker = () => (
+            <ComponentsPicker
+                data={{
+                    assetType: get(node, 'data.assetType'),
+                    barcode: data.barcode,
+                    title,
+                    compSummary: get(node, 'data.components', []),
+                    componentArray: getComponentsForPicker(get(node, 'data.assetType')),
+                }}
+                closeModal={closeModal}
+                saveComponentData={handleComponentsEdit}
+                index={rowIndex}
+            />
+        );
+
+        const onTooltipOptionClick = () => {
+            return isDisabled || toolTipContent !== CLICK_FOR_SELECTION
+                ? null
+                : openModal(renderComponentsPicker(), {
+                      width: get(node, 'data.assetType') === 'Audio' ? 'x-large' : 'large',
+                  });
+        };
+
         return (
             <Tooltip content={toolTipContent}>
-                <div
-                    style={{minHeight: '25px'}}
-                    onClick={() => {
-                        return isDisabled || toolTipContent !== CLICK_FOR_SELECTION
-                            ? null
-                            : openModal(
-                                  <ComponentsPicker
-                                      data={{
-                                          assetType: get(node, 'data.assetType'),
-                                          barcode: data.barcode,
-                                          title,
-                                          compSummary: get(node, 'data.components', []),
-                                          componentArray: getComponentsForPicker(get(node, 'data.assetType')),
-                                      }}
-                                      closeModal={closeModal}
-                                      saveComponentData={handleComponentsEdit}
-                                      index={rowIndex}
-                                  />,
-                                  {
-                                      width: get(node, 'data.assetType') === 'Audio' ? 'x-large' : 'large',
-                                  }
-                              );
-                    }}
-                >
+                <div style={{minHeight: '25px'}} onClick={onTooltipOptionClick}>
                     {Object.keys(
                         groupBy(get(node, 'data.components', []), v => [v.language, v.trackConfig || v.type])
                     ).map(item => (

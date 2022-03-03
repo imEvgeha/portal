@@ -1,5 +1,5 @@
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
-import config from 'react-global-configuration';
+import {getConfig} from '../../../config';
 
 export const fetchPosters = url => {
     const headers = new Headers();
@@ -20,7 +20,7 @@ export const fetchPoster = poster => {
 
 export const loginAssets = () => {
     const headers = new Headers();
-    const url = `${config.get('gateway.kongUrl')}${config.get(
+    const url = `${getConfig('gateway.kongUrl')}${getConfig(
         'gateway.service.kongVidispine'
     )}/token?seconds=1800&autoRefresh=true`;
 

@@ -4,9 +4,9 @@ exports[`TextSummaryPanel should match snapshot 1`] = `
 <div
   className="text-picker__summary-panel"
 >
-  <Component>
+  <HelperMessage>
     Text Service Summary
-  </Component>
+  </HelperMessage>
   <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
     content="ENGLISH, undefined, Component ID 123"
     key="123"

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import DownloadIcon from '@vubiquity-nexus/portal-assets/action-download.svg';
 import Email from '@vubiquity-nexus/portal-assets/email.svg';
-import config from 'react-global-configuration';
+import {getConfig} from '../../../../../config';
 import {NexusTooltip} from '../../../../../ui/elements';
 import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
 import IngestStatus from '../../../ingest-panel/components/ingest-status/IngestStatus';
@@ -23,7 +23,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
 
     let renderIngestId = ingest.id;
     if (ingest.dopProjectId) {
-        const url = config.get('DOP_base') + DOP_PROJECT_URL + ingest.dopProjectId;
+        const url = getConfig('DOP_base') + DOP_PROJECT_URL + ingest.dopProjectId;
         renderIngestId = (
             <a href={url} target="_blank">
                 {ingest.id}

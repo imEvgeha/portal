@@ -4,7 +4,7 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Lozenge from '@atlaskit/lozenge';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
-import Select from '@atlaskit/select/dist/cjs/Select';
+import Select from '@atlaskit/select';
 import Textfield from '@atlaskit/textfield';
 import Tooltip from '@atlaskit/tooltip';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
@@ -221,8 +221,8 @@ export const FulfillmentOrder = ({
                         ...parametersWithoutSourceStandard,
                         {
                             name: SOURCE_STANDARD,
-                            value:
-                                updatedData?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources?.standard,
+                            value: updatedData?.definition?.deteServices?.[0]?.deteSources?.[0]?.externalSources
+                                ?.standard,
                         },
                     ],
                 };
@@ -301,6 +301,9 @@ export const FulfillmentOrder = ({
 
     const lateFaultOptions = [...Constants.LATE_FAULT, ...getLateFaultOptions()];
     const lateReasonOptions = getLateReasonOptions(fulfillmentOrder?.late_fault);
+
+    const onTooltipOptionClick = () =>
+        deteErrors.length ? openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />) : null;
 
     return (
         <Page>
@@ -498,15 +501,7 @@ export const FulfillmentOrder = ({
                                     <Tooltip
                                         content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}
                                     >
-                                        <div
-                                            onClick={() =>
-                                                deteErrors.length
-                                                    ? openModal(
-                                                          <ErrorsList errors={deteErrors} closeModal={closeModal} />
-                                                      )
-                                                    : null
-                                            }
-                                        >
+                                        <div onClick={onTooltipOptionClick}>
                                             <label htmlFor="late-reason">Fulfillment Status</label>
                                             <ErrorIcon size="small" primaryColor={deteErrors.length ? 'red' : 'grey'} />
                                         </div>

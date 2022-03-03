@@ -2,8 +2,8 @@
 import React from 'react';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import { Button } from 'primereact/button';
+import { ERROR_TITLE } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {Button} from 'primereact/button';
 import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
 
@@ -47,9 +47,7 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
         title: errorMessage,
     };
     const defaultErrorToast = {
-        summary: ERROR_TITLE,
         severity: 'error',
-        sticky: true,
     };
 
     let toast = null;
@@ -68,21 +66,22 @@ export const showToastForErrors = (error, {errorToast = null, errorCodesToast = 
                   ...errorToast,
               }
             : {
-                severity: 'error',
-                sticky: true,
-                content: (
-                    <ToastBody
-                        summary={ERROR_MODAL.title}
-                        detail={description || message || data.message || JSON.stringify(data) || errorMessage}
-                        severity='error'
-                    >
-                        {
-                            ERROR_MODAL.codes.includes(status) ? 
-                                <Button label='Ok' className="p-button-link" onClick={() => store.dispatch(removeToast())} /> : 
-                                null
-                        }
-                    </ToastBody>
-                ),
+                  severity: 'error',
+                  content: (
+                      <ToastBody
+                          summary={ERROR_TITLE}
+                          detail={description || message || data.message || JSON.stringify(data) || errorMessage}
+                          severity="error"
+                      >
+                          {ERROR_MODAL.codes.includes(status) ? (
+                              <Button
+                                  label="Ok"
+                                  className="p-button-link p-toast-button-link"
+                                  onClick={() => store.dispatch(removeToast())}
+                              />
+                          ) : null}
+                      </ToastBody>
+                  ),
               };
     }
     store.dispatch(addToast(toast));

@@ -2,25 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './ToastBody.scss';
 
-const ToastBody = ({
-    severity,
-    summary,
-    detail,
-    children,
-}) => {
+const ToastBody = ({severity, summary, detail, children}) => {
     const icons = {success: 'pi-check', warn: 'pi-exclamation-triangle', error: 'pi-times'};
     return (
         <div className="flex flex-column nexus-c-toast__container">
             <div className={`row type-${severity}`}>
-                <div className="text-center col-3 nexus-c-toast__icon-container">
+                <div className="text-center col-2 nexus-c-toast__icon-container">
                     <i className={`pi ${icons[severity]} pi-fluid nexus-c-toast__icon`} />
                 </div>
-                <div className="col-9">
-                    <div className='row'>
-                        <h4>{summary}</h4>
+                <div className="col-10">
+                    <div className="row">
+                        <span className="nexus-c-toast__summary-title">{summary}</span>
                     </div>
-                    <div className='row'>
-                        <p>{detail}</p>
+                    <div className="row">
+                        <span className="nexus-c-toast__detail-title">{detail}</span>
                         {children}
                     </div>
                 </div>

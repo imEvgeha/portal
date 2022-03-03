@@ -8,11 +8,25 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
-import { PRE_PLAN_TAB, RIGHTS_SELECTED_TAB, RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB } from '../rights-repository/constants';
+import {
+    PRE_PLAN_SELECTED_TAB,
+    PRE_PLAN_TAB,
+    RIGHTS_SELECTED_TAB,
+    RIGHTS_TAB,
+    SELECTED_FOR_PLANNING_TAB,
+    STATUS_TAB,
+} from '../rights-repository/constants';
 import {CREATE_REPORT, ERROR_MESSAGE, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
 import './AvailsTableReleaseReport.scss';
 
-const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows, prePlanRightsCount, planningRightsCount}) => {
+const AvailsTableReleaseReport = ({
+    addToast,
+    activeTab,
+    selectedRows,
+    totalRows,
+    prePlanRightsCount,
+    planningRightsCount,
+}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [isDisabled, setIsDisabled] = useState(false);
@@ -22,14 +36,17 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
     useEffect(() => {
         let disable = false;
         const isItEmptyRightsTab = [RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && totalRows === 0;
-        const isItDisabledForCurrentTab = [SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
-        const isItEmptyPrePlanTab = [PRE_PLAN_TAB].includes(activeTab) && prePlanRightsCount === 0;
-        const isItEmtySelectedForPlaningTab = [SELECTED_FOR_PLANNING_TAB].includes(activeTab) && planningRightsCount === 0;
-        
-        if (isItEmptyRightsTab || isItDisabledForCurrentTab || isItEmptyPrePlanTab || isItEmtySelectedForPlaningTab) {
-            disable = true
-        } 
-        
+        const isItDisabledForCurrentTab = [
+            PRE_PLAN_TAB,
+            PRE_PLAN_SELECTED_TAB,
+            SELECTED_FOR_PLANNING_TAB,
+            STATUS_TAB,
+        ].includes(activeTab);
+
+        if (isItEmptyRightsTab || isItDisabledForCurrentTab) {
+            disable = true;
+        }
+
         setIsDisabled(disable);
     }, [activeTab, selectedRows, totalRows, prePlanRightsCount]);
 
@@ -51,9 +68,8 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
                 setIsLoading(false);
                 setIsOpen(false);
                 addToast({
-                    summary: ERROR_MESSAGE,
+                    detail: ERROR_MESSAGE,
                     severity: 'error',
-                    sticky: true,
                 });
             });
     };
@@ -108,8 +124,16 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRows, totalRows,
                 onClose={() => setIsOpen(false)}
                 content={() => getContent()}
                 trigger={triggerProps => (
-                    <Button {...triggerProps} isSelected={isOpen} onClick={() => setIsOpen(!isOpen)} isDisabled={isDisabled} shouldFitContainer>
-                        <span className="nexus-c-right-repository-release-report-button__title">{NEW_RELEASE_REPORT}</span>
+                    <Button
+                        {...triggerProps}
+                        isSelected={isOpen}
+                        onClick={() => setIsOpen(!isOpen)}
+                        isDisabled={isDisabled}
+                        shouldFitContainer
+                    >
+                        <span className="nexus-c-right-repository-release-report-button__title">
+                            {NEW_RELEASE_REPORT}
+                        </span>
                         <AtlaskitMoreIcon />
                     </Button>
                 )}

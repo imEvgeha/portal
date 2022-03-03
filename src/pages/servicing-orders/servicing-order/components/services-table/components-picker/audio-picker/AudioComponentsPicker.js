@@ -5,7 +5,7 @@ import {Checkbox} from '@atlaskit/checkbox';
 import DynamicTable from '@atlaskit/dynamic-table';
 import {HelperMessage} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
-import Select from '@atlaskit/select/dist/cjs/Select';
+import Select from '@atlaskit/select';
 import {differenceBy, flattenDeep, get, groupBy, pickBy, uniqBy} from 'lodash';
 import {Header, Footer, AddToService} from '../ComponentsPicker';
 import {createDynamicTableRows, getAudioChannelsForLangTrack, getToolTipText} from '../pickerUtils';
@@ -112,10 +112,10 @@ const AudioComponentsPicker = ({data, closeModal, saveComponentData, index}) => 
         []
     );
 
-    const audioChannels = useMemo(() => getAudioChannelsForLangTrack(language, track, audioComponentArray), [
-        language,
-        track,
-    ]);
+    const audioChannels = useMemo(
+        () => getAudioChannelsForLangTrack(language, track, audioComponentArray),
+        [language, track]
+    );
 
     const checkboxData = useMemo(
         () =>

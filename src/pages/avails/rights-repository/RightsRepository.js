@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions, no-magic-numbers */
-import React, {useEffect, useState, useRef, useMemo} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
@@ -17,13 +17,14 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
-import {isEmpty, isEqual, get} from 'lodash';
+import {get, isEmpty, isEqual} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
 import usePrevious from '../../../util/hooks/usePrevious';
 import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridApiFix';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
+import {processOptions} from '../../legacy/containers/avail/util/ProcessSelectOptions';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {
     deselectIngest,
@@ -43,19 +44,21 @@ import {
 } from '../right-matching/rightMatchingSelectors';
 import DOPService from '../selected-for-planning/DOP-services';
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
+import SelectedPreplanTable from '../selected-preplan-table/SelectedPreplanTable';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
+import StatusLogRightsTable from '../status-log-rights-table/StatusLogRightsTable';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
-import {setRightsFilter, setSelectedRights, setPreplanRights} from './rightsActions';
+import {setPreplanRights, setRightsFilter, setSelectedRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
-import {RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB} from './constants';
+import {PRE_PLAN_TAB, RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB} from './constants';
 import constants from '../constants';
 import './RightsRepository.scss';
 
 const RightsRepositoryTable = compose(
     withSideBar(),
-    withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
+    withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2, filtersMapping: processOptions}),
     withColumnsResizing(),
     withInfiniteScrolling({fetchData: rightsService.advancedSearchV2, filtersInBody: true}),
     withSorting(constants.INITIAL_SORT)
@@ -83,7 +86,7 @@ const RightsRepository = ({
     setIsTableDataLoading,
     username,
     onFiltersChange,
-
+    statusLogCount,
     fromSelectedTable,
 }) => {
     const isMounted = useRef(true);
@@ -94,6 +97,8 @@ const RightsRepository = ({
     const [prePlanColumnApi, setPrePlanColumnApi] = useState(null);
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [activeTabIndex, setActiveTabIndex] = useState(0);
+    const [isSelected, setIsSelected] = useState(false);
+
     const [selectedGridApi, setSelectedGridApi] = useState(null);
     const [selectedForPlanningGridApi, setSelectedForPlanningGridApi] = useState(null);
     const [selectedForPlanningColumnApi, setSelectedForPlanningColumnApi] = useState(null);
@@ -101,16 +106,20 @@ const RightsRepository = ({
 
     const [attachment, setAttachment] = useState();
     const {search} = location;
+
     const [selectedFilter, setSelectedFilter] = useState({});
     const [planningRightsCount, setPlanningRightsCount] = useState(0);
     const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
+
     const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
 
     const [singleRightMatch, setSingleRightMatch] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
+
+    const repositoryFilterModel = useRef(undefined);
 
     useEffect(() => {
         return () => {
@@ -119,6 +128,12 @@ const RightsRepository = ({
     }, []);
 
     useEffect(() => {
+        setIsSelected(false);
+    }, [activeTab]);
+
+    useEffect(() => {
+        setActiveTabIndex(0);
+        setActiveTab(RIGHTS_TAB);
         const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
         const timer = setInterval(() => {
             if (updatedAttachment?.status === 'PENDING' && attachment?.status === 'PENDING')
@@ -201,7 +216,7 @@ const RightsRepository = ({
 
             //     // Filter selected rights only when ingest is selected
             if (selectedIngest) {
-                gridApi.getSelectedRows().forEach(row => {
+                gridApi?.getSelectedRows()?.forEach(row => {
                     if (selectedIds?.includes(row.id)) {
                         loadedSelectedRights.push(row);
                     }
@@ -242,17 +257,19 @@ const RightsRepository = ({
 
     // Fetch and set DOP projects count for current user
     useEffect(() => {
-        DOPService.getUsersProjectsList(1, 1)
-            .then(([response, headers]) => {
-                const total = parseInt(headers.get('X-Total-Count') || response.length);
-                if (isMounted.current) {
-                    setPlanningRightsCount(total);
-                }
-            })
-            .catch(error => {
-                // error-handling here
-            });
-    }, [activeTab, get(prePlanRights, `[${username}].length`, 0), isPlanningTabRefreshed]);
+        if (activeTab === SELECTED_FOR_PLANNING_TAB) {
+            DOPService.getUsersProjectsList(1, 1)
+                .then(([response, headers]) => {
+                    const total = parseInt(headers.get('X-Total-Count') || response.length);
+                    if (isMounted.current) {
+                        setPlanningRightsCount(total);
+                    }
+                })
+                .catch(error => {
+                    // error-handling here
+                });
+        }
+    }, [activeTab]);
 
     // Fetch only pre-plan rights from the current user
     useEffect(() => {
@@ -416,7 +433,7 @@ const RightsRepository = ({
 
         if (Object.keys(data).length > 0 && data.validationErrors.length > 0 && colDef.colId !== 'icon') {
             let severityType = '';
-            data.validationErrors.forEach(function (validation) {
+            data?.validationErrors?.forEach(function (validation) {
                 const fieldName = validation.fieldName.includes('[')
                     ? validation.fieldName.split('[')[0]
                     : validation.fieldName;
@@ -504,8 +521,11 @@ const RightsRepository = ({
                 setColumnApi(gridColumnApi);
                 break;
             case READY:
-                setGridApi(api);
+                api && setGridApi(api);
                 setColumnApi(gridColumnApi);
+                if (repositoryFilterModel.current) {
+                    api?.setFilterModel(repositoryFilterModel.current);
+                }
                 break;
             case SELECTION_CHANGED: {
                 if (activeTab === RIGHTS_TAB) {
@@ -589,7 +609,11 @@ const RightsRepository = ({
                     break;
                 }
 
-                setRightsFilter({...rightsFilter, column});
+                repositoryFilterModel.current = api.getFilterModel();
+
+                // setRightsFilter({...rightsFilter, column});
+                const filters = {column: {...rightsFilter.column, ...column}, external: {...rightsFilter.external}};
+                setRightsFilter(filters);
                 updateMapping(api);
                 break;
             }
@@ -623,8 +647,8 @@ const RightsRepository = ({
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader
                 gridApi={gridApi}
-                columnApi={columnApi} 
-                username={username} 
+                columnApi={columnApi}
+                username={username}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 activeTabIndex={activeTabIndex}
@@ -634,6 +658,8 @@ const RightsRepository = ({
                 totalRows={totalCount === 'One' ? 1 : totalCount}
                 selectedRightsCount={currentUserSelectedRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
+                setIsSelected={setIsSelected}
+                isSelected={isSelected}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 activeTabIndex={activeTabIndex}
@@ -661,8 +687,9 @@ const RightsRepository = ({
                 prePlanGridApi={prePlanGridApi}
                 selectedForPlanningColumnApi={selectedForPlanningColumnApi}
                 selectedForPlanningGridApi={selectedForPlanningGridApi}
+                statusRightsCount={statusLogCount}
             />
-            {!isEmpty(selectedIngest) && attachment && (
+            {!isEmpty(selectedIngest) && attachment && activeTab === RIGHTS_TAB && (
                 <Ingest
                     ingest={selectedIngest}
                     deselectIngest={deselectIngest}
@@ -672,58 +699,77 @@ const RightsRepository = ({
                     filterByStatus={filterByStatus}
                 />
             )}
-            <RightsRepositoryTable
-                id="rightsRepo"
-                columnDefs={updatedColumnDefs}
-                rowSelection="multiple"
-                suppressRowClickSelection={true}
-                singleClickEdit
-                context={{selectedRows: currentUserSelectedRights}}
-                mapping={updatedMapping || mapping}
-                setTotalCount={setTotalCount}
-                onGridEvent={type => onRightsRepositoryGridEvent(type, gridApi, columnApi)}
-                isGridHidden={activeTab !== RIGHTS_TAB}
-                initialFilter={rightsFilter.column}
-                params={rightsFilter.external}
-                multiSortKey="ctrl"
-                setDataLoading={setIsTableDataLoading}
-                rowClassRules={{
-                    'nexus-c-rights-repository__row': params =>
-                        params &&
-                        params.data &&
-                        params.data.status &&
-                        (params.data.status === 'Merged' || params.data.status === 'Deleted'),
-                }}
-            />
+            {activeTab === RIGHTS_TAB && !isSelected && (
+                <RightsRepositoryTable
+                    id="rightsRepo"
+                    columnDefs={updatedColumnDefs}
+                    rowSelection="multiple"
+                    suppressRowClickSelection={true}
+                    singleClickEdit
+                    context={{selectedRows: currentUserSelectedRights}}
+                    mapping={updatedMapping || mapping}
+                    setTotalCount={setTotalCount}
+                    onGridEvent={type => onRightsRepositoryGridEvent(type, gridApi, columnApi)}
+                    isGridHidden={activeTab !== RIGHTS_TAB}
+                    initialFilter={rightsFilter.column}
+                    params={rightsFilter.external}
+                    multiSortKey="ctrl"
+                    setDataLoading={setIsTableDataLoading}
+                    rowClassRules={{
+                        'nexus-c-rights-repository__row': params =>
+                            params &&
+                            params.data &&
+                            params.data.status &&
+                            (params.data.status === 'Merged' || params.data.status === 'Deleted'),
+                    }}
+                />
+            )}
 
-            <SelectedRightsTable
-                columnDefs={updatedColumnDefsCheckBoxHeader}
-                mapping={mapping}
-                rowData={selectedRepoRights}
-                notFilterableColumns={['action', 'buttons']}
-                activeTab={activeTab}
-                selectedColumnApi={selectedColumnApi}
-                setSelectedColumnApi={setSelectedColumnApi}
-                selectedFilter={selectedFilter}
-                setSelectedFilter={setSelectedFilter}
-                selectedRepoRights={selectedRepoRights}
-                gridApi={gridApi}
-                selectedRights={selectedRights}
-                username={username}
-                selectedGridApi={selectedGridApi}
-                setSelectedGridApi={setSelectedGridApi}
-            />
-            <PreplanRightsTable
-                columnDefs={updatedColumnDefsCheckBoxHeader}
-                prePlanRepoRights={currentUserPrePlanRights}
-                activeTab={activeTab}
-                mapping={mapping}
-                setPreplanRights={setPreplanRights}
-                setPrePlanColumnApi={setPrePlanColumnApi}
-                setPrePlanGridApi={setPrePlanGridApi}
-                setSelectedPrePlanRights={setSelectedPrePlanRights}
-                username={username}
-            />
+            {activeTab === RIGHTS_TAB && isSelected && (
+                <SelectedRightsTable
+                    columnDefs={updatedColumnDefsCheckBoxHeader}
+                    mapping={mapping}
+                    rowData={selectedRepoRights}
+                    notFilterableColumns={['action', 'buttons']}
+                    activeTab={activeTab}
+                    selectedFilter={selectedFilter}
+                    setSelectedFilter={setSelectedFilter}
+                    selectedRepoRights={selectedRepoRights}
+                    selectedRights={selectedRights}
+                    username={username}
+                />
+            )}
+            {activeTab === PRE_PLAN_TAB && !isSelected && (
+                <PreplanRightsTable
+                    columnDefs={updatedColumnDefsCheckBoxHeader}
+                    prePlanRepoRights={currentUserPrePlanRights}
+                    context={{selectedRows: selectedPrePlanRights}}
+                    activeTab={activeTab}
+                    mapping={mapping}
+                    setPreplanRights={setPreplanRights}
+                    setPrePlanColumnApi={setPrePlanColumnApi}
+                    setPrePlanGridApi={setPrePlanGridApi}
+                    setSelectedPrePlanRights={setSelectedPrePlanRights}
+                    username={username}
+                />
+            )}
+            {activeTab === PRE_PLAN_TAB && isSelected && (
+                <SelectedPreplanTable
+                    columnDefs={updatedColumnDefsCheckBoxHeader}
+                    mapping={mapping}
+                    rowData={selectedPrePlanRights}
+                    activeTab={activeTab}
+                    selectedColumnApi={selectedColumnApi}
+                    setSelectedColumnApi={setSelectedColumnApi}
+                    selectedRepoRights={selectedPrePlanRights}
+                    gridApi={gridApi}
+                    selectedRights={selectedPrePlanRights}
+                    username={username}
+                    selectedGridApi={selectedGridApi}
+                    setSelectedGridApi={setSelectedGridApi}
+                />
+            )}
+            {activeTab === STATUS_TAB && <StatusLogRightsTable activeTab={activeTab} />}
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
                 <SelectedForPlanning
                     activeTab={activeTab}
@@ -759,6 +805,7 @@ RightsRepository.propTypes = {
     setIsTableDataLoading: PropTypes.func,
     onFiltersChange: PropTypes.func,
     fromSelectedTable: PropTypes.object,
+    statusLogCount: PropTypes.number,
 };
 
 RightsRepository.defaultProps = {
@@ -772,6 +819,7 @@ RightsRepository.defaultProps = {
     setIsTableDataLoading: () => null,
     onFiltersChange: () => null,
     fromSelectedTable: {},
+    statusLogCount: 0,
 };
 
 const mapStateToProps = () => {
@@ -781,6 +829,7 @@ const mapStateToProps = () => {
     const preplanRightsSelector = selectors.createPreplanRightsSelector();
     const rightsFilterSelector = selectors.createRightsFilterSelector();
     const fromSelectedTableSelector = selectors.createFromSelectedTableSelector();
+    const statusLogCountSelector = selectors.createStatusLogCountSelector();
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
         mapping: availsMappingSelector(state, props),
@@ -791,6 +840,7 @@ const mapStateToProps = () => {
         rightsFilter: rightsFilterSelector(state, props),
         username: getUsername(state),
         fromSelectedTable: fromSelectedTableSelector(state, props),
+        statusLogCount: statusLogCountSelector(state, props),
     });
 };
 

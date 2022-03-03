@@ -47,14 +47,14 @@ const EntityActions = ({tag, flag1, flag2, actions, totalEnabled}) => {
     return (
         <div className="nexus-c-entity-actions">
             <div className="row text-center text-sm-start align-items-center">
-                <div className="col-12 col-sm-4 col-lg-6">
+                <div className="col-12 col-sm-4 col-lg-4">
                     <div className="row">
                         <div className="col-sm-4">{!!tag && <Tag value={tag} />}</div>
                         <div className="col-sm-3">{flag1}</div>
                         <div className="col-sm-3">{flag2}</div>
                     </div>
                 </div>
-                <div className="col-12 col-sm-8 col-lg-6 text-end">
+                <div className="col-12 col-sm-8 col-lg-8 text-end">
                     <div className="row">{constructActions()}</div>
                 </div>
             </div>

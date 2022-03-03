@@ -308,10 +308,6 @@
                             "optionsConfig": {
                                 "options": [
                                     {
-                                        "label": "Pending",
-                                        "value": "Pending"
-                                    },
-                                    {
                                         "label": "Confirmed",
                                         "value": "Confirmed"
                                     },

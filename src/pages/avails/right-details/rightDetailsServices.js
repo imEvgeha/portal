@@ -1,20 +1,21 @@
 import {
     ACTOR,
+    ANIMATED_CHARACTER,
     CAST,
     DIRECTOR,
+    DISPLAY_ARTIST,
+    FEATURE_ARTIST,
     PRODUCER,
-    WRITER,
-    ANIMATED_CHARACTER,
     RECORDING_ARTIST,
     VOICE_TALENT,
-    FEATURE_ARTIST,
-    DISPLAY_ARTIST,
+    WRITER,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
-import config from 'react-global-configuration';
+import {getConfig} from '../../../config';
 import {nexusFetch} from '../../../util/http-client/index';
 
 const createMultiCastPersonTypePath = () => {
-    const value = `${ACTOR},${ANIMATED_CHARACTER},${RECORDING_ARTIST},${VOICE_TALENT},${FEATURE_ARTIST},${DISPLAY_ARTIST},&`.toLowerCase();
+    const value =
+        `${ACTOR},${ANIMATED_CHARACTER},${RECORDING_ARTIST},${VOICE_TALENT},${FEATURE_ARTIST},${DISPLAY_ARTIST},&`.toLowerCase();
     return `personTypes=${value}`;
 };
 
@@ -51,12 +52,12 @@ export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = fal
     }
 
     const path = `/persons${sortPath}${displayNamePath}${personTypePath}page=0&size=${size}`;
-    const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + path;
+    const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + path;
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 
 export const searchPersonById = personId => {
     const path = `/persons/${personId}`;
-    const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + path;
+    const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + path;
     return nexusFetch(url, {isWithErrorHandling: false});
 };
