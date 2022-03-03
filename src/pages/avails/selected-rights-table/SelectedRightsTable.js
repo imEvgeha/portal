@@ -22,11 +22,6 @@ const SelectedRightsGrid = compose(
 const SelectedRightsTable = ({
     columnDefs,
     mapping,
-    activeTab,
-    selectedGridApi,
-    setSelectedGridApi,
-    selectedColumnApi,
-    setSelectedColumnApi,
     selectedFilter,
     setSelectedFilter,
     selectedRepoRights,
@@ -34,13 +29,14 @@ const SelectedRightsTable = ({
     username,
 }) => {
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
-
+    const [gridApi, setGridApi] = useState(undefined);
+    const [columnApiState, setColumnApiState] = useState(undefined);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const usersSelectedRights = get(selectedRights, username, {});
         setCurrentUserSelectedRights(Object.values(usersSelectedRights));
-        selectedGridApi?.forEachNode(node => node?.setSelected(true));
+        gridApi?.forEachNode(node => node?.setSelected(true));
     }, []);
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
@@ -48,15 +44,15 @@ const SelectedRightsTable = ({
 
         switch (type) {
             case FIRST_DATA_RENDERED:
-                !selectedGridApi && setSelectedGridApi(api);
-                !selectedColumnApi && setSelectedColumnApi(columnApi);
+                !gridApi && setGridApi(api);
+                !columnApiState && setColumnApiState(columnApi);
 
                 api?.forEachNode(node => node?.setSelected(true));
 
                 break;
             case READY:
-                !selectedGridApi && setSelectedGridApi(api);
-                !selectedColumnApi && setSelectedColumnApi(columnApi);
+                !gridApi && setGridApi(api);
+                !columnApiState && setColumnApiState(columnApi);
 
                 api?.forEachNode(node => node?.setSelected(true));
                 break;
@@ -86,10 +82,8 @@ const SelectedRightsTable = ({
                     return selectedRights;
                 }, {});
 
-                const formatedRights = {[username]: payload};
-
-                dispatch(storeFromSelectedTable(formatedRights));
-
+                const formattedRights = {[username]: payload};
+                dispatch(storeFromSelectedTable(formattedRights));
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -97,7 +91,7 @@ const SelectedRightsTable = ({
                 break;
             case FILTER_CHANGED:
                 setSelectedFilter(api.getFilterModel());
-                !selectedGridApi && setSelectedGridApi(api);
+                !gridApi && setGridApi(api);
                 break;
             default:
                 break;
@@ -115,9 +109,6 @@ const SelectedRightsTable = ({
             rowSelection="multiple"
             mapping={mapping}
             rowData={currentUserSelectedRights}
-            setSelectedColumnApi={setSelectedColumnApi}
-            setSelectedGridApi={setSelectedGridApi}
-            // isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
         />
     );
 };
@@ -125,12 +116,7 @@ const SelectedRightsTable = ({
 SelectedRightsTable.propTypes = {
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
-    activeTab: PropTypes.string.isRequired,
     selectedRepoRights: PropTypes.array,
-    selectedGridApi: PropTypes.object,
-    setSelectedGridApi: PropTypes.func,
-    selectedColumnApi: PropTypes.object,
-    setSelectedColumnApi: PropTypes.func,
     selectedFilter: PropTypes.object,
     setSelectedFilter: PropTypes.func,
     selectedRights: PropTypes.object,
@@ -141,10 +127,6 @@ SelectedRightsTable.defaultProps = {
     columnDefs: [],
     mapping: null,
     selectedRepoRights: [],
-    selectedGridApi: {},
-    setSelectedGridApi: () => null,
-    selectedColumnApi: {},
-    setSelectedColumnApi: () => null,
     selectedFilter: {},
     setSelectedFilter: () => null,
     selectedRights: {},
