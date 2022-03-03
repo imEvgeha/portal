@@ -58,3 +58,9 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
     justify-content: space-between;
     align-items: flex-end;
 }
+
+.disable-selected {
+    background-color: map-get($neutrals, N20) !important;
+    pointer-events: none;
+    opacity: 0.7;
+}

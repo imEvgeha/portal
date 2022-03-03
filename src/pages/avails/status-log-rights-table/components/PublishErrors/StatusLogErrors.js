@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const StatusLogErrors = ({setErrors, data}) => {
+const StatusLogErrors = ({errorsSet, data}) => {
     const {errors} = data;
+
     const value = errors ? errors.map(item => `${item.errorType} - ${item.description}`) : [];
-    const setErrorsData = () => setErrors(value);
+    const setEr = () => errorsSet(value);
 
     return value && value.length ? (
-        <div className="nexus-c-status-log-table__error-cell" onClick={setErrorsData}>
-            ...
+        <div className="nexus-c-status-log-table__error-cell" onClick={setEr}>
+            <h3>...</h3>
         </div>
     ) : (
         ''
@@ -16,7 +17,7 @@ const StatusLogErrors = ({setErrors, data}) => {
 };
 
 StatusLogErrors.propTypes = {
-    setErrors: PropTypes.func.isRequired,
+    errorsSet: PropTypes.func.isRequired,
     data: PropTypes.object,
 };
 

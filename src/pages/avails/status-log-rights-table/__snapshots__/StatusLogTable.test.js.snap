@@ -9,7 +9,6 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
-          "cellStyle": [Function],
           "checkboxSelection": true,
           "field": "action",
           "filter": false,
@@ -178,6 +177,11 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
       ]
     }
     onGridEvent={[Function]}
+    rowClassRules={
+      Object {
+        "zag-row-selected": [Function],
+      }
+    }
     rowSelection="multiple"
     suppressRowClickSelection={true}
   />
