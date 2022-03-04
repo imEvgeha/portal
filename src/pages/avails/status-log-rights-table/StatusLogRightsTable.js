@@ -35,7 +35,7 @@ const StatusLogRightsTable = ({activeTab}) => {
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
 
-    const errorsSet = data => {
+    const setErrors = data => {
         setErrorsData(data);
         setShowDrawer(true);
     };
@@ -45,7 +45,7 @@ const StatusLogRightsTable = ({activeTab}) => {
     const columnDefs = columnMappings.map(col => ({
         ...col,
         cellRendererParams: {
-            errorsSet,
+            setErrors,
         },
     }));
 
