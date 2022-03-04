@@ -5,6 +5,7 @@ import FieldLabel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-labe
 import {isEmpty} from 'lodash';
 import {Calendar} from 'primereact/calendar';
 import {Checkbox} from 'primereact/checkbox';
+import {Dropdown} from 'primereact/dropdown';
 import {InputText} from 'primereact/inputtext';
 import {Controller} from 'react-hook-form';
 import ArrayElement from './array-element/ArrayElement';
@@ -80,6 +81,32 @@ const getElement = (elementSchema, field, value, form, onChange, cb) => {
             let tmpDate;
             let val;
 
+            // dynamically populate the years from the dropdown menu for the calendar
+            const currentYear = new Date().getFullYear();
+
+            const monthNavigatorTemplate = e => {
+                return (
+                    <Dropdown
+                        value={e.value}
+                        options={e.options}
+                        onChange={event => e.onChange(event.originalEvent, event.value)}
+                        style={{lineHeight: 1}}
+                    />
+                );
+            };
+
+            const yearNavigatorTemplate = e => {
+                return (
+                    <Dropdown
+                        value={e.value}
+                        options={e.options}
+                        onChange={event => e.onChange(event.originalEvent, event.value)}
+                        className="ml-2"
+                        style={{lineHeight: 1}}
+                    />
+                );
+            };
+
             if (field.value) {
                 tmpDate = new Date(field.value);
                 val = new Date(tmpDate.toLocaleString('en-US', {timeZone: 'UTC'}));
@@ -100,6 +127,11 @@ const getElement = (elementSchema, field, value, form, onChange, cb) => {
                     showSeconds
                     showIcon
                     icon={IconCalendar}
+                    monthNavigator
+                    yearNavigator
+                    yearRange={`${currentYear - 5}:${currentYear + 10}`}
+                    monthNavigatorTemplate={monthNavigatorTemplate}
+                    yearNavigatorTemplate={yearNavigatorTemplate}
                 />
             );
         }
