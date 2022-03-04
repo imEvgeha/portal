@@ -168,7 +168,9 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 // change key - add List
                 keyValue = `${keyValue}List`;
                 //  Convert Comma Separated String into an Array
-                if (typeof value === 'string') value = value.split(',');
+                if (typeof value === 'string') {
+                    value = value.split(', ');
+                }
             }
 
             if (map?.searchDataType === 'boolean') {
