@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
-import Tag from '@atlaskit/tag';
+import {SimpleTag as Tag} from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
@@ -104,13 +104,12 @@ const ServicingOrdersTable = ({
                     cellStyle: params => {
                         const dueDate = ISODateToView(params.value, DATETIME_FIELDS.REGIONAL_MIDNIGHT);
                         const daysDiff = moment().diff(dueDate, 'days');
-                        if (daysDiff >= 0)
-                            return {color: 'red'}; // last day or expired
+                        if (daysDiff >= 0) return {color: 'red'};
+                        // last day or expired
                         // eslint-disable-next-line no-magic-numbers
-                        else if(daysDiff >= -3 && daysDiff <= -1)
-                            return {color: 'orange'}; // 3 days or less
+                        else if (daysDiff >= -3 && daysDiff <= -1) return {color: 'orange'}; // 3 days or less
                         return null;
-                    }
+                    },
                 };
             }
 

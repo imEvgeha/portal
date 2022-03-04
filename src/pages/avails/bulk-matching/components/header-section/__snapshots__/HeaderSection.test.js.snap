@@ -22,12 +22,12 @@ exports[`HeaderSection should match snapshot 1`] = `
     2
     )
   </div>
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+  <Button
     className="nexus-c-bulk-matching__btn"
     isDisabled={true}
     onClick={[Function]}
   >
     New Title
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </Button>
 </div>
 `;

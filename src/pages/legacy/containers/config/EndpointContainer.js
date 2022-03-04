@@ -195,7 +195,6 @@ export class EndpointContainer extends Component {
         const {selectedApi} = this.props;
         const newVal = {...this.state.currentRecord, ...val};
         const successToast = {
-            summary: 'Success',
             severity: 'success',
             detail: `${capitalize(newVal.name)} config for ${selectedApi.displayName} successfully ${
                 newVal.id ? 'updated.' : 'added.'

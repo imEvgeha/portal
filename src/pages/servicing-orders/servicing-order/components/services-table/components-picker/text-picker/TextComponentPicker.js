@@ -2,7 +2,7 @@
 import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {HelperMessage} from '@atlaskit/form';
-import Select from '@atlaskit/select/dist/cjs/Select';
+import Select from '@atlaskit/select';
 import Textfield from '@atlaskit/textfield';
 import {differenceBy, get, uniqBy} from 'lodash';
 import {Header, Footer, AddToService} from '../ComponentsPicker';

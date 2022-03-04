@@ -134,7 +134,7 @@ const withFilterableColumns =
                 if (isCallback) {
                     waitForFilter--;
                     if (isMounted.current && !waitForFilter) {
-                        gridApi.onFilterChanged();
+                        gridApi?.onFilterChanged?.();
                         setIsDatasourceEnabled(true);
                     }
                 }
@@ -159,21 +159,21 @@ const withFilterableColumns =
                     ];
                     keys.forEach(key => {
                         const field = key.replace(/Match/, '');
-                        const filterInstance = gridApi.getFilterInstance(field);
+                        const filterInstance = gridApi?.getFilterInstance?.(field);
                         if (filterInstance) {
                             // if filter is found or is not found but is not readonly
                             initializeFilter(filterInstance, key);
                         } else {
                             // we need to use callback
                             waitForFilter++;
-                            gridApi.getFilterInstance(field, filterInstance =>
+                            gridApi?.getFilterInstance?.(field, filterInstance =>
                                 initializeFilter(filterInstance, key, true)
                             );
                         }
                     });
 
                     if (isMounted.current && !waitForFilter) {
-                        gridApi.onFilterChanged();
+                        gridApi?.onFilterChanged?.();
                         setIsDatasourceEnabled(true);
                     }
                 }

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {HelperMessage} from '@atlaskit/form';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import Tag from '@atlaskit/tag';
+import {SimpleTag as Tag} from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import './TextComponentPicker.scss';
 

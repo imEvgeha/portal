@@ -19,10 +19,6 @@ export const Label = styled.span`
     `}
 `;
 
-export const ExtendedButton = styled(Button)`
-    padding: 15px 21px;
-`;
-
 export const Wrapper = styled.div`
     display: flex;
     justify-content: space-space-between;

@@ -7,7 +7,6 @@ import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-m
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {
-    SUCCESS_TITLE,
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
@@ -201,7 +200,6 @@ export const BulkMatching = ({
 
     const dispatchSuccessToast = count => {
         addToast({
-            summary: SUCCESS_TITLE,
             detail: isBonusRight
                 ? TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE(count, selectedTableData.length - count)
                 : TITLE_BULK_MATCH_SUCCESS_MESSAGE(affectedTableData.length),
@@ -228,14 +226,14 @@ export const BulkMatching = ({
                 <ToastBody summary={WARNING_TITLE} detail={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} severity="warn">
                     <div className="d-flex align-items-center">
                         <PrimeReactButton
-                            label="Ok"
-                            className="p-button-link p-toast-confirm-button"
-                            onClick={onOkayButtonClick}
+                            label="Cancel"
+                            className="p-button-link p-toast-left-button"
+                            onClick={onCancelButtonClick}
                         />
                         <PrimeReactButton
-                            label="Cancel"
-                            className="p-button-link p-toast-cancel-button"
-                            onClick={onCancelButtonClick}
+                            label="Continue"
+                            className="p-button-link p-toast-right-button"
+                            onClick={onOkayButtonClick}
                         />
                     </div>
                 </ToastBody>

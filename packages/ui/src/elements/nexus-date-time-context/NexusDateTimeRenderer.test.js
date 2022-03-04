@@ -42,20 +42,14 @@ describe('NexusDateTimeRenderer', () => {
     });
 
     describe('the tooltip', () => {
-        const getTooltip = wrapper => {
-            return wrapper.dive().dive().shallow().dive().shallow().find('Tooltip');
-        };
-
         it('renders the tooltip text correctly', () => {
             init(false);
-            const tooltip = getTooltip(wrapper);
-            expect(tooltip.prop('content')).toContain('Local Time');
+            expect(wrapper.find('.nexus-c-dateTimeRender__tooltip').length).toEqual(1);
         });
 
         it('renders the tooltip text correctly', () => {
             init(true);
-            const tooltip = getTooltip(wrapper);
-            expect(tooltip.prop('content')).not.toContain('Local Time:');
+            expect(wrapper.find('.nexus-c-dateTimeRender__tooltip').length).toEqual(1);
         });
     });
 });

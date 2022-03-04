@@ -156,6 +156,11 @@ $element-color-orange-80: palette(orange, 80);
 
         &.p-button-icon-only {
             width: 32px;
+            margin-left: 12px;
+
+            @media (max-width: 1600px) {
+                margin-left: 0;
+            }
         }
 
         svg {
@@ -178,7 +183,7 @@ $element-color-orange-80: palette(orange, 80);
         }
     }
 
-    &.p-toast-confirm-button {
+    &.p-toast-left-button {
         @include padding(0, 0, 0, 0);
         @include margin(2, 8, 0, 0);
 
@@ -193,7 +198,7 @@ $element-color-orange-80: palette(orange, 80);
         }
     }
 
-    &.p-toast-cancel-button {
+    &.p-toast-right-button {
         @include padding(0, 0, 0, 0);
         @include margin(2, 0, 0, 0);
 
@@ -358,6 +363,12 @@ $element-color-orange-80: palette(orange, 80);
             color: palette(black, 100);
         }
     }
+
+    .p-toast-message.p-toast-message-error {
+        color: #aa214b;
+        border: solid #aa214b;
+        border-width: 0 0 0 6px;
+    }
 }
 
 // Input Text
@@ -392,6 +403,10 @@ $element-color-orange-80: palette(orange, 80);
             border-radius: 24px;
             width: 640px;
             object-fit: contain;
+
+            @media (max-width: 1600px) {
+                width: 540px;
+            }
         }
     }
 }

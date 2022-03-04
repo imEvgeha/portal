@@ -1,8 +1,15 @@
-import {SAVE_STATUS_DATA, REMOVE_STATUS_DATA} from './statusLogActionTypes';
+import {
+    SAVE_STATUS_DATA,
+    REMOVE_STATUS_DATA,
+    STORE_RESYNC_RIGHTS,
+    STORE_SELECTED_RESYNC_RIGHTS,
+} from './statusLogActionTypes';
 
 const initialState = {
     count: 0,
     data: [],
+    resyncRights: {},
+    selectedResyncRights: [],
 };
 
 const statusLogReducer = (state = initialState, action) => {
@@ -20,6 +27,20 @@ const statusLogReducer = (state = initialState, action) => {
                 ...state,
                 count: 0,
                 data: [],
+            };
+        }
+
+        case STORE_RESYNC_RIGHTS: {
+            return {
+                ...state,
+                resyncRights: action.payload,
+            };
+        }
+
+        case STORE_SELECTED_RESYNC_RIGHTS: {
+            return {
+                ...state,
+                selectedResyncRights: action.payload,
             };
         }
 

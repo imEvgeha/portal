@@ -24,6 +24,7 @@ const DateTimeRenderer = ({value, format, shouldDisplayTime, children}) => {
     const {renderDateTime, isLocal} = useDateTimeContext();
     return (
         <Tooltip
+            className="nexus-c-dateTimeRender__tooltip"
             content={`${!isLocal ? 'Local Time: ' : ''}${renderDateTime(value, format, shouldDisplayTime, !isLocal)}`}
         >
             {children(renderDateTime(value, format, shouldDisplayTime))}

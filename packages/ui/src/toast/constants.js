@@ -20,8 +20,8 @@ export const EDIT_RIGHT_ERROR_TITLE = 'Editing right failed!';
 export const RIGHT_ERROR_MSG_MERGED = 'Review and merge rights';
 export const LICENSOR_ERROR = 'Licensor already exists!';
 
-export const WARNING_TITLE = 'Warning';
-export const ERROR_TITLE = 'Error';
+export const WARNING_TITLE = 'Alert';
+export const ERROR_TITLE = 'Warning';
 export const SUCCESS_TITLE = 'Success';
 export const SUCCESS_ICON = 'success';
 export const WARNING_ICON = 'warning';

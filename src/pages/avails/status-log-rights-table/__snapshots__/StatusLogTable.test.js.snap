@@ -9,6 +9,22 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
+          "checkboxSelection": true,
+          "field": "action",
+          "filter": false,
+          "headerName": "",
+          "lockPinned": true,
+          "lockPosition": true,
+          "lockVisible": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -89,11 +105,16 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "field": "publishErrors",
           "headerName": "Errors",
           "javaVariableName": "publishErrors",
-          "minWidth": 150,
+          "minWidth": 100,
         },
       ]
     }
-    isGridHidden={false}
+    context={
+      Object {
+        "selectedRows": Object {},
+      }
+    }
+    isGridHidden={true}
     mapping={
       Array [
         Object {
@@ -156,12 +177,17 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "field": "publishErrors",
           "headerName": "Errors",
           "javaVariableName": "publishErrors",
-          "minWidth": 150,
+          "minWidth": 100,
         },
       ]
     }
     onGridEvent={[Function]}
-    rowSelection="single"
+    rowClassRules={
+      Object {
+        "disable-selected": [Function],
+      }
+    }
+    rowSelection="multiple"
     suppressRowClickSelection={true}
   />
   <NexusDrawer

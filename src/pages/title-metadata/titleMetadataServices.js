@@ -82,16 +82,14 @@ export const regenerateAutoDecoratedMetadata = async masterEmet => {
         if (failed.length) {
             const message = failed.map(e => e.description).join(' ');
             const errorToast = {
-                summary: 'Regenerating Editorial Metadata Failed',
                 severity: 'warn',
                 sticky: true,
-                detail: message,
+                detail: `Regenerating Editorial Metadata Failed. Detail: ${message}`,
             };
             store.dispatch(addToast(errorToast));
             return false;
         }
         const successToast = {
-            summary: 'Success',
             severity: 'success',
             detail: 'Editorial Metadata Successfully Regenerated!',
         };
@@ -109,9 +107,8 @@ export const unmergeTitle = async id => {
             response.statusCodeValue === internalErrorCode || response.statusCodeValue === authorizationErrorCode;
         if (unmergeFailed) {
             const errorToast = {
-                summary: 'Unmerge not available',
                 severity: 'error',
-                detail: response.body.description,
+                detail: `Unmerge not available. Detail: ${response.body.description}`,
             };
             store.dispatch(addToast(errorToast));
             return false;

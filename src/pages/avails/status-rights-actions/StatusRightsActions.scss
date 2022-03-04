@@ -4,20 +4,26 @@
 @import '~@vubiquity-nexus/portal-styles/scss/color-palette';
 
 .nexus-c-status-rights-actions {
+    cursor: not-allowed;
     position: relative;
 
-    .nexus-c-status-rights-actions__menu-item {
-        @include margin(0, 3);
-        color: palette(black, 20);
-        white-space: nowrap; // Keep each option in one line
-        padding-bottom: 0px;
-        font-weight: bold;
-        cursor: not-allowed;
+    &--is-active {
+        position: relative;
+        cursor: pointer;
+    }
+}
 
-        &--is-active {
-            color: map-get($colors, nexus-secondary-color);
-            color: palette(black, 55);
-            cursor: pointer;
-        }
+.nexus-c-status-rights-actions__menu-item {
+    @include margin(0, 3);
+    color: palette(black, 20);
+    white-space: nowrap; // Keep each option in one line
+    padding-bottom: 0px;
+    font-weight: bold;
+    pointer-events: none;
+
+    &--is-active {
+        color: map-get($colors, nexus-secondary-color);
+        color: palette(black, 55);
+        pointer-events: all;
     }
 }

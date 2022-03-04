@@ -33,3 +33,9 @@ export const createFromSelectedTableSelector = () =>
 
 export const createStatusLogCountSelector = () =>
     createSelector(getStatusLogReducer, statusLog => statusLog.count || 0);
+
+export const createStatusLogResyncRightsSelector = () =>
+    createSelector(getStatusLogReducer, statusLog => statusLog.resyncRights || 0);
+
+export const createSelectedResyncRightsSelector = () =>
+    createSelector(getStatusLogReducer, statusLog => statusLog.selectedResyncRights || 0);

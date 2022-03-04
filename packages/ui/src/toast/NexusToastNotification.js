@@ -10,12 +10,19 @@ const NexusToastNotification = ({toast}) => {
         if (toast && toast.severity === 'error') {
             return {
                 ...toast,
+                summary: 'Warning',
                 sticky: true,
             };
         } else if (toast && toast.severity === 'success') {
             return {
                 ...toast,
+                summary: 'Success',
                 life: 3000,
+            };
+        } else if (toast && toast.severity === 'warn') {
+            return {
+                ...toast,
+                summary: 'Alert',
             };
         }
 

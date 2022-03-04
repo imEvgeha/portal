@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import TextArea from '@atlaskit/textarea';
-import { SUCCESS_TITLE } from '../../toast/constants';
 import withToasts from '../../toast/hoc/withToasts';
 import {options, THANKYOU_NOTE} from './constants';
 import './NexusFeedback.scss';
@@ -22,7 +21,6 @@ const NexusFeedback = ({addToast, currentPage, closeModal}) => {
         // call API and then close modal
         closeModal();
         addToast({
-            summary: SUCCESS_TITLE,
             detail: THANKYOU_NOTE,
             severity: 'success',
         });

@@ -28,7 +28,7 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
             "value": "repository",
           },
           Object {
-            "label": "Pre-Plan",
+            "label": "Pre-Planning",
             "tab": "Pre-Plan",
             "value": "prePlan",
           },
