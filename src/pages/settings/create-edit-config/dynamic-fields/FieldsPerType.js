@@ -58,29 +58,6 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
 };
 
 const getElement = (elementSchema, field, value, form, onChange, cb) => {
-    const monthNavigatorTemplate = e => {
-        return (
-            <Dropdown
-                value={e.value}
-                options={e.options}
-                onChange={event => e.onChange(event.originalEvent, event.value)}
-                style={{lineHeight: 1}}
-            />
-        );
-    };
-
-    const yearNavigatorTemplate = e => {
-        return (
-            <Dropdown
-                value={e.value}
-                options={e.options}
-                onChange={event => e.onChange(event.originalEvent, event.value)}
-                className="ml-2"
-                style={{lineHeight: 1}}
-            />
-        );
-    };
-
     switch (elementSchema.type) {
         case 'text': {
             const newField = {...field, ...(field.value === null && {value: undefined})};
@@ -106,6 +83,29 @@ const getElement = (elementSchema, field, value, form, onChange, cb) => {
 
             // dynamically populate the years from the dropdown menu for the calendar
             const currentYear = new Date().getFullYear();
+
+            const monthNavigatorTemplate = e => {
+                return (
+                    <Dropdown
+                        value={e.value}
+                        options={e.options}
+                        onChange={event => e.onChange(event.originalEvent, event.value)}
+                        style={{lineHeight: 1}}
+                    />
+                );
+            };
+
+            const yearNavigatorTemplate = e => {
+                return (
+                    <Dropdown
+                        value={e.value}
+                        options={e.options}
+                        onChange={event => e.onChange(event.originalEvent, event.value)}
+                        className="ml-2"
+                        style={{lineHeight: 1}}
+                    />
+                );
+            };
 
             if (field.value) {
                 tmpDate = new Date(field.value);
