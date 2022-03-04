@@ -109,6 +109,11 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
         },
       ]
     }
+    context={
+      Object {
+        "selectedRows": Object {},
+      }
+    }
     isGridHidden={true}
     mapping={
       Array [

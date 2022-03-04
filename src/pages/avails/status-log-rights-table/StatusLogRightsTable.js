@@ -8,15 +8,16 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../sync-log/syncLogConstants';
 import {STATUS_TAB} from '../rights-repository/constants';
+import {createSelectedResyncRightsSelector} from '../rights-repository/rightsSelectors';
 import {getStatusLog} from './StatusLogService';
 import columnMappings from './columnMappings';
 import './StatusLogRightsTable.scss';
 import StatusLogErrors from './components/PublishErrors/StatusLogErrors';
-import {storeResyncRights} from './statusLogActions';
+import {storeResyncRights, storeSelectedResyncRights} from './statusLogActions';
 
 const StatusLogRightsGrid = compose(
     withSideBar(),
@@ -28,6 +29,8 @@ const StatusLogRightsGrid = compose(
 
 const StatusLogRightsTable = ({activeTab}) => {
     const dispatch = useDispatch();
+
+    const selectedResyncRights = useSelector(createSelectedResyncRightsSelector());
 
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
@@ -51,11 +54,13 @@ const StatusLogRightsTable = ({activeTab}) => {
         switch (type) {
             case READY:
                 api.sizeColumnsToFit();
-
                 break;
 
             case SELECTION_CHANGED:
                 {
+                    const selectedRows = api?.getSelectedNodes()?.map(row => row.data);
+                    dispatch(storeSelectedResyncRights(selectedRows));
+
                     const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.entityId);
                     const payload = allSelectedRowsIds.reduce((selectedRights, currentRight, i) => {
                         selectedRights[i] = {id: currentRight};
@@ -89,6 +94,7 @@ const StatusLogRightsTable = ({activeTab}) => {
                         return ['SUCCESS', 'DELETED'].includes(params?.data?.status);
                     },
                 }}
+                context={{selectedRows: selectedResyncRights}}
             />
 
             <NexusDrawer onClose={closeDrawer} isOpen={showDrawer} title={ERROR_TABLE_TITLE} width="wider">
