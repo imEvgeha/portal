@@ -8,16 +8,15 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {compose} from 'redux';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import Loading from '../../static/Loading';
-import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {
+    COLUMNS_TO_REORDER,
+    INSERT_FROM,
+    planKeywordsColumn,
+    planKeywordsMapping,
     planTerritoriesColumn,
     planTerritoriesMapping,
     territoriesColumn,
     territoriesMapping,
-    planKeywordsColumn,
-    planKeywordsMapping,
-    COLUMNS_TO_REORDER,
-    INSERT_FROM,
 } from './constants';
 
 const PrePlanGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
@@ -26,22 +25,30 @@ const PreplanRightsTable = ({
     columnDefs,
     mapping,
     prePlanRepoRights,
-    activeTab,
     username,
     context,
     setPreplanRights,
     setSelectedPrePlanRights,
     setPrePlanColumnApi,
     setPrePlanGridApi,
+    selectedRights,
 }) => {
     const [count, setCount] = useState(0);
+    const [gridApi, setGridApi] = useState(undefined);
+    const [selectedPPRights, setSelectedPPRights] = useState([]);
 
     useEffect(() => {
-        if (activeTab === PRE_PLAN_TAB) {
-            setCount(0);
-            updateRightDetails();
+        setCount(0);
+        updateRightDetails();
+        setSelectedPPRights([...selectedRights]);
+    }, []);
+
+    useEffect(() => {
+        if (selectedPPRights.length && gridApi) {
+            const selectedIds = selectedPPRights.map(right => right.id);
+            gridApi.forEachNode?.(node => node?.setSelected(selectedIds.includes(node.data.id)));
         }
-    }, [activeTab]);
+    }, [selectedPPRights, gridApi]);
 
     const updateRightDetails = () => {
         let updatedPrePlanRepo = prePlanRepoRights;
@@ -101,6 +108,7 @@ const PreplanRightsTable = ({
             case GRID_EVENTS.READY: {
                 setPrePlanColumnApi(columnApi);
                 setPrePlanGridApi(api);
+                setGridApi(api);
                 break;
             }
             case GRID_EVENTS.CELL_VALUE_CHANGED:
@@ -134,7 +142,7 @@ const PreplanRightsTable = ({
         return updatedColumnDefs;
     };
 
-    return activeTab === PRE_PLAN_TAB && count < prePlanRepoRights.length ? (
+    return count < prePlanRepoRights.length ? (
         <Loading />
     ) : (
         <PrePlanGrid
@@ -151,7 +159,6 @@ const PreplanRightsTable = ({
             mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
             rowData={prePlanRepoRights}
             context={context}
-            isGridHidden={activeTab !== PRE_PLAN_TAB}
             onGridEvent={onGridReady}
             notFilterableColumns={['action', 'buttons']}
         />
@@ -163,12 +170,12 @@ PreplanRightsTable.propTypes = {
     mapping: PropTypes.array,
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
-    activeTab: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
     setPrePlanColumnApi: PropTypes.func,
     setPrePlanGridApi: PropTypes.func,
     context: PropTypes.object,
+    selectedRights: PropTypes.array,
 };
 
 PreplanRightsTable.defaultProps = {
@@ -178,6 +185,7 @@ PreplanRightsTable.defaultProps = {
     setPrePlanColumnApi: () => null,
     setPrePlanGridApi: () => null,
     context: {},
+    selectedRights: [],
 };
 
 export default PreplanRightsTable;

@@ -516,13 +516,13 @@ const RightsRepository = ({
 
         switch (type) {
             case FIRST_DATA_RENDERED:
-                setGridApi(api);
+                !gridApi && setGridApi(api);
                 updateMapping(api);
-                setColumnApi(gridColumnApi);
+                !columnApi && setColumnApi(gridColumnApi);
                 break;
             case READY:
-                api && setGridApi(api);
-                setColumnApi(gridColumnApi);
+                !gridApi && setGridApi(api);
+                !columnApi && setColumnApi(gridColumnApi);
                 if (repositoryFilterModel.current) {
                     api?.setFilterModel(repositoryFilterModel.current);
                 }
@@ -744,11 +744,11 @@ const RightsRepository = ({
                     columnDefs={updatedColumnDefsCheckBoxHeader}
                     prePlanRepoRights={currentUserPrePlanRights}
                     context={{selectedRows: selectedPrePlanRights}}
-                    activeTab={activeTab}
                     mapping={mapping}
                     setPreplanRights={setPreplanRights}
                     setPrePlanColumnApi={setPrePlanColumnApi}
                     setPrePlanGridApi={setPrePlanGridApi}
+                    selectedRights={selectedPrePlanRights}
                     setSelectedPrePlanRights={setSelectedPrePlanRights}
                     username={username}
                 />
@@ -758,7 +758,6 @@ const RightsRepository = ({
                     columnDefs={updatedColumnDefsCheckBoxHeader}
                     mapping={mapping}
                     rowData={selectedPrePlanRights}
-                    activeTab={activeTab}
                     selectedColumnApi={selectedColumnApi}
                     setSelectedColumnApi={setSelectedColumnApi}
                     selectedRepoRights={selectedPrePlanRights}
@@ -767,6 +766,7 @@ const RightsRepository = ({
                     username={username}
                     selectedGridApi={selectedGridApi}
                     setSelectedGridApi={setSelectedGridApi}
+                    setSelectedPrePlanRights={setSelectedPrePlanRights}
                 />
             )}
             {activeTab === STATUS_TAB && <StatusLogRightsTable activeTab={activeTab} />}
