@@ -42,7 +42,7 @@ const StatusLogRightsTable = ({activeTab, context, setSelectedStatusRights}) => 
         },
     }));
 
-    const onGridReady = ({type, api}) => {
+    const onGridEvent = ({type, api}) => {
         const {READY, SELECTION_CHANGED} = GRID_EVENTS;
         switch (type) {
             case READY:
@@ -75,7 +75,7 @@ const StatusLogRightsTable = ({activeTab, context, setSelectedStatusRights}) => 
                 columnDefs={[checkboxSelectionWithHeaderColumnDef, ...columnDefs]}
                 mapping={columnMappings}
                 context={context}
-                onGridEvent={onGridReady}
+                onGridEvent={onGridEvent}
                 isGridHidden={activeTab !== STATUS_TAB}
             />
 
