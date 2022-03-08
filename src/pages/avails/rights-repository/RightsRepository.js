@@ -782,7 +782,6 @@ const RightsRepository = ({
             {activeTab === STATUS_TAB && isSelected && (
                 <SelectedStatusTable
                     activeTab={activeTab}
-                    selectedGridApi={selectedGridApi}
                     selectedRights={selectedStatusRights}
                     setSelectedStatusRights={setSelectedStatusRights}
                 />

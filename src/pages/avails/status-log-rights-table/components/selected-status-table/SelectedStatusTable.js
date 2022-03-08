@@ -21,11 +21,11 @@ const SelectedStatusGrid = compose(
 
 const SelectedStatusTable = ({
     activeTab,
-    selectedGridApi,
     selectedRights,
     username,
     setSelectedStatusRights,
 }) => {
+    const [selectedGridApi, setSelectedGridApi] = useState(null);
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
@@ -129,6 +129,7 @@ const SelectedStatusTable = ({
                 mapping={columnMappings}
                 onGridEvent={onGridReady}
                 isGridHidden={activeTab !== STATUS_TAB}
+                setSelectedGridApi={setSelectedGridApi}
             />
 
             <NexusDrawer onClose={closeDrawer} isOpen={showDrawer} title={ERROR_TABLE_TITLE} width="wider">
@@ -153,14 +154,12 @@ const SelectedStatusTable = ({
 
 SelectedStatusTable.propTypes = {
     activeTab: PropTypes.string.isRequired,
-    selectedGridApi: PropTypes.object,
     selectedRights: PropTypes.array,
     username: PropTypes.string,
     setSelectedStatusRights: PropTypes.func,
 };
 
 SelectedStatusTable.defaultProps = {
-    selectedGridApi: {},
     selectedRights: [],
     username: {},
     setSelectedStatusRights: () => null,
