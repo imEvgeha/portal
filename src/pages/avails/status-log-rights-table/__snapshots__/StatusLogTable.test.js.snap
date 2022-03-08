@@ -12,6 +12,8 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "checkboxSelection": true,
           "field": "action",
           "filter": false,
+          "headerCheckboxSelection": true,
+          "headerCheckboxSelectionFilteredOnly": true,
           "headerName": "",
           "lockPinned": true,
           "lockPosition": true,
@@ -109,11 +111,6 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
         },
       ]
     }
-    context={
-      Object {
-        "selectedRows": Object {},
-      }
-    }
     isGridHidden={true}
     mapping={
       Array [
@@ -188,6 +185,7 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
       }
     }
     rowSelection="multiple"
+    singleClickEdit={true}
     suppressRowClickSelection={true}
   />
   <NexusDrawer
