@@ -11,20 +11,20 @@ export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
     const queryParams = {page, size};
     const getUpdatedAtParams = () => {
         const updatedAtStart =
-            params?.publishedAt?.publishedAtFrom && moment(params.publishedAt.publishedAtFrom).utc(true).toISOString();
+            params?.updatedAt?.updatedAtFrom && moment(params.updatedAt.updatedAtFrom).utc(true).toISOString();
         const updatedAtEnd =
-            params?.publishedAt?.publishedAtTo && moment(params.publishedAt.publishedAtTo).utc(true).toISOString();
+            params?.updatedAt?.updatedAtTo && moment(params.updatedAt.updatedAtTo).utc(true).endOf('day').toISOString();
 
-        if (params?.publishedAt?.publishedAtFrom && params?.publishedAt?.publishedAtTo) {
+        if (params?.updatedAt?.updatedAtFrom && params?.updatedAt?.updatedAtTo) {
             return {
                 updatedAtStart,
                 updatedAtEnd,
             };
-        } else if (params?.publishedAt?.publishedAtTo) {
+        } else if (params?.updatedAt?.updatedAtTo) {
             return {
                 updatedAtEnd,
             };
-        } else if (params?.publishedAt?.publishedAtFrom) {
+        } else if (params?.updatedAt?.updatedAtFrom) {
             return {
                 updatedAtStart,
             };
@@ -33,7 +33,7 @@ export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
         return {};
     };
     const updatedAtParams = getUpdatedAtParams();
-    delete params.publishedAt;
+    delete params.updatedAt;
 
     const qs = querystring.stringify({...queryParams, ...updatedAtParams, ...params});
     const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/publishInfo/search`;
