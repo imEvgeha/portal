@@ -71,10 +71,10 @@ const AvailsTableToolbar = ({
     };
 
     const getAmountOfSelectedRowsForCurrentTab = () => {
-        if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && getAmountOfRowsForCurrentTab()) {
+        if ([RIGHTS_TAB].includes(activeTab) && getAmountOfRowsForCurrentTab()) {
             return selectedRightsCount;
         }
-        if ([PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab) && getAmountOfRowsForCurrentTab()) {
+        if ([PRE_PLAN_TAB].includes(activeTab) && getAmountOfRowsForCurrentTab()) {
             return selectedPrePlanRights.length;
         }
         if ([STATUS_TAB].includes(activeTab) && getAmountOfRowsForCurrentTab()) {
@@ -92,7 +92,7 @@ const AvailsTableToolbar = ({
                 </div>
                 <div className="d-flex">
                     <div className="nexus-c-table-toolbar__selected-button-container d-flex justify-content-end">
-                        {[RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB, STATUS_TAB].includes(activeTab) && (
+                        {[RIGHTS_TAB, PRE_PLAN_TAB, STATUS_TAB].includes(activeTab) && (
                             <SelectedButton
                                 selectedRightsCount={getAmountOfSelectedRowsForCurrentTab()}
                                 activeTab={activeTab}

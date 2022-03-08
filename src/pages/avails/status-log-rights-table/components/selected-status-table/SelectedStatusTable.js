@@ -80,8 +80,6 @@ const SelectedStatusTable = ({
                 break;
             case SELECTION_CHANGED: {
                 if (activeTab === STATUS_TAB) {
-                    // eslint-disable-next-line no-console
-                    console.log(api?.getSelectedNodes(), 'API')
                     const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
 
                     // Get ID of a right to be deselected
