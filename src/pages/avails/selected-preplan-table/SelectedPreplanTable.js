@@ -8,7 +8,7 @@ import {isEmpty} from 'lodash';
 import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
-import {PRE_PLAN_SELECTED_TAB} from '../rights-repository/constants';
+import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {storeFromSelectedTable} from '../rights-repository/rightsActions';
 
 const SelectedPreplanGrid = compose(
@@ -37,7 +37,7 @@ const SelectedPreplanTable = ({
         if (!isEmpty(selectedRights) && username && selectedGridApi) {
             setCurrentUserSelectedRights(Object.values(selectedRights));
         }
-    }, [activeTab === PRE_PLAN_SELECTED_TAB]);
+    }, [activeTab === PRE_PLAN_TAB]);
 
     useEffect(() => {
         if (
@@ -73,7 +73,7 @@ const SelectedPreplanTable = ({
                 }
                 break;
             case SELECTION_CHANGED: {
-                if (activeTab === PRE_PLAN_SELECTED_TAB) {
+                if (activeTab === PRE_PLAN_TAB) {
                     const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
 
                     // Get ID of a right to be deselected
@@ -125,7 +125,7 @@ const SelectedPreplanTable = ({
             rowData={currentUserSelectedRights}
             setSelectedColumnApi={setSelectedColumnApi}
             setSelectedGridApi={setSelectedGridApi}
-            isGridHidden={activeTab !== PRE_PLAN_SELECTED_TAB}
+            isGridHidden={activeTab !== PRE_PLAN_TAB}
         />
     );
 };
