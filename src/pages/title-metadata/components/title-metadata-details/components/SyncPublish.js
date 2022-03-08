@@ -22,7 +22,7 @@ const SyncPublish = ({
     const needsSyncing = moment(publishedDate).isBefore(moment(titleUpdatedAt));
 
     const getStatus = () => {
-        if (needsSyncing) return 'warning';
+        if (needsSyncing && externalData?.status !== 'failure') return 'warning';
         if (externalData === undefined) return 'neutral';
         if (externalData.status === SUCCESS) return 'success';
         return 'danger';
