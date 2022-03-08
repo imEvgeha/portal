@@ -26,6 +26,10 @@ const SelectedRightsTable = ({
     setSelectedFilter,
     selectedRepoRights,
     selectedRights,
+    selectedGridApi,
+    setSelectedGridApi,
+    selectedColumnApi,
+    setSelectedColumnApi,
     username,
 }) => {
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
@@ -44,6 +48,8 @@ const SelectedRightsTable = ({
 
         switch (type) {
             case FIRST_DATA_RENDERED:
+                !selectedGridApi && setSelectedGridApi(api);
+                !selectedColumnApi && setSelectedColumnApi(columnApi);
                 !gridApi && setGridApi(api);
                 !columnApiState && setColumnApiState(columnApi);
 
@@ -51,6 +57,8 @@ const SelectedRightsTable = ({
 
                 break;
             case READY:
+                !selectedGridApi && setSelectedGridApi(api);
+                !selectedColumnApi && setSelectedColumnApi(columnApi);
                 !gridApi && setGridApi(api);
                 !columnApiState && setColumnApiState(columnApi);
 
@@ -109,6 +117,8 @@ const SelectedRightsTable = ({
             rowSelection="multiple"
             mapping={mapping}
             rowData={currentUserSelectedRights}
+            setSelectedColumnApi={setSelectedColumnApi}
+            setSelectedGridApi={setSelectedGridApi}
         />
     );
 };
@@ -120,6 +130,10 @@ SelectedRightsTable.propTypes = {
     selectedFilter: PropTypes.object,
     setSelectedFilter: PropTypes.func,
     selectedRights: PropTypes.object,
+    selectedGridApi: PropTypes.object,
+    setSelectedGridApi: PropTypes.func,
+    selectedColumnApi: PropTypes.object,
+    setSelectedColumnApi: PropTypes.func,
     username: PropTypes.string,
 };
 
@@ -130,6 +144,10 @@ SelectedRightsTable.defaultProps = {
     selectedFilter: {},
     setSelectedFilter: () => null,
     selectedRights: {},
+    selectedGridApi: {},
+    setSelectedGridApi: () => null,
+    selectedColumnApi: {},
+    setSelectedColumnApi: () => null,
     username: {},
 };
 
