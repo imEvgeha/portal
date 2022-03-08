@@ -46,7 +46,7 @@ export default [
     {
         colId: 'publishedAt',
         field: 'publishedAt',
-        searchDataType: "regionalMidnight",
+        searchDataType: 'regionalMidnight',
         javaVariableName: 'publishedAt',
         enableSearch: true,
         dataType: 'timestamp',
@@ -58,7 +58,7 @@ export default [
         field: 'publishErrors',
         javaVariableName: 'publishErrors',
         headerName: 'Errors',
-        minWidth: 150,
+        minWidth: 100,
         cellRenderer: 'publishErrors',
     },
 ];

@@ -84,12 +84,12 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
                         <div className="d-flex align-items-center">
                             <PrimeReactButton
                                 label="Cancel"
-                                className="p-button-link p-toast-right-button"
+                                className="p-button-link p-toast-left-button"
                                 onClick={() => removeToast()}
                             />
                             <PrimeReactButton
                                 label="Continue"
-                                className="p-button-link p-toast-left-button"
+                                className="p-button-link p-toast-right-button"
                                 onClick={mergeSingle}
                             />
                         </div>

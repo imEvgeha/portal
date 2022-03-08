@@ -125,12 +125,12 @@ const RightToMatchView = ({
                     <div className="d-flex align-items-center">
                         <PrimeReactButton
                             label="Cancel"
-                            className="p-button-link p-toast-right-button"
+                            className="p-button-link p-toast-left-button"
                             onClick={() => removeToast()}
                         />
                         <PrimeReactButton
                             label="Continue"
-                            className="p-button-link p-toast-left-button"
+                            className="p-button-link p-toast-right-button"
                             onClick={onUpdateRight}
                         />
                     </div>

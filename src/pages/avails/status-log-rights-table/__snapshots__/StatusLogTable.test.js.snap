@@ -9,7 +9,6 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
-          "cellStyle": [Function],
           "checkboxSelection": true,
           "field": "action",
           "filter": false,
@@ -106,9 +105,14 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "field": "publishErrors",
           "headerName": "Errors",
           "javaVariableName": "publishErrors",
-          "minWidth": 150,
+          "minWidth": 100,
         },
       ]
+    }
+    context={
+      Object {
+        "selectedRows": Object {},
+      }
     }
     isGridHidden={true}
     mapping={
@@ -173,11 +177,16 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "field": "publishErrors",
           "headerName": "Errors",
           "javaVariableName": "publishErrors",
-          "minWidth": 150,
+          "minWidth": 100,
         },
       ]
     }
     onGridEvent={[Function]}
+    rowClassRules={
+      Object {
+        "disable-selected": [Function],
+      }
+    }
     rowSelection="multiple"
     suppressRowClickSelection={true}
   />

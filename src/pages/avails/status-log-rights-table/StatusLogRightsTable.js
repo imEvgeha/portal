@@ -24,7 +24,6 @@ const StatusLogRightsGrid = compose(
 )(NexusGrid);
 
 const StatusLogRightsTable = ({activeTab, context, setSelectedStatusRights}) => {
-
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
 
@@ -47,7 +46,6 @@ const StatusLogRightsTable = ({activeTab, context, setSelectedStatusRights}) => 
         switch (type) {
             case READY:
                 api.sizeColumnsToFit();
-
                 break;
 
             case SELECTION_CHANGED:
@@ -77,22 +75,29 @@ const StatusLogRightsTable = ({activeTab, context, setSelectedStatusRights}) => 
                 context={context}
                 onGridEvent={onGridEvent}
                 isGridHidden={activeTab !== STATUS_TAB}
+                rowClassRules={{
+                    'disable-selected': params => {
+                        return ['SUCCESS', 'DELETED'].includes(params?.data?.status);
+                    },
+                }}
             />
 
             <NexusDrawer onClose={closeDrawer} isOpen={showDrawer} title={ERROR_TABLE_TITLE} width="wider">
                 <div className="nexus-c-sync-log-table__errors-table">
-                    {ERROR_TABLE_COLUMNS.map(column => (
-                        <div className="nexus-c-sync-log-table__errors-table--header-cell" key={column}>
-                            {column.toUpperCase()}
-                        </div>
-                    ))}
-                    {errorsData.map((error, i) =>
-                        ERROR_TABLE_COLUMNS.map(key => (
+                    {ERROR_TABLE_COLUMNS.map(column => {
+                        return (
+                            <div className="nexus-c-sync-log-table__errors-table--header-cell" key={column}>
+                                {column.toUpperCase()}
+                            </div>
+                        );
+                    })}
+                    {errorsData.map((error, i) => {
+                        return ERROR_TABLE_COLUMNS.map(key => (
                             <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i}-${key}`}>
                                 {error.split(' - ')[key === 'type' ? 0 : 1]}
                             </div>
-                        ))
-                    )}
+                        ));
+                    })}
                 </div>
             </NexusDrawer>
         </div>
