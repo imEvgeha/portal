@@ -47,6 +47,7 @@ import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import SelectedPreplanTable from '../selected-preplan-table/SelectedPreplanTable';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
 import StatusLogRightsTable from '../status-log-rights-table/StatusLogRightsTable';
+import SelectedStatusTable from '../status-log-rights-table/components/selected-status-table/SelectedStatusTable';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
@@ -110,6 +111,7 @@ const RightsRepository = ({
     const [selectedFilter, setSelectedFilter] = useState({});
     const [planningRightsCount, setPlanningRightsCount] = useState(0);
     const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
+    const [selectedStatusRights, setSelectedStatusRights] = useState([]);
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
 
     const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
@@ -688,6 +690,7 @@ const RightsRepository = ({
                 selectedForPlanningColumnApi={selectedForPlanningColumnApi}
                 selectedForPlanningGridApi={selectedForPlanningGridApi}
                 statusRightsCount={statusLogCount}
+                selectedStatusRights={selectedStatusRights}
             />
             {!isEmpty(selectedIngest) && attachment && activeTab === RIGHTS_TAB && (
                 <Ingest
@@ -769,7 +772,20 @@ const RightsRepository = ({
                     setSelectedPrePlanRights={setSelectedPrePlanRights}
                 />
             )}
-            {activeTab === STATUS_TAB && <StatusLogRightsTable activeTab={activeTab} />}
+            {activeTab === STATUS_TAB && !isSelected && (
+                <StatusLogRightsTable
+                    activeTab={activeTab}
+                    context={{selectedRows: selectedStatusRights}}
+                    setSelectedStatusRights={setSelectedStatusRights}
+                />
+            )}
+            {activeTab === STATUS_TAB && isSelected && (
+                <SelectedStatusTable
+                    activeTab={activeTab}
+                    selectedRights={selectedStatusRights}
+                    setSelectedStatusRights={setSelectedStatusRights}
+                />
+            )}
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
                 <SelectedForPlanning
                     activeTab={activeTab}

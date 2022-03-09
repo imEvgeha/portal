@@ -8,30 +8,22 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
-import {useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../sync-log/syncLogConstants';
 import {STATUS_TAB} from '../rights-repository/constants';
-import {createSelectedResyncRightsSelector} from '../rights-repository/rightsSelectors';
 import {getStatusLog} from './StatusLogService';
 import columnMappings from './columnMappings';
 import './StatusLogRightsTable.scss';
 import StatusLogErrors from './components/PublishErrors/StatusLogErrors';
-import {storeResyncRights, storeSelectedResyncRights} from './statusLogActions';
 
 const StatusLogRightsGrid = compose(
     withSideBar(),
     withColumnsResizing(),
     withFilterableColumns({frameworkComponents: {publishErrors: StatusLogErrors}}),
-    withColumnsResizing(),
     withInfiniteScrolling({fetchData: getStatusLog})
 )(NexusGrid);
 
-const StatusLogRightsTable = ({activeTab}) => {
-    const dispatch = useDispatch();
-
-    const selectedResyncRights = useSelector(createSelectedResyncRightsSelector());
-
+const StatusLogRightsTable = ({activeTab, context, setSelectedStatusRights}) => {
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
 
@@ -57,19 +49,8 @@ const StatusLogRightsTable = ({activeTab}) => {
                 break;
 
             case SELECTION_CHANGED:
-                {
-                    const selectedRows = api?.getSelectedNodes()?.map(row => row.data);
-                    dispatch(storeSelectedResyncRights(selectedRows));
+                setSelectedStatusRights(api.getSelectedRows());
 
-                    const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.entityId);
-                    const payload = allSelectedRowsIds.reduce((selectedRights, currentRight, i) => {
-                        selectedRights[i] = {id: currentRight};
-                        return selectedRights;
-                    }, {});
-
-                    const formated = {rights: Object.values(payload)};
-                    dispatch(storeResyncRights(formated));
-                }
                 break;
 
             default:
@@ -77,16 +58,21 @@ const StatusLogRightsTable = ({activeTab}) => {
         }
     };
 
-    const checkboxColumn = {...defineCheckboxSelectionColumn()};
+    const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
+        headerCheckboxSelection: true,
+        headerCheckboxSelectionFilteredOnly: true,
+    });
 
     return (
         <div className="nexus-c-status-log-table">
             <StatusLogRightsGrid
-                suppressRowClickSelection
-                className="nexus-c-status-log-grid"
-                columnDefs={[checkboxColumn, ...columnDefs]}
-                mapping={columnMappings}
                 rowSelection="multiple"
+                suppressRowClickSelection={true}
+                singleClickEdit
+                className="nexus-c-status-log-grid"
+                columnDefs={[checkboxSelectionWithHeaderColumnDef, ...columnDefs]}
+                mapping={columnMappings}
+                context={context}
                 onGridEvent={onGridEvent}
                 isGridHidden={activeTab !== STATUS_TAB}
                 rowClassRules={{
@@ -94,7 +80,6 @@ const StatusLogRightsTable = ({activeTab}) => {
                         return ['SUCCESS', 'DELETED'].includes(params?.data?.status);
                     },
                 }}
-                context={{selectedRows: selectedResyncRights}}
             />
 
             <NexusDrawer onClose={closeDrawer} isOpen={showDrawer} title={ERROR_TABLE_TITLE} width="wider">
@@ -121,6 +106,8 @@ const StatusLogRightsTable = ({activeTab}) => {
 
 StatusLogRightsTable.propTypes = {
     activeTab: PropTypes.string.isRequired,
+    setSelectedStatusRights: PropTypes.func.isRequired,
+    context: PropTypes.object.isRequired,
 };
 
 export default StatusLogRightsTable;

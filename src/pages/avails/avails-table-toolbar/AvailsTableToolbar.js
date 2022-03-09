@@ -53,6 +53,7 @@ const AvailsTableToolbar = ({
     statusLogResyncRights,
     isSelected,
     setIsSelected,
+    selectedStatusRights
 }) => {
     const isItSamePage = tab => activeTab === tab;
 
@@ -70,14 +71,14 @@ const AvailsTableToolbar = ({
     };
 
     const getAmountOfSelectedRowsForCurrentTab = () => {
-        if ([RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab)) {
+        if ([RIGHTS_TAB].includes(activeTab) && getAmountOfRowsForCurrentTab()) {
             return selectedRightsCount;
         }
-        if ([PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab)) {
+        if ([PRE_PLAN_TAB].includes(activeTab) && getAmountOfRowsForCurrentTab()) {
             return selectedPrePlanRights.length;
         }
-        if ([STATUS_TAB].includes(activeTab)) {
-            return statusLogResyncRights['rights']?.length;
+        if ([STATUS_TAB].includes(activeTab) && getAmountOfRowsForCurrentTab()) {
+            return selectedStatusRights.length;
         }
 
         return 0;
@@ -91,7 +92,7 @@ const AvailsTableToolbar = ({
                 </div>
                 <div className="d-flex">
                     <div className="nexus-c-table-toolbar__selected-button-container d-flex justify-content-end">
-                        {[RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB].includes(activeTab) && (
+                        {[RIGHTS_TAB, PRE_PLAN_TAB, STATUS_TAB].includes(activeTab) && (
                             <SelectedButton
                                 selectedRightsCount={getAmountOfSelectedRowsForCurrentTab()}
                                 activeTab={activeTab}
@@ -100,18 +101,7 @@ const AvailsTableToolbar = ({
                                 setIsSelected={setIsSelected}
                                 isSelected={isSelected}
                                 inNewDesign
-                            />
-                        )}
-                        {activeTab === STATUS_TAB && (
-                            <SelectedButton
-                                selectedRightsCount={getAmountOfSelectedRowsForCurrentTab()}
-                                activeTab={activeTab}
-                                setActiveTab={setActiveTab}
-                                setActiveTabIndex={setActiveTabIndex}
-                                setIsSelected={setIsSelected}
-                                isSelected={isSelected}
-                                inNewDesign
-                                showTooltip={false}
+                                showTooltip={activeTab !== STATUS_TAB}
                             />
                         )}
                     </div>
@@ -222,6 +212,7 @@ AvailsTableToolbar.propTypes = {
     statusLogResyncRights: PropTypes.object,
     isSelected: PropTypes.bool.isRequired,
     setIsSelected: PropTypes.func.isRequired,
+    selectedStatusRights: PropTypes.array,
 };
 
 AvailsTableToolbar.defaultProps = {
@@ -246,6 +237,7 @@ AvailsTableToolbar.defaultProps = {
     selectedForPlanningGridApi: {},
     setActiveTabIndex: () => null,
     statusLogResyncRights: {},
+    selectedStatusRights: [],
 };
 
 const mapStateToProps = () => {

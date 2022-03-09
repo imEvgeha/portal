@@ -10,11 +10,6 @@ export const removeStatusDataAction = payload => ({
     payload,
 });
 
-export const storeResyncRights = payload => ({
-    type: actionTypes.STORE_RESYNC_RIGHTS,
-    payload,
-});
-
 export const postReSyncRights = payload => ({
     type: actionTypes.POST_RESYNC_RIGHTS,
     payload,
