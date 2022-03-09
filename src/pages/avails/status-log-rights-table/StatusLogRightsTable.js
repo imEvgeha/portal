@@ -58,6 +58,9 @@ const StatusLogRightsTable = ({activeTab, context, setSelectedStatusRights}) => 
         }
     };
 
+    const selectableRows = ['SUCCESS', 'DELETED'];
+    const isRowSelectable = rowNode => rowNode?.data && !selectableRows.includes(rowNode?.data?.status);
+
     const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
         headerCheckboxSelection: true,
         headerCheckboxSelectionFilteredOnly: true,
@@ -77,9 +80,10 @@ const StatusLogRightsTable = ({activeTab, context, setSelectedStatusRights}) => 
                 isGridHidden={activeTab !== STATUS_TAB}
                 rowClassRules={{
                     'disable-selected': params => {
-                        return ['SUCCESS', 'DELETED'].includes(params?.data?.status);
+                        return selectableRows.includes(params?.data?.status);
                     },
                 }}
+                isRowSelectable={isRowSelectable}
             />
 
             <NexusDrawer onClose={closeDrawer} isOpen={showDrawer} title={ERROR_TABLE_TITLE} width="wider">
