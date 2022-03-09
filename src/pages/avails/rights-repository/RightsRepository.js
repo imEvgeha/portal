@@ -736,9 +736,7 @@ const RightsRepository = ({
                     setSelectedFilter={setSelectedFilter}
                     selectedRepoRights={selectedRepoRights}
                     selectedRights={selectedRights}
-                    selectedGridApi={selectedGridApi}
                     setSelectedGridApi={setSelectedGridApi}
-                    selectedColumnApi={selectedColumnApi}
                     setSelectedColumnApi={setSelectedColumnApi}
                     username={username}
                 />
