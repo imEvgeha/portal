@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import './AvailsTableToolbar.scss';
 import NexusTableExportDropdown from '../avails-table-export-dropdown/AvailsTableExportDropdown';
 import AvailsTableReleaseReport from '../avails-table-release-report/AvailsTableReleaseReport';
@@ -13,7 +12,6 @@ import {
     STATUS_TAB,
     PRE_PLAN_SELECTED_TAB,
 } from '../rights-repository/constants';
-import {createStatusLogResyncRightsSelector} from '../rights-repository/rightsSelectors';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import {StatusRightsActions} from '../status-rights-actions/StatusRightsActions';
 import SelectedButton from './components/selected-button/SelectedButton';
