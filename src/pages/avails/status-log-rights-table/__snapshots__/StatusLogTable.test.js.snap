@@ -112,6 +112,7 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
       ]
     }
     isGridHidden={true}
+    isRowSelectable={[Function]}
     mapping={
       Array [
         Object {
