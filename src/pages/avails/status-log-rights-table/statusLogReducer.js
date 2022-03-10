@@ -37,13 +37,6 @@ const statusLogReducer = (state = initialState, action) => {
             };
         }
 
-        case STORE_SELECTED_RESYNC_RIGHTS: {
-            return {
-                ...state,
-                selectedResyncRights: action.payload,
-            };
-        }
-
         default:
             return state;
     }
