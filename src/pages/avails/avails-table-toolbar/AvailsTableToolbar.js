@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import './AvailsTableToolbar.scss';
 import NexusTableExportDropdown from '../avails-table-export-dropdown/AvailsTableExportDropdown';
 import AvailsTableReleaseReport from '../avails-table-release-report/AvailsTableReleaseReport';
@@ -13,7 +12,6 @@ import {
     STATUS_TAB,
     PRE_PLAN_SELECTED_TAB,
 } from '../rights-repository/constants';
-import {createStatusLogResyncRightsSelector} from '../rights-repository/rightsSelectors';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import {StatusRightsActions} from '../status-rights-actions/StatusRightsActions';
 import SelectedButton from './components/selected-button/SelectedButton';
@@ -41,8 +39,6 @@ const AvailsTableToolbar = ({
     selectedPrePlanRights,
     setSelectedPrePlanRights,
     setPreplanRights,
-    isPlanningTabRefreshed,
-    setIsPlanningTabRefreshed,
     username,
     singleRightMatch,
     setSingleRightMatch,
@@ -50,10 +46,9 @@ const AvailsTableToolbar = ({
     prePlanGridApi,
     selectedForPlanningColumnApi,
     selectedForPlanningGridApi,
-    statusLogResyncRights,
     isSelected,
     setIsSelected,
-    selectedStatusRights
+    selectedStatusRights,
 }) => {
     const isItSamePage = tab => activeTab === tab;
 
@@ -83,6 +78,13 @@ const AvailsTableToolbar = ({
 
         return 0;
     };
+
+    const payload = selectedStatusRights.reduce((selectedRights, currentRight, i) => {
+        selectedRights[i] = {id: currentRight.entityId};
+        return selectedRights;
+    }, {});
+
+    const formatedStatusRights = {rights: Object.values(payload)};
 
     return (
         <div className="nexus-c-table-toolbar d-flex justify-content-between row">
@@ -137,7 +139,7 @@ const AvailsTableToolbar = ({
                     ) : null}
 
                     {isItSamePage(STATUS_TAB) ? (
-                        <StatusRightsActions statusLogResyncRights={statusLogResyncRights} />
+                        <StatusRightsActions formatedStatusRights={formatedStatusRights} />
                     ) : null}
                     {isItSamePage(SELECTED_FOR_PLANNING_TAB) && null}
                 </div>
@@ -200,8 +202,6 @@ AvailsTableToolbar.propTypes = {
     selectedPrePlanRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
-    isPlanningTabRefreshed: PropTypes.bool.isRequired,
-    setIsPlanningTabRefreshed: PropTypes.func.isRequired,
     singleRightMatch: PropTypes.array,
     setSingleRightMatch: PropTypes.func,
     prePlanColumnApi: PropTypes.object,
@@ -209,7 +209,6 @@ AvailsTableToolbar.propTypes = {
     selectedForPlanningColumnApi: PropTypes.object,
     selectedForPlanningGridApi: PropTypes.object,
     setActiveTabIndex: PropTypes.func,
-    statusLogResyncRights: PropTypes.object,
     isSelected: PropTypes.bool.isRequired,
     setIsSelected: PropTypes.func.isRequired,
     selectedStatusRights: PropTypes.array,
@@ -236,15 +235,7 @@ AvailsTableToolbar.defaultProps = {
     selectedForPlanningColumnApi: {},
     selectedForPlanningGridApi: {},
     setActiveTabIndex: () => null,
-    statusLogResyncRights: {},
     selectedStatusRights: [],
 };
 
-const mapStateToProps = () => {
-    const statusLogResyncRightsSelector = createStatusLogResyncRightsSelector();
-    return (state, props) => ({
-        statusLogResyncRights: statusLogResyncRightsSelector(state, props),
-    });
-};
-
-export default connect(mapStateToProps)(AvailsTableToolbar);
+export default AvailsTableToolbar;

@@ -134,8 +134,6 @@ const RightsRepository = ({
     }, [activeTab]);
 
     useEffect(() => {
-        setActiveTabIndex(0);
-        setActiveTab(RIGHTS_TAB);
         const updatedAttachment = selectedIngest?.attachments?.find(elem => elem.id === selectedAttachmentId);
         const timer = setInterval(() => {
             if (updatedAttachment?.status === 'PENDING' && attachment?.status === 'PENDING')
@@ -739,8 +737,6 @@ const RightsRepository = ({
                     setSelectedFilter={setSelectedFilter}
                     selectedRepoRights={selectedRepoRights}
                     selectedRights={selectedRights}
-                    setSelectedGridApi={setSelectedGridApi}
-                    setSelectedColumnApi={setSelectedColumnApi}
                     username={username}
                 />
             )}

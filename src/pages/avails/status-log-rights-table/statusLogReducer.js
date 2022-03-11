@@ -1,9 +1,4 @@
-import {
-    SAVE_STATUS_DATA,
-    REMOVE_STATUS_DATA,
-    STORE_RESYNC_RIGHTS,
-    STORE_SELECTED_RESYNC_RIGHTS,
-} from './statusLogActionTypes';
+import {SAVE_STATUS_DATA, REMOVE_STATUS_DATA, STORE_RESYNC_RIGHTS} from './statusLogActionTypes';
 
 const initialState = {
     count: 0,
@@ -34,13 +29,6 @@ const statusLogReducer = (state = initialState, action) => {
             return {
                 ...state,
                 resyncRights: action.payload,
-            };
-        }
-
-        case STORE_SELECTED_RESYNC_RIGHTS: {
-            return {
-                ...state,
-                selectedResyncRights: action.payload,
             };
         }
 
