@@ -368,6 +368,10 @@ $element-color-orange-80: palette(orange, 80);
         color: #aa214b;
         border: solid #aa214b;
         border-width: 0 0 0 6px;
+
+        .p-toast-message-icon {
+            color: #aa214b;
+        }
     }
 }
 
