@@ -12,6 +12,8 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "checkboxSelection": true,
           "field": "action",
           "filter": false,
+          "headerCheckboxSelection": true,
+          "headerCheckboxSelectionFilteredOnly": true,
           "headerName": "",
           "lockPinned": true,
           "lockPosition": true,
@@ -87,12 +89,12 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
-          "colId": "publishedAt",
+          "colId": "updatedAt",
           "dataType": "timestamp",
           "enableSearch": true,
-          "field": "publishedAt",
-          "headerName": "Publish date",
-          "javaVariableName": "publishedAt",
+          "field": "updatedAt",
+          "headerName": "Synced date",
+          "javaVariableName": "updatedAt",
           "minWidth": 150,
           "searchDataType": "regionalMidnight",
         },
@@ -109,12 +111,8 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
         },
       ]
     }
-    context={
-      Object {
-        "selectedRows": Object {},
-      }
-    }
     isGridHidden={true}
+    isRowSelectable={[Function]}
     mapping={
       Array [
         Object {
@@ -162,12 +160,12 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
           "minWidth": 120,
         },
         Object {
-          "colId": "publishedAt",
+          "colId": "updatedAt",
           "dataType": "timestamp",
           "enableSearch": true,
-          "field": "publishedAt",
-          "headerName": "Publish date",
-          "javaVariableName": "publishedAt",
+          "field": "updatedAt",
+          "headerName": "Synced date",
+          "javaVariableName": "updatedAt",
           "minWidth": 150,
           "searchDataType": "regionalMidnight",
         },
@@ -188,6 +186,7 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
       }
     }
     rowSelection="multiple"
+    singleClickEdit={true}
     suppressRowClickSelection={true}
   />
   <NexusDrawer

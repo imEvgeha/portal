@@ -8,11 +8,11 @@ import {postReSyncRights} from '../status-log-rights-table/statusLogActions';
 import {RE_SYNC, RE_SYNC_TOOLTIP} from './constants';
 import './StatusRightsActions.scss';
 
-export const StatusRightsActions = ({statusLogResyncRights}) => {
+export const StatusRightsActions = ({formatedStatusRights}) => {
     const node = useRef();
     const dispatch = useDispatch();
 
-    const isReSyncInactive = isEmpty(statusLogResyncRights.rights);
+    const isReSyncInactive = isEmpty(formatedStatusRights.rights);
 
     return (
         <>
@@ -28,7 +28,7 @@ export const StatusRightsActions = ({statusLogResyncRights}) => {
                         'nexus-c-status-rights-actions__menu-item--is-active': !isReSyncInactive,
                     })}
                     data-test-id="bulk-match"
-                    onClick={() => dispatch(postReSyncRights(statusLogResyncRights))}
+                    onClick={() => dispatch(postReSyncRights(formatedStatusRights))}
                 >
                     <NexusTooltip content={RE_SYNC_TOOLTIP} isDisabled={false}>
                         <div>{RE_SYNC}</div>
@@ -42,9 +42,9 @@ export const StatusRightsActions = ({statusLogResyncRights}) => {
 export default StatusRightsActions;
 
 StatusRightsActions.propTypes = {
-    statusLogResyncRights: PropTypes.object,
+    formatedStatusRights: PropTypes.object,
 };
 
 StatusRightsActions.defaultProps = {
-    statusLogResyncRights: {},
+    formatedStatusRights: {},
 };

@@ -7,7 +7,6 @@ import {connect} from 'react-redux';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import * as selectors from '../right-matching/rightMatchingSelectors';
 import {
-    RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
     PRE_PLAN_TAB,
     SELECTED_FOR_PLANNING_TAB,
@@ -75,7 +74,7 @@ const AvailsTableExportDropdown = ({
 
     const getSelectedRightIds = gridApi => {
         const ids = [];
-        gridApi.forEachNodeAfterFilter(node => {
+        gridApi?.forEachNodeAfterFilter(node => {
             const {data = {}} = node;
             ids.push(data.id);
         });
@@ -84,14 +83,14 @@ const AvailsTableExportDropdown = ({
 
     const onAllColumnsExportClick = () => {
         switch (activeTab) {
-            case RIGHTS_SELECTED_TAB: {
-                const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
-                exportService
-                    .exportAvails(getSelectedRightIds(selectedRightGridApi), allDisplayedColumns)
-                    .then(response => downloadFile(response));
-                break;
-            }
             case RIGHTS_TAB: {
+                if (isSelected) {
+                    const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
+                    exportService
+                        .exportAvails(getSelectedRightIds(selectedRightGridApi), allDisplayedColumns)
+                        .then(response => downloadFile(response));
+                    break;
+                }
                 const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
                 const {external, column} = rightsFilter;
                 exportService
@@ -119,15 +118,16 @@ const AvailsTableExportDropdown = ({
 
     const onVisibleColumnsExportClick = () => {
         switch (activeTab) {
-            case RIGHTS_SELECTED_TAB: {
-                const visibleColumns = getDownloadableColumns(selectedRightColumnApi?.getAllDisplayedColumns());
-                exportService
-                    .exportAvails(getSelectedRightIds(selectedRightGridApi), visibleColumns)
-                    .then(response => downloadFile(response));
-                break;
-            }
             case RIGHTS_TAB: {
                 const visibleColumns = getDownloadableColumns(rightColumnApi?.getAllDisplayedColumns());
+                if (isSelected) {
+                    const visibleColumns = getDownloadableColumns(selectedRightColumnApi?.getAllDisplayedColumns());
+                    exportService
+                        .exportAvails(getSelectedRightIds(selectedRightGridApi), visibleColumns)
+                        .then(response => downloadFile(response));
+                    break;
+                }
+
                 const {external, column} = rightsFilter;
                 exportService
                     .bulkExportAvails({...external, ...column}, visibleColumns)

@@ -9,19 +9,17 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../sync-log/syncLogConstants';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {STATUS_TAB} from '../rights-repository/constants';
 import {setPreplanRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
-import {createSelectedResyncRightsSelector} from '../rights-repository/rightsSelectors';
 import {getStatusLog} from './StatusLogService';
 import columnMappings from './columnMappings';
 import './StatusLogRightsTable.scss';
 import StatusLogErrors from './components/PublishErrors/StatusLogErrors';
-import {storeResyncRights, storeSelectedResyncRights} from './statusLogActions';
 
 const StatusLogRightsGrid = compose(
     withSideBar(),
@@ -32,9 +30,9 @@ const StatusLogRightsGrid = compose(
 )(NexusGrid);
 
 const StatusLogRightsTable = ({activeTab, totalRowCount, username}) => {
-    const dispatch = useDispatch();
-
-    const selectedResyncRights = useSelector(createSelectedResyncRightsSelector());
+    // const dispatch = useDispatch();
+    //
+    // const selectedResyncRights = useSelector(createSelectedResyncRightsSelector());
 
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
@@ -66,17 +64,17 @@ const StatusLogRightsTable = ({activeTab, totalRowCount, username}) => {
                 break;
             case SELECTION_CHANGED:
                 {
-                    const selectedRows = api?.getSelectedNodes()?.map(row => row.data);
-                    dispatch(storeSelectedResyncRights(selectedRows));
-
-                    const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.entityId);
-                    const payload = allSelectedRowsIds.reduce((selectedRights, currentRight, i) => {
-                        selectedRights[i] = {id: currentRight};
-                        return selectedRights;
-                    }, {});
-
-                    const formated = {rights: Object.values(payload)};
-                    dispatch(storeResyncRights(formated));
+                    // const selectedRows = api?.getSelectedNodes()?.map(row => row.data);
+                    // dispatch(storeSelectedResyncRights(selectedRows));
+                    //
+                    // const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.entityId);
+                    // const payload = allSelectedRowsIds.reduce((selectedRights, currentRight, i) => {
+                    //     selectedRights[i] = {id: currentRight};
+                    //     return selectedRights;
+                    // }, {});
+                    //
+                    // const formated = {rights: Object.values(payload)};
+                    // dispatch(storeResyncRights(formated));
                 }
                 break;
 
@@ -85,6 +83,13 @@ const StatusLogRightsTable = ({activeTab, totalRowCount, username}) => {
         }
     };
 
+    const selectableRows = ['SUCCESS', 'DELETED'];
+    const isRowSelectable = rowNode => rowNode?.data && !selectableRows.includes(rowNode?.data?.status);
+
+    const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
+        headerCheckboxSelection: true,
+        headerCheckboxSelectionFilteredOnly: true,
+    });
     const checkboxColumn = {...defineCheckboxSelectionColumn()};
 
     return (
@@ -106,7 +111,7 @@ const StatusLogRightsTable = ({activeTab, totalRowCount, username}) => {
                 <StatusLogRightsGrid
                     suppressRowClickSelection
                     className="nexus-c-status-log-grid"
-                    columnDefs={[checkboxColumn, ...columnDefs]}
+                    columnDefs={[checkboxSelectionWithHeaderColumnDef, ...columnDefs]}
                     mapping={columnMappings}
                     rowSelection="multiple"
                     onGridEvent={onGridEvent}
@@ -116,7 +121,8 @@ const StatusLogRightsTable = ({activeTab, totalRowCount, username}) => {
                             return ['SUCCESS', 'DELETED'].includes(params?.data?.status);
                         },
                     }}
-                    context={{selectedRows: selectedResyncRights}}
+                    // context={{selectedRows: selectedResyncRights}}
+                    isRowSelectable={isRowSelectable}
                 />
             )}
 
