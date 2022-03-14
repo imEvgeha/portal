@@ -1,4 +1,6 @@
+import React from 'react';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {NexusTooltip} from '../../../../ui/elements';
 import {
     READY_PENDING_VIEW,
     ERROR_VIEW,
@@ -52,3 +54,26 @@ export const applyPredefinedTableView = (gridApi, filter, columnApi) => {
     setSorting({colId: 'updatedAt', sort: 'desc'}, columnApi);
     columnApi.resetColumnState();
 };
+
+export const mapColumnDefinitions = columnDefs =>
+    columnDefs.map(columnDef => {
+        let updatedColumnDef = {...columnDef};
+
+        if (columnDef.colId === 'displayName') {
+            updatedColumnDef = {
+                ...updatedColumnDef,
+                cellRendererFramework: params => {
+                    const {valueFormatted} = params || {};
+                    const value = valueFormatted ? ' '.concat(valueFormatted.split(';').join('\n')) : '';
+                    return (
+                        <div className="nexus-c-rights-repo-table__cast-crew">
+                            <NexusTooltip content={value}>
+                                <div>{valueFormatted || ''}</div>
+                            </NexusTooltip>
+                        </div>
+                    );
+                },
+            };
+        }
+        return updatedColumnDef;
+    });

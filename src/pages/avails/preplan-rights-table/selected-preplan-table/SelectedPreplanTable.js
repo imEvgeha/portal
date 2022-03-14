@@ -6,41 +6,39 @@ import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {isEmpty} from 'lodash';
 import {compose} from 'redux';
-import {NexusGrid} from '../../../ui/elements';
+import {NexusGrid} from '../../../../ui/elements';
 
 const SelectedPreplanGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
 
 const SelectedPreplanTable = ({
     columnDefs,
     mapping,
-    selectedGridApi,
-    setSelectedGridApi,
-    selectedColumnApi,
-    setSelectedColumnApi,
-    selectedRepoRights,
+    // selectedRepoRights,
     selectedRights,
     username,
     setSelectedPrePlanRights,
 }) => {
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
+    const [gridApi, setGridApi] = useState(undefined);
+    const [columnApi, setColumnApi] = useState(undefined);
 
     useEffect(() => {
-        if (!isEmpty(selectedRights) && username && selectedGridApi) {
+        if (!isEmpty(selectedRights) && username && gridApi) {
             setCurrentUserSelectedRights(Object.values(selectedRights));
         }
 
-        if (!isEmpty(selectedRights) && username && currentUserSelectedRights && selectedGridApi?.forEachNode) {
-            selectedGridApi.forEachNode(node => node?.setSelected(true));
+        if (!isEmpty(selectedRights) && username && currentUserSelectedRights && gridApi?.forEachNode) {
+            gridApi.forEachNode(node => node?.setSelected(true));
         }
-    }, [selectedGridApi]);
+    }, [gridApi]);
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
 
         switch (type) {
             case FIRST_DATA_RENDERED:
-                !selectedGridApi && setSelectedGridApi(api);
-                !selectedColumnApi && setSelectedColumnApi(columnApi);
+                !gridApi && setGridApi(api);
+                !columnApi && setColumnApi(columnApi);
 
                 if (api && api?.forEachNode) {
                     api.forEachNode(node => node?.setSelected(true));
@@ -48,29 +46,29 @@ const SelectedPreplanTable = ({
 
                 break;
             case READY:
-                !selectedGridApi && setSelectedGridApi(api);
-                !selectedColumnApi && setSelectedColumnApi(columnApi);
+                !gridApi && setGridApi(api);
+                !columnApi && setColumnApi(columnApi);
 
                 if (api && api?.forEachNode) {
                     api.forEachNode(node => node?.setSelected(true));
                 }
                 break;
             case SELECTION_CHANGED: {
-                const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
+                // const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
 
                 // Get ID of a right to be deselected
-                const toDeselectIds = selectedRepoRights
-                    .map(({id}) => id)
-                    .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
-
-                // Get all selected nodes from main ag-grid table and filter only ones to deselect
-                const nodesToDeselect = api
-                    ?.getSelectedNodes()
-                    ?.filter(({data = {}}) => toDeselectIds.includes(data.id));
-
-                if (nodesToDeselect) {
-                    nodesToDeselect.forEach(node => node?.setSelected(false));
-                }
+                // const toDeselectIds = selectedRepoRights
+                //     .map(({id}) => id)
+                //     .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
+                //
+                // // Get all selected nodes from main ag-grid table and filter only ones to deselect
+                // const nodesToDeselect = api
+                //     ?.getSelectedNodes()
+                //     ?.filter(({data = {}}) => toDeselectIds.includes(data.id));
+                //
+                // if (nodesToDeselect) {
+                //     nodesToDeselect.forEach(node => node?.setSelected(false));
+                // }
 
                 setSelectedPrePlanRights(api.getSelectedRows());
                 break;
@@ -91,8 +89,6 @@ const SelectedPreplanTable = ({
             rowSelection="multiple"
             mapping={mapping}
             rowData={currentUserSelectedRights}
-            setSelectedColumnApi={setSelectedColumnApi}
-            setSelectedGridApi={setSelectedGridApi}
         />
     );
 };
@@ -100,11 +96,7 @@ const SelectedPreplanTable = ({
 SelectedPreplanTable.propTypes = {
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
-    selectedRepoRights: PropTypes.array,
-    selectedGridApi: PropTypes.object,
-    setSelectedGridApi: PropTypes.func,
-    selectedColumnApi: PropTypes.object,
-    setSelectedColumnApi: PropTypes.func,
+    // selectedRepoRights: PropTypes.array,
     selectedRights: PropTypes.array,
     username: PropTypes.string,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
@@ -113,11 +105,7 @@ SelectedPreplanTable.propTypes = {
 SelectedPreplanTable.defaultProps = {
     columnDefs: [],
     mapping: null,
-    selectedRepoRights: [],
-    selectedGridApi: {},
-    setSelectedGridApi: () => null,
-    selectedColumnApi: {},
-    setSelectedColumnApi: () => null,
+    // selectedRepoRights: [],
     selectedRights: [],
     username: {},
 };

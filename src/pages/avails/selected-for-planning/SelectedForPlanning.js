@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -11,6 +11,7 @@ import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep} from 'lodash';
 import {compose} from 'redux';
 import {getConfig} from '../../../config';
+import DOPService from './DOP-services';
 import {prepareSelectForPlanningData} from './utils';
 import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
 
@@ -30,6 +31,17 @@ const SelectedForPlanning = ({
 }) => {
     const [updatedColDef, setUpdatedColDef] = useState([]);
     const [externalSort, setExternalSort] = useState({});
+    const [planningRightsCount, setPlanningRightsCount] = useState(0);
+
+    // Fetch and set DOP projects count for current user
+    useEffect(() => {
+        DOPService.getUsersProjectsList(1, 1)
+            .then(([response, headers]) => {
+                const total = parseInt(headers.get('X-Total-Count') || response.length);
+                setPlanningRightsCount(total);
+            })
+            .catch(error => {});
+    }, []);
 
     const mappings = COLUMN_MAPPINGS.map(col =>
         col.colId === 'projectId'

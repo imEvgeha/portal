@@ -10,7 +10,7 @@ import {get} from 'lodash';
 import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
-import {storeFromSelectedTable} from '../rights-repository/rightsActions';
+import {setSelectedRights, storeFromSelectedTable} from '../rights-repository/rightsActions';
 
 const SelectedRightsGrid = compose(
     withColumnsResizing(),
@@ -27,6 +27,7 @@ const SelectedRightsTable = ({
     selectedRepoRights,
     selectedRights,
     username,
+    storeGridApi,
 }) => {
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
     const [gridApi, setGridApi] = useState(undefined);
@@ -36,54 +37,27 @@ const SelectedRightsTable = ({
     useEffect(() => {
         const usersSelectedRights = get(selectedRights, username, {});
         setCurrentUserSelectedRights(Object.values(usersSelectedRights));
-        gridApi?.forEachNode(node => node?.setSelected(true));
+        // gridApi?.forEachNode(node => node?.setSelected(true, false, true));
     }, []);
+
+    const setGridApis = (api, columnApi) => {
+        !gridApi && setGridApi(api);
+        !columnApiState && setColumnApiState(columnApi);
+        setGridApi(api);
+    };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
 
         switch (type) {
-            case FIRST_DATA_RENDERED:
-                !gridApi && setGridApi(api);
-                !columnApiState && setColumnApiState(columnApi);
-
-                api?.forEachNode(node => node?.setSelected(true));
-
-                break;
             case READY:
-                !gridApi && setGridApi(api);
-                !columnApiState && setColumnApiState(columnApi);
-
-                api?.forEachNode(node => node?.setSelected(true));
+                setGridApis(api, columnApi);
+                break;
+            case FIRST_DATA_RENDERED:
+                api.selectAll();
                 break;
             case SELECTION_CHANGED: {
-                const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
-
-                // Get ID of a right to be deselected
-                const toDeselectIds = selectedRepoRights
-                    .map(({id}) => id)
-                    .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
-
-                // Get all selected nodes from main ag-grid table and filter only ones to deselect
-                const nodesToDeselect = api
-                    ?.getSelectedNodes()
-                    ?.filter(({data = {}}) => toDeselectIds.includes(data.id));
-
-                nodesToDeselect?.forEach(node => node?.setSelected(false));
-
-                const updateSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
-
-                const updatedState = currentUserSelectedRights.filter(right =>
-                    updateSelectedRowsIds.includes(right.id)
-                );
-
-                const payload = updatedState.reduce((selectedRights, currentRight) => {
-                    selectedRights[currentRight.id] = currentRight;
-                    return selectedRights;
-                }, {});
-
-                const formattedRights = {[username]: payload};
-                dispatch(storeFromSelectedTable(formattedRights));
+                dispatch(setSelectedRights({[username]: api.getSelectedRows()}));
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -91,7 +65,7 @@ const SelectedRightsTable = ({
                 break;
             case FILTER_CHANGED:
                 setSelectedFilter(api.getFilterModel());
-                !gridApi && setGridApi(api);
+                // !gridApi && setGridApi(api);
                 break;
             default:
                 break;
@@ -121,6 +95,7 @@ SelectedRightsTable.propTypes = {
     setSelectedFilter: PropTypes.func,
     selectedRights: PropTypes.object,
     username: PropTypes.string,
+    storeGridApi: PropTypes.func.isRequired,
 };
 
 SelectedRightsTable.defaultProps = {

@@ -55,7 +55,6 @@ export const SelectedRightsActions = ({
     gridApi,
     setSelectedRights,
     setPrePlanRepoRights,
-    activeTab,
     singleRightMatch,
     setSingleRightMatch,
     rightsWithDeps,
@@ -85,10 +84,8 @@ export const SelectedRightsActions = ({
     }, []);
 
     useEffect(() => {
-        if (activeTab === RIGHTS_TAB) {
-            toggleRefreshGridData(true);
-        }
-    }, [activeTab]);
+        toggleRefreshGridData(true);
+    }, []);
 
     // All the rights have empty SourceRightId or all the rights have uniq SourceRightId
     const checkSourceRightIds = () => {
@@ -413,39 +410,33 @@ export const SelectedRightsActions = ({
                         <div>{CREATE_BONUS_RIGHT}</div>
                     </NexusTooltip>
                 </div>
-                {activeTab !== PRE_PLAN_TAB && (
-                    <>
-                        <div
-                            className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                                'nexus-c-selected-rights-actions__menu-item--is-active':
-                                    !!selectedRights.length && !statusDeleteMerged,
-                            })}
-                            data-test-id="add-to-preplan"
-                            onClick={() => (selectedRights.length ? prepareRightsForPrePlan() : null)}
-                        >
-                            <NexusTooltip
-                                content={PREPLAN_TOOLTIP}
-                                isDisabled={!!selectedRights.length && !statusDeleteMerged}
-                            >
-                                <div>{ADD_TO_PREPLAN}</div>
-                            </NexusTooltip>
-                        </div>
-                        <div
-                            className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                                'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
-                            })}
-                            data-test-id="mark-as-deleted"
-                            onClick={() => (isDeletable ? openDeleteConfirmationModal() : null)}
-                        >
-                            <NexusTooltip
-                                content={isSelectedForPlanning ? BULK_DELETE_TOOLTIP_SFP : BULK_DELETE_TOOLTIP}
-                                isDisabled={isDeletable}
-                            >
-                                <div>{MARK_DELETED}</div>
-                            </NexusTooltip>
-                        </div>
-                    </>
-                )}
+
+                <div
+                    className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                        'nexus-c-selected-rights-actions__menu-item--is-active':
+                            !!selectedRights.length && !statusDeleteMerged,
+                    })}
+                    data-test-id="add-to-preplan"
+                    onClick={() => (selectedRights.length ? prepareRightsForPrePlan() : null)}
+                >
+                    <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length && !statusDeleteMerged}>
+                        <div>{ADD_TO_PREPLAN}</div>
+                    </NexusTooltip>
+                </div>
+                <div
+                    className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                        'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
+                    })}
+                    data-test-id="mark-as-deleted"
+                    onClick={() => (isDeletable ? openDeleteConfirmationModal() : null)}
+                >
+                    <NexusTooltip
+                        content={isSelectedForPlanning ? BULK_DELETE_TOOLTIP_SFP : BULK_DELETE_TOOLTIP}
+                        isDisabled={isDeletable}
+                    >
+                        <div>{MARK_DELETED}</div>
+                    </NexusTooltip>
+                </div>
             </div>
             <NexusDrawer
                 onClose={closeDrawer}
@@ -471,10 +462,9 @@ SelectedRightsActions.propTypes = {
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
     selectedRightGridApi: PropTypes.object,
-    toggleRefreshGridData: PropTypes.func.isRequired,
+    toggleRefreshGridData: PropTypes.func,
     setSelectedRights: PropTypes.func,
     setPrePlanRepoRights: PropTypes.func,
-    activeTab: PropTypes.string,
     gridApi: PropTypes.object,
     singleRightMatch: PropTypes.array,
     setSingleRightMatch: PropTypes.func,
@@ -492,7 +482,6 @@ SelectedRightsActions.defaultProps = {
     selectedRightGridApi: {},
     setSelectedRights: () => null,
     setPrePlanRepoRights: () => null,
-    activeTab: '',
     gridApi: {},
     singleRightMatch: [],
     setSingleRightMatch: () => null,
@@ -500,6 +489,7 @@ SelectedRightsActions.defaultProps = {
     getLinkedRights: () => null,
     clearLinkedRights: () => null,
     bulkDeleteRights: () => null,
+    toggleRefreshGridData: () => null,
     deletedRightsCount: 0,
 };
 
