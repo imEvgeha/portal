@@ -51,7 +51,7 @@ const NexusPersonsList = ({
     const [submitLoading, setSubmitLoading] = useState(false);
 
     useEffect(() => {
-        const updatedPersons = personsList;
+        const updatedPersons = [...personsList];
 
         updatedPersons.forEach((person, index) => {
             // Avails crew doesn't come with id so displayName is used instead
