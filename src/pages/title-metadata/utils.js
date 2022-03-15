@@ -425,13 +425,13 @@ const handleDirtyEMETValues = (initialValues, values) => {
 
         if (index !== null && index >= 0) {
             const cleanEditorial = cleanObject(editorial);
-            const isChanged = Object.keys(cleanEditorial).some(
+            const isUpdated = Object.keys(cleanEditorial).some(
                 item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
             );
             const updatedEmetRecord = {
                 ...values.editorialMetadata[index],
                 ...editorial,
-                isUpdated: isChanged,
+                isUpdated,
             };
             values.editorialMetadata[index] = updatedEmetRecord;
         }
@@ -454,12 +454,12 @@ const handleDirtyTMETValues = (initialValues, values) => {
     if(territorialMetadata.length) {
         const updatedTerritorialMetadata = territorialMetadata.map((elem, i) => {
             const cleanEditorial = cleanObject(elem);
-            const isChanged = Object.keys(cleanEditorial).some(
+            const isUpdated = Object.keys(cleanEditorial).some(
                 item => !isEqual(initialValues.territorialMetadata[i]?.[item], cleanEditorial?.[item])
             );
             return {
                 ...elem,
-                isUpdated: isChanged,
+                isUpdated,
             }
         })
 
