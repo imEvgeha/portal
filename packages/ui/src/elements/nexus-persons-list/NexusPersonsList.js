@@ -44,14 +44,14 @@ const NexusPersonsList = ({
     const [openPersonModal, setOpenPersonModal] = useState(false);
     const [currentRecord, setCurrentRecord] = useState({});
     const [persons, setPersons] = useState(personsList || []);
-    const [deletedPersonsIds, setDeletedPersonsIds] = useState([]);
+
     const [searchText, setSearchText] = useState('');
     const propagateRemovePersons = useSelector(propagateRemovePersonsSelector);
     const {title, contentType, castCrew, editorialMetadata} = getValues();
     const [submitLoading, setSubmitLoading] = useState(false);
 
     useEffect(() => {
-        const updatedPersons = [...personsList.filter(elem => !deletedPersonsIds.includes(elem.id))];
+        const updatedPersons = [...personsList];
 
         updatedPersons.forEach((person, index) => {
             // Avails crew doesn't come with id so displayName is used instead
@@ -186,12 +186,8 @@ const NexusPersonsList = ({
               })
             : null;
 
-        const deletedCastCrew = persons?.filter(entry => entry.id === person.id);
-        const updatedDeletedCastCrew = deletedCastCrew ? deletedCastCrew?.map(elem => elem.id) : [];
-
         !isVerticalLayout && setFieldValue('castCrew', updatedCastCrew);
         editorialMetadata && setFieldValue('editorialMetadata', updateEditorialMetadata);
-        setDeletedPersonsIds([...deletedPersonsIds, ...updatedDeletedCastCrew]);
         closeModal();
         setUpdate(prev => !prev);
     };
