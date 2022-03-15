@@ -34,8 +34,8 @@ const AG_GRID_LICENSE_KEY =
     'CompanyName=QBS Software Ltd_on_behalf_of_Vubiquity Management Ltd,LicensedGroup=Multi,LicenseType=MultipleApplications,LicensedConcurrentDeveloperCount=4,LicensedProductionInstancesCount=0,AssetReference=AG-010641,ExpiryDate=11_November_2021_[v2]_MTYzNjU4ODgwMDAwMA==14105f72d5a1473f60b320a047d57a3b';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
-setEnvConfiguration('qa')
-// setEnvConfiguration()
+// setEnvConfiguration('qa')
+setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
         // eslint-disable-next-line
