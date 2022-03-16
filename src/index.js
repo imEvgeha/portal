@@ -31,11 +31,11 @@ import './styles/bootstrap.scss';
 import './styles/prime-custom.scss';
 
 const AG_GRID_LICENSE_KEY =
-    'CompanyName=QBS Software Ltd_on_behalf_of_Vubiquity Management Ltd,LicensedGroup=Multi,LicenseType=MultipleApplications,LicensedConcurrentDeveloperCount=4,LicensedProductionInstancesCount=0,AssetReference=AG-010641,ExpiryDate=11_November_2021_[v2]_MTYzNjU4ODgwMDAwMA==14105f72d5a1473f60b320a047d57a3b';
+    'CompanyName=QBS Software Ltd_on_behalf_of_VUBIQUITY MANAGEMENT LIMITED,LicensedGroup=Multi,LicenseType=MultipleApplications,LicensedConcurrentDeveloperCount=4,LicensedProductionInstancesCount=0,AssetReference=AG-019524,ExpiryDate=11_November_2022_[v2]_MTY2ODEyNDgwMDAwMA==9e3648df22b0693cd75412f61e4125f1';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
-// setEnvConfiguration('qa')
-setEnvConfiguration()
+// setEnvConfiguration()
+setEnvConfiguration('qa')
     .then(() => renderApp())
     .catch(error => {
         // eslint-disable-next-line

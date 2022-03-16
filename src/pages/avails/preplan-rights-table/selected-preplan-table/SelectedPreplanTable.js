@@ -36,43 +36,16 @@ const SelectedPreplanTable = ({
         const {READY, SELECTION_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
 
         switch (type) {
-            case FIRST_DATA_RENDERED:
-                !gridApi && setGridApi(api);
-                !columnApi && setColumnApi(columnApi);
-
-                if (api && api?.forEachNode) {
-                    api.forEachNode(node => node?.setSelected(true));
-                }
-
-                break;
             case READY:
                 !gridApi && setGridApi(api);
                 !columnApi && setColumnApi(columnApi);
-
-                if (api && api?.forEachNode) {
-                    api.forEachNode(node => node?.setSelected(true));
-                }
                 break;
-            case SELECTION_CHANGED: {
-                // const allSelectedRowsIds = api?.getSelectedNodes()?.map(row => row.data.id);
-
-                // Get ID of a right to be deselected
-                // const toDeselectIds = selectedRepoRights
-                //     .map(({id}) => id)
-                //     .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
-                //
-                // // Get all selected nodes from main ag-grid table and filter only ones to deselect
-                // const nodesToDeselect = api
-                //     ?.getSelectedNodes()
-                //     ?.filter(({data = {}}) => toDeselectIds.includes(data.id));
-                //
-                // if (nodesToDeselect) {
-                //     nodesToDeselect.forEach(node => node?.setSelected(false));
-                // }
-
+            case FIRST_DATA_RENDERED:
+                api.selectAll();
+                break;
+            case SELECTION_CHANGED:
                 setSelectedPrePlanRights(api.getSelectedRows());
                 break;
-            }
             default:
                 break;
         }

@@ -1,23 +1,12 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import * as Redux from 'react-redux';
 import configureStore from 'redux-mock-store';
-import StatusLogRightsTable from './StatusLogRightsTable';
+import {StatusLogRightsTable} from './StatusLogRightsTable';
 
 describe('StatusLogRightsTable', () => {
-    const setState = jest.fn();
-    const useStateSpy = jest.spyOn(React, 'useState');
-    const useSelectorSpy = jest.spyOn(Redux, 'useSelector');
-    const useDispatchSpy = jest.spyOn(Redux, 'useDispatch');
-
-    useStateSpy.mockImplementation(init => [init, setState]);
-    useSelectorSpy.mockReturnValue({});
-    useDispatchSpy.mockImplementation(() => cb => cb);
-
     let wrapper = null;
 
     const mockStore = configureStore();
-
     const store = mockStore({
         avails: {
             statusLog: {
@@ -28,7 +17,7 @@ describe('StatusLogRightsTable', () => {
     });
 
     beforeEach(() => {
-        wrapper = shallow(<StatusLogRightsTable store={store} />);
+        wrapper = shallow(<StatusLogRightsTable username="" store={store} />);
     });
 
     it('should match snapshot', () => {

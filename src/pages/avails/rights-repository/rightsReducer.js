@@ -35,10 +35,10 @@ const rightsReducer = (state = initialState, action = {}) => {
                 right: {},
             };
         case actionTypes.SET_SELECTED_RIGHTS: {
-            const {selected = {}} = state;
+            // const {selected = {}} = state;
             return {
                 ...state,
-                selected: {...selected, ...payload},
+                selected: {...payload},
             };
         }
         case actionTypes.SET_PREPLAN_RIGHTS: {

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
@@ -9,11 +10,14 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep} from 'lodash';
+import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {getConfig} from '../../../config';
+import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import DOPService from './DOP-services';
 import {prepareSelectForPlanningData} from './utils';
 import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
+import './SelectedForPlanning.scss';
 
 const SelectedForPlanningTable = compose(
     withFilterableColumns(),
@@ -23,23 +27,23 @@ const SelectedForPlanningTable = compose(
     withInfiniteScrolling({fetchData: prepareSelectForPlanningData})
 )(NexusGrid);
 
-const SelectedForPlanning = ({
+export const SelectedForPlanning = ({
     activeTab,
     isPlanningTabRefreshed,
     setSelectedForPlanningGridApi,
     setSelectedForPlanningColumnApi,
+    username,
 }) => {
     const [updatedColDef, setUpdatedColDef] = useState([]);
     const [externalSort, setExternalSort] = useState({});
-    const [planningRightsCount, setPlanningRightsCount] = useState(0);
+    const [gridApi, setGridApi] = useState(undefined);
+    const [columnApiState, setColumnApiState] = useState(undefined);
+    const [allRights, setAllRights] = useState([]);
 
     // Fetch and set DOP projects count for current user
     useEffect(() => {
         DOPService.getUsersProjectsList(1, 1)
-            .then(([response, headers]) => {
-                const total = parseInt(headers.get('X-Total-Count') || response.length);
-                setPlanningRightsCount(total);
-            })
+            .then(([response, headers]) => setAllRights(response))
             .catch(error => {});
     }, []);
 
@@ -57,12 +61,14 @@ const SelectedForPlanning = ({
     const onGridReady = ({type, columnApi, api}) => {
         switch (type) {
             case GRID_EVENTS.READY: {
+                !gridApi && setGridApi(api);
+                !columnApiState && setColumnApiState(columnApi);
                 setSelectedForPlanningColumnApi(columnApi);
                 setSelectedForPlanningGridApi(api);
                 break;
             }
             default:
-            // no-op;
+                break;
         }
     };
 
@@ -101,19 +107,32 @@ const SelectedForPlanning = ({
     };
 
     return (
-        <SelectedForPlanningTable
-            id="selectedForPlanningRepo"
-            columnDefs={updatedColDef.length ? updatedColDef : mappings}
-            mapping={COLUMN_MAPPINGS}
-            rowSelection="multiple"
-            suppressRowClickSelection
-            isGridHidden={activeTab !== SELECTED_FOR_PLANNING_TAB}
-            key={`planning_table_${isPlanningTabRefreshed}`}
-            onGridEvent={onGridReady}
-            dragStopped={dragStoppedHandler}
-            onSortChanged={onSortChanged}
-            externalFilter={externalSort}
-        />
+        <div className="selected-for-planning-table-wrapper">
+            <AvailsTableToolbar
+                activeTab={SELECTED_FOR_PLANNING_TAB}
+                allRowsCount={allRights.length}
+                selectedRowsCount={allRights.length}
+                selectedRows={allRights}
+                gridApi={gridApi}
+                columnApi={columnApiState}
+                username={username}
+                showSelectedButton={false}
+            />
+
+            <SelectedForPlanningTable
+                id="selectedForPlanningRepo"
+                columnDefs={updatedColDef.length ? updatedColDef : mappings}
+                mapping={COLUMN_MAPPINGS}
+                rowSelection="multiple"
+                suppressRowClickSelection
+                isGridHidden={activeTab !== SELECTED_FOR_PLANNING_TAB}
+                key={`planning_table_${isPlanningTabRefreshed}`}
+                onGridEvent={onGridReady}
+                dragStopped={dragStoppedHandler}
+                onSortChanged={onSortChanged}
+                externalFilter={externalSort}
+            />
+        </div>
     );
 };
 
@@ -122,6 +141,7 @@ SelectedForPlanning.propTypes = {
     isPlanningTabRefreshed: PropTypes.bool,
     setSelectedForPlanningGridApi: PropTypes.func,
     setSelectedForPlanningColumnApi: PropTypes.func,
+    username: PropTypes.string.isRequired,
 };
 
 SelectedForPlanning.defaultProps = {
@@ -131,4 +151,12 @@ SelectedForPlanning.defaultProps = {
     isPlanningTabRefreshed: false,
 };
 
-export default SelectedForPlanning;
+const mapStateToProps = () => {
+    return (state, props) => ({
+        username: getUsername(state),
+    });
+};
+
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedForPlanning);

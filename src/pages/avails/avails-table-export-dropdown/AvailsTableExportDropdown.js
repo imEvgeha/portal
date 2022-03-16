@@ -25,15 +25,9 @@ const AvailsTableExportDropdown = ({
     selectedRows,
     totalRows,
     rightsFilter,
-    rightColumnApi,
-    selectedRightColumnApi,
-    selectedRightGridApi,
-    prePlanColumnApi,
-    prePlanGridApi,
-    selectedForPlanningColumnApi,
-    selectedForPlanningGridApi,
+    gridApi,
+    columnApi,
     prePlanRightsCount,
-    planningRightsCount,
     mapping,
     username,
     isSelected,
@@ -53,7 +47,7 @@ const AvailsTableExportDropdown = ({
     useEffect(() => {
         let disable = false;
         const prePlanHasNoData = activeTab === PRE_PLAN_TAB && prePlanRightsCount === 0;
-        const planningHasNoData = activeTab === SELECTED_FOR_PLANNING_TAB && planningRightsCount === 0;
+        const planningHasNoData = activeTab === SELECTED_FOR_PLANNING_TAB && !selectedRows.length;
         const isRightsRepo = [RIGHTS_TAB].includes(activeTab);
 
         if (STATUS_TAB === activeTab || prePlanHasNoData || planningHasNoData) {
@@ -85,13 +79,13 @@ const AvailsTableExportDropdown = ({
         switch (activeTab) {
             case RIGHTS_TAB: {
                 if (isSelected) {
-                    const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
+                    const allDisplayedColumns = getAllDisplayedColumns(columnApi);
                     exportService
-                        .exportAvails(getSelectedRightIds(selectedRightGridApi), allDisplayedColumns)
+                        .exportAvails(getSelectedRightIds(gridApi), allDisplayedColumns)
                         .then(response => downloadFile(response));
                     break;
                 }
-                const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
+                const allDisplayedColumns = getAllDisplayedColumns(columnApi);
                 const {external, column} = rightsFilter;
                 exportService
                     .bulkExportAvails({...external, ...column}, allDisplayedColumns)
@@ -99,16 +93,11 @@ const AvailsTableExportDropdown = ({
                 break;
             }
             case PRE_PLAN_TAB: {
-                downloadTableReport(true, prePlanGridApi, prePlanColumnApi, PREPLAN_REPORT);
+                downloadTableReport(true, gridApi, columnApi, PREPLAN_REPORT);
                 break;
             }
             case SELECTED_FOR_PLANNING_TAB: {
-                downloadTableReport(
-                    true,
-                    selectedForPlanningGridApi,
-                    selectedForPlanningColumnApi,
-                    SELECTED_FOR_PLANNING_REPORT
-                );
+                downloadTableReport(true, gridApi, columnApi, SELECTED_FOR_PLANNING_REPORT);
                 break;
             }
             default:
@@ -119,11 +108,11 @@ const AvailsTableExportDropdown = ({
     const onVisibleColumnsExportClick = () => {
         switch (activeTab) {
             case RIGHTS_TAB: {
-                const visibleColumns = getDownloadableColumns(rightColumnApi?.getAllDisplayedColumns());
+                const visibleColumns = getDownloadableColumns(columnApi?.getAllDisplayedColumns());
                 if (isSelected) {
-                    const visibleColumns = getDownloadableColumns(selectedRightColumnApi?.getAllDisplayedColumns());
+                    const visibleColumns = getDownloadableColumns(columnApi?.getAllDisplayedColumns());
                     exportService
-                        .exportAvails(getSelectedRightIds(selectedRightGridApi), visibleColumns)
+                        .exportAvails(getSelectedRightIds(gridApi), visibleColumns)
                         .then(response => downloadFile(response));
                     break;
                 }
@@ -135,16 +124,11 @@ const AvailsTableExportDropdown = ({
                 break;
             }
             case PRE_PLAN_TAB: {
-                downloadTableReport(false, prePlanGridApi, prePlanColumnApi, PREPLAN_REPORT);
+                downloadTableReport(false, gridApi, columnApi, PREPLAN_REPORT);
                 break;
             }
             case SELECTED_FOR_PLANNING_TAB: {
-                downloadTableReport(
-                    false,
-                    selectedForPlanningGridApi,
-                    selectedForPlanningColumnApi,
-                    SELECTED_FOR_PLANNING_REPORT
-                );
+                downloadTableReport(false, gridApi, columnApi, SELECTED_FOR_PLANNING_REPORT);
                 break;
             }
             default:
@@ -250,16 +234,10 @@ AvailsTableExportDropdown.propTypes = {
     selectedRows: PropTypes.array.isRequired,
     totalRows: PropTypes.number.isRequired,
     rightsFilter: PropTypes.object,
-    rightColumnApi: PropTypes.object,
-    selectedRightGridApi: PropTypes.object,
-    selectedRightColumnApi: PropTypes.object,
-    prePlanColumnApi: PropTypes.object,
-    prePlanGridApi: PropTypes.object,
-    selectedForPlanningColumnApi: PropTypes.object,
-    selectedForPlanningGridApi: PropTypes.object,
+    gridApi: PropTypes.object,
+    columnApi: PropTypes.object,
     mapping: PropTypes.array.isRequired,
     prePlanRightsCount: PropTypes.number,
-    planningRightsCount: PropTypes.number,
     username: PropTypes.string,
     isSelected: PropTypes.bool.isRequired,
 };
@@ -267,15 +245,9 @@ AvailsTableExportDropdown.propTypes = {
 AvailsTableExportDropdown.defaultProps = {
     activeTab: RIGHTS_TAB,
     rightsFilter: {},
-    rightColumnApi: {},
-    selectedRightGridApi: {},
-    selectedRightColumnApi: {},
-    prePlanColumnApi: {},
-    prePlanGridApi: {},
-    selectedForPlanningColumnApi: {},
-    selectedForPlanningGridApi: {},
+    gridApi: {},
+    columnApi: {},
     prePlanRightsCount: 0,
-    planningRightsCount: 0,
     username: '',
 };
 

@@ -12,6 +12,7 @@ import {rightsService} from '../../legacy/containers/avail/service/RightsService
 import Loading from '../../static/Loading';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {PrePlanActions} from '../pre-plan-actions/PrePlanActions';
+import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {setPreplanRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import SelectedPreplanTable from './selected-preplan-table/SelectedPreplanTable';
@@ -42,7 +43,7 @@ const PreplanRightsTable = ({
 }) => {
     const [count, setCount] = useState(0);
     const [gridApi, setGridApi] = useState(undefined);
-    const [columnApi, setColumnApi] = useState(undefined);
+    const [columnApiState, setColumnApiState] = useState(undefined);
     const [selectedPPRights, setSelectedPPRights] = useState([]);
     const [showSelected, setShowSelected] = useState(false);
     const [allRights, setAllRights] = useState([]);
@@ -130,7 +131,7 @@ const PreplanRightsTable = ({
             case GRID_EVENTS.READY: {
                 firstDataRendered.current = false;
                 setPrePlanColumnApi(columnApi);
-                setColumnApi(columnApi);
+                !columnApiState && setColumnApiState(columnApi);
                 setPrePlanGridApi(api);
                 setGridApi(api);
                 api.deselectAll();
@@ -198,17 +199,14 @@ const PreplanRightsTable = ({
         <div className="pre-plan-rights-table-wrapper">
             <AvailsTableToolbar
                 allRowsCount={allRights.length}
+                activeTab={PRE_PLAN_TAB}
                 selectedRowsCount={selectedPPRights.length}
                 setIsSelected={setShowSelected}
                 isSelected={showSelected}
                 selectedRows={selectedPPRights}
-                // setSelectedRights={setSelectedRightsToolbar}
                 gridApi={gridApi}
-                // rightsFilter={rightsFilter}
-                rightColumnApi={columnApi}
+                columnApi={columnApiState}
                 username={username}
-                // singleRightMatch={singleRightMatch}
-                // setSingleRightMatch={setSingleRightMatch}
                 showSelectedButton={true}
                 toolbarActions={toolbarActions()}
             />

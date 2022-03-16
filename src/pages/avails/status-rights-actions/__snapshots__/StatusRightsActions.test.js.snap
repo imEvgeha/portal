@@ -3,8 +3,7 @@
 exports[`StatusRightsActions should match snapshot 1`] = `
 <Fragment>
   <div
-    className="nexus-c-status-rights-actions
-                     d-flex align-items-center"
+    className="nexus-c-status-rights-actions d-flex align-items-center"
   >
     <div
       className="nexus-c-status-rights-actions__menu-item"

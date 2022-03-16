@@ -1,5 +1,6 @@
-import React, {useState, useEffect, useRef, useContext, useCallback} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
@@ -7,7 +8,7 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import classNames from 'classnames';
-import {get, uniqBy, isEmpty} from 'lodash';
+import {get, isEmpty, uniqBy} from 'lodash';
 import {connect} from 'react-redux';
 import AuditHistory from '../audit-history/AuditHistory';
 import NexusBulkDelete from '../bulk-delete/NexusBulkDelete';
@@ -17,32 +18,31 @@ import {getAffectedRights, setCoreTitleId} from '../bulk-matching/bulkMatchingSe
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import {
+    filterOutUnselectedTerritories,
     getEligibleRights,
     hasAtLeastOneUnselectedTerritory,
-    filterOutUnselectedTerritories,
     isEndDateExpired,
 } from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
-import {PRE_PLAN_TAB, RIGHTS_TAB} from '../rights-repository/constants';
-import {getLinkedRights, clearLinkedRights, bulkDeleteRights} from '../rights-repository/rightsActions';
+import {bulkDeleteRights, clearLinkedRights, getLinkedRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import {
+    ADD_TO_PREPLAN,
+    BULK_DELETE_HEADER,
+    BULK_DELETE_TOOLTIP,
+    BULK_DELETE_TOOLTIP_SFP,
     BULK_MATCH,
     BULK_MATCH_DISABLED_TOOLTIP,
     BULK_UNMATCH,
     BULK_UNMATCH_DISABLED_TOOLTIP,
-    CREATE_BONUS_RIGHT_TOOLTIP,
     CREATE_BONUS_RIGHT,
+    CREATE_BONUS_RIGHT_TOOLTIP,
     HEADER_TITLE_BONUS_RIGHT,
     HEADER_TITLE_TITLE_MATCHING,
-    ADD_TO_PREPLAN,
+    MARK_DELETED,
     PREPLAN_TOOLTIP,
     STATUS_CHECK_HEADER,
     VIEW_AUDIT_HISTORY,
-    BULK_DELETE_TOOLTIP,
-    BULK_DELETE_TOOLTIP_SFP,
-    MARK_DELETED,
-    BULK_DELETE_HEADER,
 } from './constants';
 import './SelectedRightsActions.scss';
 
@@ -52,7 +52,6 @@ export const SelectedRightsActions = ({
     removeToast,
     toggleRefreshGridData,
     selectedRightGridApi,
-    gridApi,
     setSelectedRights,
     setPrePlanRepoRights,
     singleRightMatch,
@@ -62,6 +61,7 @@ export const SelectedRightsActions = ({
     clearLinkedRights,
     bulkDeleteRights,
     deletedRightsCount,
+    username,
 }) => {
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
@@ -81,10 +81,6 @@ export const SelectedRightsActions = ({
         return () => {
             clearLinkedRights();
         };
-    }, []);
-
-    useEffect(() => {
-        toggleRefreshGridData(true);
     }, []);
 
     // All the rights have empty SourceRightId or all the rights have uniq SourceRightId
@@ -270,8 +266,7 @@ export const SelectedRightsActions = ({
     };
 
     const onCloseStatusCheckModal = () => {
-        gridApi && gridApi.deselectAll();
-        setSelectedRights([]);
+        // setSelectedRights([]);
         toggleRefreshGridData(true);
         closeModal();
     };
@@ -280,7 +275,6 @@ export const SelectedRightsActions = ({
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
             setPrePlanRepoRights(filterOutUnselectedTerritories(selectedRights));
-            gridApi.deselectAll();
             setSelectedRights([]);
             toggleRefreshGridData(true);
 
@@ -294,7 +288,7 @@ export const SelectedRightsActions = ({
 
         const [eligibleRights, nonEligibleRights] = getEligibleRights(selectedRights);
 
-        setSelectedRights(nonEligibleRights);
+        setSelectedRights({[username]: Object.values(nonEligibleRights)});
         setPrePlanRepoRights(filterOutUnselectedTerritories(eligibleRights));
         openModal(<StatusCheck nonEligibleTitles={nonEligibleRights} onClose={onCloseStatusCheckModal} />, {
             title: STATUS_CHECK_HEADER,
@@ -357,7 +351,7 @@ export const SelectedRightsActions = ({
     }, [rightsWithDeps, deletedRightsCount, openBulkDeleteModal]);
 
     return (
-        <>
+        <div className="selected-rights-actions">
             <div className="nexus-c-selected-rights-actions d-flex align-items-center" ref={node}>
                 <Can I="read" a="DopTasks">
                     <div
@@ -453,7 +447,7 @@ export const SelectedRightsActions = ({
                     headerText={headerText}
                 />
             </NexusDrawer>
-        </>
+        </div>
     );
 };
 
@@ -465,7 +459,6 @@ SelectedRightsActions.propTypes = {
     toggleRefreshGridData: PropTypes.func,
     setSelectedRights: PropTypes.func,
     setPrePlanRepoRights: PropTypes.func,
-    gridApi: PropTypes.object,
     singleRightMatch: PropTypes.array,
     setSingleRightMatch: PropTypes.func,
     rightsWithDeps: PropTypes.object,
@@ -473,6 +466,7 @@ SelectedRightsActions.propTypes = {
     clearLinkedRights: PropTypes.func,
     bulkDeleteRights: PropTypes.func,
     deletedRightsCount: PropTypes.number,
+    username: PropTypes.string,
 };
 
 SelectedRightsActions.defaultProps = {
@@ -482,7 +476,6 @@ SelectedRightsActions.defaultProps = {
     selectedRightGridApi: {},
     setSelectedRights: () => null,
     setPrePlanRepoRights: () => null,
-    gridApi: {},
     singleRightMatch: [],
     setSingleRightMatch: () => null,
     rightsWithDeps: {},
@@ -491,6 +484,7 @@ SelectedRightsActions.defaultProps = {
     bulkDeleteRights: () => null,
     toggleRefreshGridData: () => null,
     deletedRightsCount: 0,
+    username: '',
 };
 
 const mapStateToProps = () => {
@@ -500,6 +494,7 @@ const mapStateToProps = () => {
     return (state, props) => ({
         rightsWithDeps: rightsWithDependenciesSelector(state, props),
         deletedRightsCount: deletedRightsCountSelector(state, props),
+        username: getUsername(state),
     });
 };
 

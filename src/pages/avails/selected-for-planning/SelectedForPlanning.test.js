@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import SelectedForPlanning from './SelectedForPlanning';
+import {SelectedForPlanning} from './SelectedForPlanning';
 
 describe('SelectedForPlanning', () => {
     let wrapper = null;

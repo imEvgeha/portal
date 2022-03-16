@@ -38,10 +38,11 @@ import {
 } from '../right-matching/rightMatchingSelectors';
 import Ingest from '../rights-repository/components/ingest/Ingest';
 import TooltipCellRenderer from '../rights-repository/components/tooltip/TooltipCellRenderer';
+import {RIGHTS_TAB} from '../rights-repository/constants';
 import {setPreplanRights, setRightsFilter, setSelectedRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import {mapColumnDefinitions} from '../rights-repository/util/utils';
-import {SelectedRightsActions} from '../selected-rights-actions/SelectedRightsActions';
+import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
 import constants from '../constants';
 import './RightsRepositoryTable.scss';
@@ -56,14 +57,10 @@ const RightsRepositoryTable = ({
     rightsFilter,
     username,
     location,
-    // selectedRepoRights,
-    // setSelectedRepoRights,
     ingestClick,
     selectedAttachmentId,
     deselectIngest,
-    fromSelectedTable,
     isTableDataLoading,
-    setIsTableDataLoading,
     downloadIngestEmail,
     downloadIngestFile,
     filterByStatus,
@@ -80,7 +77,7 @@ const RightsRepositoryTable = ({
     const [showSelected, setShowSelected] = useState(false);
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
     const [updatedMapping, setUpdatedMapping] = useState(null);
-    const [columnApi, setColumnApi] = useState(null);
+    const [columnApiState, setColumnApiState] = useState(null);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [singleRightMatch, setSingleRightMatch] = useState([]);
     const [attachment, setAttachment] = useState();
@@ -91,11 +88,18 @@ const RightsRepositoryTable = ({
 
     // Fetch only selected rights from the current user
     useEffect(() => {
-        if (!isEmpty(selectedRights) && username) {
-            const usersSelectedRights = get(selectedRights, username, {});
-            setCurrentUserSelectedRights(Object.values(usersSelectedRights));
+        if (selectedRights && username) {
+            const usersSelectedRights = Object.values(get(selectedRights, username, {}));
+            setCurrentUserSelectedRights(usersSelectedRights);
         }
     }, [selectedRights, username]);
+
+    useEffect(() => {
+        if (!currentUserSelectedRights.length) {
+            gridApi?.forEachNode?.(node => node.setSelected(false, true, true));
+            gridApi?.redrawRows?.();
+        }
+    }, [currentUserSelectedRights]);
 
     useEffect(() => {
         setTotalCount(0);
@@ -163,31 +167,33 @@ const RightsRepositoryTable = ({
     // }, [fromSelectedTable]);
 
     useEffect(() => {
-        let newSelectedRepoRights = currentUserSelectedRights;
-        if (gridApi) {
-            const selectedIds = currentUserSelectedRights?.map(({id}) => id);
-            const loadedSelectedRights = [];
-
-            //     // Filter selected rights only when ingest is selected
-            if (selectedIngest) {
-                gridApi?.getSelectedRows()?.forEach(row => {
-                    if (selectedIds?.includes(row.id)) {
-                        loadedSelectedRights.push(row);
-                    }
-                });
-                newSelectedRepoRights = loadedSelectedRights;
-            }
-
-            // Added if statement to prevent state late updates when SelectedTable is used,
-            // Counter switched to use currentUserSelectedRights istead selectedRepoRight
-            gridApi?.forEachNode?.(node => {
-                const {data = {}} = node;
-
-                if (node.id) {
-                    selectedIds.includes(data.id) ? node.setSelected(true) : node.setSelected(false);
-                }
-            });
-        }
+        // let newSelectedRepoRights = currentUserSelectedRights;
+        // if (gridApi) {
+        //     const selectedIds = currentUserSelectedRights?.map(({id}) => id);
+        //     const loadedSelectedRights = [];
+        //
+        //     //     // Filter selected rights only when ingest is selected
+        //     if (selectedIngest) {
+        //         gridApi?.getSelectedRows()?.forEach(row => {
+        //             if (selectedIds?.includes(row.id)) {
+        //                 loadedSelectedRights.push(row);
+        //             }
+        //         });
+        //         newSelectedRepoRights = loadedSelectedRights;
+        //     }
+        //
+        //     // Added if statement to prevent state late updates when SelectedTable is used,
+        //     // Counter switched to use currentUserSelectedRights istead selectedRepoRight
+        //     gridApi?.forEachNode?.(node => {
+        //         const {data = {}} = node;
+        //
+        //         if (node.id) {
+        //             selectedIds.includes(data.id)
+        //                 ? node.setSelected(true, false, true)
+        //                 : node.setSelected(false, false, true);
+        //         }
+        //     });
+        // }
         // setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
         // setCurrentUserSelectedRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
     }, [search, currentUserSelectedRights, selectedIngest, gridApi, isTableDataLoading]);
@@ -344,7 +350,7 @@ const RightsRepositoryTable = ({
     const setGridApis = (api, columnApi) => {
         !gridApi && setGridApi(api);
         !gridApi && setRightsRepoGridApi(api);
-        !columnApi && setColumnApi(columnApi);
+        !columnApiState && setColumnApiState(columnApi);
         !columnApi && setRightsRepoColumnApi(columnApi);
     };
 
@@ -402,14 +408,15 @@ const RightsRepositoryTable = ({
             selectedRightGridApi={selectedRightsGridApi}
             setSelectedRights={setSelectedRights}
             setPrePlanRepoRights={addRightsToPrePlan}
-            gridApi={gridApi}
             singleRightMatch={singleRightMatch}
             setSingleRightMatch={setSingleRightMatch}
         />
     );
 
     const storeSelectedRightsGridApi = api => setSelectedRightsGridApi(api);
-    const setSelectedRightsToolbar = payload => setSelectedRights({[username]: payload});
+    const setSelectedRightsToolbar = payload => {
+        setSelectedRights({[username]: payload});
+    };
 
     return (
         <div className="rights-table-wrapper">
@@ -425,6 +432,7 @@ const RightsRepositoryTable = ({
             )}
 
             <AvailsTableToolbar
+                activeTab={RIGHTS_TAB}
                 allRowsCount={totalCount}
                 selectedRowsCount={currentUserSelectedRights.length}
                 setIsSelected={setShowSelected}
@@ -433,7 +441,7 @@ const RightsRepositoryTable = ({
                 setSelectedRights={setSelectedRightsToolbar}
                 gridApi={gridApi}
                 rightsFilter={rightsFilter}
-                rightColumnApi={columnApi}
+                columnApi={columnApiState}
                 username={username}
                 singleRightMatch={singleRightMatch}
                 setSingleRightMatch={setSingleRightMatch}
@@ -493,15 +501,11 @@ RightsRepositoryTable.propTypes = {
     selectedIngest: PropTypes.object,
     selectedRights: PropTypes.object,
     rightsFilter: PropTypes.object,
-    // selectedRepoRights: PropTypes.array.isRequired,
-    // setSelectedRepoRights: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     ingestClick: PropTypes.func.isRequired,
     selectedAttachmentId: PropTypes.string,
     deselectIngest: PropTypes.func.isRequired,
     isTableDataLoading: PropTypes.bool,
-    setIsTableDataLoading: PropTypes.func,
-    fromSelectedTable: PropTypes.object,
     downloadIngestEmail: PropTypes.func.isRequired,
     downloadIngestFile: PropTypes.func.isRequired,
     filterByStatus: PropTypes.func.isRequired,
@@ -520,8 +524,6 @@ RightsRepositoryTable.defaultProps = {
     rightsFilter: {},
     selectedAttachmentId: '',
     isTableDataLoading: false,
-    setIsTableDataLoading: () => null,
-    fromSelectedTable: {},
     prePlanRights: {},
 };
 
