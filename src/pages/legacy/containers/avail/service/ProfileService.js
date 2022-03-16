@@ -30,7 +30,6 @@ const getSelectValues = (field, alternateSelector, isInitAvailsMappingFlow = fal
                 store.dispatch(storeConfigValues({[key]: response.data}));
             }
         }).catch((err) => {
-            console.log('ERROR2', err)
             store.dispatch(addToast({
                 detail: `${err.type}, you failed to get the field ${key}.`,
                 severity: 'error',
