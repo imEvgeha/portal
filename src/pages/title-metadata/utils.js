@@ -375,7 +375,7 @@ export const handleDirtyValues = (initialValues, values) => {
 
     handleDirtyRatingsValues(values);
     handleDirtyEMETValues(initialValues, values);
-    handleDirtyTMETValues(values);
+    handleDirtyTMETValues(initialValues, values);
     values.isUpdated = isTitleChanged;
 };
 
@@ -425,13 +425,13 @@ const handleDirtyEMETValues = (initialValues, values) => {
 
         if (index !== null && index >= 0) {
             const cleanEditorial = cleanObject(editorial);
-            const isChanged = Object.keys(cleanEditorial).some(
+            const isUpdated = Object.keys(cleanEditorial).some(
                 item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
             );
             const updatedEmetRecord = {
                 ...values.editorialMetadata[index],
                 ...editorial,
-                isUpdated: isChanged,
+                isUpdated,
             };
             values.editorialMetadata[index] = updatedEmetRecord;
         }
@@ -447,9 +447,24 @@ const handleDirtyEMETValues = (initialValues, values) => {
     }
 };
 
-const handleDirtyTMETValues = values => {
+const handleDirtyTMETValues = (initialValues, values) => {
     const territorial = get(values, 'territorial');
-    if (territorial) {
+    const territorialMetadata = get(values, 'territorialMetadata');
+
+    if(territorialMetadata.length) {
+        const updatedTerritorialMetadata = territorialMetadata.map((elem, i) => {
+            const cleanEditorial = cleanObject(elem);
+            const isUpdated = Object.keys(cleanEditorial).some(
+                item => !isEqual(initialValues.territorialMetadata[i]?.[item], cleanEditorial?.[item])
+            );
+            return {
+                ...elem,
+                isUpdated,
+            }
+        })
+
+        values.territorialMetadata = updatedTerritorialMetadata;
+    } else if (territorial) {
         const index =
             values.territorialMetadata &&
             values.territorialMetadata.findIndex(elem => elem.locale === territorial.locale);
