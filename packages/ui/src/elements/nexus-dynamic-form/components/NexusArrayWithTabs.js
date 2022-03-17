@@ -78,6 +78,19 @@ const NexusArrayWithTabs = ({
         return formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]];
     };
 
+    const getInitialAndCurrentFormData = (item, newData, oldTabIndex) => {
+        const newDataItem = newData[oldTabIndex]?.[item];
+        const initialDataItem =
+            name === 'Editorial Metadata'
+                ? initialData.editorialMetadata[oldTabIndex]?.[item]
+                : initialData.territorialMetadata[oldTabIndex]?.[item];
+
+        return {
+            initialDataItem,
+            newDataItem,
+        };
+    };
+
     const changeTabData = (oldSubTab, oldTabIndex, key, index, subTabIndex) => {
         if (view === VIEWS.EDIT) {
             const currentFormData = getCurrentFormData();
@@ -85,8 +98,8 @@ const NexusArrayWithTabs = ({
             replaceRecordInGroupedData(currentFormData, current, oldSubTab, subTabIndex, key);
             const newData = replaceRecordInData(currentFormData, current);
             const isUpdated = Object.keys(currentFormData).some(item => {
-                const initialDataItem = initialData.editorialMetadata[oldTabIndex]?.[item];
-                const newDataItem = newData[oldTabIndex]?.[item];
+                const data = getInitialAndCurrentFormData(item, newData, oldTabIndex);
+                const {initialDataItem, newDataItem} = data;
 
                 return typeof newDataItem === 'object'
                     ? Object.keys(newDataItem).some(key => {

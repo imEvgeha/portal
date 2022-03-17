@@ -366,7 +366,7 @@ export const handleDirtyValues = (initialValues, values) => {
         const initialItem = initialValues?.[item] === undefined ? null : initialValues?.[item];
         const cleanItem = cleanValues?.[item];
         if (unnecessaryValues.includes(item)) return false;
-        if(item === 'editorialMetadata' && Array.isArray(initialItem) && Array.isArray(cleanItem)) {
+        if (item === 'editorialMetadata' && Array.isArray(initialItem) && Array.isArray(cleanItem)) {
             return !isEqual(initialItem.length, cleanItem.length);
         }
 
@@ -451,7 +451,7 @@ const handleDirtyTMETValues = (initialValues, values) => {
     const territorial = get(values, 'territorial');
     const territorialMetadata = get(values, 'territorialMetadata');
 
-    if(territorialMetadata.length) {
+    if (territorialMetadata.length) {
         const updatedTerritorialMetadata = territorialMetadata.map((elem, i) => {
             const cleanEditorial = cleanObject(elem);
             const isUpdated = Object.keys(cleanEditorial).some(
@@ -460,11 +460,12 @@ const handleDirtyTMETValues = (initialValues, values) => {
             return {
                 ...elem,
                 isUpdated,
-            }
-        })
+            };
+        });
 
         values.territorialMetadata = updatedTerritorialMetadata;
-    } else if (territorial) {
+    }
+    if (territorial) {
         const index =
             values.territorialMetadata &&
             values.territorialMetadata.findIndex(elem => elem.locale === territorial.locale);

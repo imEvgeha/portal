@@ -85,6 +85,7 @@ const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) =>
             toReturn.push(
                 <div key={key} className="nexus-c-side-tabs__tab-container">
                     <Button
+                        className="nexus-c-side-tabs__tab-button"
                         onClick={() => handleTabChanged(key, index)}
                         iconAfter={<ChevronDownIcon label="Down icon" size="large" />}
                     >
@@ -106,6 +107,7 @@ const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) =>
                         })}
                     >
                         <Button
+                            className="nexus-c-side-tabs__tab-button"
                             onClick={() => handleTabChanged(key, index, missedTabIndex)}
                             iconAfter={<ChevronDownIcon label="Down icon" size="large" />}
                         >
