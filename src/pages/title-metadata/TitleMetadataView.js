@@ -14,7 +14,7 @@ import {resetTitle} from '../metadata/metadataActions';
 import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
-import { failureDownloadDesc } from './components/title-metadata-header/components/constants';
+import {failureDownloadDesc} from './components/title-metadata-header/components/constants';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
@@ -68,6 +68,11 @@ export const TitleMetadataView = ({
         }
     }, [gridState, username]);
 
+    // this will reset all Grid filters after the user clicks "Cancel" on the "Create New Title" button
+    useEffect(() => {
+        gridApi?.setFilterModel();
+    }, [showModal]);
+
     useEffect(() => {
         resetTitleId();
         if (window.sessionStorage.getItem('unmerge')) {
@@ -103,9 +108,9 @@ export const TitleMetadataView = ({
     };
 
     const resetToAll = (gridApi, filter, columnApi) => {
-        gridApi.setFilterModel();
-        gridApi.onFilterChanged();
-        columnApi.resetColumnState();
+        gridApi?.setFilterModel();
+        gridApi?.onFilterChanged();
+        columnApi?.resetColumnState();
     };
 
     const uploadHandler = file => {
@@ -136,9 +141,9 @@ export const TitleMetadataView = ({
     const lastFilterView = (gridApi, columnApi, id) => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && id) {
             const {columnState, filterModel, sortModel} = storedFilterData || {};
-            gridApi.setFilterModel(filterModel);
+            gridApi?.setFilterModel(filterModel);
             setSorting(sortModel, columnApi);
-            columnApi.setColumnState(columnState);
+            columnApi?.setColumnState(columnState);
         }
     };
 
