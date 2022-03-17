@@ -464,7 +464,7 @@ const handleDirtyTMETValues = (initialValues, values) => {
         })
 
         values.territorialMetadata = updatedTerritorialMetadata;
-    } else if (territorial) {
+    } if (territorial) {
         const index =
             values.territorialMetadata &&
             values.territorialMetadata.findIndex(elem => elem.locale === territorial.locale);
