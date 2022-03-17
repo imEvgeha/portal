@@ -7,27 +7,26 @@ import {connect} from 'react-redux';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import * as selectors from '../right-matching/rightMatchingSelectors';
 import {
-    RIGHTS_TAB,
-    PRE_PLAN_TAB,
-    SELECTED_FOR_PLANNING_TAB,
-    PREPLAN_REPORT,
-    SELECTED_FOR_PLANNING_REPORT,
-    STATUS_TAB,
     IN_PROGRESS,
+    PRE_PLAN_TAB,
+    PREPLAN_REPORT,
+    RIGHTS_TAB,
+    SELECTED_FOR_PLANNING_REPORT,
+    SELECTED_FOR_PLANNING_TAB,
+    STATUS_TAB,
 } from '../rights-repository/constants';
-import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_MAX_ROWS} from './constants';
+import {TOOLTIP_MSG_MAX_ROWS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_NO_RIGHTS} from './constants';
 import './AvailsTableExportDropdown.scss';
 
 const MAX_ROWS = 50000;
 
 const AvailsTableExportDropdown = ({
     activeTab,
-    selectedRows,
-    totalRows,
+    selectedRowsCount,
+    totalRecordsCount,
     rightsFilter,
     gridApi,
     columnApi,
-    prePlanRightsCount,
     mapping,
     username,
     isSelected,
@@ -46,25 +45,25 @@ const AvailsTableExportDropdown = ({
 
     useEffect(() => {
         let disable = false;
-        const prePlanHasNoData = activeTab === PRE_PLAN_TAB && prePlanRightsCount === 0;
-        const planningHasNoData = activeTab === SELECTED_FOR_PLANNING_TAB && !selectedRows.length;
+        const isPrePlanDisabled = activeTab === PRE_PLAN_TAB && !totalRecordsCount;
+        const planningHasNoData = activeTab === SELECTED_FOR_PLANNING_TAB && !totalRecordsCount;
         const isRightsRepo = [RIGHTS_TAB].includes(activeTab);
 
-        if (STATUS_TAB === activeTab || prePlanHasNoData || planningHasNoData) {
+        if (STATUS_TAB === activeTab || isPrePlanDisabled || planningHasNoData) {
             disable = true;
-        } else if (isRightsRepo && isSelected && selectedRows.length === 0) {
+        } else if (isRightsRepo && isSelected && selectedRowsCount === 0) {
             setTooltipContent(TOOLTIP_MSG_NO_RIGHTS);
             disable = true;
-        } else if (isRightsRepo && !isSelected && totalRows === 0) {
+        } else if (isRightsRepo && !isSelected && totalRecordsCount === 0) {
             setTooltipContent(TOOLTIP_MSG_NO_RESULT);
             disable = true;
-        } else if (isRightsRepo && !isSelected && totalRows > MAX_ROWS) {
+        } else if (isRightsRepo && !isSelected && totalRecordsCount > MAX_ROWS) {
             setTooltipContent(TOOLTIP_MSG_MAX_ROWS);
             disable = true;
         }
 
         setIsDisabled(disable);
-    }, [activeTab, selectedRows, totalRows, prePlanRightsCount]);
+    }, [activeTab, selectedRowsCount, totalRecordsCount, isSelected]);
 
     const getSelectedRightIds = gridApi => {
         const ids = [];
@@ -231,13 +230,12 @@ const AvailsTableExportDropdown = ({
 
 AvailsTableExportDropdown.propTypes = {
     activeTab: PropTypes.string,
-    selectedRows: PropTypes.array.isRequired,
-    totalRows: PropTypes.number.isRequired,
+    selectedRowsCount: PropTypes.number.isRequired,
+    totalRecordsCount: PropTypes.number.isRequired,
     rightsFilter: PropTypes.object,
     gridApi: PropTypes.object,
     columnApi: PropTypes.object,
     mapping: PropTypes.array.isRequired,
-    prePlanRightsCount: PropTypes.number,
     username: PropTypes.string,
     isSelected: PropTypes.bool.isRequired,
 };
@@ -247,7 +245,6 @@ AvailsTableExportDropdown.defaultProps = {
     rightsFilter: {},
     gridApi: {},
     columnApi: {},
-    prePlanRightsCount: 0,
     username: '',
 };
 

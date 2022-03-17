@@ -10,43 +10,27 @@ const PAGESIZE = 100;
 export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
     const queryParams = {page, size};
     const getUpdatedAtParams = () => {
-        const updatedAtStart =
-            params?.updatedAt?.updatedAtFrom && moment(params.updatedAt.updatedAtFrom).utc(true).toISOString();
-        const updatedAtEnd =
-            params?.updatedAt?.updatedAtTo && moment(params.updatedAt.updatedAtTo).utc(true).endOf('day').toISOString();
+        const updatedAtFrom = params?.updatedAt?.updatedAtFrom;
+        const updatedAtStart = updatedAtFrom && moment(updatedAtFrom).utc(true).toISOString();
 
-        if (params?.updatedAt?.updatedAtFrom && params?.updatedAt?.updatedAtTo) {
-            return {
-                updatedAtStart,
-                updatedAtEnd,
-            };
-        } else if (params?.updatedAt?.updatedAtTo) {
-            return {
-                updatedAtEnd,
-            };
-        } else if (params?.updatedAt?.updatedAtFrom) {
-            return {
-                updatedAtStart,
-            };
-        }
+        const updatedAtTo = params?.updatedAt?.updatedAtTo;
+        const updatedAtEnd = updatedAtTo && moment(updatedAtTo).utc(true).endOf('day').toISOString();
 
-        return {};
+        return {
+            ...(updatedAtStart && {updatedAtStart}),
+            ...(updatedAtEnd && {updatedAtEnd}),
+        };
     };
-    const updatedAtParams = getUpdatedAtParams();
     delete params.updatedAt;
 
-    const qs = querystring.stringify({...queryParams, ...updatedAtParams, ...params});
+    const qs = querystring.stringify({...queryParams, ...getUpdatedAtParams(), ...params});
     const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/publishInfo/search`;
     const response = nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK`);
-    response.then(data => {
-        store.dispatch(saveStatusDataAction(data));
-    });
-
+    response.then(data => store.dispatch(saveStatusDataAction(data)));
     return response;
 };
 
 export const postReSync = data => {
     const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/rights/sync`;
-    const response = nexusFetch(url, {method: 'post', body: JSON.stringify(data)});
-    return response;
+    return nexusFetch(url, {method: 'post', body: JSON.stringify(data)});
 };

@@ -110,9 +110,8 @@ export const SelectedForPlanning = ({
         <div className="selected-for-planning-table-wrapper">
             <AvailsTableToolbar
                 activeTab={SELECTED_FOR_PLANNING_TAB}
-                allRowsCount={allRights.length}
+                totalRecordsCount={allRights.length}
                 selectedRowsCount={allRights.length}
-                selectedRows={allRights}
                 gridApi={gridApi}
                 columnApi={columnApiState}
                 username={username}
@@ -125,7 +124,6 @@ export const SelectedForPlanning = ({
                 mapping={COLUMN_MAPPINGS}
                 rowSelection="multiple"
                 suppressRowClickSelection
-                isGridHidden={activeTab !== SELECTED_FOR_PLANNING_TAB}
                 key={`planning_table_${isPlanningTabRefreshed}`}
                 onGridEvent={onGridReady}
                 dragStopped={dragStoppedHandler}

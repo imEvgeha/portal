@@ -198,12 +198,11 @@ const PreplanRightsTable = ({
     ) : (
         <div className="pre-plan-rights-table-wrapper">
             <AvailsTableToolbar
-                allRowsCount={allRights.length}
+                totalRecordsCount={allRights.length}
                 activeTab={PRE_PLAN_TAB}
                 selectedRowsCount={selectedPPRights.length}
                 setIsSelected={setShowSelected}
                 isSelected={showSelected}
-                selectedRows={selectedPPRights}
                 gridApi={gridApi}
                 columnApi={columnApiState}
                 username={username}

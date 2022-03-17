@@ -67,13 +67,11 @@ const RightsRepositoryTable = ({
     onFiltersChange,
     setRightsRepoGridApi,
     setRightsRepoColumnApi,
-    updatedColumnDefsCheckBoxHeader,
     setPreplanRights,
     prePlanRights,
 }) => {
     const {search} = location;
 
-    const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
     const [showSelected, setShowSelected] = useState(false);
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
     const [updatedMapping, setUpdatedMapping] = useState(null);
@@ -86,20 +84,14 @@ const RightsRepositoryTable = ({
     const [selectedRightsGridApi, setSelectedRightsGridApi] = useState(undefined);
     const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
 
-    // Fetch only selected rights from the current user
-    useEffect(() => {
-        if (selectedRights && username) {
-            const usersSelectedRights = Object.values(get(selectedRights, username, {}));
-            setCurrentUserSelectedRights(usersSelectedRights);
-        }
-    }, [selectedRights, username]);
-
-    useEffect(() => {
-        if (!currentUserSelectedRights.length) {
+    const getCurrentUserSelRights = () => {
+        const usersSelectedRights = Object.values(get(selectedRights, username, {}));
+        if (!usersSelectedRights.length) {
             gridApi?.forEachNode?.(node => node.setSelected(false, true, true));
             gridApi?.redrawRows?.();
         }
-    }, [currentUserSelectedRights]);
+        return usersSelectedRights;
+    };
 
     useEffect(() => {
         setTotalCount(0);
@@ -196,7 +188,7 @@ const RightsRepositoryTable = ({
         // }
         // setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
         // setCurrentUserSelectedRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
-    }, [search, currentUserSelectedRights, selectedIngest, gridApi, isTableDataLoading]);
+    }, [search, selectedRights, selectedIngest, gridApi, isTableDataLoading]);
 
     // Returns only selected rights that are also included in the selected ingest
     const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
@@ -220,27 +212,26 @@ const RightsRepositoryTable = ({
         });
     };
 
-    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
     const hiddenSelectedAndTerritoryFilters = useMemo(() => setHiddenFilters(true), [mapping]);
     const hiddenSelectedAtFilter = useMemo(() => setHiddenFilters(false), [mapping]);
 
     useEffect(() => {
         if (!tableColumnDefinitions.length) {
             const colDefs = constructColumnDefs(mapColumnDefinitions(columnDefs));
-
             const updatedColumnDefs = colDefs.length
-                ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...colDefs]
+                ? [
+                      defineCheckboxSelectionColumn({
+                          headerCheckboxSelection: true,
+                          headerCheckboxSelectionFilteredOnly: true,
+                      }),
+                      actionMatchingButtonColumnDef,
+                      ...colDefs,
+                  ]
                 : colDefs;
 
             setTableColumnDefinitions(updatedColumnDefs);
         }
     }, [columnDefs]);
-
-    // const columnDefsClone = mapColumnDefinitions(columnDefs);
-
-    // const updatedColumnDefs = columnsValidationDefsClone.length
-    //     ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnsValidationDefsClone]
-    //     : columnsValidationDefsClone;
 
     const constructColumnDefs = defs =>
         defs.map(col => {
@@ -355,7 +346,8 @@ const RightsRepositoryTable = ({
     };
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
-        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
+        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED, ROW_DATA_CHANGED, GRID_SIZE_CHANGED} =
+            GRID_EVENTS;
 
         switch (type) {
             case READY:
@@ -404,7 +396,7 @@ const RightsRepositoryTable = ({
 
     const toolbarActions = () => (
         <SelectedRightsActions
-            selectedRights={currentUserSelectedRights}
+            selectedRights={getCurrentUserSelRights()}
             selectedRightGridApi={selectedRightsGridApi}
             setSelectedRights={setSelectedRights}
             setPrePlanRepoRights={addRightsToPrePlan}
@@ -433,11 +425,10 @@ const RightsRepositoryTable = ({
 
             <AvailsTableToolbar
                 activeTab={RIGHTS_TAB}
-                allRowsCount={totalCount}
-                selectedRowsCount={currentUserSelectedRights.length}
+                totalRecordsCount={totalCount}
+                selectedRowsCount={getCurrentUserSelRights().length}
                 setIsSelected={setShowSelected}
                 isSelected={showSelected}
-                selectedRows={currentUserSelectedRights}
                 setSelectedRights={setSelectedRightsToolbar}
                 gridApi={gridApi}
                 rightsFilter={rightsFilter}
@@ -456,7 +447,7 @@ const RightsRepositoryTable = ({
                     rowSelection="multiple"
                     suppressRowClickSelection={true}
                     singleClickEdit
-                    context={{selectedRows: currentUserSelectedRights}}
+                    context={{selectedRows: getCurrentUserSelRights()}}
                     mapping={updatedMapping || mapping}
                     setTotalCount={setTotalCount}
                     onGridEvent={onRightsRepositoryGridEvent}
@@ -476,14 +467,12 @@ const RightsRepositoryTable = ({
 
             {showSelected && (
                 <SelectedRightsTable
-                    columnDefs={updatedColumnDefsCheckBoxHeader}
+                    columnDefs={tableColumnDefinitions}
                     mapping={mapping}
-                    rowData={currentUserSelectedRights}
                     notFilterableColumns={['action', 'buttons']}
                     selectedFilter={selectedFilter}
                     setSelectedFilter={setSelectedFilter}
-                    selectedRepoRights={currentUserSelectedRights}
-                    selectedRights={selectedRights}
+                    selectedRights={getCurrentUserSelRights()}
                     username={username}
                     storeGridApi={storeSelectedRightsGridApi}
                 />
@@ -512,7 +501,6 @@ RightsRepositoryTable.propTypes = {
     onFiltersChange: PropTypes.func.isRequired,
     setRightsRepoGridApi: PropTypes.func.isRequired,
     setRightsRepoColumnApi: PropTypes.func.isRequired,
-    updatedColumnDefsCheckBoxHeader: PropTypes.func.isRequired,
     setPreplanRights: PropTypes.func.isRequired,
     prePlanRights: PropTypes.object,
 };

@@ -13,6 +13,7 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../sync-log/syncLogConstants';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
+import {STATUS_TAB} from '../rights-repository/constants';
 import {setPreplanRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import StatusRightsActions from '../status-rights-actions/StatusRightsActions';
@@ -82,11 +83,11 @@ export const StatusLogRightsTable = ({totalRowCount, username}) => {
     return (
         <div className="nexus-c-status-log-table">
             <AvailsTableToolbar
-                allRowsCount={totalRowCount}
+                totalRecordsCount={totalRowCount}
+                activeTab={STATUS_TAB}
                 selectedRowsCount={selectedRights.length}
                 setIsSelected={setShowSelected}
                 isSelected={showSelected}
-                selectedRows={selectedRights}
                 gridApi={gridApi}
                 columnApi={columnApiState}
                 username={username}

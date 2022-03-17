@@ -17,7 +17,7 @@ import {
 import RightsRepositoryTable from '../rights-repository-table/RightsRepositoryTable';
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import StatusLogRightsTable from '../status-log-rights-table/StatusLogRightsTable';
-import {RightsRepositoryHeader} from './components/RightsRepositoryHeader/RightsRepositoryHeader';
+import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {mapColumnDefinitions} from './util/utils';
 import {PRE_PLAN_TAB, RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB} from './constants';
@@ -33,13 +33,7 @@ const RightsRepository = ({
 }) => {
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [activeTabIndex, setActiveTabIndex] = useState(0);
-
-    // const [selectedGridApi, setSelectedGridApi] = useState(null);
-    const [selectedRepoRights, setSelectedRepoRights] = useState([]);
-
-    const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
-
     const [singleRightMatch, setSingleRightMatch] = useState([]);
     const [rightsRepoGridApi, setRightsRepoGridApi] = useState(undefined);
     const [rightsRepoColumnApi, setRightsRepoColumnApi] = useState(undefined);
@@ -116,49 +110,11 @@ const RightsRepository = ({
                 activeTabIndex={activeTabIndex}
                 setActiveTabIndex={setActiveTabIndex}
             />
-            {/*<AvailsTableToolbar*/}
-            {/*    totalRows={totalCount === 'One' ? 1 : totalCount}*/}
-            {/*    selectedRightsCount={currentUserSelectedRights.length}*/}
-            {/*    prePlanRightsCount={currentUserPrePlanRights.length}*/}
-            {/*    setIsSelected={setIsSelected}*/}
-            {/*    isSelected={isSelected}*/}
-            {/*    setActiveTab={setActiveTab}*/}
-            {/*    activeTab={activeTab}*/}
-            {/*    activeTabIndex={activeTabIndex}*/}
-            {/*    setActiveTabIndex={setActiveTabIndex}*/}
-            {/*    selectedRows={currentUserSelectedRights}*/}
-            {/*    setSelectedRights={payload => setSelectedRights({[username]: payload})}*/}
-            {/*    gridApi={gridApi}*/}
-            {/*    rightsFilter={rightsFilter}*/}
-            {/*    rightColumnApi={columnApi}*/}
-            {/*    selectedRightColumnApi={selectedColumnApi}*/}
-            {/*    selectedRightGridApi={selectedGridApi}*/}
-            {/*    selectedRepoRights={selectedRepoRights}*/}
-            {/*    setPrePlanRepoRights={addRightsToPrePlan}*/}
-            {/*    planningRightsCount={planningRightsCount}*/}
-            {/*    selectedPrePlanRights={selectedPrePlanRights}*/}
-            {/*    setSelectedPrePlanRights={setSelectedPrePlanRights}*/}
-            {/*    prePlanRepoRights={currentUserPrePlanRights}*/}
-            {/*    setPreplanRights={setPreplanRights}*/}
-            {/*    isPlanningTabRefreshed={isPlanningTabRefreshed}*/}
-            {/*    setIsPlanningTabRefreshed={setIsPlanningTabRefreshed}*/}
-            {/*    username={username}*/}
-            {/*    singleRightMatch={singleRightMatch}*/}
-            {/*    setSingleRightMatch={setSingleRightMatch}*/}
-            {/*    prePlanColumnApi={prePlanColumnApi}*/}
-            {/*    prePlanGridApi={prePlanGridApi}*/}
-            {/*    selectedForPlanningColumnApi={selectedForPlanningColumnApi}*/}
-            {/*    selectedForPlanningGridApi={selectedForPlanningGridApi}*/}
-            {/*    statusRightsCount={statusLogCount}*/}
-            {/*/>*/}
             {activeTab === RIGHTS_TAB && (
                 <RightsRepositoryTable
                     location={location}
-                    // selectedRepoRights={selectedRepoRights}
-                    // setSelectedRepoRights={setSelectedRepoRights}
                     setRightsRepoGridApi={setRightsRepoGridApi}
                     setRightsRepoColumnApi={setRightsRepoColumnApi}
-                    updatedColumnDefsCheckBoxHeader={updatedColumnDefsCheckBoxHeader}
                 />
             )}
 
@@ -173,12 +129,7 @@ const RightsRepository = ({
 
             {activeTab === STATUS_TAB && <StatusLogRightsTable activeTab={activeTab} />}
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
-                <SelectedForPlanning
-                    activeTab={activeTab}
-                    isPlanningTabRefreshed={isPlanningTabRefreshed}
-                    // setSelectedForPlanningGridApi={setSelectedForPlanningGridApi}
-                    // setSelectedForPlanningColumnApi={setSelectedForPlanningColumnApi}
-                />
+                <SelectedForPlanning activeTab={activeTab} isPlanningTabRefreshed={isPlanningTabRefreshed} />
             )}
         </div>
     );
