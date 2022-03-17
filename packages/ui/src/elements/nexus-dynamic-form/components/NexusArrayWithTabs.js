@@ -75,23 +75,15 @@ const NexusArrayWithTabs = ({
     };
 
     const getInitialAndCurrentFormData = (item, newData, oldTabIndex) => {
-        if (name === 'Editorial Metadata') {
-            const initialDataItem = initialData.editorialMetadata[oldTabIndex]?.[item];
-            const newDataItem = newData[oldTabIndex]?.[item];
-            return {
-                initialDataItem,
-                newDataItem
-            }
+        const newDataItem = newData[oldTabIndex]?.[item];
+        const initialDataItem = name === 'Editorial Metadata' ?
+            initialData.editorialMetadata[oldTabIndex]?.[item] : 
+            initialData.territorialMetadata[oldTabIndex]?.[item];
+
+        return {
+            initialDataItem,
+            newDataItem
         }
-        if (name === 'Territorial Metadata') {
-            const initialDataItem = initialData.territorialMetadata[oldTabIndex]?.[item];
-            const newDataItem = newData[oldTabIndex]?.[item];
-            return {
-                initialDataItem,
-                newDataItem
-            }
-        }
-        return {}
     }
 
     const changeTabData = (oldSubTab, oldTabIndex, key, index, subTabIndex) => {
