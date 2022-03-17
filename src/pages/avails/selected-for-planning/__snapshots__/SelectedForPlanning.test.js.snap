@@ -4,12 +4,13 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
 <div
   className="selected-for-planning-table-wrapper"
 >
-  <Connect(AvailsTableToolbar)
+  <AvailsTableToolbar
     activeTab="Selected for Planning"
-    allRowsCount={0}
-    selectedRows={Array []}
+    hasDownloadButton={true}
+    rightsFilter={Object {}}
     selectedRowsCount={0}
     showSelectedButton={false}
+    totalRecordsCount={0}
   />
   <Connect(ComposedComponent)
     columnDefs={
@@ -110,7 +111,6 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
     dragStopped={[Function]}
     externalFilter={Object {}}
     id="selectedForPlanningRepo"
-    isGridHidden={true}
     key="planning_table_false"
     mapping={
       Array [

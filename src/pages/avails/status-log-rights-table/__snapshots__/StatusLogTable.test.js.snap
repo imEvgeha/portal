@@ -4,10 +4,11 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
 <div
   className="nexus-c-status-log-table"
 >
-  <Connect(AvailsTableToolbar)
-    allRowsCount={0}
+  <AvailsTableToolbar
+    activeTab="Status"
+    hasDownloadButton={true}
     isSelected={false}
-    selectedRows={Array []}
+    rightsFilter={Object {}}
     selectedRowsCount={0}
     setIsSelected={[Function]}
     showSelectedButton={true}
@@ -16,6 +17,7 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
         rights={Array []}
       />
     }
+    totalRecordsCount={0}
     username=""
   />
   <Component
