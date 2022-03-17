@@ -22,6 +22,7 @@ const initialState = {
     filter: {},
     uploadLogFilter: {},
     selectedId: '',
+    isEditorial: false,
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
@@ -168,6 +169,12 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 filter: {},
+            };
+
+        case actionTypes.IS_EDITORIAL:
+            return {
+                ...state,
+                isEditorial: payload,
             };
         default:
             return state;

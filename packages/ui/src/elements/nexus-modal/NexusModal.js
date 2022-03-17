@@ -1,12 +1,16 @@
 import React, {useState, createContext, useCallback} from 'react';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import './NexusModal.scss';
+import {useDispatch} from 'react-redux';
+import {storeIsEditorial} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 
 export const NexusModalContext = createContext({});
 
 export const NexusModalProvider = ({children}) => {
     const [modalStack, setModalstack] = useState([]);
     const STACK_INDEX = 6;
+
+    const dispatch = useDispatch();
 
     const openModal = useCallback((content, params) => {
         const {title, width = 'medium', actions = [], shouldCloseOnOverlayClick = true} = params || {};
@@ -23,6 +27,7 @@ export const NexusModalProvider = ({children}) => {
     }, []);
 
     const closeModal = useCallback(() => {
+        dispatch(storeIsEditorial(false));
         setModalstack(modalStack => {
             const stackContent = modalStack.slice();
             stackContent.pop();

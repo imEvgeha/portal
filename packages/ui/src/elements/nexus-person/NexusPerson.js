@@ -15,6 +15,7 @@ import './NexusPerson.scss';
 import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
 import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
+import {useSelector} from 'react-redux';
 
 const NexusPerson = ({
     person,
@@ -30,6 +31,8 @@ const NexusPerson = ({
 }) => {
     const localization = get(person, 'localization');
     const isCastCrewField = name === 'castCrew';
+
+    const isEditorial = useSelector(state => state.titleMetadata.isEditorial);
 
     const getEnName = () => {
         return localization ? person.displayName : person.displayNameEn;
@@ -73,7 +76,15 @@ const NexusPerson = ({
                                         : 'nexus-c-nexus-person__two-col'
                                 }
                             >
-                                <div className="nexus-c-nexus-person__info">
+                                <div
+                                    className={
+                                        hasTranslation() && emetLanguage !== 'en'
+                                            ? ''
+                                            : `nexus-c-nexus-person__info ${
+                                                  isEditorial ? 'nexus-c-nexus-person__info-modal' : ''
+                                              }`
+                                    }
+                                >
                                     <div>
                                         <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
                                         <div className="nexus-c-nexus-person-type">
@@ -132,7 +143,7 @@ const NexusPerson = ({
         );
     else
         return (
-            <div className="nexus-c-nexus-person-avails__two-col">
+            <div className="nexus-c-nexus-person__two-col">
                 <div className="nexus-c-nexus-person-avails__info">
                     <div>
                         <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person__img" />
