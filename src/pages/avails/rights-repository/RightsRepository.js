@@ -1,10 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
-import {
-    defineButtonColumn,
-    defineCheckboxSelectionColumn,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import {connect} from 'react-redux';
 import {fetchIngests} from '../ingest-panel/ingestActions';
 import {getFiltersToSend} from '../ingest-panel/utils';
@@ -18,8 +14,6 @@ import RightsRepositoryTable from '../rights-repository-table/RightsRepositoryTa
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import StatusLogRightsTable from '../status-log-rights-table/StatusLogRightsTable';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
-import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
-import {mapColumnDefinitions} from './util/utils';
 import {PRE_PLAN_TAB, RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB} from './constants';
 import './RightsRepository.scss';
 
@@ -34,7 +28,6 @@ const RightsRepository = ({
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [activeTabIndex, setActiveTabIndex] = useState(0);
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
-    const [singleRightMatch, setSingleRightMatch] = useState([]);
     const [rightsRepoGridApi, setRightsRepoGridApi] = useState(undefined);
     const [rightsRepoColumnApi, setRightsRepoColumnApi] = useState(undefined);
 
@@ -71,30 +64,6 @@ const RightsRepository = ({
     //     }
     // }, [selectedRepoRights, selectedGridApi]);
 
-    const actionMatchingButtonColumnDef = defineButtonColumn({
-        cellRendererFramework: TooltipCellRenderer,
-        cellRendererParams: {isTooltipEnabled: true, setSingleRightMatch},
-        lockVisible: true,
-        cellStyle: {overflow: 'visible'},
-    });
-
-    const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
-        headerCheckboxSelection: true,
-        headerCheckboxSelectionFilteredOnly: true,
-    });
-
-    const columnDefsClone = mapColumnDefinitions(columnDefs);
-
-    const updatedColumnDefsCheckBoxHeader = columnDefsClone.length
-        ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
-        : columnDefsClone;
-
-    const selectedAtCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected At');
-    const selectedCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected');
-    if (selectedAtCol && selectedCol) {
-        selectedAtCol.valueFormatter = selectedCol.valueFormatter;
-    }
-
     const persistSelectedPPRights = rights => {
         selectedPPRights.current = [...rights];
     };
@@ -120,7 +89,6 @@ const RightsRepository = ({
 
             {activeTab === PRE_PLAN_TAB && (
                 <PreplanRightsTable
-                    columnDefs={updatedColumnDefsCheckBoxHeader}
                     mapping={mapping}
                     persistSelectedPPRights={persistSelectedPPRights}
                     persistedSelectedRights={selectedPPRights.current}

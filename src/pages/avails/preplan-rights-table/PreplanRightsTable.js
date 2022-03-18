@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import {
+    defineButtonColumn,
+    defineCheckboxSelectionColumn,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
@@ -12,9 +16,12 @@ import {rightsService} from '../../legacy/containers/avail/service/RightsService
 import Loading from '../../static/Loading';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {PrePlanActions} from '../pre-plan-actions/PrePlanActions';
+import {createRightMatchingColumnDefsSelector} from '../right-matching/rightMatchingSelectors';
+import TooltipCellRenderer from '../rights-repository/components/tooltip/TooltipCellRenderer';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {setPreplanRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
+import {mapColumnDefinitions} from '../rights-repository/util/utils';
 import SelectedPreplanTable from './selected-preplan-table/SelectedPreplanTable';
 import {
     COLUMNS_TO_REORDER,
@@ -49,6 +56,32 @@ const PreplanRightsTable = ({
     const [allRights, setAllRights] = useState([]);
     const [singleRightMatch, setSingleRightMatch] = useState([]);
     const firstDataRendered = useRef(false);
+
+    // column defs
+    const actionMatchingButtonColumnDef = defineButtonColumn({
+        cellRendererFramework: TooltipCellRenderer,
+        cellRendererParams: {isTooltipEnabled: true, setSingleRightMatch},
+        lockVisible: true,
+        cellStyle: {overflow: 'visible'},
+    });
+
+    const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
+        headerCheckboxSelection: true,
+        headerCheckboxSelectionFilteredOnly: true,
+    });
+
+    const columnDefsClone = mapColumnDefinitions(columnDefs);
+
+    const updatedColumnDefsCheckBoxHeader = columnDefsClone.length
+        ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
+        : columnDefsClone;
+
+    const selectedAtCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected At');
+    const selectedCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected');
+    if (selectedAtCol && selectedCol) {
+        selectedAtCol.valueFormatter = selectedCol.valueFormatter;
+    }
+
     useEffect(() => {
         setCount(0);
         updateRightDetails();
@@ -109,7 +142,9 @@ const PreplanRightsTable = ({
         );
     };
 
-    const filteredColumnDefs = columnDefs.filter(columnDef => columnDef.colId !== 'territoryCountry');
+    const filteredColumnDefs = updatedColumnDefsCheckBoxHeader.filter(
+        columnDef => columnDef.colId !== 'territoryCountry'
+    );
     const editedMappings = mapping
         .filter(mapping => mapping.javaVariableName !== 'territory')
         .map(mapping => {
@@ -232,7 +267,7 @@ const PreplanRightsTable = ({
 
             {showSelected && (
                 <SelectedPreplanTable
-                    columnDefs={columnDefs}
+                    columnDefs={updatedColumnDefsCheckBoxHeader}
                     mapping={mapping}
                     selectedRights={selectedPPRights}
                     username={username}
@@ -266,7 +301,9 @@ PreplanRightsTable.defaultProps = {
 
 const mapStateToProps = () => {
     const preplanRightsSelector = selectors.createPreplanRightsSelector();
+    const rightMatchingColumnDefsSelector = createRightMatchingColumnDefsSelector();
     return (state, props) => ({
+        columnDefs: rightMatchingColumnDefsSelector(state, props),
         prePlanRights: preplanRightsSelector(state, props),
         username: getUsername(state),
     });
