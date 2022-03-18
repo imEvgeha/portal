@@ -15,7 +15,7 @@ import {compose} from 'redux';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import Loading from '../../static/Loading';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
-import {PrePlanActions} from '../pre-plan-actions/PrePlanActions';
+import PrePlanActions from '../pre-plan-actions/PrePlanActions';
 import {createRightMatchingColumnDefsSelector} from '../right-matching/rightMatchingSelectors';
 import TooltipCellRenderer from '../rights-repository/components/tooltip/TooltipCellRenderer';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
