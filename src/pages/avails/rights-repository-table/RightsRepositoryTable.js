@@ -342,7 +342,7 @@ const RightsRepositoryTable = ({
         !gridApi && setGridApi(api);
         !gridApi && setRightsRepoGridApi(api);
         !columnApiState && setColumnApiState(columnApi);
-        !columnApi && setRightsRepoColumnApi(columnApi);
+        !columnApiState && setRightsRepoColumnApi(columnApi);
     };
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
