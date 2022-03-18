@@ -68,11 +68,6 @@ export const TitleMetadataView = ({
         }
     }, [gridState, username]);
 
-    // this will reset all Grid filters after the user clicks "Cancel" on the "Create New Title" button
-    useEffect(() => {
-        gridApi?.setFilterModel();
-    }, [showModal]);
-
     useEffect(() => {
         resetTitleId();
         if (window.sessionStorage.getItem('unmerge')) {
@@ -123,14 +118,6 @@ export const TitleMetadataView = ({
 
     const [blockLastFilter, setBlockLastFilter] = useState(true);
 
-    useEffect(() => {
-        if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
-            gridApi.setFilterModel(titleMetadataFilter?.filterModel);
-            if (columnApi.columnController) setSorting(titleMetadataFilter.sortModel, columnApi);
-            columnApi.setColumnState(titleMetadataFilter?.columnState);
-        }
-    }, [gridApi, columnApi]);
-
     const storedFilterData = titleMetadataFilter;
     const storedFilterDataId = titleMetadataFilter?.id;
 
@@ -147,7 +134,17 @@ export const TitleMetadataView = ({
         }
     };
 
-    blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
+    useEffect(() => {
+        if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
+            gridApi.setFilterModel(titleMetadataFilter?.filterModel);
+            if (columnApi.columnController) setSorting(titleMetadataFilter.sortModel, columnApi);
+            columnApi.setColumnState(titleMetadataFilter?.columnState);
+        }
+    }, [gridApi, columnApi]);
+
+    useEffect(() => {
+        blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
+    }, [blockLastFilter]);
 
     return (
         <div className="nexus-c-title-metadata">
