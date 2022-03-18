@@ -1,55 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NexusPerson should match snapshot 1`] = `
-<ContextProvider
-  value={
-    Object {
-      "store": Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Object {
-        "addNestedSub": [Function],
-        "getListeners": [Function],
-        "handleChangeWrapper": [Function],
-        "isSubscribed": [Function],
-        "notifyNestedSubs": [Function],
-        "onStateChange": [Function],
-        "trySubscribe": [Function],
-        "tryUnsubscribe": [Function],
-      },
-    }
-  }
+<Connect(Draggable)
+  disableInteractiveElementBlocking={false}
+  draggableId=""
+  index={1}
+  isDragDisabled={false}
+  shouldRespectForcePress={false}
 >
-  <NexusPerson
-    customKey=""
-    emetLanguage="en"
-    hasCharacter={true}
-    index={1}
-    isEditable={true}
-    isTitlePage={false}
-    key="idx-1"
-    name={null}
-    onEditCharacter={[Function]}
-    onEditPerson={[Function]}
-    onPropagate={[Function]}
-    onRemove={[Function]}
-    person={
-      Object {
-        "characterName": "test2",
-        "displayName": "Amaka Obi",
-        "firstName": null,
-        "id": "prs_Ac9oyaREip",
-        "lastName": null,
-        "middleName": null,
-        "personType": "Actor",
-      }
-    }
-    showPersonType={true}
-  />
-</ContextProvider>
+  <Component />
+</Connect(Draggable)>
 `;

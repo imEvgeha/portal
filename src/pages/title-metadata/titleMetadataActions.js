@@ -82,8 +82,3 @@ export const setTitleMetadataFilter = payload => ({
 export const clearTitleMetadataFilter = () => ({
     type: actionTypes.SET_TITLE_FILTER,
 });
-
-export const storeIsEditorial = payload => ({
-    type: actionTypes.IS_EDITORIAL,
-    payload,
-});

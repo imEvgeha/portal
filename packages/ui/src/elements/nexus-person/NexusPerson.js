@@ -15,7 +15,6 @@ import './NexusPerson.scss';
 import {get} from 'lodash';
 import Lozenge from '@atlaskit/lozenge';
 import {getFormatTypeName} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
-import {useSelector} from 'react-redux';
 
 const NexusPerson = ({
     person,
@@ -31,8 +30,6 @@ const NexusPerson = ({
 }) => {
     const localization = get(person, 'localization');
     const isCastCrewField = name === 'castCrew';
-
-    const isEditorial = useSelector(state => state.titleMetadata.isEditorial);
 
     const getEnName = () => {
         return localization ? person.displayName : person.displayNameEn;
@@ -78,11 +75,7 @@ const NexusPerson = ({
                             >
                                 <div
                                     className={
-                                        hasTranslation() && emetLanguage !== 'en'
-                                            ? ''
-                                            : `nexus-c-nexus-person__info ${
-                                                  isEditorial ? 'nexus-c-nexus-person__info-modal' : ''
-                                              }`
+                                        hasTranslation() && emetLanguage !== 'en' ? '' : 'nexus-c-nexus-person__info'
                                     }
                                 >
                                     <div>

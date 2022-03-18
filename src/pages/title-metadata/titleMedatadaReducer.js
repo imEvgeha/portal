@@ -170,12 +170,6 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 ...state,
                 filter: {},
             };
-
-        case actionTypes.IS_EDITORIAL:
-            return {
-                ...state,
-                isEditorial: payload,
-            };
         default:
             return state;
     }
