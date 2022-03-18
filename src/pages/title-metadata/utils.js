@@ -361,12 +361,19 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
-    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'ratings', 'editorial', 'movidaUkExternalIds'];
+    const unnecessaryValues = [
+        'vzExternalIds',
+        'movidaExternalIds',
+        'ratings',
+        'editorial',
+        'movidaUkExternalIds',
+        'territorial',
+    ];
     const isTitleChanged = Object.keys(cleanValues).some(item => {
         const initialItem = initialValues?.[item] === undefined ? null : initialValues?.[item];
         const cleanItem = cleanValues?.[item];
         if (unnecessaryValues.includes(item)) return false;
-        if (item === 'editorialMetadata' && Array.isArray(initialItem) && Array.isArray(cleanItem)) {
+        if (Array.isArray(initialItem) && Array.isArray(cleanItem)) {
             return !isEqual(initialItem.length, cleanItem.length);
         }
 
@@ -453,9 +460,9 @@ const handleDirtyTMETValues = (initialValues, values) => {
 
     if (territorialMetadata.length) {
         const updatedTerritorialMetadata = territorialMetadata.map((elem, i) => {
-            const cleanEditorial = cleanObject(elem);
-            const isUpdated = Object.keys(cleanEditorial).some(
-                item => !isEqual(initialValues.territorialMetadata[i]?.[item], cleanEditorial?.[item])
+            const cleanTerritorial = cleanObject(elem);
+            const isUpdated = Object.keys(cleanTerritorial).some(
+                item => !isEqual(initialValues.territorialMetadata[i]?.[item], cleanTerritorial?.[item])
             );
             return {
                 ...elem,
@@ -473,8 +480,15 @@ const handleDirtyTMETValues = (initialValues, values) => {
             const updatedTmetRecord = {
                 ...values.territorialMetadata[index],
                 ...territorial,
-                isUpdated: true,
             };
+
+            delete updatedTmetRecord.isUpdated;
+            const cleanTerritorial = cleanObject(updatedTmetRecord);
+            const isUpdated = Object.keys(cleanTerritorial).some(
+                item => !isEqual(initialValues.territorialMetadata[index]?.[item], cleanTerritorial?.[item])
+            );
+
+            updatedTmetRecord.isUpdated = isUpdated;
             values.territorialMetadata[index] = updatedTmetRecord;
         }
     }
