@@ -5,8 +5,6 @@ import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {get, cloneDeep, isEqual} from 'lodash';
-import {useDispatch} from 'react-redux';
-import {storeIsEditorial} from '../../../../../../src/pages/title-metadata/titleMetadataActions';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import NexusArrayCreateModal from './NexusArrayCreateModal';
@@ -40,8 +38,6 @@ const NexusArrayWithTabs = ({
     const [currentData, setCurrentData] = useState(null);
     const [isRemoved, setIsRemoved] = useState(false);
     const [regenerateLoading, setRegenerateLoading] = useState(false);
-
-    const dispatch = useDispatch();
 
     useEffect(() => {
         const groupedObj = data ? groupBy(data) : {};
@@ -254,8 +250,6 @@ const NexusArrayWithTabs = ({
     };
 
     const openEditModal = () => {
-        if (name === 'Editorial Metadata') dispatch(storeIsEditorial(true));
-
         openModal(modalContent(), {
             title: <div className="nexus-c-array__modal-title">{`Add ${name} modal Data`}</div>,
             width: 'medium',
@@ -322,7 +316,6 @@ const NexusArrayWithTabs = ({
                   };
         newData.push(newObject);
         setFieldValue(path, newData);
-        dispatch(storeIsEditorial(false));
         closeModal();
     };
 
