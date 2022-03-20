@@ -85,7 +85,7 @@ export function* fetchAndStoreSelectItems(payload, type) {
     const mappingsWithConfigEndpoint = multiSelectMappings.filter(el => el.configEndpoint);
     // TODO - make this in background via FORK effect
     const fields = [];
-    const doesUserHaveRoles = can('view', 'Config')
+    const doesUserHaveRoles = can('read', 'ConfigUI')
 
     const fetchedSelectedItems = yield all(
         mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint, alternateSelector}) => {
