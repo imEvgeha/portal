@@ -8,7 +8,7 @@ import {GlobalNav, GlobalItem, ThemeProvider, modeGenerator} from '@atlaskit/nav
 import {colors} from '@atlaskit/theme';
 import {logout} from '@vubiquity-nexus/portal-auth/authActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Can, idToAbilityNameMap} from '@vubiquity-nexus/portal-utils/lib/ability';
+import {Can, idToAbilityNameMap, can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
@@ -99,32 +99,41 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
                               },
                           ]
                         : []),
-                    {
-                        icon: EditorSettingsIcon,
-                        component: () => (
-                            <ComponentWrapper handleClick={() => handleClick(SETTINGS)} link={SETTINGS}>
-                                {' '}
-                                <EditorSettingsIcon />{' '}
-                            </ComponentWrapper>
-                        ),
-                        id: SETTINGS,
-                        tooltip: SETTINGS,
-                        isSelected: selectedItem === SETTINGS,
-                        onClick: () => handleClick(SETTINGS),
-                    },
-                    {
-                        icon: 'pi pi-sliders-h',
-                        component: () => (
-                            <ComponentWrapper handleClick={() => handleClick('settings/v2')} link="settings/v2">
-                                <i className="pi pi-sliders-h" />
-                            </ComponentWrapper>
-                        ),
-                        id: 'settings/v2',
-                        tooltip: 'Settings V2',
-                        isSelected: selectedItem === 'settings/v2',
-                        onClick: () => handleClick('settings/v2'),
-                    },
 
+                    ...(can('read', 'ConfigUI')
+                        ? [
+                            {
+                                icon: EditorSettingsIcon,
+                                component: () => (
+                                    <ComponentWrapper handleClick={() => handleClick(SETTINGS)} link={SETTINGS}>
+                                        {' '}
+                                        <EditorSettingsIcon />{' '}
+                                    </ComponentWrapper>
+                                ),
+                                id: SETTINGS,
+                                tooltip: SETTINGS,
+                                isSelected: selectedItem === SETTINGS,
+                                onClick: () => handleClick(SETTINGS),
+                            },
+                          ]
+                        : []),
+                        
+                    ...(can('read', 'ConfigUI')
+                        ? [
+                            {
+                                icon: 'pi pi-sliders-h',
+                                component: () => (
+                                    <ComponentWrapper handleClick={() => handleClick('settings/v2')} link="settings/v2">
+                                        <i className="pi pi-sliders-h" />
+                                    </ComponentWrapper>
+                                ),
+                                id: 'settings/v2',
+                                tooltip: 'Settings V2',
+                                isSelected: selectedItem === 'settings/v2',
+                                onClick: () => handleClick('settings/v2'),
+                            },
+                          ]
+                        : []),
                     {
                         // eslint-disable-next-line react/prop-types
                         component: ({onClick}) => {
