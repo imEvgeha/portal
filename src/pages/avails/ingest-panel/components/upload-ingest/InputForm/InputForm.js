@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
-import Spinner from '@atlaskit/spinner';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {get, isEmpty} from 'lodash';
+import {ProgressSpinner} from 'primereact/progressspinner';
 import {connect} from 'react-redux';
 import constants from '../../../constants';
 import {uploadIngest} from '../../../ingestActions';
@@ -338,7 +338,7 @@ const InputForm = ({
                     isLoading={isUploading}
                     isDisabled={!isUploadEnabled()}
                 >
-                    {isUploading ? <Spinner /> : <span>Upload</span>}
+                    {isUploading ? <ProgressSpinner style={{width: '30px', height: '30px'}} /> : <span>Upload</span>}
                 </Button>
             </div>
         </div>
