@@ -1,7 +1,7 @@
 import {nexusFetch} from '../../../../../util/http-client';
 import {store} from '../../../../../index';
 import {loadAvailsMapping, loadSelectLists} from '../../../stores/actions/index';
-import { addToast } from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {getConfig} from '../../../../../config';
 import {storeConfigValues} from './endpointConfigActions';
@@ -23,18 +23,22 @@ const getSelectValues = (field, alternateSelector, isInitAvailsMappingFlow = fal
         (isEmpty(availsStoredEndpoints) && isEmpty(store.getState().endpointConfigValues?.[key])) ||
         isInitAvailsMappingFlow
     ) {
-        return nexusFetch(url, {isWithErrorHandling: false}).then(response => {
-            if (isInitAvailsMappingFlow) {
-                store.dispatch(loadSelectLists(alternateSelector, response.data));
-            } else {
-                store.dispatch(storeConfigValues({[key]: response.data}));
-            }
-        }).catch((err) => {
-            store.dispatch(addToast({
-                detail: `${err.type}, you failed to get the field ${key}.`,
-                severity: 'error',
-            }));
-        });
+        return nexusFetch(url, {isWithErrorHandling: false})
+            .then(response => {
+                if (isInitAvailsMappingFlow) {
+                    store.dispatch(loadSelectLists(alternateSelector, response.data));
+                } else {
+                    store.dispatch(storeConfigValues({[key]: response.data}));
+                }
+            })
+            .catch(err => {
+                store.dispatch(
+                    addToast({
+                        detail: `${err.type}, you failed to get the field ${key}.`,
+                        severity: 'error',
+                    })
+                );
+            });
     } else {
         return !isEmpty(availsStoredEndpoints) ? availsStoredEndpoints : store.getState().endpointConfigValues?.[key];
     }

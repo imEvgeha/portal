@@ -361,12 +361,19 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
-    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'ratings', 'editorial', 'movidaUkExternalIds', 'territorial'];
+    const unnecessaryValues = [
+        'vzExternalIds',
+        'movidaExternalIds',
+        'ratings',
+        'editorial',
+        'movidaUkExternalIds',
+        'territorial',
+    ];
     const isTitleChanged = Object.keys(cleanValues).some(item => {
         const initialItem = initialValues?.[item] === undefined ? null : initialValues?.[item];
         const cleanItem = cleanValues?.[item];
         if (unnecessaryValues.includes(item)) return false;
-        if(Array.isArray(initialItem) && Array.isArray(cleanItem)) {
+        if (Array.isArray(initialItem) && Array.isArray(cleanItem)) {
             return !isEqual(initialItem.length, cleanItem.length);
         }
 
@@ -451,7 +458,7 @@ const handleDirtyTMETValues = (initialValues, values) => {
     const territorial = get(values, 'territorial');
     const territorialMetadata = get(values, 'territorialMetadata');
 
-    if(territorialMetadata.length) {
+    if (territorialMetadata.length) {
         const updatedTerritorialMetadata = territorialMetadata.map((elem, i) => {
             const cleanTerritorial = cleanObject(elem);
             const isUpdated = Object.keys(cleanTerritorial).some(
@@ -460,11 +467,12 @@ const handleDirtyTMETValues = (initialValues, values) => {
             return {
                 ...elem,
                 isUpdated,
-            }
-        })
+            };
+        });
 
         values.territorialMetadata = updatedTerritorialMetadata;
-    } if (territorial) {
+    }
+    if (territorial) {
         const index =
             values.territorialMetadata &&
             values.territorialMetadata.findIndex(elem => elem.locale === territorial.locale);

@@ -375,7 +375,7 @@ class TitleCreate extends React.Component {
                 <div className="col">
                     <Checkbox
                         id="syncVZ"
-                        label="Publish to VZ"
+                        label="Publish to VZ and Movida Int'l"
                         onChange={event => this.setState({isSyncVZ: event.currentTarget.checked})}
                         isChecked={isSyncVZ}
                     />
