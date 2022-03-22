@@ -78,8 +78,8 @@ AvailsTableToolbar.propTypes = {
     activeTab: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     rightsFilter: PropTypes.object,
-    isSelected: PropTypes.bool.isRequired,
-    setIsSelected: PropTypes.func.isRequired,
+    isSelected: PropTypes.bool,
+    setIsSelected: PropTypes.func,
     showSelectedButton: PropTypes.bool,
     totalRecordsCount: PropTypes.number,
     selectedRowsCount: PropTypes.number,
@@ -95,6 +95,8 @@ AvailsTableToolbar.defaultProps = {
     selectedRowsCount: 0,
     toolbarActions: undefined,
     rightsFilter: {},
+    isSelected: false,
+    setIsSelected: null,
 };
 
 export default AvailsTableToolbar;

@@ -147,7 +147,7 @@ const withInfiniteScrolling =
                                 gridApi.forEachNode(rowNode => {
                                     const selectedNode = context.selectedRows.find(({id}) => id === rowNode.id);
                                     if (selectedNode) {
-                                        rowNode.setSelected(true);
+                                        rowNode.setSelected(true, false, true);
                                     }
                                 });
                             }

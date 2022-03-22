@@ -17,7 +17,15 @@ const SelectedRightsGrid = compose(
     withSorting()
 )(NexusGrid);
 
-const SelectedRightsTable = ({columnDefs, mapping, selectedFilter, setSelectedFilter, selectedRights, username}) => {
+const SelectedRightsTable = ({
+    columnDefs,
+    mapping,
+    selectedFilter,
+    setSelectedFilter,
+    selectedRights,
+    username,
+    selectedIngest,
+}) => {
     const [selectedRightsState] = useState([...selectedRights]);
     const [gridApi, setGridApi] = useState(undefined);
     const [columnApiState, setColumnApiState] = useState(undefined);
@@ -39,17 +47,17 @@ const SelectedRightsTable = ({columnDefs, mapping, selectedFilter, setSelectedFi
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
-        const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
+        const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
 
         switch (type) {
             case READY:
                 setGridApis(api, columnApi);
                 break;
-            case FIRST_DATA_RENDERED:
-                api.selectAll();
-                break;
             case SELECTION_CHANGED: {
-                dispatch(setSelectedRights({[username]: api.getSelectedRows()}));
+                const rightsNonSelectedIngest = selectedIngest?.id
+                    ? selectedRights.filter(x => x.availHistoryId !== selectedIngest?.id)
+                    : [];
+                dispatch(setSelectedRights({[username]: [...api.getSelectedRows(), ...rightsNonSelectedIngest]}));
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -85,6 +93,7 @@ SelectedRightsTable.propTypes = {
     setSelectedFilter: PropTypes.func,
     selectedRights: PropTypes.object,
     username: PropTypes.string,
+    selectedIngest: PropTypes.object,
 };
 
 SelectedRightsTable.defaultProps = {
@@ -94,6 +103,7 @@ SelectedRightsTable.defaultProps = {
     setSelectedFilter: () => null,
     selectedRights: {},
     username: {},
+    selectedIngest: {},
 };
 
 export default SelectedRightsTable;

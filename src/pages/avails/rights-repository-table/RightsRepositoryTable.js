@@ -90,7 +90,11 @@ const RightsRepositoryTable = ({
             gridApi?.forEachNode?.(node => node.setSelected(false, true, true));
             gridApi?.redrawRows?.();
         }
-        return usersSelectedRights;
+
+        const {id} = selectedIngest || {};
+        return id
+            ? usersSelectedRights.filter(({availHistoryIds}) => !!availHistoryIds.find(avhId => avhId === id))
+            : usersSelectedRights;
     };
 
     useEffect(() => {
@@ -189,18 +193,6 @@ const RightsRepositoryTable = ({
         // setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
         // setCurrentUserSelectedRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
     }, [search, selectedRights, selectedIngest, gridApi, isTableDataLoading]);
-
-    // Returns only selected rights that are also included in the selected ingest
-    const getSelectedRightsFromIngest = (selectedRights, selectedIngest = {}) => {
-        const {id} = selectedIngest || {};
-        // If an ingest is selected, provide only selected rights that also belong to the ingest.
-        // Otherwise return all selected rights.
-        return id
-            ? selectedRights.filter(({availHistoryIds}) => {
-                  return !!availHistoryIds.find(avhId => avhId === id);
-              })
-            : selectedRights;
-    };
 
     const setHiddenFilters = isSelectedAt => {
         return mapping?.map(item => {
@@ -471,6 +463,7 @@ const RightsRepositoryTable = ({
                     mapping={mapping}
                     notFilterableColumns={['action', 'buttons']}
                     selectedFilter={selectedFilter}
+                    selectedIngest={selectedIngest}
                     setSelectedFilter={setSelectedFilter}
                     selectedRights={getCurrentUserSelRights()}
                     username={username}
