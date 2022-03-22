@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
+import Spinner from '@atlaskit/spinner';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
@@ -337,7 +338,7 @@ const InputForm = ({
                     isLoading={isUploading}
                     isDisabled={!isUploadEnabled()}
                 >
-                    Upload
+                    {isUploading ? <Spinner /> : <span>Upload</span>}
                 </Button>
             </div>
         </div>
