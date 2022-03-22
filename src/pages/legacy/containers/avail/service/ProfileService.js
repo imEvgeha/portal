@@ -23,21 +23,21 @@ const getSelectValues = (field, alternateSelector, isInitAvailsMappingFlow = fal
         isInitAvailsMappingFlow
     ) {
         return nexusFetch(url, {isWithErrorHandling: false})
-        .then(response => {
-            if (isInitAvailsMappingFlow) {
-                store.dispatch(loadSelectLists(alternateSelector, response.data));
-            } else {
-                store.dispatch(storeConfigValues({[key]: response.data}));
-            }
-        })
-        .catch(err => {
-            store.dispatch(
-                addToast({
-                    detail: `${err.type}, you failed to get the field ${key}.`,
-                    severity: 'error',
-                })
-            );
-        });
+            .then(response => {
+                if (isInitAvailsMappingFlow) {
+                    store.dispatch(loadSelectLists(alternateSelector, response.data));
+                } else {
+                    store.dispatch(storeConfigValues({[key]: response.data}));
+                }
+            })
+            .catch(err => {
+                store.dispatch(
+                    addToast({
+                        detail: `${err.type}, you failed to get the field ${key}.`,
+                        severity: 'error',
+                    })
+                );
+            });
     } else {
         return !isEmpty(availsStoredEndpoints) ? availsStoredEndpoints : store.getState().endpointConfigValues?.[key];
     }
