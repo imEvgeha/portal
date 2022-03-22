@@ -28,7 +28,14 @@ const getSelectValues = (field, alternateSelector, isInitAvailsMappingFlow = fal
             } else {
                 store.dispatch(storeConfigValues({[key]: response.data}));
             }
-        })
+        }).catch(err => {
+            store.dispatch(
+                addToast({
+                    detail: `${err.type}, you failed to get the field ${key}.`,
+                    severity: 'error',
+                })
+            );
+        });
     } else {
         return !isEmpty(availsStoredEndpoints) ? availsStoredEndpoints : store.getState().endpointConfigValues?.[key];
     }
