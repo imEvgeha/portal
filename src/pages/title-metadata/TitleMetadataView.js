@@ -122,8 +122,6 @@ export const TitleMetadataView = ({
     const storedFilterData = titleMetadataFilter;
     const storedFilterDataId = titleMetadataFilter?.id;
 
-    const storedCurrentView = currentUserView;
-
     const lastStoredFilter = {
         label: storedFilterDataId,
     };
@@ -140,7 +138,9 @@ export const TitleMetadataView = ({
     useEffect(() => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
             gridApi.setFilterModel(titleMetadataFilter?.filterModel);
-            if (columnApi.columnController) setSorting(titleMetadataFilter.sortModel, columnApi);
+            if (columnApi.columnController) {
+                setSorting(titleMetadataFilter.sortModel, columnApi);
+            }
             columnApi.setColumnState(titleMetadataFilter?.columnState);
         }
     }, [gridApi, columnApi]);
@@ -203,7 +203,7 @@ export const TitleMetadataView = ({
                     columnApi={columnApi}
                     gridApi={gridApi}
                     className="nexus-c-title-metadata__table"
-                    currentView={storedCurrentView}
+                    currentView={currentUserView}
                 />
             ) : null}
             {isItTheSameTab('syncLog') ? <SyncLogTable /> : null}
