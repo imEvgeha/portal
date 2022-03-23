@@ -21,8 +21,8 @@ import {
     REPOSITORY_COLUMN_ID,
     UPLOADED_EMETS_COLUMN_MAPPINGS,
 } from '../../constants';
-import {setTitleMetadataFilter} from '../../titleMetadataActions';
-import {createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
+import {setTitleMetadataFilter, setCurrentUserView} from '../../titleMetadataActions';
+import {createCurrentUserViewSelector, createTitleMetadataFilterSelector} from '../../titleMetadataSelectors';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
@@ -44,6 +44,9 @@ const TitleMetadataTable = ({
     gridApi,
     setTitleMetadataFilter,
     titleMetadataFilter,
+    setCurrentUserView,
+    currentUserViewFilter,
+    currentView,
 }) => {
     const columnDefs = UPLOADED_EMETS_COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
@@ -129,6 +132,7 @@ const TitleMetadataTable = ({
                 const id = filterModel && filterModel[`${firstFilterModel}`]?.filter;
 
                 setTitleMetadataFilter({...titleMetadataFilter, id, filterModel, sortModel, columnState});
+                setCurrentUserView({...currentUserViewFilter, currentView});
             }
         };
     }, [columnApi]);
@@ -194,6 +198,9 @@ TitleMetadataTable.propTypes = {
     gridApi: PropTypes.object,
     setTitleMetadataFilter: PropTypes.func,
     titleMetadataFilter: PropTypes.object,
+    setCurrentUserView: PropTypes.func,
+    currentUserViewFilter: PropTypes.object,
+    currentView: PropTypes.object,
 };
 
 TitleMetadataTable.defaultProps = {
@@ -205,17 +212,24 @@ TitleMetadataTable.defaultProps = {
     gridApi: {},
     setTitleMetadataFilter: () => null,
     titleMetadataFilter: {},
+    setCurrentUserView: () => null,
+    currentUserViewFilter: {},
+    currentView: {},
 };
 
 const mapStateToProps = () => {
     const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
+    const currentUserViewSelector = createCurrentUserViewSelector();
+
     return state => ({
         titleMetadataFilter: titleMetadataFilterSelector(state),
+        currentUserViewFilter: currentUserViewSelector(state),
     });
 };
 
 const mapDispatchToProps = dispatch => ({
     setTitleMetadataFilter: payload => dispatch(setTitleMetadataFilter(payload)),
+    setCurrentUserView: payload => dispatch(setCurrentUserView(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleMetadataTable);

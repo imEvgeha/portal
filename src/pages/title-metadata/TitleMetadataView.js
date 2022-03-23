@@ -42,6 +42,7 @@ export const TitleMetadataView = ({
     const [columnApi, setColumnApi] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
+    const [currentUserView, setCurrentUserView] = useState({});
 
     const showSuccess = detail => {
         store.dispatch(
@@ -121,6 +122,8 @@ export const TitleMetadataView = ({
     const storedFilterData = titleMetadataFilter;
     const storedFilterDataId = titleMetadataFilter?.id;
 
+    const storedCurrentView = currentUserView;
+
     const lastStoredFilter = {
         label: storedFilterDataId,
     };
@@ -174,6 +177,8 @@ export const TitleMetadataView = ({
                             setBlockLastFilter={setBlockLastFilter}
                             changeCatalogueOwner={changeCatalogueOwner}
                             setShowModal={setShowModal}
+                            setCurrentUserView={setCurrentUserView}
+                            currentUserView={currentUserView}
                         />
                     </div>
                 </div>
@@ -198,6 +203,7 @@ export const TitleMetadataView = ({
                     columnApi={columnApi}
                     gridApi={gridApi}
                     className="nexus-c-title-metadata__table"
+                    currentView={storedCurrentView}
                 />
             ) : null}
             {isItTheSameTab('syncLog') ? <SyncLogTable /> : null}

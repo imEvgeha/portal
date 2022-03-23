@@ -19,6 +19,8 @@ const RepositorySelectsAndButtons = ({
     setBlockLastFilter,
     changeCatalogueOwner,
     setShowModal,
+    setCurrentUserView,
+    currentUserView,
 }) => {
     if (getNameOfCurrentTab() === 'repository') {
         return (
@@ -36,6 +38,8 @@ const RepositorySelectsAndButtons = ({
                         lastStoredFilter={lastStoredFilter}
                         setBlockLastFilter={setBlockLastFilter}
                         isTitleMetadata={true}
+                        setCurrentUserView={setCurrentUserView}
+                        currentUserView={currentUserView}
                     />
                     <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 </div>
@@ -67,6 +71,8 @@ RepositorySelectsAndButtons.propTypes = {
     setBlockLastFilter: PropTypes.func,
     changeCatalogueOwner: PropTypes.func,
     setShowModal: PropTypes.func,
+    setCurrentUserView: PropTypes.func,
+    currentUserView: PropTypes.object,
 };
 
 RepositorySelectsAndButtons.defaultProps = {
@@ -81,6 +87,8 @@ RepositorySelectsAndButtons.defaultProps = {
     setBlockLastFilter: () => null,
     changeCatalogueOwner: () => null,
     setShowModal: () => null,
+    setCurrentUserView: () => null,
+    currentUserView: {},
 };
 
 export default RepositorySelectsAndButtons;
