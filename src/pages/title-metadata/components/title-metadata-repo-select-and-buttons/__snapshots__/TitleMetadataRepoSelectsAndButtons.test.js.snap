@@ -10,6 +10,7 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
     <NexusSavedTableDropdown
       applyPredefinedTableView={[Function]}
       columnApi={null}
+      currentUserView={Object {}}
       externalFilter={Object {}}
       gridApi={null}
       isDisabled={false}
@@ -17,6 +18,7 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
       lastStoredFilter={Object {}}
       onUserDefinedViewSelected={[Function]}
       setBlockLastFilter={[Function]}
+      setCurrentUserView={[Function]}
       setUserDefinedGridState={[Function]}
       tableLabels={
         Object {

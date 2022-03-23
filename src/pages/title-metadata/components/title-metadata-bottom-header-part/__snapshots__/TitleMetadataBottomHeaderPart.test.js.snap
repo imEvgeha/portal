@@ -53,6 +53,7 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
           applyPredefinedTableView={[Function]}
           changeCatalogueOwner={[Function]}
           columnApi={null}
+          currentUserView={Object {}}
           getNameOfCurrentTab={[Function]}
           gridApi={null}
           lastStoredFilter={
@@ -61,6 +62,7 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
             }
           }
           setBlockLastFilter={[Function]}
+          setCurrentUserView={[Function]}
           setShowModal={[Function]}
           setUserDefinedGridState={[Function]}
           userDefinedGridStates={Array []}
@@ -92,6 +94,7 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
     }
     className="nexus-c-title-metadata__table"
     columnApi={null}
+    currentView={Object {}}
     gridApi={null}
     history={Object {}}
     setColumnApi={[Function]}
