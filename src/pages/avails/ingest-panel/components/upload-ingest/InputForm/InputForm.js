@@ -338,7 +338,7 @@ const InputForm = ({
                     isLoading={isUploading}
                     isDisabled={!isUploadEnabled()}
                 >
-                    {isUploading ? <ProgressSpinner className="ingest-panel-spinner" /> : <span>Upload</span>}
+                    {isUploading ? <ProgressSpinner className="nexus-c-ingest-panel__spinner" /> : <span>Upload</span>}
                 </Button>
             </div>
         </div>
