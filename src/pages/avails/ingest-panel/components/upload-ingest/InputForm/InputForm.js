@@ -338,7 +338,7 @@ const InputForm = ({
                     isLoading={isUploading}
                     isDisabled={!isUploadEnabled()}
                 >
-                    {isUploading ? <ProgressSpinner style={{width: '30px', height: '30px'}} /> : <span>Upload</span>}
+                    {isUploading ? <ProgressSpinner className="ingest-panel-spinner" /> : <span>Upload</span>}
                 </Button>
             </div>
         </div>
