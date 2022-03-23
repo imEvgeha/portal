@@ -37,7 +37,7 @@ const NexusSavedTableDropdown = ({
     setCurrentUserView,
     currentUserView,
 }) => {
-    const [selectedItem, setSelectedItem] = useState(currentUserView.label ? currentUserView : tableOptions[0]);
+    const [selectedItem, setSelectedItem] = useState(currentUserView?.label ? currentUserView : tableOptions[0]);
 
     const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
     const [userInput, setUserInput] = useState('');

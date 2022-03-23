@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {Button} from 'primereact/button';
+import {useDispatch, useSelector} from 'react-redux';
 import './TitleMetadataRepoSelectsAndButtons.scss';
 import {TABLE_LABELS, TABLE_OPTIONS} from '../../constants';
+import {setCurrentUserView} from '../../titleMetadataActions';
+import {createCurrentUserViewSelector} from '../../titleMetadataSelectors';
 import CatalogueOwner from '../catalogue-owner/CatalogueOwner';
 
 const RepositorySelectsAndButtons = ({
@@ -19,9 +22,10 @@ const RepositorySelectsAndButtons = ({
     setBlockLastFilter,
     changeCatalogueOwner,
     setShowModal,
-    setCurrentUserView,
-    currentUserView,
 }) => {
+    const dispatch = useDispatch();
+    const currentUserView = useSelector(createCurrentUserViewSelector());
+
     if (getNameOfCurrentTab() === 'repository') {
         return (
             <div className="row nexus-c-title-metadata__select-container">
@@ -38,7 +42,7 @@ const RepositorySelectsAndButtons = ({
                         lastStoredFilter={lastStoredFilter}
                         setBlockLastFilter={setBlockLastFilter}
                         isTitleMetadata={true}
-                        setCurrentUserView={setCurrentUserView}
+                        setCurrentUserView={payload => dispatch(setCurrentUserView(payload))}
                         currentUserView={currentUserView}
                     />
                     <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
@@ -71,8 +75,6 @@ RepositorySelectsAndButtons.propTypes = {
     setBlockLastFilter: PropTypes.func,
     changeCatalogueOwner: PropTypes.func,
     setShowModal: PropTypes.func,
-    setCurrentUserView: PropTypes.func,
-    currentUserView: PropTypes.object,
 };
 
 RepositorySelectsAndButtons.defaultProps = {
@@ -87,8 +89,6 @@ RepositorySelectsAndButtons.defaultProps = {
     setBlockLastFilter: () => null,
     changeCatalogueOwner: () => null,
     setShowModal: () => null,
-    setCurrentUserView: () => null,
-    currentUserView: {},
 };
 
 export default RepositorySelectsAndButtons;

@@ -19,7 +19,7 @@ import RepositorySelectsAndButtons from './components/title-metadata-repo-select
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
 import './TitleMetadataView.scss';
-import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
+import {setCurrentUserView, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
 import {DEFAULT_CATALOGUE_OWNER, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
@@ -32,6 +32,7 @@ export const TitleMetadataView = ({
     gridState,
     titleMetadataFilter,
     uploadMetadata,
+    setCurrentUserView,
 }) => {
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
@@ -42,7 +43,6 @@ export const TitleMetadataView = ({
     const [columnApi, setColumnApi] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
-    const [currentUserView, setCurrentUserView] = useState({});
 
     const showSuccess = detail => {
         store.dispatch(
@@ -80,6 +80,10 @@ export const TitleMetadataView = ({
             window.sessionStorage.removeItem('unmerge');
             store.dispatch(addToast(successToast));
         }
+
+        return () => {
+            setCurrentUserView(undefined);
+        };
     }, []);
 
     const getNameOfCurrentTab = () => {
@@ -177,8 +181,6 @@ export const TitleMetadataView = ({
                             setBlockLastFilter={setBlockLastFilter}
                             changeCatalogueOwner={changeCatalogueOwner}
                             setShowModal={setShowModal}
-                            setCurrentUserView={setCurrentUserView}
-                            currentUserView={currentUserView}
                         />
                     </div>
                 </div>
@@ -203,7 +205,6 @@ export const TitleMetadataView = ({
                     columnApi={columnApi}
                     gridApi={gridApi}
                     className="nexus-c-title-metadata__table"
-                    currentView={currentUserView}
                 />
             ) : null}
             {isItTheSameTab('syncLog') ? <SyncLogTable /> : null}
@@ -243,6 +244,7 @@ const mapDispatchToProps = dispatch => ({
     resetTitleId: () => dispatch(resetTitle()),
     storeTitleUserDefinedGridState: payload => dispatch(storeTitleUserDefinedGridState(payload)),
     uploadMetadata: payload => dispatch(uploadMetadata(payload)),
+    setCurrentUserView: payload => dispatch(setCurrentUserView(payload)),
 });
 
 TitleMetadataView.propTypes = {
@@ -254,6 +256,7 @@ TitleMetadataView.propTypes = {
     gridState: PropTypes.object,
     titleMetadataFilter: PropTypes.object,
     uploadMetadata: PropTypes.func,
+    setCurrentUserView: PropTypes.func.isRequired,
 };
 
 TitleMetadataView.defaultProps = {
