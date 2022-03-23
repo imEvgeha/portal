@@ -57,13 +57,14 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
       <NexusSavedTableDropdown
         applyPredefinedTableView={[Function]}
         columnApi={Object {}}
+        currentUserView={Object {}}
         externalFilter={Object {}}
         gridApi={Object {}}
         gridState={Object {}}
         isDisabled={false}
-        lastStoredFilter={Object {}}
         onUserDefinedViewSelected={[Function]}
         setBlockLastFilter={[Function]}
+        setCurrentUserView={[Function]}
         setUserDefinedGridState={[Function]}
         tableLabels={
           Object {
