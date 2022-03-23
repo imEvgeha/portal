@@ -22,6 +22,7 @@ const initialState = {
     filter: {},
     uploadLogFilter: {},
     selectedId: '',
+    isEditorial: false,
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
