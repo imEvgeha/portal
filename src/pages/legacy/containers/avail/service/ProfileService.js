@@ -1,7 +1,6 @@
 import {nexusFetch} from '../../../../../util/http-client';
 import {store} from '../../../../../index';
 import {loadAvailsMapping, loadSelectLists} from '../../../stores/actions/index';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {getConfig} from '../../../../../config';
 import {storeConfigValues} from './endpointConfigActions';

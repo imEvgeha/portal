@@ -5,6 +5,7 @@ import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {get, isEmpty} from 'lodash';
+import {ProgressSpinner} from 'primereact/progressspinner';
 import {connect} from 'react-redux';
 import constants from '../../../constants';
 import {uploadIngest} from '../../../ingestActions';
@@ -337,7 +338,7 @@ const InputForm = ({
                     isLoading={isUploading}
                     isDisabled={!isUploadEnabled()}
                 >
-                    Upload
+                    {isUploading ? <ProgressSpinner className="nexus-c-ingest-panel__spinner" /> : <span>Upload</span>}
                 </Button>
             </div>
         </div>

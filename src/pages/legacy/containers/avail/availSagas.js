@@ -7,6 +7,9 @@ import {
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {call, put, all, take, fork, takeEvery} from 'redux-saga/effects';
+import { addToast } from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import { can } from '@vubiquity-nexus/portal-utils/lib/ability';
+import {store} from '../../../../index';
 import * as actionTypes from './availActionTypes';
 import {profileService} from './service/ProfileService';
 import {configurationService} from './service/ConfigurationService';
@@ -82,6 +85,8 @@ export function* fetchAndStoreSelectItems(payload, type) {
     const mappingsWithConfigEndpoint = multiSelectMappings.filter(el => el.configEndpoint);
     // TODO - make this in background via FORK effect
     const fields = [];
+    const doesUserHaveRoles = can('read', 'ConfigUI')
+
     const fetchedSelectedItems = yield all(
         mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint, alternateSelector}) => {
             if (!fields.includes(configEndpoint)) {
@@ -96,6 +101,19 @@ export function* fetchAndStoreSelectItems(payload, type) {
         })
     );
 
+    const getFetchedSelectedItems = () => {
+        if(doesUserHaveRoles) {
+            return fetchedSelectedItems;
+        } else {
+            !doesUserHaveRoles && store.dispatch(addToast({
+                detail: `Access denied. User has no roles.`,
+                severity: 'error',
+            }));
+
+            return mappingsWithConfigEndpoint;
+        }
+    }
+
     const deduplicate = (source, propName) => {
         return Array.from(
             source
@@ -107,7 +125,7 @@ export function* fetchAndStoreSelectItems(payload, type) {
         );
     };
 
-    const updatedSelectValues = fetchedSelectedItems.filter(Boolean).reduce((acc, el) => {
+    const updatedSelectValues = getFetchedSelectedItems()?.filter(Boolean).reduce((acc, el) => {
         const values = Object.values(el);
         const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
         const options = deduplicate(
