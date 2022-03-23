@@ -27,7 +27,6 @@ const RightsRepository = ({
 }) => {
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [activeTabIndex, setActiveTabIndex] = useState(0);
-    const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
     const [rightsRepoGridApi, setRightsRepoGridApi] = useState(undefined);
     const [rightsRepoColumnApi, setRightsRepoColumnApi] = useState(undefined);
 
@@ -95,10 +94,8 @@ const RightsRepository = ({
                 />
             )}
 
-            {activeTab === STATUS_TAB && <StatusLogRightsTable activeTab={activeTab} />}
-            {activeTab === SELECTED_FOR_PLANNING_TAB && (
-                <SelectedForPlanning activeTab={activeTab} isPlanningTabRefreshed={isPlanningTabRefreshed} />
-            )}
+            {activeTab === STATUS_TAB && <StatusLogRightsTable />}
+            {activeTab === SELECTED_FOR_PLANNING_TAB && <SelectedForPlanning />}
         </div>
     );
 };

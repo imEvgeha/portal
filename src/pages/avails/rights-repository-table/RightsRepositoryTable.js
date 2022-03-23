@@ -338,8 +338,7 @@ const RightsRepositoryTable = ({
     };
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
-        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED, ROW_DATA_CHANGED, GRID_SIZE_CHANGED} =
-            GRID_EVENTS;
+        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
 
         switch (type) {
             case READY:

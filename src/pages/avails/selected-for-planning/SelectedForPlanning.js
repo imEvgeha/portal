@@ -27,13 +27,7 @@ const SelectedForPlanningTable = compose(
     withInfiniteScrolling({fetchData: prepareSelectForPlanningData})
 )(NexusGrid);
 
-export const SelectedForPlanning = ({
-    activeTab,
-    isPlanningTabRefreshed,
-    setSelectedForPlanningGridApi,
-    setSelectedForPlanningColumnApi,
-    username,
-}) => {
+export const SelectedForPlanning = ({username}) => {
     const [updatedColDef, setUpdatedColDef] = useState([]);
     const [externalSort, setExternalSort] = useState({});
     const [gridApi, setGridApi] = useState(undefined);
@@ -42,9 +36,7 @@ export const SelectedForPlanning = ({
 
     // Fetch and set DOP projects count for current user
     useEffect(() => {
-        DOPService.getUsersProjectsList(1, 1)
-            .then(([response, headers]) => setAllRights(response))
-            .catch(error => {});
+        DOPService.getUsersProjectsList(1, 1).then(([response, headers]) => setAllRights(response));
     }, []);
 
     const mappings = COLUMN_MAPPINGS.map(col =>
@@ -63,8 +55,6 @@ export const SelectedForPlanning = ({
             case GRID_EVENTS.READY: {
                 !gridApi && setGridApi(api);
                 !columnApiState && setColumnApiState(columnApi);
-                setSelectedForPlanningColumnApi(columnApi);
-                setSelectedForPlanningGridApi(api);
                 break;
             }
             default:
@@ -124,7 +114,7 @@ export const SelectedForPlanning = ({
                 mapping={COLUMN_MAPPINGS}
                 rowSelection="multiple"
                 suppressRowClickSelection
-                key={`planning_table_${isPlanningTabRefreshed}`}
+                key="selected_for_planning_tbl"
                 onGridEvent={onGridReady}
                 dragStopped={dragStoppedHandler}
                 onSortChanged={onSortChanged}
@@ -135,18 +125,11 @@ export const SelectedForPlanning = ({
 };
 
 SelectedForPlanning.propTypes = {
-    activeTab: PropTypes.string,
-    isPlanningTabRefreshed: PropTypes.bool,
-    setSelectedForPlanningGridApi: PropTypes.func,
-    setSelectedForPlanningColumnApi: PropTypes.func,
-    username: PropTypes.string.isRequired,
+    username: PropTypes.string,
 };
 
 SelectedForPlanning.defaultProps = {
-    activeTab: '',
-    setSelectedForPlanningGridApi: () => null,
-    setSelectedForPlanningColumnApi: () => null,
-    isPlanningTabRefreshed: false,
+    username: '',
 };
 
 const mapStateToProps = () => {

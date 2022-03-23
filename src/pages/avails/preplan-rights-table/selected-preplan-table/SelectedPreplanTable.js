@@ -10,17 +10,9 @@ import {NexusGrid} from '../../../../ui/elements';
 
 const SelectedPreplanGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
 
-const SelectedPreplanTable = ({
-    columnDefs,
-    mapping,
-    // selectedRepoRights,
-    selectedRights,
-    username,
-    setSelectedPrePlanRights,
-}) => {
+const SelectedPreplanTable = ({columnDefs, mapping, selectedRights, username, setSelectedPrePlanRights}) => {
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
     const [gridApi, setGridApi] = useState(undefined);
-    const [columnApi, setColumnApi] = useState(undefined);
 
     useEffect(() => {
         if (!isEmpty(selectedRights) && username && gridApi) {
@@ -38,7 +30,6 @@ const SelectedPreplanTable = ({
         switch (type) {
             case READY:
                 !gridApi && setGridApi(api);
-                !columnApi && setColumnApi(columnApi);
                 break;
             case FIRST_DATA_RENDERED:
                 api.selectAll();
@@ -69,7 +60,6 @@ const SelectedPreplanTable = ({
 SelectedPreplanTable.propTypes = {
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
-    // selectedRepoRights: PropTypes.array,
     selectedRights: PropTypes.array,
     username: PropTypes.string,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
@@ -78,7 +68,6 @@ SelectedPreplanTable.propTypes = {
 SelectedPreplanTable.defaultProps = {
     columnDefs: [],
     mapping: null,
-    // selectedRepoRights: [],
     selectedRights: [],
     username: {},
 };

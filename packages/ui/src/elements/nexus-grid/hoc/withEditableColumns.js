@@ -59,15 +59,15 @@ const withEditableColumns =
             const {context} = props || {};
 
             useEffect(() => {
-                if (context && context.selectedRows && gridApi) {
-                    gridApi.forEachNode(rowNode => {
+                if (context?.selectedRows?.length && gridApi) {
+                    gridApi?.forEachNode(rowNode => {
                         const selectedNode = context.selectedRows.find(({id}) => id === rowNode.data.id);
                         if (selectedNode) {
                             rowNode.setSelected(true, false, true);
                         }
                     });
                 }
-            }, [gridApi]);
+            }, [gridApi, context]);
 
             const updateColumnDefs = columnDefs => {
                 const copiedColumnDefs = columnDefs;

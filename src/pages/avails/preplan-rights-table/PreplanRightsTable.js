@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
@@ -55,96 +55,92 @@ const PreplanRightsTable = ({
     const [showSelected, setShowSelected] = useState(false);
     const [allRights, setAllRights] = useState([]);
     const [singleRightMatch, setSingleRightMatch] = useState([]);
-    const firstDataRendered = useRef(false);
-
-    // column defs
-    const actionMatchingButtonColumnDef = defineButtonColumn({
-        cellRendererFramework: TooltipCellRenderer,
-        cellRendererParams: {isTooltipEnabled: true, setSingleRightMatch},
-        lockVisible: true,
-        cellStyle: {overflow: 'visible'},
-    });
-
-    const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
-        headerCheckboxSelection: true,
-        headerCheckboxSelectionFilteredOnly: true,
-    });
-
-    const columnDefsClone = mapColumnDefinitions(columnDefs);
-
-    const updatedColumnDefsCheckBoxHeader = columnDefsClone.length
-        ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
-        : columnDefsClone;
-
-    const selectedAtCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected At');
-    const selectedCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected');
-    if (selectedAtCol && selectedCol) {
-        selectedAtCol.valueFormatter = selectedCol.valueFormatter;
-    }
+    const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
+    const [selectedTableColDefs, setSelectedTableColDefs] = useState([]);
 
     useEffect(() => {
-        setCount(0);
-        updateRightDetails();
-    }, []);
+        if (!tableColumnDefinitions.length) {
+            // column defs
+            const actionMatchingButtonColumnDef = defineButtonColumn({
+                cellRendererFramework: TooltipCellRenderer,
+                cellRendererParams: {isTooltipEnabled: true, setSingleRightMatch},
+                lockVisible: true,
+                cellStyle: {overflow: 'visible'},
+            });
+
+            const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
+                headerCheckboxSelection: true,
+                headerCheckboxSelectionFilteredOnly: true,
+            });
+
+            const columnDefsClone = mapColumnDefinitions(columnDefs);
+
+            const updatedColumnDefsCheckBoxHeader = columnDefsClone.length
+                ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
+                : columnDefsClone;
+
+            const selectedAtCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected At');
+            const selectedCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected');
+            if (selectedAtCol && selectedCol) {
+                selectedAtCol.valueFormatter = selectedCol.valueFormatter;
+            }
+
+            setSelectedTableColDefs([...updatedColumnDefsCheckBoxHeader]);
+
+            const filteredColumnDefs = updatedColumnDefsCheckBoxHeader.filter(
+                columnDef => columnDef.colId !== 'territoryCountry'
+            );
+
+            setTableColumnDefinitions(filteredColumnDefs);
+        }
+    }, [columnDefs]);
 
     useEffect(() => {
-        setSelectedPPRights([...persistedSelectedRights]);
+        initRights();
+    }, [prePlanRights]);
+
+    useEffect(() => {
+        const allRightsIds = allRights.map(x => x.id);
+        setSelectedPPRights([...persistedSelectedRights.filter(x => allRightsIds.includes(x.id))]);
     }, [allRights]);
 
-    // useEffect(() => {
-    //     if (selectedPPRights.length && gridApi) {
-    //         const selectedIds = selectedPPRights.map(right => right.id);
-    //         gridApi.forEachNode?.(node => {
-    //             console.log(node.data.id);
-    //             console.log(selectedIds.includes(node.data.id));
-    //             node?.setSelected(selectedIds.includes(node.data.id), false, true);
-    //         });
-    //         gridApi.refreshCells();
-    //     }
-    // }, [selectedPPRights, gridApi]);
+    const initRights = () => {
+        setCount(0);
+        updateRightDetails();
+    };
 
     const updateRightDetails = () => {
         const currentUserPPRights = prePlanRights[username];
+        const rightAPIs = currentUserPPRights.map(right => rightsService.get(right.id, {isWithErrorHandling: true}));
 
-        let updatedPrePlanRepo = [...currentUserPPRights];
-        currentUserPPRights.forEach(right =>
-            rightsService
-                .get(right.id, {isWithErrorHandling: true})
-                .then(result => {
-                    setCount(prevCount => prevCount + 1);
-                    const oldRecord = currentUserPPRights.find(p => p.id === right.id);
-                    const dirtyTerritories = oldRecord.territory.filter(t => t.isDirty);
+        Promise.all(rightAPIs).then(res => {
+            setCount(res.length);
+            const updatedRights = [];
+            res.forEach(right => {
+                const oldRecord = currentUserPPRights.find(p => p.id === right.id);
+                const dirtyTerritories = oldRecord.territory.filter(t => t.isDirty);
 
-                    // if the territory is not withdrawn and not selected, keep it in plan else remove the selected flag
-                    const updatedTerritories = result.territory.map(t => {
-                        const dirtyTerritoryFound = dirtyTerritories.find(o => o.country === t.country);
-                        if (!t.withdrawn && !t.selected && dirtyTerritoryFound)
-                            return {...t, selected: dirtyTerritoryFound.selected, isDirty: true};
-                        return t;
-                    });
-                    const updatedResult = {
-                        ...result,
-                        planKeywords: oldRecord.planKeywords,
-                        territory: updatedTerritories.filter(t => (!t.selected && !t.isDirty) || t.isDirty),
-                        territorySelected: result.territory.filter(item => item.selected).map(t => t.country),
-                        territoryAll: result.territory.map(item => item.country).join(', '),
-                    };
-                    const prePlanRight = updatedPrePlanRepo.filter(p => p.id !== right.id);
-                    updatedPrePlanRepo = [...prePlanRight, updatedResult];
-                    // setPreplanRights({[username]: updatedPrePlanRepo});
-                    setAllRights([...updatedPrePlanRepo]);
-                })
-                .catch(error => {
-                    setCount(prevCount => prevCount + 1);
-                    updatedPrePlanRepo = updatedPrePlanRepo.filter(p => p.id !== right.id);
-                    setPreplanRights({[username]: updatedPrePlanRepo});
-                })
-        );
+                // if the territory is not withdrawn and not selected, keep it in plan else remove the selected flag
+                const updatedTerritories = right.territory.map(t => {
+                    const dirtyTerritoryFound = dirtyTerritories.find(o => o.country === t.country);
+                    if (!t.withdrawn && !t.selected && dirtyTerritoryFound)
+                        return {...t, selected: dirtyTerritoryFound.selected, isDirty: true};
+                    return t;
+                });
+                const updatedResult = {
+                    ...right,
+                    planKeywords: oldRecord.planKeywords,
+                    territory: updatedTerritories.filter(t => (!t.selected && !t.isDirty) || t.isDirty),
+                    territorySelected: right.territory.filter(item => item.selected).map(t => t.country),
+                    territoryAll: right.territory.map(item => item.country).join(', '),
+                };
+                updatedRights.push(updatedResult);
+            });
+            setAllRights(updatedRights);
+        });
+        !currentUserPPRights.length && setAllRights([]);
     };
 
-    const filteredColumnDefs = updatedColumnDefsCheckBoxHeader.filter(
-        columnDef => columnDef.colId !== 'territoryCountry'
-    );
     const editedMappings = mapping
         .filter(mapping => mapping.javaVariableName !== 'territory')
         .map(mapping => {
@@ -164,17 +160,16 @@ const PreplanRightsTable = ({
         const result = [];
         switch (type) {
             case GRID_EVENTS.READY: {
-                firstDataRendered.current = false;
                 setPrePlanColumnApi(columnApi);
                 !columnApiState && setColumnApiState(columnApi);
                 setPrePlanGridApi(api);
                 setGridApi(api);
-                api.deselectAll();
                 break;
             }
             case GRID_EVENTS.FIRST_DATA_RENDERED: {
-                firstDataRendered.current = true;
-                const selectedIds = selectedPPRights.map(right => right.id);
+                const selectedIds = persistedSelectedRights
+                    .filter(x => allRights.map(x => x.id).includes(x.id))
+                    .map(right => right.id);
                 api.forEachNode?.(node => {
                     node?.setSelected(selectedIds.includes(node.data.id), false, true);
                 });
@@ -192,10 +187,8 @@ const PreplanRightsTable = ({
                 setPreplanRights({[username]: result});
                 break;
             case GRID_EVENTS.SELECTION_CHANGED:
-                if (firstDataRendered.current) {
-                    setSelectedPPRights(api.getSelectedRows());
-                    persistSelectedPPRights(api.getSelectedRows());
-                }
+                setSelectedPPRights(api.getSelectedRows());
+                persistSelectedPPRights(api.getSelectedRows());
                 break;
             default:
                 break;
@@ -228,7 +221,7 @@ const PreplanRightsTable = ({
         );
     };
 
-    return count < selectedPPRights.length ? (
+    return count < allRights.length && !allRights.length ? (
         <Loading />
     ) : (
         <div className="pre-plan-rights-table-wrapper">
@@ -249,7 +242,7 @@ const PreplanRightsTable = ({
                 <PrePlanGrid
                     id="prePlanRightsRepo"
                     columnDefs={reorderColumns([
-                        ...filteredColumnDefs,
+                        ...tableColumnDefinitions,
                         planTerritoriesColumn,
                         territoriesColumn,
                         planKeywordsColumn,
@@ -259,7 +252,6 @@ const PreplanRightsTable = ({
                     suppressRowClickSelection={true}
                     mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
                     rowData={allRights}
-                    context={{selectedRows: [...allRights]}}
                     onGridEvent={onGridReady}
                     notFilterableColumns={['action', 'buttons']}
                 />
@@ -267,7 +259,7 @@ const PreplanRightsTable = ({
 
             {showSelected && (
                 <SelectedPreplanTable
-                    columnDefs={updatedColumnDefsCheckBoxHeader}
+                    columnDefs={selectedTableColDefs}
                     mapping={mapping}
                     selectedRights={selectedPPRights}
                     username={username}

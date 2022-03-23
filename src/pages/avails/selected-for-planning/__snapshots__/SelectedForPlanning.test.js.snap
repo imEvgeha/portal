@@ -7,10 +7,13 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
   <AvailsTableToolbar
     activeTab="Selected for Planning"
     hasDownloadButton={true}
+    isSelected={false}
     rightsFilter={Object {}}
     selectedRowsCount={0}
+    setIsSelected={null}
     showSelectedButton={false}
     totalRecordsCount={0}
+    username=""
   />
   <Connect(ComposedComponent)
     columnDefs={
@@ -111,7 +114,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
     dragStopped={[Function]}
     externalFilter={Object {}}
     id="selectedForPlanningRepo"
-    key="planning_table_false"
+    key="selected_for_planning_tbl"
     mapping={
       Array [
         Object {

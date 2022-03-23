@@ -21,7 +21,7 @@ import {
     BULK_SET,
 } from './constants';
 
-const PrePlanActions = ({
+export const PrePlanActions = ({
     selectedPrePlanRights,
     addToast,
     setSelectedPrePlanRights,
