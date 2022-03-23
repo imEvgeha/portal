@@ -51,7 +51,7 @@ const updateAbility = (roles = []) => {
 
     // ******** Config UI  *************
     if (roles && roles.includes('configuration_viewer')) {
-        can(['create', 'read', 'update'], 'ConfigUI');
+        can(['read', 'update'], 'ConfigUI');
     }
     if (roles && roles.includes('configuration_user')) {
         can(['create', 'read', 'update'], 'ConfigUI');
