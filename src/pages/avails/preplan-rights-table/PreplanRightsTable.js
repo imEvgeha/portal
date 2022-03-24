@@ -112,34 +112,35 @@ const PreplanRightsTable = ({
     };
 
     const updateRightDetails = () => {
-        const currentUserPPRights = prePlanRights[username];
-        const rightAPIs = currentUserPPRights.map(right => rightsService.get(right.id, {isWithErrorHandling: true}));
+        const currentUserPPRights = prePlanRights[username] || [];
+        const rightAPIs = currentUserPPRights?.map(right => rightsService.get(right.id, {isWithErrorHandling: true}));
 
-        Promise.all(rightAPIs).then(res => {
-            setCount(res.length);
-            const updatedRights = [];
-            res.forEach(right => {
-                const oldRecord = currentUserPPRights.find(p => p.id === right.id);
-                const dirtyTerritories = oldRecord.territory.filter(t => t.isDirty);
+        rightAPIs.length &&
+            Promise.all(rightAPIs).then(res => {
+                setCount(res.length);
+                const updatedRights = [];
+                res.forEach(right => {
+                    const oldRecord = currentUserPPRights.find(p => p.id === right.id);
+                    const dirtyTerritories = oldRecord.territory.filter(t => t.isDirty);
 
-                // if the territory is not withdrawn and not selected, keep it in plan else remove the selected flag
-                const updatedTerritories = right.territory.map(t => {
-                    const dirtyTerritoryFound = dirtyTerritories.find(o => o.country === t.country);
-                    if (!t.withdrawn && !t.selected && dirtyTerritoryFound)
-                        return {...t, selected: dirtyTerritoryFound.selected, isDirty: true};
-                    return t;
+                    // if the territory is not withdrawn and not selected, keep it in plan else remove the selected flag
+                    const updatedTerritories = right.territory.map(t => {
+                        const dirtyTerritoryFound = dirtyTerritories.find(o => o.country === t.country);
+                        if (!t.withdrawn && !t.selected && dirtyTerritoryFound)
+                            return {...t, selected: dirtyTerritoryFound.selected, isDirty: true};
+                        return t;
+                    });
+                    const updatedResult = {
+                        ...right,
+                        planKeywords: oldRecord.planKeywords,
+                        territory: updatedTerritories.filter(t => (!t.selected && !t.isDirty) || t.isDirty),
+                        territorySelected: right.territory.filter(item => item.selected).map(t => t.country),
+                        territoryAll: right.territory.map(item => item.country).join(', '),
+                    };
+                    updatedRights.push(updatedResult);
                 });
-                const updatedResult = {
-                    ...right,
-                    planKeywords: oldRecord.planKeywords,
-                    territory: updatedTerritories.filter(t => (!t.selected && !t.isDirty) || t.isDirty),
-                    territorySelected: right.territory.filter(item => item.selected).map(t => t.country),
-                    territoryAll: right.territory.map(item => item.country).join(', '),
-                };
-                updatedRights.push(updatedResult);
+                setAllRights(updatedRights);
             });
-            setAllRights(updatedRights);
-        });
         !currentUserPPRights.length && setAllRights([]);
     };
 
