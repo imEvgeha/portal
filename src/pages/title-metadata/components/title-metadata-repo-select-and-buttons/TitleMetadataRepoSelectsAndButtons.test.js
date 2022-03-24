@@ -1,9 +1,9 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
-import TitleMetadataRepoSelectsAndButtons from './TitleMetadataRepoSelectsAndButtons';
+import {RepositorySelectsAndButtons} from './TitleMetadataRepoSelectsAndButtons';
 
-describe('TitleMetadataRepoSelectsAndButtons', () => {
+describe('RepositorySelectsAndButtons', () => {
     let wrapper = null;
     let createBtn = null;
     const mockStore = configureStore();
@@ -19,7 +19,12 @@ describe('TitleMetadataRepoSelectsAndButtons', () => {
 
     beforeAll(() => {
         wrapper = shallow(
-            <TitleMetadataRepoSelectsAndButtons getNameOfCurrentTab={() => 'repository'} store={store} />
+            <RepositorySelectsAndButtons
+                getNameOfCurrentTab={() => 'repository'}
+                store={store}
+                currentUserView={undefined}
+                setCurrentUserView={() => null}
+            />
         );
         createBtn = wrapper.find('.nexus-c-title-metadata__create-btn');
     });

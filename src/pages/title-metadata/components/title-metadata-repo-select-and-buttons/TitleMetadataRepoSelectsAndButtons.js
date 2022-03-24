@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {Button} from 'primereact/button';
-import {useDispatch, useSelector} from 'react-redux';
+import {connect} from 'react-redux';
 import './TitleMetadataRepoSelectsAndButtons.scss';
 import {TABLE_LABELS, TABLE_OPTIONS} from '../../constants';
 import {setCurrentUserView} from '../../titleMetadataActions';
 import {createCurrentUserViewSelector} from '../../titleMetadataSelectors';
 import CatalogueOwner from '../catalogue-owner/CatalogueOwner';
 
-const RepositorySelectsAndButtons = ({
+export const RepositorySelectsAndButtons = ({
     getNameOfCurrentTab,
     gridApi,
     columnApi,
@@ -22,10 +22,9 @@ const RepositorySelectsAndButtons = ({
     setBlockLastFilter,
     changeCatalogueOwner,
     setShowModal,
+    currentUserView,
+    setCurrentUserView,
 }) => {
-    const dispatch = useDispatch();
-    const currentUserView = useSelector(createCurrentUserViewSelector());
-
     if (getNameOfCurrentTab() === 'repository') {
         return (
             <div className="row nexus-c-title-metadata__select-container">
@@ -42,7 +41,7 @@ const RepositorySelectsAndButtons = ({
                         lastStoredFilter={lastStoredFilter}
                         setBlockLastFilter={setBlockLastFilter}
                         isTitleMetadata={true}
-                        setCurrentUserView={payload => dispatch(setCurrentUserView(payload))}
+                        setCurrentUserView={payload => setCurrentUserView(payload)}
                         currentUserView={currentUserView}
                     />
                     <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
@@ -63,6 +62,18 @@ const RepositorySelectsAndButtons = ({
     return null;
 };
 
+const mapStateToProps = () => {
+    const currentUserView = createCurrentUserViewSelector();
+
+    return state => ({
+        currentUserView: currentUserView(state),
+    });
+};
+
+const mapDispatchToProps = dispatch => ({
+    setCurrentUserView: payload => dispatch(setCurrentUserView(payload)),
+});
+
 RepositorySelectsAndButtons.propTypes = {
     getNameOfCurrentTab: PropTypes.func,
     gridApi: PropTypes.any,
@@ -75,6 +86,8 @@ RepositorySelectsAndButtons.propTypes = {
     setBlockLastFilter: PropTypes.func,
     changeCatalogueOwner: PropTypes.func,
     setShowModal: PropTypes.func,
+    setCurrentUserView: PropTypes.func.isRequired,
+    currentUserView: PropTypes.object.isRequired,
 };
 
 RepositorySelectsAndButtons.defaultProps = {
@@ -91,4 +104,4 @@ RepositorySelectsAndButtons.defaultProps = {
     setShowModal: () => null,
 };
 
-export default RepositorySelectsAndButtons;
+export default connect(mapStateToProps, mapDispatchToProps)(RepositorySelectsAndButtons);

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
+exports[`RepositorySelectsAndButtons should match snapshot 1`] = `
 <div
   className="row nexus-c-title-metadata__select-container"
 >
