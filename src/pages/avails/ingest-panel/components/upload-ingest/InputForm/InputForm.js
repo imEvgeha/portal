@@ -336,7 +336,7 @@ const InputForm = ({
                     onClick={openIngestConfirmationModal}
                     className={!isUploadEnabled() ? '' : 'btn-primary'}
                     isLoading={isUploading}
-                    isDisabled={!isUploadEnabled() && isUploading}
+                    isDisabled={!isUploadEnabled() || isUploading}
                 >
                     {isUploading ? <ProgressSpinner className="nexus-c-ingest-panel__spinner" /> : <span>Upload</span>}
                 </Button>
