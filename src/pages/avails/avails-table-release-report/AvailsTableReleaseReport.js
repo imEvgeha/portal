@@ -7,6 +7,7 @@ import AtlaskitMoreIcon from '@vubiquity-nexus/portal-assets/atlaskit-more-icon.
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
+import { Button as PrimereactButton } from 'primereact/button';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import {
     PRE_PLAN_SELECTED_TAB,
@@ -16,7 +17,7 @@ import {
     SELECTED_FOR_PLANNING_TAB,
     STATUS_TAB,
 } from '../rights-repository/constants';
-import {CREATE_REPORT, ERROR_MESSAGE, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
+import {CREATE_REPORT, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
 import './AvailsTableReleaseReport.scss';
 
 const AvailsTableReleaseReport = ({
@@ -68,7 +69,7 @@ const AvailsTableReleaseReport = ({
                 setIsLoading(false);
                 setIsOpen(false);
                 addToast({
-                    detail: ERROR_MESSAGE,
+                    detail: `${error?.type}: failed to create report. ${error.message ? `Details: ${error.message}` : ''}`,
                     severity: 'error',
                 });
             });
@@ -102,15 +103,12 @@ const AvailsTableReleaseReport = ({
                     classNamePrefix="nexus-c-nexus-select"
                     isSearchable
                 />
-                <Button
-                    isLoading={isLoading}
-                    className="nexus-c-right-repository-release-report-content__btn"
+                <PrimereactButton
+                    label={isLoading ? '' : CREATE_REPORT}
+                    loading={isLoading}
+                    className="p-custom-button p-button-fit-container nexus-c-right-repository-release-report-content__btn"
                     onClick={onCreateReport}
-                    appearance="primary"
-                    shouldFitContainer
-                >
-                    {CREATE_REPORT}
-                </Button>
+                />
             </div>
         );
     };
