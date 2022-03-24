@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
@@ -14,7 +14,6 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {getConfig} from '../../../config';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
-import DOPService from './DOP-services';
 import {prepareSelectForPlanningData} from './utils';
 import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
 import './SelectedForPlanning.scss';
@@ -33,11 +32,6 @@ export const SelectedForPlanning = ({username}) => {
     const [gridApi, setGridApi] = useState(undefined);
     const [columnApiState, setColumnApiState] = useState(undefined);
     const [allRights, setAllRights] = useState([]);
-
-    // Fetch and set DOP projects count for current user
-    useEffect(() => {
-        DOPService.getUsersProjectsList(1, 1).then(([response, headers]) => setAllRights(response));
-    }, []);
 
     const mappings = COLUMN_MAPPINGS.map(col =>
         col.colId === 'projectId'
@@ -119,6 +113,7 @@ export const SelectedForPlanning = ({username}) => {
                 dragStopped={dragStoppedHandler}
                 onSortChanged={onSortChanged}
                 externalFilter={externalSort}
+                setData={response => setAllRights(response.data)}
             />
         </div>
     );

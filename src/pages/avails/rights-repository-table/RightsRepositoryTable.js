@@ -82,6 +82,7 @@ const RightsRepositoryTable = ({
     const repositoryFilterModel = useRef(undefined);
     const [selectedFilter, setSelectedFilter] = useState({});
     const [selectedRightsGridApi, setSelectedRightsGridApi] = useState(undefined);
+    const [selectedRightsColumnApi, setSelectedRightsColumnApi] = useState(undefined);
     const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
 
     const getCurrentUserSelRights = () => {
@@ -396,7 +397,10 @@ const RightsRepositoryTable = ({
         />
     );
 
-    const storeSelectedRightsGridApi = api => setSelectedRightsGridApi(api);
+    const storeSelectedRightsTabledApis = (api, cApi) => {
+        setSelectedRightsGridApi(api);
+        setSelectedRightsColumnApi(cApi);
+    };
     const setSelectedRightsToolbar = payload => {
         setSelectedRights({[username]: payload});
     };
@@ -421,9 +425,9 @@ const RightsRepositoryTable = ({
                 setIsSelected={setShowSelected}
                 isSelected={showSelected}
                 setSelectedRights={setSelectedRightsToolbar}
-                gridApi={gridApi}
+                gridApi={showSelected ? selectedRightsGridApi : gridApi}
                 rightsFilter={rightsFilter}
-                columnApi={columnApiState}
+                columnApi={showSelected ? selectedRightsColumnApi : columnApiState}
                 username={username}
                 singleRightMatch={singleRightMatch}
                 setSingleRightMatch={setSingleRightMatch}
@@ -466,7 +470,7 @@ const RightsRepositoryTable = ({
                     setSelectedFilter={setSelectedFilter}
                     selectedRights={getCurrentUserSelRights()}
                     username={username}
-                    storeGridApi={storeSelectedRightsGridApi}
+                    storeGridApi={storeSelectedRightsTabledApis}
                 />
             )}
         </div>

@@ -25,6 +25,7 @@ const SelectedRightsTable = ({
     selectedRights,
     username,
     selectedIngest,
+    storeGridApi,
 }) => {
     const [selectedRightsState] = useState([...selectedRights]);
     const [gridApi, setGridApi] = useState(undefined);
@@ -43,7 +44,7 @@ const SelectedRightsTable = ({
     const setGridApis = (api, columnApi) => {
         !gridApi && setGridApi(api);
         !columnApiState && setColumnApiState(columnApi);
-        setGridApi(api);
+        storeGridApi(api, columnApi);
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
@@ -94,6 +95,7 @@ SelectedRightsTable.propTypes = {
     selectedRights: PropTypes.object,
     username: PropTypes.string,
     selectedIngest: PropTypes.object,
+    storeGridApi: PropTypes.func.isRequired,
 };
 
 SelectedRightsTable.defaultProps = {
