@@ -14,22 +14,23 @@ const getStatusLogReducer = state => {
 export const getRightDetailsRightsSelector = () =>
     createSelector(getRightsReducer, rights => get(rights, 'right') || {});
 
-export const createSelectedRightsSelector = () => createSelector(getRightsReducer, rights => rights.selected || {});
+export const createSelectedRightsSelector = () => createSelector(getRightsReducer, rights => rights?.selected || {});
 
-export const createPreplanRightsSelector = () => createSelector(getRightsReducer, rights => rights.prePlanRights || {});
+export const createPreplanRightsSelector = () =>
+    createSelector(getRightsReducer, rights => rights?.prePlanRights || {});
 
-export const createRightsFilterSelector = () => createSelector(getRightsReducer, rights => rights.filter || {});
+export const createRightsFilterSelector = () => createSelector(getRightsReducer, rights => rights?.filter || {});
 
 export const createRightsWithDependenciesSelector = () =>
-    createSelector(getRightsReducer, rights => rights.rightsWithDependencies || {});
+    createSelector(getRightsReducer, rights => rights?.rightsWithDependencies || {});
 
 export const createDeletedRightsCountSelector = () =>
-    createSelector(getRightsReducer, rights => rights.deletedRightsCount || 0);
+    createSelector(getRightsReducer, rights => rights?.deletedRightsCount || 0);
 
-export const createUserGridSelector = () => createSelector(getRightsReducer, rights => rights.gridState || {});
+export const createUserGridSelector = () => createSelector(getRightsReducer, rights => rights?.gridState || {});
 
 export const createFromSelectedTableSelector = () =>
-    createSelector(getRightsReducer, rights => rights.fromSelected || {});
+    createSelector(getRightsReducer, rights => rights?.fromSelected || {});
 
 export const createStatusLogCountSelector = () =>
-    createSelector(getStatusLogReducer, statusLog => statusLog.count || 0);
+    createSelector(getStatusLogReducer, statusLog => statusLog?.count || 0);

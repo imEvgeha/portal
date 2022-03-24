@@ -61,6 +61,7 @@ const NexusGrid = ({
                 getContextMenuItems={params => getContextMenuItems(params, link)}
                 rowData={rowData}
                 suppressPropertyNamesCheck
+                animateRows={true}
                 onGridReady={onGridReady || handleGridEvent}
                 onGridSizeChanged={onGridSizeChanged}
                 onSelectionChanged={handleGridEvent}

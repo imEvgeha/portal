@@ -7,7 +7,7 @@ const useRowCountWithGridApiFix = () => {
     useEffect(() => {
         // temp fix for aggrid not refreshing matching column when row count = 1
         if (count === 1) {
-            setCount('One');
+            setCount(1);
             api && api.refreshCells({force: true});
         }
     }, [count]);

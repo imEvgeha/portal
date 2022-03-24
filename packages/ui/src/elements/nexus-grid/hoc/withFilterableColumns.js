@@ -404,9 +404,9 @@ const withFilterableColumns =
             // TODO: create separate file for filter API methods
             const applySetFilter = (field, values = []) => {
                 // clear filter
-                field.selectNothing();
+                // field.selectNothing();
                 // select values
-                values.forEach(value => field.selectValue(value));
+                // values.forEach(value => field.selectValue(value));
                 // APPLY THE MODEL
                 field.applyModel();
             };

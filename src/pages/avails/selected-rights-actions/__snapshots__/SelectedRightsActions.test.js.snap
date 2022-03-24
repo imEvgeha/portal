@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] = `
-<Fragment>
+<div
+  className="selected-rights-actions"
+>
   <div
     className="nexus-c-selected-rights-actions d-flex align-items-center"
   >
@@ -145,5 +147,5 @@ Alternatively you may withdraw a right which can be re-instantiated later."
       setHeaderText={[Function]}
     />
   </NexusDrawer>
-</Fragment>
+</div>
 `;
