@@ -4603,20 +4603,20 @@ add-stream@^1.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/add-stream/-/add-stream-1.0.0.tgz#6a7990437ca736d5e1288db92bd3266d5f5cb2aa"
   integrity sha1-anmQQ3ynNtXhKI25K9MmbV9csqo=
 
-ag-grid-community@25.1.0:
-  version "25.1.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-community/-/ag-grid-community-25.1.0.tgz#7e132835789586900e0dd24d18cb71d68e09106f"
-  integrity sha512-sKJp6SZG8J50OlOeECtrLFSp/iwdx1mcG0+BmIkHsXmWoyXv5ZaTJyVg1/hMk6s3JVTm1ipg6LepbTaigWEL2A==
+ag-grid-community@^26.2.1:
+  version "26.2.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-community/-/ag-grid-community-26.2.1.tgz#b217e1b62317817c7119511a1a8358992e3a2026"
+  integrity sha512-aChSGNdPkBda4BhOUUEAmAkRlIG7rFU8UTXx3NPStavrCOHKLDRV90djIKuiXfM6ONBqKmeqw2as0yuLnSN8dw==
 
-ag-grid-enterprise@25.1.0:
-  version "25.1.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-enterprise/-/ag-grid-enterprise-25.1.0.tgz#4edac3cc7b2aee9bb285634de5d79c575dd0b007"
-  integrity sha512-Q+LO/orMGNcwTUD40ncyUMCUdY2iMmqL7R9KaUNrwZzDVecyBY4vg3UrLxCmui7qSkOizkD/uSZ6MoNMCnwXBA==
+ag-grid-enterprise@^26.2.1:
+  version "26.2.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-enterprise/-/ag-grid-enterprise-26.2.1.tgz#54007f5107d76ef1cffdf891b27d41a070d7325a"
+  integrity sha512-DSf+PPRHv9JXhWTg7KSEm9+ixYAEPuo3LKBUzowUCQWvygGiWBrZXEB67MnjW+Z9zULeFhU4Z6OuHbnQUDhCag==
 
-ag-grid-react@25.1.0:
-  version "25.1.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-react/-/ag-grid-react-25.1.0.tgz#a045071802eabf426a0a652558f7f2e508e63a26"
-  integrity sha512-9xboQWDde2oANitsI/RbsS/rMFVLzXLGyteEBjxSyKGrGDOwAK6XHgvfbGSBL2yWVrYDUD5HRHCdfNejO4FPGA==
+ag-grid-react@26.2.0:
+  version "26.2.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-react/-/ag-grid-react-26.2.0.tgz#79e851130a1806a5d3d3ba004ca0eecc7f344a63"
+  integrity sha512-sFU1C3OFWun/V5l5+93b4XQegT+RA21AUY1TqUcHActDY0myeEllPJkR0xKj82EZuKihNuH52WQjOrrhzAjoHA==
   dependencies:
     prop-types "^15.6.2"
 

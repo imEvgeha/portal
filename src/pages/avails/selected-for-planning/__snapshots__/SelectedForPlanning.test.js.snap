@@ -1,202 +1,216 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectedForPlanning should match snapshot 1`] = `
-<Connect(ComposedComponent)
-  columnDefs={
-    Array [
-      Object {
-        "cellRenderer": "loadingCellRenderer",
-        "cellRendererParams": Object {
-          "link": "/avails/rights/",
-          "newTab": true,
+<div
+  className="selected-for-planning-table-wrapper"
+>
+  <AvailsTableToolbar
+    activeTab="Selected for Planning"
+    hasDownloadButton={true}
+    isSelected={false}
+    rightsFilter={Object {}}
+    selectedRowsCount={0}
+    setIsSelected={null}
+    showSelectedButton={false}
+    totalRecordsCount={0}
+    username=""
+  />
+  <Connect(ComposedComponent)
+    columnDefs={
+      Array [
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "link": "/avails/rights/",
+            "newTab": true,
+          },
+          "colId": "rightID",
+          "enableSearch": true,
+          "field": "rightID",
+          "headerName": "Right ID",
+          "javaVariableName": "rightID",
+          "searchDataType": "string",
+          "width": 150,
         },
-        "colId": "rightID",
-        "enableSearch": true,
-        "field": "rightID",
-        "headerName": "Right ID",
-        "javaVariableName": "rightID",
-        "searchDataType": "string",
-        "width": 150,
-      },
-      Object {
-        "colId": "title",
-        "enableSearch": true,
-        "field": "title",
-        "headerName": "Title",
-        "javaVariableName": "title",
-        "searchDataType": "string",
-        "width": 180,
-      },
-      Object {
-        "colId": "territory",
-        "enableSearch": true,
-        "field": "territory",
-        "headerName": "Planned Territory",
-        "javaVariableName": "territory",
-        "searchDataType": "string",
-        "width": 150,
-      },
-      Object {
-        "colId": "keywords",
-        "enableSearch": true,
-        "field": "keywords",
-        "headerName": "Keywords",
-        "javaVariableName": "keywords",
-        "searchDataType": "string",
-        "width": 150,
-      },
-      Object {
-        "cellRenderer": "loadingCellRenderer",
-        "cellRendererParams": Object {
-          "link": "undefined/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=",
+        Object {
+          "colId": "title",
+          "enableSearch": true,
+          "field": "title",
+          "headerName": "Title",
+          "javaVariableName": "title",
+          "searchDataType": "string",
+          "width": 180,
         },
-        "colId": "projectId",
-        "enableSearch": false,
-        "field": "projectId",
-        "headerName": "DOP Status",
-        "javaVariableName": "projectId",
-        "readOnly": true,
-        "valueFormatter": [Function],
-        "width": 180,
-      },
-      Object {
-        "colId": "format",
-        "enableSearch": true,
-        "field": "format",
-        "headerName": "Format",
-        "javaVariableName": "format",
-        "searchDataType": "string",
-        "width": 120,
-      },
-      Object {
-        "colId": "licensor",
-        "enableSearch": true,
-        "field": "licensor",
-        "headerName": "Licensor",
-        "javaVariableName": "licensor",
-        "searchDataType": "string",
-        "width": 120,
-      },
-      Object {
-        "colId": "licensee",
-        "enableSearch": true,
-        "field": "licensee",
-        "headerName": "Licensee",
-        "javaVariableName": "licensee",
-        "searchDataType": "string",
-        "width": 120,
-      },
-      Object {
-        "colId": "licenseType",
-        "enableSearch": true,
-        "field": "licenseType",
-        "headerName": "License type",
-        "javaVariableName": "licenseType",
-        "searchDataType": "string",
-        "width": 120,
-      },
-    ]
-  }
-  dragStopped={[Function]}
-  externalFilter={Object {}}
-  id="selectedForPlanningRepo"
-  isGridHidden={true}
-  key="planning_table_false"
-  mapping={
-    Array [
-      Object {
-        "cellRenderer": "loadingCellRenderer",
-        "cellRendererParams": Object {
-          "link": "/avails/rights/",
-          "newTab": true,
+        Object {
+          "colId": "territory",
+          "enableSearch": true,
+          "field": "territory",
+          "headerName": "Planned Territory",
+          "javaVariableName": "territory",
+          "searchDataType": "string",
+          "width": 150,
         },
-        "colId": "rightID",
-        "enableSearch": true,
-        "field": "rightID",
-        "headerName": "Right ID",
-        "javaVariableName": "rightID",
-        "searchDataType": "string",
-        "width": 150,
-      },
-      Object {
-        "colId": "title",
-        "enableSearch": true,
-        "field": "title",
-        "headerName": "Title",
-        "javaVariableName": "title",
-        "searchDataType": "string",
-        "width": 180,
-      },
-      Object {
-        "colId": "territory",
-        "enableSearch": true,
-        "field": "territory",
-        "headerName": "Planned Territory",
-        "javaVariableName": "territory",
-        "searchDataType": "string",
-        "width": 150,
-      },
-      Object {
-        "colId": "keywords",
-        "enableSearch": true,
-        "field": "keywords",
-        "headerName": "Keywords",
-        "javaVariableName": "keywords",
-        "searchDataType": "string",
-        "width": 150,
-      },
-      Object {
-        "cellRenderer": "loadingCellRenderer",
-        "colId": "projectId",
-        "enableSearch": false,
-        "field": "projectId",
-        "headerName": "DOP Status",
-        "javaVariableName": "projectId",
-        "readOnly": true,
-        "valueFormatter": [Function],
-        "width": 180,
-      },
-      Object {
-        "colId": "format",
-        "enableSearch": true,
-        "field": "format",
-        "headerName": "Format",
-        "javaVariableName": "format",
-        "searchDataType": "string",
-        "width": 120,
-      },
-      Object {
-        "colId": "licensor",
-        "enableSearch": true,
-        "field": "licensor",
-        "headerName": "Licensor",
-        "javaVariableName": "licensor",
-        "searchDataType": "string",
-        "width": 120,
-      },
-      Object {
-        "colId": "licensee",
-        "enableSearch": true,
-        "field": "licensee",
-        "headerName": "Licensee",
-        "javaVariableName": "licensee",
-        "searchDataType": "string",
-        "width": 120,
-      },
-      Object {
-        "colId": "licenseType",
-        "enableSearch": true,
-        "field": "licenseType",
-        "headerName": "License type",
-        "javaVariableName": "licenseType",
-        "searchDataType": "string",
-        "width": 120,
-      },
-    ]
-  }
-  onGridEvent={[Function]}
-  onSortChanged={[Function]}
-  rowSelection="multiple"
-  suppressRowClickSelection={true}
-/>
+        Object {
+          "colId": "keywords",
+          "enableSearch": true,
+          "field": "keywords",
+          "headerName": "Keywords",
+          "javaVariableName": "keywords",
+          "searchDataType": "string",
+          "width": 150,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "link": "undefined/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=",
+          },
+          "colId": "projectId",
+          "enableSearch": false,
+          "field": "projectId",
+          "headerName": "DOP Status",
+          "javaVariableName": "projectId",
+          "readOnly": true,
+          "valueFormatter": [Function],
+          "width": 180,
+        },
+        Object {
+          "colId": "format",
+          "enableSearch": true,
+          "field": "format",
+          "headerName": "Format",
+          "javaVariableName": "format",
+          "searchDataType": "string",
+          "width": 120,
+        },
+        Object {
+          "colId": "licensor",
+          "enableSearch": true,
+          "field": "licensor",
+          "headerName": "Licensor",
+          "javaVariableName": "licensor",
+          "searchDataType": "string",
+          "width": 120,
+        },
+        Object {
+          "colId": "licensee",
+          "enableSearch": true,
+          "field": "licensee",
+          "headerName": "Licensee",
+          "javaVariableName": "licensee",
+          "searchDataType": "string",
+          "width": 120,
+        },
+        Object {
+          "colId": "licenseType",
+          "enableSearch": true,
+          "field": "licenseType",
+          "headerName": "License type",
+          "javaVariableName": "licenseType",
+          "searchDataType": "string",
+          "width": 120,
+        },
+      ]
+    }
+    dragStopped={[Function]}
+    externalFilter={Object {}}
+    id="selectedForPlanningRepo"
+    key="selected_for_planning_tbl"
+    mapping={
+      Array [
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "link": "/avails/rights/",
+            "newTab": true,
+          },
+          "colId": "rightID",
+          "enableSearch": true,
+          "field": "rightID",
+          "headerName": "Right ID",
+          "javaVariableName": "rightID",
+          "searchDataType": "string",
+          "width": 150,
+        },
+        Object {
+          "colId": "title",
+          "enableSearch": true,
+          "field": "title",
+          "headerName": "Title",
+          "javaVariableName": "title",
+          "searchDataType": "string",
+          "width": 180,
+        },
+        Object {
+          "colId": "territory",
+          "enableSearch": true,
+          "field": "territory",
+          "headerName": "Planned Territory",
+          "javaVariableName": "territory",
+          "searchDataType": "string",
+          "width": 150,
+        },
+        Object {
+          "colId": "keywords",
+          "enableSearch": true,
+          "field": "keywords",
+          "headerName": "Keywords",
+          "javaVariableName": "keywords",
+          "searchDataType": "string",
+          "width": 150,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "projectId",
+          "enableSearch": false,
+          "field": "projectId",
+          "headerName": "DOP Status",
+          "javaVariableName": "projectId",
+          "readOnly": true,
+          "valueFormatter": [Function],
+          "width": 180,
+        },
+        Object {
+          "colId": "format",
+          "enableSearch": true,
+          "field": "format",
+          "headerName": "Format",
+          "javaVariableName": "format",
+          "searchDataType": "string",
+          "width": 120,
+        },
+        Object {
+          "colId": "licensor",
+          "enableSearch": true,
+          "field": "licensor",
+          "headerName": "Licensor",
+          "javaVariableName": "licensor",
+          "searchDataType": "string",
+          "width": 120,
+        },
+        Object {
+          "colId": "licensee",
+          "enableSearch": true,
+          "field": "licensee",
+          "headerName": "Licensee",
+          "javaVariableName": "licensee",
+          "searchDataType": "string",
+          "width": 120,
+        },
+        Object {
+          "colId": "licenseType",
+          "enableSearch": true,
+          "field": "licenseType",
+          "headerName": "License type",
+          "javaVariableName": "licenseType",
+          "searchDataType": "string",
+          "width": 120,
+        },
+      ]
+    }
+    onGridEvent={[Function]}
+    onSortChanged={[Function]}
+    rowSelection="multiple"
+    suppressRowClickSelection={true}
+  />
+</div>
 `;

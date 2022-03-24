@@ -4,10 +4,10 @@ import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {isEmpty, get} from 'lodash';
-import { Button } from 'primereact/button';
-import { TabMenu } from 'primereact/tabmenu';
+import {Button} from 'primereact/button';
+import {TabMenu} from 'primereact/tabmenu';
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router';
+import {withRouter} from 'react-router-dom';
 import Loading from '../../../../static/Loading';
 import {
     SAVED_TABLE_DROPDOWN_LABEL,
@@ -23,7 +23,7 @@ import {
     PRE_PLAN_TAB,
     PRE_PLAN_SELECTED_TAB,
     SELECTED_FOR_PLANNING_TAB,
-    STATUS_TAB
+    STATUS_TAB,
 } from '../../constants';
 import './RightsRepositoryHeader.scss';
 import {storeAvailsUserDefinedGrid} from '../../rightsActions';
@@ -46,10 +46,10 @@ export const RightsRepositoryHeader = ({
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
 
     useEffect(() => {
-        if(activeTab === RIGHTS_SELECTED_TAB) {
+        if (activeTab === RIGHTS_SELECTED_TAB) {
             setActiveTabIndex(-1);
         }
-    }, [activeTab])
+    }, [activeTab]);
 
     useEffect(() => {
         if (!isEmpty(gridState) && username) {
@@ -64,12 +64,17 @@ export const RightsRepositoryHeader = ({
         predifinedViewsLabel: MY_PREDEFINED_VIEWS_LABEL,
     };
     const tableOptions = SAVED_TABLE_SELECT_OPTIONS;
-    const isItDisabledForCurrentTab = [PRE_PLAN_TAB, PRE_PLAN_SELECTED_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB].includes(activeTab);
+    const isItDisabledForCurrentTab = [
+        PRE_PLAN_TAB,
+        PRE_PLAN_SELECTED_TAB,
+        SELECTED_FOR_PLANNING_TAB,
+        STATUS_TAB,
+    ].includes(activeTab);
 
     return (
         <div className="nexus-c-rights-repository-header row d-flex align-items-center">
             <div className="nexus-c-rights-repository-header__title col-2 d-flex align-items-center">
-                <span className="nexus-c-rights-repository-header__title-text">{title}</span> 
+                <span className="nexus-c-rights-repository-header__title-text">{title}</span>
             </div>
             <div className="col-md-10 col-xl-7 d-flex justify-content-center">
                 <TabMenu
@@ -77,10 +82,10 @@ export const RightsRepositoryHeader = ({
                     model={RIGHTS_REPOSITORY_TABS}
                     activeIndex={activeTabIndex}
                     onTabChange={e => {
-                        setActiveTab(e.value.tab)
-                        setActiveTabIndex(e.index)
+                        setActiveTab(e.value.tab);
+                        setActiveTabIndex(e.index);
                     }}
-                /> 
+                />
             </div>
             <div className="col-xs-12 col-xl-3 d-flex justify-content-end align-items-center">
                 <div className="nexus-c-title-metadata__saved-table-wrapper">
@@ -97,7 +102,7 @@ export const RightsRepositoryHeader = ({
                             tableOptions={tableOptions}
                             isDisabled={isItDisabledForCurrentTab}
                         />
-                    ) : activeTab === RIGHTS_TAB || activeTab === PRE_PLAN_TAB? (
+                    ) : activeTab === RIGHTS_TAB || activeTab === PRE_PLAN_TAB ? (
                         <Loading />
                     ) : null}
                 </div>

@@ -1,0 +1,9 @@
+.rights-table-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    min-height: 400px;
+    padding: 24px 24px 0;
+    overflow: auto;
+}
