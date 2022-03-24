@@ -23,6 +23,7 @@ const initialState = {
     uploadLogFilter: {},
     selectedId: '',
     isEditorial: false,
+    currentUserView: {},
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
@@ -169,6 +170,11 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 filter: {},
+            };
+        case actionTypes.SET_CURRENT_USER_VIEW:
+            return {
+                ...state,
+                currentUserView: payload,
             };
         default:
             return state;

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
 import {FieldTextStateless} from '@atlaskit/field-text';
@@ -32,14 +32,19 @@ const NexusSavedTableDropdown = ({
     onUserDefinedViewSelected,
     tableLabels,
     tableOptions,
-    lastStoredFilter,
     setBlockLastFilter,
     isDisabled,
+    setCurrentUserView,
+    currentUserView,
 }) => {
-    const [selectedItem, setSelectedItem] = useState(lastStoredFilter.label ? lastStoredFilter : tableOptions[0]);
+    const [selectedItem, setSelectedItem] = useState(currentUserView?.label ? currentUserView : tableOptions[0]);
 
     const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
     const [userInput, setUserInput] = useState('');
+
+    useEffect(() => {
+        setCurrentUserView(selectedItem);
+    }, [selectedItem]);
 
     const setPredefinedView = item => {
         setSelectedItem(item);
@@ -102,7 +107,7 @@ const NexusSavedTableDropdown = ({
     return (
         <div className="nexus-c-dop-tasks-dropdown">
             <div className="nexus-c-dop-tasks-dropdown__elements">
-                <DropdownMenu 
+                <DropdownMenu
                     shouldFitContainer
                     appearance="tall"
                     triggerButtonProps={{isDisabled}}
@@ -173,9 +178,10 @@ NexusSavedTableDropdown.propTypes = {
     onUserDefinedViewSelected: PropTypes.func,
     tableLabels: PropTypes.object,
     tableOptions: PropTypes.array,
-    lastStoredFilter: PropTypes.object,
     setBlockLastFilter: PropTypes.func,
     isDisabled: PropTypes.bool,
+    setCurrentUserView: PropTypes.func,
+    currentUserView: PropTypes.object,
 };
 
 NexusSavedTableDropdown.defaultProps = {
@@ -189,9 +195,10 @@ NexusSavedTableDropdown.defaultProps = {
     onUserDefinedViewSelected: () => null,
     tableLabels: {},
     tableOptions: [],
-    lastStoredFilter: {},
     setBlockLastFilter: () => null,
     isDisabled: false,
+    setCurrentUserView: () => null,
+    currentUserView: {},
 };
 
 export default NexusSavedTableDropdown;
