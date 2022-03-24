@@ -9,7 +9,7 @@ import {get} from 'lodash';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
-import {VIEWS, FIELDS_WITHOUT_LABEL, LOCALIZED_VALUE_NOT_DEFINED} from '../../constants';
+import {VIEWS, FIELDS_WITHOUT_LABEL, LOCALIZED_VALUE_NOT_DEFINED, FIELD_REQUIRED} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {
     checkFieldDependencies,
@@ -517,7 +517,7 @@ const NexusField = ({
                     }
                     {...props}
                 >
-                    {({fieldProps}) => (
+                    {({fieldProps, error}) => (
                         <>
                             {!FIELDS_WITHOUT_LABEL.includes(type) &&
                                 renderLabel(label, required, tooltip, isGridLayout, isRequiredVZ, oneIsRequiredVZ)}
@@ -527,7 +527,7 @@ const NexusField = ({
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
-                                {validationError && renderError(validationError)}
+                                {error && renderError(FIELD_REQUIRED)}
                             </div>
                         </>
                     )}
