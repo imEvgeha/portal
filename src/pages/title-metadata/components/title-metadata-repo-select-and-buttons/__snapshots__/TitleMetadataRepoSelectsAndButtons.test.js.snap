@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
+exports[`RepositorySelectsAndButtons should match snapshot 1`] = `
 <div
   className="row nexus-c-title-metadata__select-container"
 >
@@ -10,6 +10,7 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
     <NexusSavedTableDropdown
       applyPredefinedTableView={[Function]}
       columnApi={null}
+      currentUserView={Object {}}
       externalFilter={Object {}}
       gridApi={null}
       isDisabled={false}
@@ -17,6 +18,7 @@ exports[`TitleMetadataRepoSelectsAndButtons should match snapshot 1`] = `
       lastStoredFilter={Object {}}
       onUserDefinedViewSelected={[Function]}
       setBlockLastFilter={[Function]}
+      setCurrentUserView={[Function]}
       setUserDefinedGridState={[Function]}
       tableLabels={
         Object {

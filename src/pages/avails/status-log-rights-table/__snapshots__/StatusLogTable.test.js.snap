@@ -4,114 +4,30 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
 <div
   className="nexus-c-status-log-table"
 >
+  <AvailsTableToolbar
+    activeTab="Status"
+    hasDownloadButton={true}
+    isSelected={false}
+    rightsFilter={Object {}}
+    selectedRowsCount={0}
+    setIsSelected={[Function]}
+    showSelectedButton={true}
+    toolbarActions={
+      <StatusRightsActions
+        rights={Array []}
+      />
+    }
+    totalRecordsCount={0}
+    username=""
+  />
   <Component
     className="nexus-c-status-log-grid"
-    columnDefs={
-      Array [
-        Object {
-          "checkboxSelection": true,
-          "field": "action",
-          "filter": false,
-          "headerCheckboxSelection": true,
-          "headerCheckboxSelectionFilteredOnly": true,
-          "headerName": "",
-          "lockPinned": true,
-          "lockPosition": true,
-          "lockVisible": true,
-          "menuTabs": Array [],
-          "pinned": "left",
-          "resizable": false,
-          "sortable": false,
-          "suppressMovable": true,
-          "suppressSizeToFit": true,
-          "width": 40,
-        },
-        Object {
-          "cellRendererParams": Object {
-            "setErrors": [Function],
-          },
-          "colId": "status",
-          "dataType": "string",
-          "enableSearch": true,
-          "field": "status",
-          "headerName": "Status",
-          "javaVariableName": "status",
-          "minWidth": 100,
-          "searchDataType": "string",
-        },
-        Object {
-          "cellRendererParams": Object {
-            "setErrors": [Function],
-          },
-          "colId": "rightTitle",
-          "field": "rightTitle",
-          "headerName": "Right Title",
-          "javaVariableName": "rightTitle",
-          "minWidth": 150,
-        },
-        Object {
-          "cellRendererParams": Object {
-            "setErrors": [Function],
-          },
-          "colId": "entityId",
-          "dataType": "string",
-          "enableSearch": true,
-          "field": "entityId",
-          "headerName": "Right ID",
-          "javaVariableName": "entityId",
-          "minWidth": 150,
-          "searchDataType": "string",
-        },
-        Object {
-          "cellRendererParams": Object {
-            "setErrors": [Function],
-          },
-          "colId": "titleId",
-          "dataType": "string",
-          "enableSearch": true,
-          "field": "titleId",
-          "headerName": "Title ID",
-          "javaVariableName": "titleId",
-          "minWidth": 150,
-          "searchDataType": "string",
-        },
-        Object {
-          "cellRendererParams": Object {
-            "setErrors": [Function],
-          },
-          "colId": "externalSystem",
-          "field": "externalSystem",
-          "headerName": "External System",
-          "javaVariableName": "externalSystem",
-          "minWidth": 120,
-        },
-        Object {
-          "cellRendererParams": Object {
-            "setErrors": [Function],
-          },
-          "colId": "updatedAt",
-          "dataType": "timestamp",
-          "enableSearch": true,
-          "field": "updatedAt",
-          "headerName": "Synced date",
-          "javaVariableName": "updatedAt",
-          "minWidth": 150,
-          "searchDataType": "regionalMidnight",
-        },
-        Object {
-          "cellRenderer": "publishErrors",
-          "cellRendererParams": Object {
-            "setErrors": [Function],
-          },
-          "colId": "publishErrors",
-          "field": "publishErrors",
-          "headerName": "Errors",
-          "javaVariableName": "publishErrors",
-          "minWidth": 100,
-        },
-      ]
+    columnDefs={Array []}
+    context={
+      Object {
+        "selectedRows": Array [],
+      }
     }
-    isGridHidden={true}
     isRowSelectable={[Function]}
     mapping={
       Array [
@@ -186,7 +102,6 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
       }
     }
     rowSelection="multiple"
-    singleClickEdit={true}
     suppressRowClickSelection={true}
   />
   <NexusDrawer

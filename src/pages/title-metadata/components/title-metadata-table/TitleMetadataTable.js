@@ -209,6 +209,7 @@ TitleMetadataTable.defaultProps = {
 
 const mapStateToProps = () => {
     const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
+
     return state => ({
         titleMetadataFilter: titleMetadataFilterSelector(state),
     });

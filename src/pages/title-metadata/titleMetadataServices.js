@@ -64,9 +64,9 @@ export const updateTitle = (title, syncToVZ, syncToMovida) => {
     });
 };
 
-export const generateMsvIds = (id, licensor, licensee) => {
+export const generateMsvIds = (id, licensor, licensee, existingMsvAssociations) => {
     return titleService
-        .addMsvAssociationIds(id, licensor, licensee)
+        .addMsvAssociationIds(id, licensor, licensee, existingMsvAssociations)
         .then(response => response)
         .catch(err => {
             // add toast
@@ -182,12 +182,13 @@ export const titleService = {
         const params = encodedSerialize({...queryParams, page, size});
         return partialContentTypeSearch && nexusFetch(url, {params});
     },
-    addMsvAssociationIds: (id, licensor, licensee) => {
+    addMsvAssociationIds: (id, licensor, licensee, existingMsvAssociations) => {
         const url = `${getConfig('gateway.titleUrl')}${getConfig(
             'gateway.service.title'
         )}/titles/${id}/msvIds?licensor=${licensor}&licensee=${licensee}&updateTitle=false`;
         return nexusFetch(url, {
             method: 'post',
+            body: JSON.stringify(existingMsvAssociations),
         });
     },
     getUploadedMetadata: async (dataForUploadedMetadata, tenantCode, page, size, sortedParams) => {
