@@ -266,7 +266,6 @@ export const SelectedRightsActions = ({
     };
 
     const onCloseStatusCheckModal = () => {
-        // setSelectedRights([]);
         toggleRefreshGridData(true);
         closeModal();
     };
