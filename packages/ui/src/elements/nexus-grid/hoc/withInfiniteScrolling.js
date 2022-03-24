@@ -128,7 +128,7 @@ const withInfiniteScrolling =
                 fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
                     .then(response => {
                         const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
-
+                        props.setData(response);
                         if (typeof props.setTotalCount === 'function' && isMounted.current) {
                             props.setTotalCount(total);
                         }
@@ -226,6 +226,7 @@ const withInfiniteScrolling =
             ...WrappedComponent.propTypes,
             onGridEvent: PropTypes.func,
             setTotalCount: PropTypes.func,
+            setData: PropTypes.func,
             setDisplayedRows: PropTypes.func,
             successDataFetchCallback: PropTypes.func,
             onAddAdditionalField: PropTypes.func,
@@ -242,6 +243,7 @@ const withInfiniteScrolling =
             onAddAdditionalField: null,
             params: null,
             isDatasourceEnabled: true,
+            setData: () => null,
         };
 
         const mapStateToProps = state => ({
