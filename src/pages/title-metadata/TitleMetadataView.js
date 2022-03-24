@@ -135,17 +135,17 @@ export const TitleMetadataView = ({
             const {columnState, filterModel, sortModel} = storedFilterData || {};
             gridApi?.setFilterModel(filterModel);
             setSorting(sortModel, columnApi);
-            columnApi?.setColumnState(columnState);
+            columnApi?.applyColumnState({state: columnState});
         }
     };
 
     useEffect(() => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
             gridApi.setFilterModel(titleMetadataFilter?.filterModel);
-            if (columnApi.columnController) {
+            if (columnApi?.columnController) {
                 setSorting(titleMetadataFilter.sortModel, columnApi);
             }
-            columnApi.setColumnState(titleMetadataFilter?.columnState);
+            columnApi?.applyColumnState({state: titleMetadataFilter?.columnState});
         }
     }, [gridApi, columnApi]);
 

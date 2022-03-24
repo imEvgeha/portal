@@ -85,7 +85,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, storeAvailsUserDefine
             const {columnState, filterModel, sortModel} = selectedModel[0] || {};
             gridApi.setFilterModel(filterModel);
             setSorting(sortModel, columnApi);
-            columnApi.setColumnState(columnState);
+            columnApi?.applyColumnState({state: columnState});
         }
     };
 
