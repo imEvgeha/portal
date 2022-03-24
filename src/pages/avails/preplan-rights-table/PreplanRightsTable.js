@@ -57,6 +57,8 @@ const PreplanRightsTable = ({
     const [singleRightMatch, setSingleRightMatch] = useState([]);
     const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
     const [selectedTableColDefs, setSelectedTableColDefs] = useState([]);
+    const [selectedRightsGridApi, setSelectedRightsGridApi] = useState(undefined);
+    const [selectedRightsColumnApi, setSelectedRightsColumnApi] = useState(undefined);
 
     useEffect(() => {
         if (!tableColumnDefinitions.length) {
@@ -207,6 +209,11 @@ const PreplanRightsTable = ({
         return updatedColumnDefs;
     };
 
+    const storeSelectedRightsTabledApis = (api, cApi) => {
+        setSelectedRightsGridApi(api);
+        setSelectedRightsColumnApi(cApi);
+    };
+
     const toolbarActions = () => {
         return (
             <PrePlanActions
@@ -231,8 +238,8 @@ const PreplanRightsTable = ({
                 selectedRowsCount={selectedPPRights.length}
                 setIsSelected={setShowSelected}
                 isSelected={showSelected}
-                gridApi={gridApi}
-                columnApi={columnApiState}
+                gridApi={showSelected ? selectedRightsGridApi : gridApi}
+                columnApi={showSelected ? selectedRightsColumnApi : columnApiState}
                 username={username}
                 showSelectedButton={true}
                 toolbarActions={toolbarActions()}
@@ -264,6 +271,7 @@ const PreplanRightsTable = ({
                     selectedRights={selectedPPRights}
                     username={username}
                     setSelectedPrePlanRights={setSelectedPPRights}
+                    storeGridApis={storeSelectedRightsTabledApis}
                 />
             )}
         </div>
