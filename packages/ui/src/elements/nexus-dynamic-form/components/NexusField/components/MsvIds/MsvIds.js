@@ -57,7 +57,7 @@ const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) =
         const {params} = match || {};
         const {id} = params;
         if (id && typeof generateMsvIds === 'function') {
-            const generatedIds = await generateMsvIds(id, values.licensor.value, values.licensee.value);
+            const generatedIds = await generateMsvIds(id, values.licensor.value, values.licensee.value, data);
             const updatedMsvIds = [...msvIds, ...generatedIds];
             setMsvIds(updatedMsvIds);
             onChange([...updatedMsvIds]);
