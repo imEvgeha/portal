@@ -56,7 +56,6 @@ const PreplanRightsTable = ({
     const [allRights, setAllRights] = useState([]);
     const [singleRightMatch, setSingleRightMatch] = useState([]);
     const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
-    const [selectedTableColDefs, setSelectedTableColDefs] = useState([]);
     const [selectedRightsGridApi, setSelectedRightsGridApi] = useState(undefined);
     const [selectedRightsColumnApi, setSelectedRightsColumnApi] = useState(undefined);
 
@@ -87,12 +86,10 @@ const PreplanRightsTable = ({
                 selectedAtCol.valueFormatter = selectedCol.valueFormatter;
             }
 
-            setSelectedTableColDefs([...updatedColumnDefsCheckBoxHeader]);
-
             const filteredColumnDefs = updatedColumnDefsCheckBoxHeader.filter(
                 columnDef => columnDef.colId !== 'territoryCountry'
-            );
-
+                );
+                
             setTableColumnDefinitions(filteredColumnDefs);
         }
     }, [columnDefs]);
@@ -267,8 +264,13 @@ const PreplanRightsTable = ({
 
             {showSelected && (
                 <SelectedPreplanTable
-                    columnDefs={selectedTableColDefs}
-                    mapping={mapping}
+                    columnDefs={reorderColumns([
+                        ...tableColumnDefinitions,
+                        planTerritoriesColumn,
+                        territoriesColumn,
+                        planKeywordsColumn,
+                    ])}
+                    mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
                     selectedRights={selectedPPRights}
                     username={username}
                     setSelectedPrePlanRights={setSelectedPPRights}

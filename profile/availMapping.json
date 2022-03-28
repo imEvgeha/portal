@@ -169,7 +169,7 @@
             "sortParamName": "territoryCountry"
         },
         {
-            "javaVariableName": "territory",
+            "javaVariableName": "territory.selected",
             "displayName": "Selected",
             "dataType": "territory.selected",
             "searchDataType": "territoryType",
@@ -193,7 +193,7 @@
             "cellRenderer": "selectedAtCellRenderer"
         },
         {
-            "javaVariableName": "territory",
+            "javaVariableName": "territory.withdrawn",
             "displayName": "Withdrawn Locales",
             "dataType": "territory.withdrawn",
             "searchDataType": "territoryType",
