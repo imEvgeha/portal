@@ -142,7 +142,7 @@ export const TitleMetadataView = ({
     useEffect(() => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
             gridApi.setFilterModel(titleMetadataFilter?.filterModel);
-            if (columnApi?.columnController) {
+            if (columnApi?.columnModel) {
                 setSorting(titleMetadataFilter.sortModel, columnApi);
             }
             columnApi?.applyColumnState({state: titleMetadataFilter?.columnState});
