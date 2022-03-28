@@ -172,6 +172,35 @@ $element-color-orange-80: palette(orange, 80);
         }
     }
 
+    &.p-custom-button {
+        &:hover {
+            svg {
+                fill: palette(black, 100);
+                color: palette(black, 100);
+            }
+        }
+
+        &:hover:active,
+        &:active {
+            svg {
+                fill: palette(black, 100);
+                color: palette(black, 100);
+            }
+        }
+
+        &.p-button-icon-only {
+            margin-left: 12px;
+
+            @media (max-width: 1600px) {
+                margin-left: 0;
+            }
+        }
+    }
+
+    &.p-button-fit-container {
+        width: 100%;
+    }
+
     &.p-toast-button-link {
         width: fit-content;
         margin-top: 8px;
