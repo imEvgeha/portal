@@ -88,7 +88,7 @@ const PreplanRightsTable = ({
 
             const filteredColumnDefs = updatedColumnDefsCheckBoxHeader.filter(
                 columnDef => columnDef.colId !== 'territoryCountry'
-                );
+            );
                 
             setTableColumnDefinitions(filteredColumnDefs);
         }
