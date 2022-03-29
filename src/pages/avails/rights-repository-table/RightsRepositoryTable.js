@@ -389,7 +389,7 @@ const RightsRepositoryTable = ({
     const toolbarActions = () => (
         <SelectedRightsActions
             selectedRights={getCurrentUserSelRights()}
-            selectedRightGridApi={gridApi}
+            selectedRightGridApi={showSelected ? selectedRightsGridApi : gridApi}
             setSelectedRights={setSelectedRights}
             setPrePlanRepoRights={addRightsToPrePlan}
             singleRightMatch={singleRightMatch}
