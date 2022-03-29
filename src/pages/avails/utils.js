@@ -14,7 +14,8 @@ export const createColumnDefs = payload => {
     return payload
         .filter(column => column.dataType && column.displayName)
         .reduce((columnDefs, column) => {
-            const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
+            const {javaVariableName, displayName, dataType, queryParamName, sortParamName, sortable, cellRenderer} =
+                column;
             const hasLink = ['id', 'title'].includes(javaVariableName);
             const hasIcon = ['icon'].includes(dataType);
             const columnDef = {
@@ -22,7 +23,11 @@ export const createColumnDefs = payload => {
                 headerName: displayName,
                 colId: sortParamName || queryParamName,
                 cellRendererFramework: hasIcon ? params => <span>{params.valueFormatted || params.value}</span> : null,
-                cellRenderer: hasLink ? 'loadingCellRenderer' : null,
+                cellRenderer: hasLink
+                    ? 'loadingCellRenderer'
+                    : dataType === 'multiselect'
+                    ? 'wordsCellRenderer'
+                    : cellRenderer,
                 cellRendererParams: hasLink
                     ? {
                           link: '/avails/rights/',
@@ -36,6 +41,7 @@ export const createColumnDefs = payload => {
                     ? COLUMN_WIDTH_ICON
                     : COLUMN_WIDTH_DEFAULT,
                 type: Object.values(DATETIME_FIELDS).includes(dataType) ? 'dateColumn' : '',
+                sortable: sortable === undefined ? dataType !== 'icon' : sortable,
             };
             return [...columnDefs, columnDef];
         }, []);

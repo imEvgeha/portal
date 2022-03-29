@@ -14,12 +14,12 @@ import {resetTitle} from '../metadata/metadataActions';
 import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
-import { failureDownloadDesc } from './components/title-metadata-header/components/constants';
+import {failureDownloadDesc} from './components/title-metadata-header/components/constants';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
 import './TitleMetadataView.scss';
-import {storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
+import {setCurrentUserView, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
 import {DEFAULT_CATALOGUE_OWNER, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
@@ -32,6 +32,7 @@ export const TitleMetadataView = ({
     gridState,
     titleMetadataFilter,
     uploadMetadata,
+    setCurrentUserView,
 }) => {
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
@@ -79,6 +80,10 @@ export const TitleMetadataView = ({
             window.sessionStorage.removeItem('unmerge');
             store.dispatch(addToast(successToast));
         }
+
+        return () => {
+            setCurrentUserView(undefined);
+        };
     }, []);
 
     const getNameOfCurrentTab = () => {
@@ -103,9 +108,9 @@ export const TitleMetadataView = ({
     };
 
     const resetToAll = (gridApi, filter, columnApi) => {
-        gridApi.setFilterModel();
-        gridApi.onFilterChanged();
-        columnApi.resetColumnState();
+        gridApi?.setFilterModel();
+        gridApi?.onFilterChanged();
+        columnApi?.resetColumnState();
     };
 
     const uploadHandler = file => {
@@ -118,14 +123,6 @@ export const TitleMetadataView = ({
 
     const [blockLastFilter, setBlockLastFilter] = useState(true);
 
-    useEffect(() => {
-        if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
-            gridApi.setFilterModel(titleMetadataFilter?.filterModel);
-            if (columnApi.columnController) setSorting(titleMetadataFilter.sortModel, columnApi);
-            columnApi.setColumnState(titleMetadataFilter?.columnState);
-        }
-    }, [gridApi, columnApi]);
-
     const storedFilterData = titleMetadataFilter;
     const storedFilterDataId = titleMetadataFilter?.id;
 
@@ -136,13 +133,25 @@ export const TitleMetadataView = ({
     const lastFilterView = (gridApi, columnApi, id) => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && id) {
             const {columnState, filterModel, sortModel} = storedFilterData || {};
-            gridApi.setFilterModel(filterModel);
+            gridApi?.setFilterModel(filterModel);
             setSorting(sortModel, columnApi);
-            columnApi.setColumnState(columnState);
+            columnApi?.applyColumnState({state: columnState});
         }
     };
 
-    blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
+    useEffect(() => {
+        if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
+            gridApi.setFilterModel(titleMetadataFilter?.filterModel);
+            if (columnApi?.columnController) {
+                setSorting(titleMetadataFilter.sortModel, columnApi);
+            }
+            columnApi?.applyColumnState({state: titleMetadataFilter?.columnState});
+        }
+    }, [gridApi, columnApi]);
+
+    useEffect(() => {
+        blockLastFilter && lastFilterView(gridApi, columnApi, storedFilterDataId);
+    }, [blockLastFilter]);
 
     return (
         <div className="nexus-c-title-metadata">
@@ -235,6 +244,7 @@ const mapDispatchToProps = dispatch => ({
     resetTitleId: () => dispatch(resetTitle()),
     storeTitleUserDefinedGridState: payload => dispatch(storeTitleUserDefinedGridState(payload)),
     uploadMetadata: payload => dispatch(uploadMetadata(payload)),
+    setCurrentUserView: payload => dispatch(setCurrentUserView(payload)),
 });
 
 TitleMetadataView.propTypes = {
@@ -246,6 +256,7 @@ TitleMetadataView.propTypes = {
     gridState: PropTypes.object,
     titleMetadataFilter: PropTypes.object,
     uploadMetadata: PropTypes.func,
+    setCurrentUserView: PropTypes.func.isRequired,
 };
 
 TitleMetadataView.defaultProps = {

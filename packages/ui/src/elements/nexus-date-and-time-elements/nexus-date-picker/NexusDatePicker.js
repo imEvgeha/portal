@@ -105,7 +105,6 @@ const NexusDatePicker = ({
                             value={date}
                             parseInputValue={e => {
                                 if (moment(e).isValid() && e) {
-                                    setDate(e);
                                     !isWithInlineEdit && debouncedOnChange(e, onChange);
                                 } else {
                                     setDate('');

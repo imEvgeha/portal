@@ -22,6 +22,7 @@ const NexusGrid = ({
     onGridReady,
     link,
     id,
+    isRowSelectable,
     ...restProps
 }) => {
     const isMounted = useRef(true);
@@ -60,6 +61,7 @@ const NexusGrid = ({
                 getContextMenuItems={params => getContextMenuItems(params, link)}
                 rowData={rowData}
                 suppressPropertyNamesCheck
+                animateRows={true}
                 onGridReady={onGridReady || handleGridEvent}
                 onGridSizeChanged={onGridSizeChanged}
                 onSelectionChanged={handleGridEvent}
@@ -81,6 +83,7 @@ const NexusGrid = ({
                     wordsCellRenderer: WordsCellRenderer,
                 }}
                 onDragStopped={dragStopped}
+                isRowSelectable={isRowSelectable}
             />
         </div>
     );
@@ -97,6 +100,7 @@ NexusGrid.propTypes = {
     onGridReady: PropTypes.func,
     link: PropTypes.string,
     id: PropTypes.string,
+    isRowSelectable: PropTypes.func,
 };
 
 NexusGrid.defaultProps = {
@@ -110,6 +114,7 @@ NexusGrid.defaultProps = {
     onGridReady: null,
     link: null,
     id: '',
+    isRowSelectable: null,
 };
 
 export default NexusGrid;

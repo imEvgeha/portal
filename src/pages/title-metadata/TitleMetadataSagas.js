@@ -16,11 +16,7 @@ import {
     registerTitle,
 } from './titleMetadataServices';
 import {isMgmTitle} from './utils';
-import {
-    UPDATE_TITLE_SUCCESS,
-    UPDATE_TITLE_ERROR,
-    UPLOAD_SUCCESS_MESSAGE,
-} from './constants';
+import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR, UPLOAD_SUCCESS_MESSAGE} from './constants';
 
 export function* loadParentTitle(title) {
     const {parentIds} = title;
@@ -231,8 +227,9 @@ export function* syncTitle({payload}) {
         payload: payload.externalSystem,
     });
 
+    const [response] = yield call(syncTitleService, payload);
+
     try {
-        const [response] = yield call(syncTitleService, payload);
         const newPayload = {id: response.titleId};
         if (response.status === 'failure') throw Error();
 
@@ -245,12 +242,12 @@ export function* syncTitle({payload}) {
                 detail: `Successfully synced to ${payload.externalSystem}!`,
             },
         });
-    } catch (err) {
+    } catch (error) {
         yield put({
             type: ADD_TOAST,
             payload: {
                 severity: ERROR_ICON,
-                detail: err.message,
+                detail: response?.errors[0].description,
             },
         });
     } finally {

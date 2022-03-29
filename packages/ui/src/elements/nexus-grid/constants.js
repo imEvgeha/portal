@@ -8,6 +8,7 @@ const GRID_EVENTS = {
     FIRST_DATA_RENDERED: 'firstDataRendered',
     FILTER_CHANGED: 'filterChanged',
     ROW_DATA_CHANGED: 'rowDataChanged',
+    GRID_SIZE_CHANGED: 'gridSizeChanged',
 };
 const ROW_BUFFER = 10;
 const PAGINATION_PAGE_SIZE = 100;

@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ImagePlaceholderIcon from '@vubiquity-nexus/portal-assets/img/img_placeholder.png';
 import './TitleInfo.scss';
 
-const IMAGE_PLACEHOLDER = 'https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png';
-
 const TitleInfo = ({title, releaseYear, contentType, titleImages, catalogueOwner}) => {
-    const image = titleImages && titleImages.length ? titleImages[0] : IMAGE_PLACEHOLDER;
+    const image = titleImages && titleImages.length ? titleImages[0] : ImagePlaceholderIcon;
     return (
         <div className="nexus-c-title-info-container">
             <div className="nexus-c-title-info-container__image">

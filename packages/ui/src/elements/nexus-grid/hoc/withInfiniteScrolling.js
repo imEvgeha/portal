@@ -34,7 +34,7 @@ const withInfiniteScrolling =
     } = {}) =>
     WrappedComponent => {
         const ComposedComponent = props => {
-            const hasBeenCalledRef = useRef();
+            const hasBeenCalledRef = useRef(false);
             const isMounted = useRef(true);
             const previousParams = usePrevious(props.params);
             const [gridApi, setGridApi] = useState();
@@ -75,7 +75,7 @@ const withInfiniteScrolling =
                 if (isMounted.current && gridApi && isDatasourceEnabled) {
                     updateData(fetchData, gridApi);
                 }
-            }, [gridApi, props.isDatasourceEnabled, props.externalFilter, isLocal]);
+            }, [props.isDatasourceEnabled]);
             /**
              * aggrid issue: getRows needs to be called with debounce (wait = 0, invocation is deferred until to the next tick)
              * in order to avoid subsequently calling fetchData with the same params every time filter, sort and columns model
@@ -128,7 +128,7 @@ const withInfiniteScrolling =
                 fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
                     .then(response => {
                         const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
-
+                        props.setData(response);
                         if (typeof props.setTotalCount === 'function' && isMounted.current) {
                             props.setTotalCount(total);
                         }
@@ -147,7 +147,7 @@ const withInfiniteScrolling =
                                 gridApi.forEachNode(rowNode => {
                                     const selectedNode = context.selectedRows.find(({id}) => id === rowNode.id);
                                     if (selectedNode) {
-                                        rowNode.setSelected(true);
+                                        rowNode.setSelected(true, false, true);
                                     }
                                 });
                             }
@@ -226,6 +226,7 @@ const withInfiniteScrolling =
             ...WrappedComponent.propTypes,
             onGridEvent: PropTypes.func,
             setTotalCount: PropTypes.func,
+            setData: PropTypes.func,
             setDisplayedRows: PropTypes.func,
             successDataFetchCallback: PropTypes.func,
             onAddAdditionalField: PropTypes.func,
@@ -242,6 +243,7 @@ const withInfiniteScrolling =
             onAddAdditionalField: null,
             params: null,
             isDatasourceEnabled: true,
+            setData: () => null,
         };
 
         const mapStateToProps = state => ({

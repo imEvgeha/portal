@@ -5,9 +5,18 @@
     @include padding(8, 0, 0, 0);
 }
 
+.nexus-c-side-tabs__tab-button {
+    justify-content: left !important;
+}
+
+.nexus-c-side-tabs__tab-button span {
+    flex-grow: 0;
+}
+
 .nexus-c-side-tabs__tab-container {
     width: 100%;
     > button {
+        text-align: left;
         width: 100%;
         background-color: map-get($neutrals, N0);
         &:hover {
@@ -34,6 +43,7 @@
     > button {
         width: 80%;
         background-color: map-get($neutrals, N0);
+        text-align: left;
         &:hover {
             background-color: map-get($neutrals, N30A);
         }

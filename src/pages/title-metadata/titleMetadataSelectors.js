@@ -56,6 +56,9 @@ export const createUploadLogMetadataFilterSelector = () =>
 export const createTitleMetadataFilterSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.filter || {});
 
+export const createCurrentUserViewSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.currentUserView || {});
+
 export const createSelectedIdSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.selectedId || '');
 

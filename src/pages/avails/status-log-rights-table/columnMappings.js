@@ -44,13 +44,13 @@ export default [
         minWidth: 120,
     },
     {
-        colId: 'publishedAt',
-        field: 'publishedAt',
+        colId: 'updatedAt',
+        field: 'updatedAt',
         searchDataType: 'regionalMidnight',
-        javaVariableName: 'publishedAt',
+        javaVariableName: 'updatedAt',
         enableSearch: true,
         dataType: 'timestamp',
-        headerName: 'Publish date',
+        headerName: 'Synced date',
         minWidth: 150,
     },
     {

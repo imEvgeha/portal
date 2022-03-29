@@ -27,7 +27,8 @@
             "required": false,
             "icon": "block",
             "tooltip": "Withdrawn Status",
-            "valueToDisplay": "Withdrawn"
+            "valueToDisplay": "Withdrawn",
+            "sortable": false
         },
         {
             "javaVariableName": "title",
@@ -168,7 +169,7 @@
             "sortParamName": "territoryCountry"
         },
         {
-            "javaVariableName": "territory",
+            "javaVariableName": "territory.selected",
             "displayName": "Selected",
             "dataType": "territory.selected",
             "searchDataType": "territoryType",
@@ -176,7 +177,8 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true
+            "required": true,
+            "sortable": false
         },
         {
             "javaVariableName": "territoryDateSelected",
@@ -187,10 +189,11 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "cellRenderer": "selectedAtCellRenderer"
         },
         {
-            "javaVariableName": "territory",
+            "javaVariableName": "territory.withdrawn",
             "displayName": "Withdrawn Locales",
             "dataType": "territory.withdrawn",
             "searchDataType": "territoryType",
@@ -1925,7 +1928,8 @@
             "enableSearch": true,
             "enableEdit": true,
             "required": false,
-            "hide": true
+            "hide": true,
+            "sortable": false
         },
         {
             "javaVariableName": "updatedCatalogReceivedAt",

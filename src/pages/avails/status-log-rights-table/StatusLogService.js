@@ -10,43 +10,27 @@ const PAGESIZE = 100;
 export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
     const queryParams = {page, size};
     const getUpdatedAtParams = () => {
-        const updatedAtStart =
-            params?.publishedAt?.publishedAtFrom && moment(params.publishedAt.publishedAtFrom).utc(true).toISOString();
-        const updatedAtEnd =
-            params?.publishedAt?.publishedAtTo && moment(params.publishedAt.publishedAtTo).utc(true).toISOString();
+        const updatedAtFrom = params?.updatedAt?.updatedAtFrom;
+        const updatedAtStart = updatedAtFrom && moment(updatedAtFrom).utc(true).toISOString();
 
-        if (params?.publishedAt?.publishedAtFrom && params?.publishedAt?.publishedAtTo) {
-            return {
-                updatedAtStart,
-                updatedAtEnd,
-            };
-        } else if (params?.publishedAt?.publishedAtTo) {
-            return {
-                updatedAtEnd,
-            };
-        } else if (params?.publishedAt?.publishedAtFrom) {
-            return {
-                updatedAtStart,
-            };
-        }
+        const updatedAtTo = params?.updatedAt?.updatedAtTo;
+        const updatedAtEnd = updatedAtTo && moment(updatedAtTo).utc(true).endOf('day').toISOString();
 
-        return {};
+        return {
+            ...(updatedAtStart && {updatedAtStart}),
+            ...(updatedAtEnd && {updatedAtEnd}),
+        };
     };
-    const updatedAtParams = getUpdatedAtParams();
-    delete params.publishedAt;
+    delete params.updatedAt;
 
-    const qs = querystring.stringify({...queryParams, ...updatedAtParams, ...params});
+    const qs = querystring.stringify({...queryParams, ...getUpdatedAtParams(), ...params});
     const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/publishInfo/search`;
     const response = nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK`);
-    response.then(data => {
-        store.dispatch(saveStatusDataAction(data));
-    });
-
+    response.then(data => store.dispatch(saveStatusDataAction(data)));
     return response;
 };
 
 export const postReSync = data => {
     const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/rights/sync`;
-    const response = nexusFetch(url, {method: 'post', body: JSON.stringify(data)});
-    return response;
+    return nexusFetch(url, {method: 'post', body: JSON.stringify(data)});
 };

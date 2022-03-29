@@ -31,7 +31,10 @@ const ArrayElement = ({elementsSchema, form, values}) => {
         return (Array.isArray(values) && values.length ? values : newConfig).map(
             (val, index) =>
                 elementsSchema?.misc?.fields.map(f => {
-                    return {...f, name: `${elementsSchema.name}.${index}`};
+                    return {
+                        ...f,
+                        name: `${elementsSchema.name}.${index}`,
+                    };
                 })[0]
         );
     };
@@ -94,6 +97,7 @@ const ArrayElement = ({elementsSchema, form, values}) => {
         const fieldName = `${elementsSchema.name}.${newFields.length}`;
         newFields.push({
             ...(newFields?.[0] || {}),
+            id: new Date().getTime(),
             type: newFields?.[0]?.type,
             name: fieldName,
         });
@@ -127,8 +131,9 @@ const ArrayElement = ({elementsSchema, form, values}) => {
             }
             tmp.reverse();
             const name = tmp.join('.');
+            const id = new Date().getTime();
 
-            return {...f, name};
+            return {...f, name, id};
         });
 
     const onRemove = (index, isGroup) => {

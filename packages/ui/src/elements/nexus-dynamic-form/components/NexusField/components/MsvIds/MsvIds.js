@@ -57,10 +57,12 @@ const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) =
         const {params} = match || {};
         const {id} = params;
         if (id && typeof generateMsvIds === 'function') {
-            const generatedIds = await generateMsvIds(id, values.licensor.value, values.licensee.value);
-            const updatedMsvIds = [...msvIds, ...generatedIds];
-            setMsvIds(updatedMsvIds);
-            onChange([...updatedMsvIds]);
+            const generatedIds = await generateMsvIds(id, values.licensor.value, values.licensee.value, data);
+            if (Array.isArray(generatedIds) && generatedIds.length > 0) {
+                const updatedMsvIds = [...msvIds, ...generatedIds];
+                setMsvIds(updatedMsvIds);
+                onChange([...updatedMsvIds]);
+            }
         }
         closeModal();
     };

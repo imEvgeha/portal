@@ -4,6 +4,7 @@ const initialState = {
     count: 0,
     data: [],
     resyncRights: {},
+    selectedResyncRights: [],
 };
 
 const statusLogReducer = (state = initialState, action) => {
@@ -30,6 +31,7 @@ const statusLogReducer = (state = initialState, action) => {
                 resyncRights: action.payload,
             };
         }
+
         default:
             return state;
     }
