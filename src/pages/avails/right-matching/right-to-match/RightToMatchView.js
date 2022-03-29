@@ -65,7 +65,7 @@ const RightToMatchView = ({
     storeMatchedRights,
     validateRights,
 }) => {
-    const [matchingCandidates, setMatchingCandidates] = useState(null);
+    const [matchingCandidates, setMatchingCandidates] = useState([]);
     const [newPendingRight, setNewPendingRight] = useState([]);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {};
@@ -200,7 +200,9 @@ const RightToMatchView = ({
                         break;
                     }
                     case TERRITORY:
-                        if (params.colDef.colId === 'selected') return;
+                        if (params.colDef.colId === 'selected') {
+                            return '';
+                        }
                         if (pendingRightData[key].length !== params.value.length) {
                             return 'nexus-c-right-to-match-view__grid-column--highlighted';
                         }
@@ -229,8 +231,10 @@ const RightToMatchView = ({
                         }
                         break;
                     default:
-                        return;
+                        return '';
                 }
+
+                return '';
             };
         });
     };
@@ -256,9 +260,11 @@ const RightToMatchView = ({
 
         const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames)?.filter(elem => elem);
 
-        if (tableName === CONFLICTING_RIGHTS) highlightDiffCells(reorderedHeaders);
+        if (tableName === CONFLICTING_RIGHTS) {
+            highlightDiffCells(reorderedHeaders);
+        }
 
-        return reorderedHeaders;
+        return reorderedHeaders.map(column => ({...column, floatingFilter: true}));
     };
 
     return (
@@ -300,7 +306,7 @@ const RightToMatchView = ({
                         <NexusTitle isSubTitle>
                             {CONFLICTING_RIGHTS} {`(${matchingCandidates?.length})`}
                         </NexusTitle>
-                        {matchingCandidates && (
+                        {matchingCandidates.length && (
                             <RightRepositoryNexusGrid
                                 id="rightsMatchingRepo"
                                 columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
@@ -308,7 +314,6 @@ const RightToMatchView = ({
                                 rowSelection="multiple"
                                 rowData={matchingCandidates}
                                 suppressRowClickSelection={true}
-                                floatingFilter={true}
                                 defaultColDef={{
                                     filter: AG_GRID_COLUMN_FILTER.TEXT,
                                     sortable: true,

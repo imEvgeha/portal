@@ -135,4 +135,5 @@ export const addCellClass = ({value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}
     if (Object.keys(fieldValues).length && !isMajorValue(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
     }
+    return '';
 };

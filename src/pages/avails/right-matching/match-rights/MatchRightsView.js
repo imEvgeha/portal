@@ -80,7 +80,7 @@ const MatchRightView = ({
 
     useEffect(() => {
         if (!rightsForMatching.length && !mergeRights) {
-            fetchMatchedRight(matchedRightIds.split(','));
+            // fetchMatchedRight(matchedRightIds.split(','));
         }
     }, [rightsForMatching.length]);
 
@@ -181,6 +181,7 @@ const MatchRightView = ({
             const schema = createColumnSchema(getSelectedRows(api), colDef.field);
             return addCellClass({field: colDef.field, value, schema});
         }
+        return '';
     };
 
     // Sorted by start field. desc
@@ -210,6 +211,7 @@ const MatchRightView = ({
 
                       return isCellHighlighted && HIGHLIGHTED_CELL_CLASS;
                   }
+                  return '';
               },
           })
         : columnDefs;
