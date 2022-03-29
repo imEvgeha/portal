@@ -38,7 +38,9 @@ const RightsRepository = ({
             onFiltersChange(getFiltersToSend());
         }, 50000);
 
-        return () => clearInterval(timer);
+        return () => {
+            clearInterval(timer);
+        };
     }, []);
 
     useEffect(() => {
