@@ -89,8 +89,15 @@ const PreplanRightsTable = ({
             const filteredColumnDefs = updatedColumnDefsCheckBoxHeader.filter(
                 columnDef => columnDef.colId !== 'territoryCountry'
             );
-                
-            setTableColumnDefinitions(filteredColumnDefs);
+
+            const reorderedAndFilteredColumnDefs = reorderColumns([
+                ...filteredColumnDefs,
+                planTerritoriesColumn,
+                territoriesColumn,
+                planKeywordsColumn,
+            ]);
+
+            setTableColumnDefinitions(reorderedAndFilteredColumnDefs);
         }
     }, [columnDefs]);
 
@@ -246,12 +253,7 @@ const PreplanRightsTable = ({
             {!showSelected && (
                 <PrePlanGrid
                     id="prePlanRightsRepo"
-                    columnDefs={reorderColumns([
-                        ...tableColumnDefinitions,
-                        planTerritoriesColumn,
-                        territoriesColumn,
-                        planKeywordsColumn,
-                    ])}
+                    columnDefs={tableColumnDefinitions}
                     singleClickEdit
                     rowSelection="multiple"
                     suppressRowClickSelection={true}
@@ -264,12 +266,7 @@ const PreplanRightsTable = ({
 
             {showSelected && (
                 <SelectedPreplanTable
-                    columnDefs={reorderColumns([
-                        ...tableColumnDefinitions,
-                        planTerritoriesColumn,
-                        territoriesColumn,
-                        planKeywordsColumn,
-                    ])}
+                    columnDefs={tableColumnDefinitions}
                     mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
                     selectedRights={selectedPPRights}
                     username={username}
