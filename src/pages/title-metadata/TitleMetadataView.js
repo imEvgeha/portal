@@ -19,7 +19,7 @@ import RepositorySelectsAndButtons from './components/title-metadata-repo-select
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
 import './TitleMetadataView.scss';
-import {setCurrentUserView, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
+import {setCurrentUserViewAction, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
 import {DEFAULT_CATALOGUE_OWNER, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
@@ -142,7 +142,7 @@ export const TitleMetadataView = ({
     useEffect(() => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
             gridApi.setFilterModel(titleMetadataFilter?.filterModel);
-            if (columnApi?.columnController) {
+            if (columnApi?.columnModel) {
                 setSorting(titleMetadataFilter.sortModel, columnApi);
             }
             columnApi?.applyColumnState({state: titleMetadataFilter?.columnState});
@@ -244,7 +244,7 @@ const mapDispatchToProps = dispatch => ({
     resetTitleId: () => dispatch(resetTitle()),
     storeTitleUserDefinedGridState: payload => dispatch(storeTitleUserDefinedGridState(payload)),
     uploadMetadata: payload => dispatch(uploadMetadata(payload)),
-    setCurrentUserView: payload => dispatch(setCurrentUserView(payload)),
+    setCurrentUserView: payload => dispatch(setCurrentUserViewAction(payload)),
 });
 
 TitleMetadataView.propTypes = {
