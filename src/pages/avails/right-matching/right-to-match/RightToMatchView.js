@@ -258,13 +258,14 @@ const RightToMatchView = ({
             }
         }
 
-        const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames)?.filter(elem => elem);
+        let reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames)?.filter(elem => elem);
 
         if (tableName === CONFLICTING_RIGHTS) {
             highlightDiffCells(reorderedHeaders);
+            reorderedHeaders = reorderedHeaders.map(column => ({...column, floatingFilter: true}));
         }
 
-        return reorderedHeaders.map(column => ({...column, floatingFilter: true}));
+        return reorderedHeaders;
     };
 
     return (
