@@ -51,7 +51,6 @@ const MatchRightView = ({
     focusedRight,
     combinedRight,
     fetchFocusedRight,
-    fetchMatchedRight,
     fetchCombinedRight,
     saveCombinedRight,
     createRightMatchingColumnDefs,
@@ -77,12 +76,6 @@ const MatchRightView = ({
 
     // DOP Integration
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
-
-    useEffect(() => {
-        if (!rightsForMatching.length && !mergeRights) {
-            // fetchMatchedRight(matchedRightIds.split(','));
-        }
-    }, [rightsForMatching.length]);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -281,7 +274,6 @@ MatchRightView.propTypes = {
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
     fetchFocusedRight: PropTypes.func,
-    fetchMatchedRight: PropTypes.func,
     fetchCombinedRight: PropTypes.func,
     saveCombinedRight: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
@@ -289,7 +281,6 @@ MatchRightView.propTypes = {
     history: PropTypes.object,
     match: PropTypes.object,
     pendingRight: PropTypes.object,
-    // eslint-disable-next-line react/boolean-prop-naming
     mergeRights: PropTypes.bool,
     rightsForMatching: PropTypes.array,
     validateRights: PropTypes.func.isRequired,
@@ -301,7 +292,6 @@ MatchRightView.defaultProps = {
     columnDefs: [],
     mapping: null,
     fetchFocusedRight: null,
-    fetchMatchedRight: null,
     fetchCombinedRight: null,
     saveCombinedRight: null,
     createRightMatchingColumnDefs: null,
