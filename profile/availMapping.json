@@ -173,12 +173,18 @@
             "displayName": "Selected",
             "dataType": "territory.selected",
             "searchDataType": "territoryType",
+            "configEndpoint": "/countries",
+            "alternateSelector": "country",
             "queryParamName": "selected",
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
             "required": true,
-            "sortable": false
+            "sortable": false,
+            "cellRenderer": "selectedAtCellRenderer",
+            "cellRendererParams": {
+                "applyFilter": false
+            }
         },
         {
             "javaVariableName": "territoryDateSelected",
@@ -190,7 +196,10 @@
             "enableSearch": true,
             "enableEdit": true,
             "required": false,
-            "cellRenderer": "selectedAtCellRenderer"
+            "cellRenderer": "selectedAtCellRenderer",
+            "cellRendererParams": {
+                "applyFilter": true
+            }
         },
         {
             "javaVariableName": "territory.withdrawn",
