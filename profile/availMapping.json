@@ -179,7 +179,10 @@
             "enableEdit": true,
             "required": true,
             "sortable": false,
-            "cellRenderer": "selectedCellRenderer"
+            "cellRenderer": "selectedAtCellRenderer",
+            "cellRendererParams": {
+                "applyFilter": false
+            }
         },
         {
             "javaVariableName": "territoryDateSelected",
@@ -191,7 +194,10 @@
             "enableSearch": true,
             "enableEdit": true,
             "required": false,
-            "cellRenderer": "selectedAtCellRenderer"
+            "cellRenderer": "selectedAtCellRenderer",
+            "cellRendererParams": {
+                "applyFilter": true
+            }
         },
         {
             "javaVariableName": "territory.withdrawn",
