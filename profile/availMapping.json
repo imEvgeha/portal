@@ -173,6 +173,8 @@
             "displayName": "Selected",
             "dataType": "territory.selected",
             "searchDataType": "territoryType",
+            "configEndpoint": "/countries",
+            "alternateSelector": "country",
             "queryParamName": "selected",
             "readOnly": false,
             "enableSearch": true,
