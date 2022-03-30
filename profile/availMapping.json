@@ -178,7 +178,8 @@
             "enableSearch": true,
             "enableEdit": true,
             "required": true,
-            "sortable": false
+            "sortable": false,
+            "cellRenderer": "selectedCellRenderer"
         },
         {
             "javaVariableName": "territoryDateSelected",

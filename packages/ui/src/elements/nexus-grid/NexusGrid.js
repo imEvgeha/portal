@@ -10,8 +10,6 @@ import SelectedAtCellRenderer from './elements/cell-renderer/SelectedAtCellRende
 import WordsCellRenderer from './elements/cell-renderer/WordsCellRenderer';
 import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
 
-const SELECTION_DELAY = 5;
-
 const NexusGrid = ({
     columnDefs,
     rowData,

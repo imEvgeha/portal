@@ -21,6 +21,7 @@ import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridAp
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {processOptions} from '../../legacy/containers/avail/util/ProcessSelectOptions';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
+import SelectedCellRenderer from '../cell-renderers/SelectedCellRenderer';
 import {
     deselectIngest,
     downloadEmailAttachment,
@@ -461,6 +462,9 @@ const RightsRepositoryTable = ({
                             params.data &&
                             params.data.status &&
                             (params.data.status === 'Merged' || params.data.status === 'Deleted'),
+                    }}
+                    frameworkComponents={{
+                        selectedCellRenderer: SelectedCellRenderer,
                     }}
                 />
             )}
