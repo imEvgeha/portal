@@ -69,7 +69,7 @@ const UploadMetadataTable = ({
 
     useLayoutEffect(() => {
         return () => {
-            if (gridApi && columnApi?.columnController) {
+            if (gridApi && columnApi?.columnModel) {
                 const filterModel = gridApi.getFilterModel();
                 const sortModel = getSortModel(columnApi);
                 const columnState = columnApi?.getColumnState();
