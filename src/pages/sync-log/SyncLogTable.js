@@ -1,10 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
-import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import {dateToISO} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
@@ -20,11 +19,7 @@ import {selectSyncLogDateFrom, selectSyncLogDateTo} from './syncLogSelectors';
 import {getSyncLog} from './syncLogService';
 import './SyncLogTable.scss';
 
-const SyncLogGrid = compose(
-    withFilterableColumns(),
-    withColumnsResizing(),
-    withInfiniteScrolling({fetchData: getSyncLog})
-)(NexusGrid);
+const SyncLogGrid = compose(withColumnsResizing(), withInfiniteScrolling({fetchData: getSyncLog}))(NexusGrid);
 
 const SyncLogTable = ({setDateFrom, dateFrom, dateTo}) => {
     const [showDrawer, setShowDrawer] = useState(false);
