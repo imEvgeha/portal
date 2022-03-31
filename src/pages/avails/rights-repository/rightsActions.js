@@ -52,3 +52,8 @@ export const storeFromSelectedTable = payload => ({
     type: actionTypes.STORE_FROM_SELECTED_TABLE,
     payload,
 });
+
+export const setCurrentUserViewActionAvails = payload => ({
+    type: actionTypes.SET_CURRENT_USER_VIEW_AVAILS,
+    payload,
+});
