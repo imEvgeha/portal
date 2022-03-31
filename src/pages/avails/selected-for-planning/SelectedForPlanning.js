@@ -80,7 +80,7 @@ export const SelectedForPlanning = ({username}) => {
     const dragStoppedHandler = event => {
         const updatedMappings = updatedColDef.length ? cloneDeep(updatedColDef) : cloneDeep(mappings);
         const columnHeader = event.target.textContent.trim();
-        const columns = event.columnApi.columnController.gridColumns;
+        const columns = event.columnApi?.columnModel?.getAllGridColumns();
 
         const moveTo = columns.findIndex(col => col.colDef.headerName === columnHeader);
         const moveFrom = updatedMappings.findIndex(col => col.headerName === columnHeader);
