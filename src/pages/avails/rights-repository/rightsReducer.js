@@ -124,12 +124,6 @@ const rightsReducer = (state = initialState, action = {}) => {
                 fromSelected: {...fromSelected, ...payload},
             };
         }
-        case actionTypes.SET_CURRENT_USER_VIEW_AVAILS: {
-            return {
-                ...state,
-                currentUserView: payload,
-            };
-        }
         default:
             return state;
     }

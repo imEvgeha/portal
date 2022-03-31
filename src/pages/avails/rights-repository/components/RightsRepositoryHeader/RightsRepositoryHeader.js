@@ -26,8 +26,8 @@ import {
     STATUS_TAB,
 } from '../../constants';
 import './RightsRepositoryHeader.scss';
-import {setCurrentUserViewActionAvails, storeAvailsUserDefinedGrid} from '../../rightsActions';
-import {createAvailsCurrentUserViewSelector, createUserGridSelector} from '../../rightsSelectors';
+import {storeAvailsUserDefinedGrid} from '../../rightsActions';
+import {createUserGridSelector} from '../../rightsSelectors';
 import {applyPredefinedTableView} from '../../util/utils';
 
 export const RightsRepositoryHeader = ({
@@ -42,8 +42,6 @@ export const RightsRepositoryHeader = ({
     setActiveTabIndex,
     gridState,
     storeAvailsUserDefinedGrid,
-    setCurrentUserView,
-    currentUserView,
 }) => {
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
 
@@ -103,8 +101,6 @@ export const RightsRepositoryHeader = ({
                             tableLabels={tableLabels}
                             tableOptions={tableOptions}
                             isDisabled={isItDisabledForCurrentTab}
-                            setCurrentUserView={payload => setCurrentUserView(payload)}
-                            currentUserView={currentUserView}
                         />
                     ) : activeTab === RIGHTS_TAB || activeTab === PRE_PLAN_TAB ? (
                         <Loading />
@@ -136,8 +132,6 @@ RightsRepositoryHeader.propTypes = {
     setActiveTab: PropTypes.func,
     activeTabIndex: PropTypes.number.isRequired,
     setActiveTabIndex: PropTypes.func,
-    setCurrentUserView: PropTypes.func.isRequired,
-    currentUserView: PropTypes.object,
 };
 
 RightsRepositoryHeader.defaultProps = {
@@ -151,21 +145,17 @@ RightsRepositoryHeader.defaultProps = {
     storeAvailsUserDefinedGrid: () => null,
     setActiveTab: () => null,
     setActiveTabIndex: () => null,
-    currentUserView: {},
 };
 
 const mapStateToProps = () => {
     const gridSelector = createUserGridSelector();
-    const currentUserViewSelector = createAvailsCurrentUserViewSelector();
     return state => ({
         gridState: gridSelector(state),
-        currentUserView: currentUserViewSelector(state),
     });
 };
 
 const mapDispatchToProps = dispatch => ({
     storeAvailsUserDefinedGrid: payload => dispatch(storeAvailsUserDefinedGrid(payload)),
-    setCurrentUserView: payload => dispatch(setCurrentUserViewActionAvails(payload)),
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RightsRepositoryHeader));
