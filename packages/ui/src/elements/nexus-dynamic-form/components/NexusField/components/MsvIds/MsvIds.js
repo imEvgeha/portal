@@ -6,7 +6,6 @@ import {default as AKForm} from '@atlaskit/form/Form';
 import Select from '@atlaskit/select';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {cloneDeep} from 'lodash';
-import {withRouter} from 'react-router-dom';
 import NexusTagsContainer from '../../../../../../../lib/elements/nexus-tags-container/NexusTagsContainer';
 import {sortOptions} from '../../../../utils';
 import './MsvIds.scss';
@@ -147,4 +146,4 @@ MsvIds.defaultProps = {
     generateMsvIds: undefined,
 };
 
-export default withRouter(MsvIds);
+export default MsvIds;

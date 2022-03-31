@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import GoogleAnalytics from 'react-ga';
+import {useLocation} from 'react-router-dom';
 import {getConfig} from '../../config';
 
 export function initializeTracker() {
@@ -11,49 +12,39 @@ export function initializeTracker() {
     }
 }
 
-const withTracker = (WrappedComponent, options = {}) => {
-    const trackPage = page => {
-        GoogleAnalytics.set({
-            page,
-            ...options,
-        });
+const withTracker =
+    (options = {}) =>
+    WrappedComponent => {
+        return props => {
+            const location = useLocation();
+            const previousLocation = useRef('');
 
-        GoogleAnalytics.pageview(page);
+            useEffect(() => {
+                const page = location.pathname + location.search;
+                previousLocation.current = page;
+                trackPage(page);
+            }, []);
+
+            useEffect(() => {
+                const nextPage = location.pathname + location.search;
+
+                if (previousLocation.current !== nextPage) {
+                    previousLocation.current = nextPage;
+                    trackPage(nextPage);
+                }
+            }, [location]);
+
+            const trackPage = page => {
+                GoogleAnalytics.set({
+                    page,
+                    ...options,
+                });
+
+                GoogleAnalytics.pageview(page);
+            };
+
+            return <WrappedComponent location={location} />;
+        };
     };
-
-    class ComposedComponent extends Component {
-        componentDidMount() {
-            const {location} = this.props;
-            const page = location.pathname + location.search;
-
-            trackPage(page);
-        }
-
-        componentDidUpdate(prevProps) {
-            const {location} = this.props;
-            const {location: prevLocation} = prevProps;
-
-            const currentPage = prevLocation.pathname + prevLocation.search;
-            const nextPage = location.pathname + location.search;
-
-            if (currentPage !== nextPage) {
-                trackPage(nextPage);
-            }
-        }
-
-        render() {
-            return <WrappedComponent {...this.props} />;
-        }
-    }
-
-    ComposedComponent.propTypes = {
-        location: PropTypes.shape({
-            pathname: PropTypes.string,
-            search: PropTypes.string,
-        }).isRequired,
-    };
-
-    return ComposedComponent;
-};
 
 export default withTracker;

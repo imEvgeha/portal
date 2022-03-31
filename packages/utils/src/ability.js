@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {AbilityBuilder, Ability} from '@casl/ability';
+import {Ability, AbilityBuilder} from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
-import {withRouter} from 'react-router-dom';
-import {AVAILS, METADATA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS} from './constants';
+import {useHistory} from 'react-router-dom';
+import {AVAILS, DOP_TASKS, EVENT_MANAGEMENT, METADATA, SERVICING_ORDERS} from './constants';
 
 const idToAbilityNameMap = {
     [AVAILS]: 'Avail',
@@ -107,7 +106,7 @@ const canRender = (Component, action, subject, field = undefined) => {
     class AuthenticatedComponent extends React.Component {
         componentDidMount() {
             if (cannot(action, subject, field)) {
-                const {history} = this.props;
+                const history = useHistory();
                 history.push('/401');
             }
         }
@@ -117,11 +116,7 @@ const canRender = (Component, action, subject, field = undefined) => {
         }
     }
 
-    AuthenticatedComponent.propTypes = {
-        history: PropTypes.object.isRequired,
-    };
-
-    return withRouter(AuthenticatedComponent);
+    return AuthenticatedComponent;
 };
 
 export {ability, updateAbility, Can, can, cannot, canRender, idToAbilityNameMap};

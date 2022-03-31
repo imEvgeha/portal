@@ -1,4 +1,5 @@
 import React from 'react';
+import {compose} from 'redux';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
 import eventManagementRoutes from './pages/event-management/eventManagementRoutes';
@@ -67,7 +68,7 @@ export const routes = [
 
 export function routesWithTracking() {
     return routes.map(route => {
-        route.component = withTracker(route.component);
+        route.component = compose(withTracker())(route.component);
         return route;
     });
 }

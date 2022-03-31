@@ -106,12 +106,13 @@ RightsRepository.propTypes = {
     mapping: PropTypes.array,
     username: PropTypes.string.isRequired,
     onFiltersChange: PropTypes.func,
-    location: PropTypes.object.isRequired,
+    location: PropTypes.object,
 };
 
 RightsRepository.defaultProps = {
     mapping: [],
     onFiltersChange: () => null,
+    location: {search: {}},
 };
 
 const mapStateToProps = () => {
