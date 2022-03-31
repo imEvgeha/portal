@@ -6,7 +6,7 @@ import {Button} from 'primereact/button';
 import {connect} from 'react-redux';
 import './TitleMetadataRepoSelectsAndButtons.scss';
 import {TABLE_LABELS, TABLE_OPTIONS} from '../../constants';
-import {setCurrentUserViewAction} from '../../titleMetadataActions';
+import {setCurrentUserView} from '../../titleMetadataActions';
 import {createCurrentUserViewSelector} from '../../titleMetadataSelectors';
 import CatalogueOwner from '../catalogue-owner/CatalogueOwner';
 
@@ -71,7 +71,7 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    setCurrentUserView: payload => dispatch(setCurrentUserViewAction(payload)),
+    setCurrentUserView: payload => dispatch(setCurrentUserView(payload)),
 });
 
 RepositorySelectsAndButtons.propTypes = {

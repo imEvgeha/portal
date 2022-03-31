@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
@@ -10,6 +10,7 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
+import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/src/elements/nexus-grid/constants';
 import {defineCheckboxSelectionColumn} from '@vubiquity-nexus/portal-ui/src/elements/nexus-grid/elements/columnDefinitions';
 import {get, isEmpty, isEqual} from 'lodash';
@@ -38,14 +39,8 @@ import {
 import Ingest from '../rights-repository/components/ingest/Ingest';
 import TooltipCellRenderer from '../rights-repository/components/tooltip/TooltipCellRenderer';
 import {RIGHTS_TAB} from '../rights-repository/constants';
-import {
-    setCurrentUserViewActionAvails,
-    setPreplanRights,
-    setRightsFilter,
-    setSelectedRights,
-} from '../rights-repository/rightsActions';
+import {setPreplanRights, setRightsFilter, setSelectedRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
-import {createAvailsCurrentUserViewSelector} from '../rights-repository/rightsSelectors';
 import {mapColumnDefinitions} from '../rights-repository/util/utils';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
@@ -74,7 +69,6 @@ const RightsRepositoryTable = ({
     setRightsRepoColumnApi,
     setPreplanRights,
     prePlanRights,
-    setCurrentUserView,
 }) => {
     const {search} = location;
 
@@ -85,6 +79,7 @@ const RightsRepositoryTable = ({
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [singleRightMatch, setSingleRightMatch] = useState([]);
     const [attachment, setAttachment] = useState();
+    const repositoryFilterModel = useRef(undefined);
     const [selectedFilter, setSelectedFilter] = useState({});
     const [selectedRightsGridApi, setSelectedRightsGridApi] = useState(undefined);
     const [selectedRightsColumnApi, setSelectedRightsColumnApi] = useState(undefined);
@@ -109,11 +104,8 @@ const RightsRepositoryTable = ({
     }, [ingestClick]);
 
     useEffect(() => {
-        if (selectedAttachmentId && gridApi) {
-            setCurrentUserView(undefined);
-            gridApi.setFilterModel(null);
-        }
-    }, [selectedAttachmentId]);
+        gridApi && gridApi.setFilterModel(null);
+    }, [selectedAttachmentId, gridApi]);
 
     useEffect(() => {
         showSelected && setGridApi(undefined);
@@ -352,7 +344,9 @@ const RightsRepositoryTable = ({
         switch (type) {
             case READY:
                 setGridApis(api, columnApi);
-                api?.setFilterModel(rightsFilter?.column);
+                if (repositoryFilterModel.current) {
+                    api?.setFilterModel(repositoryFilterModel.current);
+                }
                 break;
             case FIRST_DATA_RENDERED:
                 updateMapping(api);
@@ -362,16 +356,17 @@ const RightsRepositoryTable = ({
                 break;
             }
             case FILTER_CHANGED: {
-                const filterModel = api.getFilterModel();
+                const column = filterBy(api.getFilterModel());
 
-                if (Object.keys(filterModel || {}).length === 0) {
+                if (Object.keys(column || {}).length === 0) {
                     const filter = {...rightsFilter};
                     delete filter.column;
                     setRightsFilter(filter);
                     break;
                 }
 
-                const filters = {column: {...filterModel}, external: {...rightsFilter.external}};
+                repositoryFilterModel.current = api.getFilterModel();
+                const filters = {column: {...rightsFilter.column, ...column}, external: {...rightsFilter.external}};
                 setRightsFilter(filters);
                 updateMapping(api);
                 break;
@@ -504,7 +499,6 @@ RightsRepositoryTable.propTypes = {
     setRightsRepoColumnApi: PropTypes.func.isRequired,
     setPreplanRights: PropTypes.func.isRequired,
     prePlanRights: PropTypes.object,
-    setCurrentUserView: PropTypes.func.isRequired,
 };
 
 RightsRepositoryTable.defaultProps = {
@@ -524,7 +518,6 @@ const mapStateToProps = () => {
     const rightsFilterSelector = selectors.createRightsFilterSelector();
     const fromSelectedTableSelector = selectors.createFromSelectedTableSelector();
     const preplanRightsSelector = selectors.createPreplanRightsSelector();
-    const currentUserViewSelector = createAvailsCurrentUserViewSelector();
 
     return (state, props) => ({
         columnDefs: rightMatchingColumnDefsSelector(state, props),
@@ -536,7 +529,6 @@ const mapStateToProps = () => {
         selectedAttachmentId: getSelectedAttachmentId(state),
         fromSelectedTable: fromSelectedTableSelector(state, props),
         prePlanRights: preplanRightsSelector(state, props),
-        currentUserView: currentUserViewSelector(state),
     });
 };
 
@@ -550,7 +542,6 @@ const mapDispatchToProps = dispatch => ({
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     onFiltersChange: payload => dispatch(fetchIngests(payload)),
     setPreplanRights: payload => dispatch(setPreplanRights(payload)),
-    setCurrentUserView: payload => dispatch(setCurrentUserViewActionAvails(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepositoryTable);
