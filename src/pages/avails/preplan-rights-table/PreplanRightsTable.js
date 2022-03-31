@@ -203,15 +203,15 @@ const PreplanRightsTable = ({
     };
 
     const reorderColumns = defs => {
-        const updatedColumnDefs = [...defs];
+        const columnDefs = [...defs];
+        const newColumnDef = columnDefs.filter(u => !COLUMNS_TO_REORDER.includes(u.headerName));
         COLUMNS_TO_REORDER.forEach((colHeader, headerIndex) => {
-            const index = updatedColumnDefs.findIndex(el => el.headerName === colHeader);
+            const index = columnDefs.findIndex(el => el.headerName === colHeader);
             if (index >= 0) {
-                updatedColumnDefs.splice(INSERT_FROM + headerIndex, 0, updatedColumnDefs[index]);
-                updatedColumnDefs.splice(index, 1);
+                newColumnDef.splice(INSERT_FROM + headerIndex, 0, columnDefs[index]);
             }
         });
-        return updatedColumnDefs;
+        return newColumnDef;
     };
 
     const storeSelectedRightsTabledApis = (api, cApi) => {
