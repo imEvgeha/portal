@@ -20,3 +20,11 @@ jest.mock('react-intl', () => {
         useIntl: () => intl,
     };
 });
+
+export const mockHistoryPush = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}));

@@ -1,6 +1,8 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+import {createMemoryHistory} from 'history';
 import {Button} from 'primereact/button';
+import {mockHistoryPush} from '../../../../../setupTestEnv';
 import {RightsRepositoryHeader} from './RightsRepositoryHeader';
 
 describe('RightsRepositoryHeader', () => {
@@ -8,6 +10,7 @@ describe('RightsRepositoryHeader', () => {
     const props = {
         title: 'Rights',
     };
+    const history = createMemoryHistory();
 
     beforeEach(() => {
         wrapper = shallow(<RightsRepositoryHeader {...props} />);
@@ -24,7 +27,7 @@ describe('RightsRepositoryHeader', () => {
 
     it('should redirect to right create page when button is clicked', () => {
         wrapper.find(Button).simulate('click');
-        // expect(historyPushMock).toHaveBeenCalled();
+        expect(mockHistoryPush).toHaveBeenCalledWith('/avails/rights/create');
     });
 
     it('renders create new right button', () => {
