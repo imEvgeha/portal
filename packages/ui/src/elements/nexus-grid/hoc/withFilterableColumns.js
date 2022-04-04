@@ -396,11 +396,7 @@ const withFilterableColumns =
                     setGridApi(api);
                 }
 
-                if (
-                    events.includes(type) &&
-                    typeof onGridEvent === 'function' &&
-                    type === GRID_EVENTS.SELECTION_CHANGED
-                ) {
+                if (events.includes(type) && typeof onGridEvent === 'function') {
                     props.onGridEvent(data);
                 }
             };
