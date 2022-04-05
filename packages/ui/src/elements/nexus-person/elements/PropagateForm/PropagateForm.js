@@ -7,6 +7,8 @@ import {RadioGroup} from '@atlaskit/radio';
 import {searchPersonById} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import {isEmpty} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
+import './PropagateForm.scss';
+import {checkIfEmetIsEditorial} from '../../../nexus-dynamic-form/utils';
 import {
     CAST_CREW,
     CANCEL_BUTTON,
@@ -18,13 +20,17 @@ import {
     EMETS,
     SEASON,
     EPISODE,
-} from '../../../../../../../src/pages/title-metadata/components/title-metadata-details/components/propagateConstants';
-import {propagateAddPersons} from '../../../../../../../src/pages/title-metadata/titleMetadataActions';
-import '../../../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm.scss';
-import {checkIfEmetIsEditorial} from '../../../nexus-dynamic-form/utils';
+} from './propagateConstants';
 
 const propagateAddPersonsSelector = state => state?.titleMetadata?.propagateAddPersons || [];
 const propagateRemovePersonsSelector = state => state?.titleMetadata?.propagateRemovePersons || [];
+
+export const PROPAGATE_ADD_PERSONS = 'PROPAGATE_ADD_PERSONS';
+
+const propagateAddPersons = payload => ({
+    type: PROPAGATE_ADD_PERSONS,
+    payload,
+});
 
 const episodePropagateOptions = [
     {

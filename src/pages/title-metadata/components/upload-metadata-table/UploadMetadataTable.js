@@ -9,11 +9,11 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {fetchUploadedEMETsLog} from '@vubiquity-nexus/portal-utils/lib/services/UploadLogService';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect, useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {UPLOAD_COLUMN_MAPPINGS, DEFAULT_CATALOGUE_OWNER} from '../../constants';
-import {fetchUploadedEMETsLog} from '../../service/UploadLogService';
 import {setUploadMetadataFilter} from '../../titleMetadataActions';
 import {createUploadLogMetadataFilterSelector} from '../../titleMetadataSelectors';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
