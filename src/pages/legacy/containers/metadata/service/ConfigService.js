@@ -14,7 +14,7 @@ import {
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
 import {getConfig} from '../../../../../config';
-import {nexusFetch} from '@vubiquity-nexus/portal-utils/src/http-client';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 
 export const configFields = {
     LOCALE: 'countries',

@@ -1,8 +1,8 @@
 import querystring from 'querystring';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import moment from 'moment';
 import {getConfig} from '../../../config';
 import {store} from '../../../index';
-import {nexusFetch} from '../../../../packages/utils/src/http-client';
 import {saveStatusDataAction} from './statusLogActions';
 
 const PAGESIZE = 100;

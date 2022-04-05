@@ -10,7 +10,7 @@ import {cloneDeep} from 'lodash';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {useDispatch, useSelector} from 'react-redux';
 import {uid} from 'react-uid';
-import {configService} from '@vubiquity-nexus/portal-utils/src/services/ConfigService';
+import {configService} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors';
 import CreateEditConfig from '../nexus-create-edit-config/CreateEditConfig';
@@ -21,7 +21,7 @@ import NexusPerson from '../nexus-person/NexusPerson';
 import {loadOptions} from './utils';
 import {CAST, CAST_CONFIG, SEASON} from './constants';
 import './NexusPersonsList.scss';
-import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
+import PropagateForm from '../nexus-person/elements/PropagateForm/PropagateForm';
 
 const NexusPersonsList = ({
     personsList,

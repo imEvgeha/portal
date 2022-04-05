@@ -1,7 +1,7 @@
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {cloneDeep, uniqBy} from 'lodash';
 import {all, call, put, select, takeEvery} from 'redux-saga/effects';
 import {getConfig} from '../../../config';
-import {nexusFetch} from '../../../../packages/utils/src/http-client/index';
 import configEndpoints from './configEndpoints.json';
 import * as actionTypes from './rightDetailsActionTypes';
 import * as selectors from './rightDetailsSelector';

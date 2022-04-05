@@ -6,10 +6,10 @@ import {
     CREW_CONFIG,
     CREW_LIST,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
+import {searchPersonById} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
 import {isEmpty} from 'lodash';
 import './CastCrew.scss';
-import {searchPersonById} from '../../../../../../../../../src/pages/avails/right-details/rightDetailsServices';
 
 const CastCrew = ({
     persons,

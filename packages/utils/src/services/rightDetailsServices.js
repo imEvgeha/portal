@@ -10,8 +10,8 @@ import {
     VOICE_TALENT,
     WRITER,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
-import {getConfig} from '../../../config';
-import {nexusFetch} from '../../../../packages/utils/src/http-client/index';
+import {getConfig} from '../../../../src/config';
+import {nexusFetch} from '../http-client';
 
 const createMultiCastPersonTypePath = () => {
     const value =

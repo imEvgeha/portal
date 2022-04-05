@@ -4,13 +4,9 @@ import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
 import {RadioGroup} from '@atlaskit/radio';
-import {checkIfEmetIsEditorial} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
+import {searchPersonById} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import {isEmpty} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
-import {searchPersonById} from '../../../../avails/right-details/rightDetailsServices';
-import Loading from '../../../../static/Loading';
-import {propagateAddPersons} from '../../../titleMetadataActions';
-import {propagateAddPersonsSelector, propagateRemovePersonsSelector} from '../../../titleMetadataSelectors';
 import {
     CAST_CREW,
     CANCEL_BUTTON,
@@ -22,8 +18,13 @@ import {
     EMETS,
     SEASON,
     EPISODE,
-} from './propagateConstants';
-import './PropagateForm.scss';
+} from '../../../../../../../src/pages/title-metadata/components/title-metadata-details/components/propagateConstants';
+import {propagateAddPersons} from '../../../../../../../src/pages/title-metadata/titleMetadataActions';
+import '../../../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm.scss';
+import {checkIfEmetIsEditorial} from '../../../nexus-dynamic-form/utils';
+
+const propagateAddPersonsSelector = state => state?.titleMetadata?.propagateAddPersons || [];
+const propagateRemovePersonsSelector = state => state?.titleMetadata?.propagateRemovePersons || [];
 
 const episodePropagateOptions = [
     {

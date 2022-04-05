@@ -1,20 +1,21 @@
-import {nexusFetch} from '../http-client';
 import {getConfig} from '../../../../src/config';
+import {nexusFetch} from '../http-client';
 
 export const loadConfigAPIEndPoints = () => {
-    const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + '/endpoints';
+    const url = `${getConfig('gateway.configuration') + getConfig('gateway.service.configuration')}/endpoints`;
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 
 export const configService = {
     get: (endpoint, id) => {
-        const url =
-            getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + `/${endpoint}/${id}`;
+        const url = `${
+            getConfig('gateway.configuration') + getConfig('gateway.service.configuration')
+        }/${endpoint}/${id}`;
         return nexusFetch(url);
     },
 
     create: (endpoint, data) => {
-        const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + '/' + endpoint;
+        const url = `${getConfig('gateway.configuration') + getConfig('gateway.service.configuration')}/${endpoint}`;
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(data),
@@ -22,8 +23,9 @@ export const configService = {
     },
 
     update: (endpoint, id, data) => {
-        const url =
-            getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + `/${endpoint}/${id}`;
+        const url = `${
+            getConfig('gateway.configuration') + getConfig('gateway.service.configuration')
+        }/${endpoint}/${id}`;
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(data),
@@ -31,8 +33,9 @@ export const configService = {
     },
 
     delete: (endpoint, id) => {
-        const url =
-            getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + `/${endpoint}/${id}`;
+        const url = `${
+            getConfig('gateway.configuration') + getConfig('gateway.service.configuration')
+        }/${endpoint}/${id}`;
         return nexusFetch(url, {
             method: 'delete',
         });

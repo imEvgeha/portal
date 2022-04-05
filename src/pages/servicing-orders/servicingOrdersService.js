@@ -1,6 +1,6 @@
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {getConfig} from '../../config';
-import {nexusFetch} from '../../../packages/utils/src/http-client';
 
 const baseServicingOrdersURL = () => {
     return `${getConfig('gateway.servicingOrdersUrl')}${getConfig('gateway.service.servicingOrder')}`;

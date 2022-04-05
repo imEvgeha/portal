@@ -5,7 +5,7 @@ import Pagination from '@atlaskit/pagination';
 import {QuickSearch} from '@atlaskit/quick-search';
 import {TextHeader} from '../../components/navigation/CustomNavigationElements';
 import {INPUT_TIMEOUT} from '../../constants/common-ui';
-import {configService} from '@vubiquity-nexus/portal-utils/src/services/ConfigService';
+import {configService} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
 import {Can, can} from '@vubiquity-nexus/portal-utils/lib/ability';

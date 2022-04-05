@@ -1,14 +1,13 @@
 import React, {useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {PROPAGATE_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/constants';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import PropagateButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-person/elements/PropagateButton/PropagateButton';
-import PropagateForm from '@vubiquity-nexus/portal-ui/src/elements/nexus-propagate-form/PropagateForm';
 import './PropagateButtonWrapper.scss';
+import {PROPAGATE_TITLE} from '../../../nexus-dynamic-form/constants';
+import {NexusModalContext} from '../../../nexus-modal/NexusModal';
+import PropagateButton from '../PropagateButton/PropagateButton';
+import PropagateForm from '../PropagateForm/PropagateForm';
 
 const PropagateButtonWrapper = ({canEdit, onClose, getValues, setFieldValue, person}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
-
     const closePropagateModal = () => {
         closeModal();
         onClose(prev => !prev);

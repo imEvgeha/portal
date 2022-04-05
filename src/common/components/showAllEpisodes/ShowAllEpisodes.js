@@ -1,5 +1,5 @@
 import React from 'react';
-import {EPISODE, SEASON, SERIES} from '@vubiquity-nexus/portal-ui/src/elements/nexus-dynamic-form/constants';
+import {EPISODE, SEASON, SERIES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/constants';
 import {useDispatch} from 'react-redux';
 import {clearTitleMetadataFilter} from '../../../pages/title-metadata/titleMetadataActions';
 import './ShowAllEpisodes.scss';

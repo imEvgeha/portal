@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {nexusFetch} from '../../../../../../packages/utils/src/http-client/index';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {store} from '../../../../../index';
 import {
     encodedSerialize,

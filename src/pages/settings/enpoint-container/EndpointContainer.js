@@ -12,13 +12,13 @@ import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entit
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
+import {configService} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 import {useDebounce} from '@vubiquity-nexus/portal-utils/lib/useDebounce';
 import {capitalize, cloneDeep} from 'lodash';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
 import {getConfigApiValues} from '../../legacy/common/CommonConfigService';
-import {configService} from '@vubiquity-nexus/portal-utils/src/services/ConfigService';
 import './EndpointContainer.scss';
 
 export const cache = {};

@@ -1,4 +1,4 @@
-import {nexusFetch} from '../../../../../../packages/utils/src/http-client/index';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSyncQueryParams} from './TitleService';
 import {getConfig} from '../../../../../config';
