@@ -115,6 +115,7 @@ const RightsRepositoryTable = ({
             setCurrentUserView(undefined);
             gridApi.setFilterModel(null);
         }
+        setShowSelected(false);
     }, [selectedAttachmentId]);
 
     useEffect(() => {
