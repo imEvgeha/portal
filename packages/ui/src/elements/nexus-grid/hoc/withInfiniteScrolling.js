@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {cleanObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {omit, isEqual, debounce} from 'lodash';
 import {connect} from 'react-redux';
-import {getTotalIngests} from '../../../../../../src/pages/avails/ingest-panel/ingestSelectors';
 import {useDateTimeContext} from '../../../../lib/elements/nexus-date-time-context/NexusDateTimeProvider';
 import {toggleRefreshGridData} from '../../../grid/gridActions';
 import {getShouldGridRefresh} from '../../../grid/gridSelectors';
@@ -233,7 +232,6 @@ const withInfiniteScrolling =
             onAddAdditionalField: PropTypes.func,
             params: PropTypes.object,
             isDatasourceEnabled: PropTypes.bool,
-            totalIngests: PropTypes.number,
         };
 
         ComposedComponent.defaultProps = {
@@ -246,12 +244,10 @@ const withInfiniteScrolling =
             params: null,
             isDatasourceEnabled: true,
             setData: () => null,
-            totalIngests: 0,
         };
 
         const mapStateToProps = state => ({
             shouldGridRefresh: getShouldGridRefresh(state),
-            totalIngests: getTotalIngests(state),
         });
 
         const mapDispatchToProps = dispatch => ({
