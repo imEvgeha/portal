@@ -3,7 +3,7 @@ import {encodedSerialize, getDomainName, prepareSortMatrixParamTitles} from '@vu
 import {get} from 'lodash';
 import {getConfig} from '../../config';
 import {store} from '../../index';
-import {nexusFetch} from '../../util/http-client/index';
+import {nexusFetch} from '../../../packages/utils/src/http-client/index';
 import {BASE_PATH} from './titleMetadataRoutes';
 import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';

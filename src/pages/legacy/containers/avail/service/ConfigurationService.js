@@ -1,4 +1,4 @@
-import {nexusFetch} from '../../../../../util/http-client/index';
+import {nexusFetch} from '../../../../../../packages/utils/src/http-client/index';
 import {store} from '../../../../../index';
 import {loadReports, setReportName} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';

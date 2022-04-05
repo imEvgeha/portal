@@ -1,4 +1,4 @@
-import {nexusFetch} from '../../../../../util/http-client/index';
+import {nexusFetch} from '../../../../../../packages/utils/src/http-client/index';
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getConfig} from '../../../../../config';
 

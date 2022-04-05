@@ -11,7 +11,7 @@ import {
     WRITER,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
 import {getConfig} from '../../../config';
-import {nexusFetch} from '../../../util/http-client/index';
+import {nexusFetch} from '../../../../packages/utils/src/http-client/index';
 
 const createMultiCastPersonTypePath = () => {
     const value =

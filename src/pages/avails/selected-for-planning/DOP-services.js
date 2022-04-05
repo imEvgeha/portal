@@ -2,7 +2,7 @@ import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import moment from 'moment';
 import {getConfig} from '../../../config';
 import {store} from '../../../index';
-import {nexusFetch} from '../../../util/http-client/index';
+import {nexusFetch} from '../../../../packages/utils/src/http-client/index';
 import {getInitialSearchPayload, PAGE_SIZE, PROJECT_ID, TABLE_FIELDS} from './constants';
 
 const DEFAULT_TIMEOUT = 60000;

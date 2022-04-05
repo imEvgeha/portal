@@ -1,4 +1,4 @@
-import {nexusFetch} from '../../../util/http-client/index';
+import {nexusFetch} from '../../../../packages/utils/src/http-client/index';
 import {getConfig} from '../../../config';
 
 export const getConfigApiValues = (configUrl, page = 0, size = 100, sortBy, field, searchValue) => {

@@ -9,7 +9,18 @@ import {useForm} from 'react-hook-form';
 import {constructFieldPerType} from './dynamic-fields/FieldsPerType';
 import './CreateEditConfig.scss';
 
-const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayName, label, submitLoading}) => {
+const CreateEditConfig = ({
+    values,
+    visible,
+    onHide,
+    schema,
+    onSubmit,
+    displayName,
+    label,
+    submitLoading,
+    cache,
+    dataApiMap,
+}) => {
     const [isVisible, setIsVisible] = useState(visible);
     const form = useForm({mode: 'all', reValidateMode: 'onChange'});
     const activeDynamicKeys = useRef({});
@@ -19,14 +30,16 @@ const CreateEditConfig = ({values, visible, onHide, schema, onSubmit, displayNam
 
     const constructFields = (schema, form, values) => {
         return schema?.map(elementSchema => {
-            return constructFieldPerType(
+            return constructFieldPerType({
                 elementSchema,
                 form,
-                values?.[elementSchema?.name] || '',
-                undefined,
-                undefined,
-                elementSchema.dynamic ? getActiveDynamicKeys : undefined
-            );
+                value: values?.[elementSchema?.name] || '',
+                className: undefined,
+                customOnChange: undefined,
+                cb: elementSchema.dynamic ? getActiveDynamicKeys : undefined,
+                cache,
+                dataApiMap,
+            });
         });
     };
 
@@ -110,6 +123,8 @@ CreateEditConfig.propTypes = {
     label: PropTypes.string,
     onHide: PropTypes.func.isRequired,
     submitLoading: PropTypes.bool,
+    cache: PropTypes.object,
+    dataApiMap: PropTypes.object,
 };
 
 CreateEditConfig.defaultProps = {
@@ -118,6 +133,8 @@ CreateEditConfig.defaultProps = {
     displayName: '',
     label: '',
     submitLoading: false,
+    cache: {},
+    dataApiMap: {},
 };
 
 export default CreateEditConfig;

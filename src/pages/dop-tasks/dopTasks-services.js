@@ -1,7 +1,7 @@
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {getConfig} from '../../config';
 import {store} from '../../index';
-import {nexusFetch} from '../../util/http-client/index';
+import {nexusFetch} from '../../../packages/utils/src/http-client/index';
 import {
     ACTUAL_OWNER,
     ALL,

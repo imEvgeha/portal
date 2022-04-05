@@ -2,7 +2,7 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotifica
 import {SUCCESS_ICON, ERROR_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {history} from '../../index';
-import {showToastForErrors} from '../../util/http-client/handleError';
+import {showToastForErrors} from '../../../packages/utils/src/http-client/handleError';
 import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
 import {uploadService} from './service/UploadService';
 import * as actionTypes from './titleMetadataActionTypes';

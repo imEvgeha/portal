@@ -10,11 +10,10 @@ import {cloneDeep} from 'lodash';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {useDispatch, useSelector} from 'react-redux';
 import {uid} from 'react-uid';
-import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
-import CreateEditConfig from '../../../../../src/pages/settings/create-edit-config/CreateEditConfig';
-import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
+import {configService} from '@vubiquity-nexus/portal-utils/src/services/ConfigService';
 import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors';
+import CreateEditConfig from '../nexus-create-edit-config/CreateEditConfig';
 import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
 import {checkIfEmetIsEditorial, getDir} from '../nexus-dynamic-form/utils';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
@@ -22,6 +21,7 @@ import NexusPerson from '../nexus-person/NexusPerson';
 import {loadOptions} from './utils';
 import {CAST, CAST_CONFIG, SEASON} from './constants';
 import './NexusPersonsList.scss';
+import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
 
 const NexusPersonsList = ({
     personsList,

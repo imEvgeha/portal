@@ -5,7 +5,7 @@ import {
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {identity, pickBy} from 'lodash';
 import {getConfig} from '../../../config';
-import {nexusFetch} from '../../../util/http-client/index';
+import {nexusFetch} from '../../../../packages/utils/src/http-client/index';
 
 export const getRightMatchingList = (searchCriteria = {}, page, size, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};

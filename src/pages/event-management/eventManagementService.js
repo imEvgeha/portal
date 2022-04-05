@@ -1,7 +1,7 @@
 import {get, isEmpty, isObject, merge} from 'lodash';
 import moment from 'moment';
 import {getConfig} from '../../config';
-import {nexusFetch} from '../../util/http-client';
+import {nexusFetch} from '../../../packages/utils/src/http-client';
 
 const FETCH_PAGE_SIZE = 100;
 

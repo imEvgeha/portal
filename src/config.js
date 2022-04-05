@@ -1,6 +1,6 @@
 import {isObject, mergeDeep} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
-import {nexusFetch} from './util/http-client';
+import {nexusFetch} from '../packages/utils/src/http-client';
 
 export const defaultConfiguration = {
     gateway: {

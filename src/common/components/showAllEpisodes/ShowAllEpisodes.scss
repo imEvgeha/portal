@@ -1,0 +1,7 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+
+.nexus-c-dynamic-form__show-all {
+    width: 20%;
+    @include margin(4, auto);
+    text-align: center;
+}

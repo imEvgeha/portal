@@ -1,5 +1,5 @@
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
-import {nexusFetch} from '../../../../../util/http-client/index';
+import {nexusFetch} from '../../../../../../packages/utils/src/http-client/index';
 import {isString} from 'lodash';
 import {getConfig} from '../../../../../config';
 

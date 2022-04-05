@@ -1,5 +1,5 @@
-import {nexusFetch} from '../../../../../util/http-client/index';
-import {getConfig} from '../../../../../config';
+import {nexusFetch} from '../http-client';
+import {getConfig} from '../../../../src/config';
 
 export const loadConfigAPIEndPoints = () => {
     const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + '/endpoints';

@@ -5,7 +5,7 @@ import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {isEmpty} from 'lodash';
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import {getConfig} from '../../../config';
-import {nexusFetch} from '../../../util/http-client';
+import {nexusFetch} from '../../../../packages/utils/src/http-client';
 import {
     FETCH_ASSET,
     FETCH_ASSET_SUCCESS,
@@ -95,8 +95,8 @@ function* uploadArtwork({payload}) {
             nexusFetch(mediaIngestUrl, {
                 method: 'post',
                 body: JSON.stringify(dataToSend),
-            }
-        ));
+            })
+        );
         const {jobId} = mediaIngestResource;
         const artworkAssetID = VuURL.getParamIfExists('artworkAssetID', '');
 

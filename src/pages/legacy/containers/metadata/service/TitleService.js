@@ -1,5 +1,5 @@
 import {uniqBy} from 'lodash';
-import {nexusFetch} from '../../../../../util/http-client/index';
+import {nexusFetch} from '../../../../../../packages/utils/src/http-client/index';
 import {encodedSerialize, prepareSortMatrixParamTitles} from '@vubiquity-nexus/portal-utils/lib/Common';
 import TitleSystems from '../../../../metadata/constants/systems';
 import {getConfig} from '../../../../../config';

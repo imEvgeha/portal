@@ -9,6 +9,8 @@ import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
+import PropagateButtonWrapper from '../../../../common/components/propagateButton/PropagateButtonWrapper';
+import ShowAllEpisodes from '../../../../common/components/showAllEpisodes/ShowAllEpisodes';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
@@ -257,6 +259,22 @@ const TitleDetails = ({
                         isSaving={isSaving}
                         setRefresh={setRefresh}
                         isTitlePage
+                        titleActionComponents={{
+                            propagate: (onClose, getValues, setFieldValue) => (
+                                <PropagateButtonWrapper
+                                    onClose={onClose}
+                                    getValues={getValues}
+                                    setFieldValue={setFieldValue}
+                                    canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
+                                />
+                            ),
+                            showAllEpisodes: (onClose, getValues, setFieldValue) => (
+                                <ShowAllEpisodes
+                                    contentType={get(extendTitleWithExternalIds(), 'contentType', '')}
+                                    titleId={get(extendTitleWithExternalIds(), 'id', '')}
+                                />
+                            ),
+                        }}
                     />
                     <NexusStickyFooter>
                         <NexusStickyFooter.LeftActions>

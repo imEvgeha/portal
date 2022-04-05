@@ -15,7 +15,7 @@ import {cloneDeep, flattenDeep, get, isEmpty, groupBy, set} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
-import {showToastForErrors} from '../../../../../util/http-client/handleError';
+import {showToastForErrors} from '../../../../../../packages/utils/src/http-client/handleError';
 import constants from '../fulfillment-order/constants';
 import {
     SELECT_VALUES,

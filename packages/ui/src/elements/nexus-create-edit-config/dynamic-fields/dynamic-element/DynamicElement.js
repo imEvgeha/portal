@@ -10,7 +10,7 @@ import {InputText} from 'primereact/inputtext';
 import {constructFieldPerType} from '../FieldsPerType';
 import './DynamicElement.scss';
 
-const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
+const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dataApiMap}) => {
     const initializeSections = () => {
         const sectionKeys = isEmpty(values) ? ['unset'] : Object.keys(values);
 
@@ -56,7 +56,17 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
 
     const constructSectionElement = sectionSchema => {
         const hasKey = !!sectionSchema.name?.split('.')?.[1];
-        return hasKey && constructFieldPerType(sectionSchema, form, sectionSchema.values || '', 'mb-2', undefined);
+        return (
+            hasKey &&
+            constructFieldPerType({
+                sectionSchema,
+                form,
+                value: sectionSchema.values || '',
+                className: 'mb-2',
+                cache,
+                dataApiMap,
+            })
+        );
     };
 
     useEffect(() => {
@@ -207,11 +217,15 @@ DynamicElement.propTypes = {
     form: PropTypes.object.isRequired,
     values: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
     onKeysChanged: PropTypes.func,
+    cache: PropTypes.object,
+    dataApiMap: PropTypes.object,
 };
 
 DynamicElement.defaultProps = {
     values: undefined,
     onKeysChanged: undefined,
+    cache: {},
+    dataApiMap: {},
 };
 
 export default DynamicElement;
