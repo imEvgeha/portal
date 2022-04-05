@@ -22,9 +22,16 @@ jest.mock('react-intl', () => {
 });
 
 export const mockHistoryPush = jest.fn();
+export const mockSubstring = jest.fn();
 
 jest.mock('react-router-dom', () => ({
     useHistory: () => ({
         push: mockHistoryPush,
     }),
+    useLocation: () => ({
+        search: {
+            substring: mockSubstring,
+        },
+    }),
+    useParams: () => ({}),
 }));

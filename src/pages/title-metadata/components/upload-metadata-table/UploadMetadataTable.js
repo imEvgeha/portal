@@ -11,6 +11,7 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect, useDispatch} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import {compose} from 'redux';
 import {UPLOAD_COLUMN_MAPPINGS, DEFAULT_CATALOGUE_OWNER} from '../../constants';
 import {fetchUploadedEMETsLog} from '../../service/UploadLogService';
@@ -27,16 +28,10 @@ const UploadMetadataTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchUploadedEMETsLog})
 )(NexusGrid);
 
-const UploadMetadataTable = ({
-    history,
-    catalogueOwner,
-    setGridApi,
-    setColumnApi,
-    columnApi,
-    gridApi,
-    titleMetadataFilter,
-}) => {
+const UploadMetadataTable = ({catalogueOwner, setGridApi, setColumnApi, columnApi, gridApi, titleMetadataFilter}) => {
     const dispatch = useDispatch();
+    const history = useHistory();
+
     const columnDefs = UPLOAD_COLUMN_MAPPINGS.map(mapping => {
         return {
             ...mapping,
@@ -134,7 +129,6 @@ const UploadMetadataTable = ({
 };
 
 UploadMetadataTable.propTypes = {
-    history: PropTypes.object,
     catalogueOwner: PropTypes.object,
     columnApi: PropTypes.object,
     setGridApi: PropTypes.func,
@@ -144,7 +138,6 @@ UploadMetadataTable.propTypes = {
 };
 
 UploadMetadataTable.defaultProps = {
-    history: {},
     catalogueOwner: DEFAULT_CATALOGUE_OWNER,
     columnApi: {},
     setGridApi: () => null,

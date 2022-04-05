@@ -9,6 +9,7 @@ import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
@@ -47,8 +48,6 @@ import './TitleDetails.scss';
 import schema from './schema.json';
 
 const TitleDetails = ({
-    history,
-    match,
     title,
     externalIds,
     territoryMetadata,
@@ -83,6 +82,7 @@ const TitleDetails = ({
     const [MOVDisabled, setMOVDisabled] = useState(true);
     const [MovIntDisabled, setMovIntDisabled] = useState(true);
     const [episodesCount, setEpisodesCount] = useState('0');
+    const routeParams = useParams();
 
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
     const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
@@ -97,8 +97,7 @@ const TitleDetails = ({
 
     useEffect(() => {
         fetchConfigApiEndpoints();
-        const {params} = match || {};
-        const {id} = params;
+        const {id} = routeParams;
         if (id) {
             const nexusTitle = isNexusTitle(id);
             const isMgm = isMgmTitle(id);
@@ -119,8 +118,7 @@ const TitleDetails = ({
         const isTitleUpdated = values.isUpdated;
         const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
         const isTmetUpdated = values.territorialMetadata.some(item => item.isUpdated);
-        const {params} = match || {};
-        const {id} = params;
+        const {id} = routeParams;
         // remove fields under arrayWithTabs
         const innerFields = getAllFields(fields, true);
         const allFields = getAllFields(fields, false);
@@ -209,8 +207,7 @@ const TitleDetails = ({
     };
 
     const syncPublishHandler = (externalSystem, buttonType) => {
-        const {params} = match || {};
-        const {id} = params;
+        const {id} = routeParams;
         if (buttonType === SYNC) {
             syncTitle({id, externalSystem});
         } else {
@@ -236,7 +233,7 @@ const TitleDetails = ({
     const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
     return (
         <div className={classnames(loading ? 'nexus-c-title-details__loading' : 'nexus-c-title-details')}>
-            <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
+            <TitleDetailsHeader title={title} containerRef={containerRef} canEdit={canEdit} />
             {loading ? (
                 <Loading />
             ) : (
@@ -308,8 +305,6 @@ const TitleDetails = ({
 };
 
 TitleDetails.propTypes = {
-    history: PropTypes.object,
-    match: PropTypes.object,
     title: PropTypes.object,
     externalIds: PropTypes.array,
     territoryMetadata: PropTypes.array,
@@ -340,8 +335,6 @@ TitleDetails.propTypes = {
 };
 
 TitleDetails.defaultProps = {
-    history: {},
-    match: {},
     title: {},
     externalIds: [],
     isLoadingSelectValues: true,

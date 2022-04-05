@@ -1,5 +1,4 @@
 import React, {useEffect, useRef} from 'react';
-import PropTypes from 'prop-types';
 import GoogleAnalytics from 'react-ga';
 import {useLocation} from 'react-router-dom';
 import {getConfig} from '../../config';

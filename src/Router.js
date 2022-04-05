@@ -25,7 +25,7 @@ const buildRoute = route => {
     const {path, component: Component, routes: children, ...rest} = route;
     return (
         <Route key={path} path={path} exact {...rest}>
-            <Component />
+            <Component {...rest} />
             {children?.map(childRoute => buildRoute(childRoute))}
         </Route>
     );

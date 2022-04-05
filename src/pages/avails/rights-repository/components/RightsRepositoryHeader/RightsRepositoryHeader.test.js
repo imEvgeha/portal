@@ -1,6 +1,5 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {createMemoryHistory} from 'history';
 import {Button} from 'primereact/button';
 import {mockHistoryPush} from '../../../../../setupTestEnv';
 import {RightsRepositoryHeader} from './RightsRepositoryHeader';
@@ -10,7 +9,6 @@ describe('RightsRepositoryHeader', () => {
     const props = {
         title: 'Rights',
     };
-    const history = createMemoryHistory();
 
     beforeEach(() => {
         wrapper = shallow(<RightsRepositoryHeader {...props} />);

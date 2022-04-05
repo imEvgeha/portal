@@ -13,6 +13,7 @@ import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import {compose} from 'redux';
 import {
     DEFAULT_CATALOGUE_OWNER,
@@ -36,7 +37,6 @@ const TitleMetadataTableGrid = compose(
 )(NexusGrid);
 
 const TitleMetadataTable = ({
-    history,
     catalogueOwner,
     setGridApi,
     setColumnApi,
@@ -45,6 +45,8 @@ const TitleMetadataTable = ({
     setTitleMetadataFilter,
     titleMetadataFilter,
 }) => {
+    const history = useHistory();
+
     const columnDefs = UPLOADED_EMETS_COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
@@ -186,7 +188,6 @@ const TitleMetadataTable = ({
 };
 
 TitleMetadataTable.propTypes = {
-    history: PropTypes.object,
     catalogueOwner: PropTypes.object,
     columnApi: PropTypes.object,
     setGridApi: PropTypes.func,
@@ -197,7 +198,6 @@ TitleMetadataTable.propTypes = {
 };
 
 TitleMetadataTable.defaultProps = {
-    history: {},
     catalogueOwner: DEFAULT_CATALOGUE_OWNER,
     columnApi: {},
     setGridApi: () => null,

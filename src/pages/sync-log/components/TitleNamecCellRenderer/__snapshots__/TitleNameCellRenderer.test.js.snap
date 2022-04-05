@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TitleNameCellRenderer should match snapshot 1`] = `
-<Link
+<Component
   to="/metadata/detail/coreTitleId"
 >
   TitleName
-</Link>
+</Component>
 `;

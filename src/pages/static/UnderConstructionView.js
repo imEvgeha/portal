@@ -1,21 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import {useParams} from 'react-router-dom';
 
-const UnderConstructionView = ({match}) => {
+const UnderConstructionView = ({}) => {
+    const routeParams = useParams();
+
     return (
         <div className="nexus-c-under-construction-view">
             <div> UNDER CONSTRUCTION </div>
-            {match && match.path}
+            {routeParams && routeParams.path}
         </div>
     );
-};
-
-UnderConstructionView.propTypes = {
-    match: PropTypes.object,
-};
-
-UnderConstructionView.defaultProps = {
-    match: {},
 };
 
 export default UnderConstructionView;

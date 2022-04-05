@@ -93,7 +93,6 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
     className="nexus-c-title-metadata__table"
     columnApi={null}
     gridApi={null}
-    history={Object {}}
     setColumnApi={[Function]}
     setGridApi={[Function]}
   />

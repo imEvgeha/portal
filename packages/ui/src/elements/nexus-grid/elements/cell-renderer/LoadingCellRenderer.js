@@ -1,11 +1,14 @@
 import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Link} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
 import {renderTitleName} from './utils/utils';
+import {Button} from 'primereact/button';
 
 const LoadingCellRenderer = params => {
+    const history = useHistory();
+
     const {
         data,
         colDef,
@@ -71,7 +74,7 @@ const LoadingCellRenderer = params => {
                     {displayValue}
                 </a>
             ) : (
-                <Link to={linkTo}>{displayValue}</Link>
+                <Button label={displayValue} onClick={() => history.push(linkTo)} className="p-button-link" />
             );
         }
 

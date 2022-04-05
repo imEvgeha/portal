@@ -1,10 +1,10 @@
-import React, {useEffect, useState, useMemo} from 'react';
-import PropTypes from 'prop-types';
+import React, {useEffect, useMemo, useState} from 'react';
 import {sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
-import {get, cloneDeep} from 'lodash';
+import {cloneDeep, get} from 'lodash';
+import {useParams} from 'react-router-dom';
 import {PAGE_SIZE} from '../../avails/selected-for-planning/constants';
 import Loading from '../../static/Loading';
-import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
+import {getSpecOptions, servicingOrdersService} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
 import JuiceBoxSection from './components/juicebox-section/JuiceBoxSection';
@@ -12,16 +12,16 @@ import {SELECT_VALUES, SOURCE_STANDARD} from './components/services-table/Consta
 import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
 import {
-    prepareRowData,
-    showLoading,
     fetchAssetInfo,
     getBarCodes,
     populateAssetInfo,
+    prepareRowData,
+    showLoading,
 } from './components/sources-table/util';
-import {SERVICERS, readinessStatus, TENANTS} from '../constants';
+import {readinessStatus, SERVICERS, TENANTS} from '../constants';
 import './ServicingOrder.scss';
 
-const ServicingOrder = ({match}) => {
+const ServicingOrder = () => {
     const [serviceOrder, setServiceOrder] = useState({});
     const [selectedFulfillmentOrderID, setSelectedFulfillmentOrderID] = useState('');
     const [selectedOrder, setSelectedOrder] = useState({});
@@ -30,7 +30,7 @@ const ServicingOrder = ({match}) => {
     const [components, setComponents] = useState([]);
     const [servicingOrderItemsLength, setServicingOrderItemsLength] = useState(0);
     const [recipientsOptions, setRecipientsOptions] = useState({});
-
+    const routeParams = useParams();
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
 
@@ -52,15 +52,12 @@ const ServicingOrder = ({match}) => {
     const fetchFulfillmentOrders = async (servicingOrder, page = 0) => {
         if (servicingOrder.so_number) {
             try {
-                const {
-                    fulfillmentOrders,
-                    servicingOrderItems,
-                    fulfillmentOrderItems,
-                } = await servicingOrdersService.getAdvancedFulfilmentOrdersForServiceOrder(
-                    servicingOrder.so_number,
-                    page,
-                    PAGE_SIZE
-                );
+                const {fulfillmentOrders, servicingOrderItems, fulfillmentOrderItems} =
+                    await servicingOrdersService.getAdvancedFulfilmentOrdersForServiceOrder(
+                        servicingOrder.so_number,
+                        page,
+                        PAGE_SIZE
+                    );
 
                 let fulfillmentOrdersClone = cloneDeep(fulfillmentOrders);
 
@@ -101,7 +98,7 @@ const ServicingOrder = ({match}) => {
     };
 
     const fetchNewPageForFulfillmentOrders = page =>
-        servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
+        servicingOrdersService.getServicingOrderById(routeParams.id).then(servicingOrder => {
             if (servicingOrder) {
                 fetchFulfillmentOrders(servicingOrder, page);
             } else {
@@ -117,7 +114,7 @@ const ServicingOrder = ({match}) => {
     };
 
     useEffect(() => {
-        servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
+        servicingOrdersService.getServicingOrderById(routeParams.id).then(servicingOrder => {
             if (servicingOrder) {
                 fetchFulfillmentOrders(servicingOrder);
                 getAmountOfItems(servicingOrder);
@@ -125,7 +122,7 @@ const ServicingOrder = ({match}) => {
                 setServiceOrder({});
             }
         });
-    }, [match]);
+    }, [routeParams]);
 
     const handleSelectedSourceChange = source => {
         // upon source change, call format sheets api if not already called for recipient
@@ -138,7 +135,9 @@ const ServicingOrder = ({match}) => {
                         param => param.name === SOURCE_STANDARD
                     )?.value;
                     if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
-                        const parametersWithoutSourceStandard = item?.externalServices?.parameters?.filter((elem) => elem.name !== SOURCE_STANDARD);
+                        const parametersWithoutSourceStandard = item?.externalServices?.parameters?.filter(
+                            elem => elem.name !== SOURCE_STANDARD
+                        );
                         item.externalServices = {
                             ...item.externalServices,
                             parameters: [
@@ -250,14 +249,6 @@ const ServicingOrder = ({match}) => {
             </div>
         </div>
     );
-};
-
-ServicingOrder.propTypes = {
-    match: PropTypes.object,
-};
-
-ServicingOrder.defaultProps = {
-    match: {},
 };
 
 export default ServicingOrder;

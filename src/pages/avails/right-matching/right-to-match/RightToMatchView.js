@@ -16,7 +16,7 @@ import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders
 import {get, isEmpty} from 'lodash';
 import {Button as PrimeReactButton} from 'primereact/button';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useHistory, useLocation, useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import {backArrowColor} from '../../../../../packages/styles/constants';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
@@ -50,14 +50,11 @@ const RightRepositoryNexusGrid = compose(withColumnsResizing(), withSideBar())(N
 const IncomingRightNexusGrid = withColumnsResizing()(NexusGrid);
 
 const RightToMatchView = ({
-    match,
     columnDefs,
     mapping,
     createRightMatchingColumnDefs,
     fetchFocusedRight,
     focusedRight,
-    history,
-    location,
     addToast,
     removeToast,
     pendingRight,
@@ -67,8 +64,10 @@ const RightToMatchView = ({
 }) => {
     const [matchingCandidates, setMatchingCandidates] = useState([]);
     const [newPendingRight, setNewPendingRight] = useState([]);
-    const {params = {}} = match;
-    const {rightId, availHistoryIds} = params || {};
+    const {rightId, availHistoryIds} = useParams() || {};
+    const history = useHistory();
+    const location = useLocation();
+
     const previousPageRoute = URL.isEmbedded()
         ? `/avails/history/${availHistoryIds}/right-matching?embedded=true`
         : focusedRight.id
@@ -288,7 +287,6 @@ const RightToMatchView = ({
                                 focusedRightId={rightId}
                                 focusedRight={focusedRight}
                                 availHistoryIds={availHistoryIds}
-                                history={history}
                             />
                         )}
                     </div>
@@ -354,9 +352,6 @@ RightToMatchView.propTypes = {
     removeToast: PropTypes.func,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
-    history: PropTypes.object,
-    match: PropTypes.object,
-    location: PropTypes.object,
     pendingRight: PropTypes.object,
     // eslint-disable-next-line react/boolean-prop-naming
     mergeRights: PropTypes.bool,
@@ -371,9 +366,6 @@ RightToMatchView.defaultProps = {
     removeToast: () => null,
     columnDefs: [],
     mapping: [],
-    history: {push: () => null},
-    match: {},
-    location: {},
     pendingRight: null,
     mergeRights: false,
     storeMatchedRights: () => null,

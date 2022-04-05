@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
@@ -10,6 +10,7 @@ import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/load
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import mappings from '../../../../profile/titleMatchingRightMappings.json';
 import {NexusGrid, NexusTitle} from '../../../ui/elements';
@@ -18,9 +19,9 @@ import {createColumnDefs as getRightColumns} from '../utils';
 import TitlesList from './components/TitlesList';
 import CreateTitleForm from './components/create-title-form/CreateTitleForm';
 import NewTitleConstants from './components/create-title-form/CreateTitleFormConstants';
-import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
+import {createColumnDefs, fetchFocusedRight, mergeTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
-import {getFocusedRight, getColumnDefs} from './titleMatchingSelectors';
+import {getColumnDefs, getFocusedRight} from './titleMatchingSelectors';
 import './TitleMatchView.scss';
 
 const SECTION_MESSAGE = `Select titles from the repository that match the Incoming right or declare it as a NEW title
@@ -30,7 +31,6 @@ const IncomingRightTable = withColumnsResizing()(NexusGrid);
 const Titles = compose(withMatchAndDuplicateList())(TitlesList);
 
 const TitleMatchView = ({
-    match,
     fetchFocusedRight,
     createColumnDefs,
     mergeTitles,
@@ -39,6 +39,7 @@ const TitleMatchView = ({
     searchCriteria,
     isMerging,
 }) => {
+    const routeParams = useParams();
     const {openModal, closeModal} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
     // eslint-disable-next-line
@@ -67,11 +68,11 @@ const TitleMatchView = ({
     };
 
     useEffect(() => {
-        if (match && match.params.rightId) {
-            fetchFocusedRight(match.params.rightId);
+        if (routeParams.rightId) {
+            fetchFocusedRight(routeParams.rightId);
             DOP.setErrorsCount(1);
         }
-    }, [fetchFocusedRight, match]);
+    }, [fetchFocusedRight, routeParams]);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -115,7 +116,7 @@ const TitleMatchView = ({
                     </SectionMessage>
                     <br />
                     <Titles
-                        rightId={match && match.params.rightId}
+                        rightId={routeParams.rightId}
                         columnDefs={columnDefs}
                         mergeTitles={mergeTitles}
                         // TODO: Capitalize first letter of contentType value to be checked inside drop down ag grid
@@ -136,7 +137,6 @@ TitleMatchView.propTypes = {
     fetchFocusedRight: PropTypes.func.isRequired,
     createColumnDefs: PropTypes.func.isRequired,
     mergeTitles: PropTypes.func.isRequired,
-    match: PropTypes.object,
     focusedRight: PropTypes.object,
     searchCriteria: PropTypes.object,
     columnDefs: PropTypes.array,
@@ -147,7 +147,6 @@ TitleMatchView.defaultProps = {
     focusedRight: {},
     columnDefs: [],
     searchCriteria: {},
-    match: {},
     isMerging: false,
 };
 

@@ -9,12 +9,14 @@ import {cloneDeep} from 'lodash';
 import NexusTagsContainer from '../../../../../../../lib/elements/nexus-tags-container/NexusTagsContainer';
 import {sortOptions} from '../../../../utils';
 import './MsvIds.scss';
+import {useParams} from 'react-router-dom';
 
-const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) => {
+const MsvIds = ({selectValues, data, isEdit, onChange, generateMsvIds}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [msvIds, setMsvIds] = useState([]);
     const [licensorOptions, setLicensorOptions] = useState([]);
     const [licenseeOptions, setLicenseeOptions] = useState([]);
+    const routeParams = useParams();
 
     useEffect(() => {
         setMsvIds(data);
@@ -53,8 +55,7 @@ const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) =
     };
 
     const handleAddMsvId = async values => {
-        const {params} = match || {};
-        const {id} = params;
+        const {id} = routeParams;
         if (id && typeof generateMsvIds === 'function') {
             const generatedIds = await generateMsvIds(id, values.licensor.value, values.licensee.value, data);
             if (Array.isArray(generatedIds) && generatedIds.length > 0) {
@@ -133,7 +134,6 @@ MsvIds.propTypes = {
     isEdit: PropTypes.bool,
     selectValues: PropTypes.object,
     onChange: PropTypes.func,
-    match: PropTypes.object,
     generateMsvIds: PropTypes.func,
 };
 
@@ -142,7 +142,6 @@ MsvIds.defaultProps = {
     isEdit: false,
     selectValues: {},
     onChange: () => null,
-    match: {},
     generateMsvIds: undefined,
 };
 

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
 import Spinner from '@atlaskit/spinner';
-import {URL, minTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {minTwoDigits, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import './RightToMatchNavigation.scss';
 import {RIGHT_PAGE_SIZE} from '../../../../../legacy/constants/rightFetching';
 import {fetchRightMatchDataUntilFindId} from '../../../rightMatchingActions';
@@ -16,8 +17,8 @@ const RightToMatchNavigation = ({
     fetchRightMatchDataUntilFindId,
     rightMatchPageData,
     availHistoryIds,
-    history,
 }) => {
+    const history = useHistory();
     const [navigationData, setNavigationData] = useState({
         previousId: null,
         currentPosition: null,
@@ -144,7 +145,6 @@ RightToMatchNavigation.propTypes = {
     rightMatchPageData: PropTypes.object,
     searchParams: PropTypes.object,
     availHistoryIds: PropTypes.string,
-    history: PropTypes.object,
 };
 
 RightToMatchNavigation.defaultProps = {
@@ -153,7 +153,6 @@ RightToMatchNavigation.defaultProps = {
     rightMatchPageData: {},
     searchParams: {},
     availHistoryIds: null,
-    history: null,
 };
 
 const createMapStateToProps = () => {
