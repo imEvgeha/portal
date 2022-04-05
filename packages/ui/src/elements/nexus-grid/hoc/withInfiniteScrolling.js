@@ -55,7 +55,7 @@ const withInfiniteScrolling =
                 }
             }, [props.shouldGridRefresh, fetchData, gridApi]);
 
-            // Handle the Auto Refresh/Update of the Grid after Right has been ingested into the systrm
+            // Handle the Auto Refresh/Update of the Grid after Right has been ingested into the system
             useEffect(() => {
                 if (isMounted.current && fetchData && gridApi) {
                     updateData(fetchData, gridApi);
