@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from "react-router-dom";
 import {MGM} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import TitleInfo from './TitleInfo';
@@ -12,7 +12,7 @@ const ARROW_COLOR = '#42526e';
 
 const TitleDetailsHeader = ({title, containerRef, canEdit}) => {
     const [isShrinked, setIsShrinked] = useState(false);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         window.addEventListener('scroll', onScroll, true);
@@ -30,7 +30,7 @@ const TitleDetailsHeader = ({title, containerRef, canEdit}) => {
     }, [isShrinked]);
 
     const onBackArrowClicked = () => {
-        history.goBack();
+        navigate(-1);
     };
 
     const onScroll = event => {

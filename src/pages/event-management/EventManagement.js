@@ -3,7 +3,7 @@ import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/co
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {INITIAL_SORT, TITLE} from './eventManagementConstants';
@@ -12,7 +12,7 @@ import './EventManagement.scss';
 const EventManagement = () => {
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [gridApi, setGridApi] = useState(null);
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const closeEventDrawer = () => {
@@ -31,7 +31,7 @@ const EventManagement = () => {
 
         const newParams = `?${existingParams.toString()}`;
 
-        history.push({search: newParams});
+        navigate({search: newParams});
     };
 
     useEffect(() => {

@@ -6,8 +6,6 @@ import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-b
 import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
 import Toast from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotification';
 import {LicenseManager} from 'ag-grid-enterprise';
-import {ConnectedRouter} from 'connected-react-router';
-import {createBrowserHistory} from 'history';
 import {render} from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
 import {Provider} from 'react-redux';
@@ -17,12 +15,13 @@ import 'primeicons/primeicons.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import '@vubiquity-nexus/portal-styles/scss/index.scss';
+import {HistoryRouter as ConnectedRouter} from 'redux-first-history/rr6';
 import AppProviders from './AppProviders';
 import Router from './Router';
 import {getConfig, setEnvConfiguration} from './config';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
-import configureStore from './store';
+import configureStore, {configureHistory} from './store';
 import {configurePersistor} from './store-persist-config';
 import {initializeTracker} from './util/hoc/withTracker';
 import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
@@ -43,11 +42,11 @@ setEnvConfiguration('qa')
         render(<p>Problem with configuration, application cannot be started</p>, document.querySelector('#app'));
     });
 
-export const history = createBrowserHistory();
-
 // temporary export -> we should not export store
 // eslint-disable-next-line no-underscore-dangle
-export const store = configureStore(window.__PRELOADED_STATE__ || {}, history);
+export const store = configureStore(window.__PRELOADED_STATE__ || {});
+export const history = configureHistory(store);
+
 const persistor = configurePersistor(store);
 
 // eslint-disable-next-line

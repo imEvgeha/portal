@@ -14,7 +14,7 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import {Link, useHistory, useParams} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import {backArrowColor} from '../../../../../packages/styles/constants';
 import {NexusGrid, NexusTitle} from '../../../../ui/elements';
@@ -62,7 +62,7 @@ const MatchRightView = ({
 }) => {
     const activeFocusedRight = mergeRights ? {...prepareRight(pendingRight), id: null} : focusedRight;
     const {availHistoryIds, rightId, matchedRightIds} = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const selectedMatchedRights = [activeFocusedRight, ...rightsForMatching];
     const [cellColoringSchema, setCellColoringSchema] = useState();
@@ -106,7 +106,7 @@ const MatchRightView = ({
 
     // TODO:  we should handle this via router Link
     const onCancel = () => {
-        history.push(URL.keepEmbedded(previousRoute));
+        navigate(URL.keepEmbedded(previousRoute));
     };
 
     const onSaveCombinedRight = () => {

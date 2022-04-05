@@ -8,8 +8,8 @@ import {
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {goBack, push} from 'connected-react-router';
 import {Button} from 'primereact/button';
+import {goBack, push} from 'redux-first-history';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';

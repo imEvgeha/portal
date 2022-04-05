@@ -1,13 +1,13 @@
 import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {useHistory} from 'react-router-dom';
+import {Button} from 'primereact/button';
+import {useNavigate} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
 import {renderTitleName} from './utils/utils';
-import {Button} from 'primereact/button';
 
 const LoadingCellRenderer = params => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const {
         data,
@@ -74,7 +74,7 @@ const LoadingCellRenderer = params => {
                     {displayValue}
                 </a>
             ) : (
-                <Button label={displayValue} onClick={() => history.push(linkTo)} className="p-button-link" />
+                <Button label={displayValue} onClick={() => navigate(linkTo)} className="p-button-link" />
             );
         }
 

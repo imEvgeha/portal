@@ -2,21 +2,21 @@ import React, {Suspense} from 'react';
 import PropTypes from 'prop-types';
 import {isEmpty} from 'lodash';
 import {connect} from 'react-redux';
-import {Route, Switch, useHistory} from 'react-router-dom';
+import {Route, Routes, useLocation} from 'react-router-dom';
 import Loading from './pages/static/Loading';
 import {clearTitleMetadataFilter} from './pages/title-metadata/titleMetadataActions';
 import {BASE_PATH} from './pages/title-metadata/titleMetadataRoutes';
 import {createTitleMetadataFilterSelector} from './pages/title-metadata/titleMetadataSelectors';
 
 const Router = ({routes, titleMetadataFilter, clearTitleMetadataFilter}) => {
-    const history = useHistory();
-    if (`/${history.location.pathname.split('/', 2)[1]}` !== BASE_PATH && !isEmpty(titleMetadataFilter)) {
+    const location = useLocation();
+    if (`/${location.pathname.split('/', 2)[1]}` !== BASE_PATH && !isEmpty(titleMetadataFilter)) {
         clearTitleMetadataFilter();
     }
 
     return (
         <Suspense fallback={<Loading />}>
-            <Switch>{routes.map(route => buildRoute(route))}</Switch>
+            <Routes>{routes.map(route => buildRoute(route))}</Routes>
         </Suspense>
     );
 };
@@ -24,8 +24,7 @@ const Router = ({routes, titleMetadataFilter, clearTitleMetadataFilter}) => {
 const buildRoute = route => {
     const {path, component: Component, routes: children, ...rest} = route;
     return (
-        <Route key={path} path={path} exact {...rest}>
-            <Component {...rest} />
+        <Route key={path} path={path} exact {...rest} element={<Component {...rest} />}>
             {children?.map(childRoute => buildRoute(childRoute))}
         </Route>
     );

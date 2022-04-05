@@ -1,15 +1,15 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {
-    SUCCESS_ICON,
     ERROR_ICON,
+    MAX_CHARS,
+    SUCCESS_ICON,
     UPDATE_RIGHT_FAILED,
     UPDATE_RIGHT_SUCCESS_MESSAGE,
-    MAX_CHARS,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {put, all, call, takeEvery} from 'redux-saga/effects';
+import {all, call, put, takeEvery} from 'redux-saga/effects';
 import {history} from '../../../index';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
-import {getLinkedToOriginalRightsV2, bulkDeleteRights} from '../availsService';
+import {bulkDeleteRights, getLinkedToOriginalRightsV2} from '../availsService';
 import {postReSync} from '../status-log-rights-table/StatusLogService';
 import {POST_RESYNC_RIGHTS} from '../status-log-rights-table/statusLogActionTypes';
 import * as actionTypes from './rightsActionTypes';

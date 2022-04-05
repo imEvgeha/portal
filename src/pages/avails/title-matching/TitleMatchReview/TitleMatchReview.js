@@ -5,7 +5,7 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
-import {useHistory, useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {NexusGrid, NexusTitle} from '../../../../ui/elements';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
 import {getRepositoryCell} from '../../utils';
@@ -16,12 +16,12 @@ import './TitleMatchReview.scss';
 const TitleMatchReview = ({columnDefs, matchedTitles, getColumnDefs, combinedTitle}) => {
     const [titles, setTitles] = useState(Object.values(matchedTitles));
     const [mergedTitles, setMergedTitles] = useState([combinedTitle]);
-    const history = useHistory();
+    const navigate = useNavigate();
     const routeParams = useParams();
 
     const navigateToMatchPreview = () => {
         const {rightId} = routeParams;
-        history.push(URL.keepEmbedded(`/avails/rights/${rightId}/title-matching`));
+        navigate(URL.keepEmbedded(`/avails/rights/${rightId}/title-matching`));
     };
 
     const getTitle = id => {

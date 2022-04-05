@@ -5,7 +5,7 @@ import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
 import Spinner from '@atlaskit/spinner';
 import {minTwoDigits, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import './RightToMatchNavigation.scss';
 import {RIGHT_PAGE_SIZE} from '../../../../../legacy/constants/rightFetching';
 import {fetchRightMatchDataUntilFindId} from '../../../rightMatchingActions';
@@ -18,7 +18,7 @@ const RightToMatchNavigation = ({
     rightMatchPageData,
     availHistoryIds,
 }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [navigationData, setNavigationData] = useState({
         previousId: null,
         currentPosition: null,
@@ -100,14 +100,14 @@ const RightToMatchNavigation = ({
 
     const onPreviousRightClick = () => {
         if (navigationData.previousId) {
-            history.push(URL.keepEmbedded(`${url}/${navigationData.previousId}`));
+            navigate(URL.keepEmbedded(`${url}/${navigationData.previousId}`));
             setIsSpinnerRunning(true);
         }
     };
 
     const onNextRightClick = () => {
         if (navigationData.nextId) {
-            history.push(URL.keepEmbedded(`${url}/${navigationData.nextId}`));
+            navigate(URL.keepEmbedded(`${url}/${navigationData.nextId}`));
             setIsSpinnerRunning(true);
         }
     };

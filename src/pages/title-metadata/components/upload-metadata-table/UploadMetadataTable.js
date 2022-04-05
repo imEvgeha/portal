@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -11,9 +11,9 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect, useDispatch} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {compose} from 'redux';
-import {UPLOAD_COLUMN_MAPPINGS, DEFAULT_CATALOGUE_OWNER} from '../../constants';
+import {DEFAULT_CATALOGUE_OWNER, UPLOAD_COLUMN_MAPPINGS} from '../../constants';
 import {fetchUploadedEMETsLog} from '../../service/UploadLogService';
 import {setUploadMetadataFilter} from '../../titleMetadataActions';
 import {createUploadLogMetadataFilterSelector} from '../../titleMetadataSelectors';
@@ -30,7 +30,7 @@ const UploadMetadataTableGrid = compose(
 
 const UploadMetadataTable = ({catalogueOwner, setGridApi, setColumnApi, columnApi, gridApi, titleMetadataFilter}) => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const location = useLocation();
 
     const columnDefs = UPLOAD_COLUMN_MAPPINGS.map(mapping => {
         return {
@@ -94,7 +94,6 @@ const UploadMetadataTable = ({catalogueOwner, setGridApi, setColumnApi, columnAp
 
     useEffect(() => {
         let externalFilter = catalogueOwner;
-        const {location} = history;
         if (location) {
             const {search} = location;
             if (search) {
@@ -109,7 +108,7 @@ const UploadMetadataTable = ({catalogueOwner, setGridApi, setColumnApi, columnAp
             }
         }
         setExternalFilter(externalFilter);
-    }, [catalogueOwner, history?.location?.search]);
+    }, [catalogueOwner, location?.search]);
 
     return (
         <div className="nexus-c-upload-metadata-table">

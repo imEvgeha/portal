@@ -1,7 +1,7 @@
 import React from 'react';
 import {Ability, AbilityBuilder} from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {AVAILS, DOP_TASKS, EVENT_MANAGEMENT, METADATA, SERVICING_ORDERS} from './constants';
 
 const idToAbilityNameMap = {
@@ -106,8 +106,8 @@ const canRender = (Component, action, subject, field = undefined) => {
     class AuthenticatedComponent extends React.Component {
         componentDidMount() {
             if (cannot(action, subject, field)) {
-                const history = useHistory();
-                history.push('/401');
+                const navigate = useNavigate();
+                navigate('/401');
             }
         }
 

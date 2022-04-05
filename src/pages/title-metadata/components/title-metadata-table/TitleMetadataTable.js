@@ -13,7 +13,7 @@ import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {compose} from 'redux';
 import {
     DEFAULT_CATALOGUE_OWNER,
@@ -45,7 +45,8 @@ const TitleMetadataTable = ({
     setTitleMetadataFilter,
     titleMetadataFilter,
 }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const columnDefs = UPLOADED_EMETS_COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
@@ -77,7 +78,7 @@ const TitleMetadataTable = ({
                                     <div
                                         className="nexus-c-title-metadata-table__repository-icon"
                                         onClick={() =>
-                                            history.push(
+                                            navigate(
                                                 URL.keepEmbedded(`/metadata/detail/${id}/legacy-title-reconciliation`)
                                             )
                                         }
@@ -153,7 +154,6 @@ const TitleMetadataTable = ({
 
     useEffect(() => {
         let externalFilter = catalogueOwner;
-        const {location} = history;
         if (location) {
             const {search} = location;
             if (search) {
@@ -168,7 +168,7 @@ const TitleMetadataTable = ({
             }
         }
         setExternalFilter(externalFilter);
-    }, [catalogueOwner, history?.location?.search]);
+    }, [catalogueOwner, location?.search]);
 
     return (
         <div className="nexus-c-title-metadata-table">

@@ -6,7 +6,7 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
-import {useHistory, useLocation, useParams} from 'react-router-dom';
+import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusGrid, NexusTitle} from '../../../ui/elements';
 import {
@@ -32,7 +32,7 @@ const RightMatchingView = ({
     cleanStoredRightMatchDataWithIds,
 }) => {
     const [totalCount, setTotalCount] = useState();
-    const history = useHistory();
+    const navigate = useNavigate();
     const routeParams = useParams();
     const location = useLocation();
 
@@ -51,7 +51,7 @@ const RightMatchingView = ({
     }, [columnDefs, createRightMatchingColumnDefs]);
 
     const onFocusButtonClick = rightId => {
-        history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
+        navigate(URL.keepEmbedded(`${location.pathname}/${rightId}`));
     };
 
     // eslint-disable-next-line

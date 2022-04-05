@@ -170,7 +170,7 @@ class RightsURL extends React.Component {
 
     static saveURL(url) {
         if (RightsURL.instance) {
-            RightsURL.instance.context.router.history.push(url);
+            RightsURL.instance.context.router.navigate(url);
         }
     }
 

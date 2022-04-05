@@ -25,7 +25,7 @@ export const mockHistoryPush = jest.fn();
 export const mockSubstring = jest.fn();
 
 jest.mock('react-router-dom', () => ({
-    useHistory: () => ({
+    useNavigate: () => ({
         push: mockHistoryPush,
     }),
     useLocation: () => ({

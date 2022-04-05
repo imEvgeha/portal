@@ -10,7 +10,7 @@ import {logout} from '@vubiquity-nexus/portal-auth/authActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Can, can, idToAbilityNameMap} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {connect} from 'react-redux';
-import {useHistory, useLocation} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
@@ -59,11 +59,11 @@ const NexusNavigation = ({profileInfo, logout}) => {
     const [selectedItem, setSelectedItem] = useState('');
     const {openModal, closeModal} = useContext(NexusModalContext);
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
     useEffect(() => setSelectedItem(location.pathname.split('/')[1]), [location.pathname]);
 
     const handleClick = destination => {
-        history.push(`/${destination.toLowerCase()}`);
+        navigate(`/${destination.toLowerCase()}`);
         setSelectedItem(destination);
     };
 

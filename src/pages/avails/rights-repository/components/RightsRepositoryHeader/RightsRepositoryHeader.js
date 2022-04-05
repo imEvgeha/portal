@@ -7,7 +7,7 @@ import {get, isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
 import {TabMenu} from 'primereact/tabmenu';
 import {connect} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import Loading from '../../../../static/Loading';
 import {
     MY_PREDEFINED_VIEWS_LABEL,
@@ -45,7 +45,7 @@ export const RightsRepositoryHeader = ({
     currentUserView,
 }) => {
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (activeTab === RIGHTS_SELECTED_TAB) {
@@ -115,7 +115,7 @@ export const RightsRepositoryHeader = ({
                         tooltip={CREATE_NEW_RIGHT}
                         tooltipOptions={{position: 'left'}}
                         icon={IconActionAdd}
-                        onClick={() => history?.push(URL.keepEmbedded('/avails/rights/create'))}
+                        onClick={() => navigate.push(URL.keepEmbedded('/avails/rights/create'))}
                         className="p-button-text"
                     />
                 </div>

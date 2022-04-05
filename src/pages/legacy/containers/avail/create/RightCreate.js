@@ -330,13 +330,13 @@ class RightCreate extends React.Component {
                         this.setState({
                             isSubmitting: false,
                         });
-                        this.props.router.history.push(
+                        this.props.router.navigate(
                             URL.keepEmbedded(
                                 '/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'
                             )
                         );
                     } else {
-                        this.props.router.history.push(RightsURL.getRightUrl(response.id));
+                        this.props.router.navigate(RightsURL.getRightUrl(response.id));
                     }
                 }
                 store.dispatch(blockUI(false));
@@ -358,11 +358,11 @@ class RightCreate extends React.Component {
 
     cancel() {
         if (this.props.match.params.availHistoryId) {
-            this.props.router.history.push(
+            this.props.router.navigate(
                 URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry')
             );
         } else {
-            this.props.router.history.push(URL.keepEmbedded('/avails'));
+            this.props.router.navigate(URL.keepEmbedded('/avails'));
         }
     }
 
