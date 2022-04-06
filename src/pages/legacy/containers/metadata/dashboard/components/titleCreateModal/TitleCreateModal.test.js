@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
 import configureStore from 'redux-mock-store';
-import NewTitleCreate from './TitleCreateModal';
+import TitleCreate from './TitleCreateModal';
 import {Checkbox} from 'primereact/checkbox';
 import {Label} from 'reactstrap';
 
@@ -18,7 +18,7 @@ describe('TitleCreateModal', () => {
     describe('Default TitleCreateModal', () => {
         withHooks(() => {
             defaultWrapper = shallow(
-                <NewTitleCreate
+                <TitleCreate
                     store={store}
                     display={true}
                     onToggle={() => null}
@@ -63,7 +63,7 @@ describe('TitleCreateModal', () => {
     describe('Matching TitleCreateModal', () => {
         withHooks(() => {
             matchingWrapper = shallow(
-                <NewTitleCreate store={store} display={true} onToggle={() => null} isItMatching={true} />
+                <TitleCreate store={store} display={true} onToggle={() => null} isItMatching={true} />
             )
                 .dive()
                 .shallow();
