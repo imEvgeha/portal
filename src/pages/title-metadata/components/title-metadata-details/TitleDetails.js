@@ -260,16 +260,18 @@ const TitleDetails = ({
                         setRefresh={setRefresh}
                         isTitlePage
                         titleActionComponents={{
-                            propagate: (onClose, getValues, setFieldValue) => (
+                            propagate: (onClose, getValues, setFieldValue, key) => (
                                 <PropagateButtonWrapper
+                                    key={key}
                                     onClose={onClose}
                                     getValues={getValues}
                                     setFieldValue={setFieldValue}
                                     canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
                                 />
                             ),
-                            showAllEpisodes: (onClose, getValues, setFieldValue) => (
+                            showAllEpisodes: (onClose, getValues, setFieldValue, key) => (
                                 <ShowAllEpisodes
+                                    key={key}
                                     contentType={get(extendTitleWithExternalIds(), 'contentType', '')}
                                     titleId={get(extendTitleWithExternalIds(), 'id', '')}
                                 />

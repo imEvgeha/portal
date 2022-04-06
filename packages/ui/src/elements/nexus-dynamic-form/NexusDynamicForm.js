@@ -169,15 +169,18 @@ const NexusDynamicForm = ({
                                     className="nexus-c-dynamic-form__section-start"
                                 >
                                     {sections.map(
-                                        ({
-                                            title: sectionTitle = '',
-                                            titleActions = [],
-                                            fields = {},
-                                            isGridLayout = false,
-                                            tabs,
-                                            subTabs,
-                                            prefix,
-                                        }) => (
+                                        (
+                                            {
+                                                title: sectionTitle = '',
+                                                titleActions = [],
+                                                fields = {},
+                                                isGridLayout = false,
+                                                tabs,
+                                                subTabs,
+                                                prefix,
+                                            },
+                                            sectionIndex
+                                        ) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
                                                 {titleActionComponents &&
@@ -185,7 +188,8 @@ const NexusDynamicForm = ({
                                                         titleActionComponents[action](
                                                             setUpdate,
                                                             getValues,
-                                                            setFieldValue
+                                                            setFieldValue,
+                                                            `${action}_${index}_${sectionIndex}`
                                                         )
                                                     )}
 
@@ -243,7 +247,7 @@ NexusDynamicForm.propTypes = {
     castCrewConfig: PropTypes.object,
     storedInitialData: PropTypes.object,
     seasonPersons: PropTypes.array,
-    titleActionComponents: PropTypes.array,
+    titleActionComponents: PropTypes.object,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -263,7 +267,7 @@ NexusDynamicForm.defaultProps = {
     castCrewConfig: {},
     storedInitialData: null,
     seasonPersons: [],
-    titleActionComponents: PropTypes.array,
+    titleActionComponents: {},
 };
 
 export default NexusDynamicForm;
