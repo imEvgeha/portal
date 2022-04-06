@@ -59,7 +59,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
         return (
             hasKey &&
             constructFieldPerType({
-                sectionSchema,
+                elementSchema: sectionSchema,
                 form,
                 value: sectionSchema.values || '',
                 className: 'mb-2',
