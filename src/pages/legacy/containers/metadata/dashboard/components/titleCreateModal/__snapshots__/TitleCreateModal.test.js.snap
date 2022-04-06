@@ -1,0 +1,1663 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
+<Portal
+  containerInfo={
+    <body>
+      <div
+        class="my-portal"
+      />
+    </body>
+  }
+>
+  <div
+    className="p-dialog-mask p-component-overlay p-component-overlay-enter p-dialog-visible p-dialog-draggable p-dialog-resizable p-dialog-center"
+    onClick={[Function]}
+    style={null}
+  >
+    <CSSTransition
+      classNames="p-dialog"
+      in={true}
+      nodeRef={
+        Object {
+          "current": null,
+        }
+      }
+      onEnter={[Function]}
+      onEntered={[Function]}
+      onExited={[Function]}
+      onExiting={[Function]}
+      options={null}
+      timeout={
+        Object {
+          "enter": 150,
+          "exit": 150,
+        }
+      }
+      unmountOnExit={true}
+    >
+      <div
+        aria-describedby="pr_id_2_content"
+        aria-labelledby="pr_id_2_header"
+        aria-modal={true}
+        className="p-dialog p-component nexus-c-title-create_dialog"
+        id="pr_id_2"
+        onClick={null}
+        role="dialog"
+        style={
+          Object {
+            "width": "40vw",
+          }
+        }
+      >
+        <div
+          className="p-dialog-header"
+          onMouseDown={[Function]}
+        >
+          <div
+            className="p-dialog-title"
+            id="pr_id_2_header"
+          >
+            Create Title
+          </div>
+          <div
+            className="p-dialog-header-icons"
+          >
+            <button
+              aria-label="Close"
+              className="p-dialog-header-icon p-dialog-header-close p-link"
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="p-dialog-header-close-icon pi pi-times"
+              />
+              <Ripple />
+            </button>
+          </div>
+        </div>
+        <div
+          className="p-dialog-content"
+          id="pr_id_2_content"
+          style={null}
+        >
+          <form
+            onSubmit={[Function]}
+          >
+            <div
+              className="row"
+            >
+              <div
+                className="col"
+              >
+                <div
+                  className="row"
+                >
+                  <div
+                    className="col"
+                  >
+                    <Label
+                      for="title"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Title
+                      <span
+                        style={
+                          Object {
+                            "color": "red",
+                          }
+                        }
+                      >
+                        *
+                      </span>
+                    </Label>
+                    <div
+                      className="nexus-c-title-create_input-container"
+                    >
+                      <Component
+                        control={
+                          Object {
+                            "_defaultValues": Object {
+                              "catalogueOwner": "vu",
+                            },
+                            "_fields": Object {
+                              "catalogueOwner": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "catalogueOwner",
+                                  "ref": Object {
+                                    "name": "catalogueOwner",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "contentType": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "contentType",
+                                  "ref": Object {
+                                    "name": "contentType",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "releaseYear": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "minLength": Object {
+                                    "message": "Min release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "releaseYear",
+                                  "pattern": Object {
+                                    "message": "Please enter a valid year!",
+                                    "value": /\\^\\[0-9\\]\\+\\$/,
+                                  },
+                                  "ref": Object {
+                                    "name": "releaseYear",
+                                  },
+                                  "required": Object {
+                                    "message": "Field cannot be empty!",
+                                    "value": true,
+                                  },
+                                },
+                              },
+                              "title": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max title length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "title",
+                                  "ref": Object {
+                                    "name": "title",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                            },
+                            "_formState": Object {
+                              "dirtyFields": Object {},
+                              "errors": Object {},
+                              "isDirty": false,
+                              "isSubmitSuccessful": false,
+                              "isSubmitted": false,
+                              "isSubmitting": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "submitCount": 0,
+                              "touchedFields": Object {},
+                            },
+                            "_formValues": Object {
+                              "catalogueOwner": "vu",
+                              "contentType": undefined,
+                              "releaseYear": undefined,
+                              "title": undefined,
+                            },
+                            "_getDirty": [Function],
+                            "_getFieldArray": [Function],
+                            "_getWatch": [Function],
+                            "_names": Object {
+                              "array": Set {},
+                              "mount": Set {
+                                "title",
+                                "contentType",
+                                "releaseYear",
+                                "catalogueOwner",
+                              },
+                              "unMount": Set {},
+                              "watch": Set {},
+                            },
+                            "_options": Object {
+                              "defaultValues": Object {
+                                "catalogueOwner": "vu",
+                              },
+                              "mode": "onSubmit",
+                              "reValidateMode": "onChange",
+                              "shouldFocusError": true,
+                            },
+                            "_proxyFormState": Object {
+                              "dirtyFields": false,
+                              "errors": "all",
+                              "isDirty": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "touchedFields": false,
+                            },
+                            "_removeUnmounted": [Function],
+                            "_stateFlags": Object {
+                              "action": false,
+                              "mount": true,
+                              "watch": false,
+                            },
+                            "_subjects": Object {
+                              "array": ye {
+                                "observers": Array [],
+                              },
+                              "control": ye {
+                                "observers": Array [],
+                              },
+                              "state": ye {
+                                "observers": Array [
+                                  me {
+                                    "closed": false,
+                                    "observer": Object {
+                                      "next": [Function],
+                                    },
+                                  },
+                                ],
+                              },
+                              "watch": ye {
+                                "observers": Array [],
+                              },
+                            },
+                            "_updateFieldArray": [Function],
+                            "_updateValid": [Function],
+                            "register": [Function],
+                            "unregister": [Function],
+                          }
+                        }
+                        name="title"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        render={[Function]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="row"
+                >
+                  <div
+                    className="col"
+                  >
+                    <Label
+                      for="contentType"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Content Type
+                      <span
+                        style={
+                          Object {
+                            "color": "red",
+                          }
+                        }
+                      >
+                        *
+                      </span>
+                    </Label>
+                    <div
+                      className="nexus-c-title-create_input-container"
+                    >
+                      <Component
+                        control={
+                          Object {
+                            "_defaultValues": Object {
+                              "catalogueOwner": "vu",
+                            },
+                            "_fields": Object {
+                              "catalogueOwner": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "catalogueOwner",
+                                  "ref": Object {
+                                    "name": "catalogueOwner",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "contentType": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "contentType",
+                                  "ref": Object {
+                                    "name": "contentType",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "releaseYear": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "minLength": Object {
+                                    "message": "Min release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "releaseYear",
+                                  "pattern": Object {
+                                    "message": "Please enter a valid year!",
+                                    "value": /\\^\\[0-9\\]\\+\\$/,
+                                  },
+                                  "ref": Object {
+                                    "name": "releaseYear",
+                                  },
+                                  "required": Object {
+                                    "message": "Field cannot be empty!",
+                                    "value": true,
+                                  },
+                                },
+                              },
+                              "title": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max title length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "title",
+                                  "ref": Object {
+                                    "name": "title",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                            },
+                            "_formState": Object {
+                              "dirtyFields": Object {},
+                              "errors": Object {},
+                              "isDirty": false,
+                              "isSubmitSuccessful": false,
+                              "isSubmitted": false,
+                              "isSubmitting": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "submitCount": 0,
+                              "touchedFields": Object {},
+                            },
+                            "_formValues": Object {
+                              "catalogueOwner": "vu",
+                              "contentType": undefined,
+                              "releaseYear": undefined,
+                              "title": undefined,
+                            },
+                            "_getDirty": [Function],
+                            "_getFieldArray": [Function],
+                            "_getWatch": [Function],
+                            "_names": Object {
+                              "array": Set {},
+                              "mount": Set {
+                                "title",
+                                "contentType",
+                                "releaseYear",
+                                "catalogueOwner",
+                              },
+                              "unMount": Set {},
+                              "watch": Set {},
+                            },
+                            "_options": Object {
+                              "defaultValues": Object {
+                                "catalogueOwner": "vu",
+                              },
+                              "mode": "onSubmit",
+                              "reValidateMode": "onChange",
+                              "shouldFocusError": true,
+                            },
+                            "_proxyFormState": Object {
+                              "dirtyFields": false,
+                              "errors": "all",
+                              "isDirty": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "touchedFields": false,
+                            },
+                            "_removeUnmounted": [Function],
+                            "_stateFlags": Object {
+                              "action": false,
+                              "mount": true,
+                              "watch": false,
+                            },
+                            "_subjects": Object {
+                              "array": ye {
+                                "observers": Array [],
+                              },
+                              "control": ye {
+                                "observers": Array [],
+                              },
+                              "state": ye {
+                                "observers": Array [
+                                  me {
+                                    "closed": false,
+                                    "observer": Object {
+                                      "next": [Function],
+                                    },
+                                  },
+                                ],
+                              },
+                              "watch": ye {
+                                "observers": Array [],
+                              },
+                            },
+                            "_updateFieldArray": [Function],
+                            "_updateValid": [Function],
+                            "register": [Function],
+                            "unregister": [Function],
+                          }
+                        }
+                        name="contentType"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        render={[Function]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="row"
+                  style={
+                    Object {
+                      "marginTop": "15px",
+                    }
+                  }
+                >
+                  <div
+                    className="col"
+                  >
+                    <Label
+                      for="releaseYear"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Release Year
+                      <span
+                        style={
+                          Object {
+                            "color": "red",
+                          }
+                        }
+                      >
+                        *
+                      </span>
+                    </Label>
+                    <div
+                      className="nexus-c-title-create_input-container"
+                    >
+                      <Component
+                        control={
+                          Object {
+                            "_defaultValues": Object {
+                              "catalogueOwner": "vu",
+                            },
+                            "_fields": Object {
+                              "catalogueOwner": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "catalogueOwner",
+                                  "ref": Object {
+                                    "name": "catalogueOwner",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "contentType": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "contentType",
+                                  "ref": Object {
+                                    "name": "contentType",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "releaseYear": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "minLength": Object {
+                                    "message": "Min release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "releaseYear",
+                                  "pattern": Object {
+                                    "message": "Please enter a valid year!",
+                                    "value": /\\^\\[0-9\\]\\+\\$/,
+                                  },
+                                  "ref": Object {
+                                    "name": "releaseYear",
+                                  },
+                                  "required": Object {
+                                    "message": "Field cannot be empty!",
+                                    "value": true,
+                                  },
+                                },
+                              },
+                              "title": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max title length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "title",
+                                  "ref": Object {
+                                    "name": "title",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                            },
+                            "_formState": Object {
+                              "dirtyFields": Object {},
+                              "errors": Object {},
+                              "isDirty": false,
+                              "isSubmitSuccessful": false,
+                              "isSubmitted": false,
+                              "isSubmitting": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "submitCount": 0,
+                              "touchedFields": Object {},
+                            },
+                            "_formValues": Object {
+                              "catalogueOwner": "vu",
+                              "contentType": undefined,
+                              "releaseYear": undefined,
+                              "title": undefined,
+                            },
+                            "_getDirty": [Function],
+                            "_getFieldArray": [Function],
+                            "_getWatch": [Function],
+                            "_names": Object {
+                              "array": Set {},
+                              "mount": Set {
+                                "title",
+                                "contentType",
+                                "releaseYear",
+                                "catalogueOwner",
+                              },
+                              "unMount": Set {},
+                              "watch": Set {},
+                            },
+                            "_options": Object {
+                              "defaultValues": Object {
+                                "catalogueOwner": "vu",
+                              },
+                              "mode": "onSubmit",
+                              "reValidateMode": "onChange",
+                              "shouldFocusError": true,
+                            },
+                            "_proxyFormState": Object {
+                              "dirtyFields": false,
+                              "errors": "all",
+                              "isDirty": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "touchedFields": false,
+                            },
+                            "_removeUnmounted": [Function],
+                            "_stateFlags": Object {
+                              "action": false,
+                              "mount": true,
+                              "watch": false,
+                            },
+                            "_subjects": Object {
+                              "array": ye {
+                                "observers": Array [],
+                              },
+                              "control": ye {
+                                "observers": Array [],
+                              },
+                              "state": ye {
+                                "observers": Array [
+                                  me {
+                                    "closed": false,
+                                    "observer": Object {
+                                      "next": [Function],
+                                    },
+                                  },
+                                ],
+                              },
+                              "watch": ye {
+                                "observers": Array [],
+                              },
+                            },
+                            "_updateFieldArray": [Function],
+                            "_updateValid": [Function],
+                            "register": [Function],
+                            "unregister": [Function],
+                          }
+                        }
+                        name="releaseYear"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        render={[Function]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="row"
+                >
+                  <div
+                    className="col"
+                  >
+                    <Label
+                      for="catalogueOwner"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Catalogue Owner
+                      <span
+                        style={
+                          Object {
+                            "color": "red",
+                          }
+                        }
+                      >
+                        *
+                      </span>
+                    </Label>
+                    <div
+                      className=" nexus-c-title-create_input-container nexus-c-title-create_catalogue-owner-dropdown-container "
+                    >
+                      <Component
+                        control={
+                          Object {
+                            "_defaultValues": Object {
+                              "catalogueOwner": "vu",
+                            },
+                            "_fields": Object {
+                              "catalogueOwner": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "catalogueOwner",
+                                  "ref": Object {
+                                    "name": "catalogueOwner",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "contentType": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "contentType",
+                                  "ref": Object {
+                                    "name": "contentType",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "releaseYear": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "minLength": Object {
+                                    "message": "Min release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "releaseYear",
+                                  "pattern": Object {
+                                    "message": "Please enter a valid year!",
+                                    "value": /\\^\\[0-9\\]\\+\\$/,
+                                  },
+                                  "ref": Object {
+                                    "name": "releaseYear",
+                                  },
+                                  "required": Object {
+                                    "message": "Field cannot be empty!",
+                                    "value": true,
+                                  },
+                                },
+                              },
+                              "title": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max title length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "title",
+                                  "ref": Object {
+                                    "name": "title",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                            },
+                            "_formState": Object {
+                              "dirtyFields": Object {},
+                              "errors": Object {},
+                              "isDirty": false,
+                              "isSubmitSuccessful": false,
+                              "isSubmitted": false,
+                              "isSubmitting": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "submitCount": 0,
+                              "touchedFields": Object {},
+                            },
+                            "_formValues": Object {
+                              "catalogueOwner": "vu",
+                              "contentType": undefined,
+                              "releaseYear": undefined,
+                              "title": undefined,
+                            },
+                            "_getDirty": [Function],
+                            "_getFieldArray": [Function],
+                            "_getWatch": [Function],
+                            "_names": Object {
+                              "array": Set {},
+                              "mount": Set {
+                                "title",
+                                "contentType",
+                                "releaseYear",
+                                "catalogueOwner",
+                              },
+                              "unMount": Set {},
+                              "watch": Set {},
+                            },
+                            "_options": Object {
+                              "defaultValues": Object {
+                                "catalogueOwner": "vu",
+                              },
+                              "mode": "onSubmit",
+                              "reValidateMode": "onChange",
+                              "shouldFocusError": true,
+                            },
+                            "_proxyFormState": Object {
+                              "dirtyFields": false,
+                              "errors": "all",
+                              "isDirty": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "touchedFields": false,
+                            },
+                            "_removeUnmounted": [Function],
+                            "_stateFlags": Object {
+                              "action": false,
+                              "mount": true,
+                              "watch": false,
+                            },
+                            "_subjects": Object {
+                              "array": ye {
+                                "observers": Array [],
+                              },
+                              "control": ye {
+                                "observers": Array [],
+                              },
+                              "state": ye {
+                                "observers": Array [
+                                  me {
+                                    "closed": false,
+                                    "observer": Object {
+                                      "next": [Function],
+                                    },
+                                  },
+                                ],
+                              },
+                              "watch": ye {
+                                "observers": Array [],
+                              },
+                            },
+                            "_updateFieldArray": [Function],
+                            "_updateValid": [Function],
+                            "register": [Function],
+                            "unregister": [Function],
+                          }
+                        }
+                        name="catalogueOwner"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        render={[Function]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="nexus-c-title-create_checkbox-container"
+                >
+                  <div
+                    className="row"
+                  >
+                    <div
+                      className="col"
+                    >
+                      <Checkbox
+                        ariaLabelledBy={null}
+                        checked={false}
+                        className={null}
+                        disabled={false}
+                        falseValue={false}
+                        icon="pi pi-check"
+                        id="syncVZ"
+                        inputId="syncVZ"
+                        inputRef={null}
+                        name={null}
+                        onChange={[Function]}
+                        onContextMenu={null}
+                        onMouseDown={null}
+                        readOnly={false}
+                        required={false}
+                        style={null}
+                        tabIndex={null}
+                        tooltip={null}
+                        tooltipOptions={null}
+                        trueValue={true}
+                        value={null}
+                      />
+                      <label
+                        className="nexus-c-title-create_checkbox-label"
+                        htmlFor="syncVZ"
+                      >
+                        Publish to VZ and Movida Int'l
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    className="row"
+                  >
+                    <div
+                      className="col"
+                    >
+                      <Checkbox
+                        ariaLabelledBy={null}
+                        checked={false}
+                        className={null}
+                        disabled={false}
+                        falseValue={false}
+                        icon="pi pi-check"
+                        id="syncMovida"
+                        inputId="syncMovida"
+                        inputRef={null}
+                        name={null}
+                        onChange={[Function]}
+                        onContextMenu={null}
+                        onMouseDown={null}
+                        readOnly={false}
+                        required={false}
+                        style={null}
+                        tabIndex={null}
+                        tooltip={null}
+                        tooltipOptions={null}
+                        trueValue={true}
+                        value={null}
+                      />
+                      <label
+                        className="nexus-c-title-create_checkbox-label"
+                        htmlFor="syncVZ"
+                      >
+                        Publish to Movida
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          className="p-dialog-footer"
+        >
+          <div
+            className="nexus-c-title-create_footer-container"
+          >
+            <div
+              className="nx-stylish list-group nexus-c-title-create_footer-alert-container"
+            />
+            <div
+              className="nexus-c-title-create_footer-buttons-container"
+            >
+              <ForwardRef
+                appearance="primary"
+                className="p-button-text"
+                disabled={false}
+                id="titleCancelBtn"
+                label="Cancel"
+                onClick={[Function]}
+              />
+              <ForwardRef
+                appearance="primary"
+                className="p-button-text"
+                iconPos="right"
+                id="titleSaveBtn"
+                label="Save"
+                loading={false}
+                loadingIcon="pi pi-spin pi-spinner"
+                onClick={[Function]}
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="p-resizable-handle"
+          onMouseDown={[Function]}
+          style={
+            Object {
+              "zIndex": 90,
+            }
+          }
+        />
+      </div>
+    </CSSTransition>
+  </div>
+</Portal>
+`;
+
+exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = `
+<Portal
+  containerInfo={
+    <body>
+      <div
+        class="my-portal"
+      />
+    </body>
+  }
+>
+  <div
+    className="p-dialog-mask p-component-overlay p-component-overlay-enter p-dialog-visible p-dialog-draggable p-dialog-resizable p-dialog-center"
+    onClick={[Function]}
+    style={null}
+  >
+    <CSSTransition
+      classNames="p-dialog"
+      in={true}
+      nodeRef={
+        Object {
+          "current": null,
+        }
+      }
+      onEnter={[Function]}
+      onEntered={[Function]}
+      onExited={[Function]}
+      onExiting={[Function]}
+      options={null}
+      timeout={
+        Object {
+          "enter": 150,
+          "exit": 150,
+        }
+      }
+      unmountOnExit={true}
+    >
+      <div
+        aria-describedby="pr_id_4_content"
+        aria-labelledby="pr_id_4_header"
+        aria-modal={true}
+        className="p-dialog p-component nexus-c-title-create_dialog"
+        id="pr_id_4"
+        onClick={null}
+        role="dialog"
+        style={
+          Object {
+            "width": "40vw",
+          }
+        }
+      >
+        <div
+          className="p-dialog-header"
+          onMouseDown={[Function]}
+        >
+          <div
+            className="p-dialog-title"
+            id="pr_id_4_header"
+          >
+            Create Title
+          </div>
+          <div
+            className="p-dialog-header-icons"
+          >
+            <button
+              aria-label="Close"
+              className="p-dialog-header-icon p-dialog-header-close p-link"
+              onClick={[Function]}
+              type="button"
+            >
+              <span
+                className="p-dialog-header-close-icon pi pi-times"
+              />
+              <Ripple />
+            </button>
+          </div>
+        </div>
+        <div
+          className="p-dialog-content"
+          id="pr_id_4_content"
+          style={null}
+        >
+          <form
+            onSubmit={[Function]}
+          >
+            <div
+              className="row"
+            >
+              <div
+                className="col"
+              >
+                <div
+                  className="row"
+                >
+                  <div
+                    className="col"
+                  >
+                    <Label
+                      for="title"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Title
+                      <span
+                        style={
+                          Object {
+                            "color": "red",
+                          }
+                        }
+                      >
+                        *
+                      </span>
+                    </Label>
+                    <div
+                      className="nexus-c-title-create_input-container"
+                    >
+                      <Component
+                        control={
+                          Object {
+                            "_defaultValues": Object {
+                              "catalogueOwner": undefined,
+                            },
+                            "_fields": Object {
+                              "contentType": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "contentType",
+                                  "ref": Object {
+                                    "name": "contentType",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "releaseYear": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "minLength": Object {
+                                    "message": "Min release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "releaseYear",
+                                  "pattern": Object {
+                                    "message": "Please enter a valid year!",
+                                    "value": /\\^\\[0-9\\]\\+\\$/,
+                                  },
+                                  "ref": Object {
+                                    "name": "releaseYear",
+                                  },
+                                  "required": Object {
+                                    "message": "Field cannot be empty!",
+                                    "value": true,
+                                  },
+                                },
+                              },
+                              "title": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max title length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "title",
+                                  "ref": Object {
+                                    "name": "title",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                            },
+                            "_formState": Object {
+                              "dirtyFields": Object {},
+                              "errors": Object {},
+                              "isDirty": false,
+                              "isSubmitSuccessful": false,
+                              "isSubmitted": false,
+                              "isSubmitting": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "submitCount": 0,
+                              "touchedFields": Object {},
+                            },
+                            "_formValues": Object {
+                              "catalogueOwner": undefined,
+                              "contentType": undefined,
+                              "releaseYear": undefined,
+                              "title": undefined,
+                            },
+                            "_getDirty": [Function],
+                            "_getFieldArray": [Function],
+                            "_getWatch": [Function],
+                            "_names": Object {
+                              "array": Set {},
+                              "mount": Set {
+                                "title",
+                                "contentType",
+                                "releaseYear",
+                              },
+                              "unMount": Set {},
+                              "watch": Set {},
+                            },
+                            "_options": Object {
+                              "defaultValues": Object {
+                                "catalogueOwner": undefined,
+                              },
+                              "mode": "onSubmit",
+                              "reValidateMode": "onChange",
+                              "shouldFocusError": true,
+                            },
+                            "_proxyFormState": Object {
+                              "dirtyFields": false,
+                              "errors": "all",
+                              "isDirty": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "touchedFields": false,
+                            },
+                            "_removeUnmounted": [Function],
+                            "_stateFlags": Object {
+                              "action": false,
+                              "mount": true,
+                              "watch": false,
+                            },
+                            "_subjects": Object {
+                              "array": ye {
+                                "observers": Array [],
+                              },
+                              "control": ye {
+                                "observers": Array [],
+                              },
+                              "state": ye {
+                                "observers": Array [
+                                  me {
+                                    "closed": false,
+                                    "observer": Object {
+                                      "next": [Function],
+                                    },
+                                  },
+                                ],
+                              },
+                              "watch": ye {
+                                "observers": Array [],
+                              },
+                            },
+                            "_updateFieldArray": [Function],
+                            "_updateValid": [Function],
+                            "register": [Function],
+                            "unregister": [Function],
+                          }
+                        }
+                        name="title"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        render={[Function]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="row"
+                >
+                  <div
+                    className="col"
+                  >
+                    <Label
+                      for="contentType"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Content Type
+                      <span
+                        style={
+                          Object {
+                            "color": "red",
+                          }
+                        }
+                      >
+                        *
+                      </span>
+                    </Label>
+                    <div
+                      className="nexus-c-title-create_input-container"
+                    >
+                      <Component
+                        control={
+                          Object {
+                            "_defaultValues": Object {
+                              "catalogueOwner": undefined,
+                            },
+                            "_fields": Object {
+                              "contentType": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "contentType",
+                                  "ref": Object {
+                                    "name": "contentType",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "releaseYear": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "minLength": Object {
+                                    "message": "Min release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "releaseYear",
+                                  "pattern": Object {
+                                    "message": "Please enter a valid year!",
+                                    "value": /\\^\\[0-9\\]\\+\\$/,
+                                  },
+                                  "ref": Object {
+                                    "name": "releaseYear",
+                                  },
+                                  "required": Object {
+                                    "message": "Field cannot be empty!",
+                                    "value": true,
+                                  },
+                                },
+                              },
+                              "title": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max title length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "title",
+                                  "ref": Object {
+                                    "name": "title",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                            },
+                            "_formState": Object {
+                              "dirtyFields": Object {},
+                              "errors": Object {},
+                              "isDirty": false,
+                              "isSubmitSuccessful": false,
+                              "isSubmitted": false,
+                              "isSubmitting": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "submitCount": 0,
+                              "touchedFields": Object {},
+                            },
+                            "_formValues": Object {
+                              "catalogueOwner": undefined,
+                              "contentType": undefined,
+                              "releaseYear": undefined,
+                              "title": undefined,
+                            },
+                            "_getDirty": [Function],
+                            "_getFieldArray": [Function],
+                            "_getWatch": [Function],
+                            "_names": Object {
+                              "array": Set {},
+                              "mount": Set {
+                                "title",
+                                "contentType",
+                                "releaseYear",
+                              },
+                              "unMount": Set {},
+                              "watch": Set {},
+                            },
+                            "_options": Object {
+                              "defaultValues": Object {
+                                "catalogueOwner": undefined,
+                              },
+                              "mode": "onSubmit",
+                              "reValidateMode": "onChange",
+                              "shouldFocusError": true,
+                            },
+                            "_proxyFormState": Object {
+                              "dirtyFields": false,
+                              "errors": "all",
+                              "isDirty": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "touchedFields": false,
+                            },
+                            "_removeUnmounted": [Function],
+                            "_stateFlags": Object {
+                              "action": false,
+                              "mount": true,
+                              "watch": false,
+                            },
+                            "_subjects": Object {
+                              "array": ye {
+                                "observers": Array [],
+                              },
+                              "control": ye {
+                                "observers": Array [],
+                              },
+                              "state": ye {
+                                "observers": Array [
+                                  me {
+                                    "closed": false,
+                                    "observer": Object {
+                                      "next": [Function],
+                                    },
+                                  },
+                                ],
+                              },
+                              "watch": ye {
+                                "observers": Array [],
+                              },
+                            },
+                            "_updateFieldArray": [Function],
+                            "_updateValid": [Function],
+                            "register": [Function],
+                            "unregister": [Function],
+                          }
+                        }
+                        name="contentType"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        render={[Function]}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="row"
+                  style={
+                    Object {
+                      "marginTop": "15px",
+                    }
+                  }
+                >
+                  <div
+                    className="col"
+                  >
+                    <Label
+                      for="releaseYear"
+                      tag="label"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
+                    >
+                      Release Year
+                      <span
+                        style={
+                          Object {
+                            "color": "red",
+                          }
+                        }
+                      >
+                        *
+                      </span>
+                    </Label>
+                    <div
+                      className="nexus-c-title-create_input-container"
+                    >
+                      <Component
+                        control={
+                          Object {
+                            "_defaultValues": Object {
+                              "catalogueOwner": undefined,
+                            },
+                            "_fields": Object {
+                              "contentType": Object {
+                                "_f": Object {
+                                  "mount": true,
+                                  "name": "contentType",
+                                  "ref": Object {
+                                    "name": "contentType",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                              "releaseYear": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "minLength": Object {
+                                    "message": "Min release year length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "releaseYear",
+                                  "pattern": Object {
+                                    "message": "Please enter a valid year!",
+                                    "value": /\\^\\[0-9\\]\\+\\$/,
+                                  },
+                                  "ref": Object {
+                                    "name": "releaseYear",
+                                  },
+                                  "required": Object {
+                                    "message": "Field cannot be empty!",
+                                    "value": true,
+                                  },
+                                },
+                              },
+                              "title": Object {
+                                "_f": Object {
+                                  "maxLength": Object {
+                                    "message": "Max title length is undefined!",
+                                    "value": undefined,
+                                  },
+                                  "mount": true,
+                                  "name": "title",
+                                  "ref": Object {
+                                    "name": "title",
+                                  },
+                                  "required": "Field cannot be empty!",
+                                },
+                              },
+                            },
+                            "_formState": Object {
+                              "dirtyFields": Object {},
+                              "errors": Object {},
+                              "isDirty": false,
+                              "isSubmitSuccessful": false,
+                              "isSubmitted": false,
+                              "isSubmitting": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "submitCount": 0,
+                              "touchedFields": Object {},
+                            },
+                            "_formValues": Object {
+                              "catalogueOwner": undefined,
+                              "contentType": undefined,
+                              "releaseYear": undefined,
+                              "title": undefined,
+                            },
+                            "_getDirty": [Function],
+                            "_getFieldArray": [Function],
+                            "_getWatch": [Function],
+                            "_names": Object {
+                              "array": Set {},
+                              "mount": Set {
+                                "title",
+                                "contentType",
+                                "releaseYear",
+                              },
+                              "unMount": Set {},
+                              "watch": Set {},
+                            },
+                            "_options": Object {
+                              "defaultValues": Object {
+                                "catalogueOwner": undefined,
+                              },
+                              "mode": "onSubmit",
+                              "reValidateMode": "onChange",
+                              "shouldFocusError": true,
+                            },
+                            "_proxyFormState": Object {
+                              "dirtyFields": false,
+                              "errors": "all",
+                              "isDirty": false,
+                              "isValid": false,
+                              "isValidating": false,
+                              "touchedFields": false,
+                            },
+                            "_removeUnmounted": [Function],
+                            "_stateFlags": Object {
+                              "action": false,
+                              "mount": true,
+                              "watch": false,
+                            },
+                            "_subjects": Object {
+                              "array": ye {
+                                "observers": Array [],
+                              },
+                              "control": ye {
+                                "observers": Array [],
+                              },
+                              "state": ye {
+                                "observers": Array [
+                                  me {
+                                    "closed": false,
+                                    "observer": Object {
+                                      "next": [Function],
+                                    },
+                                  },
+                                ],
+                              },
+                              "watch": ye {
+                                "observers": Array [],
+                              },
+                            },
+                            "_updateFieldArray": [Function],
+                            "_updateValid": [Function],
+                            "register": [Function],
+                            "unregister": [Function],
+                          }
+                        }
+                        name="releaseYear"
+                        onBlur={[Function]}
+                        onChange={[Function]}
+                        render={[Function]}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          className="p-dialog-footer"
+        >
+          <div
+            className="nexus-c-title-create_footer-container"
+          >
+            <div
+              className="nx-stylish list-group nexus-c-title-create_footer-alert-container"
+            />
+            <div
+              className="nexus-c-title-create_footer-buttons-container"
+            >
+              <ForwardRef
+                appearance="primary"
+                className="p-button-text"
+                disabled={false}
+                id="titleCancelBtn"
+                label="Cancel"
+                onClick={[Function]}
+              />
+              <ForwardRef
+                appearance="primary"
+                className="p-button-text"
+                iconPos="right"
+                id="titleSaveBtn"
+                label="Match & Create"
+                loading={false}
+                loadingIcon="pi pi-spin pi-spinner"
+                onClick={[Function]}
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="p-resizable-handle"
+          onMouseDown={[Function]}
+          style={
+            Object {
+              "zIndex": 90,
+            }
+          }
+        />
+      </div>
+    </CSSTransition>
+  </div>
+</Portal>
+`;

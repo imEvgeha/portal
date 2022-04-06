@@ -97,11 +97,12 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     setColumnApi={[Function]}
     setGridApi={[Function]}
   />
-  <Connect(ComposedComponent)
+  <TitleCreate
+    addToast={[Function]}
     display={false}
-    redirectToV2={true}
+    isItMatching={false}
+    onToggle={[Function]}
     tenantCode="vu"
-    toggle={[Function]}
   />
 </div>
 `;

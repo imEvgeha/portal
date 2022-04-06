@@ -19,15 +19,20 @@ exports[`BulkMatching should match snapshot 1`] = `
       data={Array []}
     />
     <SectionMessage>
-      Select titles from the repositories that match the incoming right or declare a 
-      <Button
-        appearance="link"
-        isDisabled={false}
-        onClick={[Function]}
-        spacing="none"
+      <div
+        className="nexus-c-bulk-matching__message"
       >
-        New Title
-      </Button>
+        Select titles from the repositories that match the incoming right or declare a 
+        <ForwardRef
+          appearance="link"
+          className="p-button-link nexus-c-bulk-matching__new-title-button"
+          disabled={false}
+          onClick={[Function]}
+          spacing="none"
+        >
+          New Title
+        </ForwardRef>
+      </div>
     </SectionMessage>
     <TitlesSection
       closeDrawer={[Function]}
@@ -49,5 +54,11 @@ exports[`BulkMatching should match snapshot 1`] = `
       }
     />
   </div>
+  <TitleCreate
+    addToast={[Function]}
+    display={false}
+    isItMatching={true}
+    onToggle={[Function]}
+  />
 </div>
 `;

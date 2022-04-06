@@ -1,0 +1,56 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
+.lgModal {
+    min-width: 90%;
+}
+
+.nx-stylish.list-group {
+    .alert {
+        @include margin(0, 0, 0, 0);
+    }
+}
+
+.nexus-c-title-create_error-msg {
+    color: #bf1650;
+}
+
+.nexus-c-title-create_error-msg::before {
+    display: inline;
+    content: '⚠ ';
+}
+
+.p-component.nexus-c-title-create_input {
+    @include margin(0, 0, 0, 0);
+}
+
+.p-component.nexus-c-title-create_input-number {
+    @include margin(0, 0, 0, 0);
+    width: 100%;
+
+    input {
+        @include margin(0, 0, 0, 0);
+    }
+}
+
+.nexus-c-title-create_footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .nexus-c-title-create_footer-buttons-container {
+        display: flex;
+    }
+}
+
+.nexus-c-title-create_input-container {
+    @include margin(0, 0, 3, 0);
+}
+
+.nexus-c-title-create_checkbox-label {
+    margin-left: 8px;
+}
+
+.nexus-c-title-create_checkbox-container .row:last-child {
+    margin-top: 8px;
+}
