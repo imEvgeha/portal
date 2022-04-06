@@ -9,7 +9,7 @@ import {isEmpty} from 'lodash';
 import {TabMenu} from 'primereact/tabmenu';
 import {connect} from 'react-redux';
 import {store} from '../../index';
-import TitleCreate from '../legacy/containers/metadata/dashboard/components/titleCreateModal/TitleCreateModal'; // TODO:replace with new component
+import TitleCreate from '../legacy/containers/metadata/dashboard/components/titleCreateModal/TitleCreateModal';
 import {resetTitle} from '../metadata/metadataActions';
 import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart';
