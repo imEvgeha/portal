@@ -12,6 +12,7 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/src/elements/nexus-grid/constants';
 import {defineCheckboxSelectionColumn} from '@vubiquity-nexus/portal-ui/src/elements/nexus-grid/elements/columnDefinitions';
+import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/src/grid/gridActions';
 import {get, isEmpty, isEqual} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -29,7 +30,7 @@ import {
     filterRightsByStatus,
     selectIngest,
 } from '../ingest-panel/ingestActions';
-import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import {getSelectedAttachmentId, getSelectedIngest, getTotalIngests} from '../ingest-panel/ingestSelectors';
 import {getFiltersToSend} from '../ingest-panel/utils';
 import {
     createAvailsMappingSelector,
@@ -75,6 +76,8 @@ const RightsRepositoryTable = ({
     setPreplanRights,
     prePlanRights,
     setCurrentUserView,
+    totalIngests,
+    toggleRefreshGridData,
 }) => {
     const {search} = location;
 
@@ -102,6 +105,11 @@ const RightsRepositoryTable = ({
             ? usersSelectedRights.filter(({availHistoryIds}) => !!availHistoryIds.find(avhId => avhId === id))
             : usersSelectedRights;
     };
+
+    // Auto Refresh/Update of the Grid after Right has been ingested into the system
+    useEffect(() => {
+        toggleRefreshGridData(true);
+    }, [totalIngests]);
 
     useEffect(() => {
         setTotalCount(0);
@@ -506,6 +514,8 @@ RightsRepositoryTable.propTypes = {
     setPreplanRights: PropTypes.func.isRequired,
     prePlanRights: PropTypes.object,
     setCurrentUserView: PropTypes.func.isRequired,
+    totalIngests: PropTypes.number,
+    toggleRefreshGridData: PropTypes.func,
 };
 
 RightsRepositoryTable.defaultProps = {
@@ -516,6 +526,8 @@ RightsRepositoryTable.defaultProps = {
     selectedAttachmentId: '',
     isTableDataLoading: false,
     prePlanRights: {},
+    totalIngests: 0,
+    toggleRefreshGridData: () => null,
 };
 
 const mapStateToProps = () => {
@@ -538,6 +550,7 @@ const mapStateToProps = () => {
         fromSelectedTable: fromSelectedTableSelector(state, props),
         prePlanRights: preplanRightsSelector(state, props),
         currentUserView: currentUserViewSelector(state),
+        totalIngests: getTotalIngests(state),
     });
 };
 
@@ -552,6 +565,7 @@ const mapDispatchToProps = dispatch => ({
     onFiltersChange: payload => dispatch(fetchIngests(payload)),
     setPreplanRights: payload => dispatch(setPreplanRights(payload)),
     setCurrentUserView: payload => dispatch(setCurrentUserViewActionAvails(payload)),
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepositoryTable);
