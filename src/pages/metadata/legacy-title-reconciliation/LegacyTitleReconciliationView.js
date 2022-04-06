@@ -6,6 +6,7 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {set} from 'lodash';
+import {ProgressSpinner} from 'primereact/progressspinner';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import './LegacyTitleReconciliationView.scss';
@@ -95,10 +96,14 @@ const LegacyTitleReconciliationView = ({
                     className="nexus-c-button"
                     appearance="primary"
                     onClick={handleDoneClick}
-                    isDisabled={isDoneDisabled}
+                    isDisabled={isDoneDisabled || isMerging}
                     isLoading={isMerging}
                 >
-                    {SAVE_BTN}
+                    {isMerging ? (
+                        <ProgressSpinner className="nexus-c-legacy-title-reconciliation-view__spinner" />
+                    ) : (
+                        <span>{SAVE_BTN}</span>
+                    )}
                 </Button>
             </div>
         </div>
