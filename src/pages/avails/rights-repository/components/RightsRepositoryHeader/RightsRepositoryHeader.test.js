@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {Button} from 'primereact/button';
-import {mockHistoryPush} from '../../../../../setupTestEnv';
+import {mockNavigate} from '../../../../../setupTestEnv';
 import {RightsRepositoryHeader} from './RightsRepositoryHeader';
 
 describe('RightsRepositoryHeader', () => {
@@ -25,7 +25,7 @@ describe('RightsRepositoryHeader', () => {
 
     it('should redirect to right create page when button is clicked', () => {
         wrapper.find(Button).simulate('click');
-        expect(mockHistoryPush).toHaveBeenCalledWith('/avails/rights/create');
+        expect(mockNavigate).toHaveBeenCalledWith('/avails/rights/create');
     });
 
     it('renders create new right button', () => {

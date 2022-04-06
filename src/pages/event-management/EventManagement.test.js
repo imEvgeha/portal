@@ -2,7 +2,7 @@ import React from 'react';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
-import {mockHistoryPush, mockSubstring} from '../../setupTestEnv';
+import {mockNavigate, mockSubstring} from '../../setupTestEnv';
 import EventManagement from './EventManagement';
 
 describe('EventManagement', () => {
@@ -103,7 +103,7 @@ describe('EventManagement', () => {
                 .props()
                 .onGridEvent({type: FILTER_CHANGED, api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
-            expect(mockHistoryPush).toHaveBeenCalledWith({
+            expect(mockNavigate).toHaveBeenCalledWith({
                 search: '?filter=%7B%22tenantId%22%3A%7B%22filter%22%3A%22WB%22%2C%22filterType%22%3A%22text%22%2C%22type%22%3A%22equals%22%7D%7D',
             });
         });
@@ -111,7 +111,7 @@ describe('EventManagement', () => {
         it('should update the URL with the applied sort option', () => {
             eventManagementTableWrapper.props().onSortChanged({api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
-            expect(mockHistoryPush).toHaveBeenCalledWith({
+            expect(mockNavigate).toHaveBeenCalledWith({
                 search: '?sort=%5B%7B%22colId%22%3A%22tenantId%22%2C%22sort%22%3A%22asc%22%7D%5D',
             });
         });
@@ -133,7 +133,7 @@ describe('EventManagement', () => {
                 .props()
                 .onGridEvent({type: SELECTION_CHANGED, api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
-            expect(mockHistoryPush).toHaveBeenCalledWith({
+            expect(mockNavigate).toHaveBeenCalledWith({
                 search: '?selectedEventId=%22abc%22',
             });
         });
