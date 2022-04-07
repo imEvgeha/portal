@@ -1,7 +1,7 @@
 import React from 'react';
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {Alert, Container, FormGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import Button from '@atlaskit/button';
+import Button, {LoadingButton} from '@atlaskit/button';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
@@ -619,14 +619,14 @@ class TitleCreate extends React.Component {
                         >
                             Cancel
                         </Button>
-                        <Button
+                        <LoadingButton
                             id="titleSaveBtn"
                             onClick={this.onSubmit}
                             appearance="primary"
                             isLoading={this.state.isCreatingTitle}
                         >
                             Save
-                        </Button>
+                        </LoadingButton>
                     </ModalFooter>
                 </AvForm>
             </Modal>

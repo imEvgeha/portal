@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import Button, {LoadingButton} from '@atlaskit/button';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {get, isEmpty} from 'lodash';
-import {ProgressSpinner} from 'primereact/progressspinner';
 import {connect} from 'react-redux';
 import constants from '../../../constants';
 import {uploadIngest} from '../../../ingestActions';
@@ -331,15 +330,15 @@ const InputForm = ({
                 <Button shouldFitContainer isDisabled={isUploading} onClick={closeModal}>
                     Cancel
                 </Button>
-                <Button
+                <LoadingButton
                     shouldFitContainer
                     onClick={openIngestConfirmationModal}
                     className={!isUploadEnabled() ? '' : 'btn-primary'}
                     isLoading={isUploading}
                     isDisabled={!isUploadEnabled() || isUploading}
                 >
-                    {isUploading ? <ProgressSpinner className="nexus-c-ingest-panel__spinner" /> : <span>Upload</span>}
-                </Button>
+                    <span>Upload</span>
+                </LoadingButton>
             </div>
         </div>
     );

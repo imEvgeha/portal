@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import Button, {LoadingButton} from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import {connect} from 'react-redux';
 import {NexusDateTimeWindowPicker} from '../../../../../ui/elements';
@@ -126,14 +126,14 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
             </div>
             <div className="ingest-filters__actions">
                 <Button onClick={clearFilters}>Clear All</Button>
-                <Button
+                <LoadingButton
                     onClick={() => applyFilters()}
                     appearance="primary"
                     isDisabled={!isApplyActive}
                     isLoading={isFilterLoading}
                 >
                     Apply Filter
-                </Button>
+                </LoadingButton>
             </div>
         </div>
     );

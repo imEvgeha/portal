@@ -59,13 +59,13 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
     >
       Hide Completed
     </Button>
-    <Button
+    <LoadingButton
       isDisabled={true}
       isLoading={false}
       onClick={[Function]}
     >
       Export
-    </Button>
+    </LoadingButton>
   </div>
   <ServicingOrdersTable
     dataRefreshComplete={[Function]}
