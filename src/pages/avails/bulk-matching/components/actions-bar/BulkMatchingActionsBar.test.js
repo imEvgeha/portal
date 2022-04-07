@@ -23,12 +23,10 @@ describe('BulkMatchingActionsBar', () => {
     });
 
     it('renders 3 buttons, Cancel, Match and Match & Create', () => {
-        // eslint-disable-next-line no-magic-numbers
         expect(wrapper.find(Button)).toHaveLength(1);
     });
 
     it('renders LoadingButton', () => {
-        // eslint-disable-next-line no-magic-numbers
         expect(wrapper.find(LoadingButton)).toHaveLength(2);
     });
 });
