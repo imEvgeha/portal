@@ -35,7 +35,7 @@ export const PrePlanActions = ({
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
     const [keywords, setKeywords] = useState('');
-    const [bulkUpdate, setBulkUpdate] = useState([]);
+    const [bulkUpdate, setBulkUpdate] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [headerText, setHeaderText] = useState('');
     const node = useRef();
@@ -49,7 +49,9 @@ export const PrePlanActions = ({
     }, []);
 
     useEffect(() => {
-        bulkSetInTable();
+        if (territories.length) {
+            bulkSetInTable();
+        }
     }, [bulkUpdate]);
 
     const {openModal, closeModal} = useContext(NexusModalContext);
