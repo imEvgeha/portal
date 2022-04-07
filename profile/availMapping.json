@@ -213,7 +213,7 @@
             "enableSearch": true,
             "enableEdit": true,
             "required": false,
-            "cellRenderer": "selectedAtCellRenderer",
+            "cellRenderer": "withdrawnAtCellRenderer",
             "cellRendererParams": {
                 "applyFilter": false
             }
