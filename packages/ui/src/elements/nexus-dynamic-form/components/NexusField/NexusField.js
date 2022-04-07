@@ -6,6 +6,7 @@ import TextField from '@atlaskit/textfield';
 import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
+import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
@@ -26,7 +27,6 @@ import DateTime from './components/DateTime/DateTime';
 import Licensors from './components/Licensors/Licensors';
 import MsvIds from './components/MsvIds/MsvIds';
 import './NexusField.scss';
-import {Link} from 'react-router-dom';
 
 const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
 
