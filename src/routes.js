@@ -1,29 +1,24 @@
 import React from 'react';
-import {compose} from 'redux';
+import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
+import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
+import {Outlet} from 'react-router-dom';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
 import eventManagementRoutes from './pages/event-management/eventManagementRoutes';
 import manualTasksRoutes from './pages/manual-tasks/manualTasksRoutes';
 import servicingOrdersRoutes from './pages/servicing-orders/servicingOrdersRoutes';
-import staticPagesRoutes from './pages/static/staticPagesRoutes';
+import NotFound from './pages/static/NotFound';
+import Welcome from './pages/static/Welcome';
 import titleMetadataRoutes from './pages/title-metadata/titleMetadataRoutes';
 import withTracker from './util/hoc/withTracker';
 
-const ContractProfile = React.lazy(() =>
-    import(
-        /* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ './pages/legacy/containers/contracts/profile/ContractProfile'
-    )
-);
-const Contract = React.lazy(() =>
-    import(
-        /* webpackPrefetch: true, webpackChunkName: "Contract" */ './pages/legacy/containers/contracts/search/Contract'
-    )
-);
 const Settings = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "Settings" */ './pages/legacy/containers/settings/Settings')
 );
 
-const SettingsPage = React.lazy(() => import('./pages/settings/SettingsPage'));
+const SettingsPage = React.lazy(() =>
+    import(/* webpackPrefetch: true, webpackChunkName: "SettingsV2" */ './pages/settings/SettingsPage')
+);
 
 const Unauthorized = React.lazy(() =>
     import(
@@ -31,44 +26,45 @@ const Unauthorized = React.lazy(() =>
     )
 );
 
-// TODO: on relevant page refactoring remove in to corresponding page folder
-const restRoutes = [
+const staticRoutes = [
     {
-        path: '/contractprofile',
-        component: ContractProfile,
+        path: 'settings',
+        element: Settings,
     },
     {
-        path: '/contractsearch',
-        component: Contract,
+        path: 'settings/v2',
+        element: canRender(SettingsPage, 'read', 'Avail'),
     },
     {
-        path: '/settings',
-        component: Settings,
+        path: '401',
+        element: Unauthorized,
     },
     {
-        path: '/settings/v2',
-        component: SettingsPage,
-    },
-    {
-        path: '/401',
-        component: Unauthorized,
+        path: '*',
+        element: NotFound,
     },
 ];
 
 export const routes = [
-    ...availsRoutes,
-    ...titleMetadataRoutes,
-    ...servicingOrdersRoutes,
-    ...eventManagementRoutes,
-    ...dopTasksRoutes,
-    ...manualTasksRoutes,
-    ...restRoutes,
-    ...staticPagesRoutes,
+    {
+        path: ':realm',
+        element: NexusLayout,
+        children: [
+            {index: true, key: 'welcome', element: Welcome},
+            {path: 'avails', element: Outlet, children: [...availsRoutes]},
+            {path: 'metadata', element: Outlet, children: [...titleMetadataRoutes]},
+            {path: 'dop-tasks', element: Outlet, children: [...dopTasksRoutes]},
+            {path: 'servicing-orders', element: Outlet, children: [...servicingOrdersRoutes]},
+            {path: 'event-management', element: Outlet, children: [...eventManagementRoutes]},
+            ...manualTasksRoutes,
+            ...staticRoutes,
+        ],
+    },
 ];
 
 export function routesWithTracking() {
     return routes.map(route => {
-        route.component = compose(withTracker())(route.component);
+        route.element = withTracker(route.element);
         return route;
     });
 }

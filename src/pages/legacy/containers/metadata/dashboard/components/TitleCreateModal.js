@@ -25,10 +25,11 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
+import withRouter from '@vubiquity-nexus/portal-ui/lib/hocs/withRouter';
 
-const onViewTitleClick = response => {
+const onViewTitleClick = (response, realm) => {
     const {id} = response || {};
-    const url = `${getDomainName()}/metadata/detail/${id}`;
+    const url = `${getDomainName()}/${realm}/metadata/detail/${id}`;
     window.open(url, '_blank');
 };
 
@@ -157,7 +158,9 @@ class TitleCreate extends React.Component {
                                             <PrimeReactButton
                                                 label="View Title"
                                                 className="p-button-link p-toast-button-link"
-                                                onClick={() => onViewTitleClick(response)}
+                                                onClick={() =>
+                                                    onViewTitleClick(response, this.props.router.params.realm)
+                                                }
                                             />
                                         </ToastBody>
                                     );
@@ -191,7 +194,7 @@ class TitleCreate extends React.Component {
                                 <PrimeReactButton
                                     label="View Title"
                                     className="p-button-link p-toast-button-link"
-                                    onClick={() => onViewTitleClick(response)}
+                                    onClick={() => onViewTitleClick(response, this.props.router.params.realm)}
                                 />
                             </ToastBody>
                         );
@@ -640,11 +643,13 @@ TitleCreate.propTypes = {
     className: PropTypes.string,
     tenantCode: PropTypes.string,
     addToast: PropTypes.func,
+    router: PropTypes.object,
 };
 
 TitleCreate.defaultProps = {
+    router: {},
     tenantCode: undefined,
     addToast: () => null,
 };
 
-export default withToasts(TitleCreate);
+export default withRouter(withToasts(TitleCreate));

@@ -6,7 +6,7 @@ const withRouter = Component => {
         const location = useLocation();
         const params = useParams();
         const navigate = useNavigate();
-        return <Component {...props} router={{location, params, history}} match={{params}} />;
+        return <Component {...props} router={{location, params, navigate}} match={{params}} />;
     };
 };
 

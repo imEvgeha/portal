@@ -2,12 +2,13 @@ import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Button} from 'primereact/button';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
 import {renderTitleName} from './utils/utils';
 
 const LoadingCellRenderer = params => {
     const navigate = useNavigate();
+    const routeParams = useParams();
 
     const {
         data,
@@ -15,17 +16,24 @@ const LoadingCellRenderer = params => {
         colDef: {field, colId},
         valueFormatted,
         linkId = '',
-        link = null,
+        link = '',
         newTab = true,
     } = params;
     if (!data && colDef !== 'actions') {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
 
-    let linkTo = link && URL.keepEmbedded(`${link}${data[linkId] || data.id || data[colId]}`);
-    if (data.type === 'title') {
-        linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
-    }
+    const getLink = () => {
+        if (data.type === 'title') {
+            return URL.keepEmbedded(`/${routeParams.realm}/metadata/detail/${data.id}`);
+        }
+
+        if (link?.includes('http')) {
+            return URL.keepEmbedded(`${link}${data[linkId] || data.id || data[colId]}`);
+        }
+
+        return link && URL.keepEmbedded(`/${routeParams.realm}/${link}${data[linkId] || data.id || data[colId]}`);
+    };
 
     let value = getDeepValue(data, field);
     if (isObject(value)) {
@@ -68,13 +76,19 @@ const LoadingCellRenderer = params => {
             </div>
         );
 
-        if (linkTo) {
+        if (getLink()) {
             return newTab ? (
-                <a href={linkTo} target="_blank">
-                    {displayValue}
-                </a>
+                getLink().includes('http') ? (
+                    <a href={getLink()} target="_blank">
+                        {displayValue}
+                    </a>
+                ) : (
+                    <Link to={getLink()} target="_blank">
+                        {displayValue}
+                    </Link>
+                )
             ) : (
-                <Button label={displayValue} onClick={() => navigate(linkTo)} className="p-button-link" />
+                <Button label={displayValue} onClick={() => navigate(getLink())} className="p-button-link" />
             );
         }
 

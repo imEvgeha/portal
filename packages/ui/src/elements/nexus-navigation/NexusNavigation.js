@@ -60,10 +60,11 @@ const NexusNavigation = ({profileInfo, logout}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const location = useLocation();
     const navigate = useNavigate();
+
     useEffect(() => setSelectedItem(location.pathname.split('/')[1]), [location.pathname]);
 
     const handleClick = destination => {
-        navigate(`/${destination.toLowerCase()}`);
+        navigate(`${destination.toLowerCase()}`);
         setSelectedItem(destination);
     };
 

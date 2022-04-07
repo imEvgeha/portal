@@ -26,6 +26,7 @@ import DateTime from './components/DateTime/DateTime';
 import Licensors from './components/Licensors/Licensors';
 import MsvIds from './components/MsvIds/MsvIds';
 import './NexusField.scss';
+import {Link} from 'react-router-dom';
 
 const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
 
@@ -479,18 +480,16 @@ const NexusField = ({
                         isEdit={false}
                     />
                 );
-            case 'link':
-                return (
-                    <>
-                        <a href={createUrl(linkConfig, initialData)}>
-                            {fieldProps.value ? (
-                                getValue(fieldProps)
-                            ) : (
-                                <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
-                            )}
-                        </a>
-                    </>
+            case 'link': {
+                const url = createUrl(linkConfig, initialData);
+                const body = fieldProps.value ? (
+                    getValue(fieldProps)
+                ) : (
+                    <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
                 );
+
+                return url.includes('http') ? <a href={url}>{body}</a> : <Link to={`./../${url}`}>{body}</Link>;
+            }
             default:
                 return fieldProps.value ? (
                     <div>

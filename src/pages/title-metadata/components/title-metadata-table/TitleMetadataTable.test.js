@@ -18,8 +18,8 @@ describe('TitleMetadataTable', () => {
 
     beforeAll(() => {
         wrapper = shallow(<TitleMetadataTable store={store} />)
-        .dive()
-        .shallow();
+            .dive()
+            .shallow();
     });
 
     it('should match snapshot', () => {

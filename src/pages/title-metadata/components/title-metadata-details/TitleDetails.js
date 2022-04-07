@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
@@ -83,6 +83,7 @@ const TitleDetails = ({
     const [MovIntDisabled, setMovIntDisabled] = useState(true);
     const [episodesCount, setEpisodesCount] = useState('0');
     const routeParams = useParams();
+    const location = useLocation();
 
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
     const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
@@ -96,19 +97,26 @@ const TitleDetails = ({
     }, []);
 
     useEffect(() => {
-        fetchConfigApiEndpoints();
-        const {id} = routeParams;
-        if (id) {
-            const nexusTitle = isNexusTitle(id);
-            const isMgm = isMgmTitle(id);
-            getTitle({id, isMgm});
-            nexusTitle && !isMgm && getExternalIds({id});
-            getTerritoryMetadata({id, isMgm});
-            getEditorialMetadata({id, isMgm});
-            clearSeasonPersons();
-            getEpisodesCount(id).then(res => {
-                setEpisodesCount(res);
-            });
+        setRefresh(true);
+    }, [location]);
+
+    useEffect(() => {
+        if (refresh) {
+            fetchConfigApiEndpoints();
+            const {id} = routeParams;
+            if (id) {
+                const nexusTitle = isNexusTitle(id);
+                const isMgm = isMgmTitle(id);
+                getTitle({id, isMgm});
+                nexusTitle && !isMgm && getExternalIds({id});
+                getTerritoryMetadata({id, isMgm});
+                getEditorialMetadata({id, isMgm});
+                clearSeasonPersons();
+                getEpisodesCount(id).then(res => {
+                    setEpisodesCount(res);
+                    setRefresh(false);
+                });
+            }
         }
     }, [refresh]);
 

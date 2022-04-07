@@ -177,7 +177,7 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true,
+            "required": false,
             "sortable": false
         },
         {

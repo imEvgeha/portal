@@ -6,12 +6,12 @@ const AssetManagementViewImport = import(
 );
 const AssetManagementView = React.lazy(() => AssetManagementViewImport);
 
-export const BASE_PATH = '/manual-tasks';
+const BASE_PATH = 'manual-tasks';
 
 const routes = [
     {
         path: `${BASE_PATH}/choose-artwork`,
-        component: canRender(AssetManagementView, 'read', 'AssetManagement'),
+        element: canRender(AssetManagementView, 'read', 'AssetManagement'),
     },
 ];
 

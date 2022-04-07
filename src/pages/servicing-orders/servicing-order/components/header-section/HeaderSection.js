@@ -55,7 +55,7 @@ const HeaderSection = ({
         <div className="panel-header">
             <div className={panelHeaderClassNames}>
                 <div className="panel-header__title--section">
-                    <Link id="lnkServicingOrders" to={`/${SERVICING_ORDERS.toLowerCase()}`}>
+                    <Link id="lnkServicingOrders" to={-1}>
                         <ArrowLeftIcon size="large" primaryColor={backArrowColor} />
                     </Link>
                     <span className="panel-header__title--text">Servicing Order</span>

@@ -49,7 +49,6 @@ export const defaultConfiguration = {
     },
     keycloak: {
         clientId: 'portalapp-public',
-        realm: 'Vubiquity',
         url: 'https://auth.dev.vubiquity.com/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
@@ -60,7 +59,7 @@ export const defaultConfiguration = {
     },
 };
 
-let configuration = {};
+let configuration = mergeDeep({}, defaultConfiguration);
 
 // temporary solution - replace it with env variables
 export async function setEnvConfiguration(env) {
@@ -75,8 +74,6 @@ export async function setEnvConfiguration(env) {
         }
     };
     try {
-        configuration = mergeDeep(configuration, defaultConfiguration);
-
         const configFile = getConfigFile(env);
         const data = await nexusFetch(configFile);
 
@@ -91,6 +88,12 @@ export async function setEnvConfiguration(env) {
 }
 
 export const getConfig = key => get(configuration, key);
+
+export const getAuthConfig = () => {
+    const kConfig = getConfig('keycloak');
+    const realm = window.location.pathname.split('/')[1];
+    return {...kConfig, realm};
+};
 
 // App config
 export const appConfig = {

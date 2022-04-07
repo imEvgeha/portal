@@ -3,7 +3,6 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
 import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
-import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
 import Toast from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotification';
 import {LicenseManager} from 'ag-grid-enterprise';
 import {render} from 'react-dom';
@@ -18,7 +17,8 @@ import '@vubiquity-nexus/portal-styles/scss/index.scss';
 import {HistoryRouter as ConnectedRouter} from 'redux-first-history/rr6';
 import AppProviders from './AppProviders';
 import Router from './Router';
-import {getConfig, setEnvConfiguration} from './config';
+import {getAuthConfig, setEnvConfiguration} from './config';
+import NotFound from './pages/static/NotFound';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
 import configureStore, {configureHistory} from './store';
@@ -59,9 +59,7 @@ const App = () => (
                 <ConnectedRouter history={history}>
                     <ErrorBoundary>
                         <Toast />
-                        <NexusLayout>
-                            <Router routes={routesWithTracking()} />
-                        </NexusLayout>
+                        <Router routes={routesWithTracking()} />
                     </ErrorBoundary>
                 </ConnectedRouter>
             </AppProviders>
@@ -70,10 +68,11 @@ const App = () => (
 );
 
 function renderApp() {
-    createKeycloakInstance(getConfig('keycloak'));
+    const kconfig = getAuthConfig();
+    createKeycloakInstance(kconfig);
     initializeTracker();
     store.runSaga(rootSaga);
-    render(<App />, document.getElementById('app'));
+    render(kconfig.realm ? <App /> : <NotFound />, document.getElementById('app'));
 }
 
 if (module.hot) {

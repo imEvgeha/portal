@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Ability, AbilityBuilder} from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {AVAILS, DOP_TASKS, EVENT_MANAGEMENT, METADATA, SERVICING_ORDERS} from './constants';
 
 const idToAbilityNameMap = {
@@ -103,20 +103,18 @@ const cannot = (action, subject, field = undefined) => {
 };
 
 const canRender = (Component, action, subject, field = undefined) => {
-    class AuthenticatedComponent extends React.Component {
-        componentDidMount() {
+    return props => {
+        const navigate = useNavigate();
+        const routeParams = useParams();
+
+        useEffect(() => {
             if (cannot(action, subject, field)) {
-                const navigate = useNavigate();
-                navigate('/401');
+                navigate(`${routeParams.realm}/401`);
             }
-        }
+        }, []);
 
-        render() {
-            return can(action, subject, field) ? <Component {...this.props} /> : <div>Invalid application state</div>;
-        }
-    }
-
-    return AuthenticatedComponent;
+        return can(action, subject, field) ? <Component {...props} /> : <div>Invalid application state</div>;
+    };
 };
 
 export {ability, updateAbility, Can, can, cannot, canRender, idToAbilityNameMap};

@@ -13,18 +13,23 @@ const Router = ({routes, titleMetadataFilter, clearTitleMetadataFilter}) => {
     if (`/${location.pathname.split('/', 2)[1]}` !== BASE_PATH && !isEmpty(titleMetadataFilter)) {
         clearTitleMetadataFilter();
     }
-
-    return (
-        <Suspense fallback={<Loading />}>
-            <Routes>{routes.map(route => buildRoute(route))}</Routes>
-        </Suspense>
-    );
+    return <Routes>{routes.map(route => buildRoute(route))}</Routes>;
 };
 
 const buildRoute = route => {
-    const {path, component: Component, routes: children, ...rest} = route;
+    const {path, key, element: Element, children, ...rest} = route;
     return (
-        <Route key={path} path={path} exact {...rest} element={<Component {...rest} />}>
+        <Route
+            key={path || key}
+            path={path}
+            exact
+            {...rest}
+            element={
+                <Suspense fallback={<Loading />}>
+                    <Element />{' '}
+                </Suspense>
+            }
+        >
             {children?.map(childRoute => buildRoute(childRoute))}
         </Route>
     );

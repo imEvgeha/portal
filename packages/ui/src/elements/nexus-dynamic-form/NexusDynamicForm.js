@@ -1,17 +1,18 @@
-import React, {Fragment, useState, useEffect, useContext, useCallback} from 'react';
+import React, {Fragment, useCallback, useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import classnames from 'classnames';
-import {mergeWith, set, get, isEmpty} from 'lodash';
+import {get, isEmpty, mergeWith, set} from 'lodash';
 import moment from 'moment';
 import {useDispatch} from 'react-redux';
+import {Link, useParams} from 'react-router-dom';
 import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
 import {clearTitleMetadataFilter} from '../../../../../src/pages/title-metadata/titleMetadataActions';
 import PropagateButton from '../nexus-person/elements/PropagateButton/PropagateButton';
 import ButtonsBuilder from './components/ButtonsBuilder/ButtonsBuilder';
-import {buildSection, getProperValues, getProperValue, getAllFields} from './utils';
-import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION, CAST_AND_CREW_TITLE, PROPAGATE_TITLE} from './constants';
+import {buildSection, getAllFields, getProperValue, getProperValues} from './utils';
+import {CAST_AND_CREW_TITLE, CORE_TITLE_SECTION, EPISODE, PROPAGATE_TITLE, SEASON, SERIES, VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({
@@ -37,6 +38,7 @@ const NexusDynamicForm = ({
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
+    const routeParams = useParams();
 
     const view = canEdit ? VIEWS.EDIT : VIEWS.VIEW;
 
@@ -146,7 +148,7 @@ const NexusDynamicForm = ({
     const createLink = contentType => {
         const baseUrl = '/metadata/?parentId=';
         const id = get(initialData, 'id', '');
-        return `${baseUrl}${id}&contentType=${contentType === SERIES ? SEASON : EPISODE}`;
+        return `/${routeParams.realm}${baseUrl}${id}&contentType=${contentType === SERIES ? SEASON : EPISODE}`;
     };
 
     const showAll = () => {
@@ -156,9 +158,9 @@ const NexusDynamicForm = ({
             if (allowedContents.includes(contentType)) {
                 return (
                     <div className="nexus-c-dynamic-form__show-all">
-                        <a onClick={() => dispatch(clearTitleMetadataFilter())} href={createLink(contentType)}>
+                        <Link onClick={() => dispatch(clearTitleMetadataFilter())} to={createLink(contentType)}>
                             Show all {contentType === SERIES ? 'seasons' : 'episodes'}
-                        </a>
+                        </Link>
                     </div>
                 );
             }

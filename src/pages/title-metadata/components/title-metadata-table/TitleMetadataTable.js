@@ -55,7 +55,7 @@ const TitleMetadataTable = ({
                 cellRendererParams: ({data = {}}) => {
                     const {id} = data;
                     return {
-                        link: `/metadata/detail/`,
+                        link: 'metadata/detail/',
                         linkId: id,
                         newTab: false,
                     };

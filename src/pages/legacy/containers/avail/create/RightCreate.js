@@ -336,7 +336,9 @@ class RightCreate extends React.Component {
                             )
                         );
                     } else {
-                        this.props.router.navigate(RightsURL.getRightUrl(response.id));
+                        this.props.router.navigate(
+                            RightsURL.getRightUrl(response.id, undefined, this.props.router.params.realm)
+                        );
                     }
                 }
                 store.dispatch(blockUI(false));
