@@ -213,10 +213,7 @@
             "enableSearch": true,
             "enableEdit": true,
             "required": false,
-            "cellRenderer": "withdrawnAtCellRenderer",
-            "cellRendererParams": {
-                "applyFilter": false
-            }
+            "cellRenderer": "withdrawnAtCellRenderer"
         },
         {
             "javaVariableName": "territory.country",
