@@ -8,12 +8,6 @@ pipeline {
             }
         }
 
-        stage('Setup Env') {
-            steps {
-                sh 'npm i -g yarn'
-            }
-        }
-
         stage('Build') {
             steps {
                 script {

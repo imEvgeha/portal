@@ -12,12 +12,6 @@ pipeline {
     agent { label 'usla-jknd-p004' }
      stages {
 
-         stage('Prepare Env') {
-              steps {
-                  sh 'npm i -g yarn'
-              }
-         }
-
          stage('Build') {
              steps {
                  sh 'rm -Rf node_modules'
