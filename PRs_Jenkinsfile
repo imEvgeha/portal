@@ -11,19 +11,29 @@ void setBuildStatus(String message, String state) {
 pipeline {
     agent { label 'usla-jknd-p004' }
      stages {
-         stage('build') {
+
+         stage('Prepare Env') {
+              steps {
+                  sh 'npm i -g yarn'
+              }
+         }
+
+         stage('Build') {
              steps {
-                 sh 'pwd'
                  sh 'rm -Rf node_modules'
                  sh 'rm -Rf packages/ui/lib'
                  sh 'rm -Rf packages/utils/lib'
-                 sh 'ls'
                  sh 'yarn'
                  sh 'yarn prebuild'
                  sh 'yarn build:local:prod'
-                 sh 'yarn test'
              }
          }
+
+        stage('Test') {
+            steps {
+              sh 'yarn test'
+            }
+        }
      }
 
        post {
