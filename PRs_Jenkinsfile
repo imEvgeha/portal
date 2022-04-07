@@ -9,7 +9,7 @@ void setBuildStatus(String message, String state) {
 }
 
 pipeline {
-    agent { label 'usla-jknd-p003' }
+    agent { label 'usla-jknd-p004' }
      stages {
          stage('build') {
              steps {
