@@ -12,7 +12,7 @@ exports[`BulkMatchingActionsBar should match snapshot 1`] = `
     >
       Cancel
     </Button>
-    <Button
+    <LoadingButton
       appearance="primary"
       className="nexus-c-bulk-actions-bar__btn"
       isDisabled={true}
@@ -20,8 +20,8 @@ exports[`BulkMatchingActionsBar should match snapshot 1`] = `
       onClick={[Function]}
     >
       Match
-    </Button>
-    <Button
+    </LoadingButton>
+    <LoadingButton
       appearance="primary"
       className="nexus-c-bulk-actions-bar__btn"
       isDisabled={true}
@@ -29,7 +29,7 @@ exports[`BulkMatchingActionsBar should match snapshot 1`] = `
       onClick={[Function]}
     >
       Match & Create
-    </Button>
+    </LoadingButton>
   </ButtonGroup>
 </div>
 `;
