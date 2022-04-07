@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import Button, {LoadingButton} from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
 import NexusDownload from '@vubiquity-nexus/portal-ui/lib/elements/nexus-download/NexusDownload';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
@@ -27,14 +27,14 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
     return (
         <div className="nexus-c-event-drawer-header">
             <Tooltip content={canReplayAndReplicate ? 'Replay Event' : 'Insufficient permissions'}>
-                <Button
+                <LoadingButton
                     className="nexus-c-event-drawer-header__replay-button"
                     onClick={onInnerReplay}
                     isLoading={isReplaying}
                     isDisabled={!canReplayAndReplicate || !event || !eventId}
                 >
                     Replay
-                </Button>
+                </LoadingButton>
             </Tooltip>
 
             <Tooltip content={canReplayAndReplicate ? 'Replicate Event' : 'Insufficient permissions'}>
@@ -52,7 +52,7 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
                 data={{
                     headers: event.headers,
                     message: event.message,
-                    metadata: event.metadata
+                    metadata: event.metadata,
                 }}
                 filename={`${eventId} - event`}
                 isDisabled={!event || !eventId}
