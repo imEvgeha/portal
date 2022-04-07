@@ -35,6 +35,7 @@ export const PrePlanActions = ({
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
     const [keywords, setKeywords] = useState('');
+    const [bulkUpdate, setBulkUpdate] = useState([]);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [headerText, setHeaderText] = useState('');
     const node = useRef();
@@ -46,6 +47,10 @@ export const PrePlanActions = ({
             window.removeEventListener('click', removeMenu);
         };
     }, []);
+
+    useEffect(() => {
+        bulkSetInTable();
+    }, [bulkUpdate]);
 
     const {openModal, closeModal} = useContext(NexusModalContext);
     const clickHandler = () => setMenuOpened(!menuOpened);
@@ -190,7 +195,7 @@ export const PrePlanActions = ({
             actions: [
                 {
                     text: 'Set',
-                    onClick: bulkSetInTable,
+                    onClick: () => setBulkUpdate(!bulkUpdate),
                 },
                 {
                     text: 'Cancel',
