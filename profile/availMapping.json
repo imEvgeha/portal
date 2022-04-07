@@ -207,10 +207,13 @@
             "dataType": "territory.withdrawn",
             "searchDataType": "territoryType",
             "queryParamName": "withdrawn",
+            "configEndpoint": "/countries",
+            "alternateSelector": "country",
             "readOnly": true,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "cellRenderer": "withdrawnAtCellRenderer"
         },
         {
             "javaVariableName": "territory.country",

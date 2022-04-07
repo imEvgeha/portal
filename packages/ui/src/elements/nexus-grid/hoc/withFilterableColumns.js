@@ -399,7 +399,7 @@ const withFilterableColumns =
                 if (
                     events.includes(type) &&
                     typeof onGridEvent === 'function' &&
-                    type === GRID_EVENTS.SELECTION_CHANGED
+                    (type === GRID_EVENTS.SELECTION_CHANGED || type === GRID_EVENTS.READY)
                 ) {
                     props.onGridEvent(data);
                 }
