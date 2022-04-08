@@ -17,7 +17,7 @@ describe('HeaderSection', () => {
         it('should have a Link component with link to servicing-orders page', () => {
             const linkElem = wrapper.find('#lnkServicingOrders');
             expect(linkElem.length).toEqual(1);
-            expect(linkElem.props().to).toEqual('/servicing-orders');
+            expect(linkElem.props().to).toEqual(-1);
         });
 
         it('sorts due dates by default - ascending', () => {

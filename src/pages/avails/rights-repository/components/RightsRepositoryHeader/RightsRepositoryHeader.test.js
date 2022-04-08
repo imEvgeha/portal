@@ -25,7 +25,7 @@ describe('RightsRepositoryHeader', () => {
 
     it('should redirect to right create page when button is clicked', () => {
         wrapper.find(Button).simulate('click');
-        expect(mockNavigate).toHaveBeenCalledWith('/avails/rights/create');
+        expect(mockNavigate).toHaveBeenCalledWith('rights/create');
     });
 
     it('renders create new right button', () => {

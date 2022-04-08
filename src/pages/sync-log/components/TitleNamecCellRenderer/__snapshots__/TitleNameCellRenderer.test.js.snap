@@ -2,7 +2,7 @@
 
 exports[`TitleNameCellRenderer should match snapshot 1`] = `
 <Component
-  to="/metadata/detail/coreTitleId"
+  to="detail/coreTitleId"
 >
   TitleName
 </Component>

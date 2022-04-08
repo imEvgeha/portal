@@ -96,7 +96,7 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
     setColumnApi={[Function]}
     setGridApi={[Function]}
   />
-  <Connect(ComposedComponent)
+  <Component
     display={false}
     redirectToV2={true}
     tenantCode="vu"

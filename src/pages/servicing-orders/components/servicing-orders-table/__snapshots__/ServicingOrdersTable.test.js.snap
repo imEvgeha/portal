@@ -18,7 +18,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         Object {
           "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
-            "link": "/servicing-orders/",
+            "link": "servicing-orders/",
             "newTab": false,
           },
           "colId": "so_number",
@@ -233,7 +233,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         },
         Object {
           "cellRendererParams": Object {
-            "link": "/servicing-orders/",
+            "link": "servicing-orders/",
             "newTab": false,
           },
           "colId": "so_number",
