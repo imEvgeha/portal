@@ -1,7 +1,3 @@
-import {isObject, mergeDeep} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
-import {get} from 'lodash';
-
 export const defaultConfiguration = {
     gateway: {
         url: 'https://availsapi.dev.vubiquity.com',
@@ -60,37 +56,7 @@ export const defaultConfiguration = {
     },
 };
 
-let configuration = {};
 
-// temporary solution - replace it with env variables
-export async function setEnvConfiguration(env) {
-    const getConfigFile = env => {
-        switch (env) {
-            case 'dev':
-                return '/config.json';
-            case 'qa':
-                return '/configQA.json';
-            default:
-                return '/config.json';
-        }
-    };
-    try {
-        configuration = mergeDeep(configuration, defaultConfiguration);
-
-        const configFile = getConfigFile(env);
-        const data = await nexusFetch(configFile);
-
-        if (isObject(data)) {
-            configuration = mergeDeep(configuration, data);
-            return true;
-        }
-        return JSON.parse(data);
-    } catch (error) {
-        throw error;
-    }
-}
-
-export const getConfig = key => get(configuration, key);
 
 // App config
 export const appConfig = {

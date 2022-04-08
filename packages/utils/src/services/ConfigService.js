@@ -1,4 +1,4 @@
-import {getConfig} from '../../../../src/config';
+import {getConfig} from "../config";
 import {nexusFetch} from '../http-client';
 
 export const loadConfigAPIEndPoints = () => {

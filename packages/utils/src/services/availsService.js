@@ -1,5 +1,5 @@
-import {getConfig} from '../../../../src/config';
 import {rightsService} from '../../../../src/pages/legacy/containers/avail/service/RightsService';
+import {getConfig} from "../config";
 import {nexusFetch} from '../http-client';
 
 export const getRightsHistory = rightId => {

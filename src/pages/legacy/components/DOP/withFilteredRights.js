@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {isEqual} from 'lodash';
 import {rightServiceManager} from '../../containers/avail/service/RightServiceManager';
 import withRightsResultsTable from './withRightsResultsTable';
-import {getConfig} from '../../../../config';
+import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
 
 const withFilteredRights =
     (filterBy = {status: 'Ready'}) =>

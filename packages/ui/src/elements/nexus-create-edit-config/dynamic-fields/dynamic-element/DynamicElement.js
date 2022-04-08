@@ -2,11 +2,11 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
-import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
-import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
-import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
 import {debounce, isEmpty, toUpper} from 'lodash';
 import {InputText} from 'primereact/inputtext';
+import NexusEntity from "../../../nexus-entity/NexusEntity";
+import {NEXUS_ENTITY_TYPES} from "../../../nexus-entity/constants";
+import {Action} from "../../../nexus-entity/entity-actions/Actions.class";
 import {constructFieldPerType} from '../FieldsPerType';
 import './DynamicElement.scss';
 

@@ -4,11 +4,11 @@ import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {CANCEL, DELETE, REMOVE_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tag/constants';
 import {get} from 'lodash';
 import {useDispatch} from 'react-redux';
-import {addToast} from '../../../../lib/toast/NexusToastNotificationActions';
+import {CANCEL} from "redux-saga";
+import {addToast} from "../../../toast/NexusToastNotificationActions";
+import {NexusModalContext} from "../../nexus-modal/NexusModal";
 import {
     buildSection,
     checkFieldDependencies,
@@ -20,6 +20,7 @@ import {
 } from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
+import {DELETE, REMOVE_TITLE} from "../../nexus-tag/constants";
 
 const NexusArray = ({
     name,

@@ -2,7 +2,7 @@ import {uniqBy} from 'lodash';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {encodedSerialize, prepareSortMatrixParamTitles} from '@vubiquity-nexus/portal-utils/lib/Common';
 import TitleSystems from '../../../../metadata/constants/systems';
-import {getConfig} from '../../../../../config';
+import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
 
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ || syncToMovida) {

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
 import GoogleAnalytics from 'react-ga';
-import {getConfig} from '../../config';
 
 export function initializeTracker() {
     const googleAnalyticsId = getConfig('googleAnalytics.propertyId');

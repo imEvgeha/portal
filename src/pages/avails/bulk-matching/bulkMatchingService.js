@@ -1,5 +1,5 @@
+import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
-import {getConfig} from '../../../config';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {EXISTING_BONUS_RIGHTS_PAGE_SIZE} from './constants';
 
