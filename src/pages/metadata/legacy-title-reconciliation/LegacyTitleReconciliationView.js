@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {LoadingButton} from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
@@ -92,15 +92,15 @@ const LegacyTitleReconciliationView = ({
                 onCandidatesChange={handleCandidatesChange}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">
-                <Button
+                <LoadingButton
                     className="nexus-c-button"
                     appearance="primary"
                     onClick={handleDoneClick}
                     isDisabled={isDoneDisabled}
                     isLoading={isMerging}
                 >
-                    {SAVE_BTN}
-                </Button>
+                    <span>{SAVE_BTN}</span>
+                </LoadingButton>
             </div>
         </div>
     );
