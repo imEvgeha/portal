@@ -220,7 +220,11 @@ class RightsCreateFromAttachment extends React.Component {
     }
 
     createRight() {
-        this.props.router.navigate(URL.keepEmbedded('/avails/history/' + this.state.availHistoryId + '/rights/create'));
+        this.props.router.navigate(
+            URL.keepEmbedded(
+                `/${this.props.router.params.realm}/avails/history/` + this.state.availHistoryId + '/rights/create'
+            )
+        );
     }
 
     getDownloadLink(attachment) {

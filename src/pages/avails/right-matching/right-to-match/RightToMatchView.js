@@ -67,6 +67,7 @@ const RightToMatchView = ({
     const {rightId, availHistoryIds} = useParams() || {};
     const navigate = useNavigate();
     const location = useLocation();
+    const routeParams = useParams();
 
     const previousPageRoute = URL.isEmbedded()
         ? `/avails/history/${availHistoryIds}/right-matching?embedded=true`
@@ -112,7 +113,7 @@ const RightToMatchView = ({
         removeToast();
         rightsService
             .updateRightWithFullData({...focusedRight, status: 'Ready'}, focusedRight.id, true)
-            .then(() => navigate(URL.keepEmbedded(`/avails/rights/${focusedRight.id}`)));
+            .then(() => navigate(URL.keepEmbedded(`/${routeParams.realm}/avails/rights/${focusedRight.id}`)));
     };
 
     const onUpdateRightClick = () => {

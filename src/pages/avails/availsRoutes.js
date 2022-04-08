@@ -5,7 +5,6 @@ import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 // currently, scss for particular component (RightsResultTable) is using for global ag grid style override
 import {Outlet} from 'react-router-dom';
 import RightsCreateFromAttachment from '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment';
-import Welcome from '../static/Welcome';
 // use webpack prefetch for legacy routes
 const RightCreate = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate')

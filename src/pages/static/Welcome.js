@@ -1,6 +1,6 @@
 import React from 'react';
-import './Welcome.scss';
 import {Outlet} from 'react-router-dom';
+import './Welcome.scss';
 
 const Welcome = () => (
     <div className="nexus-c-welcome">

@@ -332,7 +332,9 @@ class RightCreate extends React.Component {
                         });
                         this.props.router.navigate(
                             URL.keepEmbedded(
-                                '/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'
+                                `/${this.props.router.params.realm}/avails/history/` +
+                                    this.props.match.params.availHistoryId +
+                                    '/manual-rights-entry'
                             )
                         );
                     } else {
@@ -361,10 +363,14 @@ class RightCreate extends React.Component {
     cancel() {
         if (this.props.match.params.availHistoryId) {
             this.props.router.navigate(
-                URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry')
+                URL.keepEmbedded(
+                    `/${this.props.router.params.realm}/avails/history/` +
+                        this.props.match.params.availHistoryId +
+                        '/manual-rights-entry'
+                )
             );
         } else {
-            this.props.router.navigate(URL.keepEmbedded('/avails'));
+            this.props.router.navigate(URL.keepEmbedded(`/${this.props.router.params.realm}/avails`));
         }
     }
 

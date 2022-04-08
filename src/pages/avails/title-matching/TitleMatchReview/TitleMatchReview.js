@@ -20,8 +20,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, getColumnDefs, combinedTit
     const routeParams = useParams();
 
     const navigateToMatchPreview = () => {
-        const {rightId} = routeParams;
-        navigate(URL.keepEmbedded(`/avails/rights/${rightId}/title-matching`));
+        const {rightId, realm} = routeParams;
+        navigate(URL.keepEmbedded(`/${realm}/avails/rights/${rightId}/title-matching`));
     };
 
     const getTitle = id => {
