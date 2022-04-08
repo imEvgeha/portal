@@ -78,9 +78,7 @@ const TitleMetadataTable = ({
                                     <div
                                         className="nexus-c-title-metadata-table__repository-icon"
                                         onClick={() =>
-                                            navigate(
-                                                URL.keepEmbedded(`/metadata/detail/${id}/legacy-title-reconciliation`)
-                                            )
+                                            navigate(URL.keepEmbedded(`detail/${id}/legacy-title-reconciliation`))
                                         }
                                     >
                                         <NexusStatusDot severity="warning" />
