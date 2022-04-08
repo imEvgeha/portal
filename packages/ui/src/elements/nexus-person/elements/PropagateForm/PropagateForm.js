@@ -6,6 +6,7 @@ import {ErrorMessage} from '@atlaskit/form';
 import {RadioGroup} from '@atlaskit/radio';
 import {searchPersonById} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import {isEmpty} from 'lodash';
+import {ProgressSpinner} from "primereact/progressspinner";
 import {useDispatch, useSelector} from 'react-redux';
 import './PropagateForm.scss';
 import {checkIfEmetIsEditorial} from '../../../nexus-dynamic-form/utils';
@@ -159,7 +160,16 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
         <>
             <p className="propagate-form__message">{getPropagateMessage()}</p>
             {isLoading ? (
-                <Loading />
+                <div className="row">
+                    <div className="col-12 text-center">
+                        <ProgressSpinner
+                            className="nexus-c-data-panel__spinner"
+                            strokeWidth="4"
+                            animationDuration=".5s"
+                        />
+                    </div>
+                </div>
+
             ) : (
                 <>
                     <div className="propagate-form__section">
