@@ -7,14 +7,14 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
   <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
     content="Replay Event"
   >
-    <Button
+    <LoadingButton
       className="nexus-c-event-drawer-header__replay-button"
       isDisabled={false}
       isLoading={false}
       onClick={[Function]}
     >
       Replay
-    </Button>
+    </LoadingButton>
   </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
   <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
     content="Replicate Event"

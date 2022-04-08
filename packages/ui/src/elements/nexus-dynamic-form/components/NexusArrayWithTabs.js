@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import Button, {LoadingButton} from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
@@ -428,13 +428,13 @@ const NexusArrayWithTabs = ({
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                     {(showRegenerateAutoDecoratedMetadata() || isMasterEditorialRecord()) && (
-                        <Button
+                        <LoadingButton
                             appearance="primary"
                             onClick={handleRegenerateAutoDecoratedMetadata}
                             isLoading={regenerateLoading}
                         >
                             Regenerate Auto-Decorated Metadata
-                        </Button>
+                        </LoadingButton>
                     )}
                 </div>
                 {isMasterEditorialRecord() && (
