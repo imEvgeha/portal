@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import Button, {LoadingButton} from '@atlaskit/button';
 import {BULK_DELETE_BTN_CANCEL} from '../../constants';
 import './BulkDeleteActions.scss';
 
@@ -8,7 +8,7 @@ const BulkDeleteActions = ({onClose, onSubmit, rightsDeletionCount, isLoading, i
     return (
         <div className="nexus-c-bulk-delete-actions__wrapper">
             <div className="nexus-c-bulk-delete-actions__btn-wrapper">
-                <Button
+                <LoadingButton
                     appearance="danger"
                     onClick={onSubmit}
                     className="nexus-c-bulk-delete-actions__delete-btn"
@@ -16,7 +16,7 @@ const BulkDeleteActions = ({onClose, onSubmit, rightsDeletionCount, isLoading, i
                     isDisabled={isDisabled}
                 >
                     {`Delete ${rightsDeletionCount} Rights`}
-                </Button>
+                </LoadingButton>
                 <Button
                     appearance="subtle"
                     onClick={onClose}
