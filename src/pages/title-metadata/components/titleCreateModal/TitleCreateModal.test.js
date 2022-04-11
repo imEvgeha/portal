@@ -1,10 +1,10 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
-import configureStore from 'redux-mock-store';
-import TitleCreate from './TitleCreateModal';
 import {Checkbox} from 'primereact/checkbox';
-import {Label} from 'reactstrap';
+import configureStore from 'redux-mock-store';
+import ControllerWrapper from '../controllerWrapper/ControllerWrapper';
+import TitleCreate from './TitleCreateModal';
 
 describe('TitleCreateModal', () => {
     let defaultWrapper = null;
@@ -18,13 +18,7 @@ describe('TitleCreateModal', () => {
     describe('Default TitleCreateModal', () => {
         withHooks(() => {
             defaultWrapper = shallow(
-                <TitleCreate
-                    store={store}
-                    display={true}
-                    onToggle={() => null}
-                    tenantCode={'vu'}
-                    isItMatching={false}
-                />
+                <TitleCreate store={store} display={true} onToggle={() => null} tenantCode="vu" isItMatching={false} />
             )
                 .dive()
                 .shallow();
@@ -42,21 +36,13 @@ describe('TitleCreateModal', () => {
             expect(defaultWrapper.find('.nexus-c-title-create_footer-container')).toHaveLength(1);
         });
 
-        it('should render inputs for create title dialog window', () => {
-            expect(defaultWrapper.find('.nexus-c-title-create_input-container')).toHaveLength(4);
-        });
-
-        it('should render labels for create title dialog inputs', () => {
-            expect(defaultWrapper.find(Label)).toHaveLength(4);
+        it('should render labels for create title dialog ControllerWrappers', () => {
+            expect(defaultWrapper.find(ControllerWrapper)).toHaveLength(6);
         });
 
         it('should render checkbox container and checkboxes for create title dialog window', () => {
             expect(defaultWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(1);
             expect(defaultWrapper.find(Checkbox)).toHaveLength(2);
-        });
-
-        it('should render catalogueOwner dropdown', () => {
-            expect(defaultWrapper.find('.nexus-c-title-create_catalogue-owner-dropdown-container')).toHaveLength(1);
         });
     });
 
@@ -81,21 +67,13 @@ describe('TitleCreateModal', () => {
             expect(matchingWrapper.find('.nexus-c-title-create_footer-container')).toHaveLength(1);
         });
 
-        it('should render inputs for create title dialog window', () => {
-            expect(matchingWrapper.find('.nexus-c-title-create_input-container')).toHaveLength(3);
-        });
-
         it('should render labels for create title dialog inputs', () => {
-            expect(matchingWrapper.find(Label)).toHaveLength(3);
+            expect(matchingWrapper.find(ControllerWrapper)).toHaveLength(3);
         });
 
         it('should not render checkbox container and checkboxes for create title dialog window', () => {
             expect(matchingWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(0);
             expect(matchingWrapper.find(Checkbox)).toHaveLength(0);
-        });
-
-        it('should not render catalogueOwner dropdown', () => {
-            expect(matchingWrapper.find('.nexus-c-title-create_catalogue-owner-dropdown-container')).toHaveLength(0);
         });
     });
 });

@@ -54,3 +54,12 @@
 .nexus-c-title-create_checkbox-container .row:last-child {
     margin-top: 8px;
 }
+
+.nexus-c-title-create_checkbox-wrapper {
+    display: flex;
+    align-items: baseline;
+
+    .nexus-c-title-create_input-container {
+        order: -1;
+    }
+}

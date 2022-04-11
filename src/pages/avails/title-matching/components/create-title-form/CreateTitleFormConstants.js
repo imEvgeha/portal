@@ -1,4 +1,3 @@
-import MetadataConstants from '../../../../legacy/containers/metadata/MetadataConstants';
 import {
     ADVERTISEMENT,
     EPISODE,
@@ -50,8 +49,8 @@ const getTitleFormSchema = currentValue => [
         required: true,
         validWhen: {
             lengthIsLessThan: {
-                length: MetadataConstants.MAX_TITLE_LENGTH,
-                message: `Title must have less than ${MetadataConstants.MAX_TITLE_LENGTH} characters`,
+                length: CREATE_TITLE_RESTRICTIONS.MAX_TITLE_LENGTH,
+                message: `Title must have less than ${CREATE_TITLE_RESTRICTIONS.MAX_TITLE_LENGTH} characters`,
             },
         },
         defaultValue: currentValue.title,
@@ -143,8 +142,8 @@ const getTitleFormSchema = currentValue => [
         ],
         validWhen: {
             fallsWithinNumericalRange: {
-                max: MetadataConstants.MAX_NUMBER_OF_SEASONS,
-                message: `Season number can't be higher than ${MetadataConstants.MAX_NUMBER_OF_SEASONS}`,
+                max: CREATE_TITLE_RESTRICTIONS.MAX_NUMBER_OF_SEASONS,
+                message: `Season number can't be higher than ${CREATE_TITLE_RESTRICTIONS.MAX_NUMBER_OF_SEASONS}`,
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
@@ -183,8 +182,8 @@ const getTitleFormSchema = currentValue => [
         ],
         validWhen: {
             fallsWithinNumericalRange: {
-                max: MetadataConstants.MAX_NUMBER_OF_EPISODES,
-                message: `Episode number can't be higher than ${MetadataConstants.MAX_NUMBER_OF_EPISODES}`,
+                max: CREATE_TITLE_RESTRICTIONS.MAX_NUMBER_OF_EPISODES,
+                message: `Episode number can't be higher than ${CREATE_TITLE_RESTRICTIONS.MAX_NUMBER_OF_EPISODES}`,
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
@@ -215,8 +214,8 @@ const getTitleFormSchema = currentValue => [
         ],
         validWhen: {
             fallsWithinNumericalRange: {
-                max: MetadataConstants.MAX_RELEASE_YEAR,
-                message: `Release Year can't be past year ${MetadataConstants.MAX_RELEASE_YEAR}`,
+                max: CREATE_TITLE_RESTRICTIONS.MAX_RELEASE_YEAR,
+                message: `Release Year can't be past year ${CREATE_TITLE_RESTRICTIONS.MAX_RELEASE_YEAR}`,
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',

@@ -98,8 +98,9 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     setGridApi={[Function]}
   />
   <TitleCreate
-    addToast={[Function]}
+    bulkTitleMatch={[Function]}
     display={false}
+    focusedRight={Object {}}
     isItMatching={false}
     onToggle={[Function]}
     tenantCode="vu"

@@ -10,9 +10,9 @@ import {get} from 'lodash';
 import {Button} from 'primereact/button';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import TitleCreate from '../../legacy/containers/metadata/dashboard/components/titleCreateModal/TitleCreateModal';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import TitleSystems from '../../metadata/constants/systems';
+import TitleCreate from '../../title-metadata/components/titleCreateModal/TitleCreateModal';
 import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import {
@@ -326,7 +326,13 @@ export const BulkMatching = ({
                     existingBonusRights={existingBonusRights}
                 />
             )}
-            <TitleCreate display={showModal} onToggle={closeModalAndRefreshTable} isItMatching={true} />
+            <TitleCreate
+                display={showModal}
+                onToggle={closeModalAndRefreshTable}
+                isItMatching={true}
+                bulkTitleMatch={bulkTitleMatch}
+                focusedRight={{contentType: get(selectedTableData, '[0].contentType', '')}}
+            />
         </div>
     );
 };

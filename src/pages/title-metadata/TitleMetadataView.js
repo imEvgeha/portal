@@ -9,7 +9,6 @@ import {isEmpty} from 'lodash';
 import {TabMenu} from 'primereact/tabmenu';
 import {connect} from 'react-redux';
 import {store} from '../../index';
-import TitleCreate from '../legacy/containers/metadata/dashboard/components/titleCreateModal/TitleCreateModal';
 import {resetTitle} from '../metadata/metadataActions';
 import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart';
@@ -17,6 +16,7 @@ import TitleMetadataHeader from './components/title-metadata-header/TitleMetadat
 import {failureDownloadDesc} from './components/title-metadata-header/components/constants';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
+import TitleCreate from './components/titleCreateModal/TitleCreateModal';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
 import './TitleMetadataView.scss';
 import {setCurrentUserView, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';

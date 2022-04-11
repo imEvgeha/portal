@@ -55,8 +55,13 @@ exports[`BulkMatching should match snapshot 1`] = `
     />
   </div>
   <TitleCreate
-    addToast={[Function]}
+    bulkTitleMatch={[Function]}
     display={false}
+    focusedRight={
+      Object {
+        "contentType": "",
+      }
+    }
     isItMatching={true}
     onToggle={[Function]}
   />
