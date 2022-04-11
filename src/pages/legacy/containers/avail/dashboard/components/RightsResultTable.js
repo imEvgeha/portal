@@ -25,7 +25,7 @@ import {equalOrIncluded, getDeepValue} from '@vubiquity-nexus/portal-utils/lib/C
 import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
-import {getConfig} from '../../../../../../config';
+import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
 
 const colDef = [];
 let registeredOnSelect = false;

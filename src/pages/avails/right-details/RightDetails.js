@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
+import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import {connect} from 'react-redux';
 import {fetchConfigApiEndpoints} from '../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../legacy/containers/settings/settingsSelectors';
@@ -11,7 +12,6 @@ import {getRight, updateRight, clearRight} from '../rights-repository/rightsActi
 import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
-import {searchPerson} from './rightDetailsServices';
 import schema from './schema.json';
 import './RightDetails.scss';
 

@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Field as AKField, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
-import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
-import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {get} from 'lodash';
+import {get, isObject} from 'lodash';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
+import NexusTextArea from "../../../nexus-textarea/NexusTextArea";
 import {VIEWS, FIELDS_WITHOUT_LABEL, LOCALIZED_VALUE_NOT_DEFINED, FIELD_REQUIRED} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {

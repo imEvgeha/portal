@@ -11,9 +11,9 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {compose} from 'redux';
-import {getConfig} from '../../../../config';
 import {
     CHANGE_PRIORITY_TITLE,
     COLUMN_MAPPINGS,

@@ -59,6 +59,7 @@ exports[`NexusDynamicForm should match snapshot 1`] = `
     selectValues={Object {}}
     setRefresh={[Function]}
     storedInitialData={null}
+    titleActionComponents={Object {}}
   />
 </ContextProvider>
 `;
