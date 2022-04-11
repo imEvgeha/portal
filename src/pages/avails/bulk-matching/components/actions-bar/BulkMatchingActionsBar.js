@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup} from '@atlaskit/button';
+import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
 import TitleSystems from '../../../../metadata/constants/systems';
 import './BulkMatchingActionsBar.scss';
 
@@ -35,7 +35,7 @@ const BulkMatchingActionsBar = ({
                 >
                     Cancel
                 </Button>
-                <Button
+                <LoadingButton
                     onClick={onMatch}
                     isDisabled={!buttonStatus.match}
                     isLoading={isMatchLoading}
@@ -43,8 +43,8 @@ const BulkMatchingActionsBar = ({
                     appearance="primary"
                 >
                     Match
-                </Button>
-                <Button
+                </LoadingButton>
+                <LoadingButton
                     onClick={onMatchAndCreate}
                     isDisabled={!buttonStatus.matchAndCreate}
                     isLoading={isMatchAndCreateLoading}
@@ -52,7 +52,7 @@ const BulkMatchingActionsBar = ({
                     appearance="primary"
                 >
                     Match & Create
-                </Button>
+                </LoadingButton>
             </ButtonGroup>
         </div>
     );
