@@ -276,9 +276,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
         setValue('addCrew', false);
     };
 
-    // eslint-disable-next-line no-console
-    console.log(currentValues, 'currentValues');
-
     const areFieldsShouldBeDisplayed = () => {
         switch (currentValues.contentType) {
             case 'SEASON':
