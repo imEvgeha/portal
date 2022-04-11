@@ -24,12 +24,17 @@ jest.mock('react-intl', () => {
 export const mockNavigate = jest.fn();
 export const mockSubstring = jest.fn();
 
-jest.mock('react-router-dom', () => ({
-    useNavigate: () => mockNavigate,
-    useLocation: () => ({
-        search: {
-            substring: mockSubstring,
-        },
-    }),
-    useParams: () => ({}),
-}));
+jest.mock('react-router-dom', () => {
+    const r = jest.requireActual('react-router-dom');
+
+    return {
+        ...r,
+        useNavigate: () => mockNavigate,
+        useLocation: () => ({
+            search: {
+                substring: mockSubstring,
+            },
+        }),
+        useParams: () => ({}),
+    };
+});
