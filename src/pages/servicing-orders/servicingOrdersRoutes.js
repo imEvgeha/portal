@@ -6,16 +6,15 @@ const ServicingOrdersView = React.lazy(() => ServicingOrdersViewImport);
 const ServicingOrderImport = import(/* webpackChunkName: "ServicingOrder" */ './servicing-order/ServicingOrder');
 const ServicingOrder = React.lazy(() => ServicingOrderImport);
 
-const BASE_PATH = '/servicing-orders';
-
 const routes = [
     {
-        path: BASE_PATH,
-        component: canRender(ServicingOrdersView, 'read', 'ServicingOrders'),
+        index: true,
+        key: 'servicing-orders',
+        element: canRender(ServicingOrdersView, 'read', 'ServicingOrders'),
     },
     {
-        path: `${BASE_PATH}/:id`,
-        component: canRender(ServicingOrder, 'read', 'ServicingOrders'),
+        path: ':id',
+        element: canRender(ServicingOrder, 'read', 'ServicingOrders'),
     },
 ];
 

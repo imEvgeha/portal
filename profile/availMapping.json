@@ -169,16 +169,22 @@
             "sortParamName": "territoryCountry"
         },
         {
-            "javaVariableName": "territory",
+            "javaVariableName": "territory.selected",
             "displayName": "Selected",
             "dataType": "territory.selected",
             "searchDataType": "territoryType",
+            "configEndpoint": "/countries",
+            "alternateSelector": "country",
             "queryParamName": "selected",
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true,
-            "sortable": false
+            "required": false,
+            "sortable": false,
+            "cellRenderer": "selectedAtCellRenderer",
+            "cellRendererParams": {
+                "applyFilter": false
+            }
         },
         {
             "javaVariableName": "territoryDateSelected",
@@ -190,18 +196,24 @@
             "enableSearch": true,
             "enableEdit": true,
             "required": false,
-            "cellRenderer": "selectedAtCellRenderer"
+            "cellRenderer": "selectedAtCellRenderer",
+            "cellRendererParams": {
+                "applyFilter": true
+            }
         },
         {
-            "javaVariableName": "territory",
+            "javaVariableName": "territory.withdrawn",
             "displayName": "Withdrawn Locales",
             "dataType": "territory.withdrawn",
             "searchDataType": "territoryType",
             "queryParamName": "withdrawn",
+            "configEndpoint": "/countries",
+            "alternateSelector": "country",
             "readOnly": true,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "cellRenderer": "withdrawnAtCellRenderer"
         },
         {
             "javaVariableName": "territory.country",

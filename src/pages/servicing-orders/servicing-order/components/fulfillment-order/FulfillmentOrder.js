@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup} from '@atlaskit/button';
+import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Lozenge from '@atlaskit/lozenge';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
@@ -320,14 +320,14 @@ export const FulfillmentOrder = ({
                                     <Button onClick={onCancel} isDisabled={isSaveDisabled || isSaving}>
                                         Cancel
                                     </Button>
-                                    <Button
+                                    <LoadingButton
                                         onClick={onSaveHandler}
                                         appearance="primary"
                                         isDisabled={isSaveDisabled}
                                         isLoading={isSaving}
                                     >
                                         Save
-                                    </Button>
+                                    </LoadingButton>
                                 </ButtonGroup>
                             </div>
                         </div>

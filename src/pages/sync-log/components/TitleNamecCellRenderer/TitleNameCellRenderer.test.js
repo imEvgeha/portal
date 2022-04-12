@@ -1,6 +1,5 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {MemoryRouter} from 'react-router-dom';
 import TitleNameCellRenderer from './TitleNameCellRenderer';
 
 describe('TitleNameCellRenderer', () => {
@@ -15,15 +14,10 @@ describe('TitleNameCellRenderer', () => {
     });
 
     it('should render a react-router link that links to the right title page', () => {
-        expect(wrapper.find('Link').props().to).toEqual('/metadata/detail/coreTitleId');
+        expect(wrapper.props().to).toEqual('detail/coreTitleId');
     });
 
     it('should render a react-router link that contains the right title text', () => {
-        wrapper = shallow(
-            <MemoryRouter>
-                <TitleNameCellRenderer value="TitleName" data={{coreTitleId: 'coreTitleId'}} />
-            </MemoryRouter>
-        );
-        expect(wrapper.html()).toContain('TitleName');
+        expect(wrapper.props().children).toContain('TitleName');
     });
 });

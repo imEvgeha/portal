@@ -1,3 +1,5 @@
+import {PROPAGATE_ADD_PERSONS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-person/elements/PropagateForm/PropagateForm';
+import {PROPAGATE_REMOVE_PERSONS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/NexusPersonsList';
 import * as actionTypes from './titleMetadataActionTypes';
 import {VZ, MOVIDA, MOVIDA_INTL} from './constants';
 
@@ -30,13 +32,13 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
 
     switch (type) {
-        case actionTypes.PROPAGATE_ADD_PERSONS:
+        case PROPAGATE_ADD_PERSONS:
             return {
                 ...state,
                 propagateAddPersons: payload.added,
                 propagateRemovePersons: payload.removed,
             };
-        case actionTypes.PROPAGATE_REMOVE_PERSONS:
+        case PROPAGATE_REMOVE_PERSONS:
             return {
                 ...state,
                 propagateRemovePersons: payload,

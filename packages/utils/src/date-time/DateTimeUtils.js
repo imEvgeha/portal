@@ -1,7 +1,13 @@
-import {DATETIME_FIELDS, SORT_DIRECTION} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {get} from 'lodash';
 import moment from 'moment';
-import {RELATIVE_TIME_FORMAT, SIMULCAST_TIME_FORMAT, TIMESTAMP_TIME_FORMAT, LOCALE_TIME_FORMAT} from './constants';
+import {
+    RELATIVE_TIME_FORMAT,
+    SIMULCAST_TIME_FORMAT,
+    TIMESTAMP_TIME_FORMAT,
+    LOCALE_TIME_FORMAT,
+    DATETIME_FIELDS,
+    SORT_DIRECTION,
+} from './constants';
 
 const localStorageLanguage = localStorage.getItem('localization');
 const browserLocale = navigator.language.toString().toLowerCase();

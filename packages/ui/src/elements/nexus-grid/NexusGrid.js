@@ -7,10 +7,9 @@ import ConcatenatedTitleCellRenderer from './elements/cell-renderer/Concatenated
 import IconCellRenderer from './elements/cell-renderer/IconCellRenderer';
 import LoadingCellRenderer from './elements/cell-renderer/LoadingCellRenderer';
 import SelectedAtCellRenderer from './elements/cell-renderer/SelectedAtCellRenderer';
+import WithdrawnAtCellRenderer from './elements/cell-renderer/WithdrawnAtCellRenderer';
 import WordsCellRenderer from './elements/cell-renderer/WordsCellRenderer';
 import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
-
-const SELECTION_DELAY = 5;
 
 const NexusGrid = ({
     columnDefs,
@@ -81,6 +80,7 @@ const NexusGrid = ({
                     iconCellRenderer: IconCellRenderer,
                     selectedAtCellRenderer: SelectedAtCellRenderer,
                     wordsCellRenderer: WordsCellRenderer,
+                    withdrawnAtCellRenderer: WithdrawnAtCellRenderer,
                 }}
                 onDragStopped={dragStopped}
                 isRowSelectable={isRowSelectable}

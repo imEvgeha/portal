@@ -1,3 +1,4 @@
+import {PROPAGATE_ADD_PERSONS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-person/elements/PropagateForm/PropagateForm';
 import * as actionTypes from './titleMetadataActionTypes';
 
 export const getTitle = payload => ({
@@ -16,12 +17,7 @@ export const getTerritoryMetadata = payload => ({
 });
 
 export const propagateAddPersons = payload => ({
-    type: actionTypes.PROPAGATE_ADD_PERSONS,
-    payload,
-});
-
-export const removeSeasonPerson = payload => ({
-    type: actionTypes.PROPAGATE_REMOVE_PERSONS,
+    type: PROPAGATE_ADD_PERSONS,
     payload,
 });
 
@@ -83,7 +79,7 @@ export const clearTitleMetadataFilter = () => ({
     type: actionTypes.SET_TITLE_FILTER,
 });
 
-export const setCurrentUserView = payload => ({
+export const setCurrentUserViewAction = payload => ({
     type: actionTypes.SET_CURRENT_USER_VIEW,
     payload,
 });

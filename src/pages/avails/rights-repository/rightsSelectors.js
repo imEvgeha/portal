@@ -29,6 +29,9 @@ export const createDeletedRightsCountSelector = () =>
 
 export const createUserGridSelector = () => createSelector(getRightsReducer, rights => rights?.gridState || {});
 
+export const createAvailsCurrentUserViewSelector = () =>
+    createSelector(getRightsReducer, rights => rights?.currentUserView || {});
+
 export const createFromSelectedTableSelector = () =>
     createSelector(getRightsReducer, rights => rights?.fromSelected || {});
 

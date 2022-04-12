@@ -1,5 +1,5 @@
 import React from 'react';
-import Button, {ButtonGroup} from '@atlaskit/button';
+import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
 import {shallow} from 'enzyme';
 import BulkMatchingActionsBar from './BulkMatchingActionsBar';
 
@@ -23,7 +23,10 @@ describe('BulkMatchingActionsBar', () => {
     });
 
     it('renders 3 buttons, Cancel, Match and Match & Create', () => {
-        // eslint-disable-next-line no-magic-numbers
-        expect(wrapper.find(Button)).toHaveLength(3);
+        expect(wrapper.find(Button)).toHaveLength(1);
+    });
+
+    it('renders LoadingButton', () => {
+        expect(wrapper.find(LoadingButton)).toHaveLength(2);
     });
 });

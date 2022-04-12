@@ -6,6 +6,8 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
 >
   <AvailsTableToolbar
     activeTab="Selected for Planning"
+    columnApi={Object {}}
+    gridApi={Object {}}
     hasDownloadButton={true}
     isSelected={false}
     rightsFilter={Object {}}

@@ -84,11 +84,13 @@ AvailsTableToolbar.propTypes = {
     totalRecordsCount: PropTypes.number,
     selectedRowsCount: PropTypes.number,
     toolbarActions: PropTypes.element,
-    gridApi: PropTypes.object.isRequired,
-    columnApi: PropTypes.object.isRequired,
+    gridApi: PropTypes.object,
+    columnApi: PropTypes.object,
 };
 
 AvailsTableToolbar.defaultProps = {
+    gridApi: {},
+    columnApi: {},
     hasDownloadButton: true,
     showSelectedButton: false,
     totalRecordsCount: 0,

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup} from '@atlaskit/button';
+import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
@@ -116,7 +116,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
                 >
                     Match
                 </Button>
-                <Button
+                <LoadingButton
                     onClick={onMatchAndCreate}
                     isDisabled={!buttonStatus.matchAndCreate}
                     className="nexus-c-button"
@@ -124,7 +124,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
                     isLoading={isMerging}
                 >
                     Match & Create
-                </Button>
+                </LoadingButton>
             </ButtonGroup>
         </div>
     );

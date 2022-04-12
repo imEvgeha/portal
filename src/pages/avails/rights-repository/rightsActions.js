@@ -20,11 +20,6 @@ export const getLinkedRights = payload => ({
     payload,
 });
 
-export const bulkDeleteRights = payload => ({
-    type: actionTypes.BULK_DELETE_SELECTED_RIGHTS,
-    payload,
-});
-
 export const clearLinkedRights = () => ({
     type: actionTypes.CLEAR_LINKED_TO_ORIGINAL_RIGHTS,
 });
@@ -50,5 +45,10 @@ export const clearRight = () => ({
 
 export const storeFromSelectedTable = payload => ({
     type: actionTypes.STORE_FROM_SELECTED_TABLE,
+    payload,
+});
+
+export const setCurrentUserViewActionAvails = payload => ({
+    type: actionTypes.SET_CURRENT_USER_VIEW_AVAILS,
     payload,
 });

@@ -3,9 +3,9 @@ import {
     SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {identity, pickBy} from 'lodash';
-import {getConfig} from '../../../config';
-import {nexusFetch} from '../../../util/http-client/index';
 
 export const getRightMatchingList = (searchCriteria = {}, page, size, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};

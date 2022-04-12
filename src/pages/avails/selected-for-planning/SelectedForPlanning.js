@@ -8,11 +8,11 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {getConfig} from '../../../config';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {prepareSelectForPlanningData} from './utils';
 import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
@@ -80,7 +80,7 @@ export const SelectedForPlanning = ({username}) => {
     const dragStoppedHandler = event => {
         const updatedMappings = updatedColDef.length ? cloneDeep(updatedColDef) : cloneDeep(mappings);
         const columnHeader = event.target.textContent.trim();
-        const columns = event.columnApi.columnController.gridColumns;
+        const columns = event.columnApi?.columnModel?.getAllGridColumns();
 
         const moveTo = columns.findIndex(col => col.colDef.headerName === columnHeader);
         const moveFrom = updatedMappings.findIndex(col => col.headerName === columnHeader);

@@ -1,10 +1,10 @@
 import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
-import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
 import {get} from 'lodash';
+import {filterBy} from '../../utils';
 
 const SelectedAtCellRenderer = params => {
-    const {data, api} = params;
+    const {data, api, applyFilter} = params;
     if (!data) {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
@@ -14,8 +14,9 @@ const SelectedAtCellRenderer = params => {
         // selectedAt col - filter and display territories that are in date range
         const filters = filterBy(api.getFilterModel());
         if (
-            get(filters, 'territoryDateSelected.territoryDateSelectedFrom') ||
-            get(filters, 'territoryDateSelected.territoryDateSelectedTo')
+            applyFilter &&
+            (get(filters, 'territoryDateSelected.territoryDateSelectedFrom') ||
+                get(filters, 'territoryDateSelected.territoryDateSelectedTo'))
         ) {
             let selectedAt = '';
             data?.territory?.forEach(t => {
@@ -44,15 +45,14 @@ const SelectedAtCellRenderer = params => {
                 }
             });
             return selectedAt ? selectedAt.slice(0, -2) : ''; // remove last comma
-        } 
-            if (data && Array.isArray(data['territory'])) {
-                const items = data['territory']
-                    .filter(item => item.selected)
-                    .map(item => item.country)
-                    .join(', ');
-                return [items];
-            }
-        
+        }
+        if (data && Array.isArray(data['territory'])) {
+            const items = data['territory']
+                .filter(item => item.selected)
+                .map(item => item.country)
+                .join(', ');
+            return [items];
+        }
     }
     return '';
 };

@@ -56,7 +56,6 @@ const PreplanRightsTable = ({
     const [allRights, setAllRights] = useState([]);
     const [singleRightMatch, setSingleRightMatch] = useState([]);
     const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
-    const [selectedTableColDefs, setSelectedTableColDefs] = useState([]);
     const [selectedRightsGridApi, setSelectedRightsGridApi] = useState(undefined);
     const [selectedRightsColumnApi, setSelectedRightsColumnApi] = useState(undefined);
 
@@ -87,13 +86,18 @@ const PreplanRightsTable = ({
                 selectedAtCol.valueFormatter = selectedCol.valueFormatter;
             }
 
-            setSelectedTableColDefs([...updatedColumnDefsCheckBoxHeader]);
-
             const filteredColumnDefs = updatedColumnDefsCheckBoxHeader.filter(
                 columnDef => columnDef.colId !== 'territoryCountry'
             );
 
-            setTableColumnDefinitions(filteredColumnDefs);
+            const reorderedAndFilteredColumnDefs = reorderColumns([
+                ...filteredColumnDefs,
+                planTerritoriesColumn,
+                territoriesColumn,
+                planKeywordsColumn,
+            ]);
+
+            setTableColumnDefinitions(reorderedAndFilteredColumnDefs);
         }
     }, [columnDefs]);
 
@@ -199,15 +203,15 @@ const PreplanRightsTable = ({
     };
 
     const reorderColumns = defs => {
-        const updatedColumnDefs = [...defs];
+        const columnDefs = [...defs];
+        const newColumnDef = columnDefs.filter(u => !COLUMNS_TO_REORDER.includes(u.headerName));
         COLUMNS_TO_REORDER.forEach((colHeader, headerIndex) => {
-            const index = updatedColumnDefs.findIndex(el => el.headerName === colHeader);
+            const index = columnDefs.findIndex(el => el.headerName === colHeader);
             if (index >= 0) {
-                updatedColumnDefs.splice(INSERT_FROM + headerIndex, 0, updatedColumnDefs[index]);
-                updatedColumnDefs.splice(index, 1);
+                newColumnDef.splice(INSERT_FROM + headerIndex, 0, columnDefs[index]);
             }
         });
-        return updatedColumnDefs;
+        return newColumnDef;
     };
 
     const storeSelectedRightsTabledApis = (api, cApi) => {
@@ -249,12 +253,7 @@ const PreplanRightsTable = ({
             {!showSelected && (
                 <PrePlanGrid
                     id="prePlanRightsRepo"
-                    columnDefs={reorderColumns([
-                        ...tableColumnDefinitions,
-                        planTerritoriesColumn,
-                        territoriesColumn,
-                        planKeywordsColumn,
-                    ])}
+                    columnDefs={tableColumnDefinitions}
                     singleClickEdit
                     rowSelection="multiple"
                     suppressRowClickSelection={true}
@@ -267,8 +266,8 @@ const PreplanRightsTable = ({
 
             {showSelected && (
                 <SelectedPreplanTable
-                    columnDefs={selectedTableColDefs}
-                    mapping={mapping}
+                    columnDefs={tableColumnDefinitions}
+                    mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
                     selectedRights={selectedPPRights}
                     username={username}
                     setSelectedPrePlanRights={setSelectedPPRights}

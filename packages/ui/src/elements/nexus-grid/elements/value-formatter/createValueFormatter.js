@@ -2,12 +2,11 @@ import React from 'react';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import CloudDownloadIcon from '@vubiquity-nexus/portal-assets/action-cloud-download.svg';
 import WithdrawnIcon from '@vubiquity-nexus/portal-assets/withdrawn.svg';
-import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
-import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {camelCase, startCase} from 'lodash';
-import {EPISODE_CONTENT_TYPE} from '../../constants';
 import './createValueFormatter.scss';
+import {DATETIME_FIELDS} from '../../../nexus-dynamic-form/constants';
+import NexusTooltip from '../../../nexus-tooltip/NexusTooltip';
 
 export const getIcon = (value, isFocus) => {
     switch (value) {

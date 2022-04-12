@@ -2,15 +2,16 @@ import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import {store} from '../../../../../../../../../src';
+import {useDispatch} from 'react-redux';
+import {addToast} from '../../../../../../toast/NexusToastNotificationActions';
 import {LICENSOR_ERROR} from '../../../../../../toast/constants';
+import {NexusModalContext} from '../../../../../nexus-modal/NexusModal';
 import {sortOptions} from '../../../../utils';
 import './Licensors.scss';
 import AddLicensorModal from './AddLincensorModal';
 
 const Licensors = ({selectValues, data, isEdit, onChange}) => {
+    const dispatch = useDispatch();
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     const [licensors, setLicensors] = useState([]);
@@ -50,7 +51,7 @@ const Licensors = ({selectValues, data, isEdit, onChange}) => {
                 severity: 'error',
                 detail: LICENSOR_ERROR,
             };
-            store.dispatch(addToast(errorToast));
+            dispatch(addToast(errorToast));
         } else {
             const updatedLicensors = [...licensors];
             const newLicensor = {

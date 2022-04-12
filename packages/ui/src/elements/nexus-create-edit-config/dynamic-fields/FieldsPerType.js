@@ -1,18 +1,19 @@
 import React from 'react';
 import IconCalendar from '@vubiquity-nexus/portal-assets/calendar.svg';
-import FieldError from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-error/FieldError';
-import FieldLabel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-label/FieldLabel';
 import {isEmpty} from 'lodash';
 import {Calendar} from 'primereact/calendar';
 import {Checkbox} from 'primereact/checkbox';
 import {Dropdown} from 'primereact/dropdown';
 import {InputText} from 'primereact/inputtext';
 import {Controller} from 'react-hook-form';
+import FieldError from '../../nexus-field-error/FieldError';
+import FieldLabel from '../../nexus-field-label/FieldLabel';
 import ArrayElement from './array-element/ArrayElement';
 import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import DynamicElement from './dynamic-element/DynamicElement';
 
-export const constructFieldPerType = (elementSchema, form, value, className, customOnChange, cb) => {
+export const constructFieldPerType = args => {
+    const {elementSchema, form, value, className, customOnChange, cb, cache, dataApiMap} = args;
     return (
         <div
             className={className || (elementSchema.type === 'array' ? 'col-sm-12' : 'col-sm-6 mb-1')}
@@ -45,7 +46,16 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
                             )}
                             <div className={shouldShowLabel ? 'col-sm-8' : 'col-sm-12'}>
                                 <div className={!isEmpty(fieldState?.error) ? 'p-field p-field-error' : 'p-field'}>
-                                    {getElement(elementSchema, field, value, form, onFormElementChanged, cb)}
+                                    {getElement({
+                                        elementSchema,
+                                        field,
+                                        value,
+                                        form,
+                                        onChange: onFormElementChanged,
+                                        cb,
+                                        cache,
+                                        dataApiMap,
+                                    })}
                                     {elementSchema.type !== 'array' && <FieldError error={fieldState.error} />}
                                 </div>
                             </div>
@@ -57,7 +67,8 @@ export const constructFieldPerType = (elementSchema, form, value, className, cus
     );
 };
 
-const getElement = (elementSchema, field, value, form, onChange, cb) => {
+const getElement = args => {
+    const {elementSchema, field, value, form, onChange, cb, cache, dataApiMap} = args;
     switch (elementSchema.type) {
         case 'text': {
             const newField = {...field, ...(field.value === null && {value: undefined})};
@@ -137,13 +148,35 @@ const getElement = (elementSchema, field, value, form, onChange, cb) => {
         }
         case 'array':
             return elementSchema.dynamic ? (
-                <DynamicElement elementsSchema={elementSchema} form={form} values={value} onKeysChanged={cb} />
+                <DynamicElement
+                    elementsSchema={elementSchema}
+                    form={form}
+                    values={value}
+                    onKeysChanged={cb}
+                    cache={cache}
+                    dataApiMap={dataApiMap}
+                />
             ) : (
-                <ArrayElement elementsSchema={elementSchema} form={form} values={value} />
+                <ArrayElement
+                    elementsSchema={elementSchema}
+                    form={form}
+                    values={value}
+                    cache={cache}
+                    dataApiMap={dataApiMap}
+                />
             );
         case 'multiselect':
         case 'select': {
-            return <DynamicDropdown formField={field} elementSchema={elementSchema} change={onChange} form={form} />;
+            return (
+                <DynamicDropdown
+                    formField={field}
+                    elementSchema={elementSchema}
+                    change={onChange}
+                    form={form}
+                    cache={cache}
+                    dataApiMap={dataApiMap}
+                />
+            );
         }
         case 'checkbox': {
             return (

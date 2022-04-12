@@ -5,21 +5,23 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements';
+import {useNavigate, useParams} from 'react-router-dom';
+import {NexusGrid, NexusTitle} from '../../../../ui/elements';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
 import {getRepositoryCell} from '../../utils';
 import {createColumnDefs} from '../titleMatchingActions';
-import {getColumnDefs, getTitles, getCombinedTitle} from '../titleMatchingSelectors';
+import {getColumnDefs, getCombinedTitle, getTitles} from '../titleMatchingSelectors';
 import './TitleMatchReview.scss';
 
-const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {
+const TitleMatchReview = ({columnDefs, matchedTitles, getColumnDefs, combinedTitle}) => {
     const [titles, setTitles] = useState(Object.values(matchedTitles));
     const [mergedTitles, setMergedTitles] = useState([combinedTitle]);
+    const navigate = useNavigate();
+    const routeParams = useParams();
 
     const navigateToMatchPreview = () => {
-        const {params} = match || {};
-        const {rightId} = params || {};
-        history.push(URL.keepEmbedded(`/avails/rights/${rightId}/title-matching`));
+        const {rightId, realm} = routeParams;
+        navigate(URL.keepEmbedded(`/${realm}/avails/rights/${rightId}/title-matching`));
     };
 
     const getTitle = id => {
@@ -114,8 +116,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
 
     useEffect(() => {
         if (mergedTitles && mergedTitles[0] && mergedTitles[0].id) {
-            const {params} = match || {};
-            const {rightId} = params || {};
+            const {rightId} = routeParams;
             DOP.setErrorsCount(0);
             DOP.setData({
                 match: {
@@ -124,7 +125,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 },
             });
         }
-    }, [match, mergedTitles]);
+    }, [routeParams, mergedTitles]);
 
     const deepCloneMatchedTitlesColumnDefs = cloneDeep(columnDefs);
     const deepCloneCombinedTitleColumnDefs = cloneDeep(columnDefs);
@@ -191,16 +192,12 @@ TitleMatchReview.propTypes = {
     getColumnDefs: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
     matchedTitles: PropTypes.array,
-    match: PropTypes.object,
-    history: PropTypes.object,
     combinedTitle: PropTypes.object,
 };
 
 TitleMatchReview.defaultProps = {
     columnDefs: [],
     matchedTitles: [],
-    match: null,
-    history: null,
     combinedTitle: {},
 };
 

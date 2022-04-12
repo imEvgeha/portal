@@ -1,12 +1,13 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {LoadingButton} from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {set} from 'lodash';
 import {connect} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import './LegacyTitleReconciliationView.scss';
 import {NexusTitle, NexusGrid} from '../../../ui/elements';
@@ -22,7 +23,6 @@ const Candidates = compose(withMatchAndDuplicateList(true))(CandidatesList);
 
 const LegacyTitleReconciliationView = ({
     titleMetadata,
-    match,
     columnDefs,
     fetchTitle,
     onDone,
@@ -33,7 +33,8 @@ const LegacyTitleReconciliationView = ({
 
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const [selectedList, setSelectedList] = useState({});
-    const {params = {}} = match;
+    const routeParams = useParams();
+
     const {title, contentType = '', releaseYear} = titleMetadata || {};
 
     // TODO: this should be generate on initial app load
@@ -44,9 +45,9 @@ const LegacyTitleReconciliationView = ({
     }, [columnDefs, createColumnDefs]);
 
     useEffect(() => {
-        const {id} = params || {};
+        const {id} = routeParams;
         fetchTitle({id});
-    }, [fetchTitle, params]);
+    }, [fetchTitle, routeParams]);
 
     const handleDoneClick = () => {
         onDone(selectedList);
@@ -81,7 +82,7 @@ const LegacyTitleReconciliationView = ({
                 <p className="nexus-c-legacy-title-reconciliation-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <Candidates
-                titleId={params.id}
+                titleId={routeParams.id}
                 columnDefs={updatedColumnDefs}
                 queryParams={{
                     contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`,
@@ -91,15 +92,15 @@ const LegacyTitleReconciliationView = ({
                 onCandidatesChange={handleCandidatesChange}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">
-                <Button
+                <LoadingButton
                     className="nexus-c-button"
                     appearance="primary"
                     onClick={handleDoneClick}
                     isDisabled={isDoneDisabled}
                     isLoading={isMerging}
                 >
-                    {SAVE_BTN}
-                </Button>
+                    <span>{SAVE_BTN}</span>
+                </LoadingButton>
             </div>
         </div>
     );
@@ -110,7 +111,6 @@ LegacyTitleReconciliationView.propTypes = {
     createColumnDefs: PropTypes.func.isRequired,
     fetchTitle: PropTypes.func.isRequired,
     onDone: PropTypes.func.isRequired,
-    match: PropTypes.object,
     columnDefs: PropTypes.array,
     isMerging: PropTypes.bool,
 };
@@ -119,7 +119,6 @@ LegacyTitleReconciliationView.defaultProps = {
     titleMetadata: null,
     isMerging: false,
     columnDefs: null,
-    match: {},
 };
 
 const createMapStateToProps = () => {

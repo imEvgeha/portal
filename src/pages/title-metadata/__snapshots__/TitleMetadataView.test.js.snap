@@ -93,12 +93,15 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     className="nexus-c-title-metadata__table"
     columnApi={null}
     gridApi={null}
-    history={Object {}}
     setColumnApi={[Function]}
     setGridApi={[Function]}
   />
+<<<<<<< HEAD
   <TitleCreate
     bulkTitleMatch={[Function]}
+=======
+  <Component
+>>>>>>> 8ad15c8ad44e5f762bf15f59416063dc0487d258
     display={false}
     focusedRight={Object {}}
     isItMatching={false}

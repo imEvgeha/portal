@@ -21,9 +21,9 @@ import ControllerWrapper from '../controllerWrapper/ControllerWrapper';
 import constants, {CONTENT_TYPE_ITEMS} from './TitleCreateModalConstants';
 import './Title.scss';
 
-const onViewTitleClick = response => {
+const onViewTitleClick = (response, realm) => {
     const {id} = response || {};
-    const url = `${getDomainName()}/metadata/detail/${id}`;
+    const url = `${getDomainName()}/${realm}/metadata/detail/${id}`;
     window.open(url, '_blank');
 };
 
@@ -43,7 +43,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
         formState: {errors},
     } = useForm({defaultValues: {catalogueOwner: tenantCode}});
     const currentValues = useWatch({control});
-
+    const routeParams = useParams()
     const tenantCodeItems = [
         {
             label: tenantCode === 'vu' ? 'Vubiquity' : 'MGM',
@@ -66,7 +66,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                 matching ? constants.NEW_TITLE_TOAST_ERROR_PUBLISHING_MESSAGE : 'Title creation failed!'
             )
         );
-    };
+    }
 
     const defaultCreateTitle = (title, params) => {
         titleService
@@ -89,7 +89,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                             <Button
                                                 label="View Title"
                                                 className="p-button-link p-toast-button-link"
-                                                onClick={() => onViewTitleClick(response)}
+                                                onClick={() => onViewTitleClick(response, routeParams.realm)}
                                             />
                                         </ToastBody>
                                     );
@@ -112,7 +112,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                 <Button
                                     label="View Title"
                                     className="p-button-link p-toast-button-link"
-                                    onClick={() => onViewTitleClick(response)}
+                                    onClick={() => onViewTitleClick(response, routeParams.realm)}
                                 />
                             </ToastBody>
                         );
@@ -138,7 +138,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                             <Button
                                 label="View Title"
                                 className="p-button-link p-toast-button-link"
-                                onClick={() => onViewTitleClick(titleId)}
+                                onClick={() => onViewTitleClick(titleId, routeParams.realm)}
                             />
                         </ToastBody>
                     ),

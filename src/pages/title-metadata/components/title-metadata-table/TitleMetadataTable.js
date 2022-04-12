@@ -13,6 +13,7 @@ import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {compose} from 'redux';
 import {
     DEFAULT_CATALOGUE_OWNER,
@@ -36,7 +37,6 @@ const TitleMetadataTableGrid = compose(
 )(NexusGrid);
 
 const TitleMetadataTable = ({
-    history,
     catalogueOwner,
     setGridApi,
     setColumnApi,
@@ -45,6 +45,9 @@ const TitleMetadataTable = ({
     setTitleMetadataFilter,
     titleMetadataFilter,
 }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const columnDefs = UPLOADED_EMETS_COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
@@ -52,7 +55,7 @@ const TitleMetadataTable = ({
                 cellRendererParams: ({data = {}}) => {
                     const {id} = data;
                     return {
-                        link: `/metadata/detail/`,
+                        link: 'metadata/detail/',
                         linkId: id,
                         newTab: false,
                     };
@@ -75,9 +78,7 @@ const TitleMetadataTable = ({
                                     <div
                                         className="nexus-c-title-metadata-table__repository-icon"
                                         onClick={() =>
-                                            history.push(
-                                                URL.keepEmbedded(`/metadata/detail/${id}/legacy-title-reconciliation`)
-                                            )
+                                            navigate(URL.keepEmbedded(`detail/${id}/legacy-title-reconciliation`))
                                         }
                                     >
                                         <NexusStatusDot severity="warning" />
@@ -120,7 +121,7 @@ const TitleMetadataTable = ({
 
     useLayoutEffect(() => {
         return () => {
-            if (gridApi && columnApi?.columnController) {
+            if (gridApi && columnApi?.columnModel) {
                 const filterModel = gridApi.getFilterModel();
                 const sortModel = getSortModel(columnApi);
                 const columnState = columnApi?.getColumnState();
@@ -151,7 +152,6 @@ const TitleMetadataTable = ({
 
     useEffect(() => {
         let externalFilter = catalogueOwner;
-        const {location} = history;
         if (location) {
             const {search} = location;
             if (search) {
@@ -166,7 +166,7 @@ const TitleMetadataTable = ({
             }
         }
         setExternalFilter(externalFilter);
-    }, [catalogueOwner, history?.location?.search]);
+    }, [catalogueOwner, location?.search]);
 
     return (
         <div className="nexus-c-title-metadata-table">
@@ -186,7 +186,6 @@ const TitleMetadataTable = ({
 };
 
 TitleMetadataTable.propTypes = {
-    history: PropTypes.object,
     catalogueOwner: PropTypes.object,
     columnApi: PropTypes.object,
     setGridApi: PropTypes.func,
@@ -197,7 +196,6 @@ TitleMetadataTable.propTypes = {
 };
 
 TitleMetadataTable.defaultProps = {
-    history: {},
     catalogueOwner: DEFAULT_CATALOGUE_OWNER,
     columnApi: {},
     setGridApi: () => null,

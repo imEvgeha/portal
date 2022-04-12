@@ -34,14 +34,14 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               >
                 Cancel
               </Button>
-              <Button
+              <LoadingButton
                 appearance="primary"
                 isDisabled={true}
                 isLoading={Object {}}
                 onClick={[Function]}
               >
                 Save
-              </Button>
+              </LoadingButton>
             </ButtonGroup>
           </div>
         </div>

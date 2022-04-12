@@ -1,7 +1,7 @@
 import querystring from 'querystring';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getConfig} from '../../config';
-import {nexusFetch} from '../../util/http-client';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 
 const PAGESIZE = 100;
 

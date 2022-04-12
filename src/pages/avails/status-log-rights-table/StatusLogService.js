@@ -1,8 +1,8 @@
 import querystring from 'querystring';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import moment from 'moment';
-import {getConfig} from '../../../config';
 import {store} from '../../../index';
-import {nexusFetch} from '../../../util/http-client';
 import {saveStatusDataAction} from './statusLogActions';
 
 const PAGESIZE = 100;
@@ -21,9 +21,10 @@ export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
             ...(updatedAtEnd && {updatedAtEnd}),
         };
     };
+    const updatedAtParams = getUpdatedAtParams();
     delete params.updatedAt;
 
-    const qs = querystring.stringify({...queryParams, ...getUpdatedAtParams(), ...params});
+    const qs = querystring.stringify({...queryParams, ...updatedAtParams, ...params});
     const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/publishInfo/search`;
     const response = nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK`);
     response.then(data => store.dispatch(saveStatusDataAction(data)));

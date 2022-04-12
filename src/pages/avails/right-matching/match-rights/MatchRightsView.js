@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup} from '@atlaskit/button';
+import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
@@ -14,7 +14,7 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import {backArrowColor} from '../../../../../packages/styles/constants';
 import {NexusGrid, NexusTitle} from '../../../../ui/elements';
@@ -46,12 +46,9 @@ const CombinedRightNexusGrid = compose(withColumnsResizing(), withEditableColumn
 const MatchedRightsNexusGrid = withColumnsResizing()(NexusGrid);
 
 const MatchRightView = ({
-    history,
-    match,
     focusedRight,
     combinedRight,
     fetchFocusedRight,
-    fetchMatchedRight,
     fetchCombinedRight,
     saveCombinedRight,
     createRightMatchingColumnDefs,
@@ -64,8 +61,9 @@ const MatchRightView = ({
     validateRights,
 }) => {
     const activeFocusedRight = mergeRights ? {...prepareRight(pendingRight), id: null} : focusedRight;
-    const {params} = match || {};
-    const {availHistoryIds, rightId, matchedRightIds} = params || {};
+    const {availHistoryIds, rightId, matchedRightIds} = useParams();
+    const navigate = useNavigate();
+
     const selectedMatchedRights = [activeFocusedRight, ...rightsForMatching];
     const [cellColoringSchema, setCellColoringSchema] = useState();
     const previousRoute = mergeRights
@@ -77,12 +75,6 @@ const MatchRightView = ({
 
     // DOP Integration
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
-
-    useEffect(() => {
-        if (!rightsForMatching.length && !mergeRights) {
-            fetchMatchedRight(matchedRightIds.split(','));
-        }
-    }, [rightsForMatching.length]);
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -114,7 +106,7 @@ const MatchRightView = ({
 
     // TODO:  we should handle this via router Link
     const onCancel = () => {
-        history.push(URL.keepEmbedded(previousRoute));
+        navigate(URL.keepEmbedded(previousRoute));
     };
 
     const onSaveCombinedRight = () => {
@@ -181,6 +173,7 @@ const MatchRightView = ({
             const schema = createColumnSchema(getSelectedRows(api), colDef.field);
             return addCellClass({field: colDef.field, value, schema});
         }
+        return '';
     };
 
     // Sorted by start field. desc
@@ -210,6 +203,7 @@ const MatchRightView = ({
 
                       return isCellHighlighted && HIGHLIGHTED_CELL_CLASS;
                   }
+                  return '';
               },
           })
         : columnDefs;
@@ -258,7 +252,7 @@ const MatchRightView = ({
                     <Button onClick={onCancel} className="nexus-c-button">
                         {CANCEL_BUTTON}
                     </Button>
-                    <Button
+                    <LoadingButton
                         className="nexus-c-button"
                         appearance="primary"
                         onClick={onSaveCombinedRight}
@@ -266,7 +260,7 @@ const MatchRightView = ({
                         isLoading={isMatching}
                     >
                         {SAVE_BUTTON}
-                    </Button>
+                    </LoadingButton>
                 </ButtonGroup>
             </div>
         </div>
@@ -279,15 +273,11 @@ MatchRightView.propTypes = {
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
     fetchFocusedRight: PropTypes.func,
-    fetchMatchedRight: PropTypes.func,
     fetchCombinedRight: PropTypes.func,
     saveCombinedRight: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
     isMatching: PropTypes.bool,
-    history: PropTypes.object,
-    match: PropTypes.object,
     pendingRight: PropTypes.object,
-    // eslint-disable-next-line react/boolean-prop-naming
     mergeRights: PropTypes.bool,
     rightsForMatching: PropTypes.array,
     validateRights: PropTypes.func.isRequired,
@@ -299,13 +289,10 @@ MatchRightView.defaultProps = {
     columnDefs: [],
     mapping: null,
     fetchFocusedRight: null,
-    fetchMatchedRight: null,
     fetchCombinedRight: null,
     saveCombinedRight: null,
     createRightMatchingColumnDefs: null,
     isMatching: false,
-    history: {push: () => null},
-    match: {},
     pendingRight: null,
     mergeRights: false,
     rightsForMatching: [],

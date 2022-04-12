@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react';
-import Button from '@atlaskit/button';
+import Button, {LoadingButton} from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
@@ -122,13 +122,13 @@ const ServicingOrdersView = () => {
                 <Button isSelected={isHideCompleted} onClick={() => setIsHideCompleted(!isHideCompleted)}>
                     {HIDE_COMPLETED_BTN}
                 </Button>
-                <Button
+                <LoadingButton
                     isDisabled={!selectedServicingOrders.length}
                     onClick={handleExportRequest}
                     isLoading={isExporting}
                 >
                     Export
-                </Button>
+                </LoadingButton>
             </div>
             <ServicingOrdersTable
                 fixedFilter={fixedFilter}

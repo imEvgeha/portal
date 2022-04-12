@@ -75,7 +75,7 @@ const withInfiniteScrolling =
                 if (isMounted.current && gridApi && isDatasourceEnabled) {
                     updateData(fetchData, gridApi);
                 }
-            }, [props.isDatasourceEnabled]);
+            }, [gridApi, props.isDatasourceEnabled, props.externalFilter, isLocal]);
             /**
              * aggrid issue: getRows needs to be called with debounce (wait = 0, invocation is deferred until to the next tick)
              * in order to avoid subsequently calling fetchData with the same params every time filter, sort and columns model

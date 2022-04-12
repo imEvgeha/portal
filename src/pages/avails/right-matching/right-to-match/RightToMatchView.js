@@ -16,7 +16,7 @@ import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders
 import {get, isEmpty} from 'lodash';
 import {Button as PrimeReactButton} from 'primereact/button';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate, useLocation, useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import {backArrowColor} from '../../../../../packages/styles/constants';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
@@ -50,14 +50,11 @@ const RightRepositoryNexusGrid = compose(withColumnsResizing(), withSideBar())(N
 const IncomingRightNexusGrid = withColumnsResizing()(NexusGrid);
 
 const RightToMatchView = ({
-    match,
     columnDefs,
     mapping,
     createRightMatchingColumnDefs,
     fetchFocusedRight,
     focusedRight,
-    history,
-    location,
     addToast,
     removeToast,
     pendingRight,
@@ -65,10 +62,13 @@ const RightToMatchView = ({
     storeMatchedRights,
     validateRights,
 }) => {
-    const [matchingCandidates, setMatchingCandidates] = useState(null);
+    const [matchingCandidates, setMatchingCandidates] = useState([]);
     const [newPendingRight, setNewPendingRight] = useState([]);
-    const {params = {}} = match;
-    const {rightId, availHistoryIds} = params || {};
+    const {rightId, availHistoryIds} = useParams() || {};
+    const navigate = useNavigate();
+    const location = useLocation();
+    const routeParams = useParams();
+
     const previousPageRoute = URL.isEmbedded()
         ? `/avails/history/${availHistoryIds}/right-matching?embedded=true`
         : focusedRight.id
@@ -113,7 +113,7 @@ const RightToMatchView = ({
         removeToast();
         rightsService
             .updateRightWithFullData({...focusedRight, status: 'Ready'}, focusedRight.id, true)
-            .then(() => history.push(URL.keepEmbedded(`/avails/rights/${focusedRight.id}`)));
+            .then(() => navigate(URL.keepEmbedded(`/${routeParams.realm}/avails/rights/${focusedRight.id}`)));
     };
 
     const onUpdateRightClick = () => {
@@ -167,9 +167,9 @@ const RightToMatchView = ({
                 callback: () => {
                     storeMatchedRights({rightsForMatching: matchingCandidates});
                     if (mergeRights) {
-                        return history.push(URL.keepEmbedded(`${location.pathname}/preview`));
+                        return navigate(URL.keepEmbedded(`${location.pathname}/preview`));
                     }
-                    history.push(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds.join()}`));
+                    navigate(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds.join()}`));
                 },
             });
         }
@@ -200,7 +200,9 @@ const RightToMatchView = ({
                         break;
                     }
                     case TERRITORY:
-                        if (params.colDef.colId === 'selected') return;
+                        if (params.colDef.colId === 'selected') {
+                            return '';
+                        }
                         if (pendingRightData[key].length !== params.value.length) {
                             return 'nexus-c-right-to-match-view__grid-column--highlighted';
                         }
@@ -229,8 +231,10 @@ const RightToMatchView = ({
                         }
                         break;
                     default:
-                        return;
+                        return '';
                 }
+
+                return '';
             };
         });
     };
@@ -254,9 +258,12 @@ const RightToMatchView = ({
             }
         }
 
-        const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames)?.filter(elem => elem);
+        let reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames)?.filter(elem => elem);
 
-        if (tableName === CONFLICTING_RIGHTS) highlightDiffCells(reorderedHeaders);
+        if (tableName === CONFLICTING_RIGHTS) {
+            highlightDiffCells(reorderedHeaders);
+            reorderedHeaders = reorderedHeaders.map(column => ({...column, floatingFilter: true}));
+        }
 
         return reorderedHeaders;
     };
@@ -281,7 +288,6 @@ const RightToMatchView = ({
                                 focusedRightId={rightId}
                                 focusedRight={focusedRight}
                                 availHistoryIds={availHistoryIds}
-                                history={history}
                             />
                         )}
                     </div>
@@ -300,7 +306,7 @@ const RightToMatchView = ({
                         <NexusTitle isSubTitle>
                             {CONFLICTING_RIGHTS} {`(${matchingCandidates?.length})`}
                         </NexusTitle>
-                        {matchingCandidates && (
+                        {matchingCandidates.length && (
                             <RightRepositoryNexusGrid
                                 id="rightsMatchingRepo"
                                 columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
@@ -308,7 +314,6 @@ const RightToMatchView = ({
                                 rowSelection="multiple"
                                 rowData={matchingCandidates}
                                 suppressRowClickSelection={true}
-                                floatingFilter={true}
                                 defaultColDef={{
                                     filter: AG_GRID_COLUMN_FILTER.TEXT,
                                     sortable: true,
@@ -325,7 +330,7 @@ const RightToMatchView = ({
                         <ButtonGroup>
                             <Button
                                 className="nexus-c-button"
-                                onClick={() => history.push(URL.keepEmbedded(previousPageRoute))}
+                                onClick={() => navigate(URL.keepEmbedded(previousPageRoute))}
                             >
                                 {CANCEL_BUTTON}
                             </Button>
@@ -348,9 +353,6 @@ RightToMatchView.propTypes = {
     removeToast: PropTypes.func,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
-    history: PropTypes.object,
-    match: PropTypes.object,
-    location: PropTypes.object,
     pendingRight: PropTypes.object,
     // eslint-disable-next-line react/boolean-prop-naming
     mergeRights: PropTypes.bool,
@@ -365,9 +367,6 @@ RightToMatchView.defaultProps = {
     removeToast: () => null,
     columnDefs: [],
     mapping: [],
-    history: {push: () => null},
-    match: {},
-    location: {},
     pendingRight: null,
     mergeRights: false,
     storeMatchedRights: () => null,

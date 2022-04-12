@@ -19,12 +19,11 @@ import TitleMetadataTable from './components/title-metadata-table/TitleMetadataT
 import TitleCreate from './components/titleCreateModal/TitleCreateModal';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
 import './TitleMetadataView.scss';
-import {setCurrentUserView, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
+import {setCurrentUserViewAction, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
 import {DEFAULT_CATALOGUE_OWNER, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
-    history,
     toggleRefreshGridData,
     resetTitleId,
     storeTitleUserDefinedGridState,
@@ -142,7 +141,7 @@ export const TitleMetadataView = ({
     useEffect(() => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && blockLastFilter) {
             gridApi.setFilterModel(titleMetadataFilter?.filterModel);
-            if (columnApi?.columnController) {
+            if (columnApi?.columnModel) {
                 setSorting(titleMetadataFilter.sortModel, columnApi);
             }
             columnApi?.applyColumnState({state: titleMetadataFilter?.columnState});
@@ -198,7 +197,6 @@ export const TitleMetadataView = ({
             </TitleMetadataHeader>
             {isItTheSameTab('repository') ? (
                 <TitleMetadataTable
-                    history={history}
                     catalogueOwner={catalogueOwner}
                     setGridApi={setGridApi}
                     setColumnApi={setColumnApi}
@@ -210,7 +208,6 @@ export const TitleMetadataView = ({
             {isItTheSameTab('syncLog') ? <SyncLogTable /> : null}
             {isItTheSameTab('uploadLog') ? (
                 <UploadMetadataTable
-                    history={history}
                     catalogueOwner={catalogueOwner}
                     setGridApi={setGridApi}
                     setColumnApi={setColumnApi}
@@ -243,11 +240,10 @@ const mapDispatchToProps = dispatch => ({
     resetTitleId: () => dispatch(resetTitle()),
     storeTitleUserDefinedGridState: payload => dispatch(storeTitleUserDefinedGridState(payload)),
     uploadMetadata: payload => dispatch(uploadMetadata(payload)),
-    setCurrentUserView: payload => dispatch(setCurrentUserView(payload)),
+    setCurrentUserView: payload => dispatch(setCurrentUserViewAction(payload)),
 });
 
 TitleMetadataView.propTypes = {
-    history: PropTypes.object,
     toggleRefreshGridData: PropTypes.func,
     resetTitleId: PropTypes.func,
     storeTitleUserDefinedGridState: PropTypes.func,
@@ -259,7 +255,6 @@ TitleMetadataView.propTypes = {
 };
 
 TitleMetadataView.defaultProps = {
-    history: {},
     toggleRefreshGridData: () => null,
     resetTitleId: () => null,
     storeTitleUserDefinedGridState: () => null,

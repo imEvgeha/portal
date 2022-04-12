@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
-import {reloadConfigurationService} from '../../../availsService';
+import {reloadConfigurationService} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import './ReloadConfigBtn.scss';
 
 const ReloadConfigBtn = ({addToast}) => {
