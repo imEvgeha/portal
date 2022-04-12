@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
