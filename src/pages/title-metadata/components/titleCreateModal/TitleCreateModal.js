@@ -12,6 +12,7 @@ import {Dialog} from 'primereact/dialog';
 import {Dropdown} from 'primereact/dropdown';
 import {InputText} from 'primereact/inputtext';
 import {useForm, useWatch} from 'react-hook-form';
+import {useParams} from 'react-router-dom';
 import {Alert} from 'reactstrap';
 import {store} from '../../../..';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
@@ -43,7 +44,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
         formState: {errors},
     } = useForm({defaultValues: {catalogueOwner: tenantCode}});
     const currentValues = useWatch({control});
-    const routeParams = useParams()
+    const routeParams = useParams();
     const tenantCodeItems = [
         {
             label: tenantCode === 'vu' ? 'Vubiquity' : 'MGM',
@@ -66,7 +67,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                 matching ? constants.NEW_TITLE_TOAST_ERROR_PUBLISHING_MESSAGE : 'Title creation failed!'
             )
         );
-    }
+    };
 
     const defaultCreateTitle = (title, params) => {
         titleService
@@ -175,12 +176,15 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
 
     const getTitleWithoutEmptyField = titleForm => {
         const episodicFields = ['seriesTitleName', 'episodeNumber', 'seasonNumber'];
+        const ignoreFields = ['addCrew', 'syncMovida', 'syncVZ'];
         const title = {
             episodic: {},
         };
         for (const titleField in titleForm) {
             if (episodicFields.includes(titleField)) {
                 title.episodic[titleField] = titleForm[titleField] || null;
+            } else if (ignoreFields.includes(titleField)) {
+                continue;
             } else if (titleForm[titleField]) {
                 title[titleField] = titleForm[titleField];
             } else {
@@ -188,6 +192,8 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
             }
         }
 
+        // eslint-disable-next-line no-console
+        console.log(title);
         return title;
     };
 
