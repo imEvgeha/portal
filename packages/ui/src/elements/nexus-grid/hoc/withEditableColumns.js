@@ -41,12 +41,11 @@ const withEditableColumns =
     } = {}) =>
     WrappedComponent => {
         const ComposedComponent = props => {
-            const {columnDefs, mapping, selectValues, id} = props || {};
+            const {columnDefs, mapping, selectValues} = props;
             const previousSelectValues = usePrevious(selectValues);
             const previousColumnDefs = usePrevious(columnDefs);
             const [editableColumnDefs, setEditableColumnDefs] = useState(columnDefs);
             const excludedColumns = props.notEditableColumns || notEditableColumns;
-            const isItPrePlanTab = ['prePlanRightsRepo', 'selectedPrePlanRightsRepo'].includes(id);
 
             useEffect(() => {
                 if (!isEqual(previousSelectValues, selectValues) || !isEqual(previousColumnDefs, columnDefs)) {
@@ -177,7 +176,7 @@ const withEditableColumns =
                     {...propsWithoutHocProps}
                     stopEditingWhenGridLosesFocus={true}
                     singleClickEdit={true}
-                    columnDefs={isItPrePlanTab ? updateColumnDefs(columnDefs) : editableColumnDefs}
+                    columnDefs={editableColumnDefs}
                 />
             );
         };
