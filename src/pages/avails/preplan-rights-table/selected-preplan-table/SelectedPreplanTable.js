@@ -7,6 +7,16 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {isEmpty} from 'lodash';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../ui/elements';
+import {
+    COLUMNS_TO_REORDER,
+    INSERT_FROM,
+    planKeywordsColumn,
+    planKeywordsMapping,
+    planTerritoriesColumn,
+    planTerritoriesMapping,
+    territoriesColumn,
+    territoriesMapping,
+} from '../constants';
 
 const SelectedPreplanGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
 
@@ -31,6 +41,33 @@ const SelectedPreplanTable = ({
         }
     }, [gridApi]);
 
+    const editedMappings = mapping
+        .filter(mapping => mapping.javaVariableName !== 'territory')
+        .map(mapping => {
+            if (mapping.javaVariableName === 'planKeywords') {
+                return {
+                    ...mapping,
+                    enableEdit: true,
+                };
+            }
+            return {
+                ...mapping,
+                enableEdit: false,
+            };
+        });
+
+    const reorderColumns = defs => {
+        const updatedColumnDefs = [...defs];
+        COLUMNS_TO_REORDER.forEach((colHeader, headerIndex) => {
+            const index = updatedColumnDefs.findIndex(el => el.headerName === colHeader);
+            if (index >= 0) {
+                updatedColumnDefs.splice(INSERT_FROM + headerIndex, 0, updatedColumnDefs[index]);
+                updatedColumnDefs.splice(index, 1);
+            }
+        });
+        return updatedColumnDefs;
+    };
+
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
 
@@ -52,14 +89,14 @@ const SelectedPreplanTable = ({
 
     return (
         <SelectedPreplanGrid
-            id="selectedRightsRepo"
+            id="selectedPrePlanRightsRepo"
             singleClickEdit
             suppressRowClickSelection={true}
             notFilterableColumns={['action', 'buttons']}
-            columnDefs={columnDefs}
+            columnDefs={reorderColumns([...columnDefs, planTerritoriesColumn, territoriesColumn, planKeywordsColumn])}
             onGridEvent={onSelectedRightsRepositoryGridEvent}
             rowSelection="multiple"
-            mapping={mapping}
+            mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
             rowData={currentUserSelectedRights}
         />
     );
