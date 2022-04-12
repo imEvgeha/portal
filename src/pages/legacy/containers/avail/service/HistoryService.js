@@ -1,6 +1,6 @@
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 
 export const historyService = {
     advancedSearch: (searchCriteria, page, size, sortedParams) => {

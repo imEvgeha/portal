@@ -14,7 +14,7 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import {backArrowColor} from '../../../../../packages/styles/constants';
 import {NexusGrid, NexusTitle} from '../../../../ui/elements';
@@ -46,8 +46,6 @@ const CombinedRightNexusGrid = compose(withColumnsResizing(), withEditableColumn
 const MatchedRightsNexusGrid = withColumnsResizing()(NexusGrid);
 
 const MatchRightView = ({
-    history,
-    match,
     focusedRight,
     combinedRight,
     fetchFocusedRight,
@@ -63,8 +61,9 @@ const MatchRightView = ({
     validateRights,
 }) => {
     const activeFocusedRight = mergeRights ? {...prepareRight(pendingRight), id: null} : focusedRight;
-    const {params} = match || {};
-    const {availHistoryIds, rightId, matchedRightIds} = params || {};
+    const {availHistoryIds, rightId, matchedRightIds} = useParams();
+    const navigate = useNavigate();
+
     const selectedMatchedRights = [activeFocusedRight, ...rightsForMatching];
     const [cellColoringSchema, setCellColoringSchema] = useState();
     const previousRoute = mergeRights
@@ -107,7 +106,7 @@ const MatchRightView = ({
 
     // TODO:  we should handle this via router Link
     const onCancel = () => {
-        history.push(URL.keepEmbedded(previousRoute));
+        navigate(URL.keepEmbedded(previousRoute));
     };
 
     const onSaveCombinedRight = () => {
@@ -278,8 +277,6 @@ MatchRightView.propTypes = {
     saveCombinedRight: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
     isMatching: PropTypes.bool,
-    history: PropTypes.object,
-    match: PropTypes.object,
     pendingRight: PropTypes.object,
     mergeRights: PropTypes.bool,
     rightsForMatching: PropTypes.array,
@@ -296,8 +293,6 @@ MatchRightView.defaultProps = {
     saveCombinedRight: null,
     createRightMatchingColumnDefs: null,
     isMatching: false,
-    history: {push: () => null},
-    match: {},
     pendingRight: null,
     mergeRights: false,
     rightsForMatching: [],

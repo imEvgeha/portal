@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import DownloadIcon from '@vubiquity-nexus/portal-assets/action-download.svg';
 import Email from '@vubiquity-nexus/portal-assets/email.svg';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {NexusTooltip} from '../../../../../ui/elements';
 import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
 import IngestStatus from '../../../ingest-panel/components/ingest-status/IngestStatus';

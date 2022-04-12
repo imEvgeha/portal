@@ -1,17 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
+import {useNavigate, useLocation} from 'react-router-dom';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {INITIAL_SORT, TITLE} from './eventManagementConstants';
 import './EventManagement.scss';
 
-const EventManagement = props => {
+const EventManagement = () => {
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [gridApi, setGridApi] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const closeEventDrawer = () => {
         setSelectedEventId(null);
@@ -20,7 +22,7 @@ const EventManagement = props => {
     };
 
     const setSearchParams = (key, value) => {
-        const existingParams = new URLSearchParams(props.location.search.substring(1));
+        const existingParams = new URLSearchParams(location.search.substring(1));
         if (!isEmpty(value) || key === 'sort') {
             existingParams.set(key, JSON.stringify(value));
         } else {
@@ -29,9 +31,7 @@ const EventManagement = props => {
 
         const newParams = `?${existingParams.toString()}`;
 
-        props.history.push({
-            search: newParams,
-        });
+        navigate({search: newParams});
     };
 
     useEffect(() => {
@@ -93,7 +93,7 @@ const EventManagement = props => {
     };
 
     useEffect(() => {
-        const params = new URLSearchParams(props.location.search.substring(1));
+        const params = new URLSearchParams(location.search.substring(1));
         const selectedEventId = JSON.parse(params.get('selectedEventId'));
         if (selectedEventId) {
             setSelectedEventId(selectedEventId);
@@ -106,7 +106,7 @@ const EventManagement = props => {
             case READY: {
                 api.sizeColumnsToFit();
                 setGridApi(api);
-                const params = new URLSearchParams(props.location.search.substring(1));
+                const params = new URLSearchParams(location.search.substring(1));
                 const filterModel = JSON.parse(params.get('filter'));
 
                 const sortModelParam = params.get('sort');
@@ -167,13 +167,3 @@ const EventManagement = props => {
 };
 
 export default EventManagement;
-
-EventManagement.propTypes = {
-    history: PropTypes.object,
-    location: PropTypes.object,
-};
-
-EventManagement.defaultProps = {
-    history: {},
-    location: {},
-};

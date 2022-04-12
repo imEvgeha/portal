@@ -17,6 +17,7 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {get, isEmpty, isEqual} from 'lodash';
 import {connect} from 'react-redux';
+import {useLocation} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
 import usePrevious from '../../../util/hooks/usePrevious';
@@ -64,7 +65,6 @@ const RightsRepositoryTable = ({
     setRightsFilter,
     rightsFilter,
     username,
-    location,
     ingestClick,
     selectedAttachmentId,
     deselectIngest,
@@ -81,7 +81,7 @@ const RightsRepositoryTable = ({
     totalIngests,
     toggleRefreshGridData,
 }) => {
-    const {search} = location;
+    const {search} = useLocation();
 
     const [showSelected, setShowSelected] = useState(false);
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
@@ -502,7 +502,6 @@ RightsRepositoryTable.propTypes = {
     selectedIngest: PropTypes.object,
     selectedRights: PropTypes.object,
     rightsFilter: PropTypes.object,
-    location: PropTypes.object.isRequired,
     ingestClick: PropTypes.func.isRequired,
     selectedAttachmentId: PropTypes.string,
     deselectIngest: PropTypes.func.isRequired,

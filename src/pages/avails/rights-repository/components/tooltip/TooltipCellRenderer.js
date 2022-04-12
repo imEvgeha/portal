@@ -8,12 +8,14 @@ import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/n
 import {getDomainName, isObjectEmpty} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import classnames from 'classnames';
+import {useParams} from 'react-router-dom';
 import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from '../../util/indicator';
 import {ERROR_NO_CORE_TITLE_ID, FIND_MATCH, MATCHED_TITLE, NO_MATCHING_TITLE, VIEW_TITLE} from './constants';
 import './TooltipCellRenderer.scss';
 
 const TooltipCellRenderer = ({data = {}, isTooltipEnabled, setSingleRightMatch}) => {
     const [isTitleMatchTooltipOpen, setIsTitleMatchTooltipOpen] = useState(false);
+    const routeParams = useParams();
     const {id} = data || {};
     const indicator = calculateIndicatorType(data);
     const notificationClass = indicator !== INDICATOR_RED ? '--success' : '--error';
@@ -47,7 +49,10 @@ const TooltipCellRenderer = ({data = {}, isTooltipEnabled, setSingleRightMatch})
                         <Button
                             appearance="link"
                             onClick={() =>
-                                window.open(`${getDomainName()}/metadata/detail/${data.coreTitleId}`, '_blank')
+                                window.open(
+                                    `${getDomainName()}/${routeParams.realm}/metadata/detail/${data.coreTitleId}`,
+                                    '_blank'
+                                )
                             }
                         >
                             {VIEW_TITLE}

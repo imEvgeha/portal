@@ -3,12 +3,9 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
 import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
-import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
 import Toast from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotification';
-import {getConfig, loadConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getAuthConfig, loadConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {LicenseManager} from 'ag-grid-enterprise';
-import {ConnectedRouter} from 'connected-react-router';
-import {createBrowserHistory} from 'history';
 import {render} from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
 import {Provider} from 'react-redux';
@@ -18,11 +15,13 @@ import 'primeicons/primeicons.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import '@vubiquity-nexus/portal-styles/scss/index.scss';
+import {HistoryRouter as ConnectedRouter} from 'redux-first-history/rr6';
 import AppProviders from './AppProviders';
 import Router from './Router';
+import NotFound from './pages/static/NotFound';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
-import configureStore from './store';
+import configureStore, {configureHistory} from './store';
 import {configurePersistor} from './store-persist-config';
 import {initializeTracker} from './util/hoc/withTracker';
 import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
@@ -35,16 +34,15 @@ const AG_GRID_LICENSE_KEY =
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
 const setEnvConfiguration = env => {
-    let config= '/config.json';
+    let config = '/config.json';
     switch (env) {
         case 'qa':
-            config= '/configQA.json';
-            break
+            config = '/configQA.json';
+            break;
         default:
-            config= '/config.json';
+            config = '/config.json';
     }
-    return loadConfig(config)
-
+    return loadConfig(config);
 };
 
 // setEnvConfiguration('qa')
@@ -56,11 +54,11 @@ setEnvConfiguration()
         render(<p>Problem with configuration, application cannot be started</p>, document.querySelector('#app'));
     });
 
-export const history = createBrowserHistory();
-
 // temporary export -> we should not export store
 // eslint-disable-next-line no-underscore-dangle
-export const store = configureStore(window.__PRELOADED_STATE__ || {}, history);
+export const store = configureStore(window.__PRELOADED_STATE__ || {});
+export const history = configureHistory(store);
+
 const persistor = configurePersistor(store);
 
 // eslint-disable-next-line
@@ -73,9 +71,7 @@ const App = () => (
                 <ConnectedRouter history={history}>
                     <ErrorBoundary>
                         <Toast />
-                        <NexusLayout>
-                            <Router routes={routesWithTracking()} />
-                        </NexusLayout>
+                        <Router routes={routesWithTracking()} />
                     </ErrorBoundary>
                 </ConnectedRouter>
             </AppProviders>
@@ -84,10 +80,11 @@ const App = () => (
 );
 
 function renderApp() {
-    createKeycloakInstance(getConfig('keycloak'));
+    const kconfig = getAuthConfig();
+    createKeycloakInstance(kconfig);
     initializeTracker();
     store.runSaga(rootSaga);
-    render(<App />, document.getElementById('app'));
+    render(kconfig.realm ? <App /> : <NotFound />, document.getElementById('app'));
 }
 
 if (module.hot) {
@@ -104,5 +101,3 @@ if (module.hot) {
         }
     );
 }
-
-

@@ -21,6 +21,19 @@ jest.mock('react-intl', () => {
     };
 });
 
+export const mockNavigate = jest.fn();
+export const mockSubstring = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+    useNavigate: () => mockNavigate,
+    useLocation: () => ({
+        search: {
+            substring: mockSubstring,
+        },
+    }),
+    useParams: () => ({}),
+}));
+
 export const mockDispatch = jest.fn();
 jest.mock('react-redux', () => {
     const r = jest.requireActual('react-redux');

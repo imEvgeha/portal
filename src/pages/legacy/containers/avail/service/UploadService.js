@@ -1,7 +1,7 @@
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {isString} from 'lodash';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 
 // currently FETCH API doesn't support upload progress calculation
 // for upload progress we should switch upload to XHR (XMLHttpRequest) or

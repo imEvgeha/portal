@@ -1,24 +1,26 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
-import {Field as AKField, CheckboxField} from '@atlaskit/form';
+import {CheckboxField, Field as AKField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
-import {get, isObject} from 'lodash';
+import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {get} from 'lodash';
+import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
-import NexusTextArea from "../../../nexus-textarea/NexusTextArea";
-import {VIEWS, FIELDS_WITHOUT_LABEL, LOCALIZED_VALUE_NOT_DEFINED, FIELD_REQUIRED} from '../../constants';
+import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
+import {FIELD_REQUIRED, FIELDS_WITHOUT_LABEL, LOCALIZED_VALUE_NOT_DEFINED, VIEWS} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {
     checkFieldDependencies,
-    getFieldValue,
-    getValidationFunction,
-    renderLabel,
-    renderError,
     createUrl,
     getDir,
+    getFieldValue,
+    getValidationFunction,
     hebrew,
+    renderError,
+    renderLabel,
 } from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
@@ -478,18 +480,16 @@ const NexusField = ({
                         isEdit={false}
                     />
                 );
-            case 'link':
-                return (
-                    <>
-                        <a href={createUrl(linkConfig, initialData)}>
-                            {fieldProps.value ? (
-                                getValue(fieldProps)
-                            ) : (
-                                <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
-                            )}
-                        </a>
-                    </>
+            case 'link': {
+                const url = createUrl(linkConfig, initialData);
+                const body = fieldProps.value ? (
+                    getValue(fieldProps)
+                ) : (
+                    <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
                 );
+
+                return url.includes('http') ? <a href={url}>{body}</a> : <Link to={`./../${url}`}>{body}</Link>;
+            }
             default:
                 return fieldProps.value ? (
                     <div>

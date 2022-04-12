@@ -1,5 +1,5 @@
-import {getConfig} from "../config";
-import {nexusFetch} from "../http-client";
+import {getConfig} from '../config';
+import {nexusFetch} from '../http-client';
 
 // currently FETCH API doesn't support upload progress calculation
 // for upload progress we should switch upload to XHR (XMLHttpRequest) or

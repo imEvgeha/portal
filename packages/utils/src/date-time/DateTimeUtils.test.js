@@ -1,5 +1,5 @@
 import {sortByDateFn} from './DateTimeUtils';
-import {SORT_DIRECTION} from "./constants";
+import {SORT_DIRECTION} from './constants';
 
 describe('Date-Time Utils', () => {
     describe('sortByDateFn', () => {

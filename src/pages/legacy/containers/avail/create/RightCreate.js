@@ -31,6 +31,7 @@ import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {PLATFORM_INFORM_MSG} from './RightConstants';
 import {handleMatchingRightsAction} from '../availActions';
 import {createAliasValue, processOptions} from '../util/ProcessSelectOptions';
+import withRouter from '@vubiquity-nexus/portal-ui/lib/hocs/withRouter';
 
 const mapStateToProps = state => {
     return {
@@ -329,13 +330,17 @@ class RightCreate extends React.Component {
                         this.setState({
                             isSubmitting: false,
                         });
-                        this.context.router.history.push(
+                        this.props.router.navigate(
                             URL.keepEmbedded(
-                                '/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'
+                                `/${this.props.router.params.realm}/avails/history/` +
+                                    this.props.match.params.availHistoryId +
+                                    '/manual-rights-entry'
                             )
                         );
                     } else {
-                        this.context.router.history.push(RightsURL.getRightUrl(response.id));
+                        this.props.router.navigate(
+                            RightsURL.getRightUrl(response.id, undefined, this.props.router.params.realm)
+                        );
                     }
                 }
                 store.dispatch(blockUI(false));
@@ -346,7 +351,7 @@ class RightCreate extends React.Component {
                     error,
                     right: this.right,
                     isEdit: false,
-                    push: this.context.router.history.push,
+                    push: this.props.router.history.push,
                     removeToast: this.props.removeToast,
                 });
                 this.setState({
@@ -357,11 +362,15 @@ class RightCreate extends React.Component {
 
     cancel() {
         if (this.props.match.params.availHistoryId) {
-            this.context.router.history.push(
-                URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry')
+            this.props.router.navigate(
+                URL.keepEmbedded(
+                    `/${this.props.router.params.realm}/avails/history/` +
+                        this.props.match.params.availHistoryId +
+                        '/manual-rights-entry'
+                )
             );
         } else {
-            this.context.router.history.push(URL.keepEmbedded('/avails'));
+            this.props.router.navigate(URL.keepEmbedded(`/${this.props.router.params.realm}/avails`));
         }
     }
 
@@ -1287,4 +1296,4 @@ RightCreate.contextTypes = {
     router: PropTypes.object,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withToasts(RightCreate));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withToasts(RightCreate)));

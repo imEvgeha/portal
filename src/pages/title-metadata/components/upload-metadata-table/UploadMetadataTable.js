@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -12,8 +12,9 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {fetchUploadedEMETsLog} from '@vubiquity-nexus/portal-utils/lib/services/UploadLogService';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect, useDispatch} from 'react-redux';
+import {useLocation} from 'react-router-dom';
 import {compose} from 'redux';
-import {UPLOAD_COLUMN_MAPPINGS, DEFAULT_CATALOGUE_OWNER} from '../../constants';
+import {DEFAULT_CATALOGUE_OWNER, UPLOAD_COLUMN_MAPPINGS} from '../../constants';
 import {setUploadMetadataFilter} from '../../titleMetadataActions';
 import {createUploadLogMetadataFilterSelector} from '../../titleMetadataSelectors';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
@@ -27,16 +28,10 @@ const UploadMetadataTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchUploadedEMETsLog})
 )(NexusGrid);
 
-const UploadMetadataTable = ({
-    history,
-    catalogueOwner,
-    setGridApi,
-    setColumnApi,
-    columnApi,
-    gridApi,
-    titleMetadataFilter,
-}) => {
+const UploadMetadataTable = ({catalogueOwner, setGridApi, setColumnApi, columnApi, gridApi, titleMetadataFilter}) => {
     const dispatch = useDispatch();
+    const location = useLocation();
+
     const columnDefs = UPLOAD_COLUMN_MAPPINGS.map(mapping => {
         return {
             ...mapping,
@@ -99,7 +94,6 @@ const UploadMetadataTable = ({
 
     useEffect(() => {
         let externalFilter = catalogueOwner;
-        const {location} = history;
         if (location) {
             const {search} = location;
             if (search) {
@@ -114,7 +108,7 @@ const UploadMetadataTable = ({
             }
         }
         setExternalFilter(externalFilter);
-    }, [catalogueOwner, history?.location?.search]);
+    }, [catalogueOwner, location?.search]);
 
     return (
         <div className="nexus-c-upload-metadata-table">
@@ -134,7 +128,6 @@ const UploadMetadataTable = ({
 };
 
 UploadMetadataTable.propTypes = {
-    history: PropTypes.object,
     catalogueOwner: PropTypes.object,
     columnApi: PropTypes.object,
     setGridApi: PropTypes.func,
@@ -144,7 +137,6 @@ UploadMetadataTable.propTypes = {
 };
 
 UploadMetadataTable.defaultProps = {
-    history: {},
     catalogueOwner: DEFAULT_CATALOGUE_OWNER,
     columnApi: {},
     setGridApi: () => null,

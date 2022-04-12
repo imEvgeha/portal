@@ -5,10 +5,10 @@ import {FieldTextStateless} from '@atlaskit/field-text';
 import CheckIcon from '@atlaskit/icon/glyph/check';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Tooltip from '@atlaskit/tooltip';
-import {getSortModel, setSorting} from "@vubiquity-nexus/portal-utils/lib/utils";
+import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
 import './NexusSavedTableDropdown.scss';
-import IconButton from "../../atlaskit/icon-button/IconButton";
+import IconButton from '../../atlaskit/icon-button/IconButton';
 
 const insertNewGridModel = (viewId, userDefinedGridStates, model) => {
     const newUserData = userDefinedGridStates.slice();

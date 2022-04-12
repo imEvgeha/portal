@@ -4,7 +4,7 @@ import {loadReports, setReportName} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {resultPageSort, resultPageUpdateColumnsOrder} from '../../../stores/actions/avail/dashboard';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 
 const loadReportToStore = report => {
     store.dispatch(setReportName(report.name));

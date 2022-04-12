@@ -1,21 +1,22 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import Select from '@atlaskit/select';
 import {cloneDeep} from 'lodash';
-import {withRouter} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import './MsvIds.scss';
-import {NexusModalContext} from "../../../../../nexus-modal/NexusModal";
-import NexusTagsContainer from "../../../../../nexus-tags-container/NexusTagsContainer";
+import {NexusModalContext} from '../../../../../nexus-modal/NexusModal';
+import NexusTagsContainer from '../../../../../nexus-tags-container/NexusTagsContainer';
 import {sortOptions} from '../../../../utils';
 
-const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) => {
+const MsvIds = ({selectValues, data, isEdit, onChange, generateMsvIds}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [msvIds, setMsvIds] = useState([]);
     const [licensorOptions, setLicensorOptions] = useState([]);
     const [licenseeOptions, setLicenseeOptions] = useState([]);
+    const routeParams = useParams();
 
     useEffect(() => {
         setMsvIds(data);
@@ -54,8 +55,7 @@ const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) =
     };
 
     const handleAddMsvId = async values => {
-        const {params} = match || {};
-        const {id} = params;
+        const {id} = routeParams;
         if (id && typeof generateMsvIds === 'function') {
             const generatedIds = await generateMsvIds(id, values.licensor.value, values.licensee.value, data);
             if (Array.isArray(generatedIds) && generatedIds.length > 0) {
@@ -134,7 +134,6 @@ MsvIds.propTypes = {
     isEdit: PropTypes.bool,
     selectValues: PropTypes.object,
     onChange: PropTypes.func,
-    match: PropTypes.object,
     generateMsvIds: PropTypes.func,
 };
 
@@ -143,8 +142,7 @@ MsvIds.defaultProps = {
     isEdit: false,
     selectValues: {},
     onChange: () => null,
-    match: {},
     generateMsvIds: undefined,
 };
 
-export default withRouter(MsvIds);
+export default MsvIds;

@@ -45,7 +45,6 @@ export const defaultConfiguration = {
     },
     keycloak: {
         clientId: 'portalapp-public',
-        realm: 'Vubiquity',
         url: 'https://auth.dev.vubiquity.com/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
@@ -55,8 +54,6 @@ export const defaultConfiguration = {
         propertyId: 'UA-165264495-2',
     },
 };
-
-
 
 // App config
 export const appConfig = {

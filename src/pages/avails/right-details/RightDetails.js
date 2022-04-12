@@ -5,6 +5,7 @@ import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sti
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import {connect} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import {fetchConfigApiEndpoints} from '../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../legacy/containers/settings/settingsSelectors';
 import Loading from '../../static/Loading';
@@ -19,7 +20,6 @@ const RightDetails = ({
     getRight,
     updateRight,
     right,
-    match,
     selectValues,
     isSaving,
     clearRight,
@@ -29,11 +29,11 @@ const RightDetails = ({
 }) => {
     const containerRef = useRef();
     const [refresh, setRefresh] = useState(false);
+    const params = useParams();
 
     useEffect(() => {
         fetchConfigApiEndpoints();
 
-        const {params} = match || {};
         if (params.id) {
             getRight({id: params.id});
         }
@@ -77,7 +77,6 @@ RightDetails.propTypes = {
     getRight: PropTypes.func,
     updateRight: PropTypes.func,
     right: PropTypes.object,
-    match: PropTypes.object,
     clearRight: PropTypes.func,
     selectValues: PropTypes.object,
     isSaving: PropTypes.bool,
@@ -91,7 +90,6 @@ RightDetails.defaultProps = {
     updateRight: () => null,
     clearRight: () => null,
     right: {},
-    match: {},
     selectValues: {},
     isSaving: false,
     isFetching: false,

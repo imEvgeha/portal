@@ -1,9 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {AbilityBuilder, Ability} from '@casl/ability';
+import React, {useEffect} from 'react';
+import {Ability, AbilityBuilder} from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
-import {withRouter} from 'react-router-dom';
-import {AVAILS, METADATA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS} from './constants';
+import {useNavigate, useParams} from 'react-router-dom';
+import {AVAILS, DOP_TASKS, EVENT_MANAGEMENT, METADATA, SERVICING_ORDERS} from './constants';
 
 const idToAbilityNameMap = {
     [AVAILS]: 'Avail',
@@ -104,24 +103,18 @@ const cannot = (action, subject, field = undefined) => {
 };
 
 const canRender = (Component, action, subject, field = undefined) => {
-    class AuthenticatedComponent extends React.Component {
-        componentDidMount() {
+    return props => {
+        const navigate = useNavigate();
+        const routeParams = useParams();
+
+        useEffect(() => {
             if (cannot(action, subject, field)) {
-                const {history} = this.props;
-                history.push('/401');
+                navigate(`${routeParams.realm}/401`);
             }
-        }
+        }, []);
 
-        render() {
-            return can(action, subject, field) ? <Component {...this.props} /> : <div>Invalid application state</div>;
-        }
-    }
-
-    AuthenticatedComponent.propTypes = {
-        history: PropTypes.object.isRequired,
+        return can(action, subject, field) ? <Component {...props} /> : <div>Invalid application state</div>;
     };
-
-    return withRouter(AuthenticatedComponent);
 };
 
 export {ability, updateAbility, Can, can, cannot, canRender, idToAbilityNameMap};

@@ -1,5 +1,5 @@
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import moment from 'moment';
 import {store} from '../../../index';

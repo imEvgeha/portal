@@ -251,6 +251,14 @@ $element-color-orange-80: palette(orange, 80);
         padding: 0.75rem 0;
         border-radius: 50% !important;
     }
+
+    // Links
+    &.p-button-link {
+        color: #0065ff;
+        text-decoration: underline;
+        font-size: 12px;
+        padding: 0;
+    }
 }
 
 // Toggle Buttons

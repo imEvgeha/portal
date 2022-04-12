@@ -1,7 +1,7 @@
 import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {get} from 'lodash';
-import {filterBy} from "../../utils";
+import {filterBy} from '../../utils';
 
 const SelectedAtCellRenderer = params => {
     const {data, api, applyFilter} = params;

@@ -1,5 +1,5 @@
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 
 export const fetchPosters = url => {
     const headers = new Headers();

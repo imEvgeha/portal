@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {searchPersonById} from "@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices";
+import {searchPersonById} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
 import {isEmpty} from 'lodash';
 import './CastCrew.scss';
-import NexusPersonsList from "../../../../../nexus-persons-list/NexusPersonsList";
-import {CAST_CONFIG, CREW_CONFIG, CREW_LIST} from "../../../../../nexus-persons-list/constants";
+import NexusPersonsList from '../../../../../nexus-persons-list/NexusPersonsList';
+import {CAST_CONFIG, CREW_CONFIG, CREW_LIST} from '../../../../../nexus-persons-list/constants';
 
 const CastCrew = ({
     persons,

@@ -4,9 +4,9 @@ import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circl
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import {debounce, isEmpty, toUpper} from 'lodash';
 import {InputText} from 'primereact/inputtext';
-import NexusEntity from "../../../nexus-entity/NexusEntity";
-import {NEXUS_ENTITY_TYPES} from "../../../nexus-entity/constants";
-import {Action} from "../../../nexus-entity/entity-actions/Actions.class";
+import NexusEntity from '../../../nexus-entity/NexusEntity';
+import {NEXUS_ENTITY_TYPES} from '../../../nexus-entity/constants';
+import {Action} from '../../../nexus-entity/entity-actions/Actions.class';
 import {constructFieldPerType} from '../FieldsPerType';
 import './DynamicElement.scss';
 

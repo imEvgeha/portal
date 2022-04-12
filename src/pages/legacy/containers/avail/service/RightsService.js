@@ -12,7 +12,7 @@ import {
     MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
     STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS,
 } from './Constants';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 
 const isNotEmpty = function (obj) {
     if (Array.isArray(obj)) {

@@ -1,13 +1,12 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import classnames from 'classnames';
-import {mergeWith, set, get, isEmpty} from 'lodash';
+import {isEmpty, mergeWith, set} from 'lodash';
 import moment from 'moment';
-import {useDispatch} from 'react-redux';
 import ButtonsBuilder from './components/ButtonsBuilder/ButtonsBuilder';
-import {buildSection, getProperValues, getProperValue, getAllFields} from './utils';
-import {VIEWS, SEASON, SERIES, EPISODE} from './constants';
+import {buildSection, getAllFields, getProperValue, getProperValues} from './utils';
+import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({
@@ -28,8 +27,6 @@ const NexusDynamicForm = ({
     seasonPersons,
     titleActionComponents,
 }) => {
-    const dispatch = useDispatch();
-
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
@@ -137,12 +134,6 @@ const NexusDynamicForm = ({
 
             onSubmit(valuesData, initialData);
         }
-    };
-
-    const createLink = contentType => {
-        const baseUrl = '/metadata/?parentId=';
-        const id = get(initialData, 'id', '');
-        return `${baseUrl}${id}&contentType=${contentType === SERIES ? SEASON : EPISODE}`;
     };
 
     return (

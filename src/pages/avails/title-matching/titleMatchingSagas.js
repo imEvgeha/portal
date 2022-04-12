@@ -9,9 +9,9 @@ import {
     TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {push} from 'connected-react-router';
 import {isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
+import {push} from 'redux-first-history';
 import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
 import mappings from '../../../../profile/titleMatchingMappings.json';
 import {
