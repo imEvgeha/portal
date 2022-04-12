@@ -61,7 +61,7 @@ const ControllerWrapper = ({
                         })
                     }
                 />
-                {renderErrorMsg(errors)}
+                {errors ? renderErrorMsg(errors) : null}
             </div>
         </>
     );
@@ -73,7 +73,7 @@ ControllerWrapper.propTypes = {
     control: PropTypes.any.isRequired,
     register: PropTypes.func.isRequired,
     renderErrorMsg: PropTypes.func.isRequired,
-    errors: PropTypes.any.isRequired,
+    errors: PropTypes.any,
     handleChange: PropTypes.func,
     additionalValidation: PropTypes.object,
     controllerClassName: PropTypes.string,
@@ -83,6 +83,7 @@ ControllerWrapper.propTypes = {
 };
 
 ControllerWrapper.defaultProps = {
+    errors: undefined,
     handleChange: () => null,
     additionalValidation: {},
     controllerClassName: '',

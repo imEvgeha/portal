@@ -57,6 +57,17 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
         setDefaultValues();
     };
 
+    const handleError = (err, matching = false) => {
+        setIsCreatingTitle(false);
+        setErrorMessage(
+            get(
+                err,
+                'response.data.description',
+                matching ? constants.NEW_TITLE_TOAST_ERROR_PUBLISHING_MESSAGE : 'Title creation failed!'
+            )
+        );
+    };
+
     const defaultCreateTitle = (title, params) => {
         titleService
             .createTitle(title, params)
@@ -85,12 +96,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                 },
                             });
                         })
-                        .catch(e => {
-                            setIsCreatingTitle(false);
-                            setErrorMessage(
-                                get(e, 'response.data.description', constants.NEW_TITLE_TOAST_ERROR_PUBLISHING_MESSAGE)
-                            );
-                        });
+                        .catch(e => handleError(e, true));
                 }
                 setIsCreatingTitle(false);
                 toggle();
@@ -113,10 +119,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                     },
                 });
             })
-            .catch(e => {
-                setIsCreatingTitle(false);
-                setErrorMessage(get(e, 'response.data.description', 'Title creation failed!'));
-            });
+            .catch(handleError);
     };
 
     const matchCreateTitle = title => {
@@ -157,10 +160,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                 setIsCreatingTitle(false);
                 toggle();
             })
-            .catch(error => {
-                setIsCreatingTitle(false);
-                setErrorMessage(get(error, 'response.data.description', 'Title creation failed!'));
-            });
+            .catch(handleError);
     };
 
     const onSubmit = submitTitle => {
