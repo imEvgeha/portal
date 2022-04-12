@@ -6,6 +6,7 @@
             "sections": [
                 {
                     "title": "Core Title",
+                    "titleActions": ["showAllEpisodes"],
                     "isGridLayout": true,
                     "fields": {
                         "title": {
@@ -349,6 +350,7 @@
             "sections": [
                 {
                     "title": "Cast & Crew",
+                    "titleActions": ["propagate"],
                     "fields": {
                         "castCrew": {
                             "type": "castCrew",

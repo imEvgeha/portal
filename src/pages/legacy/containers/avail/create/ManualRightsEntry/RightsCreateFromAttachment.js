@@ -33,7 +33,7 @@ import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
 import InputForm from '../../../../../avails/ingest-panel/components/upload-ingest/InputForm/InputForm';
-import {getConfig} from '../../../../../../config';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import withRouter from '@vubiquity-nexus/portal-ui/lib/hocs/withRouter';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON, UPLOAD_TITLE} = Constants;

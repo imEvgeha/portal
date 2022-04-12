@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
-import {useNavigate} from "react-router-dom";
+import {useNavigate} from 'react-router-dom';
 import {MGM} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import TitleInfo from './TitleInfo';

@@ -13,8 +13,8 @@ import {
     WRITER,
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
-import {nexusFetch} from '../../../../../util/http-client';
-import {getConfig} from '../../../../../config';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 
 export const configFields = {
     LOCALE: 'countries',

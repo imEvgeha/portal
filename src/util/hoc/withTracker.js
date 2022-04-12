@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import GoogleAnalytics from 'react-ga';
 import {useLocation} from 'react-router-dom';
-import {getConfig} from '../../config';
 
 export function initializeTracker() {
     const googleAnalyticsId = getConfig('googleAnalytics.propertyId');

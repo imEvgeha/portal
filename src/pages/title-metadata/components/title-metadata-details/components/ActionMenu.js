@@ -7,8 +7,8 @@ import NexusDropdown, {
     DropdownToggle,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {unmergeTitle} from '../../../titleMetadataServices';
 import './ActionMenu.scss';
+import {unmergeTitle} from '../../../titleMetadataServices';
 
 const UNMERGE_TITLE = 'Unmerge';
 const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';

@@ -11,11 +11,11 @@ import {
     defineColumn,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
+import {showToastForErrors} from '@vubiquity-nexus/portal-utils/lib/http-client/handleError';
 import {isEqual, cloneDeep, get} from 'lodash';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../../ui/elements';
 import usePrevious from '../../../../../util/hooks/usePrevious';
-import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
 import {NON_EDITABLE_COLS, SELECT_VALUES, INIT_SOURCE_ROW, TEMP_SOURCE_ROW} from './Constants';
 import columnDefinitions from './columnDefinitions';

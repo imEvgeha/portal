@@ -6,10 +6,7 @@ import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/n
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {
-    TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-    WARNING_TITLE,
-} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
 import {Button as PrimeReactButton} from 'primereact/button';

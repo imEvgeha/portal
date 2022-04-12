@@ -2,20 +2,22 @@ import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
+import PropagateButtonWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-person/elements/PropagateButtonWrapper/PropagateButtonWrapper';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
+import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
 import {useLocation, useParams} from 'react-router-dom';
+import ShowAllEpisodes from '../../../../common/components/showAllEpisodes/ShowAllEpisodes';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
-import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
 import Loading from '../../../static/Loading';
-import {FIELDS_TO_REMOVE, MOVIDA, SYNC, VZ, MOVIDA_INTL} from '../../constants';
+import {FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SYNC, VZ} from '../../constants';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -262,6 +264,24 @@ const TitleDetails = ({
                         isSaving={isSaving}
                         setRefresh={setRefresh}
                         isTitlePage
+                        titleActionComponents={{
+                            propagate: (onClose, getValues, setFieldValue, key) => (
+                                <PropagateButtonWrapper
+                                    key={key}
+                                    onClose={onClose}
+                                    getValues={getValues}
+                                    setFieldValue={setFieldValue}
+                                    canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
+                                />
+                            ),
+                            showAllEpisodes: (onClose, getValues, setFieldValue, key) => (
+                                <ShowAllEpisodes
+                                    key={key}
+                                    contentType={get(extendTitleWithExternalIds(), 'contentType', '')}
+                                    titleId={get(extendTitleWithExternalIds(), 'id', '')}
+                                />
+                            ),
+                        }}
                     />
                     <NexusStickyFooter>
                         <NexusStickyFooter.LeftActions>

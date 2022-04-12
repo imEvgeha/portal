@@ -5,7 +5,7 @@ import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
-import {getAuthConfig} from '../../../../../config';
+import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 
 const PASS_THROUGH = ['availHistoryIds'];
 
@@ -186,8 +186,13 @@ class RightsURL extends React.Component {
         return URL.keepEmbedded(this.createRightsSearchUrl(availHistoryIds, null, true));
     }
 
-    static createRightsSearchUrl(availHistoryIds, status = null, isManualRightsEntry = false) {
-        let toReturn = '/avails';
+    static createRightsSearchUrl(
+        availHistoryIds,
+        status = null,
+        isManualRightsEntry = false,
+        realm = getAuthConfig().realm
+    ) {
+        let toReturn = `/${realm}/avails`;
         if (availHistoryIds) {
             toReturn += '/history/' + availHistoryIds;
             if (status !== null) {
