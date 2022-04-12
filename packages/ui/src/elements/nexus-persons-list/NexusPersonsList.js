@@ -2,26 +2,31 @@ import React, {useState, useEffect, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import UserPicker from '@atlaskit/user-picker';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {configService} from "@vubiquity-nexus/portal-utils/lib/services/ConfigService";
 import classnames from 'classnames';
-import {cloneDeep} from 'lodash';
+import {cloneDeep, isObject} from 'lodash';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {useDispatch, useSelector} from 'react-redux';
 import {uid} from 'react-uid';
-import {configService} from '../../../../../src/pages/legacy/containers/config/service/ConfigService';
-import CreateEditConfig from '../../../../../src/pages/settings/create-edit-config/CreateEditConfig';
-import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
-import {removeSeasonPerson} from '../../../../../src/pages/title-metadata/titleMetadataActions';
-import {propagateRemovePersonsSelector} from '../../../../../src/pages/title-metadata/titleMetadataSelectors';
+import {addToast} from "../../toast/NexusToastNotificationActions";
+import CreateEditConfig from '../nexus-create-edit-config/CreateEditConfig';
 import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
 import {checkIfEmetIsEditorial, getDir} from '../nexus-dynamic-form/utils';
+import {NexusModalContext} from "../nexus-modal/NexusModal";
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import NexusPerson from '../nexus-person/NexusPerson';
+import PropagateForm from '../nexus-person/elements/PropagateForm/PropagateForm';
 import {loadOptions} from './utils';
 import {CAST, CAST_CONFIG, SEASON} from './constants';
 import './NexusPersonsList.scss';
+
+const propagateRemovePersonsSelector = state => state?.titleMetadata?.propagateRemovePersons || [];
+
+export const PROPAGATE_REMOVE_PERSONS = 'PROPAGATE_REMOVE_PERSONS';
+export const removeSeasonPerson = payload => ({
+    type: PROPAGATE_REMOVE_PERSONS,
+    payload,
+});
 
 const NexusPersonsList = ({
     personsList,
@@ -110,7 +115,7 @@ const NexusPersonsList = ({
             const personWithType = {...person};
             delete personWithType['personTypes'];
 
-            person['personTypes'].map(personType => {
+            person['personTypes'].forEach(personType => {
                 updatedPersons.push({...personWithType, personType});
             });
         } else {

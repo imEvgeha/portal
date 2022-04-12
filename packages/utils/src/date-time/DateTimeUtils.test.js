@@ -1,5 +1,5 @@
-import {SORT_DIRECTION} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {sortByDateFn} from './DateTimeUtils';
+import {SORT_DIRECTION} from "./constants";
 
 describe('Date-Time Utils', () => {
     describe('sortByDateFn', () => {

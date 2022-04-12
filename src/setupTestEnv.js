@@ -20,3 +20,13 @@ jest.mock('react-intl', () => {
         useIntl: () => intl,
     };
 });
+
+export const mockDispatch = jest.fn();
+jest.mock('react-redux', () => {
+    const r = jest.requireActual('react-redux');
+
+    return {
+        ...r,
+        useDispatch: () => mockDispatch,
+    };
+});

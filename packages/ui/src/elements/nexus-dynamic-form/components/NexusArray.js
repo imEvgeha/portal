@@ -4,11 +4,11 @@ import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {CANCEL, DELETE, REMOVE_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tag/constants';
 import {get} from 'lodash';
-import { store } from '../../../../../../src/index';
-import { addToast } from '../../../../lib/toast/NexusToastNotificationActions';
+import {useDispatch} from 'react-redux';
+import {CANCEL} from "redux-saga";
+import {addToast} from "../../../toast/NexusToastNotificationActions";
+import {NexusModalContext} from "../../nexus-modal/NexusModal";
 import {
     buildSection,
     checkFieldDependencies,
@@ -20,6 +20,7 @@ import {
 } from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
+import {DELETE, REMOVE_TITLE} from "../../nexus-tag/constants";
 
 const NexusArray = ({
     name,
@@ -42,6 +43,7 @@ const NexusArray = ({
     isEditable,
     generateMsvIds,
 }) => {
+    const dispatch = useDispatch();
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
     const [allData, setAllData] = useState(data);
@@ -60,17 +62,21 @@ const NexusArray = ({
 
     const onRemove = index => {
         const values = getValues();
-        const editedData = path && values[path].filter((obj, i) => {
-            if(i === index && obj.selected) {
-                store.dispatch(addToast({
-                    detail: 'Selected territory cannot be removed',
-                    severity: 'error',
-                }));
-                return true;
-            };
-            
-            return i !== index;
-        });
+        const editedData =
+            path &&
+            values[path].filter((obj, i) => {
+                if (i === index && obj.selected) {
+                    dispatch(
+                        addToast({
+                            detail: 'Selected territory cannot be removed',
+                            severity: 'error',
+                        })
+                    );
+                    return true;
+                }
+
+                return i !== index;
+            });
 
         setAllData(editedData);
         setFieldValue(path, editedData);

@@ -1,17 +1,13 @@
-import React, {Fragment, useState, useEffect, useContext, useCallback} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import classnames from 'classnames';
 import {mergeWith, set, get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {useDispatch} from 'react-redux';
-import PropagateForm from '../../../../../src/pages/title-metadata/components/title-metadata-details/components/PropagateForm';
-import {clearTitleMetadataFilter} from '../../../../../src/pages/title-metadata/titleMetadataActions';
-import PropagateButton from '../nexus-person/elements/PropagateButton/PropagateButton';
 import ButtonsBuilder from './components/ButtonsBuilder/ButtonsBuilder';
 import {buildSection, getProperValues, getProperValue, getAllFields} from './utils';
-import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION, CAST_AND_CREW_TITLE, PROPAGATE_TITLE} from './constants';
+import {VIEWS, SEASON, SERIES, EPISODE} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({
@@ -30,10 +26,10 @@ const NexusDynamicForm = ({
     setRefresh,
     castCrewConfig,
     seasonPersons,
+    titleActionComponents,
 }) => {
     const dispatch = useDispatch();
 
-    const {openModal, closeModal} = useContext(NexusModalContext);
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
@@ -149,35 +145,6 @@ const NexusDynamicForm = ({
         return `${baseUrl}${id}&contentType=${contentType === SERIES ? SEASON : EPISODE}`;
     };
 
-    const showAll = () => {
-        if (isTitlePage) {
-            const allowedContents = [SEASON, SERIES];
-            const contentType = get(initialData, 'contentType', '');
-            if (allowedContents.includes(contentType)) {
-                return (
-                    <div className="nexus-c-dynamic-form__show-all">
-                        <a onClick={() => dispatch(clearTitleMetadataFilter())} href={createLink(contentType)}>
-                            Show all {contentType === SERIES ? 'seasons' : 'episodes'}
-                        </a>
-                    </div>
-                );
-            }
-        }
-        return null;
-    };
-
-    const closePropagateModal = () => {
-        closeModal();
-        setUpdate(prev => !prev);
-    };
-
-    const showPropagateModal = useCallback((getValues, setFieldValue) => {
-        openModal(<PropagateForm getValues={getValues} setFieldValue={setFieldValue} onClose={closePropagateModal} />, {
-            title: PROPAGATE_TITLE,
-            width: 'small',
-        });
-    }, []);
-
     return (
         <div className="nexus-c-dynamic-form">
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
@@ -202,30 +169,30 @@ const NexusDynamicForm = ({
                                     className="nexus-c-dynamic-form__section-start"
                                 >
                                     {sections.map(
-                                        ({
-                                            title: sectionTitle = '',
-                                            fields = {},
-                                            isGridLayout = false,
-                                            tabs,
-                                            subTabs,
-                                            prefix,
-                                        }) => (
+                                        (
+                                            {
+                                                title: sectionTitle = '',
+                                                titleActions = [],
+                                                fields = {},
+                                                isGridLayout = false,
+                                                tabs,
+                                                subTabs,
+                                                prefix,
+                                            },
+                                            sectionIndex
+                                        ) => (
                                             <Fragment key={`section-${sectionTitle}`}>
-                                                <h3 className="nexus-c-dynamic-form__section-title">
-                                                    {sectionTitle === CAST_AND_CREW_TITLE && isTitlePage && canEdit ? (
-                                                        <div className="nexus-c-dynamic-form__additional-option">
-                                                            {sectionTitle}
-                                                            <PropagateButton
-                                                                onClick={() =>
-                                                                    showPropagateModal(getValues, setFieldValue)
-                                                                }
-                                                            />
-                                                        </div>
-                                                    ) : (
-                                                        sectionTitle
+                                                <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
+                                                {titleActionComponents &&
+                                                    titleActions.map(action =>
+                                                        titleActionComponents[action](
+                                                            setUpdate,
+                                                            getValues,
+                                                            setFieldValue,
+                                                            `${action}_${index}_${sectionIndex}`
+                                                        )
                                                     )}
-                                                </h3>
-                                                {sectionTitle === CORE_TITLE_SECTION && showAll()}
+
                                                 {buildSection(
                                                     fields,
                                                     getValues,
@@ -280,6 +247,7 @@ NexusDynamicForm.propTypes = {
     castCrewConfig: PropTypes.object,
     storedInitialData: PropTypes.object,
     seasonPersons: PropTypes.array,
+    titleActionComponents: PropTypes.object,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -299,6 +267,7 @@ NexusDynamicForm.defaultProps = {
     castCrewConfig: {},
     storedInitialData: null,
     seasonPersons: [],
+    titleActionComponents: {},
 };
 
 export default NexusDynamicForm;

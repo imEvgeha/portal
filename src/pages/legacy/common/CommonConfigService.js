@@ -1,5 +1,5 @@
-import {nexusFetch} from '../../../util/http-client/index';
-import {getConfig} from '../../../config';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
+import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
 
 export const getConfigApiValues = (configUrl, page = 0, size = 100, sortBy, field, searchValue) => {
     const sortPath = sortBy ? ';' + sortBy + '=ASC' : '';

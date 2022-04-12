@@ -4,23 +4,28 @@ import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circl
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import IconActionEdit from '@vubiquity-nexus/portal-assets/icon-action-edit.svg';
 import NexusConfirmationDialog from '@vubiquity-nexus/portal-ui/lib/elements/nexus-confirmation-dialog/NexusConfirmationDialog';
+import CreateEditConfig from '@vubiquity-nexus/portal-ui/lib/elements/nexus-create-edit-config/CreateEditConfig';
 import NexusDataPanel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-data-panel/NexusDataPanel';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
 import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
+import {configService} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 import {useDebounce} from '@vubiquity-nexus/portal-utils/lib/useDebounce';
 import {capitalize, cloneDeep} from 'lodash';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
 import {getConfigApiValues} from '../../legacy/common/CommonConfigService';
-import {configService} from '../../legacy/containers/config/service/ConfigService';
-import CreateEditConfig from '../create-edit-config/CreateEditConfig';
 import './EndpointContainer.scss';
 
 export const cache = {};
+
+const dataApiMap = {
+    servicingRegion: (url, value) => getConfigApiValues(url, 0, 1000, '', value, value),
+};
 
 const EndpointContainer = ({endpoint}) => {
     const dispatch = useDispatch();
@@ -169,13 +174,14 @@ const EndpointContainer = ({endpoint}) => {
                 disabled: false,
                 buttonId: 'btnEditConfig',
             }),
-            new Action({
-                icon: ActionCrossCircle,
-                action: () => confirmDeletion(entry),
-                position: 6,
-                disabled: false,
-                buttonId: 'btnDeleteConfig',
-            }),
+            can('update', 'ConfigUI') &&
+                new Action({
+                    icon: ActionCrossCircle,
+                    action: () => confirmDeletion(entry),
+                    position: 6,
+                    disabled: false,
+                    buttonId: 'btnDeleteConfig',
+                }),
         ];
 
         return (
@@ -296,6 +302,8 @@ const EndpointContainer = ({endpoint}) => {
                     onSubmit={editRecord}
                     onHide={onHideCreateEditConfigModal}
                     submitLoading={submitLoading}
+                    cache={cache}
+                    dataApiMap={dataApiMap}
                 />
             )}
 

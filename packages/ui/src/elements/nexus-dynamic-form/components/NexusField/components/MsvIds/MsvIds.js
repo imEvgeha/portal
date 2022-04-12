@@ -4,12 +4,12 @@ import Button from '@atlaskit/button';
 import {Field, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import Select from '@atlaskit/select';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {cloneDeep} from 'lodash';
 import {withRouter} from 'react-router-dom';
-import NexusTagsContainer from '../../../../../../../lib/elements/nexus-tags-container/NexusTagsContainer';
-import {sortOptions} from '../../../../utils';
 import './MsvIds.scss';
+import {NexusModalContext} from "../../../../../nexus-modal/NexusModal";
+import NexusTagsContainer from "../../../../../nexus-tags-container/NexusTagsContainer";
+import {sortOptions} from '../../../../utils';
 
 const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);

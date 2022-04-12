@@ -1,9 +1,9 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {encodedSerialize, getDomainName, prepareSortMatrixParamTitles} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {get} from 'lodash';
-import {getConfig} from '../../config';
 import {store} from '../../index';
-import {nexusFetch} from '../../util/http-client/index';
 import {BASE_PATH} from './titleMetadataRoutes';
 import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';

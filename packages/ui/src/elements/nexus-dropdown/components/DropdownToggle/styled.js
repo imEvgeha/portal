@@ -1,9 +1,8 @@
 import PT from 'prop-types';
-import Button from '@atlaskit/button';
 import PointDown from '@vubiquity-nexus/portal-assets/angle.svg';
 import Dots from '@vubiquity-nexus/portal-assets/dots.svg';
-import {media} from '@vubiquity-nexus/portal-ui/lib/styled/utils';
 import styled, {css} from 'styled-components';
+import {media} from "../../../../styled/utils";
 
 export const DotsIcon = styled(Dots)`
     display: block;

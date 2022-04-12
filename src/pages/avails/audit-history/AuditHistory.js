@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {getRightsHistory} from '../availsService';
+import {getRightsHistory} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import AuditHistoryTable from './AuditHistoryTable';
 
 const AuditHistory = ({selectedRights}) => {

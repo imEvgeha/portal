@@ -4,15 +4,17 @@ import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
 import * as colors from '@atlaskit/theme/colors';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
-import {defineButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import {
+    defineButtonColumn,
+    defineCheckboxSelectionColumn,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
-import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/src/elements/nexus-grid/constants';
-import {defineCheckboxSelectionColumn} from '@vubiquity-nexus/portal-ui/src/elements/nexus-grid/elements/columnDefinitions';
-import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/src/grid/gridActions';
+import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {get, isEmpty, isEqual} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';

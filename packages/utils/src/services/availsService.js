@@ -1,6 +1,6 @@
-import {getConfig} from '../../config';
-import {nexusFetch} from '../../util/http-client';
-import {rightsService} from '../legacy/containers/avail/service/RightsService';
+import {rightsService} from '../../../../src/pages/legacy/containers/avail/service/RightsService';
+import {getConfig} from "../config";
+import {nexusFetch} from '../http-client';
 
 export const getRightsHistory = rightId => {
     const url = `${getConfig('gateway.eventApiUrl')}${getConfig(

@@ -1,10 +1,10 @@
-import {nexusFetch} from '../../../../../util/http-client/index';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {store} from '../../../../../index';
 import {loadReports, setReportName} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {resultPageSort, resultPageUpdateColumnsOrder} from '../../../stores/actions/avail/dashboard';
-import {getConfig} from '../../../../../config';
+import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
 
 const loadReportToStore = report => {
     store.dispatch(setReportName(report.name));
