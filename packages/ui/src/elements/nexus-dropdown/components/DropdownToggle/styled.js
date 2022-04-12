@@ -2,7 +2,7 @@ import PT from 'prop-types';
 import PointDown from '@vubiquity-nexus/portal-assets/angle.svg';
 import Dots from '@vubiquity-nexus/portal-assets/dots.svg';
 import styled, {css} from 'styled-components';
-import {media} from "../../../../styled/utils";
+import {media} from '../../../../styled/utils';
 
 export const DotsIcon = styled(Dots)`
     display: block;

@@ -15,7 +15,7 @@
         "enableSearch": true,
         "searchDataType": "string",
         "cellRendererParams": {
-            "link": "/servicing-orders/",
+            "link": "servicing-orders/",
             "newTab": false
         },
         "suppressSizeToFit": true,

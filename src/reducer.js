@@ -1,6 +1,5 @@
 import authReducer from '@vubiquity-nexus/portal-auth/authReducer';
 import uiReducer from '@vubiquity-nexus/portal-ui/lib/uiReducer';
-import {connectRouter} from 'connected-react-router';
 import {combineReducers} from 'redux';
 import availsReducer from './pages/avails/availsReducer';
 import dopTasksReducer from './pages/dop-tasks/dopTasksReducer';
@@ -22,24 +21,21 @@ import {
     authPersistConfig,
     availsPersistConfig,
     createPersistReducer,
-    rootPersistConfig,
     dopTasksPersistConfig,
+    rootPersistConfig,
     titleMetadataPersistConfig,
 } from './store-persist-config';
 
 const createRootReducer = routerHistory =>
     combineReducers({
-        router: connectRouter(routerHistory),
+        router: routerHistory,
         locale: localeReducer, // check it
-
         root: createPersistReducer(rootPersistConfig, root), // rename it to 'config'
         settings,
         dopReducer, // separate DOP reducer for all pages or integrate DOP per domain
-
         titleReducer, // remove it
         dashboard, // remove it
         manualRightsEntry, // remove it
-
         // new structure
         avails: createPersistReducer(availsPersistConfig, availsReducer),
         metadata: metadataReducer,

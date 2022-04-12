@@ -5,11 +5,11 @@ import {
     SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
-    WARNING_ICON,
+    WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {push, goBack} from 'connected-react-router';
 import {Button} from 'primereact/button';
+import {goBack, push} from 'redux-first-history';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';
@@ -18,7 +18,7 @@ import {rightsService} from '../../legacy/containers/avail/service/RightsService
 import {createColumnDefs} from '../utils';
 import * as actionTypes from './rightMatchingActionTypes';
 import {WARNING_CONFLICTING_RIGHTS} from './rightMatchingConstants';
-import {getCombinedRight, getRightMatchingList, putCombinedRight, getMatchingCandidates} from './rightMatchingService';
+import {getCombinedRight, getMatchingCandidates, getRightMatchingList, putCombinedRight} from './rightMatchingService';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {
@@ -267,7 +267,8 @@ export function* validateConflictingRights({payload}) {
             yield put({
                 type: ADD_TOAST,
                 payload: {
-                    severity: WARNING_ICON,
+                    severity: 'warn',
+                    summary: WARNING_TITLE,
                     detail: WARNING_CONFLICTING_RIGHTS,
                     sticky: true,
                 },
@@ -277,7 +278,8 @@ export function* validateConflictingRights({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                severity: WARNING_ICON,
+                severity: 'warn',
+                summary: WARNING_TITLE,
                 detail: WARNING_CONFLICTING_RIGHTS,
                 sticky: true,
             },

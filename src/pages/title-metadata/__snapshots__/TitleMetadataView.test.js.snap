@@ -93,11 +93,10 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     className="nexus-c-title-metadata__table"
     columnApi={null}
     gridApi={null}
-    history={Object {}}
     setColumnApi={[Function]}
     setGridApi={[Function]}
   />
-  <Connect(ComposedComponent)
+  <Component
     display={false}
     redirectToV2={true}
     tenantCode="vu"

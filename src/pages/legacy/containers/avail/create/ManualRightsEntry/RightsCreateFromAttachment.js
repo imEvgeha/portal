@@ -33,7 +33,8 @@ import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
 import InputForm from '../../../../../avails/ingest-panel/components/upload-ingest/InputForm/InputForm';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import withRouter from '@vubiquity-nexus/portal-ui/lib/hocs/withRouter';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON, UPLOAD_TITLE} = Constants;
 
@@ -72,12 +73,12 @@ class RightsCreateFromAttachment extends React.Component {
     componentDidMount() {
         this._isMounted = true;
         this.getHistoryData();
-        if (this.props.location && this.props.location.search) {
-            const sparams = new URLSearchParams(this.props.location.search);
+        if (this.props.router.location && this.props.router.location.search) {
+            const sparams = new URLSearchParams(this.props.router.location.search);
             const availHistoryIds = sparams.get('availHistoryIds');
             if (availHistoryIds) {
                 sparams.delete('availHistoryIds');
-                this.context.router.history.replace(
+                this.props.router.history.replace(
                     '/avails/history/' + availHistoryIds + '/manual-rights-entry?' + sparams.toString()
                 );
                 return;
@@ -219,8 +220,10 @@ class RightsCreateFromAttachment extends React.Component {
     }
 
     createRight() {
-        this.context.router.history.push(
-            URL.keepEmbedded('/avails/history/' + this.state.availHistoryId + '/rights/create')
+        this.props.router.navigate(
+            URL.keepEmbedded(
+                `/${this.props.router.params.realm}/avails/history/` + this.state.availHistoryId + '/rights/create'
+            )
         );
     }
 
@@ -424,14 +427,11 @@ class RightsCreateFromAttachment extends React.Component {
 }
 RightsCreateFromAttachment.propTypes = {
     match: PropTypes.object,
-    location: PropTypes.object,
+    router: PropTypes.object,
     availsMapping: PropTypes.any,
     selectedTab: PropTypes.string,
     updateManualRightsEntryColumns: PropTypes.func,
     columns: PropTypes.array,
 };
 
-RightsCreateFromAttachment.contextTypes = {
-    router: PropTypes.object,
-};
-export default connect(mapStateToProps, mapDispatchToProps)(RightsCreateFromAttachment);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RightsCreateFromAttachment));

@@ -3,7 +3,7 @@ import {
     SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {identity, pickBy} from 'lodash';
 

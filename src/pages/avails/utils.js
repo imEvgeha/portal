@@ -30,7 +30,7 @@ export const createColumnDefs = payload => {
                     : cellRenderer,
                 cellRendererParams: hasLink
                     ? {
-                          link: '/avails/rights/',
+                          link: `avails/rights/`,
                           newTab: true,
                       }
                     : {},

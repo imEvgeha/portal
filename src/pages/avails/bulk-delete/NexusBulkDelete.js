@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {SimpleTag as Tag} from '@atlaskit/tag';
 import {isEmpty} from 'lodash';
+import {useParams} from 'react-router-dom';
 import RightsURL from '../../legacy/containers/avail/util/RightsURL';
 import BulkDeleteActions from './components/bulk-delete-actions/BulkDeleteActions';
 import BulkDeleteAffectedRight from './components/bulk-delete-affected-right/BulkDeleteAffectedRight';
@@ -13,6 +14,7 @@ import './NexusBulkDelete.scss';
 export const NexusBulkDelete = ({rightsWithDeps, onClose, onSubmit, deletedRightsCount}) => {
     const [tableData, setTableData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const routeParams = useParams();
 
     useEffect(() => {
         if (!isEmpty(rightsWithDeps)) {
@@ -21,7 +23,11 @@ export const NexusBulkDelete = ({rightsWithDeps, onClose, onSubmit, deletedRight
     }, [rightsWithDeps]);
 
     const renderLinkableRightId = id => (
-        <Button key={id} appearance="link" onClick={() => window.open(RightsURL.getRightUrl(id), '_blank')}>
+        <Button
+            key={id}
+            appearance="link"
+            onClick={() => window.open(RightsURL.getRightUrl(id, undefined, routeParams.realm), '_blank')}
+        >
             {id}
         </Button>
     );

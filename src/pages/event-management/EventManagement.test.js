@@ -2,18 +2,15 @@ import React from 'react';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
+import {mockNavigate, mockSubstring} from '../../setupTestEnv';
 import EventManagement from './EventManagement';
 
 describe('EventManagement', () => {
     let wrapper = null;
     let eventManagementTableWrapper = null;
-    const historyPushMockFn = jest.fn();
-    const substringMockFn = jest.fn();
 
     beforeEach(() => {
-        wrapper = shallow(
-            <EventManagement history={{push: historyPushMockFn}} location={{search: {substring: substringMockFn}}} />
-        );
+        wrapper = shallow(<EventManagement />);
         eventManagementTableWrapper = wrapper.find('Connect(EventManagementTable)');
     });
 
@@ -66,12 +63,7 @@ describe('EventManagement', () => {
 
         const afterUseEffectWrapper = () => {
             withHooks(() => {
-                wrapper = shallow(
-                    <EventManagement
-                        history={{push: historyPushMockFn}}
-                        location={{search: {substring: substringMockFn}}}
-                    />
-                );
+                wrapper = shallow(<EventManagement />);
             });
         };
 
@@ -111,26 +103,25 @@ describe('EventManagement', () => {
                 .props()
                 .onGridEvent({type: FILTER_CHANGED, api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
-            expect(historyPushMockFn).toHaveBeenCalledWith({
-                search:
-                    '?filter=%7B%22tenantId%22%3A%7B%22filter%22%3A%22WB%22%2C%22filterType%22%3A%22text%22%2C%22type%22%3A%22equals%22%7D%7D',
+            expect(mockNavigate).toHaveBeenCalledWith({
+                search: '?filter=%7B%22tenantId%22%3A%7B%22filter%22%3A%22WB%22%2C%22filterType%22%3A%22text%22%2C%22type%22%3A%22equals%22%7D%7D',
             });
         });
 
         it('should update the URL with the applied sort option', () => {
             eventManagementTableWrapper.props().onSortChanged({api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
-            expect(historyPushMockFn).toHaveBeenCalledWith({
+            expect(mockNavigate).toHaveBeenCalledWith({
                 search: '?sort=%5B%7B%22colId%22%3A%22tenantId%22%2C%22sort%22%3A%22asc%22%7D%5D',
             });
         });
 
         it('should correctly apply the filters and sorts given in the URL search params', () => {
-            substringMockFn.mockImplementationOnce(
+            mockSubstring.mockImplementationOnce(
                 () =>
                     'filter=%7B%22tenantId%22%3A%7B%22filter%22%3A%22WB%22%2C%22filterType%22%3A%22text%22%2C%22type%22%3A%22equals%22%7D%7D&sort=%5B%7B%22colId%22%3A%22tenantId%22%2C%22sort%22%3A%22asc%22%7D%5D'
             );
-            wrapper.setProps({location: {search: {substring: substringMockFn}}});
+            wrapper.setProps({location: {search: {substring: mockSubstring}}});
             eventManagementTableWrapper.props().onGridEvent({type: READY, api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
             expect(setFilterModelMock).toHaveBeenCalledWith(filter);
@@ -142,13 +133,13 @@ describe('EventManagement', () => {
                 .props()
                 .onGridEvent({type: SELECTION_CHANGED, api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
-            expect(historyPushMockFn).toHaveBeenCalledWith({
+            expect(mockNavigate).toHaveBeenCalledWith({
                 search: '?selectedEventId=%22abc%22',
             });
         });
 
         it('opens the event drawer given a selectedEventId in the URL search params', async () => {
-            substringMockFn.mockImplementationOnce(() => 'selectedEventId=%22test_event_id%22');
+            mockSubstring.mockImplementationOnce(() => 'selectedEventId=%22test_event_id%22');
             await afterUseEffectWrapper();
             expect(wrapper.find('EventDrawer').props().id).toEqual('test_event_id');
         });

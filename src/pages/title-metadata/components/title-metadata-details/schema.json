@@ -146,7 +146,7 @@
                             "isReadOnlyInEdit": true,
                             "type": "link",
                             "linkConfig": {
-                                "baseUrl": "/metadata/detail/",
+                                "baseUrl": "",
                                 "contentType": "SERIES"
                             },
                             "showWhen": [
@@ -210,7 +210,7 @@
                             "isRequired": true,
                             "isReadOnlyInEdit": true,
                             "linkConfig": {
-                                "baseUrl": "/metadata/detail/",
+                                "baseUrl": "",
                                 "contentType": "SEASON"
                             },
                             "showWhen": [

@@ -6,9 +6,9 @@ import {default as AKForm} from '@atlaskit/form/Form';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {get} from 'lodash';
 import {useDispatch} from 'react-redux';
-import {CANCEL} from "redux-saga";
-import {addToast} from "../../../toast/NexusToastNotificationActions";
-import {NexusModalContext} from "../../nexus-modal/NexusModal";
+import {CANCEL} from 'redux-saga';
+import {addToast} from '../../../toast/NexusToastNotificationActions';
+import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {
     buildSection,
     checkFieldDependencies,
@@ -20,7 +20,7 @@ import {
 } from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
-import {DELETE, REMOVE_TITLE} from "../../nexus-tag/constants";
+import {DELETE, REMOVE_TITLE} from '../../nexus-tag/constants';
 
 const NexusArray = ({
     name,

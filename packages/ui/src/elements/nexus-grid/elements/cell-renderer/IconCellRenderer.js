@@ -1,11 +1,11 @@
 import React, {useCallback} from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
-import {downloadFile, getDeepValue} from "@vubiquity-nexus/portal-utils/lib/Common";
-import {downloadUploadedEMETLog} from "@vubiquity-nexus/portal-utils/lib/services/UploadLogService";
+import {downloadFile, getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {downloadUploadedEMETLog} from '@vubiquity-nexus/portal-utils/lib/services/UploadLogService';
 import {debounce} from 'lodash';
 import {useDispatch} from 'react-redux';
-import {addToast} from "../../../../toast/NexusToastNotificationActions";
-import NexusTooltip from "../../../nexus-tooltip/NexusTooltip";
+import {addToast} from '../../../../toast/NexusToastNotificationActions';
+import NexusTooltip from '../../../nexus-tooltip/NexusTooltip';
 import {getIcon} from '../value-formatter/createValueFormatter';
 import './IconCellRenderer.scss';
 

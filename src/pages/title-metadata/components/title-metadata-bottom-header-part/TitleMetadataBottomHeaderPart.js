@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CloudDownloadIcon from '@vubiquity-nexus/portal-assets/action-cloud-download.svg';
 import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.svg';
 import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import moment from 'moment';
 import {Button} from 'primereact/button';
 import {connect} from 'react-redux';

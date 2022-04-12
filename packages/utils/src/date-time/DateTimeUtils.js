@@ -5,7 +5,8 @@ import {
     SIMULCAST_TIME_FORMAT,
     TIMESTAMP_TIME_FORMAT,
     LOCALE_TIME_FORMAT,
-    DATETIME_FIELDS, SORT_DIRECTION
+    DATETIME_FIELDS,
+    SORT_DIRECTION,
 } from './constants';
 
 const localStorageLanguage = localStorage.getItem('localization');

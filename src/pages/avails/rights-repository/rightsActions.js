@@ -20,11 +20,6 @@ export const getLinkedRights = payload => ({
     payload,
 });
 
-export const bulkDeleteRights = payload => ({
-    type: actionTypes.BULK_DELETE_SELECTED_RIGHTS,
-    payload,
-});
-
 export const clearLinkedRights = () => ({
     type: actionTypes.CLEAR_LINKED_TO_ORIGINAL_RIGHTS,
 });

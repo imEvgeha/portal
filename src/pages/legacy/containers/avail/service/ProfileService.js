@@ -2,7 +2,7 @@ import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {store} from '../../../../../index';
 import {loadAvailsMapping, loadSelectLists} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {storeConfigValues} from './endpointConfigActions';
 import {isEmpty} from 'lodash';
 

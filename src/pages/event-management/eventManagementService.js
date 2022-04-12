@@ -1,4 +1,4 @@
-import {getConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {get, isEmpty, isObject, merge} from 'lodash';
 import moment from 'moment';

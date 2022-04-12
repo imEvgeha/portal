@@ -5,8 +5,8 @@ import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
 import './CreateEditConfig.scss';
-import NexusEntity from "../nexus-entity/NexusEntity";
-import {NEXUS_ENTITY_TYPES} from "../nexus-entity/constants";
+import NexusEntity from '../nexus-entity/NexusEntity';
+import {NEXUS_ENTITY_TYPES} from '../nexus-entity/constants';
 import {constructFieldPerType} from './dynamic-fields/FieldsPerType';
 
 const CreateEditConfig = ({

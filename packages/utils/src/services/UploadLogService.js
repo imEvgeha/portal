@@ -1,6 +1,6 @@
 import {encodedSerialize, prepareSortMatrixParamTitles} from '../Common';
-import {getConfig} from "../config";
-import {nexusFetch} from "../http-client";
+import {getConfig} from '../config';
+import {nexusFetch} from '../http-client';
 
 export const fetchUploadedEMETsLog = async (data, page, size, sortedParams) => {
     const {tenantCode, uploadedBy, uploadedAt, status} = data;

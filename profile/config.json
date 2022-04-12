@@ -50,7 +50,6 @@
     "DOP_base": "http://dops.dev.vubiquity.com:8040",
     "keycloak": {
         "clientId": "portalapp-public",
-        "realm": "Vubiquity",
         "url": "https://identity.dev.vubiquity.com/auth"
     },
     "googleAnalytics": {
