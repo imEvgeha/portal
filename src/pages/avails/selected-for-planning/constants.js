@@ -53,7 +53,7 @@ export const COLUMN_MAPPINGS = [
         width: 150,
         cellRenderer: 'loadingCellRenderer',
         cellRendererParams: {
-            link: '/avails/rights/',
+            link: 'avails/rights/',
             newTab: true,
         },
     },
