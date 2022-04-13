@@ -6,6 +6,7 @@ import {
     UPDATE_RIGHT_FAILED,
     UPDATE_RIGHT_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {getAuthConfig} from "@vubiquity-nexus/portal-utils/lib/config";
 import {getLinkedToOriginalRightsV2, bulkDeleteRights} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import {history} from '../../../index';
@@ -162,7 +163,7 @@ export function* getRight({payload}) {
             payload: error,
         });
 
-        history.push('/avails');
+        history.push(`${getAuthConfig().realm}/avails`);
     }
 }
 
