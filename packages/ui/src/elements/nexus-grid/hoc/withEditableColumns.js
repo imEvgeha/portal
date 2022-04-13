@@ -15,7 +15,6 @@ import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
 import {createAvailSelectValuesSelector} from '../nexusGridSelectors';
 import usePrevious from './hooks/usePrevious';
-import {GRID_EVENTS} from '../constants';
 
 const DEFAULT_HOC_PROPS = ['notEditableColumns', 'mapping', 'selectValues'];
 const DEFAULT_EDITABLE_DATA_TYPES = [
@@ -46,7 +45,6 @@ const withEditableColumns =
             const previousSelectValues = usePrevious(selectValues);
             const previousColumnDefs = usePrevious(columnDefs);
             const [editableColumnDefs, setEditableColumnDefs] = useState(columnDefs);
-            const [gridApi, setGridApi] = useState();
             const excludedColumns = props.notEditableColumns || notEditableColumns;
 
             useEffect(() => {
@@ -55,19 +53,6 @@ const withEditableColumns =
                     setEditableColumnDefs(updatedColumnDefs);
                 }
             }, [columnDefs, selectValues]);
-
-            const {context} = props || {};
-
-            useEffect(() => {
-                if (context?.selectedRows?.length && gridApi) {
-                    gridApi?.forEachNode(rowNode => {
-                        const selectedNode = context.selectedRows.find(({id}) => id === rowNode.data.id);
-                        if (selectedNode) {
-                            rowNode.setSelected(true, false, true);
-                        }
-                    });
-                }
-            }, [gridApi, context]);
 
             const updateColumnDefs = columnDefs => {
                 const copiedColumnDefs = columnDefs;
@@ -184,25 +169,6 @@ const withEditableColumns =
                 });
             };
 
-            const onGridEvent = data => {
-                const {onGridEvent} = props;
-                const events = [
-                    GRID_EVENTS.READY,
-                    GRID_EVENTS.FIRST_DATA_RENDERED,
-                    GRID_EVENTS.SELECTION_CHANGED,
-                    GRID_EVENTS.FILTER_CHANGED,
-                ];
-                const {api, type} = data || {};
-
-                if (type === GRID_EVENTS.READY && !gridApi) {
-                    setGridApi(api);
-                }
-
-                if (events.includes(type) && typeof onGridEvent === 'function') {
-                    props.onGridEvent(data);
-                }
-            };
-
             const propsWithoutHocProps = omit(props, hocProps);
 
             return (
@@ -210,7 +176,6 @@ const withEditableColumns =
                     {...propsWithoutHocProps}
                     stopEditingWhenGridLosesFocus={true}
                     singleClickEdit={true}
-                    onGridEvent={onGridEvent}
                     columnDefs={editableColumnDefs}
                 />
             );
@@ -227,7 +192,6 @@ const withEditableColumns =
         };
 
         ComposedComponent.propTypes = {
-            onGridEvent: PropTypes.func,
             columnDefs: PropTypes.array.isRequired,
             mapping: PropTypes.array.isRequired,
             selectValues: PropTypes.object,
@@ -235,7 +199,6 @@ const withEditableColumns =
         };
 
         ComposedComponent.defaultProps = {
-            onGridEvent: null,
             selectValues: {},
             notEditableColumns: [],
         };
