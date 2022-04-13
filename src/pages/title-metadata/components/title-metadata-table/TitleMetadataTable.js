@@ -13,7 +13,7 @@ import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import {
     DEFAULT_CATALOGUE_OWNER,
@@ -47,6 +47,7 @@ const TitleMetadataTable = ({
 }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const routeParams = useParams();
 
     const columnDefs = UPLOADED_EMETS_COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
@@ -178,7 +179,7 @@ const TitleMetadataTable = ({
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
                 externalFilter={externalFilter}
-                link="/metadata/detail"
+                link={`/${routeParams.realm}/metadata/detail`}
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>

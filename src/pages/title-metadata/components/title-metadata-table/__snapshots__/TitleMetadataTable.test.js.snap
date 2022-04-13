@@ -315,7 +315,7 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
       ]
     }
     externalFilter={null}
-    link="/metadata/detail"
+    link="/undefined/metadata/detail"
     mapping={
       Array [
         Object {
