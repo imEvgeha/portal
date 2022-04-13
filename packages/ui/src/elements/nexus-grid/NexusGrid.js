@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-enterprise';
@@ -25,7 +25,6 @@ const NexusGrid = ({
     ...restProps
 }) => {
     const isMounted = useRef(true);
-    const [updatedColumnDefs, setUpdatedColumnDefs] = useState(columnDefs || []);
 
     useEffect(() => {
         return () => {
@@ -46,20 +45,6 @@ const NexusGrid = ({
 
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
 
-    const handleDisplayedColumnsChange = e => {
-        const displayedColumnsIds = e?.columnApi?.columnModel?.displayedColumns.map(col => col.colId);
-        const unhiddenColDefs = updatedColumnDefs.map(col => {
-            if (displayedColumnsIds.length && displayedColumnsIds.includes(col.colId) && col.hide) {
-                return {
-                    ...col,
-                    hide: false,
-                };
-            }
-            return col;
-        });
-        setUpdatedColumnDefs(unhiddenColDefs);
-    };
-
     return (
         <div
             id={id}
@@ -71,7 +56,7 @@ const NexusGrid = ({
         `}
         >
             <AgGridReact
-                columnDefs={updatedColumnDefs}
+                columnDefs={columnDefs}
                 getContextMenuItems={params => getContextMenuItems(params, link)}
                 rowData={rowData}
                 suppressPropertyNamesCheck
@@ -80,7 +65,6 @@ const NexusGrid = ({
                 onGridSizeChanged={onGridSizeChanged}
                 onSelectionChanged={handleGridEvent}
                 onCellValueChanged={handleGridEvent}
-                onDisplayedColumnsChanged={handleDisplayedColumnsChange}
                 onFirstDataRendered={handleGridEvent}
                 onRowDataChanged={handleGridEvent}
                 onFilterChanged={handleGridEvent}

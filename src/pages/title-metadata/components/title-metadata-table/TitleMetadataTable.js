@@ -15,6 +15,7 @@ import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {compose} from 'redux';
+import {mapColumnDefinitions} from '../../../avails/rights-repository/util/utils';
 import {
     DEFAULT_CATALOGUE_OWNER,
     LEGACY_TOOLTIP_TEXT,
@@ -47,54 +48,64 @@ const TitleMetadataTable = ({
 }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
 
-    const columnDefs = UPLOADED_EMETS_COLUMN_MAPPINGS.map(mapping => {
-        if (mapping.colId === 'title') {
+    useEffect(() => {
+        if (!tableColumnDefinitions.length) {
+            const colDefs = constructColumnDefs(mapColumnDefinitions(UPLOADED_EMETS_COLUMN_MAPPINGS));
+
+            setTableColumnDefinitions(colDefs);
+        }
+    }, [UPLOADED_EMETS_COLUMN_MAPPINGS]);
+
+    const constructColumnDefs = defs =>
+        defs.map(mapping => {
+            if (mapping.colId === 'title') {
+                return {
+                    ...mapping,
+                    cellRendererParams: ({data = {}}) => {
+                        const {id} = data;
+                        return {
+                            link: 'metadata/detail/',
+                            linkId: id,
+                            newTab: false,
+                        };
+                    },
+                    valueFormatter: createValueFormatter(mapping),
+                };
+            }
+            if (mapping.colId === REPOSITORY_COLUMN_ID) {
+                return {
+                    ...mapping,
+                    cellRendererFramework: params => {
+                        const {value, data = {}} = params || {};
+                        const {id} = data;
+                        return (
+                            <div className="nexus-c-title-metadata-table__repository">
+                                <div>{value}</div>
+
+                                {value !== NEXUS && (
+                                    <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
+                                        <div
+                                            className="nexus-c-title-metadata-table__repository-icon"
+                                            onClick={() =>
+                                                navigate(URL.keepEmbedded(`detail/${id}/legacy-title-reconciliation`))
+                                            }
+                                        >
+                                            <NexusStatusDot severity="warning" />
+                                        </div>
+                                    </NexusTooltip>
+                                )}
+                            </div>
+                        );
+                    },
+                };
+            }
             return {
                 ...mapping,
-                cellRendererParams: ({data = {}}) => {
-                    const {id} = data;
-                    return {
-                        link: 'metadata/detail/',
-                        linkId: id,
-                        newTab: false,
-                    };
-                },
                 valueFormatter: createValueFormatter(mapping),
             };
-        }
-        if (mapping.colId === REPOSITORY_COLUMN_ID) {
-            return {
-                ...mapping,
-                cellRendererFramework: params => {
-                    const {value, data = {}} = params || {};
-                    const {id} = data;
-                    return (
-                        <div className="nexus-c-title-metadata-table__repository">
-                            <div>{value}</div>
-
-                            {value !== NEXUS && (
-                                <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
-                                    <div
-                                        className="nexus-c-title-metadata-table__repository-icon"
-                                        onClick={() =>
-                                            navigate(URL.keepEmbedded(`detail/${id}/legacy-title-reconciliation`))
-                                        }
-                                    >
-                                        <NexusStatusDot severity="warning" />
-                                    </div>
-                                </NexusTooltip>
-                            )}
-                        </div>
-                    );
-                },
-            };
-        }
-        return {
-            ...mapping,
-            valueFormatter: createValueFormatter(mapping),
-        };
-    });
+        });
 
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
@@ -171,7 +182,7 @@ const TitleMetadataTable = ({
     return (
         <div className="nexus-c-title-metadata-table">
             <TitleMetadataTableGrid
-                columnDefs={columnDefs}
+                columnDefs={tableColumnDefinitions}
                 mapping={UPLOADED_EMETS_COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onGridEvent={onGridReady}
