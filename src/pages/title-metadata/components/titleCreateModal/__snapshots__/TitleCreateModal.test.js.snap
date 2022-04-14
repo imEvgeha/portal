@@ -56,19 +56,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
           </div>
           <div
             className="p-dialog-header-icons"
-          >
-            <button
-              aria-label="Close"
-              className="p-dialog-header-icon p-dialog-header-close p-link"
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="p-dialog-header-close-icon pi pi-times"
-              />
-              <Ripple />
-            </button>
-          </div>
+          />
         </div>
         <div
           className="p-dialog-content"
@@ -133,15 +121,15 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                             "defaultValues": Object {
                               "catalogueOwner": "vu",
                             },
-                            "mode": "onSubmit",
+                            "mode": "all",
                             "reValidateMode": "onChange",
                             "shouldFocusError": true,
                           },
                           "_proxyFormState": Object {
-                            "dirtyFields": false,
+                            "dirtyFields": "all",
                             "errors": "all",
                             "isDirty": false,
-                            "isValid": false,
+                            "isValid": "all",
                             "isValidating": false,
                             "touchedFields": false,
                           },
@@ -191,7 +179,6 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       isItCheckbox={false}
                       labelClassName=""
                       register={[Function]}
-                      renderErrorMsg={[Function]}
                       required={true}
                       title="Title"
                     >
@@ -245,15 +232,15 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                             "defaultValues": Object {
                               "catalogueOwner": "vu",
                             },
-                            "mode": "onSubmit",
+                            "mode": "all",
                             "reValidateMode": "onChange",
                             "shouldFocusError": true,
                           },
                           "_proxyFormState": Object {
-                            "dirtyFields": false,
+                            "dirtyFields": "all",
                             "errors": "all",
                             "isDirty": false,
-                            "isValid": false,
+                            "isValid": "all",
                             "isValidating": false,
                             "touchedFields": false,
                           },
@@ -303,7 +290,6 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       isItCheckbox={false}
                       labelClassName=""
                       register={[Function]}
-                      renderErrorMsg={[Function]}
                       required={true}
                       title="Content Type"
                     >
@@ -407,11 +393,6 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                 </div>
                 <div
                   className="row"
-                  style={
-                    Object {
-                      "marginTop": "15px",
-                    }
-                  }
                 >
                   <div
                     className="col"
@@ -467,15 +448,15 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                             "defaultValues": Object {
                               "catalogueOwner": "vu",
                             },
-                            "mode": "onSubmit",
+                            "mode": "all",
                             "reValidateMode": "onChange",
                             "shouldFocusError": true,
                           },
                           "_proxyFormState": Object {
-                            "dirtyFields": false,
+                            "dirtyFields": "all",
                             "errors": "all",
                             "isDirty": false,
-                            "isValid": false,
+                            "isValid": "all",
                             "isValidating": false,
                             "touchedFields": false,
                           },
@@ -525,7 +506,6 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       isItCheckbox={false}
                       labelClassName=""
                       register={[Function]}
-                      renderErrorMsg={[Function]}
                       required={true}
                       title="Release Year"
                     >
@@ -579,15 +559,15 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                             "defaultValues": Object {
                               "catalogueOwner": "vu",
                             },
-                            "mode": "onSubmit",
+                            "mode": "all",
                             "reValidateMode": "onChange",
                             "shouldFocusError": true,
                           },
                           "_proxyFormState": Object {
-                            "dirtyFields": false,
+                            "dirtyFields": "all",
                             "errors": "all",
                             "isDirty": false,
-                            "isValid": false,
+                            "isValid": "all",
                             "isValidating": false,
                             "touchedFields": false,
                           },
@@ -637,7 +617,6 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       isItCheckbox={false}
                       labelClassName=""
                       register={[Function]}
-                      renderErrorMsg={[Function]}
                       required={true}
                       title="Catalogue Owner"
                     >
@@ -752,15 +731,15 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                               "defaultValues": Object {
                                 "catalogueOwner": "vu",
                               },
-                              "mode": "onSubmit",
+                              "mode": "all",
                               "reValidateMode": "onChange",
                               "shouldFocusError": true,
                             },
                             "_proxyFormState": Object {
-                              "dirtyFields": false,
+                              "dirtyFields": "all",
                               "errors": "all",
                               "isDirty": false,
-                              "isValid": false,
+                              "isValid": "all",
                               "isValidating": false,
                               "touchedFields": false,
                             },
@@ -810,7 +789,6 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                         isItCheckbox={true}
                         labelClassName="nexus-c-title-create_checkbox-label"
                         register={[Function]}
-                        renderErrorMsg={[Function]}
                         required={false}
                         title="Publish to VZ and Movida Int\`l"
                       >
@@ -882,15 +860,15 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                               "defaultValues": Object {
                                 "catalogueOwner": "vu",
                               },
-                              "mode": "onSubmit",
+                              "mode": "all",
                               "reValidateMode": "onChange",
                               "shouldFocusError": true,
                             },
                             "_proxyFormState": Object {
-                              "dirtyFields": false,
+                              "dirtyFields": "all",
                               "errors": "all",
                               "isDirty": false,
-                              "isValid": false,
+                              "isValid": "all",
                               "isValidating": false,
                               "touchedFields": false,
                             },
@@ -940,7 +918,6 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                         isItCheckbox={true}
                         labelClassName="nexus-c-title-create_checkbox-label"
                         register={[Function]}
-                        renderErrorMsg={[Function]}
                         required={false}
                         title="Publish to Movida"
                       >
@@ -988,16 +965,15 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
               className="nexus-c-title-create_footer-buttons-container"
             >
               <ForwardRef
-                appearance="primary"
-                className="p-button-text"
+                className="p-button-outlined p-button-secondary"
                 disabled={false}
                 id="titleCancelBtn"
                 label="Cancel"
                 onClick={[Function]}
               />
               <ForwardRef
-                appearance="primary"
-                className="p-button-text"
+                className="p-button-outlined"
+                disabled={true}
                 iconPos="right"
                 id="titleSaveBtn"
                 label="Save"
@@ -1079,19 +1055,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           </div>
           <div
             className="p-dialog-header-icons"
-          >
-            <button
-              aria-label="Close"
-              className="p-dialog-header-icon p-dialog-header-close p-link"
-              onClick={[Function]}
-              type="button"
-            >
-              <span
-                className="p-dialog-header-close-icon pi pi-times"
-              />
-              <Ripple />
-            </button>
-          </div>
+          />
         </div>
         <div
           className="p-dialog-content"
@@ -1156,15 +1120,15 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                             "defaultValues": Object {
                               "catalogueOwner": undefined,
                             },
-                            "mode": "onSubmit",
+                            "mode": "all",
                             "reValidateMode": "onChange",
                             "shouldFocusError": true,
                           },
                           "_proxyFormState": Object {
-                            "dirtyFields": false,
+                            "dirtyFields": "all",
                             "errors": "all",
                             "isDirty": false,
-                            "isValid": false,
+                            "isValid": "all",
                             "isValidating": false,
                             "touchedFields": false,
                           },
@@ -1214,7 +1178,6 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                       isItCheckbox={false}
                       labelClassName=""
                       register={[Function]}
-                      renderErrorMsg={[Function]}
                       required={true}
                       title="Title"
                     >
@@ -1268,15 +1231,15 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                             "defaultValues": Object {
                               "catalogueOwner": undefined,
                             },
-                            "mode": "onSubmit",
+                            "mode": "all",
                             "reValidateMode": "onChange",
                             "shouldFocusError": true,
                           },
                           "_proxyFormState": Object {
-                            "dirtyFields": false,
+                            "dirtyFields": "all",
                             "errors": "all",
                             "isDirty": false,
-                            "isValid": false,
+                            "isValid": "all",
                             "isValidating": false,
                             "touchedFields": false,
                           },
@@ -1326,7 +1289,6 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                       isItCheckbox={false}
                       labelClassName=""
                       register={[Function]}
-                      renderErrorMsg={[Function]}
                       required={true}
                       title="Content Type"
                     >
@@ -1430,11 +1392,6 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                 </div>
                 <div
                   className="row"
-                  style={
-                    Object {
-                      "marginTop": "15px",
-                    }
-                  }
                 >
                   <div
                     className="col"
@@ -1490,15 +1447,15 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                             "defaultValues": Object {
                               "catalogueOwner": undefined,
                             },
-                            "mode": "onSubmit",
+                            "mode": "all",
                             "reValidateMode": "onChange",
                             "shouldFocusError": true,
                           },
                           "_proxyFormState": Object {
-                            "dirtyFields": false,
+                            "dirtyFields": "all",
                             "errors": "all",
                             "isDirty": false,
-                            "isValid": false,
+                            "isValid": "all",
                             "isValidating": false,
                             "touchedFields": false,
                           },
@@ -1548,7 +1505,6 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                       isItCheckbox={false}
                       labelClassName=""
                       register={[Function]}
-                      renderErrorMsg={[Function]}
                       required={true}
                       title="Release Year"
                     >
@@ -1577,16 +1533,15 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
               className="nexus-c-title-create_footer-buttons-container"
             >
               <ForwardRef
-                appearance="primary"
-                className="p-button-text"
+                className="p-button-outlined p-button-secondary"
                 disabled={false}
                 id="titleCancelBtn"
                 label="Cancel"
                 onClick={[Function]}
               />
               <ForwardRef
-                appearance="primary"
-                className="p-button-text"
+                className="p-button-outlined"
+                disabled={true}
                 iconPos="right"
                 id="titleSaveBtn"
                 label="Match & Create"

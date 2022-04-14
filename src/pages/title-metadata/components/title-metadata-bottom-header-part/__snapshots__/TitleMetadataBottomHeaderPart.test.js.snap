@@ -101,7 +101,8 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
     display={false}
     focusedRight={Object {}}
     isItMatching={false}
-    onToggle={[Function]}
+    onCloseModal={[Function]}
+    onSave={[Function]}
     tenantCode="vu"
   />
 </div>
