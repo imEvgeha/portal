@@ -40,7 +40,8 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
         register,
         control,
         handleSubmit,
-        setValue,
+        // setValue,
+        reset,
         formState: {errors},
     } = useForm({defaultValues: {catalogueOwner: tenantCode}});
     const currentValues = useWatch({control});
@@ -55,7 +56,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
     const toggle = () => {
         onToggle();
         setErrorMessage('');
-        setDefaultValues();
+        reset();
     };
 
     const handleError = (err, matching = false) => {
@@ -167,7 +168,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
     const onSubmit = submitTitle => {
         setErrorMessage('');
         const title = getTitleWithoutEmptyField(submitTitle);
-        const copyCastCrewFromSeason = currentValues.addCrew;
+        const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
         const params = {tenantCode, copyCastCrewFromSeason};
         setIsCreatingTitle(true);
 
@@ -175,25 +176,20 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
     };
 
     const getTitleWithoutEmptyField = titleForm => {
-        const episodicFields = ['seriesTitleName', 'episodeNumber', 'seasonNumber'];
-        const ignoreFields = ['addCrew', 'syncMovida', 'syncVZ'];
+        const isEpisodicEmpty = titleForm.seriesTitleName || titleForm.episodeNumber || titleForm.seasonNumber;
         const title = {
-            episodic: {},
+            title: titleForm.title,
+            releaseYear: titleForm.releaseYear || null,
+            contentType: titleForm.contentType,
+            episodic: isEpisodicEmpty
+                ? {
+                      seriesTitleName: titleForm.seriesTitleName || null,
+                      episodeNumber: titleForm.episodeNumber || null,
+                      seasonNumber: titleForm.seasonNumber || null,
+                  }
+                : null,
         };
-        for (const titleField in titleForm) {
-            if (episodicFields.includes(titleField)) {
-                title.episodic[titleField] = titleForm[titleField] || null;
-            } else if (ignoreFields.includes(titleField)) {
-                continue;
-            } else if (titleForm[titleField]) {
-                title[titleField] = titleForm[titleField];
-            } else {
-                title[titleField] = null;
-            }
-        }
 
-        // eslint-disable-next-line no-console
-        console.log(title);
         return title;
     };
 
@@ -268,18 +264,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
         }
 
         return null;
-    };
-
-    const setDefaultValues = () => {
-        setValue('title', '');
-        setValue('contentType', '');
-        setValue('seriesTitleName', '');
-        setValue('seasonNumber', '');
-        setValue('episodeNumber', '');
-        setValue('releaseYear', '');
-        setValue('syncVZ', false);
-        setValue('syncMovida', false);
-        setValue('addCrew', false);
     };
 
     const areFieldsShouldBeDisplayed = () => {
