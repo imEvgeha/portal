@@ -22,7 +22,6 @@ const NexusArrayCreateModal = ({
     allData,
 }) => {
     const [updatedValues, setUpdatedValues] = useState(null);
-    const [updatedCastCrew, setUpdatedCastCrew] = useState([]);
 
     const getVisibleFields = allFields => {
         const updateFields = {...allFields};
@@ -47,7 +46,7 @@ const NexusArrayCreateModal = ({
                     handleModalSubmit(
                         values?.editorial?.castCrew?.length
                             ? values
-                            : {...values, editorial: {...values.editorial, castCrew: updatedCastCrew}}
+                            : {...values, editorial: {...values.editorial, castCrew: []}}
                     );
                 }}
             >
@@ -65,7 +64,6 @@ const NexusArrayCreateModal = ({
                                             castCrewConfig,
                                             initialData: {contentType: initialData.contentType},
                                             setUpdatedValues,
-                                            setUpdatedCastCrew,
                                             updatedValues,
                                             prefix,
                                             allData,

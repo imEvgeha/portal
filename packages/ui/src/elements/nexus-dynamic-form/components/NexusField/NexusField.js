@@ -76,7 +76,6 @@ const NexusField = ({
     showLocalized,
     localizationConfig,
     setUpdatedValues,
-    setUpdatedCastCrew,
     isClearable,
     isTitlePage,
     setUpdate,
@@ -325,7 +324,6 @@ const NexusField = ({
                         isEdit={true}
                         getValues={getValues}
                         setFieldValue={setFieldValue}
-                        setUpdatedCastCrew={setUpdatedCastCrew}
                         isVerticalLayout={isVerticalLayout}
                         isTitlePage={isTitlePage}
                         searchPerson={searchPerson}
@@ -580,7 +578,6 @@ NexusField.propTypes = {
     localizationConfig: PropTypes.object,
     getValues: PropTypes.func,
     setUpdatedValues: PropTypes.func,
-    setUpdatedCastCrew: PropTypes.func,
     setUpdate: PropTypes.func,
     allData: PropTypes.object,
     forMetadata: PropTypes.bool,
@@ -627,7 +624,6 @@ NexusField.defaultProps = {
     localizationConfig: undefined,
     getValues: () => null,
     setUpdatedValues: () => null,
-    setUpdatedCastCrew: () => null,
     setUpdate: () => null,
     allData: {},
     forMetadata: false,
