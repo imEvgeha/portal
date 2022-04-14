@@ -92,8 +92,12 @@ export const TitleMetadataView = ({
 
     const isItTheSameTab = tabName => getNameOfCurrentTab() === tabName;
 
-    const closeModalAndRefreshTable = () => {
+    const onCloseModal = () => {
         setShowModal(false);
+    };
+
+    const closeModalAndRefreshTable = () => {
+        onCloseModal();
         toggleRefreshGridData(true);
     };
 
@@ -218,7 +222,8 @@ export const TitleMetadataView = ({
             ) : null}
             <TitleCreate
                 display={showModal}
-                onToggle={closeModalAndRefreshTable}
+                onSave={closeModalAndRefreshTable}
+                onCloseModal={onCloseModal}
                 tenantCode={catalogueOwner.tenantCode}
             />
         </div>

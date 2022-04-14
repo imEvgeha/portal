@@ -783,6 +783,11 @@ $element-color-orange-80: palette(orange, 80);
     }
 }
 
+.checkbox-label {
+    margin-left: 5px;
+    display: inline-block;
+}
+
 // Checkbox
 .p-checkbox-wrapper {
     margin-bottom: $element-margin-bottom;

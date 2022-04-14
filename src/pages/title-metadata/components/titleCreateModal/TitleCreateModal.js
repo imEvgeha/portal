@@ -5,7 +5,7 @@ import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-bod
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
-import {get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
 import {Checkbox} from 'primereact/checkbox';
 import {Dialog} from 'primereact/dialog';
@@ -28,7 +28,7 @@ const onViewTitleClick = (response, realm) => {
     window.open(url, '_blank');
 };
 
-const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight, bulkTitleMatch}) => {
+const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, focusedRight, bulkTitleMatch}) => {
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         constants.CREATE_TITLE_RESTRICTIONS;
     const addToast = toast => store.dispatch(toastDisplay(toast));
@@ -41,8 +41,8 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
         control,
         handleSubmit,
         setValue,
-        formState: {errors},
-    } = useForm({defaultValues: {catalogueOwner: tenantCode}});
+        formState: {errors, isValid, dirtyFields},
+    } = useForm({defaultValues: {catalogueOwner: tenantCode}, mode: 'all', reValidateMode: 'onChange'});
     const currentValues = useWatch({control});
     const routeParams = useParams();
     const tenantCodeItems = [
@@ -53,7 +53,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
     ];
 
     const toggle = () => {
-        onToggle();
+        onSave();
         setErrorMessage('');
         setDefaultValues();
     };
@@ -206,7 +206,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                         inputName="syncVZ"
                         errors={errors.syncVZ}
                         control={control}
-                        renderErrorMsg={renderErrorMsg}
                         register={register}
                         labelClassName="nexus-c-title-create_checkbox-label"
                         isItCheckbox
@@ -222,7 +221,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                         inputName="syncMovida"
                         errors={errors.syncMovida}
                         control={control}
-                        renderErrorMsg={renderErrorMsg}
                         register={register}
                         labelClassName="nexus-c-title-create_checkbox-label"
                         isItCheckbox
@@ -243,32 +241,23 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                 <Button
                     id="titleCancelBtn"
                     label="Cancel"
-                    onClick={toggle}
-                    appearance="primary"
+                    onClick={() => onCloseModal()}
                     disabled={isCreatingTitle}
-                    className="p-button-text"
+                    className="p-button-outlined p-button-secondary"
                 />
                 <Button
                     id="titleSaveBtn"
                     label={isItMatching ? 'Match & Create' : 'Save'}
                     onClick={handleSubmit(onSubmit)}
-                    appearance="primary"
                     loading={isCreatingTitle}
                     loadingIcon="pi pi-spin pi-spinner"
-                    className="p-button-text"
+                    className="p-button-outlined"
                     iconPos="right"
+                    disabled={!isValid || isEmpty(dirtyFields)}
                 />
             </div>
         </div>
     );
-
-    const renderErrorMsg = error => {
-        if (error) {
-            return <span className="nexus-c-title-create_error-msg">{error.message}</span>;
-        }
-
-        return null;
-    };
 
     const setDefaultValues = () => {
         setValue('title', '');
@@ -314,6 +303,8 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
             footer={renderFooter()}
             onHide={toggle}
             className="nexus-c-title-create_dialog"
+            closeOnEscape={false}
+            closable={false}
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="row">
@@ -332,7 +323,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                         },
                                     }}
                                     control={control}
-                                    renderErrorMsg={renderErrorMsg}
                                     register={register}
                                 >
                                     <InputText
@@ -352,7 +342,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                     errors={errors.contentType}
                                     required={true}
                                     control={control}
-                                    renderErrorMsg={renderErrorMsg}
                                     register={register}
                                 >
                                     <Dropdown
@@ -375,7 +364,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                         control={control}
                                         errors={errors.seriesTitleName}
                                         required={areFieldsRequired()}
-                                        renderErrorMsg={renderErrorMsg}
                                         register={register}
                                     >
                                         <InputText
@@ -405,7 +393,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                                 message: `Max season length is ${MAX_SEASON_LENGTH}!`,
                                             },
                                         }}
-                                        renderErrorMsg={renderErrorMsg}
                                         register={register}
                                         control={control}
                                         errors={errors.seasonNumber}
@@ -433,7 +420,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                                     message: `Max episode length is ${MAX_EPISODE_LENGTH}!`,
                                                 },
                                             }}
-                                            renderErrorMsg={renderErrorMsg}
                                             register={register}
                                             control={control}
                                             errors={errors.episodeNumber}
@@ -457,7 +443,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                         inputName="addCrew"
                                         errors={errors.addCrew}
                                         control={control}
-                                        renderErrorMsg={renderErrorMsg}
                                         register={register}
                                         labelClassName="nexus-c-title-create_checkbox-label"
                                         isItCheckbox
@@ -472,7 +457,7 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                             </div>
                         ) : null}
 
-                        <div className="row" style={{marginTop: '15px'}}>
+                        <div className="row">
                             <div className="col">
                                 <ControllerWrapper
                                     title="Release Year"
@@ -494,7 +479,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                         },
                                     }}
                                     control={control}
-                                    renderErrorMsg={renderErrorMsg}
                                     register={register}
                                 >
                                     <InputText
@@ -516,7 +500,6 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
                                         required={true}
                                         controllerClassName="nexus-c-title-create_catalogue-owner-dropdown-container"
                                         control={control}
-                                        renderErrorMsg={renderErrorMsg}
                                         register={register}
                                     >
                                         <Dropdown
@@ -540,12 +523,13 @@ const TitleCreate = ({onToggle, tenantCode, display, isItMatching, focusedRight,
 };
 
 TitleCreate.propTypes = {
-    onToggle: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
     display: PropTypes.bool.isRequired,
     tenantCode: PropTypes.string,
     isItMatching: PropTypes.bool,
     bulkTitleMatch: PropTypes.func,
     focusedRight: PropTypes.object,
+    onCloseModal: PropTypes.func.isRequired,
 };
 
 TitleCreate.defaultProps = {

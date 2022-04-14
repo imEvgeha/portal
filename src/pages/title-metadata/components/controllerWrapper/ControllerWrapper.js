@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FieldError from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-error/FieldError';
+import FieldLabel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-label/FieldLabel';
+import {isEmpty} from 'lodash';
 import {Controller} from 'react-hook-form';
-import {Label} from 'reactstrap';
 
 const ControllerWrapper = ({
     title,
@@ -10,7 +12,6 @@ const ControllerWrapper = ({
     required,
     handleChange,
     register,
-    renderErrorMsg,
     errors,
     additionalValidation,
     controllerClassName,
@@ -19,51 +20,59 @@ const ControllerWrapper = ({
     children,
 }) => {
     return (
-        <>
-            <Label for={inputName} className={labelClassName}>
-                {title}
-                {required ? <span style={{color: 'red'}}>*</span> : null}
-            </Label>
-            <div className={`nexus-c-title-create_input-container ${controllerClassName}`}>
-                <Controller
-                    name={inputName}
-                    control={control}
-                    {...register(inputName, {
-                        required: {
-                            value: required,
-                            message: 'Field cannot be empty!',
-                        },
-                        ...additionalValidation,
-                    })}
-                    render={({field}) =>
-                        React.Children.map(children, child => {
-                            if (React.isValidElement(child)) {
-                                if (isItCheckbox) {
+        <div className={`nexus-c-title-create_input-container ${controllerClassName}`}>
+            <Controller
+                name={inputName}
+                control={control}
+                {...register(inputName, {
+                    required: {
+                        value: required,
+                        message: 'Field cannot be empty!',
+                    },
+                    ...additionalValidation,
+                })}
+                render={({field}) => (
+                    <div>
+                        {!isItCheckbox && (
+                            <FieldLabel
+                                htmlFor={inputName}
+                                label={title}
+                                additionalLabel={undefined}
+                                isRequired={required}
+                                className={labelClassName}
+                                shouldUpper={false}
+                            />
+                        )}
+                        <div className={!isEmpty(errors) ? 'p-field p-field-error' : 'p-field'}>
+                            {React.Children.map(children, child => {
+                                if (React.isValidElement(child)) {
                                     return React.cloneElement(child, {
                                         ...field,
-                                        checked: field.value,
+                                        checked: isItCheckbox ? field.value : undefined,
                                         onChange: e => {
                                             handleChange(e);
-                                            field.onChange(e.checked);
+                                            field.onChange(e);
                                         },
                                     });
                                 }
-
-                                return React.cloneElement(child, {
-                                    ...field,
-                                    onChange: e => {
-                                        handleChange(e);
-                                        field.onChange(e);
-                                    },
-                                });
-                            }
-                            return child;
-                        })
-                    }
-                />
-                {errors ? renderErrorMsg(errors) : null}
-            </div>
-        </>
+                                return child;
+                            })}
+                            {isItCheckbox && (
+                                <FieldLabel
+                                    htmlFor={inputName}
+                                    label={title}
+                                    additionalLabel={undefined}
+                                    isRequired={required}
+                                    className="checkbox-label"
+                                    shouldUpper={false}
+                                />
+                            )}
+                            <FieldError error={errors} />
+                        </div>
+                    </div>
+                )}
+            />
+        </div>
     );
 };
 
@@ -72,7 +81,6 @@ ControllerWrapper.propTypes = {
     inputName: PropTypes.string.isRequired,
     control: PropTypes.any.isRequired,
     register: PropTypes.func.isRequired,
-    renderErrorMsg: PropTypes.func.isRequired,
     errors: PropTypes.any,
     handleChange: PropTypes.func,
     additionalValidation: PropTypes.object,

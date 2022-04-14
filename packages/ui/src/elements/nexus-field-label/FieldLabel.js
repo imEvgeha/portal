@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import {toUpper} from 'lodash';
 import FieldRequired from '../nexus-field-required/FieldRequired';
 
-const FieldLabel = ({htmlFor, label, additionalLabel, isRequired}) => {
+const FieldLabel = ({htmlFor, label, additionalLabel, isRequired, shouldUpper, className}) => {
     return label ? (
-        <div className="nexus-c-field-label">
+        <div className={className}>
             <label htmlFor={htmlFor}>
-                {toUpper(label)}
+                {shouldUpper ? toUpper(label) : label}
                 {additionalLabel}
                 <FieldRequired required={!!isRequired} />
             </label>
@@ -20,6 +20,8 @@ FieldLabel.propTypes = {
     label: PropTypes.string,
     additionalLabel: PropTypes.string,
     isRequired: PropTypes.bool,
+    className: PropTypes.string,
+    shouldUpper: PropTypes.bool,
 };
 
 FieldLabel.defaultProps = {
@@ -27,6 +29,8 @@ FieldLabel.defaultProps = {
     label: undefined,
     additionalLabel: '',
     isRequired: false,
+    className: 'nexus-c-field-label',
+    shouldUpper: true,
 };
 
 export default FieldLabel;
