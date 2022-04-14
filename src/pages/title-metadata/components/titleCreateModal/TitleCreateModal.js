@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {get, isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
@@ -40,7 +40,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
         register,
         control,
         handleSubmit,
-        setValue,
+        reset,
         formState: {errors, isValid, dirtyFields},
     } = useForm({defaultValues: {catalogueOwner: tenantCode}, mode: 'all', reValidateMode: 'onChange'});
     const currentValues = useWatch({control});
@@ -55,7 +55,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
     const toggle = () => {
         onSave();
         setErrorMessage('');
-        setDefaultValues();
+        reset();
     };
 
     const handleError = (err, matching = false) => {
@@ -167,7 +167,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
     const onSubmit = submitTitle => {
         setErrorMessage('');
         const title = getTitleWithoutEmptyField(submitTitle);
-        const copyCastCrewFromSeason = currentValues.addCrew;
+        const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
         const params = {tenantCode, copyCastCrewFromSeason};
         setIsCreatingTitle(true);
 
@@ -175,26 +175,19 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
     };
 
     const getTitleWithoutEmptyField = titleForm => {
-        const episodicFields = ['seriesTitleName', 'episodeNumber', 'seasonNumber'];
-        const ignoreFields = ['addCrew', 'syncMovida', 'syncVZ'];
-        const title = {
-            episodic: {},
+        const isEpisodicEmpty = titleForm.seriesTitleName || titleForm.episodeNumber || titleForm.seasonNumber;
+        return {
+            title: titleForm.title,
+            releaseYear: titleForm.releaseYear || null,
+            contentType: titleForm.contentType,
+            episodic: isEpisodicEmpty
+                ? {
+                      seriesTitleName: titleForm.seriesTitleName || null,
+                      episodeNumber: titleForm.episodeNumber || null,
+                      seasonNumber: titleForm.seasonNumber || null,
+                  }
+                : null,
         };
-        for (const titleField in titleForm) {
-            if (episodicFields.includes(titleField)) {
-                title.episodic[titleField] = titleForm[titleField] || null;
-            } else if (ignoreFields.includes(titleField)) {
-                continue;
-            } else if (titleForm[titleField]) {
-                title[titleField] = titleForm[titleField];
-            } else {
-                title[titleField] = null;
-            }
-        }
-
-        // eslint-disable-next-line no-console
-        console.log(title);
-        return title;
     };
 
     const renderSyncCheckBoxes = () => (
@@ -258,18 +251,6 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
             </div>
         </div>
     );
-
-    const setDefaultValues = () => {
-        setValue('title', '');
-        setValue('contentType', '');
-        setValue('seriesTitleName', '');
-        setValue('seasonNumber', '');
-        setValue('episodeNumber', '');
-        setValue('releaseYear', '');
-        setValue('syncVZ', false);
-        setValue('syncMovida', false);
-        setValue('addCrew', false);
-    };
 
     const areFieldsShouldBeDisplayed = () => {
         switch (currentValues.contentType) {
