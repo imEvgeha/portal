@@ -1,9 +1,9 @@
 import React from 'react';
+import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
 import {Checkbox} from 'primereact/checkbox';
 import configureStore from 'redux-mock-store';
-import ControllerWrapper from '../controllerWrapper/ControllerWrapper';
 import TitleCreate from './TitleCreateModal';
 
 describe('TitleCreateModal', () => {

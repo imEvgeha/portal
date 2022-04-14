@@ -282,14 +282,13 @@ export const BulkMatching = ({
                         <div className="nexus-c-bulk-matching__message">
                             {TITLE_MATCHING_MSG}
                             <Button
+                                label="New Title"
                                 spacing="none"
                                 appearance="link"
                                 onClick={handleShowModal}
                                 disabled={isMatchAndCreateLoading || isMatchLoading}
                                 className="p-button-link nexus-c-bulk-matching__new-title-button"
-                            >
-                                New Title
-                            </Button>
+                            />
                             {hasExistingCoreTitleIds && (
                                 <div className="nexus-c-bulk-matching__warning">{EXISTING_CORE_TITLE_ID_WARNING}</div>
                             )}
@@ -328,7 +327,8 @@ export const BulkMatching = ({
             )}
             <TitleCreate
                 display={showModal}
-                onToggle={closeModalAndRefreshTable}
+                onSave={closeModalAndRefreshTable}
+                onCloseModal={() => setShowModal(false)}
                 isItMatching={true}
                 bulkTitleMatch={bulkTitleMatch}
                 focusedRight={{contentType: get(selectedTableData, '[0].contentType', '')}}

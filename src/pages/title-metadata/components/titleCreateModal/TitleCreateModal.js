@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
@@ -18,7 +19,6 @@ import {store} from '../../../..';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import {publisherService} from '../../../legacy/containers/metadata/service/PublisherService';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
-import ControllerWrapper from '../controllerWrapper/ControllerWrapper';
 import constants, {CONTENT_TYPE_ITEMS} from './TitleCreateModalConstants';
 import './Title.scss';
 
@@ -234,7 +234,10 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                 <Button
                     id="titleCancelBtn"
                     label="Cancel"
-                    onClick={() => onCloseModal()}
+                    onClick={() => {
+                        onCloseModal();
+                        reset();
+                    }}
                     disabled={isCreatingTitle}
                     className="p-button-outlined p-button-secondary"
                 />
@@ -252,7 +255,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
         </div>
     );
 
-    const areFieldsShouldBeDisplayed = () => {
+    const fieldsToDisplay = () => {
         switch (currentValues.contentType) {
             case 'SEASON':
             case 'EPISODE':
@@ -263,8 +266,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                 return false;
         }
     };
-    const areFieldsShouldBeDisplayedAndHiddenForSeason =
-        areFieldsShouldBeDisplayed() && currentValues.contentType !== 'SEASON';
+    const fieldsToDisplayAndHideForSeason = fieldsToDisplay() && currentValues.contentType !== 'SEASON';
 
     const areFieldsRequired = () => {
         switch (currentValues.contentType) {
@@ -336,7 +338,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                             </div>
                         </div>
 
-                        {areFieldsShouldBeDisplayed() ? (
+                        {fieldsToDisplay() ? (
                             <div className="row">
                                 <div className="col">
                                     <ControllerWrapper
@@ -357,7 +359,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                             </div>
                         ) : null}
 
-                        {areFieldsShouldBeDisplayed() ? (
+                        {fieldsToDisplay() ? (
                             <div className="row">
                                 <div className="col">
                                     <ControllerWrapper
@@ -385,7 +387,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                                         />
                                     </ControllerWrapper>
                                 </div>
-                                {areFieldsShouldBeDisplayedAndHiddenForSeason ? (
+                                {fieldsToDisplayAndHideForSeason ? (
                                     <div className="col">
                                         <ControllerWrapper
                                             title="Episode"
@@ -416,7 +418,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                             </div>
                         ) : null}
 
-                        {areFieldsShouldBeDisplayedAndHiddenForSeason ? (
+                        {fieldsToDisplayAndHideForSeason ? (
                             <div className="row">
                                 <div className="col nexus-c-title-create_checkbox-wrapper">
                                     <ControllerWrapper
