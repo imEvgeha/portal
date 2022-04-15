@@ -1,27 +1,27 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {isEmpty, get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
 import {TabMenu} from 'primereact/tabmenu';
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import Loading from '../../../../static/Loading';
 import {
-    SAVED_TABLE_DROPDOWN_LABEL,
-    MY_SAVED_VIEWS_LABEL,
     MY_PREDEFINED_VIEWS_LABEL,
+    MY_SAVED_VIEWS_LABEL,
+    SAVED_TABLE_DROPDOWN_LABEL,
     SAVED_TABLE_SELECT_OPTIONS,
 } from '../../../saved-table-dropdown/constants';
 import {
     CREATE_NEW_RIGHT,
+    PRE_PLAN_SELECTED_TAB,
+    PRE_PLAN_TAB,
     RIGHTS_REPOSITORY_TABS,
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
-    PRE_PLAN_TAB,
-    PRE_PLAN_SELECTED_TAB,
     SELECTED_FOR_PLANNING_TAB,
     STATUS_TAB,
 } from '../../constants';
@@ -32,7 +32,6 @@ import {applyPredefinedTableView} from '../../util/utils';
 
 export const RightsRepositoryHeader = ({
     title,
-    history,
     gridApi,
     columnApi,
     username,
@@ -46,6 +45,7 @@ export const RightsRepositoryHeader = ({
     currentUserView,
 }) => {
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (activeTab === RIGHTS_SELECTED_TAB) {
@@ -115,7 +115,7 @@ export const RightsRepositoryHeader = ({
                         tooltip={CREATE_NEW_RIGHT}
                         tooltipOptions={{position: 'left'}}
                         icon={IconActionAdd}
-                        onClick={() => history.push(URL.keepEmbedded('/avails/rights/create'))}
+                        onClick={() => navigate(URL.keepEmbedded('rights/create'))}
                         className="p-button-text"
                     />
                 </div>
@@ -126,7 +126,6 @@ export const RightsRepositoryHeader = ({
 
 RightsRepositoryHeader.propTypes = {
     title: PropTypes.string,
-    history: PropTypes.object,
     activeTab: PropTypes.string,
     gridApi: PropTypes.object,
     columnApi: PropTypes.object,
@@ -142,7 +141,6 @@ RightsRepositoryHeader.propTypes = {
 
 RightsRepositoryHeader.defaultProps = {
     title: 'Rights',
-    history: {},
     gridApi: {},
     activeTab: '',
     columnApi: {},
@@ -168,4 +166,4 @@ const mapDispatchToProps = dispatch => ({
     setCurrentUserView: payload => dispatch(setCurrentUserViewActionAvails(payload)),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RightsRepositoryHeader));
+export default connect(mapStateToProps, mapDispatchToProps)(RightsRepositoryHeader);

@@ -11,9 +11,10 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {compose} from 'redux';
-import {getConfig} from '../../../../config';
+import {mapColumnDefinitions} from '../../../avails/rights-repository/util/utils';
 import {
     CHANGE_PRIORITY_TITLE,
     COLUMN_MAPPINGS,
@@ -58,6 +59,7 @@ const DopTasksTable = ({
     const [modalValue, setModalValue] = useState(null);
     const [api, setApi] = useState(null);
     const {openModal, closeModal} = useContext(NexusModalContext);
+    const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
 
     const removeMenu = () => setIsMenuOpen(false);
 
@@ -67,6 +69,14 @@ const DopTasksTable = ({
             window.removeEventListener('click', removeMenu);
         };
     }, []);
+
+    useEffect(() => {
+        if (!tableColumnDefinitions.length) {
+            const colDefs = [checkboxColumn, ...constructColumnDefs(mapColumnDefinitions(COLUMN_MAPPINGS))];
+
+            setTableColumnDefinitions(colDefs);
+        }
+    }, [COLUMN_MAPPINGS]);
 
     useEffect(() => {
         if (modalValue) {
@@ -81,64 +91,65 @@ const DopTasksTable = ({
         }
     }, [action]);
 
-    const formattedValueColDefs = COLUMN_MAPPINGS.map(col => {
-        col.resizable = true;
-        if (col.colId === 'taskName') {
+    const constructColumnDefs = defs =>
+        defs.map(col => {
+            col.resizable = true;
+            if (col.colId === 'taskName') {
+                return {
+                    ...col,
+                    cellRendererParams: {
+                        link: `${getConfig('DOP_base')}${DOP_GUIDED_TASK_URL}`,
+                    },
+                };
+            }
+            if (col.colId === 'taskStatus') {
+                return {
+                    ...col,
+                    cellRendererFramework: params => {
+                        const {value} = params || {};
+                        let color = 'yellowLight';
+                        switch (value) {
+                            case 'COMPLETED':
+                                color = 'grey';
+                                break;
+                            case 'READY':
+                                color = 'green';
+                                break;
+                            case 'IN PROGRESS':
+                                color = 'blue';
+                                break;
+                            default:
+                                color = 'standard';
+                                break;
+                        }
+                        return (
+                            <div>
+                                <Tag text={value} color={color} />
+                            </div>
+                        );
+                    },
+                };
+            }
+            if (col.colId === 'projectName') {
+                return {
+                    ...col,
+                    cellRendererParams: {
+                        link: `${getConfig('DOP_base')}${DOP_PROJECT_URL}`,
+                        linkId: 'projectId',
+                    },
+                };
+            }
+            if (col.colId === 'projectStatus') {
+                return {
+                    ...col,
+                    valueFormatter: params => PROJECT_STATUS_ENUM[params.value],
+                };
+            }
             return {
                 ...col,
-                cellRendererParams: {
-                    link: `${getConfig('DOP_base')}${DOP_GUIDED_TASK_URL}`,
-                },
+                valueFormatter: createValueFormatter(col),
             };
-        }
-        if (col.colId === 'taskStatus') {
-            return {
-                ...col,
-                cellRendererFramework: params => {
-                    const {value} = params || {};
-                    let color = 'yellowLight';
-                    switch (value) {
-                        case 'COMPLETED':
-                            color = 'grey';
-                            break;
-                        case 'READY':
-                            color = 'green';
-                            break;
-                        case 'IN PROGRESS':
-                            color = 'blue';
-                            break;
-                        default:
-                            color = 'standard';
-                            break;
-                    }
-                    return (
-                        <div>
-                            <Tag text={value} color={color} />
-                        </div>
-                    );
-                },
-            };
-        }
-        if (col.colId === 'projectName') {
-            return {
-                ...col,
-                cellRendererParams: {
-                    link: `${getConfig('DOP_base')}${DOP_PROJECT_URL}`,
-                    linkId: 'projectId',
-                },
-            };
-        }
-        if (col.colId === 'projectStatus') {
-            return {
-                ...col,
-                valueFormatter: params => PROJECT_STATUS_ENUM[params.value],
-            };
-        }
-        return {
-            ...col,
-            valueFormatter: createValueFormatter(col),
-        };
-    });
+        });
 
     const setTotalCount = total => {
         setPaginationData(prevData => {
@@ -266,7 +277,7 @@ const DopTasksTable = ({
             )}
             <DopTasksTableGrid
                 id="DopTasksTable"
-                columnDefs={[checkboxColumn, ...formattedValueColDefs]}
+                columnDefs={tableColumnDefinitions}
                 rowSelection="multiple"
                 notFilterableColumns={['action']}
                 mapping={COLUMN_MAPPINGS}

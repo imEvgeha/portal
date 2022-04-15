@@ -1,15 +1,16 @@
 import React, {useCallback} from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
-import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {downloadFile, getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {downloadUploadedEMETLog} from '@vubiquity-nexus/portal-utils/lib/services/UploadLogService';
 import {debounce} from 'lodash';
-import {store} from '../../../../../../../src';
-import {downloadUploadedEMETLog} from '../../../../../../../src/pages/title-metadata/service/UploadLogService';
-import {addToast} from '../../../../../lib/toast/NexusToastNotificationActions';
+import {useDispatch} from 'react-redux';
+import {addToast} from '../../../../toast/NexusToastNotificationActions';
+import NexusTooltip from '../../../nexus-tooltip/NexusTooltip';
 import {getIcon} from '../value-formatter/createValueFormatter';
 import './IconCellRenderer.scss';
 
 const IconCellRenderer = params => {
+    const dispatch = useDispatch();
     const {
         data,
         colDef: {field},
@@ -32,7 +33,7 @@ const IconCellRenderer = params => {
     const handleClick = useCallback(
         debounce(() => {
             if (idToFileDownloading) {
-                store.dispatch(addToast(successToast));
+                dispatch(addToast(successToast));
                 downloadUploadedEMETLog(idToFileDownloading)
                     .then(response => {
                         const name = data.sourceFileName.includes('.xlsx')

@@ -528,5 +528,5 @@ export const createUrl = (linkConfig, initialData) => {
     if (id.length) {
         return baseUrl + id[0].id;
     }
-    return '';
+    return initialData.id;
 };

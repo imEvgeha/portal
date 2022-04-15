@@ -3,9 +3,10 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotifica
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {normalizeDataForStore, URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {push} from 'connected-react-router';
+import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {get} from 'lodash';
 import {Button} from 'primereact/button';
+import {push} from 'redux-first-history';
 import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
 import {titleService} from '../legacy/containers/metadata/service/TitleService';
 import * as actionTypes from './metadataActionTypes';
@@ -211,7 +212,12 @@ export function* reconcileTitles({payload}) {
                         <Button
                             label="View title"
                             className="p-button-link p-toast-button-link"
-                            onClick={() => window.open(`${getDomainName()}/metadata/detail/${newTitleId}`, '_blank')}
+                            onClick={() =>
+                                window.open(
+                                    `${getDomainName()}/${getAuthConfig().realm}/metadata/detail/${newTitleId}`,
+                                    '_blank'
+                                )
+                            }
                         />
                     </ToastBody>
                 ),

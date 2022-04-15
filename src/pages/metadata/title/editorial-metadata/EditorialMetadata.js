@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import NexusPersonsList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/NexusPersonsList';
 import {CAST_CONFIG, CREW_CONFIG} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
 import {getFilteredCastList, getFilteredCrewList} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
-import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
+import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 
 const EditorialMetadata = ({data, castCrewConfig}) => {
     // TODO: temporary integration of NexusPersonsList here as PoC

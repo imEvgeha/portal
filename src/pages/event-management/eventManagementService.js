@@ -1,7 +1,7 @@
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {get, isEmpty, isObject, merge} from 'lodash';
 import moment from 'moment';
-import {getConfig} from '../../config';
-import {nexusFetch} from '../../util/http-client';
 
 const FETCH_PAGE_SIZE = 100;
 

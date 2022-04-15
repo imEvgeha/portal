@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import {get, sortBy, startCase} from 'lodash';
 import {Dropdown} from 'primereact/dropdown';
 import {MultiSelect} from 'primereact/multiselect';
-import {getConfigApiValues} from '../../../../legacy/common/CommonConfigService';
-import {cache} from '../../../../legacy/containers/config/EndpointContainer';
+// import {getConfigApiValues} from '../../../../legacy/common/CommonConfigService';
 
-const DynamicDropdown = ({elementSchema, formField, change, form}) => {
+const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApiMap}) => {
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
@@ -15,8 +14,8 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
 
     React.useEffect(() => {
         const subscription = form.watch((value, {name}) => {
-            if (elementSchema.id === 'licensees' && name?.includes('servicingRegionName')) {
-                getLicensees(elementSchema, name);
+            if (dataApiMap[elementSchema.name]) {
+                getDDValues(elementSchema, name);
             }
         });
 
@@ -30,11 +29,11 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
         if (elementSchema?.options) {
             const opts = elementSchema?.options?.[0]?.items?.map(i => ({value: i, label: startCase(i)}));
             setOptions(opts);
-        } else if (elementSchema.id === 'licensees') {
+        } else if (getDDValues !== undefined) {
             // licensees needs to be filtered by selected servicing region name
-            getLicensees(elementSchema);
-        } else if (sourceUrl && cachedOption === undefined) {
-            cachedOption = getConfigApiValues(sourceUrl, 0, 1000).then(response => {
+            getDDValues(elementSchema);
+        } else if (sourceUrl && cachedOption === undefined && !!dataApiMap[elementSchema.name]) {
+            cachedOption = dataApiMap[elementSchema.name](sourceUrl).then(response => {
                 cachedOption = response.data;
                 cache[sourceUrl] = response.data;
                 processOptions(response.data, elementSchema);
@@ -57,33 +56,26 @@ const DynamicDropdown = ({elementSchema, formField, change, form}) => {
         setOptions(items);
     };
 
-    const getLicensees = (field, valuePath) => {
-        const servicingRegion = (valuePath && form?.getValues(valuePath)) || '';
+    const getDDValues = (field, valuePath) => {
+        const value = (valuePath && form?.getValues(valuePath)) || '';
 
-        if (get(cache[field.source.url], servicingRegion, '')) {
+        if (get(cache[field.source.url], value, '')) {
             // licensees cache is per servicing region
-            if (cache[field.source.url][servicingRegion] instanceof Promise) {
-                return cache[field.source.url][servicingRegion].then(res => processOptions(res, field));
+            if (cache[field.source.url][value] instanceof Promise) {
+                return cache[field.source.url][value].then(res => processOptions(res, field));
             }
-            processOptions(cache[field.source.url][servicingRegion], field);
-        } else {
-            const promiseLicensees = getConfigApiValues(
-                field.source.url,
-                0,
-                1000,
-                '',
-                'servicingRegion',
-                servicingRegion
-            ).then(response => {
+            processOptions(cache[field.source.url][value], field);
+        } else if (dataApiMap[elementSchema.name]) {
+            const apiResponse = dataApiMap[elementSchema.name](field.source.url, value).then(response => {
                 cache[field.source.url] = {
                     ...cache[field.source.url],
-                    [servicingRegion]: response.data,
+                    [value]: response.data,
                 };
                 processOptions(response.data, field);
             });
             cache[field.source.url] = {
                 ...cache[field.source.url],
-                [servicingRegion]: promiseLicensees,
+                [value]: apiResponse,
             };
         }
     };
@@ -155,6 +147,8 @@ DynamicDropdown.propTypes = {
     elementSchema: PropTypes.object.isRequired,
     change: PropTypes.func,
     form: PropTypes.object.isRequired,
+    cache: PropTypes.object,
+    dataApi: PropTypes.object,
 };
 
 DynamicDropdown.defaultProps = {};

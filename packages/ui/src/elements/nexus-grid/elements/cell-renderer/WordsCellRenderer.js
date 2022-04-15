@@ -1,8 +1,8 @@
 import React from 'react';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
-import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Common';
+import NexusTooltip from '../../../nexus-tooltip/NexusTooltip';
 
 const WordsCellRenderer = params => {
     const {

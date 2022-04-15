@@ -2,29 +2,25 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {ErrorMessage} from '@atlaskit/form';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
-import {URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
+import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {Button as PrimeReactButton} from 'primereact/button';
 import {Form, FormFragment} from 'react-forms-processor';
 import {renderer} from 'react-forms-processor-atlaskit';
+import {useDispatch} from 'react-redux';
 import './CreateTitleForm.scss';
 import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
 import {titleService} from '../../../../legacy/containers/metadata/service/TitleService';
-import {EPISODE, EVENT, SEASON, SPORTS, SPECIAL} from '../../../../metadata/constants/contentType';
+import {EPISODE, EVENT, SEASON, SPECIAL, SPORTS} from '../../../../metadata/constants/contentType';
 import constants from './CreateTitleFormConstants';
 
 const {NEW_TITLE_LABEL_CANCEL, NEW_TITLE_LABEL_SUBMIT, getTitleFormSchema} = constants;
 
-// Building a URL where user can check the newly created title
-// (Opens in new tab)
-const onViewTitleClick = id => {
-    window.open(`${getDomainName()}/metadata/detail/${id}`, '_blank');
-};
-
-const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
+const CreateTitleForm = ({close, focusedRight, bulkTitleMatch}) => {
     const [error, setError] = useState();
     const {
         id: focusedId,
@@ -49,6 +45,11 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
         isFilled: !!(focusedTitle && focusedContentType && focusedReleaseYear),
     };
     const [titleValue, setTitleValue] = useState(initialState);
+    const dispatch = useDispatch();
+
+    const onViewTitleClick = id => {
+        window.open(`${getDomainName()}/${getAuthConfig().realm}/metadata/detail/${id}`, '_blank');
+    };
 
     const submitTitle = title => {
         // Delete empty properties before sending
@@ -83,7 +84,7 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
             .createTitleWithoutErrorModal(title)
             .then(res => {
                 const titleId = res.id;
-                addToast({
+                const toastBody = {
                     severity: 'success',
                     content: (
                         <ToastBody
@@ -98,7 +99,10 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
                             />
                         </ToastBody>
                     ),
-                });
+                };
+
+                dispatch(addToast(toastBody));
+
                 if (URL.isEmbedded()) {
                     DOP.setErrorsCount(0);
                     DOP.setData({
@@ -148,13 +152,11 @@ CreateTitleForm.propTypes = {
     close: PropTypes.func.isRequired,
     focusedRight: PropTypes.object,
     bulkTitleMatch: PropTypes.func,
-    addToast: PropTypes.func,
 };
 
 CreateTitleForm.defaultProps = {
     focusedRight: {},
     bulkTitleMatch: null,
-    addToast: () => null,
 };
 
-export default withToasts(CreateTitleForm);
+export default CreateTitleForm;

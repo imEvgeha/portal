@@ -24,7 +24,6 @@ import {createGridStateSelector, createTitleMetadataFilterSelector} from './titl
 import {DEFAULT_CATALOGUE_OWNER, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
-    history,
     toggleRefreshGridData,
     resetTitleId,
     storeTitleUserDefinedGridState,
@@ -198,7 +197,6 @@ export const TitleMetadataView = ({
             </TitleMetadataHeader>
             {isItTheSameTab('repository') ? (
                 <TitleMetadataTable
-                    history={history}
                     catalogueOwner={catalogueOwner}
                     setGridApi={setGridApi}
                     setColumnApi={setColumnApi}
@@ -210,7 +208,6 @@ export const TitleMetadataView = ({
             {isItTheSameTab('syncLog') ? <SyncLogTable /> : null}
             {isItTheSameTab('uploadLog') ? (
                 <UploadMetadataTable
-                    history={history}
                     catalogueOwner={catalogueOwner}
                     setGridApi={setGridApi}
                     setColumnApi={setColumnApi}
@@ -248,7 +245,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 TitleMetadataView.propTypes = {
-    history: PropTypes.object,
     toggleRefreshGridData: PropTypes.func,
     resetTitleId: PropTypes.func,
     storeTitleUserDefinedGridState: PropTypes.func,
@@ -260,7 +256,6 @@ TitleMetadataView.propTypes = {
 };
 
 TitleMetadataView.defaultProps = {
-    history: {},
     toggleRefreshGridData: () => null,
     resetTitleId: () => null,
     storeTitleUserDefinedGridState: () => null,

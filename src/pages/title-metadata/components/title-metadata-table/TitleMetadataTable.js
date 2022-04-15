@@ -13,7 +13,9 @@ import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import {compose} from 'redux';
+import {mapColumnDefinitions} from '../../../avails/rights-repository/util/utils';
 import {
     DEFAULT_CATALOGUE_OWNER,
     LEGACY_TOOLTIP_TEXT,
@@ -36,7 +38,6 @@ const TitleMetadataTableGrid = compose(
 )(NexusGrid);
 
 const TitleMetadataTable = ({
-    history,
     catalogueOwner,
     setGridApi,
     setColumnApi,
@@ -45,55 +46,67 @@ const TitleMetadataTable = ({
     setTitleMetadataFilter,
     titleMetadataFilter,
 }) => {
-    const columnDefs = UPLOADED_EMETS_COLUMN_MAPPINGS.map(mapping => {
-        if (mapping.colId === 'title') {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
+    const routeParams = useParams();
+
+    useEffect(() => {
+        if (!tableColumnDefinitions.length) {
+            const colDefs = constructColumnDefs(mapColumnDefinitions(UPLOADED_EMETS_COLUMN_MAPPINGS));
+
+            setTableColumnDefinitions(colDefs);
+        }
+    }, [UPLOADED_EMETS_COLUMN_MAPPINGS]);
+
+    const constructColumnDefs = defs =>
+        defs.map(mapping => {
+            if (mapping.colId === 'title') {
+                return {
+                    ...mapping,
+                    cellRendererParams: ({data = {}}) => {
+                        const {id} = data;
+                        return {
+                            link: 'metadata/detail/',
+                            linkId: id,
+                            newTab: false,
+                        };
+                    },
+                    valueFormatter: createValueFormatter(mapping),
+                };
+            }
+            if (mapping.colId === REPOSITORY_COLUMN_ID) {
+                return {
+                    ...mapping,
+                    cellRendererFramework: params => {
+                        const {value, data = {}} = params || {};
+                        const {id} = data;
+                        return (
+                            <div className="nexus-c-title-metadata-table__repository">
+                                <div>{value}</div>
+
+                                {value !== NEXUS && (
+                                    <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
+                                        <div
+                                            className="nexus-c-title-metadata-table__repository-icon"
+                                            onClick={() =>
+                                                navigate(URL.keepEmbedded(`detail/${id}/legacy-title-reconciliation`))
+                                            }
+                                        >
+                                            <NexusStatusDot severity="warning" />
+                                        </div>
+                                    </NexusTooltip>
+                                )}
+                            </div>
+                        );
+                    },
+                };
+            }
             return {
                 ...mapping,
-                cellRendererParams: ({data = {}}) => {
-                    const {id} = data;
-                    return {
-                        link: `/metadata/detail/`,
-                        linkId: id,
-                        newTab: false,
-                    };
-                },
                 valueFormatter: createValueFormatter(mapping),
             };
-        }
-        if (mapping.colId === REPOSITORY_COLUMN_ID) {
-            return {
-                ...mapping,
-                cellRendererFramework: params => {
-                    const {value, data = {}} = params || {};
-                    const {id} = data;
-                    return (
-                        <div className="nexus-c-title-metadata-table__repository">
-                            <div>{value}</div>
-
-                            {value !== NEXUS && (
-                                <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
-                                    <div
-                                        className="nexus-c-title-metadata-table__repository-icon"
-                                        onClick={() =>
-                                            history.push(
-                                                URL.keepEmbedded(`/metadata/detail/${id}/legacy-title-reconciliation`)
-                                            )
-                                        }
-                                    >
-                                        <NexusStatusDot severity="warning" />
-                                    </div>
-                                </NexusTooltip>
-                            )}
-                        </div>
-                    );
-                },
-            };
-        }
-        return {
-            ...mapping,
-            valueFormatter: createValueFormatter(mapping),
-        };
-    });
+        });
 
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
@@ -151,7 +164,6 @@ const TitleMetadataTable = ({
 
     useEffect(() => {
         let externalFilter = catalogueOwner;
-        const {location} = history;
         if (location) {
             const {search} = location;
             if (search) {
@@ -166,19 +178,19 @@ const TitleMetadataTable = ({
             }
         }
         setExternalFilter(externalFilter);
-    }, [catalogueOwner, history?.location?.search]);
+    }, [catalogueOwner, location?.search]);
 
     return (
         <div className="nexus-c-title-metadata-table">
             <TitleMetadataTableGrid
-                columnDefs={columnDefs}
+                columnDefs={tableColumnDefinitions}
                 mapping={UPLOADED_EMETS_COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onGridEvent={onGridReady}
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
                 externalFilter={externalFilter}
-                link="/metadata/detail"
+                link={`/${routeParams.realm}/metadata/detail`}
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>
@@ -186,7 +198,6 @@ const TitleMetadataTable = ({
 };
 
 TitleMetadataTable.propTypes = {
-    history: PropTypes.object,
     catalogueOwner: PropTypes.object,
     columnApi: PropTypes.object,
     setGridApi: PropTypes.func,
@@ -197,7 +208,6 @@ TitleMetadataTable.propTypes = {
 };
 
 TitleMetadataTable.defaultProps = {
-    history: {},
     catalogueOwner: DEFAULT_CATALOGUE_OWNER,
     columnApi: {},
     setGridApi: () => null,

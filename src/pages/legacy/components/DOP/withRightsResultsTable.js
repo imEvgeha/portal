@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import RightsURL from '../../containers/avail/util/RightsURL';
 import {getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
@@ -19,6 +19,7 @@ const withRightsResultsTable = BaseComponent => {
     const selectRightMode = 'selectRightsMode';
 
     const ComposedComponent = props => {
+        const routeParams = useParams();
         // parse columns schema
         const parseColumnsSchema = mappings => {
             const colDef = {};
@@ -186,7 +187,11 @@ const withRightsResultsTable = BaseComponent => {
                     if (props.disableEdit) {
                         return <div> {cellVisualContent} </div>;
                     } else {
-                        return <Link to={RightsURL.getRightUrl(data.id, props.nav)}>{cellVisualContent}</Link>;
+                        return (
+                            <Link to={RightsURL.getRightUrl(data.id, props.nav, routeParams.realm)}>
+                                {cellVisualContent}
+                            </Link>
+                        );
                     }
                 }
 

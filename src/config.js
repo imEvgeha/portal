@@ -1,7 +1,3 @@
-import {isObject, mergeDeep} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {get} from 'lodash';
-import {nexusFetch} from './util/http-client';
-
 export const defaultConfiguration = {
     gateway: {
         url: 'https://availsapi.dev.vubiquity.com',
@@ -49,7 +45,6 @@ export const defaultConfiguration = {
     },
     keycloak: {
         clientId: 'portalapp-public',
-        realm: 'Vubiquity',
         url: 'https://auth.dev.vubiquity.com/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
@@ -59,38 +54,6 @@ export const defaultConfiguration = {
         propertyId: 'UA-165264495-2',
     },
 };
-
-let configuration = {};
-
-// temporary solution - replace it with env variables
-export async function setEnvConfiguration(env) {
-    const getConfigFile = env => {
-        switch (env) {
-            case 'dev':
-                return '/config.json';
-            case 'qa':
-                return '/configQA.json';
-            default:
-                return '/config.json';
-        }
-    };
-    try {
-        configuration = mergeDeep(configuration, defaultConfiguration);
-
-        const configFile = getConfigFile(env);
-        const data = await nexusFetch(configFile);
-
-        if (isObject(data)) {
-            configuration = mergeDeep(configuration, data);
-            return true;
-        }
-        return JSON.parse(data);
-    } catch (error) {
-        throw error;
-    }
-}
-
-export const getConfig = key => get(configuration, key);
 
 // App config
 export const appConfig = {

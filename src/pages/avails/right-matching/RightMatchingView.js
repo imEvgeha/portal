@@ -6,6 +6,7 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
+import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusGrid, NexusTitle} from '../../../ui/elements';
 import {
@@ -13,7 +14,7 @@ import {
     createRightMatchingColumnDefs,
     storeRightMatchDataWithIds,
 } from './rightMatchingActions';
-import {RIGHT_MATCHING_TITLE, FOCUS_BUTTON, RIGHT_MATCHING_DOP_STORAGE} from './rightMatchingConstants';
+import {FOCUS_BUTTON, RIGHT_MATCHING_DOP_STORAGE, RIGHT_MATCHING_TITLE} from './rightMatchingConstants';
 import * as selectors from './rightMatchingSelectors';
 import {getRightMatchingList} from './rightMatchingService';
 import useDOPIntegration from './util/hooks/useDOPIntegration';
@@ -27,13 +28,14 @@ const NexusGridWithInfiniteScrolling = compose(
 const RightMatchingView = ({
     createRightMatchingColumnDefs,
     columnDefs,
-    history,
-    match,
-    location,
     storeRightMatchDataWithIds,
     cleanStoredRightMatchDataWithIds,
 }) => {
     const [totalCount, setTotalCount] = useState();
+    const navigate = useNavigate();
+    const routeParams = useParams();
+    const location = useLocation();
+
     // DOP integration
     useDOPIntegration(totalCount, RIGHT_MATCHING_DOP_STORAGE);
 
@@ -49,7 +51,7 @@ const RightMatchingView = ({
     }, [columnDefs, createRightMatchingColumnDefs]);
 
     const onFocusButtonClick = rightId => {
-        history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
+        navigate(URL.keepEmbedded(`${location.pathname}/${rightId}`));
     };
 
     // eslint-disable-next-line
@@ -84,8 +86,7 @@ const RightMatchingView = ({
 
     const updatedColumnDefs = columnDefs.length ? [actionCol, ...columnDefs] : columnDefs;
 
-    const {params = {}} = match;
-    const {availHistoryIds} = params || {};
+    const {availHistoryIds} = routeParams;
 
     return (
         <div className="nexus-c-right-matching-view">
@@ -107,9 +108,6 @@ RightMatchingView.propTypes = {
     storeRightMatchDataWithIds: PropTypes.func,
     cleanStoredRightMatchDataWithIds: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
-    history: PropTypes.object,
-    match: PropTypes.object,
-    location: PropTypes.object,
 };
 
 RightMatchingView.defaultProps = {
@@ -117,9 +115,6 @@ RightMatchingView.defaultProps = {
     storeRightMatchDataWithIds: null,
     cleanStoredRightMatchDataWithIds: null,
     createRightMatchingColumnDefs: null,
-    history: {push: () => null},
-    location: {},
-    match: {},
 };
 
 const createMapStateToProps = () => {

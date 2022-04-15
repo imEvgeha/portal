@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {useEffect, useRef} from 'react';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import GoogleAnalytics from 'react-ga';
-import {getConfig} from '../../config';
+import {useLocation} from 'react-router-dom';
 
 export function initializeTracker() {
     const googleAnalyticsId = getConfig('googleAnalytics.propertyId');
@@ -12,48 +12,36 @@ export function initializeTracker() {
 }
 
 const withTracker = (WrappedComponent, options = {}) => {
-    const trackPage = page => {
-        GoogleAnalytics.set({
-            page,
-            ...options,
-        });
+    return props => {
+        const location = useLocation();
+        const previousLocation = useRef('');
 
-        GoogleAnalytics.pageview(page);
-    };
-
-    class ComposedComponent extends Component {
-        componentDidMount() {
-            const {location} = this.props;
+        useEffect(() => {
             const page = location.pathname + location.search;
-
+            previousLocation.current = page;
             trackPage(page);
-        }
+        }, []);
 
-        componentDidUpdate(prevProps) {
-            const {location} = this.props;
-            const {location: prevLocation} = prevProps;
-
-            const currentPage = prevLocation.pathname + prevLocation.search;
+        useEffect(() => {
             const nextPage = location.pathname + location.search;
 
-            if (currentPage !== nextPage) {
+            if (previousLocation.current !== nextPage) {
+                previousLocation.current = nextPage;
                 trackPage(nextPage);
             }
-        }
+        }, [location]);
 
-        render() {
-            return <WrappedComponent {...this.props} />;
-        }
-    }
+        const trackPage = page => {
+            GoogleAnalytics.set({
+                page,
+                ...options,
+            });
 
-    ComposedComponent.propTypes = {
-        location: PropTypes.shape({
-            pathname: PropTypes.string,
-            search: PropTypes.string,
-        }).isRequired,
+            GoogleAnalytics.pageview(page);
+        };
+
+        return <WrappedComponent location={location} {...props} />;
     };
-
-    return ComposedComponent;
 };
 
 export default withTracker;

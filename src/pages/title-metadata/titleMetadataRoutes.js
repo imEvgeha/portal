@@ -1,5 +1,6 @@
 import React from 'react';
 import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
+import {Outlet} from 'react-router-dom';
 
 const LegacyTitleReconciliationViewImport = import(
     '../metadata/legacy-title-reconciliation/LegacyTitleReconciliationView'
@@ -21,21 +22,28 @@ export const BASE_PATH = '/metadata';
 
 const routes = [
     {
-        path: BASE_PATH,
-        component: canRender(TitleMetadataView, 'read', 'Metadata'),
+        index: true,
+        key: 'metadata',
+        element: canRender(TitleMetadataView, 'read', 'Metadata'),
     },
     {
-        path: `${BASE_PATH}/detail/:id`,
-        component: canRender(TitleDetails, 'update', 'Metadata'),
-    },
-
-    {
-        path: `${BASE_PATH}/detail/:id/legacy-title-reconciliation`,
-        component: canRender(LegacyTitleReconciliationView, 'update', 'Metadata'),
-    },
-    {
-        path: `${BASE_PATH}/detail/:id/legacy-title-reconciliation/review`,
-        component: canRender(LegacyTitleReconciliationReview, 'update', 'Metadata'),
+        path: 'detail/:id',
+        element: Outlet,
+        children: [
+            {
+                index: true,
+                key: 'metadata-details',
+                element: canRender(TitleDetails, 'update', 'Metadata'),
+            },
+            {
+                path: 'legacy-title-reconciliation',
+                element: canRender(LegacyTitleReconciliationView, 'update', 'Metadata'),
+            },
+            {
+                path: 'legacy-title-reconciliation/review',
+                element: canRender(LegacyTitleReconciliationReview, 'update', 'Metadata'),
+            },
+        ],
     },
 ];
 

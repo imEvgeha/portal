@@ -7,6 +7,7 @@ import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
+import {bulkDeleteRights} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import classNames from 'classnames';
 import {get, isEmpty, uniqBy} from 'lodash';
 import {connect} from 'react-redux';
@@ -24,7 +25,7 @@ import {
     isEndDateExpired,
 } from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
-import {bulkDeleteRights, clearLinkedRights, getLinkedRights} from '../rights-repository/rightsActions';
+import {clearLinkedRights, getLinkedRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import {
     ADD_TO_PREPLAN,

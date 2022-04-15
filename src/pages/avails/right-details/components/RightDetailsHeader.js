@@ -5,7 +5,7 @@ import SectionTab from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-fo
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
 import {throttle} from 'lodash';
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import schema from '../schema.json';
 import RightDetailsHighlightedField from './RightDetailsHighlightedField';
 import RightDetailsShrinkedBottom from './RightDetailsShrinkedBottom';
@@ -37,10 +37,16 @@ const RightDetailsHeader = ({title, right, containerRef}) => {
 
     const [isShrinked, setIsShrinked] = useState(false);
     const [selectedTab, setSelectedTab] = useState(tabs[0].title);
-    const previousUrl =
-        URL.getParamIfExists('back') === 'manual-rights-entry'
-            ? `/avails/history/${URL.getParamIfExists('availHistoryId')}/manual-rights-entry`
-            : '/avails';
+    const routeParams = useParams();
+
+    const getPreviousUrl = () => {
+        const url =
+            URL.getParamIfExists('back') === 'manual-rights-entry'
+                ? `/${routeParams.realm}/avails/history/${URL.getParamIfExists('availHistoryId')}/manual-rights-entry`
+                : `/${routeParams.realm}/avails`;
+
+        return URL.keepEmbedded(url);
+    };
 
     useEffect(() => {
         const sectionIDs = tabs.map((_, index) => document.getElementById(`tab-${index}`));
@@ -123,7 +129,7 @@ const RightDetailsHeader = ({title, right, containerRef}) => {
                         {status === 'Pending' ? (
                             <Link
                                 to={URL.keepEmbedded(
-                                    `/avails/history/${right.availHistoryId}/right-matching/${right.id}`
+                                    `/${routeParams.realm}/avails/history/${right.availHistoryId}/right-matching/${right.id}`
                                 )}
                             >
                                 {note.note}
@@ -144,7 +150,7 @@ const RightDetailsHeader = ({title, right, containerRef}) => {
             })}
         >
             <div className="nexus-c-right-details-header__top">
-                <RightDetailsTitle title={title} previousUrl={URL.keepEmbedded(previousUrl)} />
+                <RightDetailsTitle title={title} previousUrl={getPreviousUrl()} />
                 <RightDetailsTags right={right} />
             </div>
             <div

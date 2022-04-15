@@ -2,15 +2,15 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
-import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
-import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
-import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
 import {debounce, isEmpty, toUpper} from 'lodash';
 import {InputText} from 'primereact/inputtext';
+import NexusEntity from '../../../nexus-entity/NexusEntity';
+import {NEXUS_ENTITY_TYPES} from '../../../nexus-entity/constants';
+import {Action} from '../../../nexus-entity/entity-actions/Actions.class';
 import {constructFieldPerType} from '../FieldsPerType';
 import './DynamicElement.scss';
 
-const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
+const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dataApiMap}) => {
     const initializeSections = () => {
         const sectionKeys = isEmpty(values) ? ['unset'] : Object.keys(values);
 
@@ -56,7 +56,17 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged}) => {
 
     const constructSectionElement = sectionSchema => {
         const hasKey = !!sectionSchema.name?.split('.')?.[1];
-        return hasKey && constructFieldPerType(sectionSchema, form, sectionSchema.values || '', 'mb-2', undefined);
+        return (
+            hasKey &&
+            constructFieldPerType({
+                elementSchema: sectionSchema,
+                form,
+                value: sectionSchema.values || '',
+                className: 'mb-2',
+                cache,
+                dataApiMap,
+            })
+        );
     };
 
     useEffect(() => {
@@ -207,11 +217,15 @@ DynamicElement.propTypes = {
     form: PropTypes.object.isRequired,
     values: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
     onKeysChanged: PropTypes.func,
+    cache: PropTypes.object,
+    dataApiMap: PropTypes.object,
 };
 
 DynamicElement.defaultProps = {
     values: undefined,
     onKeysChanged: undefined,
+    cache: {},
+    dataApiMap: {},
 };
 
 export default DynamicElement;

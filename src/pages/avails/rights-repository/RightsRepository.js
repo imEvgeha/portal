@@ -17,14 +17,7 @@ import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRe
 import {PRE_PLAN_TAB, RIGHTS_TAB, SELECTED_FOR_PLANNING_TAB, STATUS_TAB} from './constants';
 import './RightsRepository.scss';
 
-const RightsRepository = ({
-    columnDefs,
-    createRightMatchingColumnDefs,
-    mapping,
-    username,
-    onFiltersChange,
-    location,
-}) => {
+const RightsRepository = ({columnDefs, createRightMatchingColumnDefs, mapping, username, onFiltersChange}) => {
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [activeTabIndex, setActiveTabIndex] = useState(0);
     const [rightsRepoGridApi, setRightsRepoGridApi] = useState(undefined);
@@ -80,7 +73,6 @@ const RightsRepository = ({
             />
             {activeTab === RIGHTS_TAB && (
                 <RightsRepositoryTable
-                    location={location}
                     setRightsRepoGridApi={setRightsRepoGridApi}
                     setRightsRepoColumnApi={setRightsRepoColumnApi}
                 />
@@ -106,7 +98,6 @@ RightsRepository.propTypes = {
     mapping: PropTypes.array,
     username: PropTypes.string.isRequired,
     onFiltersChange: PropTypes.func,
-    location: PropTypes.object.isRequired,
 };
 
 RightsRepository.defaultProps = {

@@ -3,6 +3,7 @@ import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 // TODO: change it to dynamic imports when we remove legacy override style for ag grid
 // from RightsResultTable.scss to global.scss file
 // currently, scss for particular component (RightsResultTable) is using for global ag grid style override
+import {Outlet} from 'react-router-dom';
 import RightsCreateFromAttachment from '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment';
 // use webpack prefetch for legacy routes
 const RightCreate = React.lazy(() =>
@@ -43,59 +44,89 @@ const TitleMatchReview = React.lazy(() => TitleMatchReviewImport);
 
 export const AVAILS_PATH = '/avails';
 
-// TODO: create nested structure of routes
 const routes = [
+    {index: true, key: 'avails', element: canRender(AvailsView, 'read', 'Avail')},
     {
-        path: AVAILS_PATH,
-        component: canRender(AvailsView, 'read', 'Avail'),
+        path: 'rights',
+        element: Outlet,
+        children: [
+            {
+                path: 'create',
+                element: canRender(RightCreate, 'create', 'Avail'),
+            },
+            {
+                path: ':id',
+                element: canRender(RightDetails, 'update', 'Avail'),
+            },
+            {
+                path: ':rightId/title-matching',
+                element: Outlet,
+                children: [
+                    {
+                        index: true,
+                        key: 'rightId/title-matching',
+                        element: canRender(TitleMatchView, 'update', 'Metadata'),
+                    },
+                    {
+                        path: 'review',
+                        element: canRender(TitleMatchReview, 'update', 'Metadata'),
+                    },
+                ],
+            },
+        ],
     },
     {
-        path: `${AVAILS_PATH}/rights/create`,
-        component: canRender(RightCreate, 'create', 'Avail'),
+        path: 'history',
+        element: Outlet,
+        children: [
+            {
+                path: 'manual-rights-entry',
+                element: canRender(RightsCreateFromAttachment, 'create', 'Avail'),
+            },
+
+            {
+                path: ':availHistoryId/rights/create',
+                element: canRender(RightCreate, 'create', 'Avail'),
+            },
+            {
+                path: ':availHistoryIds/right-matching',
+                element: Outlet,
+                children: [
+                    {
+                        key: 'availHistoryIds/right-matching',
+                        index: true,
+                        element: canRender(RightMatchingView, 'update', 'Avail'),
+                    },
+                    {
+                        path: ':rightId',
+                        element: canRender(RightToMatchView, 'update', 'Avail'),
+                    },
+                    {
+                        path: ':rightId/match/:matchedRightIds',
+                        element: canRender(MatchRightView, 'update', 'Avail'),
+                    },
+                ],
+            },
+            {
+                path: ':availHistoryIds/manual-rights-entry',
+                element: canRender(RightsCreateFromAttachment, 'create', 'Avail'),
+            },
+        ],
     },
     {
-        path: `${AVAILS_PATH}/rights/:id`,
-        component: canRender(RightDetails, 'update', 'Avail'),
-    },
-    {
-        path: `${AVAILS_PATH}/rights/:rightId/title-matching`,
-        component: canRender(TitleMatchView, 'update', 'Metadata'),
-    },
-    {
-        path: `${AVAILS_PATH}/rights/:rightId/title-matching/review`,
-        component: canRender(TitleMatchReview, 'update', 'Metadata'),
-    },
-    {
-        path: `${AVAILS_PATH}/history/manual-rights-entry`,
-        component: canRender(RightsCreateFromAttachment, 'create', 'Avail'),
-    },
-    {
-        path: `${AVAILS_PATH}/history/:availHistoryIds/manual-rights-entry`,
-        component: canRender(RightsCreateFromAttachment, 'create', 'Avail'),
-    },
-    {
-        path: `${AVAILS_PATH}/history/:availHistoryId/rights/create`,
-        component: canRender(RightCreate, 'create', 'Avail'),
-    },
-    {
-        path: `${AVAILS_PATH}/history/:availHistoryIds/right-matching`,
-        component: canRender(RightMatchingView, 'update', 'Avail'),
-    },
-    {
-        path: `${AVAILS_PATH}/history/:availHistoryIds/right-matching/:rightId`,
-        component: canRender(RightToMatchView, 'update', 'Avail'),
-    },
-    {
-        path: `${AVAILS_PATH}/history/:availHistoryIds/right-matching/:rightId/match/:matchedRightIds`,
-        component: canRender(MatchRightView, 'update', 'Avail'),
-    },
-    {
-        path: `${AVAILS_PATH}/right-matching`,
-        component: canRender(RightToRightMatchMerge, 'update', 'Avail'),
-    },
-    {
-        path: `${AVAILS_PATH}/right-matching/preview`,
-        component: canRender(MatchRightViewMerge, 'update', 'Avail'),
+        path: 'right-matching',
+        element: Outlet,
+        children: [
+            {
+                key: 'right-matching',
+                index: true,
+                element: canRender(RightToRightMatchMerge, 'update', 'Avail'),
+            },
+            {
+                path: 'preview',
+                element: canRender(MatchRightViewMerge, 'update', 'Avail'),
+            },
+        ],
     },
 ];
 

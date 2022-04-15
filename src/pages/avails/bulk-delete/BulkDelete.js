@@ -4,6 +4,7 @@ import Button from '@atlaskit/button';
 import {SimpleTag as Tag} from '@atlaskit/tag';
 import {isEmpty} from 'lodash';
 import {connect} from 'react-redux';
+import {useParams} from 'react-router-dom';
 import RightsURL from '../../legacy/containers/avail/util/RightsURL';
 import {getLinkedRights, clearLinkedRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
@@ -14,6 +15,7 @@ import './BulkDelete.scss';
 
 export const BulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRights, clearLinkedRights}) => {
     const [tableData, setTableData] = useState({});
+    const routeParams = useParams();
 
     useEffect(() => {
         if (rights.length) {
@@ -31,7 +33,11 @@ export const BulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRights, cl
     }, [rightsWithDeps]);
 
     const renderLinkableRightId = id => (
-        <Button key={id} appearance="link" onClick={() => window.open(RightsURL.getRightUrl(id), '_blank')}>
+        <Button
+            key={id}
+            appearance="link"
+            onClick={() => window.open(RightsURL.getRightUrl(id, undefined, routeParams.realm), '_blank')}
+        >
             {id}
         </Button>
     );

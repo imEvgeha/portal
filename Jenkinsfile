@@ -1,36 +1,41 @@
 pipeline {
-    agent { label 'usla-jknd-p003' }
+    agent { label 'usla-jknd-p004' }
 
     stages {
-        stage('init') {
+        stage('Init') {
             steps {
                 script { imageTag = ''}
             }
         }
-        stage('build') {
+
+        stage('Build') {
             steps {
                 script {
                     tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
                     imageTag = "${tagTime}.${BUILD_NUMBER}"
                 }
-                sh 'pwd'
                 sh 'rm -Rf node_modules'
                 sh 'rm -Rf packages/ui/lib'
                 sh 'rm -Rf packages/utils/lib'
-                sh 'ls'
                 sh 'yarn'
                 sh 'yarn prebuild'
                 sh 'yarn build:prod'
+            }
+        }
+
+        stage('Test') {
+            steps {
                 sh 'yarn test'
             }
         }
-        stage('docker image') {
+
+        stage('Build Docker Image') {
             steps {
                 sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
                 sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
             }
         }
-        stage('kubernetes') {
+        stage('Kubernetes Deployment') {
             steps {
                 dir('kubernetes') {
                     git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'

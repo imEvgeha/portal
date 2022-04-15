@@ -5,12 +5,11 @@ import Pagination from '@atlaskit/pagination';
 import {QuickSearch} from '@atlaskit/quick-search';
 import {TextHeader} from '../../components/navigation/CustomNavigationElements';
 import {INPUT_TIMEOUT} from '../../constants/common-ui';
-import {configService} from './service/ConfigService';
+import {configService} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
 import {Can, can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import './ConfigUI.scss';
-import CreateEditConfig from '../../../settings/create-edit-config/CreateEditConfig';
 import {capitalize, cloneDeep} from 'lodash';
 import {store} from '../../../../index';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
@@ -303,31 +302,19 @@ export class EndpointContainer extends Component {
 
                     <div style={{clear: 'both'}} />
                 </TextHeader>
-                {window.location.pathname.includes('settings/v2') && this.state.showEditConfigModal ? (
-                    <CreateEditConfig
-                        visible={this.state.showEditConfigModal}
-                        schema={selectedApi && selectedApi.uiSchema}
-                        label={this.getLabel(selectedApi, this.state.currentRecord, false) || ''}
-                        displayName={selectedApi && selectedApi.displayName}
-                        values={this.getValues()}
-                        onSubmit={this.editRecord}
-                        onHide={this.onHideCreateEditConfigModal}
-                        submitLoading={this.state.submitLoading}
-                    />
-                ) : (
-                    !!this.state.currentRecord && (
-                        <DataBody>
-                            <CreateEditConfigForm
-                                onRemoveItem={this.onRemoveItem}
-                                schema={selectedApi && selectedApi.uiSchema}
-                                label={this.getLabel(selectedApi, this.state.currentRecord, false)}
-                                displayName={selectedApi && selectedApi.displayName}
-                                value={this.state.currentRecord}
-                                onSubmit={this.editRecord}
-                                onCancel={() => this.setState({currentRecord: null})}
-                            />
-                        </DataBody>
-                    )
+
+                {!!this.state.currentRecord && (
+                    <DataBody>
+                        <CreateEditConfigForm
+                            onRemoveItem={this.onRemoveItem}
+                            schema={selectedApi && selectedApi.uiSchema}
+                            label={this.getLabel(selectedApi, this.state.currentRecord, false)}
+                            displayName={selectedApi && selectedApi.displayName}
+                            value={this.state.currentRecord}
+                            onSubmit={this.editRecord}
+                            onCancel={() => this.setState({currentRecord: null})}
+                        />
+                    </DataBody>
                 )}
 
                 <DataBody>

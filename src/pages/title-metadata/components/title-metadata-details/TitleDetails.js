@@ -2,19 +2,22 @@ import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
+import PropagateButtonWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-person/elements/PropagateButtonWrapper/PropagateButtonWrapper';
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
+import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
+import {useLocation, useParams} from 'react-router-dom';
+import ShowAllEpisodes from '../../../../common/components/showAllEpisodes/ShowAllEpisodes';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
-import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
 import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
 import Loading from '../../../static/Loading';
-import {FIELDS_TO_REMOVE, MOVIDA, SYNC, VZ, MOVIDA_INTL} from '../../constants';
+import {FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SYNC, VZ} from '../../constants';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -47,8 +50,6 @@ import './TitleDetails.scss';
 import schema from './schema.json';
 
 const TitleDetails = ({
-    history,
-    match,
     title,
     externalIds,
     territoryMetadata,
@@ -83,6 +84,8 @@ const TitleDetails = ({
     const [MOVDisabled, setMOVDisabled] = useState(true);
     const [MovIntDisabled, setMovIntDisabled] = useState(true);
     const [episodesCount, setEpisodesCount] = useState('0');
+    const routeParams = useParams();
+    const location = useLocation();
 
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
     const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
@@ -96,20 +99,26 @@ const TitleDetails = ({
     }, []);
 
     useEffect(() => {
-        fetchConfigApiEndpoints();
-        const {params} = match || {};
-        const {id} = params;
-        if (id) {
-            const nexusTitle = isNexusTitle(id);
-            const isMgm = isMgmTitle(id);
-            getTitle({id, isMgm});
-            nexusTitle && !isMgm && getExternalIds({id});
-            getTerritoryMetadata({id, isMgm});
-            getEditorialMetadata({id, isMgm});
-            clearSeasonPersons();
-            getEpisodesCount(id).then(res => {
-                setEpisodesCount(res);
-            });
+        setRefresh(true);
+    }, [location]);
+
+    useEffect(() => {
+        if (refresh) {
+            fetchConfigApiEndpoints();
+            const {id} = routeParams;
+            if (id) {
+                const nexusTitle = isNexusTitle(id);
+                const isMgm = isMgmTitle(id);
+                getTitle({id, isMgm});
+                nexusTitle && !isMgm && getExternalIds({id});
+                getTerritoryMetadata({id, isMgm});
+                getEditorialMetadata({id, isMgm});
+                clearSeasonPersons();
+                getEpisodesCount(id).then(res => {
+                    setEpisodesCount(res);
+                    setRefresh(false);
+                });
+            }
         }
     }, [refresh]);
 
@@ -119,8 +128,7 @@ const TitleDetails = ({
         const isTitleUpdated = values.isUpdated;
         const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
         const isTmetUpdated = values.territorialMetadata.some(item => item.isUpdated);
-        const {params} = match || {};
-        const {id} = params;
+        const {id} = routeParams;
         // remove fields under arrayWithTabs
         const innerFields = getAllFields(fields, true);
         const allFields = getAllFields(fields, false);
@@ -209,8 +217,7 @@ const TitleDetails = ({
     };
 
     const syncPublishHandler = (externalSystem, buttonType) => {
-        const {params} = match || {};
-        const {id} = params;
+        const {id} = routeParams;
         if (buttonType === SYNC) {
             syncTitle({id, externalSystem});
         } else {
@@ -236,7 +243,7 @@ const TitleDetails = ({
     const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
     return (
         <div className={classnames(loading ? 'nexus-c-title-details__loading' : 'nexus-c-title-details')}>
-            <TitleDetailsHeader title={title} history={history} containerRef={containerRef} canEdit={canEdit} />
+            <TitleDetailsHeader title={title} containerRef={containerRef} canEdit={canEdit} />
             {loading ? (
                 <Loading />
             ) : (
@@ -257,6 +264,24 @@ const TitleDetails = ({
                         isSaving={isSaving}
                         setRefresh={setRefresh}
                         isTitlePage
+                        titleActionComponents={{
+                            propagate: (onClose, getValues, setFieldValue, key) => (
+                                <PropagateButtonWrapper
+                                    key={key}
+                                    onClose={onClose}
+                                    getValues={getValues}
+                                    setFieldValue={setFieldValue}
+                                    canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
+                                />
+                            ),
+                            showAllEpisodes: (onClose, getValues, setFieldValue, key) => (
+                                <ShowAllEpisodes
+                                    key={key}
+                                    contentType={get(extendTitleWithExternalIds(), 'contentType', '')}
+                                    titleId={get(extendTitleWithExternalIds(), 'id', '')}
+                                />
+                            ),
+                        }}
                     />
                     <NexusStickyFooter>
                         <NexusStickyFooter.LeftActions>
@@ -308,8 +333,6 @@ const TitleDetails = ({
 };
 
 TitleDetails.propTypes = {
-    history: PropTypes.object,
-    match: PropTypes.object,
     title: PropTypes.object,
     externalIds: PropTypes.array,
     territoryMetadata: PropTypes.array,
@@ -340,8 +363,6 @@ TitleDetails.propTypes = {
 };
 
 TitleDetails.defaultProps = {
-    history: {},
-    match: {},
     title: {},
     externalIds: [],
     isLoadingSelectValues: true,
