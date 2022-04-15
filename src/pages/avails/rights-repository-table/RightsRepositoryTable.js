@@ -419,6 +419,13 @@ const RightsRepositoryTable = ({
         setSelectedRights({[username]: payload});
     };
 
+    const onDataFetched = res => {
+        const {data} = res;
+        const selectedIds = getCurrentUserSelRights().map(x => x.id);
+        const refreshedSelectedRights = data.filter(x => selectedIds.includes(x.id));
+        setSelectedRights({[username]: refreshedSelectedRights});
+    };
+
     return (
         <div className="rights-table-wrapper">
             {!isEmpty(selectedIngest) && attachment && !showSelected && (
@@ -463,6 +470,7 @@ const RightsRepositoryTable = ({
                     initialFilter={rightsFilter.column}
                     params={rightsFilter.external}
                     multiSortKey="ctrl"
+                    setData={onDataFetched}
                     setDataLoading={() => null}
                     rowClassRules={{
                         'nexus-c-rights-repository__row': params =>
