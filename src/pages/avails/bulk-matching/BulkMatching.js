@@ -6,10 +6,7 @@ import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/n
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {
-    TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-    WARNING_TITLE,
-} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
 import {Button as PrimeReactButton} from 'primereact/button';
@@ -59,6 +56,7 @@ export const BulkMatching = ({
     duplicateList,
     selectedItems,
     getRestrictedIds,
+    onReloadData,
 }) => {
     const isMounted = useRef(true);
     const [selectedTableData, setSelectedTableData] = useState([]);
@@ -147,6 +145,7 @@ export const BulkMatching = ({
                         disableLoadingState();
                         dispatchSuccessToast(response.length);
                         setBonusRights(response);
+                        onReloadData();
                         if (isNewTitle || matchList[NEXUS]) {
                             setHeaderText(BONUS_RIGHTS_REVIEW_HEADER);
                             toggleRefreshGridData(true);
@@ -351,6 +350,7 @@ BulkMatching.propTypes = {
     getRestrictedIds: PropTypes.func,
     matchList: PropTypes.object,
     duplicateList: PropTypes.object,
+    onReloadData: PropTypes.func,
 };
 
 BulkMatching.defaultProps = {
@@ -368,6 +368,7 @@ BulkMatching.defaultProps = {
     getRestrictedIds: () => null,
     matchList: {},
     duplicateList: {},
+    onReloadData: () => null,
 };
 
 const mapDispatchToProps = dispatch => ({

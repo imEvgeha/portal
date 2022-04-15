@@ -106,6 +106,10 @@ const RightsRepositoryTable = ({
             : usersSelectedRights;
     };
 
+    useEffect(() => {
+        selectedRightsGridApi?.refreshCells();
+    }, [selectedRights]);
+
     // Auto Refresh/Update of the Grid after Right has been ingested into the system
     useEffect(() => {
         toggleRefreshGridData(true);
@@ -400,6 +404,14 @@ const RightsRepositoryTable = ({
         });
     };
 
+    const onReloadData = () => {
+        if (showSelected) {
+            rightsService
+                .advancedSearchV2([], 0, 100, [{sort: 'desc', colId: 'updatedAt'}], {isLocal: false})
+                .then(res => onDataFetched(res));
+        }
+    };
+
     const toolbarActions = () => (
         <SelectedRightsActions
             selectedRights={getCurrentUserSelRights()}
@@ -408,6 +420,7 @@ const RightsRepositoryTable = ({
             setPrePlanRepoRights={addRightsToPrePlan}
             singleRightMatch={singleRightMatch}
             setSingleRightMatch={setSingleRightMatch}
+            onReloadData={onReloadData}
         />
     );
 
