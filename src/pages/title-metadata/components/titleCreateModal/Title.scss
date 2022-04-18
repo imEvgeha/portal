@@ -11,15 +11,6 @@
     }
 }
 
-.nexus-c-title-create_error-msg {
-    color: #bf1650;
-}
-
-.nexus-c-title-create_error-msg::before {
-    display: inline;
-    content: '⚠ ';
-}
-
 .nexus-c-title-create_footer-container {
     display: flex;
     align-items: center;
@@ -34,11 +25,8 @@
     margin-left: 8px;
 }
 
-.nexus-c-title-create_checkbox-container .row:last-child {
-    margin-top: 8px;
-}
-
 .nexus-c-title-create_checkbox-wrapper {
     display: flex;
     align-items: baseline;
+    margin-bottom: 18px;
 }

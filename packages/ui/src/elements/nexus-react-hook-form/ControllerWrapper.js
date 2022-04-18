@@ -19,6 +19,17 @@ const ControllerWrapper = ({
     labelClassName,
     children,
 }) => {
+    const FieldTitle = () => (
+        <FieldLabel
+            htmlFor={inputName}
+            label={title}
+            additionalLabel={undefined}
+            isRequired={required}
+            className={isItCheckbox ? 'checkbox-label' : labelClassName}
+            shouldUpper={false}
+        />
+    );
+
     return (
         <div className={`nexus-c-title-create_input-container ${controllerClassName}`}>
             <Controller
@@ -33,16 +44,7 @@ const ControllerWrapper = ({
                 })}
                 render={({field}) => (
                     <div>
-                        {!isItCheckbox && (
-                            <FieldLabel
-                                htmlFor={inputName}
-                                label={title}
-                                additionalLabel={undefined}
-                                isRequired={required}
-                                className={labelClassName}
-                                shouldUpper={false}
-                            />
-                        )}
+                        {!isItCheckbox && <FieldTitle />}
                         <div className={!isEmpty(errors) ? 'p-field p-field-error' : 'p-field'}>
                             {React.Children.map(children, child => {
                                 if (React.isValidElement(child)) {
@@ -57,16 +59,7 @@ const ControllerWrapper = ({
                                 }
                                 return child;
                             })}
-                            {isItCheckbox && (
-                                <FieldLabel
-                                    htmlFor={inputName}
-                                    label={title}
-                                    additionalLabel={undefined}
-                                    isRequired={required}
-                                    className="checkbox-label"
-                                    shouldUpper={false}
-                                />
-                            )}
+                            {isItCheckbox && <FieldTitle />}
                             <FieldError error={errors} />
                         </div>
                     </div>
