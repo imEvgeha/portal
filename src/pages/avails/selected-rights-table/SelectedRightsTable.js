@@ -33,6 +33,7 @@ const SelectedRightsTable = ({
     const dispatch = useDispatch();
 
     useEffect(() => {
+        // Reselect rows that were already selected by user
         if (selectedRightsState.length && gridApi) {
             const selectedRightsIds = selectedRights.map(x => x.id);
             gridApi.forEachNode(node => {
@@ -42,6 +43,7 @@ const SelectedRightsTable = ({
     }, [selectedRightsState]);
 
     useEffect(() => {
+        // Merge displayed selected rights (api with already existing data) to refresh state of data
         setSelectedRightsState(prev =>
             prev.map(right => {
                 if (selectedRights.find(selR => selR.id === right.id)) {
