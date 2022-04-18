@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
 import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import {GlobalItem, GlobalNav, modeGenerator, ThemeProvider} from '@atlaskit/navigation-next';
@@ -15,6 +14,7 @@ import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {ComponentWrapper, navigationPrimaryItems} from './components/NavigationItems';
+import NexusUserAvatar from './nexus-user-avatar/NexusUserAvatar';
 import {backgroundColor, FEEDBACK_HEADER, SETTINGS} from './constants';
 
 const customThemeMode = modeGenerator({
@@ -69,11 +69,7 @@ const NexusNavigation = ({profileInfo, logout}) => {
     };
 
     const AccountDropdownItems = () => {
-        return (
-            <DropdownItemGroup title={`${profileInfo.firstName} ${profileInfo.lastName}` || 'Profile'}>
-                <DropdownItem onClick={logout}>Log out</DropdownItem>
-            </DropdownItemGroup>
-        );
+        return <NexusUserAvatar profileInfo={profileInfo} logout />;
     };
 
     return (
