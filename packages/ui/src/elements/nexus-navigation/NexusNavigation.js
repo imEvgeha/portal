@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Avatar from '@atlaskit/avatar';
 import {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
 import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
@@ -9,6 +8,7 @@ import {colors} from '@atlaskit/theme';
 import {logout} from '@vubiquity-nexus/portal-auth/authActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Can, can, idToAbilityNameMap} from '@vubiquity-nexus/portal-utils/lib/ability';
+import {Avatar} from 'primereact/avatar';
 import {connect} from 'react-redux';
 import {useNavigate, useLocation} from 'react-router-dom';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
@@ -70,7 +70,7 @@ const NexusNavigation = ({profileInfo, logout}) => {
 
     const AccountDropdownItems = () => {
         return (
-            <DropdownItemGroup title={profileInfo.username || 'Profile'}>
+            <DropdownItemGroup title={`${profileInfo.firstName} ${profileInfo.lastName}` || 'Profile'}>
                 <DropdownItem onClick={logout}>Log out</DropdownItem>
             </DropdownItemGroup>
         );
@@ -141,15 +141,8 @@ const NexusNavigation = ({profileInfo, logout}) => {
                         : []),
                     {
                         // eslint-disable-next-line react/prop-types
-                        component: ({onClick}) => {
-                            return (
-                                <Avatar
-                                    borderColor="transparent"
-                                    size="medium"
-                                    name={profileInfo.username}
-                                    onClick={onClick}
-                                />
-                            );
+                        component: () => {
+                            return <Avatar icon="pi pi-user" size="large" className="mr-2 nav-user" />;
                         },
                         dropdownItems: AccountDropdownItems,
                         id: 'profile',
