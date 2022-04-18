@@ -17,7 +17,6 @@ const CastCrew = ({
     castCrewConfig,
     language,
     setFieldValue,
-    setUpdatedCastCrew,
     setUpdate,
     isEditable,
     path,
@@ -64,10 +63,6 @@ const CastCrew = ({
     useEffect(() => {
         resetPersons();
     }, [personsWithLocalization]);
-
-    useEffect(() => {
-        setUpdatedCastCrew(persons.sort((a, b) => a.creditsOrder - b.creditsOrder));
-    }, []);
 
     const resetPersons = () => {
         setCast(
@@ -166,7 +161,6 @@ CastCrew.propTypes = {
     onChange: PropTypes.func,
     getValues: PropTypes.func,
     setFieldValue: PropTypes.func,
-    setUpdatedCastCrew: PropTypes.func,
     isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
     castCrewConfig: PropTypes.object,
@@ -183,7 +177,6 @@ CastCrew.defaultProps = {
     onChange: () => null,
     getValues: () => null,
     setFieldValue: () => null,
-    setUpdatedCastCrew: () => null,
     setUpdate: () => null,
     isVerticalLayout: false,
     searchPerson: undefined,
