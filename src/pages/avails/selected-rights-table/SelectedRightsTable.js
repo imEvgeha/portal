@@ -27,7 +27,7 @@ const SelectedRightsTable = ({
     selectedIngest,
     storeGridApi,
 }) => {
-    const [selectedRightsState] = useState([...selectedRights]);
+    const [selectedRightsState, setSelectedRightsState] = useState([...selectedRights]);
     const [gridApi, setGridApi] = useState(undefined);
     const [columnApiState, setColumnApiState] = useState(undefined);
     const dispatch = useDispatch();
@@ -39,6 +39,17 @@ const SelectedRightsTable = ({
                 node.setSelected(selectedRightsIds.includes(node.data.id), false, true);
             });
         }
+    }, [selectedRightsState]);
+
+    useEffect(() => {
+        setSelectedRightsState(prev =>
+            prev.map(right => {
+                if (selectedRights.find(selR => selR.id === right.id)) {
+                    return selectedRights.find(selR => selR.id === right.id);
+                }
+                return right;
+            })
+        );
     }, [selectedRights]);
 
     const setGridApis = (api, columnApi) => {
