@@ -1,12 +1,12 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {injectUser, logout} from '@vubiquity-nexus/portal-auth/authActions';
+import {injectUser, logout, setSelectedTenantInfo} from '@vubiquity-nexus/portal-auth/authActions';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@vubiquity-nexus/portal-auth/keycloak';
 import {getTokenDuration, getValidToken, wait} from '@vubiquity-nexus/portal-auth/utils';
 import {updateAbility} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {store} from '../index';
 import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions';
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
@@ -31,6 +31,7 @@ const AuthProvider = ({
     // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!configEndpointsLoading) {
@@ -55,8 +56,16 @@ const AuthProvider = ({
                     refreshToken: getValidToken(refreshToken, getConfig('keycloak.url')),
                 });
                 if (isAuthenticated) {
-                    const {realmAccess, token, refreshToken} = keycloak;
+                    const {realmAccess, resourceAccess, token, refreshToken} = keycloak;
                     const {roles} = realmAccess || {};
+
+                    const tmpK = {...keycloak};
+                    const permissions = resourceAccess?.['VU'].roles;
+                    const selectedTenant = {
+                        id: 'VU',
+                        permissions,
+                    };
+                    dispatch(setSelectedTenantInfo(selectedTenant));
                     updateAbility(roles);
                     addUser({token, refreshToken});
                     loadUserAccount();

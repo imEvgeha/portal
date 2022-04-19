@@ -51,7 +51,7 @@ export const routes = [
         element: NexusLayout,
         children: [
             {index: true, key: 'welcome', element: Welcome},
-            {path: 'avails', element: Outlet, children: [...availsRoutes]},
+            {path: 'avails', roles: 'test', element: Outlet, children: [...availsRoutes]},
             {path: 'metadata', element: Outlet, children: [...titleMetadataRoutes]},
             {path: 'dop-tasks', element: Outlet, children: [...dopTasksRoutes]},
             {path: 'servicing-orders', element: Outlet, children: [...servicingOrdersRoutes]},
