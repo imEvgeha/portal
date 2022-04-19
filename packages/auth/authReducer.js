@@ -24,6 +24,11 @@ const authReducer = (state = initialState, action) => {
                 ...payload,
                 isAuthenticated: true,
             };
+        case actionTypes.SET_SELECTED_TENANT_INFO:
+            return {
+                ...state,
+                selectedTenant: payload,
+            };
         default:
             return state;
     }
