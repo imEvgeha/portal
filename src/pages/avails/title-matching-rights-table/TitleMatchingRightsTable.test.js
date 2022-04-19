@@ -25,6 +25,5 @@ describe('TitleMatchingRightsTable', () => {
 
     it('should pass rowSelection prop to NexusGrid', () => {
         expect(TitlesTable.props().rowSelection).toEqual('single');
-        expect(TitlesTable.props().onSelectionChanged).toBeInstanceOf(Function);
     });
 });

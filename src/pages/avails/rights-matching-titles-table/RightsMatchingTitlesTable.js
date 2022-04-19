@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {getLinkableColumnDefs} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
@@ -33,6 +33,8 @@ const RightsMatchingTitlesTable = ({
     duplicateButton,
     onCellValueChanged,
 }) => {
+    const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
+
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => {
             const updatedColumnDef = {
@@ -56,7 +58,6 @@ const RightsMatchingTitlesTable = ({
             return updatedColumnDef;
         });
     };
-    const updatedColumns = updateColumnDefs(mappings);
 
     const onGridReady = ({type, api}) => {
         if (type === GRID_EVENTS.READY) {
@@ -65,8 +66,11 @@ const RightsMatchingTitlesTable = ({
         }
     };
 
-    const updatedColumnDefs = getLinkableColumnDefs(updatedColumns);
-    const repository = getRepositoryCell();
+    useEffect(() => {
+        const tmp = updateColumnDefs(mappings);
+        const updatedColumnDefs = getLinkableColumnDefs(tmp);
+        setTableColumnDefinitions([matchButton, duplicateButton, getRepositoryCell(), ...updatedColumnDefs]);
+    }, []);
 
     return (
         <div
@@ -77,7 +81,7 @@ const RightsMatchingTitlesTable = ({
         >
             <TitlesTable
                 className="nexus-c-rights-matching-titles-table"
-                columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
+                columnDefs={tableColumnDefinitions}
                 mapping={mappings}
                 onGridEvent={onGridReady}
                 initialFilter={{contentType}}
