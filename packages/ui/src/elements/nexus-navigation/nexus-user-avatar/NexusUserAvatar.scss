@@ -11,6 +11,13 @@
         }
     }
     .UserAvatarTenantsSelection {
+        .p-dropdown {
+            width: 14rem;
+        }
+
+        .tenant-item-value {
+            width: 17px;
+        }
     }
     .NexusUserAvatar .UserAvatarLogout .p-button.logout {
         background: linear-gradient(to left, var(--bluegray-700) 50%, var(--bluegray-800) 50%);

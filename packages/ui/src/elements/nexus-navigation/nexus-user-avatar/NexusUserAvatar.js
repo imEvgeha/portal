@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import LogoutIcon from '@vubiquity-nexus/portal-assets/logout.svg';
 import TenantIcon from '@vubiquity-nexus/portal-assets/tenant.svg';
 import {logout} from '@vubiquity-nexus/portal-auth/authActions';
+import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import {Button} from 'primereact/button';
 import {Divider} from 'primereact/divider';
 import {Dropdown} from 'primereact/dropdown';
@@ -17,11 +18,16 @@ import './NexusUserAvatar.scss';
  */
 const NexusUserAvatar = ({profileInfo, logout}) => {
     const [selectedTenant, setSelectedTenant] = useState(null);
+    const {resourceAccess} = keycloak;
 
+    // TODO: useEffect on init
     const tenants = [
-        {name: 'WB', code: 'WB'},
-        {name: 'MGM', code: 'MGM'},
-        {name: 'Vubiquity', code: 'VU'},
+        ...Object.entries(resourceAccess).map(client => {
+            return {
+                id: client[0],
+                permissions: [...client[1].roles],
+            };
+        }),
     ];
 
     /**
@@ -33,16 +39,9 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
     const selectedTenantTemplate = (option, props) => {
         if (option) {
             return (
-                <div className="country-item country-item-value">
-                    <img
-                        alt={option.name}
-                        src={TenantIcon}
-                        onError={e =>
-                            (e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png')
-                        }
-                        className={`flag flag-${option.code.toLowerCase()}`}
-                    />
-                    <div>{option.name}</div>
+                <div className="tenant-item tenant-item-value">
+                    <i className={`${TenantIcon} px-2`} />
+                    <div>{option.id}</div>
                 </div>
             );
         }
@@ -52,16 +51,9 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
 
     const tenantOptionTemplate = option => {
         return (
-            <div className="country-item">
-                <img
-                    alt={option.name}
-                    src={TenantIcon}
-                    onError={e =>
-                        (e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png')
-                    }
-                    className={`flag flag-${option.code.toLowerCase()}`}
-                />
-                <div>{option.name}</div>
+            <div className="tenant-item">
+                <i className={`${TenantIcon} px-2`} />
+                <div>{option.id}</div>
             </div>
         );
     };
@@ -84,7 +76,7 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
                     value={selectedTenant}
                     options={tenants}
                     onChange={e => onTenantChange(e.value)}
-                    optionLabel="name"
+                    optionLabel="id"
                     placeholder="Select a Tenant"
                     valueTemplate={selectedTenantTemplate}
                     itemTemplate={tenantOptionTemplate}

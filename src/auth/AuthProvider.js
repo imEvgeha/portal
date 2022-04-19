@@ -59,7 +59,6 @@ const AuthProvider = ({
                     const {realmAccess, resourceAccess, token, refreshToken} = keycloak;
                     const {roles} = realmAccess || {};
 
-                    const tmpK = {...keycloak};
                     const permissions = resourceAccess?.['VU'].roles;
                     const selectedTenant = {
                         id: 'VU',
