@@ -13,5 +13,13 @@
         "lodash": "4.x",
         "react-global-configuration": "1.x",
         "reselect": "4.x"
+    },
+    "files": [
+        "lib/"
+    ],
+    "scripts": {
+        "prepublish": "babel ./ -d lib",
+        "postpublish": "rm -r lib",
+        "build": "babel ./ -d lib"
     }
 }
