@@ -13,13 +13,13 @@ import './NexusTenantSelection.scss';
  * @returns Dropdown for tenant selection
  */
 const NexusTenantSelection = ({selectedTenant}) => {
-    const [userSelectedTenant, setUserSelectedTenant] = useState(selectedTenant);
+    // const [userSelectedTenant, setUserSelectedTenant] = useState(selectedTenant);
     const {resourceAccess} = keycloak;
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(setSelectedTenantInfo(userSelectedTenant));
-    }, [userSelectedTenant]);
+    // useEffect(() => {
+    //     dispatch(setSelectedTenantInfo(userSelectedTenant));
+    // }, [userSelectedTenant]);
 
     // TODO: useEffect on init
     const tenants = [
@@ -62,13 +62,13 @@ const NexusTenantSelection = ({selectedTenant}) => {
     };
 
     const onTenantChange = e => {
-        setUserSelectedTenant(e.value);
+        dispatch(setSelectedTenantInfo(e.value));
     };
 
     return (
         <div className="UserAvatarTenantsSelection">
             <Dropdown
-                value={userSelectedTenant}
+                value={selectedTenant}
                 options={tenants}
                 onChange={e => onTenantChange(e)}
                 optionLabel="id"
