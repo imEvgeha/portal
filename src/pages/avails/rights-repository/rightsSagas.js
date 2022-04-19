@@ -6,7 +6,7 @@ import {
     UPDATE_RIGHT_FAILED,
     UPDATE_RIGHT_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {getAuthConfig} from "@vubiquity-nexus/portal-utils/lib/config";
+import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {getLinkedToOriginalRightsV2, bulkDeleteRights} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import {history} from '../../../index';
@@ -210,7 +210,8 @@ export function* updateRight({payload}) {
             type: ADD_TOAST,
             payload: {
                 severity: ERROR_ICON,
-                detail: `${UPDATE_RIGHT_FAILED} Detail: ${error.message.message.slice(0, MAX_CHARS)}...`,
+                detail: `${UPDATE_RIGHT_FAILED} Detail: ${error.message.message.slice(0, MAX_CHARS)} 
+                 ${error.message.rightIDs ? `Right IDs: ${error.message.rightIDs.join(', ')}.` : ''}`,
             },
         });
     } finally {
