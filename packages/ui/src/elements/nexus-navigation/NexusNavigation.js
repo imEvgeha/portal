@@ -1,14 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
 import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import {GlobalItem, GlobalNav, modeGenerator, ThemeProvider} from '@atlaskit/navigation-next';
 import {colors} from '@atlaskit/theme';
-import {logout} from '@vubiquity-nexus/portal-auth/authActions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Can, can, idToAbilityNameMap} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {Avatar} from 'primereact/avatar';
-import {connect} from 'react-redux';
 import {useNavigate, useLocation} from 'react-router-dom';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
@@ -55,7 +52,7 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     );
 };
 
-const NexusNavigation = ({profileInfo, logout}) => {
+const NexusNavigation = () => {
     const [selectedItem, setSelectedItem] = useState('');
     const {openModal, closeModal} = useContext(NexusModalContext);
     const location = useLocation();
@@ -69,7 +66,7 @@ const NexusNavigation = ({profileInfo, logout}) => {
     };
 
     const AccountDropdownItems = () => {
-        return <NexusUserAvatar profileInfo={profileInfo} logout />;
+        return <NexusUserAvatar />;
     };
 
     return (
@@ -150,25 +147,4 @@ const NexusNavigation = ({profileInfo, logout}) => {
     );
 };
 
-NexusNavigation.propTypes = {
-    profileInfo: PropTypes.object,
-    logout: PropTypes.func,
-};
-
-NexusNavigation.defaultProps = {
-    profileInfo: {},
-    logout: () => null,
-};
-
-const mapStateToProps = ({auth}) => {
-    const {userAccount} = auth || {};
-    return {
-        profileInfo: userAccount,
-    };
-};
-
-const mapDispatchToProps = dispatch => ({
-    logout: payload => dispatch(logout(payload)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(NexusNavigation);
+export default NexusNavigation;
