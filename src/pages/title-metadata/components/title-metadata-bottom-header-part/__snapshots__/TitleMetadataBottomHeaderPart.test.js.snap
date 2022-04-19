@@ -96,11 +96,14 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
     setColumnApi={[Function]}
     setGridApi={[Function]}
   />
-  <Component
+  <TitleCreate
+    bulkTitleMatch={[Function]}
     display={false}
-    redirectToV2={true}
+    focusedRight={Object {}}
+    isItMatching={false}
+    onCloseModal={[Function]}
+    onSave={[Function]}
     tenantCode="vu"
-    toggle={[Function]}
   />
 </div>
 `;
