@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import LogoutIcon from '@vubiquity-nexus/portal-assets/logout.svg';
 import TenantIcon from '@vubiquity-nexus/portal-assets/tenant.svg';
-import {logout} from '@vubiquity-nexus/portal-auth/authActions';
+import {logout, setSelectedTenantInfo} from '@vubiquity-nexus/portal-auth/authActions';
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import {Button} from 'primereact/button';
 import {Divider} from 'primereact/divider';
 import {Dropdown} from 'primereact/dropdown';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
+
 import './NexusUserAvatar.scss';
 
 /**
@@ -16,18 +17,26 @@ import './NexusUserAvatar.scss';
  * @param {logout} Dispatch function to logout the user from session
  * @returns NexusUserAvatar
  */
-const NexusUserAvatar = ({profileInfo, logout}) => {
-    const [selectedTenant, setSelectedTenant] = useState(null);
+const NexusUserAvatar = ({profileInfo, logout, selectedTenant, packageJsonVersion}) => {
+    const [userSelectedTenant, setUserSelectedTenant] = useState(selectedTenant);
     const {resourceAccess} = keycloak;
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setSelectedTenantInfo(userSelectedTenant));
+    }, [userSelectedTenant]);
 
     // TODO: useEffect on init
     const tenants = [
-        ...Object.entries(resourceAccess).map(client => {
-            return {
-                id: client[0],
-                permissions: [...client[1].roles],
-            };
-        }),
+        ...Object.entries(resourceAccess)
+            // keycloak returns 'account' client by default
+            .filter(tenantClient => tenantClient[0] !== 'account')
+            .map(client => {
+                return {
+                    id: client[0],
+                    permissions: [...client[1].roles],
+                };
+            }),
     ];
 
     /**
@@ -39,9 +48,9 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
     const selectedTenantTemplate = (option, props) => {
         if (option) {
             return (
-                <div className="tenant-item tenant-item-value">
-                    <i className={`${TenantIcon} px-2`} />
-                    <div>{option.id}</div>
+                <div className="tenant-item">
+                    <TenantIcon className="tenantIcon" />
+                    <div className="tenantName">{option.id}</div>
                 </div>
             );
         }
@@ -52,14 +61,13 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
     const tenantOptionTemplate = option => {
         return (
             <div className="tenant-item">
-                <i className={`${TenantIcon} px-2`} />
-                <div>{option.id}</div>
+                <div className="tenantName">{option.id}</div>
             </div>
         );
     };
 
     const onTenantChange = e => {
-        setSelectedTenant(e.value);
+        setUserSelectedTenant(e.value);
     };
 
     return (
@@ -69,25 +77,25 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
                     {`${profileInfo.firstName} ${profileInfo.lastName}` || 'Profile'}
                 </div>
                 <div className="UserAvatarUsername">{`${profileInfo.username}`}</div>
+                <div className="ApplicationVersion">{`v${packageJsonVersion}`}</div>
             </div>
             <Divider />
             <div className="UserAvatarTenantsSelection">
                 <Dropdown
-                    value={selectedTenant}
+                    value={userSelectedTenant}
                     options={tenants}
-                    onChange={e => onTenantChange(e.value)}
+                    onChange={e => onTenantChange(e)}
                     optionLabel="id"
-                    placeholder="Select a Tenant"
+                    placeholder="Select Tenant"
                     valueTemplate={selectedTenantTemplate}
                     itemTemplate={tenantOptionTemplate}
                     dropdownIcon="pi pi-chevron-right"
-                    showOnFocus
                 />
             </div>
             <Divider />
             <div className="UserAvatarLogout">
                 <Button className="logout p-0" aria-label="LogOut" onClick={logout}>
-                    <i className={`${LogoutIcon} px-2`} />
+                    <LogoutIcon className="logoutIcon" />
                     <span className="px-3">Log Out</span>
                 </Button>
             </div>
@@ -98,17 +106,22 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
 NexusUserAvatar.propTypes = {
     profileInfo: PropTypes.object,
     logout: PropTypes.func,
+    selectedTenant: PropTypes.object,
+    packageJsonVersion: PropTypes.string,
 };
 
 NexusUserAvatar.defaultProps = {
     profileInfo: {},
+    selectedTenant: {},
     logout: () => null,
+    packageJsonVersion: '1.0.0',
 };
 
 const mapStateToProps = ({auth}) => {
-    const {userAccount} = auth || {};
+    const {userAccount, selectedTenant} = auth || {};
     return {
         profileInfo: userAccount,
+        selectedTenant,
     };
 };
 

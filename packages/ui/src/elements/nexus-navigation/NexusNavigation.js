@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import {GlobalItem, GlobalNav, modeGenerator, ThemeProvider} from '@atlaskit/navigation-next';
@@ -6,6 +6,7 @@ import {colors} from '@atlaskit/theme';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Can, can, idToAbilityNameMap} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {Avatar} from 'primereact/avatar';
+import {OverlayPanel} from 'primereact/overlaypanel';
 import {useNavigate, useLocation} from 'react-router-dom';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
@@ -54,6 +55,7 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
 
 const NexusNavigation = () => {
     const [selectedItem, setSelectedItem] = useState('');
+    const op = useRef(null);
     const {openModal, closeModal} = useContext(NexusModalContext);
     const location = useLocation();
     const navigate = useNavigate();
@@ -63,10 +65,6 @@ const NexusNavigation = () => {
     const handleClick = destination => {
         navigate(`${destination.toLowerCase()}`);
         setSelectedItem(destination);
-    };
-
-    const AccountDropdownItems = () => {
-        return <NexusUserAvatar />;
     };
 
     return (
@@ -133,11 +131,22 @@ const NexusNavigation = () => {
                           ]
                         : []),
                     {
-                        // eslint-disable-next-line react/prop-types
                         component: () => {
-                            return <Avatar icon="pi pi-user" size="large" className="mr-2 nav-user" />;
+                            return (
+                                <div>
+                                    <Avatar
+                                        icon="pi pi-user"
+                                        size="large"
+                                        className="mr-2 nav-user"
+                                        onClick={e => op.current.toggle(e)}
+                                    />
+
+                                    <OverlayPanel ref={op}>
+                                        <NexusUserAvatar />
+                                    </OverlayPanel>
+                                </div>
+                            );
                         },
-                        dropdownItems: AccountDropdownItems,
                         id: 'profile',
                         icon: null,
                     },
