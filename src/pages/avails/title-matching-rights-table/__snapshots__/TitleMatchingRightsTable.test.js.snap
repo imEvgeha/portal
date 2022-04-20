@@ -6,131 +6,7 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
 >
   <Connect(ComposedComponent)
     className="titleTableForMatching"
-    columnDefs={
-      Array [
-        Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": "/avails/rights/",
-            "newTab": true,
-          },
-          "colId": "id",
-          "field": "id",
-          "headerName": "Right ID",
-        },
-        Object {
-          "cellRenderer": "iconCellRenderer",
-          "cellRendererParams": Object {
-            "icon": "warning",
-            "tooltip": "Removed from Catalog",
-          },
-          "colId": "updatedCatalogReceived",
-          "field": "updatedCatalogReceived",
-          "headerName": "",
-          "width": 45,
-        },
-        Object {
-          "cellRenderer": "iconCellRenderer",
-          "cellRendererParams": Object {
-            "icon": "block",
-            "tooltip": "Withdrawn",
-            "valueToDisplay": "Withdrawn",
-          },
-          "colId": "rightStatus",
-          "field": "rightStatus",
-          "headerName": "",
-          "width": 45,
-        },
-        Object {
-          "cellRenderer": "loadingCellRenderer",
-          "colId": "title",
-          "field": "title",
-          "headerName": "Title",
-        },
-        Object {
-          "colId": "sourceRightId",
-          "field": "sourceRightId",
-          "headerName": "Source Right ID",
-        },
-        Object {
-          "colId": "bonusRight",
-          "field": "bonusRight",
-          "headerName": "Bonus Right",
-          "valueFormatter": [Function],
-        },
-        Object {
-          "colId": "coreTitleId",
-          "field": "coreTitleId",
-          "headerName": "Core Title Id",
-        },
-        Object {
-          "colId": "releaseYear",
-          "field": "releaseYear",
-          "headerName": "Release Year",
-          "width": 120,
-        },
-        Object {
-          "colId": "licensor",
-          "field": "licensor",
-          "headerName": "Licensor",
-          "width": 120,
-        },
-        Object {
-          "colId": "rightStatus",
-          "field": "rightStatus",
-          "headerName": "Right Status",
-          "width": 120,
-        },
-        Object {
-          "colId": "status",
-          "field": "status",
-          "headerName": "Status",
-          "width": 120,
-        },
-        Object {
-          "colId": "licenseType",
-          "field": "licenseType",
-          "headerName": "License Type",
-          "width": 120,
-        },
-        Object {
-          "colId": "territory",
-          "field": "territory",
-          "headerName": "Country",
-          "width": 120,
-        },
-        Object {
-          "colId": "contentType",
-          "field": "contentType",
-          "headerName": "Content Type",
-          "width": 120,
-        },
-        Object {
-          "colId": "seriesTitle",
-          "field": "seriesTitle",
-          "headerName": "Series Title",
-          "width": 120,
-        },
-        Object {
-          "colId": "seasonNumber",
-          "field": "seasonNumber",
-          "headerName": "Season Number",
-          "width": 150,
-        },
-        Object {
-          "colId": "episodeNumber",
-          "field": "episodeNumber",
-          "headerName": "Episode Number",
-          "width": 150,
-        },
-        Object {
-          "colId": "format",
-          "field": "format",
-          "headerName": "Format",
-          "width": 100,
-        },
-      ]
-    }
+    columnDefs={Array []}
     mapping={
       Array [
         Object {
@@ -261,7 +137,6 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
         },
       ]
     }
-    onSelectionChanged={[Function]}
     rowData={Array []}
     rowSelection="single"
   />

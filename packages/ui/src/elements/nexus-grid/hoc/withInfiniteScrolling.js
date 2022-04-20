@@ -128,6 +128,8 @@ const withInfiniteScrolling =
                 fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
                     .then(response => {
                         const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
+
+                        // Callback to return the response of tha API
                         props.setData(response);
                         if (typeof props.setTotalCount === 'function' && isMounted.current) {
                             props.setTotalCount(total);

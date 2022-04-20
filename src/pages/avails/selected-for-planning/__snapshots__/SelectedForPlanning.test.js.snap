@@ -23,7 +23,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         Object {
           "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
-            "link": "/avails/rights/",
+            "link": "avails/rights/",
             "newTab": true,
           },
           "colId": "rightID",
@@ -122,7 +122,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         Object {
           "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
-            "link": "/avails/rights/",
+            "link": "avails/rights/",
             "newTab": true,
           },
           "colId": "rightID",

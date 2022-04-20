@@ -5,21 +5,25 @@ import CustomIntlProvider from '@vubiquity-nexus/portal-ui/lib/elements/nexus-la
 import {NexusModalProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-overlay/NexusOverlay';
 import theme from '@vubiquity-nexus/portal-ui/lib/styled/theme';
+import {HistoryRouter as ConnectedRouter} from 'redux-first-history/rr6';
 import {PersistGate} from 'redux-persist/integration/react';
 import {ThemeProvider} from 'styled-components';
 import AuthProvider from './auth/AuthProvider';
+import {history} from './index';
 
 const AppProviders = ({children, persistor}) => (
     <CustomIntlProvider>
         <NexusDateTimeProvider>
             <NexusOverlayProvider>
-                <NexusModalProvider>
-                    <PersistGate loading={null} persistor={persistor}>
-                        <ThemeProvider theme={theme}>
-                            <AuthProvider>{children}</AuthProvider>
-                        </ThemeProvider>
-                    </PersistGate>
-                </NexusModalProvider>
+                <ConnectedRouter history={history}>
+                    <NexusModalProvider>
+                        <PersistGate loading={null} persistor={persistor}>
+                            <ThemeProvider theme={theme}>
+                                <AuthProvider>{children}</AuthProvider>
+                            </ThemeProvider>
+                        </PersistGate>
+                    </NexusModalProvider>
+                </ConnectedRouter>
             </NexusOverlayProvider>
         </NexusDateTimeProvider>
     </CustomIntlProvider>

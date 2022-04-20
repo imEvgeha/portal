@@ -426,7 +426,6 @@ export const renderNexusField = (
         path,
         setDisableSubmit,
         setUpdatedValues,
-        setUpdatedCastCrew,
         updatedValues,
         prefix,
         isTitlePage,
@@ -457,7 +456,6 @@ export const renderNexusField = (
             setDisableSubmit={setDisableSubmit}
             initialData={initialData}
             setUpdatedValues={setUpdatedValues}
-            setUpdatedCastCrew={setUpdatedCastCrew}
             isTitlePage={isTitlePage}
             setUpdate={setUpdate}
             allData={allData}
@@ -528,5 +526,5 @@ export const createUrl = (linkConfig, initialData) => {
     if (id.length) {
         return baseUrl + id[0].id;
     }
-    return '';
+    return initialData.id;
 };

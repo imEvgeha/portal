@@ -4,7 +4,7 @@ const columnDefinitions = [
         field: 'id',
         headerName: 'Right ID',
         cellRendererParams: {
-            link: '/avails/rights/',
+            link: 'avails/rights/',
             newTab: true,
         },
         cellRenderer: 'loadingCellRenderer',

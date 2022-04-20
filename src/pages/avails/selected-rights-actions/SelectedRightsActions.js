@@ -63,6 +63,7 @@ export const SelectedRightsActions = ({
     bulkDeleteRights,
     deletedRightsCount,
     username,
+    onReloadData,
 }) => {
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
@@ -445,6 +446,7 @@ export const SelectedRightsActions = ({
                     isBonusRight={isBonusRight}
                     setHeaderText={setHeaderText}
                     headerText={headerText}
+                    onReloadData={onReloadData}
                 />
             </NexusDrawer>
         </div>
@@ -467,6 +469,7 @@ SelectedRightsActions.propTypes = {
     bulkDeleteRights: PropTypes.func,
     deletedRightsCount: PropTypes.number,
     username: PropTypes.string,
+    onReloadData: PropTypes.func,
 };
 
 SelectedRightsActions.defaultProps = {
@@ -485,6 +488,7 @@ SelectedRightsActions.defaultProps = {
     toggleRefreshGridData: () => null,
     deletedRightsCount: 0,
     username: '',
+    onReloadData: () => null,
 };
 
 const mapStateToProps = () => {

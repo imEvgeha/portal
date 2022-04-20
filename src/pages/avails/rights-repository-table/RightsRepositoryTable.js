@@ -108,6 +108,10 @@ const RightsRepositoryTable = ({
             : usersSelectedRights;
     };
 
+    useEffect(() => {
+        selectedRightsGridApi?.refreshCells();
+    }, [selectedRights]);
+
     // Auto Refresh/Update of the Grid after Right has been ingested into the system
     useEffect(() => {
         toggleRefreshGridData(true);
@@ -402,6 +406,14 @@ const RightsRepositoryTable = ({
         });
     };
 
+    const onReloadData = () => {
+        if (showSelected) {
+            rightsService
+                .advancedSearchV2([], 0, 100, [{sort: 'desc', colId: 'updatedAt'}], {isLocal: false})
+                .then(res => onDataFetched(res));
+        }
+    };
+
     const toolbarActions = () => (
         <SelectedRightsActions
             selectedRights={getCurrentUserSelRights()}
@@ -410,6 +422,7 @@ const RightsRepositoryTable = ({
             setPrePlanRepoRights={addRightsToPrePlan}
             singleRightMatch={singleRightMatch}
             setSingleRightMatch={setSingleRightMatch}
+            onReloadData={onReloadData}
         />
     );
 
@@ -419,6 +432,13 @@ const RightsRepositoryTable = ({
     };
     const setSelectedRightsToolbar = payload => {
         setSelectedRights({[username]: payload});
+    };
+
+    const onDataFetched = res => {
+        const {data} = res;
+        const selectedIds = getCurrentUserSelRights().map(x => x.id);
+        const refreshedSelectedRights = data.filter(x => selectedIds.includes(x.id));
+        setSelectedRights({[username]: refreshedSelectedRights});
     };
 
     return (
@@ -465,6 +485,7 @@ const RightsRepositoryTable = ({
                     initialFilter={rightsFilter.column}
                     params={rightsFilter.external}
                     multiSortKey="ctrl"
+                    setData={onDataFetched}
                     setDataLoading={() => null}
                     rowClassRules={{
                         'nexus-c-rights-repository__row': params =>

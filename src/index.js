@@ -15,7 +15,6 @@ import 'primeicons/primeicons.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import '@vubiquity-nexus/portal-styles/scss/index.scss';
-import {HistoryRouter as ConnectedRouter} from 'redux-first-history/rr6';
 import AppProviders from './AppProviders';
 import Router from './Router';
 import NotFound from './pages/static/NotFound';
@@ -68,12 +67,10 @@ const App = () => (
     <AppContainer>
         <Provider store={store}>
             <AppProviders persistor={persistor}>
-                <ConnectedRouter history={history}>
-                    <ErrorBoundary>
-                        <Toast />
-                        <Router routes={routesWithTracking()} />
-                    </ErrorBoundary>
-                </ConnectedRouter>
+                <ErrorBoundary>
+                    <Toast />
+                    <Router routes={routesWithTracking()} />
+                </ErrorBoundary>
             </AppProviders>
         </Provider>
     </AppContainer>

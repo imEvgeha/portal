@@ -53,6 +53,7 @@ export const BulkMatching = ({
     duplicateList,
     selectedItems,
     getRestrictedIds,
+    onReloadData,
 }) => {
     const isMounted = useRef(true);
     const [showModal, setShowModal] = useState(false);
@@ -141,6 +142,7 @@ export const BulkMatching = ({
                         disableLoadingState();
                         dispatchSuccessToast(response.length);
                         setBonusRights(response);
+                        onReloadData();
                         if (isNewTitle || matchList[NEXUS]) {
                             setHeaderText(BONUS_RIGHTS_REVIEW_HEADER);
                             toggleRefreshGridData(true);
@@ -353,6 +355,7 @@ BulkMatching.propTypes = {
     getRestrictedIds: PropTypes.func,
     matchList: PropTypes.object,
     duplicateList: PropTypes.object,
+    onReloadData: PropTypes.func,
 };
 
 BulkMatching.defaultProps = {
@@ -370,6 +373,7 @@ BulkMatching.defaultProps = {
     getRestrictedIds: () => null,
     matchList: {},
     duplicateList: {},
+    onReloadData: () => null,
 };
 
 const mapDispatchToProps = dispatch => ({

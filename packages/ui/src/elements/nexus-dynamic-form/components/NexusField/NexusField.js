@@ -10,7 +10,13 @@ import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
-import {FIELD_REQUIRED, FIELDS_WITHOUT_LABEL, LOCALIZED_VALUE_NOT_DEFINED, VIEWS} from '../../constants';
+import {
+    FIELD_REQUIRED,
+    FIELDS_WITHOUT_LABEL,
+    LOCALIZED_VALUE_NOT_DEFINED,
+    VIEWS,
+    RIGHT_STATUS_CANCELED,
+} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {
     checkFieldDependencies,
@@ -76,7 +82,6 @@ const NexusField = ({
     showLocalized,
     localizationConfig,
     setUpdatedValues,
-    setUpdatedCastCrew,
     isClearable,
     isTitlePage,
     setUpdate,
@@ -325,7 +330,6 @@ const NexusField = ({
                         isEdit={true}
                         getValues={getValues}
                         setFieldValue={setFieldValue}
-                        setUpdatedCastCrew={setUpdatedCastCrew}
                         isVerticalLayout={isVerticalLayout}
                         isTitlePage={isTitlePage}
                         searchPerson={searchPerson}
@@ -501,6 +505,10 @@ const NexusField = ({
         }
     };
 
+    const validationName = type => {
+        return validation[0]?.name === type;
+    };
+
     return (
         <ErrorBoundary>
             <div
@@ -526,7 +534,9 @@ const NexusField = ({
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
-                                {error && renderError(FIELD_REQUIRED)}
+                                {error && validationName('areAllWithdrawn')
+                                    ? renderError(RIGHT_STATUS_CANCELED)
+                                    : error && renderError(FIELD_REQUIRED)}
                             </div>
                         </>
                     )}
@@ -580,7 +590,6 @@ NexusField.propTypes = {
     localizationConfig: PropTypes.object,
     getValues: PropTypes.func,
     setUpdatedValues: PropTypes.func,
-    setUpdatedCastCrew: PropTypes.func,
     setUpdate: PropTypes.func,
     allData: PropTypes.object,
     forMetadata: PropTypes.bool,
@@ -627,7 +636,6 @@ NexusField.defaultProps = {
     localizationConfig: undefined,
     getValues: () => null,
     setUpdatedValues: () => null,
-    setUpdatedCastCrew: () => null,
     setUpdate: () => null,
     allData: {},
     forMetadata: false,

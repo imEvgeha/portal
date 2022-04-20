@@ -87,7 +87,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   <Connect(TitleMetadataTable)
     catalogueOwner={
       Object {
-        "tenantCode": "vu",
+        "tenantCode": "VU",
       }
     }
     className="nexus-c-title-metadata__table"
@@ -103,7 +103,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     isItMatching={false}
     onCloseModal={[Function]}
     onSave={[Function]}
-    tenantCode="vu"
+    tenantCode="VU"
   />
 </div>
 `;

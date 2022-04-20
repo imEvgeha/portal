@@ -37,12 +37,16 @@ const RightDetailsHeader = ({title, right, containerRef}) => {
 
     const [isShrinked, setIsShrinked] = useState(false);
     const [selectedTab, setSelectedTab] = useState(tabs[0].title);
-    const previousUrl =
-        URL.getParamIfExists('back') === 'manual-rights-entry'
-            ? `/avails/history/${URL.getParamIfExists('availHistoryId')}/manual-rights-entry`
-            : '/avails';
-
     const routeParams = useParams();
+
+    const getPreviousUrl = () => {
+        const url =
+            URL.getParamIfExists('back') === 'manual-rights-entry'
+                ? `/${routeParams.realm}/avails/history/${URL.getParamIfExists('availHistoryId')}/manual-rights-entry`
+                : `/${routeParams.realm}/avails`;
+
+        return URL.keepEmbedded(url);
+    };
 
     useEffect(() => {
         const sectionIDs = tabs.map((_, index) => document.getElementById(`tab-${index}`));
@@ -146,7 +150,7 @@ const RightDetailsHeader = ({title, right, containerRef}) => {
             })}
         >
             <div className="nexus-c-right-details-header__top">
-                <RightDetailsTitle title={title} previousUrl={URL.keepEmbedded(previousUrl)} />
+                <RightDetailsTitle title={title} previousUrl={getPreviousUrl()} />
                 <RightDetailsTags right={right} />
             </div>
             <div

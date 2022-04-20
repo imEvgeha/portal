@@ -4,14 +4,24 @@ import {cloneDeep, get} from 'lodash';
 import {compose} from 'redux';
 import withColumnsResizing from '../../../../packages/ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import {NexusGrid} from '../../../ui/elements';
+import {mapColumnDefinitions} from '../rights-repository/util/utils';
 import mappings from './TitleMatchingRightsTable.json';
 import columnDefinitions from './columnDefinitions';
 import './TitleMatchingRightsTable.scss';
 
+const TitleTable = compose(withColumnsResizing())(NexusGrid);
+
 const TitleMatchingRightsTable = ({data}) => {
     const [tableData, setTableData] = useState([]);
+    const [tableColumnDefinitions, setTableColumnDefinitions] = useState([]);
 
-    const TitleTable = compose(withColumnsResizing())(NexusGrid);
+    useEffect(() => {
+        if (!tableColumnDefinitions.length) {
+            const colDefs = mapColumnDefinitions(columnDefinitions);
+
+            setTableColumnDefinitions(colDefs);
+        }
+    }, [columnDefinitions, mappings]);
 
     const flattenData = data => {
         return cloneDeep(data).filter(item => {
@@ -27,15 +37,9 @@ const TitleMatchingRightsTable = ({data}) => {
         });
     };
 
-    const handleRowSelectionChange = () => {
-        // get selected row data with api.getSelectedRows()
-    };
-
     useEffect(() => {
-        if (data.length) {
+        if (data.length && !tableData.length) {
             setTableData(flattenData(data));
-        } else {
-            setTableData([]);
         }
     }, [data]);
 
@@ -43,11 +47,10 @@ const TitleMatchingRightsTable = ({data}) => {
         <div className="nexus-c-title-matching-rights-table">
             <TitleTable
                 className="titleTableForMatching"
-                columnDefs={columnDefinitions}
+                columnDefs={tableColumnDefinitions}
                 mapping={mappings}
                 rowData={tableData}
                 rowSelection="single"
-                onSelectionChanged={handleRowSelectionChange}
             />
         </div>
     );

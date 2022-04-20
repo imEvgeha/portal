@@ -1,13 +1,11 @@
 import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Button} from 'primereact/button';
-import {Link, useNavigate, useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
 import {renderTitleName} from './utils/utils';
 
 const LoadingCellRenderer = params => {
-    const navigate = useNavigate();
     const routeParams = useParams();
 
     const {
@@ -77,18 +75,14 @@ const LoadingCellRenderer = params => {
         );
 
         if (getLink()) {
-            return newTab ? (
-                getLink().includes('http') ? (
-                    <a href={getLink()} target="_blank">
-                        {displayValue}
-                    </a>
-                ) : (
-                    <Link to={getLink()} target="_blank">
-                        {displayValue}
-                    </Link>
-                )
+            return getLink().includes('http') ? (
+                <a href={getLink()} target={newTab ? '_blank' : '_self'}>
+                    {displayValue}
+                </a>
             ) : (
-                <Button label={displayValue} onClick={() => navigate(getLink())} className="p-button-link" />
+                <Link to={getLink()} target={newTab ? '_blank' : '_self'}>
+                    {displayValue}
+                </Link>
             );
         }
 

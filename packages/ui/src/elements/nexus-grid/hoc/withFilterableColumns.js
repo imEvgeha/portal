@@ -399,7 +399,9 @@ const withFilterableColumns =
                 if (
                     events.includes(type) &&
                     typeof onGridEvent === 'function' &&
-                    (type === GRID_EVENTS.SELECTION_CHANGED || type === GRID_EVENTS.READY)
+                    (type === GRID_EVENTS.SELECTION_CHANGED ||
+                        type === GRID_EVENTS.READY ||
+                        type === GRID_EVENTS.FILTER_CHANGED)
                 ) {
                     props.onGridEvent(data);
                 }
@@ -407,6 +409,11 @@ const withFilterableColumns =
 
             // TODO: create separate file for filter API methods
             const applySetFilter = (field, values = []) => {
+                // clear filter
+                field.selectNothing();
+                // select values
+                values.forEach(value => field.selectValue(value));
+                // APPLY THE MODEL
                 field.applyModel();
             };
 

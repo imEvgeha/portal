@@ -144,6 +144,7 @@ Alternatively you may withdraw a right which can be re-instantiated later."
       data={Array []}
       headerText=""
       isBonusRight={false}
+      onReloadData={[Function]}
       setHeaderText={[Function]}
     />
   </NexusDrawer>
