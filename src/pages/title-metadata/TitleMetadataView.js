@@ -5,9 +5,9 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_METADATA} from '@vubiquity-nexus/portal-utils/lib/constants';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {isEmpty} from 'lodash';
+import {isEmpty, get} from 'lodash';
 import {TabMenu} from 'primereact/tabmenu';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {store} from '../../index';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
@@ -21,7 +21,7 @@ import UploadMetadataTable from './components/upload-metadata-table/UploadMetada
 import './TitleMetadataView.scss';
 import {setCurrentUserViewAction, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
-import {DEFAULT_CATALOGUE_OWNER, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
+import {TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
     toggleRefreshGridData,
@@ -33,9 +33,10 @@ export const TitleMetadataView = ({
     uploadMetadata,
     setCurrentUserView,
 }) => {
+    const selectedTenant = useSelector(state => get(state, 'auth.selectedTenant'));
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
-        tenantCode: DEFAULT_CATALOGUE_OWNER,
+        tenantCode: selectedTenant.id,
     });
 
     const [gridApi, setGridApi] = useState(null);
