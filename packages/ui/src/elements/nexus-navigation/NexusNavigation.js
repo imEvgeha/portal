@@ -8,7 +8,6 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {useLocation, useNavigate} from 'react-router-dom';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
-import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {ComponentWrapper, navigationPrimaryItems} from './components/NavigationItems';
 import NexusUser from './nexus-user/NexusUser';
 import {backgroundColor, FEEDBACK_HEADER, SETTINGS} from './constants';
@@ -22,19 +21,9 @@ const customThemeMode = modeGenerator({
 
 // eslint-disable-next-line react/prop-types
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
-    const Child = () =>
-        DropdownItems ? (
-            <GlobalItemWithDropdown
-                trigger={({isOpen}) => <GlobalItem isSelected={isOpen} {...itemProps} />}
-                items={<DropdownItems />}
-            />
-        ) : (
-            <GlobalItem {...itemProps} />
-        );
-
     return (
         <Restricted roles={itemProps.roles}>
-            <Child />
+            <GlobalItem {...itemProps} />
         </Restricted>
     );
 };
