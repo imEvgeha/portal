@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {get, sortBy, startCase} from 'lodash';
 import {Dropdown} from 'primereact/dropdown';
 import {MultiSelect} from 'primereact/multiselect';
-// import {getConfigApiValues} from '../../../../legacy/common/CommonConfigService';
+import {getConfigApiValues} from '../../../../../../../src/pages/legacy/common/CommonConfigService';
 
 const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApiMap}) => {
     const [options, setOptions] = useState([]);
@@ -12,7 +12,7 @@ const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi
         constructOptions();
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const subscription = form.watch((value, {name}) => {
             if (dataApiMap[elementSchema.name]) {
                 getDDValues(elementSchema, name);
@@ -32,8 +32,8 @@ const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi
         } else if (getDDValues !== undefined) {
             // licensees needs to be filtered by selected servicing region name
             getDDValues(elementSchema);
-        } else if (sourceUrl && cachedOption === undefined && !!dataApiMap[elementSchema.name]) {
-            cachedOption = dataApiMap[elementSchema.name](sourceUrl).then(response => {
+        } else if (sourceUrl && cachedOption === undefined) {
+            cachedOption = getConfigApiValues(sourceUrl, 0, 1000).then(response => {
                 cachedOption = response.data;
                 cache[sourceUrl] = response.data;
                 processOptions(response.data, elementSchema);
