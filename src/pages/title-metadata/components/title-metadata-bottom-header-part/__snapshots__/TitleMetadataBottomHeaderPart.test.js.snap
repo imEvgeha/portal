@@ -103,7 +103,7 @@ exports[`TitleMetadataBottomHeaderPart should match snapshot 1`] = `
     isItMatching={false}
     onCloseModal={[Function]}
     onSave={[Function]}
-    tenantCode="vu"
+    tenantCode="VU"
   />
 </div>
 `;
