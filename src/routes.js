@@ -31,16 +31,16 @@ const staticRoutes = [
         path: 'settings',
         element: Settings,
         roles: {
-            operation: 'AND',
-            values: ['configuration_viewer'],
+            operation: 'OR',
+            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
         },
     },
     {
         path: 'settings/v2',
         element: canRender(SettingsPage, 'read', 'Avail'),
         roles: {
-            operation: 'AND',
-            values: ['configuration_viewer'],
+            operation: 'OR',
+            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
         },
     },
     {
