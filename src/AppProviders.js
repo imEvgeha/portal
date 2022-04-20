@@ -14,10 +14,10 @@ import AuthProvider from './auth/AuthProvider';
 import {history} from './index';
 
 const AppProviders = ({children, persistor}) => {
-    const permissions = useSelector(state => state?.auth?.selectedTenant?.permissions || []);
+    const roles = useSelector(state => state?.auth?.selectedTenant?.roles || []);
 
     return (
-        <PermissionProvider permissions={permissions}>
+        <PermissionProvider roles={roles}>
             <CustomIntlProvider>
                 <NexusDateTimeProvider>
                     <NexusOverlayProvider>

@@ -58,12 +58,10 @@ const AuthProvider = ({
                 if (isAuthenticated) {
                     const {realmAccess, resourceAccess, token, refreshToken} = keycloak;
                     const {roles} = realmAccess || {};
-
-                    const tmpK = {...keycloak};
-                    const permissions = resourceAccess?.['VU'].roles;
+                    const tmpRoles = resourceAccess?.['Columbia'].roles;
                     const selectedTenant = {
                         id: 'VU',
-                        permissions,
+                        roles: tmpRoles,
                     };
                     dispatch(setSelectedTenantInfo(selectedTenant));
                     updateAbility(roles);

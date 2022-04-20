@@ -1,20 +1,24 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import isAllowed from './CheckPermissions';
+import isAllowed, {setRoles} from './CheckPermissions';
 import PermissionContext from './PermissionContext';
 
-const PermissionProvider = ({permissions, children}) => {
-    const isAllowedTo = permission => isAllowed(permissions, permission);
+const PermissionProvider = ({roles, children}) => {
+    useEffect(() => {
+        setRoles(roles);
+    }, [roles]);
+
+    const isAllowedTo = role => isAllowed(role);
 
     return <PermissionContext.Provider value={{isAllowedTo}}>{children}</PermissionContext.Provider>;
 };
 
 PermissionProvider.propTypes = {
-    permissions: PropTypes.array,
+    roles: PropTypes.array,
 };
 
 PermissionProvider.defaultProps = {
-    permissions: [],
+    roles: [],
 };
 
 export default PermissionProvider;

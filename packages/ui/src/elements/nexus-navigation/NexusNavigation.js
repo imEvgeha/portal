@@ -7,10 +7,10 @@ import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import {GlobalItem, GlobalNav, modeGenerator, ThemeProvider} from '@atlaskit/navigation-next';
 import {colors} from '@atlaskit/theme';
 import {logout} from '@vubiquity-nexus/portal-auth/authActions';
+import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Can, can, idToAbilityNameMap} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {connect} from 'react-redux';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
@@ -26,32 +26,20 @@ const customThemeMode = modeGenerator({
 
 // eslint-disable-next-line react/prop-types
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
-    const {id} = itemProps;
-    const abilityLocationName = idToAbilityNameMap[id];
-
-    if (DropdownItems) {
-        const ItemWithDropdown = () => {
-            return (
-                <GlobalItemWithDropdown
-                    trigger={({isOpen}) => <GlobalItem isSelected={isOpen} {...itemProps} />}
-                    items={<DropdownItems />}
-                />
-            );
-        };
-        return abilityLocationName ? (
-            <Can do="read" on={abilityLocationName}>
-                <ItemWithDropdown />
-            </Can>
+    const Child = () =>
+        DropdownItems ? (
+            <GlobalItemWithDropdown
+                trigger={({isOpen}) => <GlobalItem isSelected={isOpen} {...itemProps} />}
+                items={<DropdownItems />}
+            />
         ) : (
-            <ItemWithDropdown />
-        );
-    }
-    return abilityLocationName ? (
-        <Can do="read" on={abilityLocationName}>
             <GlobalItem {...itemProps} />
-        </Can>
-    ) : (
-        <GlobalItem {...itemProps} />
+        );
+
+    return (
+        <Restricted roles={itemProps.roles}>
+            <Child />
+        </Restricted>
     );
 };
 
@@ -101,44 +89,40 @@ const NexusNavigation = ({profileInfo, logout}) => {
                               },
                           ]
                         : []),
+                    {
+                        icon: EditorSettingsIcon,
+                        component: () => (
+                            <ComponentWrapper handleClick={() => handleClick(SETTINGS)} link={SETTINGS}>
+                                <EditorSettingsIcon />
+                            </ComponentWrapper>
+                        ),
+                        id: SETTINGS,
+                        tooltip: SETTINGS,
+                        isSelected: selectedItem === SETTINGS,
+                        onClick: () => handleClick(SETTINGS),
+                        roles: {
+                            operation: 'AND',
+                            values: ['configuration_viewer'],
+                        },
+                    },
 
-                    ...(can('read', 'ConfigUI')
-                        ? [
-                              {
-                                  icon: EditorSettingsIcon,
-                                  component: () => (
-                                      <ComponentWrapper handleClick={() => handleClick(SETTINGS)} link={SETTINGS}>
-                                          {' '}
-                                          <EditorSettingsIcon />{' '}
-                                      </ComponentWrapper>
-                                  ),
-                                  id: SETTINGS,
-                                  tooltip: SETTINGS,
-                                  isSelected: selectedItem === SETTINGS,
-                                  onClick: () => handleClick(SETTINGS),
-                              },
-                          ]
-                        : []),
+                    {
+                        icon: 'pi pi-sliders-h',
+                        component: () => (
+                            <ComponentWrapper handleClick={() => handleClick('settings/v2')} link="settings/v2">
+                                <i className="pi pi-sliders-h" />
+                            </ComponentWrapper>
+                        ),
+                        id: 'settings/v2',
+                        tooltip: 'Settings V2',
+                        isSelected: selectedItem === 'settings/v2',
+                        onClick: () => handleClick('settings/v2'),
+                        roles: {
+                            operation: 'AND',
+                            values: ['configuration_viewer'],
+                        },
+                    },
 
-                    ...(can('read', 'ConfigUI')
-                        ? [
-                              {
-                                  icon: 'pi pi-sliders-h',
-                                  component: () => (
-                                      <ComponentWrapper
-                                          handleClick={() => handleClick('settings/v2')}
-                                          link="settings/v2"
-                                      >
-                                          <i className="pi pi-sliders-h" />
-                                      </ComponentWrapper>
-                                  ),
-                                  id: 'settings/v2',
-                                  tooltip: 'Settings V2',
-                                  isSelected: selectedItem === 'settings/v2',
-                                  onClick: () => handleClick('settings/v2'),
-                              },
-                          ]
-                        : []),
                     {
                         // eslint-disable-next-line react/prop-types
                         component: ({onClick}) => {

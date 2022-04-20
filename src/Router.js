@@ -1,6 +1,6 @@
 import React, {Suspense} from 'react';
 import PropTypes from 'prop-types';
-import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
+import RestrictedRoute from '@vubiquity-nexus/portal-auth/lib/permissions/RestrictedRoute';
 import {isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {Route, Routes, useLocation} from 'react-router-dom';
@@ -26,11 +26,11 @@ const buildRoute = route => {
             exact
             {...rest}
             element={
-                <Restricted roles={roles}>
+                <RestrictedRoute roles={roles} isRoute>
                     <Suspense fallback={<Loading />}>
                         <Element />
                     </Suspense>
-                </Restricted>
+                </RestrictedRoute>
             }
         >
             {children?.map(childRoute => buildRoute(childRoute))}

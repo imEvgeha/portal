@@ -1,22 +1,23 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
+import Unauthorized from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/Unauthorized';
 import PermissionContext from './PermissionContext';
 
-const Restricted = ({roles, children}) => {
+const RestrictedRoute = ({roles, children}) => {
     const {isAllowedTo} = useContext(PermissionContext);
 
     if (isAllowedTo(roles)) {
         return <>{children}</>;
     }
-    return null;
+    return <Unauthorized />;
 };
 
-Restricted.propTypes = {
+RestrictedRoute.propTypes = {
     roles: PropTypes.array,
 };
 
-Restricted.defaultProps = {
+RestrictedRoute.defaultProps = {
     roles: undefined,
 };
 
-export default Restricted;
+export default RestrictedRoute;
