@@ -29,7 +29,7 @@ const NexusTenantSelection = ({selectedTenant}) => {
             .map(client => {
                 return {
                     id: client[0],
-                    permissions: [...client[1].roles],
+                    roles: [...client[1].roles],
                 };
             }),
     ];

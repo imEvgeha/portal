@@ -58,7 +58,8 @@ const AuthProvider = ({
                 if (isAuthenticated) {
                     const {realmAccess, resourceAccess, token, refreshToken} = keycloak;
                     const {roles} = realmAccess || {};
-                    const tmpRoles = resourceAccess?.['Columbia'].roles;
+                    const tmpRoles = resourceAccess?.['VU'].roles;
+                    // TODO: Default tenant for user is missing, defining staticly for now
                     const selectedTenant = {
                         id: 'VU',
                         roles: tmpRoles,
