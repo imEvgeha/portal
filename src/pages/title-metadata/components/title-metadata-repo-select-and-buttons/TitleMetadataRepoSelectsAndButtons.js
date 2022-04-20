@@ -8,7 +8,6 @@ import './TitleMetadataRepoSelectsAndButtons.scss';
 import {TABLE_LABELS, TABLE_OPTIONS} from '../../constants';
 import {setCurrentUserViewAction} from '../../titleMetadataActions';
 import {createCurrentUserViewSelector} from '../../titleMetadataSelectors';
-// import CatalogueOwner from '../catalogue-owner/CatalogueOwner';
 
 export const RepositorySelectsAndButtons = ({
     getNameOfCurrentTab,
@@ -20,7 +19,6 @@ export const RepositorySelectsAndButtons = ({
     applyPredefinedTableView,
     lastStoredFilter,
     setBlockLastFilter,
-    changeCatalogueOwner,
     setShowModal,
     currentUserView,
     setCurrentUserView,
@@ -44,7 +42,6 @@ export const RepositorySelectsAndButtons = ({
                         setCurrentUserView={payload => setCurrentUserView(payload)}
                         currentUserView={currentUserView}
                     />
-                    {/* <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} /> */}
                 </div>
                 <div className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1">
                     <Button
@@ -84,7 +81,6 @@ RepositorySelectsAndButtons.propTypes = {
     applyPredefinedTableView: PropTypes.func,
     lastStoredFilter: PropTypes.object,
     setBlockLastFilter: PropTypes.func,
-    changeCatalogueOwner: PropTypes.func,
     setShowModal: PropTypes.func,
     setCurrentUserView: PropTypes.func.isRequired,
     currentUserView: PropTypes.object.isRequired,
@@ -100,7 +96,6 @@ RepositorySelectsAndButtons.defaultProps = {
     applyPredefinedTableView: () => null,
     lastStoredFilter: {},
     setBlockLastFilter: () => null,
-    changeCatalogueOwner: () => null,
     setShowModal: () => null,
 };
 
