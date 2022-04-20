@@ -30,10 +30,18 @@ const staticRoutes = [
     {
         path: 'settings',
         element: Settings,
+        roles: {
+            operation: 'AND',
+            values: ['configuration_viewer'],
+        },
     },
     {
         path: 'settings/v2',
         element: canRender(SettingsPage, 'read', 'Avail'),
+        roles: {
+            operation: 'AND',
+            values: ['configuration_viewer'],
+        },
     },
     {
         path: '401',
@@ -51,11 +59,43 @@ export const routes = [
         element: NexusLayout,
         children: [
             {index: true, key: 'welcome', element: Welcome},
-            {path: 'avails', roles: 'test', element: Outlet, children: [...availsRoutes]},
-            {path: 'metadata', element: Outlet, children: [...titleMetadataRoutes]},
-            {path: 'dop-tasks', element: Outlet, children: [...dopTasksRoutes]},
+            {
+                path: 'avails',
+                roles: {
+                    operation: 'OR',
+                    values: ['avails_viewer', 'avails_user', 'avails_admin'],
+                },
+                element: Outlet,
+                children: [...availsRoutes],
+            },
+            {
+                path: 'metadata',
+                roles: {
+                    operation: 'OR',
+                    values: ['metadata_admin', 'metadata_user', 'metadata_viewer'],
+                },
+                element: Outlet,
+                children: [...titleMetadataRoutes],
+            },
+            {
+                path: 'dop-tasks',
+                roles: {
+                    operation: 'AND',
+                    values: ['dop_viewer'],
+                },
+                element: Outlet,
+                children: [...dopTasksRoutes],
+            },
             {path: 'servicing-orders', element: Outlet, children: [...servicingOrdersRoutes]},
-            {path: 'event-management', element: Outlet, children: [...eventManagementRoutes]},
+            {
+                path: 'event-management',
+                roles: {
+                    operation: 'OR',
+                    values: ['event_viewer', 'event_admin'],
+                },
+                element: Outlet,
+                children: [...eventManagementRoutes],
+            },
             ...manualTasksRoutes,
             ...staticRoutes,
         ],
