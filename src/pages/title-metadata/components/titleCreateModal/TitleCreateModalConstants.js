@@ -40,11 +40,11 @@ const CREATE_TITLE_RESTRICTIONS = {
 const TENANT_CODE_ITEMS = [
     {
         label: 'Vubiquity',
-        value: 'vu',
+        value: 'VU',
     },
     {
         label: 'MGM',
-        value: 'mgm',
+        value: 'MGM',
     },
 ];
 
