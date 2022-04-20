@@ -89,8 +89,8 @@ const NexusNavigation = () => {
                         isSelected: selectedItem === SETTINGS,
                         onClick: () => handleClick(SETTINGS),
                         roles: {
-                            operation: 'AND',
-                            values: ['configuration_viewer'],
+                            operation: 'OR',
+                            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
                         },
                     },
 
@@ -106,8 +106,8 @@ const NexusNavigation = () => {
                         isSelected: selectedItem === 'settings/v2',
                         onClick: () => handleClick('settings/v2'),
                         roles: {
-                            operation: 'AND',
-                            values: ['configuration_viewer'],
+                            operation: 'OR',
+                            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
                         },
                     },
 
