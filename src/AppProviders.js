@@ -6,15 +6,21 @@ import CustomIntlProvider from '@vubiquity-nexus/portal-ui/lib/elements/nexus-la
 import {NexusModalProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-overlay/NexusOverlay';
 import theme from '@vubiquity-nexus/portal-ui/lib/styled/theme';
+import {get} from 'lodash';
 import {useSelector} from 'react-redux';
 import {HistoryRouter as ConnectedRouter} from 'redux-first-history/rr6';
 import {PersistGate} from 'redux-persist/integration/react';
 import {ThemeProvider} from 'styled-components';
 import AuthProvider from './auth/AuthProvider';
+import {registerFetchInterceptor} from './util/httpInterceptor';
 import {history} from './index';
 
 const AppProviders = ({children, persistor}) => {
-    const roles = useSelector(state => state?.auth?.selectedTenant?.roles || []);
+    const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
+    const roles = get(selectedTenant, 'roles', []);
+
+    // register interceptor
+    registerFetchInterceptor(selectedTenant);
 
     return (
         <PermissionProvider roles={roles}>
