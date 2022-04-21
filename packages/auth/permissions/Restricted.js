@@ -12,7 +12,7 @@ const Restricted = ({roles, children}) => {
 };
 
 Restricted.propTypes = {
-    roles: PropTypes.array,
+    roles: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 };
 
 Restricted.defaultProps = {
