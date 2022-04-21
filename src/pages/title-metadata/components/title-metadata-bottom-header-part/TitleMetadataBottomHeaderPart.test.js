@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
-import {TitleMetadataView} from '../../TitleMetadataView';
+import {TitleMetadataBottomHeaderPart} from './TitleMetadataBottomHeaderPart';
 
 describe('TitleMetadataBottomHeaderPart', () => {
     let wrapper = null;
@@ -17,14 +17,10 @@ describe('TitleMetadataBottomHeaderPart', () => {
     });
 
     beforeAll(() => {
-        wrapper = shallow(<TitleMetadataView store={store} />);
+        wrapper = shallow(<TitleMetadataBottomHeaderPart store={store} />);
     });
 
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('should render bottom container for title metadata header', () => {
-        expect(wrapper.find('.nexus-c-title-metadata-header__bottom')).toHaveLength(1);
     });
 });

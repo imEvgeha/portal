@@ -1,5 +1,4 @@
 import React from 'react';
-import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 
 const ServicingOrdersViewImport = import(/* webpackChunkName: "ServicingOrdersView" */ './ServicingOrdersView');
 const ServicingOrdersView = React.lazy(() => ServicingOrdersViewImport);
@@ -10,11 +9,11 @@ const routes = [
     {
         index: true,
         key: 'servicing-orders',
-        element: canRender(ServicingOrdersView, 'read', 'ServicingOrders'),
+        element: ServicingOrdersView,
     },
     {
         path: ':id',
-        element: canRender(ServicingOrder, 'read', 'ServicingOrders'),
+        element: ServicingOrder,
     },
 ];
 
