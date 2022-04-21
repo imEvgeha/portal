@@ -1,12 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import isAllowed, {setRoles} from './CheckPermissions';
 import PermissionContext from './PermissionContext';
 
 const PermissionProvider = ({roles, children}) => {
-    useEffect(() => {
-        setRoles(roles);
-    }, [roles]);
+    setRoles(roles);
 
     const isAllowedTo = role => isAllowed(role);
 

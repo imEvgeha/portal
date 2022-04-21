@@ -9,7 +9,6 @@ import {isEmpty, get} from 'lodash';
 import {TabMenu} from 'primereact/tabmenu';
 import {connect, useSelector} from 'react-redux';
 import {store} from '../../index';
-import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // TODO:replace with new component
 import {resetTitle} from '../metadata/metadataActions';
 import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart';
@@ -17,6 +16,7 @@ import TitleMetadataHeader from './components/title-metadata-header/TitleMetadat
 import {failureDownloadDesc} from './components/title-metadata-header/components/constants';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
+import TitleCreate from './components/titleCreateModal/TitleCreateModal';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
 import './TitleMetadataView.scss';
 import {setCurrentUserViewAction, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
@@ -93,8 +93,12 @@ export const TitleMetadataView = ({
 
     const isItTheSameTab = tabName => getNameOfCurrentTab() === tabName;
 
-    const closeModalAndRefreshTable = () => {
+    const onCloseModal = () => {
         setShowModal(false);
+    };
+
+    const closeModalAndRefreshTable = () => {
+        onCloseModal();
         toggleRefreshGridData(true);
     };
 
@@ -219,9 +223,9 @@ export const TitleMetadataView = ({
             ) : null}
             <TitleCreate
                 display={showModal}
-                toggle={closeModalAndRefreshTable}
+                onSave={closeModalAndRefreshTable}
+                onCloseModal={onCloseModal}
                 tenantCode={catalogueOwner.tenantCode}
-                redirectToV2
             />
         </div>
     );

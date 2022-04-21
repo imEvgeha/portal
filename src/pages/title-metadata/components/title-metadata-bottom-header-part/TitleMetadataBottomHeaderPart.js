@@ -15,7 +15,7 @@ import {exportSyncLog} from '../../../sync-log/syncLogService';
 import {METADATA_UPLOAD_TITLE} from '../../constants';
 import CloudDownloadButton from '../title-metadata-header/components/CloudDownloadButton/CloudDownloadButton';
 
-const TitleMetadataBottomHeaderPart = ({
+export const TitleMetadataBottomHeaderPart = ({
     isItTheSameTab,
     uploadHandler,
     setDateFrom,

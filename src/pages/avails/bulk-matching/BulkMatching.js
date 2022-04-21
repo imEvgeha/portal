@@ -1,23 +1,20 @@
-import React, {useState, useEffect, useContext, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
-import {Button as PrimeReactButton} from 'primereact/button';
+import {Button} from 'primereact/button';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import TitleSystems from '../../metadata/constants/systems';
+import TitleCreate from '../../title-metadata/components/titleCreateModal/TitleCreateModal';
 import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
-import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
-import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
 import {
     getAffectedRights,
     getRestrictedTitles,
@@ -59,6 +56,7 @@ export const BulkMatching = ({
     onReloadData,
 }) => {
     const isMounted = useRef(true);
+    const [showModal, setShowModal] = useState(false);
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [existingBonusRights, setExistingBonusRights] = useState([]);
@@ -70,7 +68,6 @@ export const BulkMatching = ({
     const [combinedTitle, setCombinedTitle] = useState([]);
     const [bonusRights, setBonusRights] = useState([]);
 
-    const {openModal, closeModal} = useContext(NexusModalContext);
     const {NEXUS} = TitleSystems;
 
     const changeActiveTab = tab => tab !== activeTab && setActiveTab(tab);
@@ -206,6 +203,11 @@ export const BulkMatching = ({
         });
     };
 
+    const closeModalAndRefreshTable = () => {
+        setShowModal(false);
+        toggleRefreshGridData(true);
+    };
+
     const dispatchWarningToast = () => {
         const onOkayButtonClick = e => {
             e.preventDefault();
@@ -224,12 +226,12 @@ export const BulkMatching = ({
             content: (
                 <ToastBody summary={WARNING_TITLE} detail={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} severity="warn">
                     <div className="d-flex align-items-center">
-                        <PrimeReactButton
+                        <Button
                             label="Cancel"
                             className="p-button-link p-toast-left-button"
                             onClick={onCancelButtonClick}
                         />
-                        <PrimeReactButton
+                        <Button
                             label="Continue"
                             className="p-button-link p-toast-right-button"
                             onClick={onOkayButtonClick}
@@ -246,15 +248,8 @@ export const BulkMatching = ({
         closeDrawer();
     };
 
-    const showModal = () => {
-        openModal(
-            <CreateTitleForm
-                close={closeModal}
-                bulkTitleMatch={bulkTitleMatch}
-                focusedRight={{contentType: get(selectedTableData, '[0].contentType', '')}}
-            />,
-            {title: NewTitleConstants.NEW_TITLE_MODAL_TITLE}
-        );
+    const handleShowModal = () => {
+        setShowModal(true);
     };
 
     const getRightsTableData = () => {
@@ -282,22 +277,24 @@ export const BulkMatching = ({
                         isBonusRight={isBonusRight}
                         isNewTitleDisabled={isDisabled}
                         selectedRights={selectedTableData.length}
-                        showModal={showModal}
+                        showModal={handleShowModal}
                     />
                     <TitleMatchingRightsTable data={getRightsTableData()} />
                     <SectionMessage>
-                        {TITLE_MATCHING_MSG}
-                        <Button
-                            spacing="none"
-                            appearance="link"
-                            onClick={showModal}
-                            isDisabled={isMatchAndCreateLoading || isMatchLoading}
-                        >
-                            New Title
-                        </Button>
-                        {hasExistingCoreTitleIds && (
-                            <div className="nexus-c-bulk-matching__warning">{EXISTING_CORE_TITLE_ID_WARNING}</div>
-                        )}
+                        <div className="nexus-c-bulk-matching__message">
+                            {TITLE_MATCHING_MSG}
+                            <Button
+                                label="New Title"
+                                spacing="none"
+                                appearance="link"
+                                onClick={handleShowModal}
+                                disabled={isMatchAndCreateLoading || isMatchLoading}
+                                className="p-button-link nexus-c-bulk-matching__new-title-button"
+                            />
+                            {hasExistingCoreTitleIds && (
+                                <div className="nexus-c-bulk-matching__warning">{EXISTING_CORE_TITLE_ID_WARNING}</div>
+                            )}
+                        </div>
                     </SectionMessage>
                     <TitlesSection
                         onMatchAndCreate={onMatchAndCreate}
@@ -330,6 +327,14 @@ export const BulkMatching = ({
                     existingBonusRights={existingBonusRights}
                 />
             )}
+            <TitleCreate
+                display={showModal}
+                onSave={closeModalAndRefreshTable}
+                onCloseModal={() => setShowModal(false)}
+                isItMatching={true}
+                bulkTitleMatch={bulkTitleMatch}
+                focusedRight={{contentType: get(selectedTableData, '[0].contentType', '')}}
+            />
         </div>
     );
 };

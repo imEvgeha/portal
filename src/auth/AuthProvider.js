@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {injectUser, logout, setSelectedTenantInfo} from '@vubiquity-nexus/portal-auth/authActions';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@vubiquity-nexus/portal-auth/keycloak';
 import {getTokenDuration, getValidToken, wait} from '@vubiquity-nexus/portal-auth/utils';
-import {updateAbility} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
 import {connect, useDispatch} from 'react-redux';
@@ -56,8 +55,7 @@ const AuthProvider = ({
                     refreshToken: getValidToken(refreshToken, getConfig('keycloak.url')),
                 });
                 if (isAuthenticated) {
-                    const {realmAccess, resourceAccess, token, refreshToken} = keycloak;
-                    const {roles} = realmAccess || {};
+                    const {resourceAccess, token, refreshToken} = keycloak;
                     const tmpRoles = resourceAccess?.['VU'].roles;
                     // TODO: Default tenant for user is missing, defining staticly for now
                     const selectedTenant = {
@@ -65,7 +63,6 @@ const AuthProvider = ({
                         roles: tmpRoles,
                     };
                     dispatch(setSelectedTenantInfo(selectedTenant));
-                    updateAbility(roles);
                     addUser({token, refreshToken});
                     loadUserAccount();
                     loadProfileInfo();

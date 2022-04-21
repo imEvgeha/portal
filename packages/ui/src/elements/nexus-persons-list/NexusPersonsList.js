@@ -131,9 +131,9 @@ const NexusPersonsList = ({
     };
 
     const removePerson = person => {
-        const updatedPersons = persons.filter(entry => {
-            return entry.id !== person.id || entry.personType !== person.personType;
-        });
+        const updatedPersons = persons;
+
+        updatedPersons.splice(person, 1);
 
         const isCast = uiConfig.type === CAST;
         updatedPersons.forEach((person, index) => {

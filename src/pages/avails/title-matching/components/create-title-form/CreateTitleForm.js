@@ -16,7 +16,7 @@ import './CreateTitleForm.scss';
 import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
 import {titleService} from '../../../../legacy/containers/metadata/service/TitleService';
 import {EPISODE, EVENT, SEASON, SPECIAL, SPORTS} from '../../../../metadata/constants/contentType';
-import constants from './CreateTitleFormConstants';
+import constants from '../../../../title-metadata/components/titleCreateModal/TitleCreateModalConstants';
 
 const {NEW_TITLE_LABEL_CANCEL, NEW_TITLE_LABEL_SUBMIT, getTitleFormSchema} = constants;
 

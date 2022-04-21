@@ -8,11 +8,12 @@ import {INPUT_TIMEOUT} from '../../constants/common-ui';
 import {configService} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
-import {Can, can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import './ConfigUI.scss';
 import {capitalize, cloneDeep} from 'lodash';
 import {store} from '../../../../index';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import isAllowed from '@vubiquity-nexus/portal-auth/lib/permissions/CheckPermissions';
+import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
 
 const DataContainer = styled.div`
     width: 65%;
@@ -276,8 +277,14 @@ export class EndpointContainer extends Component {
 
     render() {
         const {selectedApi} = this.props;
-        const canUpdate = can('update', 'ConfigUI');
-        const canCreate = can('create', 'ConfigUI');
+        const canUpdate = isAllowed({
+            operation: 'OR',
+            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
+        });
+        const canCreate = isAllowed({
+            operation: 'OR',
+            values: ['configuration_user', 'configuration_admin'],
+        });
 
         return (
             <DataContainer>
@@ -345,7 +352,13 @@ export class EndpointContainer extends Component {
                                             ) : (
                                                 <span className="text-truncate">{label}</span>
                                             )}
-                                            <Can I="delete" a="ConfigUI">
+                                            <Restricted
+                                                roles={{
+                                                    operation: 'AND',
+                                                    values: ['configuration_admin'],
+                                                }}
+                                            >
+                                                {' '}
                                                 <i
                                                     className="pi pi-times"
                                                     style={{
@@ -357,7 +370,7 @@ export class EndpointContainer extends Component {
                                                     }}
                                                     onClick={() => this.onRemoveItem(item)}
                                                 />
-                                            </Can>
+                                            </Restricted>
                                         </ListItem>
                                     );
                                 }

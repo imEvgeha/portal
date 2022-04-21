@@ -4,6 +4,10 @@
 
 .nexus-c-toast__container {
     flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
     .nexus-c-toast__summary-title {
         font-size: 13px;
         font-weight: bold;

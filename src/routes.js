@@ -1,6 +1,5 @@
 import React from 'react';
 import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
-import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {Outlet} from 'react-router-dom';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
@@ -37,7 +36,7 @@ const staticRoutes = [
     },
     {
         path: 'settings/v2',
-        element: canRender(SettingsPage, 'read', 'Avail'),
+        element: SettingsPage,
         roles: {
             operation: 'OR',
             values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],

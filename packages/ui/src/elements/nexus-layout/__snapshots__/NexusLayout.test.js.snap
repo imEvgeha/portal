@@ -12,7 +12,7 @@ exports[`NexusLayout should match snapshot 1`] = `
   <IfEmbedded
     value={false}
   >
-    <Connect(NexusNavigation) />
+    <NexusNavigation />
   </IfEmbedded>
   <div
     className="nexus-c-app-layout__main"
