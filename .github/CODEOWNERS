@@ -27,8 +27,8 @@
 # In this example, @Nexus/portal-ui-maintainers owns any files in the src folder
 # directory at the root of the repository and any of its
 # subdirectories.
- /webpack/ @mcharalambous @pdemetriou
- /packages/ @mcharalambous @pdemetriou @mompasiis
+ /webpack/ @mcharalambous @pdemetriou @anikolaou
+ /packages/ @mcharalambous @pdemetriou @mompasiis @anikolaou
  /.vscode/ @mcharalambous
 
 # The `docs/*` pattern will match files like

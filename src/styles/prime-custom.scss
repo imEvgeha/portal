@@ -164,6 +164,14 @@ $element-color-orange-80: palette(orange, 80);
             }
         }
 
+        .p-button-icon {
+            width: 16px;
+            height: 16px;
+            margin: 0 4px;
+            fill: palette(black, 55);
+            color: palette(black, 55);
+        }
+
         svg {
             width: 16px;
             height: 16px;
@@ -773,6 +781,11 @@ $element-color-orange-80: palette(orange, 80);
             border-radius: 5px;
         }
     }
+}
+
+.checkbox-label {
+    margin-left: 5px;
+    display: inline-block;
 }
 
 // Checkbox

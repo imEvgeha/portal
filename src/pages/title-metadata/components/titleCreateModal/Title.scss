@@ -1,0 +1,32 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
+.lgModal {
+    min-width: 90%;
+}
+
+.nx-stylish.list-group {
+    .alert {
+        @include margin(0, 0, 0, 0);
+    }
+}
+
+.nexus-c-title-create_footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .nexus-c-title-create_footer-buttons-container {
+        display: flex;
+    }
+}
+
+.nexus-c-title-create_checkbox-label {
+    margin-left: 8px;
+}
+
+.nexus-c-title-create_checkbox-wrapper {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 18px;
+}

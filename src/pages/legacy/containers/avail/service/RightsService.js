@@ -100,7 +100,13 @@ const parseAdvancedFilter = function (searchCriteria) {
 
     for (let key in searchCriteria) {
         if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-            let value = searchCriteria[key];
+            let value;
+
+            searchCriteria[key]?.values
+                ? (value = searchCriteria[key]?.values.toString())
+                : searchCriteria[key]?.filter
+                ? (value = searchCriteria[key]?.filter)
+                : (value = searchCriteria[key]);
 
             // TODO: temporary workaround for territory field (BE doesn't filter items via 'territory=CA', etc.)
             if (key === 'territory') {
