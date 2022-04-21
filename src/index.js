@@ -44,11 +44,11 @@ const setEnvConfiguration = async env => {
         default:
             config = '/config.json';
     }
-    await loadConfig(config);
 
     setConfig({portalVersion});
     setConfig(defaultConfiguration);
 
+    await loadConfig(config);
     return new Promise(resolve => {
         resolve();
     });
