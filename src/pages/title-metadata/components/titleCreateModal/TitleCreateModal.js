@@ -45,12 +45,12 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
     } = useForm({defaultValues: {catalogueOwner: tenantCode}, mode: 'all', reValidateMode: 'onChange'});
     const currentValues = useWatch({control});
     const routeParams = useParams();
-    const tenantCodeItems = [
-        {
-            label: tenantCode === 'vu' ? 'Vubiquity' : 'MGM',
-            value: tenantCode,
-        },
-    ];
+    // const tenantCodeItems = [
+    //     {
+    //         label: tenantCode === 'vu' ? 'Vubiquity' : 'MGM',
+    //         value: tenantCode,
+    //     },
+    // ];
 
     const toggle = () => {
         onSave();
@@ -473,7 +473,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                             </div>
                         </div>
 
-                        {tenantCode && !isItMatching && (
+                        {/* {tenantCode && !isItMatching && (
                             <div className="row">
                                 <div className="col">
                                     <ControllerWrapper
@@ -496,7 +496,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                                     </ControllerWrapper>
                                 </div>
                             </div>
-                        )}
+                        )} */}
                         {isItMatching ? null : renderSyncCheckBoxes()}
                     </div>
                 </div>

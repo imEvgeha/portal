@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LogoutIcon from '@vubiquity-nexus/portal-assets/logout.svg';
 import {logout} from '@vubiquity-nexus/portal-auth/authActions';
+import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {Button} from 'primereact/button';
 import {Divider} from 'primereact/divider';
 import {connect} from 'react-redux';
@@ -15,7 +16,7 @@ import './NexusUserAvatar.scss';
  * @param {logout} Dispatch function to logout the user from session
  * @returns NexusUserAvatar
  */
-const NexusUserAvatar = ({profileInfo, logout, packageJsonVersion}) => {
+const NexusUserAvatar = ({profileInfo, logout}) => {
     /**
      *
      * @returns Render Header of Avatar
@@ -27,7 +28,7 @@ const NexusUserAvatar = ({profileInfo, logout, packageJsonVersion}) => {
                     {`${profileInfo.firstName} ${profileInfo.lastName}` || 'Profile'}
                 </div>
                 <div className="UserAvatarUsername">{`${profileInfo.username}`}</div>
-                <div className="ApplicationVersion">{`v${packageJsonVersion}`}</div>
+                <div className="ApplicationVersion">{`v${getConfig('portalVersion')}`}</div>
             </div>
         );
     };
@@ -69,13 +70,11 @@ const NexusUserAvatar = ({profileInfo, logout, packageJsonVersion}) => {
 NexusUserAvatar.propTypes = {
     profileInfo: PropTypes.object,
     logout: PropTypes.func,
-    packageJsonVersion: PropTypes.string,
 };
 
 NexusUserAvatar.defaultProps = {
     profileInfo: {},
     logout: () => null,
-    packageJsonVersion: '1.0.0',
 };
 
 const mapStateToProps = ({auth}) => {

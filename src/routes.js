@@ -52,9 +52,6 @@ const staticRoutes = [
     },
 ];
 
-
-
-
 export const routes = [
     {
         path: ':realm',
