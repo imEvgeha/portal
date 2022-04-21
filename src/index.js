@@ -4,7 +4,7 @@ import 'regenerator-runtime/runtime';
 import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
 import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
 import Toast from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotification';
-import {getAuthConfig, loadConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getAuthConfig, loadConfig, setConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {LicenseManager} from 'ag-grid-enterprise';
 import {render} from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
@@ -15,8 +15,10 @@ import 'primeicons/primeicons.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import '@vubiquity-nexus/portal-styles/scss/index.scss';
+import packageJson from '../package.json';
 import AppProviders from './AppProviders';
 import Router from './Router';
+import {defaultConfiguration} from './config';
 import NotFound from './pages/static/NotFound';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
@@ -32,8 +34,9 @@ const AG_GRID_LICENSE_KEY =
     'CompanyName=QBS Software Ltd_on_behalf_of_VUBIQUITY MANAGEMENT LIMITED,LicensedGroup=Multi,LicenseType=MultipleApplications,LicensedConcurrentDeveloperCount=4,LicensedProductionInstancesCount=0,AssetReference=AG-019524,ExpiryDate=11_November_2022_[v2]_MTY2ODEyNDgwMDAwMA==9e3648df22b0693cd75412f61e4125f1';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
-const setEnvConfiguration = env => {
+const setEnvConfiguration = async env => {
     let config = '/config.json';
+    const {version: portalVersion} = packageJson;
     switch (env) {
         case 'qa':
             config = '/configQA.json';
@@ -41,7 +44,14 @@ const setEnvConfiguration = env => {
         default:
             config = '/config.json';
     }
-    return loadConfig(config);
+    await loadConfig(config);
+
+    setConfig({portalVersion});
+    setConfig(defaultConfiguration);
+
+    return new Promise(resolve => {
+        resolve();
+    });
 };
 
 // setEnvConfiguration('qa')
