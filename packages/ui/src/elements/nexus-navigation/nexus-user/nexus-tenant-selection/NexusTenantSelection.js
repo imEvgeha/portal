@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TenantIcon from '@vubiquity-nexus/portal-assets/tenant.svg';
 import {setSelectedTenantInfo} from '@vubiquity-nexus/portal-auth/authActions';
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import {Dropdown} from 'primereact/dropdown';
 import {connect, useDispatch} from 'react-redux';
-
 import './NexusTenantSelection.scss';
 
 /**
@@ -16,10 +15,6 @@ const NexusTenantSelection = ({selectedTenant}) => {
     // const [userSelectedTenant, setUserSelectedTenant] = useState(selectedTenant);
     const {resourceAccess} = keycloak;
     const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     dispatch(setSelectedTenantInfo(userSelectedTenant));
-    // }, [userSelectedTenant]);
 
     // TODO: useEffect on init
     const tenants = [
@@ -66,7 +61,7 @@ const NexusTenantSelection = ({selectedTenant}) => {
     };
 
     return (
-        <div className="UserAvatarTenantsSelection">
+        <div className="UserAvatarTenantsSelection p-field">
             <Dropdown
                 value={selectedTenant}
                 options={tenants}
