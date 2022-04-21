@@ -26,7 +26,7 @@ const buildRoute = route => {
             exact
             {...rest}
             element={
-                <RestrictedRoute roles={roles} isRoute>
+                <RestrictedRoute roles={roles}>
                     <Suspense fallback={<Loading />}>
                         <Element />
                     </Suspense>
