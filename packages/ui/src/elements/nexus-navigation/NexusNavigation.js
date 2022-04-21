@@ -10,7 +10,7 @@ import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import {ComponentWrapper, navigationPrimaryItems} from './components/NavigationItems';
 import NexusUser from './nexus-user/NexusUser';
-import {backgroundColor, FEEDBACK_HEADER, SETTINGS} from './constants';
+import {backgroundColor, FEEDBACK_HEADER, SETTINGS, USER_AVATAR} from './constants';
 
 const customThemeMode = modeGenerator({
     product: {
@@ -106,6 +106,7 @@ const NexusNavigation = () => {
                         },
                         id: 'profile',
                         icon: null,
+                        tooltip: USER_AVATAR,
                     },
                 ]}
             />
