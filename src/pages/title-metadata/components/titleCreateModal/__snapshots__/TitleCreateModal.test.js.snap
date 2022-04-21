@@ -661,11 +661,11 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                           Array [
                             Object {
                               "label": "Vubiquity",
-                              "value": "vu",
+                              "value": "VU",
                             },
                             Object {
                               "label": "MGM",
-                              "value": "mgm",
+                              "value": "MGM",
                             },
                           ]
                         }
