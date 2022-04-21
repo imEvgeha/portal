@@ -1,12 +1,12 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
+import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
-import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {bulkDeleteRights} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import classNames from 'classnames';
 import {get, isEmpty, uniqBy} from 'lodash';
@@ -354,7 +354,12 @@ export const SelectedRightsActions = ({
     return (
         <div className="selected-rights-actions">
             <div className="nexus-c-selected-rights-actions d-flex align-items-center" ref={node}>
-                <Can I="read" a="DopTasks">
+                <Restricted
+                    roles={{
+                        operation: 'AND',
+                        values: ['dop_viewer'],
+                    }}
+                >
                     <div
                         className={classNames('nexus-c-selected-rights-actions__menu-item', {
                             'nexus-c-selected-rights-actions__menu-item--is-active': selectedRights.length,
@@ -364,7 +369,7 @@ export const SelectedRightsActions = ({
                     >
                         <div>{VIEW_AUDIT_HISTORY}</div>
                     </div>
-                </Can>
+                </Restricted>
                 <div
                     className={classNames('nexus-c-selected-rights-actions__menu-item', {
                         'nexus-c-selected-rights-actions__menu-item--is-active': isMatchable && !statusDeleteMerged,

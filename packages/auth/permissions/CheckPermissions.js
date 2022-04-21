@@ -11,7 +11,7 @@ const isAllowed = roles => {
 
 const constructRoles = roles => {
     let iterationPerm = roles.operation === 'AND';
-    roles.values.forEach(value => {
+    roles?.values?.forEach(value => {
         const tmpCondition = typeof value === 'string' ? _allRoles.includes(value) : constructRoles(value);
         roles.operation === 'AND' ? (iterationPerm &&= tmpCondition) : (iterationPerm ||= tmpCondition);
     });

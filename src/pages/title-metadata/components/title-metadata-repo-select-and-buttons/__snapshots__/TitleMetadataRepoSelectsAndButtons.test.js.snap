@@ -37,9 +37,6 @@ exports[`RepositorySelectsAndButtons should match snapshot 1`] = `
       userDefinedGridStates={Array []}
       username=""
     />
-    <CatalogueOwner
-      setCatalogueOwner={[Function]}
-    />
   </div>
   <div
     className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1"

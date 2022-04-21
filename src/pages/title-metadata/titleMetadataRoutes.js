@@ -1,5 +1,4 @@
 import React from 'react';
-import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {Outlet} from 'react-router-dom';
 
 const LegacyTitleReconciliationViewImport = import(
@@ -24,7 +23,7 @@ const routes = [
     {
         index: true,
         key: 'metadata',
-        element: canRender(TitleMetadataView, 'read', 'Metadata'),
+        element: TitleMetadataView,
     },
     {
         path: 'detail/:id',
@@ -33,15 +32,27 @@ const routes = [
             {
                 index: true,
                 key: 'metadata-details',
-                element: canRender(TitleDetails, 'update', 'Metadata'),
+                element: TitleDetails,
+                roles: {
+                    operation: 'OR',
+                    values: ['metadata_user', 'metadata_admin'],
+                },
             },
             {
                 path: 'legacy-title-reconciliation',
-                element: canRender(LegacyTitleReconciliationView, 'update', 'Metadata'),
+                element: LegacyTitleReconciliationView,
+                roles: {
+                    operation: 'OR',
+                    values: ['metadata_user', 'metadata_admin'],
+                },
             },
             {
                 path: 'legacy-title-reconciliation/review',
-                element: canRender(LegacyTitleReconciliationReview, 'update', 'Metadata'),
+                element: LegacyTitleReconciliationReview,
+                roles: {
+                    operation: 'OR',
+                    values: ['metadata_user', 'metadata_admin'],
+                },
             },
         ],
     },
