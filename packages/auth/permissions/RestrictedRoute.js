@@ -13,7 +13,7 @@ const RestrictedRoute = ({roles, children}) => {
 };
 
 RestrictedRoute.propTypes = {
-    roles: PropTypes.array,
+    roles: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 };
 
 RestrictedRoute.defaultProps = {
