@@ -29,9 +29,6 @@ const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi
         if (elementSchema?.options) {
             const opts = elementSchema?.options?.[0]?.items?.map(i => ({value: i, label: startCase(i)}));
             setOptions(opts);
-            // } else if (getDDValues !== undefined) {
-            //     // licensees needs to be filtered by selected servicing region name
-            //     getDDValues(elementSchema);
         } else if (sourceUrl && cachedOption === undefined) {
             cachedOption = dataApiMap.servicingRegion(sourceUrl).then(response => {
                 cachedOption = response.data;
