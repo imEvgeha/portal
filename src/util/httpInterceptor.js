@@ -9,12 +9,12 @@ export const registerFetchInterceptor = selectedTenant =>
         },
 
         requestError(error) {
-            // Called when an error occured during another 'request' interceptor call
+            // Called when an error occurred during another 'request' interceptor call
             return Promise.reject(error);
         },
 
         response(response) {
-            // Modify the reponse object
+            // Modify the response object
             return response;
         },
 

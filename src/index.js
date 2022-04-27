@@ -15,6 +15,7 @@ import 'primeicons/primeicons.css';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import '@vubiquity-nexus/portal-styles/scss/index.scss';
+import {HistoryRouter} from 'redux-first-history/rr6';
 import packageJson from '../package.json';
 import AppProviders from './AppProviders';
 import Router from './Router';
@@ -74,16 +75,18 @@ const persistor = configurePersistor(store);
 delete window.__PRELOADED_STATE__;
 
 const App = () => (
-    <AppContainer>
-        <Provider store={store}>
-            <AppProviders persistor={persistor}>
-                <ErrorBoundary>
-                    <Toast />
-                    <Router routes={routesWithTracking()} />
-                </ErrorBoundary>
-            </AppProviders>
-        </Provider>
-    </AppContainer>
+    <HistoryRouter history={history}>
+        <AppContainer>
+            <Provider store={store}>
+                <AppProviders persistor={persistor}>
+                    <ErrorBoundary>
+                        <Toast />
+                        <Router routes={routesWithTracking()} />
+                    </ErrorBoundary>
+                </AppProviders>
+            </Provider>
+        </AppContainer>
+    </HistoryRouter>
 );
 
 function renderApp() {

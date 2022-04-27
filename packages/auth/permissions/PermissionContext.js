@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 const defaultBehaviour = {
-    isAllowedTo: () => true
-}
+    isAllowedTo: () => true,
+    unauthorizedAction: () => ({}),
+};
 
-const PermissionContext = React.createContext(defaultBehaviour)
+const PermissionContext = React.createContext(defaultBehaviour);
 
-export default PermissionContext
+export default PermissionContext;
