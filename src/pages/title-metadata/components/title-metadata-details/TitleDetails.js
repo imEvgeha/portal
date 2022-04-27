@@ -1,5 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import isAllowed from '@vubiquity-nexus/portal-auth/lib/permissions/CheckPermissions';
+import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import PropagateButtonWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-person/elements/PropagateButtonWrapper/PropagateButtonWrapper';
@@ -239,7 +241,14 @@ const TitleDetails = ({
         }
     };
 
-    const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus);
+    const isEditPermitted = () =>
+        isAllowed({
+            operation: 'AND',
+            values: ['metadata_update'],
+        });
+
+    const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus) && isEditPermitted();
+
     const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
     return (
         <div className={classnames(loading ? 'nexus-c-title-details__loading' : 'nexus-c-title-details')}>
@@ -253,7 +262,7 @@ const TitleDetails = ({
                         searchPerson={searchPerson}
                         schema={schema}
                         initialData={extendTitleWithExternalIds()}
-                        canEdit={isNexusTitle(title.id) && isStateEditable(title.metadataStatus)}
+                        canEdit={canEdit}
                         containerRef={containerRef}
                         selectValues={selectValues}
                         seasonPersons={propagateAddPersons}
@@ -323,7 +332,14 @@ const TitleDetails = ({
                                     hasButtons={isNexusTitle(title.id)}
                                 />
                             </NexusTooltip>
-                            {title.id && <ActionMenu titleId={title.id} />}
+                            <Restricted
+                                roles={{
+                                    operation: 'AND',
+                                    values: ['metadata_legacy_unmerge'],
+                                }}
+                            >
+                                {title.id && <ActionMenu titleId={title.id} />}
+                            </Restricted>
                         </NexusStickyFooter.LeftActions>
                     </NexusStickyFooter>
                 </>

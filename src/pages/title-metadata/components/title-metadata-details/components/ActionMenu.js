@@ -1,6 +1,7 @@
 import React, {useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
+import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
 import NexusDropdown, {
     DropdownOption,
     DropdownOptions,
@@ -45,9 +46,16 @@ const ActionMenu = ({titleId}) => {
             <NexusDropdown>
                 <DropdownToggle label="Actions" isMobile />
                 <DropdownOptions isMobile align="top">
-                    <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(titleId)}>
-                        Unmerge
-                    </DropdownOption>
+                    <Restricted
+                        roles={{
+                            operation: 'AND',
+                            values: ['metadata_legacy_unmerge'],
+                        }}
+                    >
+                        <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(titleId)}>
+                            Unmerge
+                        </DropdownOption>
+                    </Restricted>
                 </DropdownOptions>
             </NexusDropdown>
         </div>

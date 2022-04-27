@@ -35,7 +35,7 @@ const routes = [
                 element: TitleDetails,
                 roles: {
                     operation: 'OR',
-                    values: ['metadata_user', 'metadata_admin'],
+                    values: ['metadata_view'],
                 },
             },
             {
@@ -43,7 +43,7 @@ const routes = [
                 element: LegacyTitleReconciliationView,
                 roles: {
                     operation: 'OR',
-                    values: ['metadata_user', 'metadata_admin'],
+                    values: ['metadata_view'],
                 },
             },
             {
@@ -51,7 +51,7 @@ const routes = [
                 element: LegacyTitleReconciliationReview,
                 roles: {
                     operation: 'OR',
-                    values: ['metadata_user', 'metadata_admin'],
+                    values: ['metadata_view'],
                 },
             },
         ],

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import Button, {LoadingButton} from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
+import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {get, cloneDeep, isEqual} from 'lodash';
+import {cloneDeep, get, isEqual} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import NexusArrayCreateModal from './NexusArrayCreateModal';
@@ -428,13 +429,20 @@ const NexusArrayWithTabs = ({
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                     {(showRegenerateAutoDecoratedMetadata() || isMasterEditorialRecord()) && (
-                        <LoadingButton
-                            appearance="primary"
-                            onClick={handleRegenerateAutoDecoratedMetadata}
-                            isLoading={regenerateLoading}
+                        <Restricted
+                            roles={{
+                                operation: 'AND',
+                                values: ['metadata_auto_decorate'],
+                            }}
                         >
-                            Regenerate Auto-Decorated Metadata
-                        </LoadingButton>
+                            <LoadingButton
+                                appearance="primary"
+                                onClick={handleRegenerateAutoDecoratedMetadata}
+                                isLoading={regenerateLoading}
+                            >
+                                Regenerate Auto-Decorated Metadata
+                            </LoadingButton>
+                        </Restricted>
                     )}
                 </div>
                 {isMasterEditorialRecord() && (

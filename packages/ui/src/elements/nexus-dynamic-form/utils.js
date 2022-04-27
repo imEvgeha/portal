@@ -1,5 +1,6 @@
 import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
+import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
 import {get, isObjectLike, isObject} from 'lodash';
@@ -434,32 +435,34 @@ export const renderNexusField = (
     }
 ) => {
     return toShow(field, updatedValues || initialData, prefix) ? (
-        <NexusField
-            {...field}
-            id={key}
-            key={key}
-            name={key}
-            label={field.name}
-            view={view}
-            getValues={getValues}
-            formData={inTabs ? {[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]: initialData} : getValues()}
-            validationError={getValidationError(initialData.validationErrors, field)}
-            defaultValue={getDefaultValue(field, view, initialData)}
-            selectValues={selectValues}
-            setFieldValue={setFieldValue}
-            getCurrentValues={getValues}
-            config={config}
-            isGridLayout={isGridLayout}
-            searchPerson={searchPerson}
-            castCrewConfig={castCrewConfig}
-            generateMsvIds={generateMsvIds}
-            setDisableSubmit={setDisableSubmit}
-            initialData={initialData}
-            setUpdatedValues={setUpdatedValues}
-            isTitlePage={isTitlePage}
-            setUpdate={setUpdate}
-            allData={allData}
-        />
+        <Restricted roles={field.roles}>
+            <NexusField
+                {...field}
+                id={key}
+                key={key}
+                name={key}
+                label={field.name}
+                view={view}
+                getValues={getValues}
+                formData={inTabs ? {[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]: initialData} : getValues()}
+                validationError={getValidationError(initialData.validationErrors, field)}
+                defaultValue={getDefaultValue(field, view, initialData)}
+                selectValues={selectValues}
+                setFieldValue={setFieldValue}
+                getCurrentValues={getValues}
+                config={config}
+                isGridLayout={isGridLayout}
+                searchPerson={searchPerson}
+                castCrewConfig={castCrewConfig}
+                generateMsvIds={generateMsvIds}
+                setDisableSubmit={setDisableSubmit}
+                initialData={initialData}
+                setUpdatedValues={setUpdatedValues}
+                isTitlePage={isTitlePage}
+                setUpdate={setUpdate}
+                allData={allData}
+            />
+        </Restricted>
     ) : null;
 };
 
