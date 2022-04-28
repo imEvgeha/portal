@@ -52,6 +52,9 @@ module.exports = envFile => ({
             stats: (envFile && envFile['BUILD_STATS']) || 'normal',
         },
     },
+    watchOptions: {
+        ignored: ['files/**/*.test.js', 'node_modules'],
+    },
     performance: {
         hints: false,
     },
