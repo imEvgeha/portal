@@ -9,7 +9,7 @@ import './NexusTenantSelection.scss';
 
 /**
  * Based on token, show a list of available tenant
- * @returns Dropdown for tenant selection
+ * @returns Dispatches to Redux the selected tenant under auth.selectedTenant
  */
 const NexusTenantSelection = ({selectedTenant}) => {
     // const [userSelectedTenant, setUserSelectedTenant] = useState(selectedTenant);
