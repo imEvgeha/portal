@@ -61,7 +61,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             onClick: () => handleClick(METADATA),
             roles: {
                 operation: 'OR',
-                values: ['metadata_admin', 'metadata_user', 'metadata_viewer'],
+                values: ['metadata_view'],
             },
         },
         {

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
+import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {Button} from 'primereact/button';
 import {connect} from 'react-redux';
@@ -44,13 +45,20 @@ export const RepositorySelectsAndButtons = ({
                     />
                 </div>
                 <div className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1">
-                    <Button
-                        tooltip="Create New Title"
-                        tooltipOptions={{position: 'left'}}
-                        icon={IconActionAdd}
-                        onClick={() => setShowModal(true)}
-                        className="p-button-text nexus-c-title-metadata__create-btn"
-                    />
+                    <Restricted
+                        roles={{
+                            operation: 'AND',
+                            values: ['metadata_create'],
+                        }}
+                    >
+                        <Button
+                            tooltip="Create New Title"
+                            tooltipOptions={{position: 'left'}}
+                            icon={IconActionAdd}
+                            onClick={() => setShowModal(true)}
+                            className="p-button-text nexus-c-title-metadata__create-btn"
+                        />
+                    </Restricted>
                 </div>
             </div>
         );

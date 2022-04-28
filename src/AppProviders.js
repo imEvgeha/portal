@@ -6,36 +6,35 @@ import CustomIntlProvider from '@vubiquity-nexus/portal-ui/lib/elements/nexus-la
 import {NexusModalProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-overlay/NexusOverlay';
 import theme from '@vubiquity-nexus/portal-ui/lib/styled/theme';
+import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {get} from 'lodash';
 import {useSelector} from 'react-redux';
-import {HistoryRouter as ConnectedRouter} from 'redux-first-history/rr6';
+import {useNavigate} from 'react-router-dom';
 import {PersistGate} from 'redux-persist/integration/react';
 import {ThemeProvider} from 'styled-components';
 import AuthProvider from './auth/AuthProvider';
 import {registerFetchInterceptor} from './util/httpInterceptor';
-import {history} from './index';
 
 const AppProviders = ({children, persistor}) => {
     const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
     const roles = get(selectedTenant, 'roles', []);
+    const navigate = useNavigate();
 
     // register interceptor
     registerFetchInterceptor(selectedTenant);
 
     return (
-        <PermissionProvider roles={roles}>
+        <PermissionProvider roles={roles} unauthorizedAction={() => navigate(`/${getAuthConfig().realm}/401`)}>
             <CustomIntlProvider>
                 <NexusDateTimeProvider>
                     <NexusOverlayProvider>
-                        <ConnectedRouter history={history}>
-                            <NexusModalProvider>
-                                <PersistGate loading={null} persistor={persistor}>
-                                    <ThemeProvider theme={theme}>
-                                        <AuthProvider>{children}</AuthProvider>
-                                    </ThemeProvider>
-                                </PersistGate>
-                            </NexusModalProvider>
-                        </ConnectedRouter>
+                        <NexusModalProvider>
+                            <PersistGate loading={null} persistor={persistor}>
+                                <ThemeProvider theme={theme}>
+                                    <AuthProvider>{children}</AuthProvider>
+                                </ThemeProvider>
+                            </PersistGate>
+                        </NexusModalProvider>
                     </NexusOverlayProvider>
                 </NexusDateTimeProvider>
             </CustomIntlProvider>

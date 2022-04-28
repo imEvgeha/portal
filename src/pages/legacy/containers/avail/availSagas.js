@@ -109,14 +109,6 @@ export function* fetchAndStoreSelectItems(payload, type) {
         if (doesUserHaveRoles) {
             return fetchedSelectedItems;
         } else {
-            !doesUserHaveRoles &&
-                store.dispatch(
-                    addToast({
-                        detail: `Access denied. User has no roles.`,
-                        severity: 'error',
-                    })
-                );
-
             return mappingsWithConfigEndpoint;
         }
     };

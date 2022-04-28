@@ -71,7 +71,7 @@ export const routes = [
                 path: 'metadata',
                 roles: {
                     operation: 'OR',
-                    values: ['metadata_admin', 'metadata_user', 'metadata_viewer'],
+                    values: ['metadata_view'],
                 },
                 element: Outlet,
                 children: [...titleMetadataRoutes],
