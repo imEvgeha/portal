@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
@@ -29,28 +29,27 @@ const onViewTitleClick = (response, realm) => {
 };
 
 const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, focusedRight, bulkTitleMatch}) => {
+    const {CREATE_TITLE_RESTRICTIONS, TENANT_CODE_ITEMS} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
-        constants.CREATE_TITLE_RESTRICTIONS;
+        CREATE_TITLE_RESTRICTIONS;
     const addToast = toast => store.dispatch(toastDisplay(toast));
     const {id: focusedId} = focusedRight;
-
     const [errorMessage, setErrorMessage] = useState('');
     const [isCreatingTitle, setIsCreatingTitle] = useState(false);
     const {
         register,
         control,
         handleSubmit,
+        setValue,
         reset,
         formState: {errors, isValid, dirtyFields},
     } = useForm({defaultValues: {catalogueOwner: tenantCode}, mode: 'all', reValidateMode: 'onChange'});
     const currentValues = useWatch({control});
     const routeParams = useParams();
-    const tenantCodeItems = [
-        {
-            label: tenantCode === 'vu' ? 'Vubiquity' : 'MGM',
-            value: tenantCode,
-        },
-    ];
+
+    useEffect(() => {
+        setValue('catalogueOwner', tenantCode);
+    }, [tenantCode]);
 
     const toggle = () => {
         onSave();
@@ -472,7 +471,6 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                                 </ControllerWrapper>
                             </div>
                         </div>
-
                         {tenantCode && !isItMatching && (
                             <div className="row">
                                 <div className="col">
@@ -488,7 +486,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                                         <Dropdown
                                             optionLabel="label"
                                             disabled
-                                            options={tenantCodeItems}
+                                            options={TENANT_CODE_ITEMS}
                                             id="catalogueOwner"
                                             className="nexus-c-title-create_input"
                                             placeholder="Select a Catalogue Owner"

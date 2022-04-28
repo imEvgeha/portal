@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {CheckboxField, Field as AKField} from '@atlaskit/form';
@@ -92,8 +92,6 @@ const NexusField = ({
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, getCurrentValues});
     };
-
-    const [required] = useState(!!(checkDependencies('required') || isRequired));
 
     const addedProps = {
         isOptional,
@@ -520,14 +518,25 @@ const NexusField = ({
                     isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}
                     validate={value =>
-                        getValidationFunction(value, validation, {type, isRequired: required, getCurrentValues})
+                        getValidationFunction(value, validation, {
+                            type,
+                            isRequired: checkDependencies('required') || isRequired,
+                            getCurrentValues,
+                        })
                     }
                     {...props}
                 >
                     {({fieldProps, error}) => (
                         <>
                             {!FIELDS_WITHOUT_LABEL.includes(type) &&
-                                renderLabel(label, required, tooltip, isGridLayout, isRequiredVZ, oneIsRequiredVZ)}
+                                renderLabel(
+                                    label,
+                                    checkDependencies('required') || isRequired,
+                                    tooltip,
+                                    isGridLayout,
+                                    isRequiredVZ,
+                                    oneIsRequiredVZ
+                                )}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
                                     {!getIsReadOnly() && (view === VIEWS.EDIT || view === VIEWS.CREATE)

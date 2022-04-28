@@ -1,7 +1,7 @@
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {parseAdvancedFilter} from './RightsService';
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
+import {keycloak} from '@portal/portal-auth';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 
 export const exportService = {

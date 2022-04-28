@@ -1,8 +1,8 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {injectUser, logout} from '@vubiquity-nexus/portal-auth/authActions';
-import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@vubiquity-nexus/portal-auth/keycloak';
-import {getTokenDuration, getValidToken, wait} from '@vubiquity-nexus/portal-auth/utils';
+import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@portal/portal-auth';
+import {injectUser, logout} from "@portal/portal-auth/authActions";
+import {getTokenDuration, getValidToken, wait} from "@portal/portal-auth/utils";
 import {updateAbility} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';

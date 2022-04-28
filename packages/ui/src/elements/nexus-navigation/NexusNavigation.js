@@ -6,7 +6,7 @@ import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import {GlobalItem, GlobalNav, modeGenerator, ThemeProvider} from '@atlaskit/navigation-next';
 import {colors} from '@atlaskit/theme';
-import {logout} from '@vubiquity-nexus/portal-auth/authActions';
+import {logout} from "@portal/portal-auth/authActions";
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Can, can, idToAbilityNameMap} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {connect} from 'react-redux';
