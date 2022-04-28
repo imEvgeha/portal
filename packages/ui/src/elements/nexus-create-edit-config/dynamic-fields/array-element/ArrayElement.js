@@ -10,7 +10,7 @@ import {arrayElementButtons} from '../ArrayButtons';
 import {constructFieldPerType} from '../FieldsPerType';
 import './ArrayElement.scss';
 
-const ArrayElement = ({elementsSchema, form, values, cache, dataApiMap}) => {
+const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
     const isGroup = useRef(false);
     const constructFormFieldsState = () => {
         // Needed when adding new as no values still exist.
@@ -239,7 +239,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApiMap}) => {
             className,
             customOnChange: onChange,
             cache,
-            dataApiMap,
+            dataApi,
         });
 
     const renderElement = fieldsIn => {
@@ -286,13 +286,13 @@ ArrayElement.propTypes = {
     form: PropTypes.object.isRequired,
     values: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
     cache: PropTypes.object,
-    dataApiMap: PropTypes.object,
+    dataApi: PropTypes.func,
 };
 
 ArrayElement.defaultProps = {
     values: undefined,
     cache: {},
-    dataApiMap: {},
+    dataApi: () => null,
 };
 
 export default ArrayElement;

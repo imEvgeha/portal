@@ -19,7 +19,7 @@ const CreateEditConfig = ({
     label,
     submitLoading,
     cache,
-    dataApiMap,
+    dataApi,
 }) => {
     const [isVisible, setIsVisible] = useState(visible);
     const form = useForm({mode: 'all', reValidateMode: 'onChange'});
@@ -38,7 +38,7 @@ const CreateEditConfig = ({
                 customOnChange: undefined,
                 cb: elementSchema.dynamic ? getActiveDynamicKeys : undefined,
                 cache,
-                dataApiMap,
+                dataApi,
             });
         });
     };
@@ -124,7 +124,7 @@ CreateEditConfig.propTypes = {
     onHide: PropTypes.func.isRequired,
     submitLoading: PropTypes.bool,
     cache: PropTypes.object,
-    dataApiMap: PropTypes.object,
+    dataApi: PropTypes.func,
 };
 
 CreateEditConfig.defaultProps = {
@@ -134,7 +134,7 @@ CreateEditConfig.defaultProps = {
     label: '',
     submitLoading: false,
     cache: {},
-    dataApiMap: {},
+    dataApi: () => null,
 };
 
 export default CreateEditConfig;
