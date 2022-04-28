@@ -3778,6 +3778,16 @@
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@popperjs/core/-/core-2.11.2.tgz#830beaec4b4091a9e9398ac50f865ddea52186b9"
   integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
 
+"@portal/portal-auth@~1.0.8":
+  version "1.0.8"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-auth/-/portal-auth-1.0.8.tgz#7c8e6c6e74517710763b165fb32a07cdb32faad2"
+  integrity sha512-Ga4bQUJSaUdOBK4UEh4PS7/Ha9iRRSq8a/QlPt6dDGqGJLXhSY+dP1dRy6U81/XAxqkg8QC6rHF7KRYY39Y+ew==
+  dependencies:
+    jwt-decode "2.x"
+    keycloak-js "9.x"
+    react-global-configuration "1.x"
+    reselect "4.x"
+
 "@redux-saga/core@^1.1.3":
   version "1.1.3"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@redux-saga/core/-/core-1.1.3.tgz#3085097b57a4ea8db5528d58673f20ce0950f6a4"
@@ -6957,6 +6967,11 @@ deep-equal@^1.0.1, deep-equal@^1.1.1:
     object-is "^1.0.1"
     object-keys "^1.1.1"
     regexp.prototype.flags "^1.2.0"
+
+deep-freeze@0.0.1:
+  version "0.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/deep-freeze/-/deep-freeze-0.0.1.tgz#3a0b0005de18672819dfd38cd31f91179c893e84"
+  integrity sha1-OgsABd4YZygZ39OM0x+RF5yJPoQ=
 
 deep-is@^0.1.3, deep-is@~0.1.3:
   version "0.1.4"
@@ -10760,7 +10775,7 @@ just-debounce@^1.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/just-debounce/-/just-debounce-1.1.0.tgz#2f81a3ad4121a76bc7cb45dbf704c0d76a8e5ddf"
   integrity sha512-qpcRocdkUmf+UTNBYx5w6dexX5J31AKK1OmPwH630a83DdVVUIngk55RSAiIGpQyoH0dlr872VHfPjnQnK1qDQ==
 
-jwt-decode@^2.2.0:
+jwt-decode@2.x, jwt-decode@^2.2.0:
   version "2.2.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/jwt-decode/-/jwt-decode-2.2.0.tgz#7d86bd56679f58ce6a84704a657dd392bba81a79"
   integrity sha1-fYa9VmefWM5qhHBKZX3TkruoGnk=
@@ -10770,7 +10785,7 @@ kefir@^3.7.3:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/kefir/-/kefir-3.8.8.tgz#235932ddfbed422acebf5d7cba503035e9ea05c5"
   integrity sha512-xWga7QCZsR2Wjy2vNL3Kq/irT+IwxwItEWycRRlT5yhqHZK2fmEhziP+LzcJBWSTAMranGKtGTQ6lFpyJS3+jA==
 
-keycloak-js@^9.0.2:
+keycloak-js@9.x, keycloak-js@^9.0.2:
   version "9.0.3"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/keycloak-js/-/keycloak-js-9.0.3.tgz#cb63412df13c7c6390df5b902555866e659b24b4"
   integrity sha512-c8FFPa8YiJmPbJEMZ/mIrHflBR6FIFUm5xTWtIDzlrnoeF4u0wDmTBfo1u71rWIL1HanLvg3T+9AgR1NqfmGbA==
@@ -13590,6 +13605,15 @@ react-ga@^2.7.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-ga/-/react-ga-2.7.0.tgz#24328f157f31e8cffbf4de74a3396536679d8d7c"
   integrity sha512-AjC7UOZMvygrWTc2hKxTDvlMXEtbmA0IgJjmkhgmQQ3RkXrWR11xEagLGFGaNyaPnmg24oaIiaNPnEoftUhfXA==
 
+react-global-configuration@1.x:
+  version "1.4.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-global-configuration/-/react-global-configuration-1.4.1.tgz#49ea1bfe531a58e82aacfa180e02deef80bf7cd4"
+  integrity sha512-Sop75icLBD6H8R+h57OH4Tu4/aWelqMizZ8My43RA93LEd0Cyxy71p5bxsbXSwNU7i1xFb/ScbuUOlL5+4DJhg==
+  dependencies:
+    deep-freeze "0.0.1"
+    object-assign "^4.1.1"
+    serialize-javascript "^4.0.0"
+
 react-hook-form@7.17.5:
   version "7.17.5"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-hook-form/-/react-hook-form-7.17.5.tgz#3852f294159378d0b5893c9fcc89e313937c6f89"
@@ -14350,7 +14374,7 @@ requires-port@^1.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
-reselect@^4.1.5:
+reselect@4.x, reselect@^4.1.5:
   version "4.1.5"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/reselect/-/reselect-4.1.5.tgz#852c361247198da6756d07d9296c2b51eddb79f6"
   integrity sha512-uVdlz8J7OO+ASpBYoz1Zypgx0KasCY20H+N8JD13oUMtPvSHQuscrHop4KbXrbsBcdB9Ds7lVK7eRkBIfO43vQ==

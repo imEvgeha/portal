@@ -37,6 +37,17 @@ const CREATE_TITLE_RESTRICTIONS = {
     MAX_COPYRIGHT_LENGTH: 1000,
 };
 
+const TENANT_CODE_ITEMS = [
+    {
+        label: 'Vubiquity',
+        value: 'VU',
+    },
+    {
+        label: 'MGM',
+        value: 'MGM',
+    },
+];
+
 export const CONTENT_TYPE_ITEMS = [
     {label: 'Select Content Type', value: ''},
     {label: MOVIE.name, value: MOVIE.apiName},
@@ -59,4 +70,5 @@ export default {
     NEW_TITLE_ERROR_ALREADY_EXISTS,
     NEW_TITLE_ERROR_EMPTY_FIELDS,
     CREATE_TITLE_RESTRICTIONS,
+    TENANT_CODE_ITEMS,
 };

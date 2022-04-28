@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
-import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
+import {getUsername} from "@portal/portal-auth/authSelectors";
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';

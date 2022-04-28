@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
 import * as colors from '@atlaskit/theme/colors';
-import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
+import {getUsername} from "@portal/portal-auth/authSelectors";
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
