@@ -1,5 +1,5 @@
-import {LOGOUT} from '@vubiquity-nexus/portal-auth/authActionTypes';
-import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
+import {keycloak} from "@portal/portal-auth";
+import {LOGOUT} from "@portal/portal-auth/authActionTypes";
 import {createBrowserHistory} from 'history';
 import {createStore, applyMiddleware} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';

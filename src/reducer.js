@@ -1,4 +1,4 @@
-import authReducer from '@vubiquity-nexus/portal-auth/authReducer';
+import authReducer from "@portal/portal-auth/authReducer";
 import uiReducer from '@vubiquity-nexus/portal-ui/lib/uiReducer';
 import {combineReducers} from 'redux';
 import availsReducer from './pages/avails/availsReducer';
