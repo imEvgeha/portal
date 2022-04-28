@@ -35,11 +35,13 @@ jest.mock('react-router-dom', () => ({
 }));
 
 export const mockDispatch = jest.fn();
+export const mockSelector = jest.fn();
 jest.mock('react-redux', () => {
     const r = jest.requireActual('react-redux');
 
     return {
         ...r,
         useDispatch: () => mockDispatch,
+        useSelector: () => mockSelector,
     };
 });
