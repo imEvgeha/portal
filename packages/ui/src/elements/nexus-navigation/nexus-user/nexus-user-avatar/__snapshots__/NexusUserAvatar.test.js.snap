@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusUserAvatar should match snapshot 1`] = `
+<ContextProvider
+  value={null}
+>
+  <NexusUserAvatar
+    logout={[Function]}
+    profileInfo={
+      Object {
+        "email": "marios.charalambous@vubiquity.net",
+        "emailVerified": false,
+        "firstName": "Marios",
+        "lastName": "Charalambous",
+        "username": "mcharalambous",
+      }
+    }
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+  />
+</ContextProvider>
+`;
