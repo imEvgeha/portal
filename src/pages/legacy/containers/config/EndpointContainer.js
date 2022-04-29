@@ -12,8 +12,7 @@ import './ConfigUI.scss';
 import {capitalize, cloneDeep} from 'lodash';
 import {store} from '../../../../index';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import {Restricted} from '@portal/portal-auth/permissions';
-import {isAllowed} from '@portal/portal-auth/permissions/CheckPermissions';
+import {isAllowed, Restricted} from '@portal/portal-auth/permissions';
 
 const DataContainer = styled.div`
     width: 65%;

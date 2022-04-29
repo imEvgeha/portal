@@ -1,6 +1,7 @@
 import React, {useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {keycloak, Restricted} from '@portal/portal-auth';
+import {keycloak} from '@portal/portal-auth';
+import {Restricted} from '@portal/portal-auth/permissions';
 import NexusDropdown, {
     DropdownOption,
     DropdownOptions,

@@ -19,7 +19,7 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotifica
 import {STORE_PENDING_RIGHT} from '../../../avails/right-matching/rightMatchingActionTypes';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {Button} from 'primereact/button';
-import {isAllowed} from '@portal/portal-auth/permissions/CheckPermissions';
+import {isAllowed} from '@portal/portal-auth/permissions';
 
 export function* fetchAvailMapping(requestMethod) {
     try {

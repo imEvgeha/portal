@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Restricted} from '@portal/portal-auth/permissions';
-import {isAllowed} from '@portal/portal-auth/permissions/CheckPermissions';
+import {isAllowed, Restricted} from '@portal/portal-auth/permissions';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import IconActionEdit from '@vubiquity-nexus/portal-assets/icon-action-edit.svg';

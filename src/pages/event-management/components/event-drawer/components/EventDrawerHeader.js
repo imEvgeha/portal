@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button, {LoadingButton} from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
-import {isAllowed} from '@portal/portal-auth/permissions/CheckPermissions';
+import {isAllowed} from '@portal/portal-auth/permissions';
 import NexusDownload from '@vubiquity-nexus/portal-ui/lib/elements/nexus-download/NexusDownload';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {connect} from 'react-redux';
