@@ -3778,10 +3778,10 @@
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@popperjs/core/-/core-2.11.2.tgz#830beaec4b4091a9e9398ac50f865ddea52186b9"
   integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
 
-"@portal/portal-auth@~1.0.21-01":
-  version "1.0.21-28"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-auth/-/portal-auth-1.0.21-28.tgz#8a375a4c4e1c3203fb516b33771af3c60e3011b8"
-  integrity sha512-ksH4TOJ97wpU8fwuZRO++VK1wNYn1TcMupWX0PltoMw4kipXbHcWjxdFgAeXa+PjuA+Grv6IeeIn5J5FZEa0Dw==
+"@portal/portal-auth@^1.0.21-35":
+  version "1.0.21-35"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-auth/-/portal-auth-1.0.21-35.tgz#da86d8c82a5a85bf604d786178bab5e2cbd45808"
+  integrity sha512-jHUb92Uuu5VBZzmFoG5fUiwiy2pMSGLH2GgCvpLbxO87FcuUBGy0k+ZguACD2dhWEh5tBuYFS8Atokhjhnl69A==
   dependencies:
     jwt-decode "2.x"
     keycloak-js "9.x"
