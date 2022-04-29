@@ -1,7 +1,6 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {getUsername} from "@portal/portal-auth/authSelectors";
-import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
+import {getUsername} from '@portal/portal-auth/authSelectors';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';

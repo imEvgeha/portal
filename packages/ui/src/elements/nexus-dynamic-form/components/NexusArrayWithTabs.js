@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button, {LoadingButton} from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
-import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
+import {Restricted} from '@portal/portal-auth/permissions';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep, get, isEqual} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';

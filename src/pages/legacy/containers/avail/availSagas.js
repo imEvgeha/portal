@@ -7,8 +7,6 @@ import {
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {all, call, fork, put, take, takeEvery} from 'redux-saga/effects';
-import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import {store} from '../../../../index';
 import * as actionTypes from './availActionTypes';
 import {profileService} from './service/ProfileService';
 import {configurationService} from './service/ConfigurationService';
@@ -21,7 +19,7 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotifica
 import {STORE_PENDING_RIGHT} from '../../../avails/right-matching/rightMatchingActionTypes';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {Button} from 'primereact/button';
-import isAllowed from '@vubiquity-nexus/portal-auth/lib/permissions/CheckPermissions';
+import {isAllowed} from '@portal/portal-auth/permissions/CheckPermissions';
 
 export function* fetchAvailMapping(requestMethod) {
     try {

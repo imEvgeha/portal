@@ -17,7 +17,7 @@ import ObjectType from './custom-types/ObjectType';
 import ObjectKey from './custom-types/ObjectKey';
 import DelayedOptions from './custom-types/DelayedOptions';
 import {Field as AkField} from '@atlaskit/form';
-import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
+import {Restricted} from '@portal/portal-auth/permissions';
 
 const CreateEditConfigForm = ({value, onRemoveItem, onCancel, schema, onSubmit, displayName, label}) => {
     const [val, setVal] = useState(value);

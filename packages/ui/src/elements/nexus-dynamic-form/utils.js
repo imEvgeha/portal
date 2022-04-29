@@ -1,6 +1,6 @@
 import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
-import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
+import {Restricted} from '@portal/portal-auth/permissions';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
 import {get, isObjectLike, isObject} from 'lodash';

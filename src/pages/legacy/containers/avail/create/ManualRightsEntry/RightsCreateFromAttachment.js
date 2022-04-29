@@ -34,7 +34,7 @@ import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/
 import InputForm from '../../../../../avails/ingest-panel/components/upload-ingest/InputForm/InputForm';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import withRouter from '@vubiquity-nexus/portal-ui/lib/hocs/withRouter';
-import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
+import {Restricted} from '@portal/portal-auth/permissions';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON, UPLOAD_TITLE} = Constants;
 

@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import isAllowed from '@vubiquity-nexus/portal-auth/lib/permissions/CheckPermissions';
-import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
+import {Restricted} from '@portal/portal-auth/permissions';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
 import PropagateButtonWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-person/elements/PropagateButtonWrapper/PropagateButtonWrapper';
@@ -50,6 +49,7 @@ import SyncPublish from './components/SyncPublish';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
+import {isAllowed} from '@portal/portal-auth/permissions/CheckPermissions';
 
 const TitleDetails = ({
     title,

@@ -3,7 +3,7 @@ import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import {GlobalItem, GlobalNav, modeGenerator, ThemeProvider} from '@atlaskit/navigation-next';
 import {colors} from '@atlaskit/theme';
-import Restricted from '@vubiquity-nexus/portal-auth/lib/permissions/Restricted';
+import {Restricted} from '@portal/portal-auth/permissions';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {useLocation, useNavigate} from 'react-router-dom';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';

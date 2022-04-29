@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {keycloak} from '@portal/portal-auth';
+import {setSelectedTenantInfo} from '@portal/portal-auth/authActions';
 import TenantIcon from '@vubiquity-nexus/portal-assets/tenant.svg';
-import {setSelectedTenantInfo} from '@vubiquity-nexus/portal-auth/authActions';
-import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import {Dropdown} from 'primereact/dropdown';
 import {connect, useDispatch} from 'react-redux';
 import './NexusTenantSelection.scss';

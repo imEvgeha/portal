@@ -1,6 +1,6 @@
 import React, {Suspense} from 'react';
 import PropTypes from 'prop-types';
-import RestrictedRoute from '@vubiquity-nexus/portal-auth/lib/permissions/RestrictedRoute';
+import {RestrictedRoute} from '@portal/portal-auth/permissions';
 import {isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {Route, Routes, useLocation} from 'react-router-dom';
