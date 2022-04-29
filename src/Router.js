@@ -18,7 +18,7 @@ const Router = ({routes, titleMetadataFilter, clearTitleMetadataFilter}) => {
 };
 
 const buildRoute = route => {
-    const {path, roles, key, element: Element, children, ...rest} = route;
+    const {path, resource, key, element: Element, children, ...rest} = route;
     return (
         <Route
             key={path || key}
@@ -26,7 +26,7 @@ const buildRoute = route => {
             exact
             {...rest}
             element={
-                <RestrictedRoute roles={roles}>
+                <RestrictedRoute resource={resource}>
                     <Suspense fallback={<Loading />}>
                         <Element />
                     </Suspense>

@@ -8,14 +8,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
     className="nexus-c-selected-rights-actions d-flex align-items-center"
   >
     <Restricted
-      roles={
-        Object {
-          "operation": "AND",
-          "values": Array [
-            "dop_viewer",
-          ],
-        }
-      }
+      resource="openAuditHistoryModalButton"
     >
       <div
         className="nexus-c-selected-rights-actions__menu-item"

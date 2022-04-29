@@ -22,7 +22,7 @@ const customThemeMode = modeGenerator({
 // eslint-disable-next-line react/prop-types
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     return (
-        <Restricted roles={itemProps.roles}>
+        <Restricted resource={itemProps.resource}>
             <GlobalItem {...itemProps} />
         </Restricted>
     );
@@ -77,10 +77,7 @@ const NexusNavigation = () => {
                         tooltip: SETTINGS,
                         isSelected: selectedItem === SETTINGS,
                         onClick: () => handleClick(SETTINGS),
-                        roles: {
-                            operation: 'OR',
-                            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
-                        },
+                        resource: 'settingsMenuIcon',
                     },
 
                     {
@@ -94,10 +91,7 @@ const NexusNavigation = () => {
                         tooltip: 'Settings V2',
                         isSelected: selectedItem === 'settings/v2',
                         onClick: () => handleClick('settings/v2'),
-                        roles: {
-                            operation: 'OR',
-                            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
-                        },
+                        resource: 'settingsMenuIcon',
                     },
 
                     {

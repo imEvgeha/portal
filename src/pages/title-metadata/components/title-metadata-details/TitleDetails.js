@@ -240,11 +240,7 @@ const TitleDetails = ({
         }
     };
 
-    const isEditPermitted = () =>
-        isAllowed({
-            operation: 'AND',
-            values: ['metadata_update'],
-        });
+    const isEditPermitted = () => isAllowed('editTitleDetails');
 
     const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus) && isEditPermitted();
 
@@ -331,12 +327,7 @@ const TitleDetails = ({
                                     hasButtons={isNexusTitle(title.id)}
                                 />
                             </NexusTooltip>
-                            <Restricted
-                                roles={{
-                                    operation: 'AND',
-                                    values: ['metadata_legacy_unmerge'],
-                                }}
-                            >
+                            <Restricted resource="titleDetailsActionMenu">
                                 {title.id && <ActionMenu titleId={title.id} />}
                             </Restricted>
                         </NexusStickyFooter.LeftActions>

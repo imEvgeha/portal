@@ -354,12 +354,7 @@ export const SelectedRightsActions = ({
     return (
         <div className="selected-rights-actions">
             <div className="nexus-c-selected-rights-actions d-flex align-items-center" ref={node}>
-                <Restricted
-                    roles={{
-                        operation: 'AND',
-                        values: ['dop_viewer'],
-                    }}
-                >
+                <Restricted resource="openAuditHistoryModalButton">
                     <div
                         className={classNames('nexus-c-selected-rights-actions__menu-item', {
                             'nexus-c-selected-rights-actions__menu-item--is-active': selectedRights.length,
