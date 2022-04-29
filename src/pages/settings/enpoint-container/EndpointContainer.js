@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {Restricted} from '@portal/portal-auth/permissions';
+import {isAllowed} from '@portal/portal-auth/permissions/CheckPermissions';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import IconActionEdit from '@vubiquity-nexus/portal-assets/icon-action-edit.svg';
-import {Restricted} from '@portal/portal-auth/permissions';
 import NexusConfirmationDialog from '@vubiquity-nexus/portal-ui/lib/elements/nexus-confirmation-dialog/NexusConfirmationDialog';
 import CreateEditConfig from '@vubiquity-nexus/portal-ui/lib/elements/nexus-create-edit-config/CreateEditConfig';
 import NexusDataPanel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-data-panel/NexusDataPanel';
@@ -20,7 +21,6 @@ import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
 import {getConfigApiValues} from '../../legacy/common/CommonConfigService';
 import './EndpointContainer.scss';
-import {isAllowed} from '@portal/portal-auth/permissions/CheckPermissions';
 
 export const cache = {};
 

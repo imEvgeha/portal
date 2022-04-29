@@ -29,7 +29,7 @@ const onViewTitleClick = (response, realm) => {
 };
 
 const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, focusedRight, bulkTitleMatch}) => {
-    const {CREATE_TITLE_RESTRICTIONS, TENANT_CODE_ITEMS} = constants;
+    const {CREATE_TITLE_RESTRICTIONS} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         CREATE_TITLE_RESTRICTIONS;
     const addToast = toast => store.dispatch(toastDisplay(toast));
