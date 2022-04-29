@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
+import {getUsername} from "@portal/portal-auth/authSelectors";
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
@@ -106,8 +106,10 @@ const PreplanRightsTable = ({
     }, [prePlanRights]);
 
     useEffect(() => {
-        const allRightsIds = allRights.map(x => x.id);
-        setSelectedPPRights([...persistedSelectedRights.filter(x => allRightsIds.includes(x.id))]);
+        if (persistedSelectedRights.length) {
+            const allRightsIds = allRights.map(x => x.id);
+            setSelectedPPRights([...persistedSelectedRights.filter(x => allRightsIds.includes(x.id))]);
+        }
     }, [allRights]);
 
     const initRights = () => {
@@ -164,7 +166,6 @@ const PreplanRightsTable = ({
         });
 
     const onGridReady = ({type, columnApi, api, data}) => {
-        const result = [];
         switch (type) {
             case GRID_EVENTS.READY: {
                 setPrePlanColumnApi(columnApi);
@@ -182,17 +183,14 @@ const PreplanRightsTable = ({
                 });
                 break;
             }
-            case GRID_EVENTS.CELL_VALUE_CHANGED:
-                api.forEachNode(({data = {}}) => {
-                    const {territory, planKeywords} = data || {};
-                    let value = data;
-                    if (territory || planKeywords) {
-                        value = {...data, territory, planKeywords};
-                    }
-                    result.push(value);
+            case GRID_EVENTS.CELL_VALUE_CHANGED: {
+                const data = [];
+                api.forEachNode(node => {
+                    data.push(node.data);
                 });
-                setPreplanRights({[username]: result});
+                setAllRights(data);
                 break;
+            }
             case GRID_EVENTS.SELECTION_CHANGED:
                 setSelectedPPRights(api.getSelectedRows());
                 persistSelectedPPRights(api.getSelectedRows());
