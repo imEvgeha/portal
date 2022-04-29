@@ -13,6 +13,7 @@ import {compose} from 'redux';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import TitleSystems from '../../metadata/constants/systems';
 import TitleCreate from '../../title-metadata/components/titleCreateModal/TitleCreateModal';
+import {CONTENT_TYPE_ITEMS} from '../../title-metadata/components/titleCreateModal/TitleCreateModalConstants';
 import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import {
@@ -332,8 +333,12 @@ export const BulkMatching = ({
                 onSave={closeModalAndRefreshTable}
                 onCloseModal={() => setShowModal(false)}
                 isItMatching={true}
+                defaultValues={{
+                    contentType: CONTENT_TYPE_ITEMS?.find(
+                        item => item.label === get(selectedTableData, '[0].contentType', '')
+                    )?.value,
+                }}
                 bulkTitleMatch={bulkTitleMatch}
-                focusedRight={{contentType: get(selectedTableData, '[0].contentType', '')}}
             />
         </div>
     );

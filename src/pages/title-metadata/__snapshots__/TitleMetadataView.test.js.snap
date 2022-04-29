@@ -98,6 +98,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   />
   <TitleCreate
     bulkTitleMatch={[Function]}
+    defaultValues={Object {}}
     display={false}
     focusedRight={Object {}}
     isItMatching={false}

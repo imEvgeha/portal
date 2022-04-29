@@ -55,12 +55,13 @@ exports[`BulkMatching should match snapshot 1`] = `
   </div>
   <TitleCreate
     bulkTitleMatch={[Function]}
-    display={false}
-    focusedRight={
+    defaultValues={
       Object {
-        "contentType": "",
+        "contentType": undefined,
       }
     }
+    display={false}
+    focusedRight={Object {}}
     isItMatching={true}
     onCloseModal={[Function]}
     onSave={[Function]}
