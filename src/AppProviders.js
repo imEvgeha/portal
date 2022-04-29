@@ -16,6 +16,8 @@ import AuthProvider from './auth/AuthProvider';
 import {registerFetchInterceptor} from './util/httpInterceptor';
 
 const AppProviders = ({children, persistor}) => {
+    const rolesResourceMap = require('../profile/resourceRoleMap.json');
+
     const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
     const roles = get(selectedTenant, 'roles', []);
     const navigate = useNavigate();
@@ -24,7 +26,11 @@ const AppProviders = ({children, persistor}) => {
     registerFetchInterceptor(selectedTenant);
 
     return (
-        <PermissionProvider roles={roles} unauthorizedAction={() => navigate(`/${getAuthConfig().realm}/401`)}>
+        <PermissionProvider
+            roles={roles}
+            resourceRolesMap={rolesResourceMap}
+            unauthorizedAction={() => navigate(`/${getAuthConfig().realm}/401`)}
+        >
             <CustomIntlProvider>
                 <NexusDateTimeProvider>
                     <NexusOverlayProvider>

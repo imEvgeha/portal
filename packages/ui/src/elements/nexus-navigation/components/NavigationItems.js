@@ -47,10 +47,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: AVAILS,
             isSelected: selectedItem === AVAILS,
             onClick: () => handleClick(AVAILS),
-            roles: {
-                operation: 'OR',
-                values: ['avails_viewer', 'avails_user', 'avails_admin'],
-            },
+            resource: 'availsMenuIcon',
         },
         {
             icon: EditorMediaWrapRightIcon,
@@ -59,10 +56,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: 'Title Metadata',
             isSelected: selectedItem === TITLE_METADATA,
             onClick: () => handleClick(METADATA),
-            roles: {
-                operation: 'OR',
-                values: ['metadata_view'],
-            },
+            resource: 'titleMetadataMenuIcon',
         },
         {
             icon: DopIcon,
@@ -71,10 +65,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: 'DOP Tasks',
             isSelected: selectedItem === DOP_TASKS,
             onClick: () => handleClick(DOP_TASKS),
-            roles: {
-                operation: 'AND',
-                values: ['dop_viewer'],
-            },
+            resource: 'dopTasksMenuIcon',
         },
         {
             icon: DetailViewIcon,
@@ -91,10 +82,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: 'Event Management',
             isSelected: selectedItem === EVENT_MANAGEMENT,
             onClick: () => handleClick(EVENT_MANAGEMENT),
-            roles: {
-                operation: 'OR',
-                values: ['event_viewer', 'event_admin'],
-            },
+            resource: 'eventManagementMenuIcon',
         },
     ];
 };

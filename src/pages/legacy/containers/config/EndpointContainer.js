@@ -276,14 +276,8 @@ export class EndpointContainer extends Component {
 
     render() {
         const {selectedApi} = this.props;
-        const canUpdate = isAllowed({
-            operation: 'OR',
-            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
-        });
-        const canCreate = isAllowed({
-            operation: 'OR',
-            values: ['configuration_user', 'configuration_admin'],
-        });
+        const canUpdate = isAllowed('legacySettingsUpdate');
+        const canCreate = isAllowed('legacySettingsCreate');
 
         return (
             <DataContainer>
@@ -351,13 +345,7 @@ export class EndpointContainer extends Component {
                                             ) : (
                                                 <span className="text-truncate">{label}</span>
                                             )}
-                                            <Restricted
-                                                roles={{
-                                                    operation: 'AND',
-                                                    values: ['configuration_admin'],
-                                                }}
-                                            >
-                                                {' '}
+                                            <Restricted resource="settingsDeleteConfigButton">
                                                 <i
                                                     className="pi pi-times"
                                                     style={{

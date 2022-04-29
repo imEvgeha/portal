@@ -84,10 +84,7 @@ export function* fetchAndStoreSelectItems(payload, type) {
     // TODO - make this in background via FORK effect
     const fields = [];
 
-    const doesUserHaveRoles = isAllowed({
-        operation: 'OR',
-        values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
-    });
+    const doesUserHaveRoles = isAllowed('fetchAvailSelectValues');
 
     const fetchedSelectedItems = yield all(
         mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint, alternateSelector}) => {

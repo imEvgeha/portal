@@ -11,10 +11,7 @@ const routes = [
     {
         path: `${BASE_PATH}/choose-artwork`,
         element: AssetManagementView,
-        roles: {
-            operation: 'OR',
-            values: ['asset_management_viewer', 'asset_management_user', 'asset_management_admin'],
-        },
+        resource: 'assetManagementViewPage',
     },
 ];
 

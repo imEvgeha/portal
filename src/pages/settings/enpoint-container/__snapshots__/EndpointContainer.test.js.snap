@@ -54,14 +54,7 @@ exports[`EndpointContainer should match snapshot 1`] = `
               className="col-2 text-end"
             >
               <Restricted
-                roles={
-                  Object {
-                    "operation": "OR",
-                    "values": Array [
-                      "configuration_admin",
-                    ],
-                  }
-                }
+                resource="settingsCreate"
               >
                 <ForwardRef
                   className="p-button-text"

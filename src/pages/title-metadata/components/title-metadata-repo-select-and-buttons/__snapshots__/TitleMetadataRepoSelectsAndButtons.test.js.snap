@@ -42,14 +42,7 @@ exports[`RepositorySelectsAndButtons should match snapshot 1`] = `
     className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1"
   >
     <Restricted
-      roles={
-        Object {
-          "operation": "AND",
-          "values": Array [
-            "metadata_create",
-          ],
-        }
-      }
+      resource="createNewTitleButton"
     >
       <ForwardRef
         className="p-button-text nexus-c-title-metadata__create-btn"

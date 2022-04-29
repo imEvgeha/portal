@@ -768,10 +768,7 @@
                                             }
                                         ]
                                     ],
-                                    "roles": {
-                                        "operation": "AND",
-                                        "values": ["metadata_auto_decorate"]
-                                    }
+                                    "resource": "autoDecorateTitleMetadata"
                                 },
                                 "editorial.shortTitleTemplate": {
                                     "name": "Auto - Decorate Title",

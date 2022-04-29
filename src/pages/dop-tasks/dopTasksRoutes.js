@@ -8,10 +8,7 @@ const routes = [
         index: true,
         key: 'dop-tasks',
         element: DopTasksView,
-        roles: {
-            operation: 'OR',
-            values: ['dop_viewer'],
-        },
+        resource: 'dopTasksViewPage',
     },
 ];
 

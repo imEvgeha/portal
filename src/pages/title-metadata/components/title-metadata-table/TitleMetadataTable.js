@@ -86,12 +86,7 @@ const TitleMetadataTable = ({
                             <div className="nexus-c-title-metadata-table__repository">
                                 <div>{value}</div>
 
-                                <Restricted
-                                    roles={{
-                                        operation: 'AND',
-                                        values: ['metadata_legacy_merge'],
-                                    }}
-                                >
+                                <Restricted resource="titleMetadataMergeTitle">
                                     {value !== NEXUS && (
                                         <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
                                             <div

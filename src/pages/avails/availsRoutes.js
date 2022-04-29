@@ -56,18 +56,12 @@ const routes = [
             {
                 path: 'create',
                 element: RightCreate,
-                roles: {
-                    operation: 'OR',
-                    values: ['avails_user', 'avails_admin'],
-                },
+                resource: 'createRightPage',
             },
             {
                 path: ':id',
                 element: RightDetails,
-                roles: {
-                    operation: 'OR',
-                    values: ['avails_user', 'avails_admin'],
-                },
+                resource: 'rightDetailsPage',
             },
             {
                 path: ':rightId/title-matching',
@@ -77,18 +71,12 @@ const routes = [
                         index: true,
                         key: 'rightId/title-matching',
                         element: TitleMatchView,
-                        roles: {
-                            operation: 'OR',
-                            values: ['metadata_user', 'metadata_admin'],
-                        },
+                        resource: 'availsTitleMatchViewPage',
                     },
                     {
                         path: 'review',
                         element: TitleMatchReview,
-                        roles: {
-                            operation: 'OR',
-                            values: ['metadata_user', 'metadata_admin'],
-                        },
+                        resource: 'availsTitleMatchReviewPage',
                     },
                 ],
             },
@@ -101,19 +89,13 @@ const routes = [
             {
                 path: 'manual-rights-entry',
                 element: RightsCreateFromAttachment,
-                roles: {
-                    operation: 'OR',
-                    values: ['avails_user', 'avails_admin'],
-                },
+                resource: 'rightsCreateFromAttachmentPage',
             },
 
             {
                 path: ':availHistoryId/rights/create',
                 element: RightCreate,
-                roles: {
-                    operation: 'OR',
-                    values: ['avails_user', 'avails_admin'],
-                },
+                resource: 'rightCreateHistoryPage',
             },
             {
                 path: ':availHistoryIds/right-matching',
@@ -123,36 +105,24 @@ const routes = [
                         key: 'availHistoryIds/right-matching',
                         index: true,
                         element: RightMatchingView,
-                        roles: {
-                            operation: 'OR',
-                            values: ['avails_user', 'avails_admin'],
-                        },
+                        resource: 'availsRightMatchingViewPage',
                     },
                     {
                         path: ':rightId',
                         element: RightToMatchView,
-                        roles: {
-                            operation: 'OR',
-                            values: ['avails_user', 'avails_admin'],
-                        },
+                        resource: 'availsRightToMatchViewPage',
                     },
                     {
                         path: ':rightId/match/:matchedRightIds',
                         element: MatchRightView,
-                        roles: {
-                            operation: 'OR',
-                            values: ['avails_user', 'avails_admin'],
-                        },
+                        resource: 'availsMatchRightViewPage',
                     },
                 ],
             },
             {
                 path: ':availHistoryIds/manual-rights-entry',
                 element: RightsCreateFromAttachment,
-                roles: {
-                    operation: 'OR',
-                    values: ['avails_user', 'avails_admin'],
-                },
+                resource: 'rightsCreateFromAttachmentPageByHistoryId',
             },
         ],
     },
@@ -164,18 +134,12 @@ const routes = [
                 key: 'right-matching',
                 index: true,
                 element: RightToRightMatchMerge,
-                roles: {
-                    operation: 'OR',
-                    values: ['avails_user', 'avails_admin'],
-                },
+                resource: 'rightToRightMatchMergePage',
             },
             {
                 path: 'preview',
                 element: MatchRightViewMerge,
-                roles: {
-                    operation: 'OR',
-                    values: ['avails_user', 'avails_admin'],
-                },
+                resource: 'matchRightViewMergePage',
             },
         ],
     },

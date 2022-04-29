@@ -12,10 +12,7 @@ import './EventDrawerHeader.scss';
 
 export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {
     const {eventId = '', id = ''} = event?.headers || {};
-    const canReplayAndReplicate = isAllowed({
-        operation: 'AND',
-        roles: ['event_admin'],
-    });
+    const canReplayAndReplicate = isAllowed('replayAndReplicate');
 
     const onInnerReplay = () => {
         const payload = {docId: id};

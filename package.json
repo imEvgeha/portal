@@ -58,7 +58,7 @@
         "@atlaskit/tooltip": "^15.0.15",
         "@atlaskit/user-picker": "^6.9.3",
         "@casl/react": "^1.0.4",
-        "@portal/portal-auth": "^1.0.21-35",
+        "@portal/portal-auth": "^1.0.21-37",
         "@vubiquity-nexus/portal-assets": "^1.1.0",
         "@vubiquity-nexus/portal-styles": "1.0.0",
         "@vubiquity-nexus/portal-ui": "1.0.57",

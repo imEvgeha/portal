@@ -8,10 +8,7 @@ const routes = [
         index: true,
         key: 'event-management',
         element: EventManagement,
-        roles: {
-            operation: 'OR',
-            values: ['event_viewer'],
-        },
+        resource: 'eventManagementPage',
     },
 ];
 

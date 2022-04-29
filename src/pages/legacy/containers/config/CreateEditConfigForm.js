@@ -264,12 +264,7 @@ const CreateEditConfigForm = ({value, onRemoveItem, onCancel, schema, onSubmit, 
                 <p style={{marginTop: '-4px'}}>
                     <b>{value && label ? label : <i style={{fontSize: '20px', color: '#666'}}>New {displayName}</i>}</b>
                 </p>
-                <Restricted
-                    roles={{
-                        operation: 'AND',
-                        values: ['configuration_admin'],
-                    }}
-                >
+                <Restricted resource="legacySettingsDeleteConfigButton">
                     {Object.entries(value).length !== 0 && (
                         <div style={{position: 'absolute', top: '20px', right: '20px', cursor: 'pointer'}}>
                             <Dropdown isOpen={dropdownOpen} toggle={toggle}>

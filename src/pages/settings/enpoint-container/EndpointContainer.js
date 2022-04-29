@@ -121,12 +121,7 @@ const EndpointContainer = ({endpoint}) => {
                         </span>
                     </div>
                     <div className="col-2 text-end">
-                        <Restricted
-                            roles={{
-                                operation: 'OR',
-                                values: ['configuration_admin'],
-                            }}
-                        >
+                        <Restricted resource="settingsCreate">
                             <Button
                                 key="add_new_config"
                                 id="add_new_config__btn"
@@ -181,10 +176,7 @@ const EndpointContainer = ({endpoint}) => {
                 disabled: false,
                 buttonId: 'btnEditConfig',
             }),
-            isAllowed({
-                operation: 'OR',
-                values: ['configuration_admin'],
-            }) &&
+            isAllowed('settingsDelete') &&
                 new Action({
                     icon: ActionCrossCircle,
                     action: () => confirmDeletion(entry),

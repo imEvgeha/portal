@@ -1,0 +1,182 @@
+{
+    "settingsPage": {
+        "operation": "OR",
+        "values": ["configuration_viewer", "configuration_user", "configuration_admin"]
+    },
+    "settingsCreate": {
+        "operation": "OR",
+        "values": ["configuration_admin"]
+    },
+    "settingsDelete": {
+        "operation": "OR",
+        "values": ["configuration_admin"]
+    },
+    "availsPage": {
+        "operation": "OR",
+        "values": ["avails_viewer", "avails_user", "avails_admin"]
+    },
+    "titleMetadataPage": {
+        "operation": "OR",
+        "values": ["metadata_view"]
+    },
+    "eventManagementParentPage": {
+        "operation": "OR",
+        "values": ["event_viewer", "event_admin"]
+    },
+    "dopPage": {
+        "operation": "AND",
+        "values": ["dop_viewer"]
+    },
+    "createRightPage": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "rightDetailsPage": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "rightsCreateFromAttachmentPage": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "rightCreateHistoryPage": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "rightsCreateFromAttachmentPageByHistoryId": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "rightToRightMatchMergePage": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "matchRightViewMergePage": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "availsTitleMatchViewPage": {
+        "operation": "OR",
+        "values": ["metadata_user", "metadata_admin"]
+    },
+    "availsTitleMatchReviewPage": {
+        "operation": "OR",
+        "values": ["metadata_user", "metadata_admin"]
+    },
+    "availsRightMatchingViewPage": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "availsRightToMatchViewPage": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "availsMatchRightViewPage": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "titleDetailsPage": {
+        "operation": "OR",
+        "values": ["metadata_view"]
+    },
+    "legacyTitleReconciliationViewPage": {
+        "operation": "OR",
+        "values": ["metadata_view"]
+    },
+    "legacyTitleReconciliationReviewPage": {
+        "operation": "OR",
+        "values": ["metadata_view"]
+    },
+    "dopTasksViewPage": {
+        "operation": "OR",
+        "values": ["dop_viewer"]
+    },
+    "eventManagementPage": {
+        "operation": "OR",
+        "values": ["event_viewer"]
+    },
+    "assetManagementViewPage": {
+        "operation": "OR",
+        "values": ["asset_management_viewer", "asset_management_user", "asset_management_admin"]
+    },
+    "regenerateAutoDecoratedMetadata": {
+        "operation": "AND",
+        "values": ["metadata_auto_decorate"]
+    },
+    "autoDecorateTitleMetadata": {
+        "operation": "AND",
+        "values": ["metadata_auto_decorate"]
+    },
+    "settingsMenuIcon": {
+        "operation": "OR",
+        "values": ["configuration_viewer", "configuration_user", "configuration_admin"]
+    },
+    "availsMenuIcon": {
+        "operation": "OR",
+        "values": ["avails_viewer", "avails_user", "avails_admin"]
+    },
+    "titleMetadataMenuIcon": {
+        "operation": "OR",
+        "values": ["metadata_view"]
+    },
+    "dopTasksMenuIcon": {
+        "operation": "AND",
+        "values": ["dop_viewer"]
+    },
+    "eventManagementMenuIcon": {
+        "operation": "OR",
+        "values": ["event_viewer", "event_admin"]
+    },
+    "openAuditHistoryModalButton": {
+        "operation": "AND",
+        "values": ["dop_viewer"]
+    },
+    "createRightsFromAttachementUploadButton": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
+    "legacySettingsDeleteConfigButton": {
+        "operation": "AND",
+        "values": ["configuration_admin"]
+    },
+    "settingsDeleteConfigButton": {
+        "operation": "AND",
+        "values": ["configuration_admin"]
+    },
+    "titleDetailsActionMenu": {
+        "operation": "AND",
+        "values": ["metadata_legacy_unmerge"]
+    },
+    "unmergeTitleAction": {
+        "operation": "AND",
+        "values": ["metadata_legacy_unmerge"]
+    },
+    "createNewTitleButton": {
+        "operation": "AND",
+        "values": ["metadata_create"]
+    },
+    "titleMetadataMergeTitle": {
+        "operation": "AND",
+        "values": ["metadata_legacy_merge"]
+    },
+    "replayAndReplicate": {
+        "operation": "AND",
+        "values": ["event_admin"]
+    },
+    "fetchAvailSelectValues": {
+        "operation": "OR",
+        "values": ["configuration_viewer", "configuration_user", "configuration_admin"]
+    },
+    "legacySettingsCreate": {
+        "operation": "OR",
+        "values": ["configuration_user", "configuration_admin"]
+    },
+    "legacySettingsUpdate": {
+        "operation": "OR",
+        "values": ["configuration_viewer", "configuration_user", "configuration_admin"]
+    },
+    "editTitleDetails": {
+        "operation": "AND",
+        "values": ["metadata_update"]
+    }
+}

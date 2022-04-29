@@ -429,12 +429,7 @@ const NexusArrayWithTabs = ({
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                     {(showRegenerateAutoDecoratedMetadata() || isMasterEditorialRecord()) && (
-                        <Restricted
-                            roles={{
-                                operation: 'AND',
-                                values: ['metadata_auto_decorate'],
-                            }}
-                        >
+                        <Restricted resource="regenerateAutoDecoratedMetadata">
                             <LoadingButton
                                 appearance="primary"
                                 onClick={handleRegenerateAutoDecoratedMetadata}

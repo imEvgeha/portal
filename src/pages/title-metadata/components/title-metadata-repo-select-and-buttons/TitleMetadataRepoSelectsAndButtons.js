@@ -45,12 +45,7 @@ export const RepositorySelectsAndButtons = ({
                     />
                 </div>
                 <div className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1">
-                    <Restricted
-                        roles={{
-                            operation: 'AND',
-                            values: ['metadata_create'],
-                        }}
-                    >
+                    <Restricted resource="createNewTitleButton">
                         <Button
                             tooltip="Create New Title"
                             tooltipOptions={{position: 'left'}}

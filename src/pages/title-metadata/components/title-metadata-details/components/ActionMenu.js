@@ -46,12 +46,7 @@ const ActionMenu = ({titleId}) => {
             <NexusDropdown>
                 <DropdownToggle label="Actions" isMobile />
                 <DropdownOptions isMobile align="top">
-                    <Restricted
-                        roles={{
-                            operation: 'AND',
-                            values: ['metadata_legacy_unmerge'],
-                        }}
-                    >
+                    <Restricted resource="unmergeTitleAction">
                         <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(titleId)}>
                             Unmerge
                         </DropdownOption>

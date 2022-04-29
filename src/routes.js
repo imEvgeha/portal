@@ -29,18 +29,12 @@ const staticRoutes = [
     {
         path: 'settings',
         element: Settings,
-        roles: {
-            operation: 'OR',
-            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
-        },
+        resource: 'settingsPage',
     },
     {
         path: 'settings/v2',
         element: SettingsPage,
-        roles: {
-            operation: 'OR',
-            values: ['configuration_viewer', 'configuration_user', 'configuration_admin'],
-        },
+        resource: 'settingsPage',
     },
     {
         path: '401',
@@ -60,38 +54,26 @@ export const routes = [
             {index: true, key: 'welcome', element: Welcome},
             {
                 path: 'avails',
-                roles: {
-                    operation: 'OR',
-                    values: ['avails_viewer', 'avails_user', 'avails_admin'],
-                },
+                resource: 'availsPage',
                 element: Outlet,
                 children: [...availsRoutes],
             },
             {
                 path: 'metadata',
-                roles: {
-                    operation: 'OR',
-                    values: ['metadata_view'],
-                },
+                resource: 'titleMetadataPage',
                 element: Outlet,
                 children: [...titleMetadataRoutes],
             },
             {
                 path: 'dop-tasks',
-                roles: {
-                    operation: 'AND',
-                    values: ['dop_viewer'],
-                },
+                resource: 'dopPage',
                 element: Outlet,
                 children: [...dopTasksRoutes],
             },
             {path: 'servicing-orders', element: Outlet, children: [...servicingOrdersRoutes]},
             {
                 path: 'event-management',
-                roles: {
-                    operation: 'OR',
-                    values: ['event_viewer', 'event_admin'],
-                },
+                resource: 'eventManagementParentPage',
                 element: Outlet,
                 children: [...eventManagementRoutes],
             },

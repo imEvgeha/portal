@@ -33,26 +33,17 @@ const routes = [
                 index: true,
                 key: 'metadata-details',
                 element: TitleDetails,
-                roles: {
-                    operation: 'OR',
-                    values: ['metadata_view'],
-                },
+                resource: 'titleDetailsPage',
             },
             {
                 path: 'legacy-title-reconciliation',
                 element: LegacyTitleReconciliationView,
-                roles: {
-                    operation: 'OR',
-                    values: ['metadata_view'],
-                },
+                resource: 'legacyTitleReconciliationViewPage',
             },
             {
                 path: 'legacy-title-reconciliation/review',
                 element: LegacyTitleReconciliationReview,
-                roles: {
-                    operation: 'OR',
-                    values: ['metadata_view'],
-                },
+                resource: 'legacyTitleReconciliationReviewPage',
             },
         ],
     },

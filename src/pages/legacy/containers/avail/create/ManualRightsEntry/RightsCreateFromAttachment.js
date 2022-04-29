@@ -342,12 +342,7 @@ class RightsCreateFromAttachment extends React.Component {
                         )}
                     </div>
                     <div>
-                        <Restricted
-                            roles={{
-                                operation: 'OR',
-                                values: ['avails_user', 'avails_admin'],
-                            }}
-                        >
+                        <Restricted resource="createRightsFromAttachementUploadButton">
                             <NexusUploadButton
                                 modalContext={NexusModalContext}
                                 modalCallback={this.buildForm}

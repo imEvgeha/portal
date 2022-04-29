@@ -435,7 +435,7 @@ export const renderNexusField = (
     }
 ) => {
     return toShow(field, updatedValues || initialData, prefix) ? (
-        <Restricted roles={field.roles}>
+        <Restricted resource={field.resource}>
             <NexusField
                 {...field}
                 id={key}
