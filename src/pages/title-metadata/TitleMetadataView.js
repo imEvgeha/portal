@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {getUsername} from "@portal/portal-auth/authSelectors";
+import {getUsername} from '@portal/portal-auth/authSelectors';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_METADATA} from '@vubiquity-nexus/portal-utils/lib/constants';
@@ -43,6 +43,12 @@ export const TitleMetadataView = ({
     const [columnApi, setColumnApi] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
+
+    useEffect(() => {
+        setCatalogueOwner({
+            tenantCode: selectedTenant.id,
+        });
+    }, [selectedTenant]);
 
     const showSuccess = detail => {
         store.dispatch(

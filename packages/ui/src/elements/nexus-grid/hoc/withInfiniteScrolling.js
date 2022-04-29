@@ -39,13 +39,6 @@ const withInfiniteScrolling =
             const previousParams = usePrevious(props.params);
             const [gridApi, setGridApi] = useState();
             const {isLocal} = useDateTimeContext();
-            const roles = useSelector(state => state?.auth?.selectedTenant?.roles || []);
-
-            useEffect(() => {
-                if (gridApi) {
-                    updateData(fetchData, gridApi);
-                }
-            }, [roles]);
 
             useEffect(() => {
                 return () => {
