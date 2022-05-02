@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Restricted} from '@portal/portal-auth/permissions';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {Button} from 'primereact/button';
@@ -8,7 +9,6 @@ import './TitleMetadataRepoSelectsAndButtons.scss';
 import {TABLE_LABELS, TABLE_OPTIONS} from '../../constants';
 import {setCurrentUserViewAction} from '../../titleMetadataActions';
 import {createCurrentUserViewSelector} from '../../titleMetadataSelectors';
-import CatalogueOwner from '../catalogue-owner/CatalogueOwner';
 
 export const RepositorySelectsAndButtons = ({
     getNameOfCurrentTab,
@@ -20,7 +20,6 @@ export const RepositorySelectsAndButtons = ({
     applyPredefinedTableView,
     lastStoredFilter,
     setBlockLastFilter,
-    changeCatalogueOwner,
     setShowModal,
     currentUserView,
     setCurrentUserView,
@@ -44,16 +43,17 @@ export const RepositorySelectsAndButtons = ({
                         setCurrentUserView={payload => setCurrentUserView(payload)}
                         currentUserView={currentUserView}
                     />
-                    <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 </div>
                 <div className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1">
-                    <Button
-                        tooltip="Create New Title"
-                        tooltipOptions={{position: 'left'}}
-                        icon={IconActionAdd}
-                        onClick={() => setShowModal(true)}
-                        className="p-button-text nexus-c-title-metadata__create-btn"
-                    />
+                    <Restricted resource="createNewTitleButton">
+                        <Button
+                            tooltip="Create New Title"
+                            tooltipOptions={{position: 'left'}}
+                            icon={IconActionAdd}
+                            onClick={() => setShowModal(true)}
+                            className="p-button-text nexus-c-title-metadata__create-btn"
+                        />
+                    </Restricted>
                 </div>
             </div>
         );
@@ -84,7 +84,6 @@ RepositorySelectsAndButtons.propTypes = {
     applyPredefinedTableView: PropTypes.func,
     lastStoredFilter: PropTypes.object,
     setBlockLastFilter: PropTypes.func,
-    changeCatalogueOwner: PropTypes.func,
     setShowModal: PropTypes.func,
     setCurrentUserView: PropTypes.func.isRequired,
     currentUserView: PropTypes.object.isRequired,
@@ -100,7 +99,6 @@ RepositorySelectsAndButtons.defaultProps = {
     applyPredefinedTableView: () => null,
     lastStoredFilter: {},
     setBlockLastFilter: () => null,
-    changeCatalogueOwner: () => null,
     setShowModal: () => null,
 };
 

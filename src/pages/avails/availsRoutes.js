@@ -1,5 +1,4 @@
 import React from 'react';
-import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 // TODO: change it to dynamic imports when we remove legacy override style for ag grid
 // from RightsResultTable.scss to global.scss file
 // currently, scss for particular component (RightsResultTable) is using for global ag grid style override
@@ -45,18 +44,24 @@ const TitleMatchReview = React.lazy(() => TitleMatchReviewImport);
 export const AVAILS_PATH = '/avails';
 
 const routes = [
-    {index: true, key: 'avails', element: canRender(AvailsView, 'read', 'Avail')},
+    {
+        index: true,
+        key: 'avails',
+        element: AvailsView,
+    },
     {
         path: 'rights',
         element: Outlet,
         children: [
             {
                 path: 'create',
-                element: canRender(RightCreate, 'create', 'Avail'),
+                element: RightCreate,
+                resource: 'createRightPage',
             },
             {
                 path: ':id',
-                element: canRender(RightDetails, 'update', 'Avail'),
+                element: RightDetails,
+                resource: 'rightDetailsPage',
             },
             {
                 path: ':rightId/title-matching',
@@ -65,11 +70,13 @@ const routes = [
                     {
                         index: true,
                         key: 'rightId/title-matching',
-                        element: canRender(TitleMatchView, 'update', 'Metadata'),
+                        element: TitleMatchView,
+                        resource: 'availsTitleMatchViewPage',
                     },
                     {
                         path: 'review',
-                        element: canRender(TitleMatchReview, 'update', 'Metadata'),
+                        element: TitleMatchReview,
+                        resource: 'availsTitleMatchReviewPage',
                     },
                 ],
             },
@@ -81,12 +88,14 @@ const routes = [
         children: [
             {
                 path: 'manual-rights-entry',
-                element: canRender(RightsCreateFromAttachment, 'create', 'Avail'),
+                element: RightsCreateFromAttachment,
+                resource: 'rightsCreateFromAttachmentPage',
             },
 
             {
                 path: ':availHistoryId/rights/create',
-                element: canRender(RightCreate, 'create', 'Avail'),
+                element: RightCreate,
+                resource: 'rightCreateHistoryPage',
             },
             {
                 path: ':availHistoryIds/right-matching',
@@ -95,21 +104,25 @@ const routes = [
                     {
                         key: 'availHistoryIds/right-matching',
                         index: true,
-                        element: canRender(RightMatchingView, 'update', 'Avail'),
+                        element: RightMatchingView,
+                        resource: 'availsRightMatchingViewPage',
                     },
                     {
                         path: ':rightId',
-                        element: canRender(RightToMatchView, 'update', 'Avail'),
+                        element: RightToMatchView,
+                        resource: 'availsRightToMatchViewPage',
                     },
                     {
                         path: ':rightId/match/:matchedRightIds',
-                        element: canRender(MatchRightView, 'update', 'Avail'),
+                        element: MatchRightView,
+                        resource: 'availsMatchRightViewPage',
                     },
                 ],
             },
             {
                 path: ':availHistoryIds/manual-rights-entry',
-                element: canRender(RightsCreateFromAttachment, 'create', 'Avail'),
+                element: RightsCreateFromAttachment,
+                resource: 'rightsCreateFromAttachmentPageByHistoryId',
             },
         ],
     },
@@ -120,11 +133,13 @@ const routes = [
             {
                 key: 'right-matching',
                 index: true,
-                element: canRender(RightToRightMatchMerge, 'update', 'Avail'),
+                element: RightToRightMatchMerge,
+                resource: 'rightToRightMatchMergePage',
             },
             {
                 path: 'preview',
-                element: canRender(MatchRightViewMerge, 'update', 'Avail'),
+                element: MatchRightViewMerge,
+                resource: 'matchRightViewMergePage',
             },
         ],
     },

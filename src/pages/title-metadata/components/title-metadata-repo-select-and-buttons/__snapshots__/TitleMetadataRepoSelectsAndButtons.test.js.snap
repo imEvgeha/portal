@@ -37,28 +37,29 @@ exports[`RepositorySelectsAndButtons should match snapshot 1`] = `
       userDefinedGridStates={Array []}
       username=""
     />
-    <CatalogueOwner
-      setCatalogueOwner={[Function]}
-    />
   </div>
   <div
     className="d-flex align-items-center justify-content-end col-xs-12 col-xl-2 col-xxl-1"
   >
-    <ForwardRef
-      className="p-button-text nexus-c-title-metadata__create-btn"
-      icon={
-        Object {
-          "process": [Function],
+    <Restricted
+      resource="createNewTitleButton"
+    >
+      <ForwardRef
+        className="p-button-text nexus-c-title-metadata__create-btn"
+        icon={
+          Object {
+            "process": [Function],
+          }
         }
-      }
-      onClick={[Function]}
-      tooltip="Create New Title"
-      tooltipOptions={
-        Object {
-          "position": "left",
+        onClick={[Function]}
+        tooltip="Create New Title"
+        tooltipOptions={
+          Object {
+            "position": "left",
+          }
         }
-      }
-    />
+      />
+    </Restricted>
   </div>
 </div>
 `;

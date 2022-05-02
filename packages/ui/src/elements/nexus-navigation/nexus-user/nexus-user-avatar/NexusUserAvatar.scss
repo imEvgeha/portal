@@ -1,0 +1,40 @@
+.NexusUserAvatar {
+    padding: 20px;
+    color: black;
+    .UserAvatarHeading {
+        .UserAvatarFullName {
+            font: normal normal bold 20px/15px Arial;
+        }
+        .UserAvatarUsername {
+            margin-top: 4px;
+            font: normal normal normal 12px/18px Arial;
+        }
+        .ApplicationVersion {
+            font: normal normal normal 12px/20px Arial;
+        }
+    }
+
+    .UserAvatarLogout {
+        .logoutIcon {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        .p-button.logout {
+            background: linear-gradient(to left, #ffffff 50%, #d66a6a 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: background-position 0.3s ease-out;
+            color: rgb(0, 0, 0);
+            border-color: var(--bluegray-800);
+        }
+        .p-button.logout:hover {
+            background-position: left bottom;
+        }
+        .p-button.logout i {
+            background-color: var(--bluegray-800);
+        }
+        .p-button.logout:focus {
+            box-shadow: 0 0 0 1px var(--bluegray-500);
+        }
+    }
+}

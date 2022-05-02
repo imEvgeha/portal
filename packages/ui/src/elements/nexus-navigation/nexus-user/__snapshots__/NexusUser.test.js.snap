@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusUser should match snapshot 1`] = `
+<div
+  className="NexusUser"
+>
+  <Avatar
+    className="mr-2 nav-user"
+    icon="pi pi-user"
+    image={null}
+    imageAlt="avatar"
+    label={null}
+    onClick={[Function]}
+    onImageError={null}
+    shape="circle"
+    size="large"
+    style={null}
+    template={null}
+  />
+  <OverlayPanel
+    appendTo={null}
+    ariaCloseLabel="close"
+    breakpoints={null}
+    className="UserAvatarOverlay"
+    dismissable={true}
+    id="overlay_panel"
+    onHide={null}
+    onShow={null}
+    showCloseIcon={false}
+    style={null}
+    transitionOptions={null}
+  >
+    <Connect(NexusUserAvatar) />
+  </OverlayPanel>
+</div>
+`;

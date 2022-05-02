@@ -767,7 +767,8 @@
                                                 "hasValue": true
                                             }
                                         ]
-                                    ]
+                                    ],
+                                    "resource": "autoDecorateTitleMetadata"
                                 },
                                 "editorial.shortTitleTemplate": {
                                     "name": "Auto - Decorate Title",

@@ -582,27 +582,6 @@ class TitleCreate extends React.Component {
                                             />
                                         </div>
                                     </div>
-                                    {this.props.tenantCode && (
-                                        <div className="row">
-                                            <div className="col">
-                                                {/* eslint-disable-next-line react/no-adjacent-inline-elements */}
-                                                <Label for="catalogueOwner">
-                                                    Catalogue Owner<span style={{color: 'red'}}>*</span>
-                                                </Label>
-                                                <AvField
-                                                    type="select"
-                                                    name="catalogueOwner"
-                                                    required
-                                                    disabled={true}
-                                                    value={this.props.tenantCode}
-                                                >
-                                                    <option value={this.props.tenantCode}>
-                                                        {this.props.tenantCode === 'vu' ? 'Vubiquity' : 'MGM'}
-                                                    </option>
-                                                </AvField>
-                                            </div>
-                                        </div>
-                                    )}
                                     {this.renderSyncCheckBoxes()}
                                 </Container>
                             </div>

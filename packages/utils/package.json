@@ -8,7 +8,6 @@
         "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
     },
     "peerDependencies": {
-        "@casl/ability": "^2.5.1",
         "@casl/react": "^0.8.1",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",

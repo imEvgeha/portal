@@ -1,0 +1,15 @@
+.UserAvatarTenantsSelection {
+    .tenant-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        .tenantIcon {
+            margin-right: 10px;
+        }
+
+        .tenantName {
+            // margin-left: 10px;
+        }
+    }
+}

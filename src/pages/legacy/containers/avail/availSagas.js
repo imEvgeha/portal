@@ -6,10 +6,7 @@ import {
     RIGHT_ERROR_MSG_MERGED,
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {call, put, all, take, fork, takeEvery} from 'redux-saga/effects';
-import { addToast } from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import { can } from '@vubiquity-nexus/portal-utils/lib/ability';
-import {store} from '../../../../index';
+import {all, call, fork, put, take, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './availActionTypes';
 import {profileService} from './service/ProfileService';
 import {configurationService} from './service/ConfigurationService';
@@ -22,6 +19,7 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotifica
 import {STORE_PENDING_RIGHT} from '../../../avails/right-matching/rightMatchingActionTypes';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {Button} from 'primereact/button';
+import {isAllowed} from '@portal/portal-auth/permissions';
 
 export function* fetchAvailMapping(requestMethod) {
     try {
@@ -85,7 +83,8 @@ export function* fetchAndStoreSelectItems(payload, type) {
     const mappingsWithConfigEndpoint = multiSelectMappings.filter(el => el.configEndpoint);
     // TODO - make this in background via FORK effect
     const fields = [];
-    const doesUserHaveRoles = can('read', 'ConfigUI')
+
+    const doesUserHaveRoles = isAllowed('fetchAvailSelectValues');
 
     const fetchedSelectedItems = yield all(
         mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint, alternateSelector}) => {
@@ -102,17 +101,12 @@ export function* fetchAndStoreSelectItems(payload, type) {
     );
 
     const getFetchedSelectedItems = () => {
-        if(doesUserHaveRoles) {
+        if (doesUserHaveRoles) {
             return fetchedSelectedItems;
         } else {
-            !doesUserHaveRoles && store.dispatch(addToast({
-                detail: `Access denied. User has no roles.`,
-                severity: 'error',
-            }));
-
             return mappingsWithConfigEndpoint;
         }
-    }
+    };
 
     const deduplicate = (source, propName) => {
         return Array.from(
@@ -125,27 +119,29 @@ export function* fetchAndStoreSelectItems(payload, type) {
         );
     };
 
-    const updatedSelectValues = getFetchedSelectedItems()?.filter(Boolean).reduce((acc, el) => {
-        const values = Object.values(el);
-        const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
-        const options = deduplicate(
-            processOptions(value, configEndpoint),
-            key === 'rating.ratingValue' ? 'label' : 'value'
-        );
-        let dopOptions = {};
-        if (configEndpoint === '/languages') {
-            dopOptions.language = options;
-        }
-        if (configEndpoint === '/countries') {
-            dopOptions.locale = options;
-        }
-        acc = {
-            ...acc,
-            ...dopOptions,
-            [key]: options,
-        };
-        return acc;
-    }, {});
+    const updatedSelectValues = getFetchedSelectedItems()
+        ?.filter(Boolean)
+        .reduce((acc, el) => {
+            const values = Object.values(el);
+            const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
+            const options = deduplicate(
+                processOptions(value, configEndpoint),
+                key === 'rating.ratingValue' ? 'label' : 'value'
+            );
+            let dopOptions = {};
+            if (configEndpoint === '/languages') {
+                dopOptions.language = options;
+            }
+            if (configEndpoint === '/countries') {
+                dopOptions.locale = options;
+            }
+            acc = {
+                ...acc,
+                ...dopOptions,
+                [key]: options,
+            };
+            return acc;
+        }, {});
 
     const selectedItemsForStore = {
         ...mappingsWithOptions,
@@ -243,11 +239,7 @@ export function* handleMatchingRights({payload}) {
             payload: {
                 ...toastProps,
                 content: (
-                    <ToastBody
-                        summary={ERROR_TITLE}
-                        detail={message}
-                        severity={'error'}
-                    >
+                    <ToastBody summary={ERROR_TITLE} detail={message} severity={'error'}>
                         {rightIDs.map(right => (
                             <Button
                                 label={right}

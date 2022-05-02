@@ -56,6 +56,7 @@ module.exports = envKeys => ({
         new ESLintPlugin(esLintOptions),
         new CopyWebpackPlugin({
             patterns: [
+                'profile/resourceRoleMap.json',
                 'profile/config.json',
                 'profile/configQA.json',
                 'profile/availMapping.json',

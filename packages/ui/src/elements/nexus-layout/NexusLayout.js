@@ -14,7 +14,6 @@ const NexusLayout = ({children}) => (
             <NexusNavigation />
         </IfEmbedded>
         <div className="nexus-c-app-layout__main">
-            {/*{children}*/}
             <Outlet />
         </div>
     </div>

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {getUsername} from "@portal/portal-auth/authSelectors";
+import {getUsername} from '@portal/portal-auth/authSelectors';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_METADATA} from '@vubiquity-nexus/portal-utils/lib/constants';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {isEmpty} from 'lodash';
+import {isEmpty, get} from 'lodash';
 import {TabMenu} from 'primereact/tabmenu';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {store} from '../../index';
 import {resetTitle} from '../metadata/metadataActions';
 import SyncLogTable from '../sync-log/SyncLogTable';
@@ -21,7 +21,7 @@ import UploadMetadataTable from './components/upload-metadata-table/UploadMetada
 import './TitleMetadataView.scss';
 import {setCurrentUserViewAction, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
-import {DEFAULT_CATALOGUE_OWNER, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
+import {TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
     toggleRefreshGridData,
@@ -33,15 +33,22 @@ export const TitleMetadataView = ({
     uploadMetadata,
     setCurrentUserView,
 }) => {
+    const selectedTenant = useSelector(state => get(state, 'auth.selectedTenant'));
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
-        tenantCode: DEFAULT_CATALOGUE_OWNER,
+        tenantCode: selectedTenant.id,
     });
 
     const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
+
+    useEffect(() => {
+        setCatalogueOwner({
+            tenantCode: selectedTenant.id,
+        });
+    }, [selectedTenant]);
 
     const showSuccess = detail => {
         store.dispatch(

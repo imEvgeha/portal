@@ -6,8 +6,7 @@ import EditorMediaWrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-rig
 import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import NexusNavIcon from '@vubiquity-nexus/portal-assets/nexus-nav-icon.svg';
-import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
-import {AVAILS, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS, TITLE_METADATA, METADATA} from '../constants';
+import {AVAILS, DOP_TASKS, EVENT_MANAGEMENT, METADATA, SERVICING_ORDERS, TITLE_METADATA} from '../constants';
 import './NavigationItems.scss';
 
 export const ComponentWrapper = ({link, handleClick, children, dataset, id}) => {
@@ -29,7 +28,6 @@ export const ComponentWrapper = ({link, handleClick, children, dataset, id}) => 
 };
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => {
-    const canReadEventManager = can('read', 'EventManagement');
     const generateComponent = (link, Icon, props) => (
         <ComponentWrapper handleClick={handleClick} link={link} {...props}>
             <Icon />
@@ -49,6 +47,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: AVAILS,
             isSelected: selectedItem === AVAILS,
             onClick: () => handleClick(AVAILS),
+            resource: 'availsMenuIcon',
         },
         {
             icon: EditorMediaWrapRightIcon,
@@ -57,6 +56,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: 'Title Metadata',
             isSelected: selectedItem === TITLE_METADATA,
             onClick: () => handleClick(METADATA),
+            resource: 'titleMetadataMenuIcon',
         },
         {
             icon: DopIcon,
@@ -65,6 +65,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: 'DOP Tasks',
             isSelected: selectedItem === DOP_TASKS,
             onClick: () => handleClick(DOP_TASKS),
+            resource: 'dopTasksMenuIcon',
         },
         {
             icon: DetailViewIcon,
@@ -74,18 +75,15 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             isSelected: selectedItem === SERVICING_ORDERS,
             onClick: () => handleClick(SERVICING_ORDERS),
         },
-        ...(canReadEventManager
-            ? [
-                  {
-                      icon: RecentIcon,
-                      component: props => generateComponent(EVENT_MANAGEMENT, RecentIcon, props),
-                      id: EVENT_MANAGEMENT,
-                      tooltip: 'Event Management',
-                      isSelected: selectedItem === EVENT_MANAGEMENT,
-                      onClick: () => handleClick(EVENT_MANAGEMENT),
-                  },
-              ]
-            : []),
+        {
+            icon: RecentIcon,
+            component: props => generateComponent(EVENT_MANAGEMENT, RecentIcon, props),
+            id: EVENT_MANAGEMENT,
+            tooltip: 'Event Management',
+            isSelected: selectedItem === EVENT_MANAGEMENT,
+            onClick: () => handleClick(EVENT_MANAGEMENT),
+            resource: 'eventManagementMenuIcon',
+        },
     ];
 };
 

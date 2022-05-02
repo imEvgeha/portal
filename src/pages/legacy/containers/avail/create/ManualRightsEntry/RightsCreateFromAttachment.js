@@ -9,7 +9,6 @@ import RightsResultTable from '../../dashboard/components/RightsResultTable';
 import {profileService} from '../../service/ProfileService';
 import {historyService} from '../../service/HistoryService';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
 import * as selectors from './manualRightEntrySelector';
@@ -35,6 +34,7 @@ import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/
 import InputForm from '../../../../../avails/ingest-panel/components/upload-ingest/InputForm/InputForm';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import withRouter from '@vubiquity-nexus/portal-ui/lib/hocs/withRouter';
+import {Restricted} from '@portal/portal-auth/permissions';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON, UPLOAD_TITLE} = Constants;
 
@@ -342,7 +342,7 @@ class RightsCreateFromAttachment extends React.Component {
                         )}
                     </div>
                     <div>
-                        <Can I="create" a="Avail">
+                        <Restricted resource="createRightsFromAttachementUploadButton">
                             <NexusUploadButton
                                 modalContext={NexusModalContext}
                                 modalCallback={this.buildForm}
@@ -352,7 +352,7 @@ class RightsCreateFromAttachment extends React.Component {
                                 withModal
                                 extensionsAccepted={getConfig('avails.upload.extensions')}
                             />
-                        </Can>
+                        </Restricted>
                     </div>
                 </div>
                 {availsMapping && (

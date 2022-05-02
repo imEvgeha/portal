@@ -23,6 +23,11 @@ const SettingsPage = () => {
 
     useEffect(() => {
         activeIndex === 0 && dispatch(fetchConfigApiEndpoints());
+
+        return () => {
+            setConfigList([]);
+            setSelectedApi(undefined);
+        };
     }, []);
 
     useEffect(() => {
