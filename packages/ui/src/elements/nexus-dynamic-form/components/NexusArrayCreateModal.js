@@ -44,9 +44,9 @@ const NexusArrayCreateModal = ({
             <AKForm
                 onSubmit={values => {
                     handleModalSubmit(
-                        values?.editorial?.castCrew?.length
+                        values?.editorial?.castCrew
                             ? values
-                            : {...values, editorial: {...values.editorial, castCrew: []}}
+                            : {...values, editorial: {...values.editorial, castCrew: initialData?.castCrew || []}}
                     );
                 }}
             >
