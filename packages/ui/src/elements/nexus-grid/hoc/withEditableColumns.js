@@ -5,14 +5,11 @@ import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {isEqual, omit} from 'lodash';
 import {connect} from 'react-redux';
-import AudioLanguageTypeCellEditor from '../elements/cell-editor/AudioLanguageTypeCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';
 import DateTimeCellEditor from '../elements/cell-editor/DateTimeCellEditor';
 import DropdownCellEditor from '../elements/cell-editor/DropdownCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
-import PriceTypeCellEditor from '../elements/cell-editor/PriceTypeCellEditor';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
-import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
 import {createAvailSelectValuesSelector} from '../nexusGridSelectors';
 import usePrevious from './hooks/usePrevious';
 
@@ -109,35 +106,6 @@ const withEditableColumns =
                                 columnDef.cellEditorFramework = DateTimeCellEditor;
                                 // Check the comment above for 'date' field and PORT-1393
                                 columnDef.suppressHeaderKeyboardEvent = params => params.event.key === 'Enter';
-                                break;
-                            case 'priceType':
-                                columnDef.cellEditorFramework = PriceTypeCellEditor;
-                                columnDef.cellEditorParams = {
-                                    options: {
-                                        priceTypes: (isObject(selectValues) && selectValues['pricing.priceType']) || [],
-                                        currencies:
-                                            (isObject(selectValues) && selectValues['pricing.priceCurrency']) || [],
-                                    },
-                                };
-                                break;
-                            case 'territoryType':
-                                columnDef.cellEditorFramework = TerritoryCellEditor;
-                                columnDef.cellEditorParams = {
-                                    options: (isObject(selectValues) && selectValues[field]) || [],
-                                };
-                                break;
-                            case 'audioLanguageType':
-                                columnDef.cellEditorFramework = AudioLanguageTypeCellEditor;
-                                columnDef.cellEditorParams = {
-                                    options: {
-                                        languages:
-                                            (isObject(selectValues) && selectValues['languageAudioTypes.language']) ||
-                                            [],
-                                        audioTypes:
-                                            (isObject(selectValues) && selectValues['languageAudioTypes.audioType']) ||
-                                            [],
-                                    },
-                                };
                                 break;
                             default:
                                 break;
