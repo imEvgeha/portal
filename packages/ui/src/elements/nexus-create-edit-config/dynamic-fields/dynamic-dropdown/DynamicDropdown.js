@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {get, sortBy, startCase} from 'lodash';
 import {Dropdown} from 'primereact/dropdown';
 import {MultiSelect} from 'primereact/multiselect';
-// import {getConfigApiValues} from '../../../../../../../src/pages/legacy/common/CommonConfigService';
 
 const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi}) => {
     const [options, setOptions] = useState([]);
