@@ -8,7 +8,13 @@ const NexusUser = () => {
 
     return (
         <div className="NexusUser">
-            <Avatar icon="pi pi-user" size="large" className="mr-2 nav-user" onClick={e => op.current.toggle(e)} />
+            <Avatar
+                icon="pi pi-user"
+                size="large"
+                className="mr-2 nav-user"
+                shape="circle"
+                onClick={e => op.current.toggle(e)}
+            />
 
             {/* On Avatar click, render a popup overlay to show contents */}
             <OverlayPanel id="overlay_panel" className="UserAvatarOverlay" ref={op} dismissable>
