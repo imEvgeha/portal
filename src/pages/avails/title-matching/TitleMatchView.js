@@ -56,11 +56,7 @@ const TitleMatchView = ({
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
-                <Button
-                    className="p-button-text nexus-c-title-matching-custom-button"
-                    label="New Title"
-                    onClick={handleOpenModal}
-                />
+                <Button className="p-button-text p-button-text-for-cell" label="New Title" onClick={handleOpenModal} />
             </CustomActionsCellRenderer>
         );
     };
