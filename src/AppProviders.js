@@ -1,33 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {PermissionProvider} from '@portal/portal-auth/permissions';
 import NexusDateTimeProvider from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-time-context/NexusDateTimeProvider';
 import CustomIntlProvider from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/CustomIntlProvider';
 import {NexusModalProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-overlay/NexusOverlay';
 import theme from '@vubiquity-nexus/portal-ui/lib/styled/theme';
-import {HistoryRouter as ConnectedRouter} from 'redux-first-history/rr6';
+import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {get} from 'lodash';
+import {useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import {PersistGate} from 'redux-persist/integration/react';
 import {ThemeProvider} from 'styled-components';
 import AuthProvider from './auth/AuthProvider';
-import {history} from './index';
+import {registerFetchInterceptor} from './util/httpInterceptor';
 
-const AppProviders = ({children, persistor}) => (
-    <CustomIntlProvider>
-        <NexusDateTimeProvider>
-            <NexusOverlayProvider>
-                <ConnectedRouter history={history}>
-                    <NexusModalProvider>
-                        <PersistGate loading={null} persistor={persistor}>
-                            <ThemeProvider theme={theme}>
-                                <AuthProvider>{children}</AuthProvider>
-                            </ThemeProvider>
-                        </PersistGate>
-                    </NexusModalProvider>
-                </ConnectedRouter>
-            </NexusOverlayProvider>
-        </NexusDateTimeProvider>
-    </CustomIntlProvider>
-);
+const AppProviders = ({children, persistor}) => {
+    const rolesResourceMap = require('../profile/resourceRoleMap.json');
+
+    const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
+    const roles = get(selectedTenant, 'roles', []);
+    const navigate = useNavigate();
+
+    // register interceptor
+    registerFetchInterceptor(selectedTenant);
+
+    return (
+        <PermissionProvider
+            roles={roles}
+            resourceRolesMap={rolesResourceMap}
+            unauthorizedAction={() => navigate(`/${getAuthConfig().realm}/401`)}
+        >
+            <CustomIntlProvider>
+                <NexusDateTimeProvider>
+                    <NexusOverlayProvider>
+                        <NexusModalProvider>
+                            <PersistGate loading={null} persistor={persistor}>
+                                <ThemeProvider theme={theme}>
+                                    <AuthProvider>{children}</AuthProvider>
+                                </ThemeProvider>
+                            </PersistGate>
+                        </NexusModalProvider>
+                    </NexusOverlayProvider>
+                </NexusDateTimeProvider>
+            </CustomIntlProvider>
+        </PermissionProvider>
+    );
+};
 
 AppProviders.propTypes = {
     persistor: PropTypes.object.isRequired,

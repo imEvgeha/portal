@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {get, cloneDeep} from 'lodash';
+import {cloneDeep, get} from 'lodash';
 import Button from '@atlaskit/button';
 import {Form} from 'react-forms-processor';
 import {validateAllFields} from 'react-forms-processor/dist/utilities/validation';
 import {renderer as akRenderer} from 'react-forms-processor-atlaskit';
-import {Modal, ModalBody, ModalFooter} from 'reactstrap';
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Modal, ModalBody, ModalFooter} from 'reactstrap';
 import RepeatingFormField from './custom-types/Repeats';
 import RepeatingField from './custom-types/RepeatsPrimitives';
 import NexusDateTimePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
@@ -17,8 +16,8 @@ import DynamicObjectType from './custom-types/DynamicObjectType';
 import ObjectType from './custom-types/ObjectType';
 import ObjectKey from './custom-types/ObjectKey';
 import DelayedOptions from './custom-types/DelayedOptions';
-import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {Field as AkField} from '@atlaskit/form';
+import {Restricted} from '@portal/portal-auth/permissions';
 
 const CreateEditConfigForm = ({value, onRemoveItem, onCancel, schema, onSubmit, displayName, label}) => {
     const [val, setVal] = useState(value);
@@ -265,7 +264,7 @@ const CreateEditConfigForm = ({value, onRemoveItem, onCancel, schema, onSubmit, 
                 <p style={{marginTop: '-4px'}}>
                     <b>{value && label ? label : <i style={{fontSize: '20px', color: '#666'}}>New {displayName}</i>}</b>
                 </p>
-                <Can I="delete" a="ConfigUI">
+                <Restricted resource="legacySettingsDeleteConfigButton">
                     {Object.entries(value).length !== 0 && (
                         <div style={{position: 'absolute', top: '20px', right: '20px', cursor: 'pointer'}}>
                             <Dropdown isOpen={dropdownOpen} toggle={toggle}>
@@ -278,7 +277,7 @@ const CreateEditConfigForm = ({value, onRemoveItem, onCancel, schema, onSubmit, 
                             </Dropdown>
                         </div>
                     )}
-                </Can>
+                </Restricted>
                 <Form
                     renderer={(field, onChange, onFieldFocus, onFieldBlur) =>
                         renderer(field, onChange, onFieldFocus, onFieldBlur)

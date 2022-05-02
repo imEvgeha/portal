@@ -1,5 +1,5 @@
 import {get, isObject, merge} from 'lodash';
-import {defaultConfiguration} from '../../../src/config';
+// import {defaultConfiguration} from '../../../src/config';
 import {nexusFetch} from './http-client';
 
 let configuration = {};
@@ -7,7 +7,7 @@ let configuration = {};
 // temporary solution - replace it with env variables
 export async function loadConfig(configFile) {
     try {
-        configuration = merge(configuration, defaultConfiguration);
+        // configuration = merge(configuration, defaultConfiguration);
 
         const data = await nexusFetch(configFile);
 

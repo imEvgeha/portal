@@ -29,7 +29,7 @@ const onViewTitleClick = (response, realm) => {
 };
 
 const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, focusedRight, bulkTitleMatch}) => {
-    const {CREATE_TITLE_RESTRICTIONS, TENANT_CODE_ITEMS} = constants;
+    const {CREATE_TITLE_RESTRICTIONS} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         CREATE_TITLE_RESTRICTIONS;
     const addToast = toast => store.dispatch(toastDisplay(toast));
@@ -471,30 +471,6 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                                 </ControllerWrapper>
                             </div>
                         </div>
-                        {tenantCode && !isItMatching && (
-                            <div className="row">
-                                <div className="col">
-                                    <ControllerWrapper
-                                        title="Catalogue Owner"
-                                        inputName="catalogueOwner"
-                                        errors={errors.catalogueOwner}
-                                        required={true}
-                                        controllerClassName="nexus-c-title-create_catalogue-owner-dropdown-container"
-                                        control={control}
-                                        register={register}
-                                    >
-                                        <Dropdown
-                                            optionLabel="label"
-                                            disabled
-                                            options={TENANT_CODE_ITEMS}
-                                            id="catalogueOwner"
-                                            className="nexus-c-title-create_input"
-                                            placeholder="Select a Catalogue Owner"
-                                        />
-                                    </ControllerWrapper>
-                                </div>
-                            </div>
-                        )}
                         {isItMatching ? null : renderSyncCheckBoxes()}
                     </div>
                 </div>

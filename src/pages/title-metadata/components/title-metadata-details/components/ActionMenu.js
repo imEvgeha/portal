@@ -1,6 +1,7 @@
 import React, {useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {keycloak} from "@portal/portal-auth";
+import {keycloak} from '@portal/portal-auth';
+import {Restricted} from '@portal/portal-auth/permissions';
 import NexusDropdown, {
     DropdownOption,
     DropdownOptions,
@@ -45,9 +46,11 @@ const ActionMenu = ({titleId}) => {
             <NexusDropdown>
                 <DropdownToggle label="Actions" isMobile />
                 <DropdownOptions isMobile align="top">
-                    <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(titleId)}>
-                        Unmerge
-                    </DropdownOption>
+                    <Restricted resource="unmergeTitleAction">
+                        <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(titleId)}>
+                            Unmerge
+                        </DropdownOption>
+                    </Restricted>
                 </DropdownOptions>
             </NexusDropdown>
         </div>

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {isAllowed, Restricted} from '@portal/portal-auth/permissions';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import IconActionEdit from '@vubiquity-nexus/portal-assets/icon-action-edit.svg';
@@ -11,7 +12,6 @@ import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-
 import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {configService} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 import {useDebounce} from '@vubiquity-nexus/portal-utils/lib/useDebounce';
 import {capitalize, cloneDeep} from 'lodash';
@@ -121,16 +121,18 @@ const EndpointContainer = ({endpoint}) => {
                         </span>
                     </div>
                     <div className="col-2 text-end">
-                        <Button
-                            key="add_new_config"
-                            id="add_new_config__btn"
-                            icon={IconActionAdd}
-                            onClick={() => {
-                                setSelectedConfig({});
-                                setShowEditConfigModal(true);
-                            }}
-                            className="p-button-text"
-                        />
+                        <Restricted resource="settingsCreate">
+                            <Button
+                                key="add_new_config"
+                                id="add_new_config__btn"
+                                icon={IconActionAdd}
+                                onClick={() => {
+                                    setSelectedConfig({});
+                                    setShowEditConfigModal(true);
+                                }}
+                                className="p-button-text"
+                            />
+                        </Restricted>
                     </div>
                 </div>
             </div>
@@ -174,7 +176,7 @@ const EndpointContainer = ({endpoint}) => {
                 disabled: false,
                 buttonId: 'btnEditConfig',
             }),
-            can('update', 'ConfigUI') &&
+            isAllowed('settingsDelete') &&
                 new Action({
                     icon: ActionCrossCircle,
                     action: () => confirmDeletion(entry),

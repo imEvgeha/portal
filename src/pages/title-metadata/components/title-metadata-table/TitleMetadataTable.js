@@ -1,5 +1,6 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {Restricted} from '@portal/portal-auth/permissions';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
@@ -85,18 +86,22 @@ const TitleMetadataTable = ({
                             <div className="nexus-c-title-metadata-table__repository">
                                 <div>{value}</div>
 
-                                {value !== NEXUS && (
-                                    <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
-                                        <div
-                                            className="nexus-c-title-metadata-table__repository-icon"
-                                            onClick={() =>
-                                                navigate(URL.keepEmbedded(`detail/${id}/legacy-title-reconciliation`))
-                                            }
-                                        >
-                                            <NexusStatusDot severity="warning" />
-                                        </div>
-                                    </NexusTooltip>
-                                )}
+                                <Restricted resource="titleMetadataMergeTitle">
+                                    {value !== NEXUS && (
+                                        <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
+                                            <div
+                                                className="nexus-c-title-metadata-table__repository-icon"
+                                                onClick={() =>
+                                                    navigate(
+                                                        URL.keepEmbedded(`detail/${id}/legacy-title-reconciliation`)
+                                                    )
+                                                }
+                                            >
+                                                <NexusStatusDot severity="warning" />
+                                            </div>
+                                        </NexusTooltip>
+                                    )}
+                                </Restricted>
                             </div>
                         );
                     },

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {SUCCESS_TITLE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {CREATE_NEW_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {connect} from 'react-redux';
@@ -16,7 +16,6 @@ import {INVALID_DATE} from '../../../constants/messages';
 import {rightsService} from '../service/RightsService';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import RightsURL from '../util/RightsURL';
-import {can, cannot} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import RightPriceForm from '../../../components/form/RightPriceForm';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
@@ -269,9 +268,7 @@ class RightCreate extends React.Component {
             this.right.status &&
             this.right.status.value === 'Ready';
         if (map) {
-            const canCreate = !map.readOnly && can('create', 'Avail', map.javaVariableName);
-
-            if (canCreate && (map.required || isOriginRightIdRequired)) {
+            if (map.required || isOriginRightIdRequired) {
                 if (Array.isArray(value)) {
                     return value.length === 0 ? 'Field can not be empty' : '';
                 }
@@ -282,21 +279,15 @@ class RightCreate extends React.Component {
     }
 
     areMandatoryFieldsEmpty() {
-        if (
-            this.props.availsMapping.mappings
-                .filter(({javaVariableName, readOnly}) => !readOnly && can('create', 'Avail', javaVariableName))
-                .find(x => x.required && !this.right[x.javaVariableName])
-        )
-            return true;
-        return false;
+        return !!this.props.availsMapping.mappings
+            .filter(({readOnly}) => !readOnly)
+            .find(x => x.required && !this.right[x.javaVariableName]);
     }
 
     validateFields() {
-        this.props.availsMapping.mappings
-            .filter(({javaVariableName}) => can('create', 'Avail', javaVariableName))
-            .map(mapping => {
-                this.checkRight(mapping.javaVariableName, this.right[mapping.javaVariableName], false);
-            });
+        this.props.availsMapping.mappings.map(mapping => {
+            this.checkRight(mapping.javaVariableName, this.right[mapping.javaVariableName], false);
+        });
         this.setState({});
         return this.anyInvalidField();
     }
@@ -1014,10 +1005,7 @@ class RightCreate extends React.Component {
                     ) {
                         const required = mapping.required;
                         const value = this.right ? this.right[mapping.javaVariableName] : '';
-                        const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
-                        if (cannotCreate) {
-                            return;
-                        }
+
                         switch (mapping.dataType) {
                             case 'string':
                                 let req = required;

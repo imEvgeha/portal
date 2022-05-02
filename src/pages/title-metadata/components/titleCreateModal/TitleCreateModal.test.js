@@ -37,7 +37,7 @@ describe('TitleCreateModal', () => {
         });
 
         it('should render labels for create title dialog ControllerWrappers', () => {
-            expect(defaultWrapper.find(ControllerWrapper)).toHaveLength(6);
+            expect(defaultWrapper.find(ControllerWrapper)).toHaveLength(5);
         });
 
         it('should render checkbox container and checkboxes for create title dialog window', () => {

@@ -1,12 +1,11 @@
 import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@portal/portal-auth';
-import {injectUser, logout} from "@portal/portal-auth/authActions";
-import {getTokenDuration, getValidToken, wait} from "@portal/portal-auth/utils";
-import {updateAbility} from '@vubiquity-nexus/portal-utils/lib/ability';
+import {injectUser, logout, setSelectedTenantInfo} from '@portal/portal-auth/authActions';
+import {getTokenDuration, getValidToken, wait} from '@portal/portal-auth/utils';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {store} from '../index';
 import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions';
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
@@ -31,6 +30,7 @@ const AuthProvider = ({
     // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!configEndpointsLoading) {
@@ -55,9 +55,14 @@ const AuthProvider = ({
                     refreshToken: getValidToken(refreshToken, getConfig('keycloak.url')),
                 });
                 if (isAuthenticated) {
-                    const {realmAccess, token, refreshToken} = keycloak;
-                    const {roles} = realmAccess || {};
-                    updateAbility(roles);
+                    const {resourceAccess, token, refreshToken} = keycloak;
+                    const tmpRoles = resourceAccess?.['VU'].roles;
+                    // TODO: Default tenant for user is missing, defining staticly for now
+                    const selectedTenant = {
+                        id: 'VU',
+                        roles: tmpRoles,
+                    };
+                    dispatch(setSelectedTenantInfo(selectedTenant));
                     addUser({token, refreshToken});
                     loadUserAccount();
                     loadProfileInfo();

@@ -1,6 +1,5 @@
 import React from 'react';
 import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
-import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {Outlet} from 'react-router-dom';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
@@ -30,10 +29,12 @@ const staticRoutes = [
     {
         path: 'settings',
         element: Settings,
+        resource: 'settingsPage',
     },
     {
         path: 'settings/v2',
-        element: canRender(SettingsPage, 'read', 'Avail'),
+        element: SettingsPage,
+        resource: 'settingsPage',
     },
     {
         path: '401',
@@ -51,11 +52,31 @@ export const routes = [
         element: NexusLayout,
         children: [
             {index: true, key: 'welcome', element: Welcome},
-            {path: 'avails', element: Outlet, children: [...availsRoutes]},
-            {path: 'metadata', element: Outlet, children: [...titleMetadataRoutes]},
-            {path: 'dop-tasks', element: Outlet, children: [...dopTasksRoutes]},
+            {
+                path: 'avails',
+                resource: 'availsPage',
+                element: Outlet,
+                children: [...availsRoutes],
+            },
+            {
+                path: 'metadata',
+                resource: 'titleMetadataPage',
+                element: Outlet,
+                children: [...titleMetadataRoutes],
+            },
+            {
+                path: 'dop-tasks',
+                resource: 'dopPage',
+                element: Outlet,
+                children: [...dopTasksRoutes],
+            },
             {path: 'servicing-orders', element: Outlet, children: [...servicingOrdersRoutes]},
-            {path: 'event-management', element: Outlet, children: [...eventManagementRoutes]},
+            {
+                path: 'event-management',
+                resource: 'eventManagementParentPage',
+                element: Outlet,
+                children: [...eventManagementRoutes],
+            },
             ...manualTasksRoutes,
             ...staticRoutes,
         ],

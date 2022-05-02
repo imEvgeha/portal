@@ -53,16 +53,20 @@ exports[`EndpointContainer should match snapshot 1`] = `
             <div
               className="col-2 text-end"
             >
-              <ForwardRef
-                className="p-button-text"
-                icon={
-                  Object {
-                    "process": [Function],
+              <Restricted
+                resource="settingsCreate"
+              >
+                <ForwardRef
+                  className="p-button-text"
+                  icon={
+                    Object {
+                      "process": [Function],
+                    }
                   }
-                }
-                id="add_new_config__btn"
-                onClick={[Function]}
-              />
+                  id="add_new_config__btn"
+                  onClick={[Function]}
+                />
+              </Restricted>
             </div>
           </div>
         </div>

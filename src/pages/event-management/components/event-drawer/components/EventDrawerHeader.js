@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button, {LoadingButton} from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
+import {isAllowed} from '@portal/portal-auth/permissions';
 import NexusDownload from '@vubiquity-nexus/portal-ui/lib/elements/nexus-download/NexusDownload';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
-import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {connect} from 'react-redux';
 import {REPLAY_EVENT, REPLICATE_EVENT} from '../../../eventManagementActionTypes';
 import {replayEvent, replicateEvent} from '../../../eventManagementActions';
@@ -12,7 +12,7 @@ import './EventDrawerHeader.scss';
 
 export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {
     const {eventId = '', id = ''} = event?.headers || {};
-    const canReplayAndReplicate = can('create', 'EventManagement') && can('update', 'EventManagement');
+    const canReplayAndReplicate = isAllowed('replayAndReplicate');
 
     const onInnerReplay = () => {
         const payload = {docId: id};

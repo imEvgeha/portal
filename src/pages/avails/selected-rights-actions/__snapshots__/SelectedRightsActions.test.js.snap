@@ -7,29 +7,8 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
   <div
     className="nexus-c-selected-rights-actions d-flex align-items-center"
   >
-    <e
-      I="read"
-      a="DopTasks"
-      ability={
-        e {
-          Symbol(private): Object {
-            "RuleType": [Function],
-            "aliases": Object {
-              "crud": Array [
-                "create",
-                "read",
-                "update",
-                "delete",
-              ],
-            },
-            "events": Object {},
-            "hasPerFieldRules": false,
-            "indexedRules": Object {},
-            "mergedRules": Object {},
-            "originalRules": Array [],
-          },
-        }
-      }
+    <Restricted
+      resource="openAuditHistoryModalButton"
     >
       <div
         className="nexus-c-selected-rights-actions__menu-item"
@@ -40,7 +19,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
           History
         </div>
       </div>
-    </e>
+    </Restricted>
     <div
       className="nexus-c-selected-rights-actions__menu-item"
       data-test-id="bulk-match"
