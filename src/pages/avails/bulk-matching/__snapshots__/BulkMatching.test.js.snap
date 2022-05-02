@@ -61,6 +61,7 @@ exports[`BulkMatching should match snapshot 1`] = `
       }
     }
     display={false}
+    error=""
     focusedRight={Object {}}
     isItMatching={true}
     onCloseModal={[Function]}

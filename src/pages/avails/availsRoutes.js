@@ -35,6 +35,8 @@ const MatchRightViewMergeImport = import(
 );
 const MatchRightViewMerge = React.lazy(() => MatchRightViewMergeImport);
 
+const TitleMatchViewImport = import(/* webpackChunkName: "TitleMatchView" */ './title-matching/TitleMatchView');
+const TitleMatchView = React.lazy(() => TitleMatchViewImport);
 const TitleMatchReviewImport = import(
     /* webpackChunkName: "TitleMatchReview" */ './title-matching/TitleMatchReview/TitleMatchReview'
 );
@@ -60,6 +62,11 @@ const routes = [
                 path: ':rightId/title-matching',
                 element: Outlet,
                 children: [
+                    {
+                        index: true,
+                        key: 'rightId/title-matching',
+                        element: canRender(TitleMatchView, 'update', 'Metadata'),
+                    },
                     {
                         path: 'review',
                         element: canRender(TitleMatchReview, 'update', 'Metadata'),

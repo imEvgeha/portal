@@ -37,6 +37,7 @@ const TitleCreate = ({
     focusedRight,
     bulkTitleMatch,
     defaultValues,
+    error,
 }) => {
     const {CREATE_TITLE_RESTRICTIONS, TENANT_CODE_ITEMS} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
@@ -63,6 +64,10 @@ const TitleCreate = ({
     useEffect(() => {
         setValue('catalogueOwner', tenantCode);
     }, [tenantCode]);
+
+    useEffect(() => {
+        setErrorMessage(error);
+    }, [error]);
 
     useEffect(() => {
         if (!isEmpty(defaultValues)) {
@@ -160,7 +165,7 @@ const TitleCreate = ({
                             <Button
                                 label="View Title"
                                 className="p-button-link p-toast-button-link"
-                                onClick={() => onViewTitleClick(titleId, routeParams.realm)}
+                                onClick={() => onViewTitleClick(res, routeParams.realm)}
                             />
                         </ToastBody>
                     ),
@@ -535,6 +540,7 @@ TitleCreate.propTypes = {
     focusedRight: PropTypes.object,
     onCloseModal: PropTypes.func.isRequired,
     defaultValues: PropTypes.object,
+    error: PropTypes.string,
 };
 
 TitleCreate.defaultProps = {
@@ -543,6 +549,7 @@ TitleCreate.defaultProps = {
     bulkTitleMatch: () => null,
     focusedRight: {},
     defaultValues: {},
+    error: '',
 };
 
 export default TitleCreate;
