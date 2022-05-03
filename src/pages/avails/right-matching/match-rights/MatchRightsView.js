@@ -8,14 +8,12 @@ import {
     updateColumnDefs,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
-import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import {compose} from 'redux';
 import {backArrowColor} from '../../../../../packages/styles/constants';
 import {NexusGrid, NexusTitle} from '../../../../ui/elements';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
@@ -42,7 +40,7 @@ import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import {UNSELECTED_STATUSES, MIN_SELECTED_ROWS, FIELDS_WITHOUT_COLOURING, FIELDS_FOR_COLOURING} from './constants';
 import './MatchRightsView.scss';
 
-const CombinedRightNexusGrid = compose(withColumnsResizing(), withEditableColumns())(NexusGrid);
+const CombinedRightNexusGrid = withColumnsResizing()(NexusGrid);
 const MatchedRightsNexusGrid = withColumnsResizing()(NexusGrid);
 
 const MatchRightView = ({
