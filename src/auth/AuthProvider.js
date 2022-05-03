@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@portal/portal-auth';
 import {injectUser, logout, setSelectedTenantInfo} from '@portal/portal-auth/authActions';
 import {getTokenDuration, getValidToken, wait} from '@portal/portal-auth/utils';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getAuthConfig, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
 import {connect, useDispatch} from 'react-redux';
 import {store} from '../index';
@@ -56,11 +56,16 @@ const AuthProvider = ({
                 });
                 if (isAuthenticated) {
                     const {resourceAccess, token, refreshToken} = keycloak;
-                    const tmpRoles = resourceAccess?.['VU'].roles;
-                    // TODO: Default tenant for user is missing, defining staticly for now
+                    const realm = getAuthConfig().realm;
+                    // check if realm(from URL) matches with any client from keycloak
+                    const tenantFromRealm = Object.entries(resourceAccess).find(
+                        resource => resource[0].toLowerCase() === realm.toLowerCase()
+                    );
+                    // if realm does not match with any clients, set the first client as default tenant
+                    const defaultTenant = tenantFromRealm || Object.entries(resourceAccess)[0];
                     const selectedTenant = {
-                        id: 'VU',
-                        roles: tmpRoles,
+                        id: defaultTenant[0],
+                        roles: defaultTenant[1].roles,
                     };
                     dispatch(setSelectedTenantInfo(selectedTenant));
                     addUser({token, refreshToken});
