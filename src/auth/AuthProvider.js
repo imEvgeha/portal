@@ -97,9 +97,7 @@ const AuthProvider = ({
             // get the realm from URL
             const realm = getAuthConfig().realm;
             // check if realm(from URL) matches with any client from keycloak
-            const tenantFromRealm = Object.entries(resourceAccess).find(
-                resource => resource[0].toLowerCase() === realm.toLowerCase()
-            );
+            const tenantFromRealm = checkIfClientExistsInKeycloak(realm, resourceAccess);
             // if realm does not match with any clients, set the first client as default tenant
             const defaultTenant = tenantFromRealm || Object.entries(resourceAccess)[0];
             // construct the object and dispatch to redux
@@ -108,7 +106,37 @@ const AuthProvider = ({
                 roles: defaultTenant[1].roles,
             };
             dispatch(setSelectedTenantInfo(selectedTenant));
+        } else {
+            // check if persistedTenant exists in clients from keycloak
+            const persistedTenantExistsInClients = checkIfClientExistsInKeycloak(
+                persistedSelectedTenant.id,
+                resourceAccess
+            );
+            // if the client does not exist, assign the clients[0] as the default
+            if (isEmpty(persistedTenantExistsInClients)) {
+                const defaultClient = Object.entries(resourceAccess)[0];
+                // construct the object and dispatch to redux
+                const defaultSelectedTenant = {
+                    id: defaultClient[0],
+                    roles: defaultClient[1].roles,
+                };
+                dispatch(setSelectedTenantInfo(defaultSelectedTenant));
+            }
         }
+    };
+
+    /**
+     * Receives current client and all clients and checks if user has access
+     * @param {*} currentClient Current Client that needs to be checked
+     * @param {*} resourceAccess All Clients fetched from keycloak
+     * @returns
+     */
+    const checkIfClientExistsInKeycloak = (currentClient, resourceAccess) => {
+        const clientExistsInKeycloak = Object.entries(resourceAccess).find(
+            resource => resource[0].toLowerCase() === currentClient.toLowerCase()
+        );
+
+        return clientExistsInKeycloak;
     };
 
     const loadUserAccount = async () => {
