@@ -3,18 +3,17 @@ import PropTypes from 'prop-types';
 import {get, sortBy, startCase} from 'lodash';
 import {Dropdown} from 'primereact/dropdown';
 import {MultiSelect} from 'primereact/multiselect';
-// import {getConfigApiValues} from '../../../../legacy/common/CommonConfigService';
 
-const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApiMap}) => {
+const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi}) => {
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
         constructOptions();
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const subscription = form.watch((value, {name}) => {
-            if (dataApiMap[elementSchema.name]) {
+            if (elementSchema.id === 'licensees' && name?.includes('servicingRegionName')) {
                 getDDValues(elementSchema, name);
             }
         });
@@ -29,11 +28,11 @@ const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi
         if (elementSchema?.options) {
             const opts = elementSchema?.options?.[0]?.items?.map(i => ({value: i, label: startCase(i)}));
             setOptions(opts);
-        } else if (getDDValues !== undefined) {
+        } else if (elementSchema.id === 'licensees') {
             // licensees needs to be filtered by selected servicing region name
             getDDValues(elementSchema);
-        } else if (sourceUrl && cachedOption === undefined && !!dataApiMap[elementSchema.name]) {
-            cachedOption = dataApiMap[elementSchema.name](sourceUrl).then(response => {
+        } else if (sourceUrl && cachedOption === undefined && dataApi) {
+            cachedOption = dataApi(sourceUrl).then(response => {
                 cachedOption = response.data;
                 cache[sourceUrl] = response.data;
                 processOptions(response.data, elementSchema);
@@ -65,8 +64,8 @@ const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi
                 return cache[field.source.url][value].then(res => processOptions(res, field));
             }
             processOptions(cache[field.source.url][value], field);
-        } else if (dataApiMap[elementSchema.name]) {
-            const apiResponse = dataApiMap[elementSchema.name](field.source.url, value).then(response => {
+        } else if (dataApi) {
+            const apiResponse = dataApi(field.source.url, 'servicingRegion', value).then(response => {
                 cache[field.source.url] = {
                     ...cache[field.source.url],
                     [value]: response.data,
@@ -148,7 +147,7 @@ DynamicDropdown.propTypes = {
     change: PropTypes.func,
     form: PropTypes.object.isRequired,
     cache: PropTypes.object,
-    dataApi: PropTypes.object,
+    dataApi: PropTypes.func,
 };
 
 DynamicDropdown.defaultProps = {};

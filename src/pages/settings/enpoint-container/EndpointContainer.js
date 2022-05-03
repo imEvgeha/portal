@@ -23,10 +23,6 @@ import './EndpointContainer.scss';
 
 export const cache = {};
 
-const dataApiMap = {
-    servicingRegion: (url, value) => getConfigApiValues(url, 0, 1000, '', value, value),
-};
-
 const EndpointContainer = ({endpoint}) => {
     const dispatch = useDispatch();
     const [endpointList, setEndpointList] = useState([]);
@@ -284,6 +280,8 @@ const EndpointContainer = ({endpoint}) => {
         }
     };
 
+    const dataApi = (url, param, value) => getConfigApiValues(url, 0, 1000, '', param, value);
+
     return (
         <div className="nexus-c-endpoint-container h-100">
             <NexusDataPanel
@@ -305,7 +303,7 @@ const EndpointContainer = ({endpoint}) => {
                     onHide={onHideCreateEditConfigModal}
                     submitLoading={submitLoading}
                     cache={cache}
-                    dataApiMap={dataApiMap}
+                    dataApi={dataApi}
                 />
             )}
 

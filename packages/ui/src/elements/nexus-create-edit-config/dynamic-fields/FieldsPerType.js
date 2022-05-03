@@ -13,7 +13,7 @@ import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import DynamicElement from './dynamic-element/DynamicElement';
 
 export const constructFieldPerType = args => {
-    const {elementSchema, form, value, className, customOnChange, cb, cache, dataApiMap} = args;
+    const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi} = args;
     return (
         <div
             className={className || (elementSchema.type === 'array' ? 'col-sm-12' : 'col-sm-6 mb-1')}
@@ -54,7 +54,7 @@ export const constructFieldPerType = args => {
                                         onChange: onFormElementChanged,
                                         cb,
                                         cache,
-                                        dataApiMap,
+                                        dataApi,
                                     })}
                                     {elementSchema.type !== 'array' && <FieldError error={fieldState.error} />}
                                 </div>
@@ -68,7 +68,7 @@ export const constructFieldPerType = args => {
 };
 
 const getElement = args => {
-    const {elementSchema, field, value, form, onChange, cb, cache, dataApiMap} = args;
+    const {elementSchema, field, value, form, onChange, cb, cache, dataApi} = args;
     switch (elementSchema.type) {
         case 'text': {
             const newField = {...field, ...(field.value === null && {value: undefined})};
@@ -154,7 +154,7 @@ const getElement = args => {
                     values={value}
                     onKeysChanged={cb}
                     cache={cache}
-                    dataApiMap={dataApiMap}
+                    dataApi={dataApi}
                 />
             ) : (
                 <ArrayElement
@@ -162,7 +162,7 @@ const getElement = args => {
                     form={form}
                     values={value}
                     cache={cache}
-                    dataApiMap={dataApiMap}
+                    dataApi={dataApi}
                 />
             );
         case 'multiselect':
@@ -174,7 +174,7 @@ const getElement = args => {
                     change={onChange}
                     form={form}
                     cache={cache}
-                    dataApiMap={dataApiMap}
+                    dataApi={dataApi}
                 />
             );
         }
