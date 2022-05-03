@@ -1,19 +1,21 @@
 import React, {useState, useEffect, forwardRef, useImperativeHandle} from 'react';
-import Button from '@atlaskit/button';
-import {Form} from 'react-forms-processor';
-import {renderer} from 'react-forms-processor-atlaskit';
+import PropTypes from 'prop-types';
+import {isArray, isEmpty, isObject} from 'lodash';
+import {Button} from 'primereact/button';
 import './CustomComplexFilter.scss';
-/* eslint-disable react/prop-types */
+import ModuleRenderer from '../module-renderer-for-complex-filter/ModuleRenderer';
 
-export default forwardRef((props, ref) => {
-    const [value, setValue] = useState(null);
+const CustomComplexFilter = forwardRef((props, ref) => {
+    const [selectedData, setSelectedData] = useState({});
 
     useEffect(() => {
-        props.filterChangedCallback();
-    }, [value]);
+        if (!isEmpty(selectedData)) {
+            props.filterChangedCallback();
+        }
+    }, [selectedData]);
 
-    const onChange = v => {
-        setValue(v);
+    const onChangeSelectedData = e => {
+        setSelectedData(e);
     };
 
     // expose AG Grid Filter Lifecycle callbacks
@@ -24,30 +26,73 @@ export default forwardRef((props, ref) => {
             },
 
             isFilterActive() {
-                return !!value;
+                return !!selectedData;
             },
 
             getModel() {
-                if (value) {
+                if (selectedData) {
                     return {
                         type: 'equals',
-                        filter: value?.filter || value,
+                        filter: selectedData?.filter || selectedData,
                     };
                 }
             },
 
             setModel(val) {
-                onChange(val);
+                onChangeSelectedData(val);
             },
         };
     });
 
+    const clearObjFunction = async () => {
+        const emptySelectedData = {};
+
+        const returnEmptyVal = (key, obj) => {
+            if (isArray(obj[key])) {
+                return [];
+            }
+            if (isObject(obj[key])) {
+                return {};
+            }
+            return undefined;
+        };
+
+        for (const key in selectedData) {
+            emptySelectedData[key] = returnEmptyVal(key, selectedData);
+        }
+
+        onChangeSelectedData(emptySelectedData);
+    };
+
     return (
         <div className="nexus-c-custom-complex-filter">
-            <Form key={value} renderer={renderer} defaultFields={props.schema} onChange={onChange} />
-            <Button className="nexus-c-custom-complex-filter--clear" onClick={() => onChange(null)}>
-                Clear
-            </Button>
+            <div>
+                {props.schema.map((item, index) => (
+                    <ModuleRenderer
+                        item={item}
+                        selectedData={selectedData}
+                        onChangeSelectedData={onChangeSelectedData}
+                        key={index}
+                    />
+                ))}
+            </div>
+            <Button
+                className="p-button-text nexus-c-custom-complex-filter--clear"
+                label="Clear"
+                onClick={clearObjFunction}
+            />
         </div>
     );
 });
+
+CustomComplexFilter.propTypes = {
+    schema: PropTypes.array,
+    filterChangedCallback: PropTypes.func,
+};
+
+CustomComplexFilter.defaultProps = {
+    schema: [],
+    filterChangedCallback: () => null,
+};
+
+export default CustomComplexFilter;
