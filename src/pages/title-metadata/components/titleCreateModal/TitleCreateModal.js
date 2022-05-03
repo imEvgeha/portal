@@ -28,7 +28,17 @@ const onViewTitleClick = (response, realm) => {
     window.open(url, '_blank');
 };
 
-const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, focusedRight, bulkTitleMatch}) => {
+const TitleCreate = ({
+    onSave,
+    onCloseModal,
+    tenantCode,
+    display,
+    isItMatching,
+    focusedRight,
+    bulkTitleMatch,
+    defaultValues,
+    error,
+}) => {
     const {CREATE_TITLE_RESTRICTIONS} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         CREATE_TITLE_RESTRICTIONS;
@@ -43,13 +53,30 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
         setValue,
         reset,
         formState: {errors, isValid, dirtyFields},
-    } = useForm({defaultValues: {catalogueOwner: tenantCode}, mode: 'all', reValidateMode: 'onChange'});
+    } = useForm({
+        defaultValues: {...defaultValues, catalogueOwner: tenantCode},
+        mode: 'all',
+        reValidateMode: 'onChange',
+    });
     const currentValues = useWatch({control});
     const routeParams = useParams();
 
     useEffect(() => {
         setValue('catalogueOwner', tenantCode);
     }, [tenantCode]);
+
+    useEffect(() => {
+        setErrorMessage(error);
+    }, [error]);
+
+    useEffect(() => {
+        if (!isEmpty(defaultValues)) {
+            const keys = Object.keys(defaultValues);
+            keys.forEach(key => {
+                setValue(key, defaultValues[key]);
+            });
+        }
+    }, [defaultValues]);
 
     const toggle = () => {
         onSave();
@@ -138,7 +165,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                             <Button
                                 label="View Title"
                                 className="p-button-link p-toast-button-link"
-                                onClick={() => onViewTitleClick(titleId, routeParams.realm)}
+                                onClick={() => onViewTitleClick(res, routeParams.realm)}
                             />
                         </ToastBody>
                     ),
@@ -329,6 +356,7 @@ const TitleCreate = ({onSave, onCloseModal, tenantCode, display, isItMatching, f
                                     <Dropdown
                                         optionLabel="label"
                                         options={CONTENT_TYPE_ITEMS}
+                                        disabled={isItMatching}
                                         id="contentType"
                                         className="nexus-c-title-create_input"
                                         placeholder="Select a Content Type"
@@ -487,6 +515,8 @@ TitleCreate.propTypes = {
     bulkTitleMatch: PropTypes.func,
     focusedRight: PropTypes.object,
     onCloseModal: PropTypes.func.isRequired,
+    defaultValues: PropTypes.object,
+    error: PropTypes.string,
 };
 
 TitleCreate.defaultProps = {
@@ -494,6 +524,8 @@ TitleCreate.defaultProps = {
     isItMatching: false,
     bulkTitleMatch: () => null,
     focusedRight: {},
+    defaultValues: {},
+    error: '',
 };
 
 export default TitleCreate;

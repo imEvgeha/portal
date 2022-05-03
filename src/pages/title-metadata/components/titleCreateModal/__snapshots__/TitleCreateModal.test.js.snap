@@ -82,8 +82,8 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       additionalValidation={
                         Object {
                           "maxLength": Object {
-                            "message": "Max title length is 20!",
-                            "value": 20,
+                            "message": "Max title length is 250!",
+                            "value": 250,
                           },
                         }
                       }
@@ -912,8 +912,8 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                       additionalValidation={
                         Object {
                           "maxLength": Object {
-                            "message": "Max title length is 20!",
-                            "value": 20,
+                            "message": "Max title length is 250!",
+                            "value": 250,
                           },
                         }
                       }
@@ -1130,7 +1130,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                         autoFocus={false}
                         className="nexus-c-title-create_input"
                         dataKey={null}
-                        disabled={false}
+                        disabled={true}
                         dropdownIcon="pi pi-chevron-down"
                         editable={false}
                         emptyFilterMessage={null}

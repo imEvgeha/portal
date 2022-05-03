@@ -1,24 +1,24 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
-import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {cloneDeep} from 'lodash';
+import {Button} from 'primereact/button';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import mappings from '../../../../profile/titleMatchingRightMappings.json';
 import {NexusGrid, NexusTitle} from '../../../ui/elements';
 import {getSearchCriteria} from '../../legacy/stores/selectors/metadata/titleSelectors';
-import NewTitleConstants from '../../title-metadata/components/titleCreateModal/TitleCreateModalConstants';
+import TitleCreate from '../../title-metadata/components/titleCreateModal/TitleCreateModal';
+import {CONTENT_TYPE_ITEMS} from '../../title-metadata/components/titleCreateModal/TitleCreateModalConstants';
 import {createColumnDefs as getRightColumns} from '../utils';
 import TitlesList from './components/TitlesList';
-import CreateTitleForm from './components/create-title-form/CreateTitleForm';
 import {createColumnDefs, fetchFocusedRight, mergeTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
 import {getColumnDefs, getFocusedRight} from './titleMatchingSelectors';
@@ -38,27 +38,34 @@ const TitleMatchView = ({
     columnDefs,
     searchCriteria,
     isMerging,
+    toggleRefreshGridData,
 }) => {
+    const [error, setError] = useState('');
+    const [showModal, setShowModal] = useState(false);
     const routeParams = useParams();
-    const {openModal, closeModal} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
+    const {contentType: focusedContentType} = focusedRight;
+
+    const handleOpenModal = () => {
+        setShowModal(true);
+        setError('');
+    };
+
     // eslint-disable-next-line
     const newTitleCell = ({data}) => {
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
-                <Button
-                    onClick={() =>
-                        openModal(<CreateTitleForm close={closeModal} focusedRight={focusedRight} />, {
-                            title: NewTitleConstants.NEW_TITLE_MODAL_TITLE,
-                        })
-                    }
-                >
-                    New Title
-                </Button>
+                <Button className="p-button-text p-button-text-for-cell" label="New Title" onClick={handleOpenModal} />
             </CustomActionsCellRenderer>
         );
     };
+
+    const closeModalAndRefreshTable = () => {
+        setShowModal(false);
+        toggleRefreshGridData(true);
+    };
+
     const newTitleButton = {
         ...Constants.ADDITIONAL_COLUMN_DEF,
         colId: 'newTitle',
@@ -129,6 +136,17 @@ const TitleMatchView = ({
                     />
                 </>
             )}
+            <TitleCreate
+                display={showModal}
+                onSave={closeModalAndRefreshTable}
+                onCloseModal={() => setShowModal(false)}
+                isItMatching={true}
+                defaultValues={{
+                    ...focusedRight,
+                    contentType: CONTENT_TYPE_ITEMS?.find(item => item.label === focusedContentType)?.value,
+                }}
+                error={error}
+            />
         </div>
     );
 };
@@ -141,6 +159,7 @@ TitleMatchView.propTypes = {
     searchCriteria: PropTypes.object,
     columnDefs: PropTypes.array,
     isMerging: PropTypes.bool,
+    toggleRefreshGridData: PropTypes.func,
 };
 
 TitleMatchView.defaultProps = {
@@ -148,6 +167,7 @@ TitleMatchView.defaultProps = {
     columnDefs: [],
     searchCriteria: {},
     isMerging: false,
+    toggleRefreshGridData: () => null,
 };
 
 const createMapStateToProps = () => {
@@ -165,7 +185,7 @@ const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
     mergeTitles: (matchList, duplicateList, rightId) => dispatch(mergeTitles({matchList, duplicateList, rightId})),
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
-// eslint-disable-next-line
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView);

@@ -172,6 +172,11 @@ $element-color-orange-80: palette(orange, 80);
             color: palette(black, 55);
         }
 
+        &.p-button-text-for-cell {
+            @include padding(0, 1, 0, 1);
+            height: 25px;
+        }
+
         svg {
             width: 16px;
             height: 16px;
