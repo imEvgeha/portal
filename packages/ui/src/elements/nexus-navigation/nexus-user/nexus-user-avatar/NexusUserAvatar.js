@@ -12,11 +12,12 @@ import './NexusUserAvatar.scss';
 
 /**
  *
- * @param {profileInfo} Retrieves User profile from Redux
- * @param {logout} Dispatch function to logout the user from session
+ * @param {profileInfo} profileInfo Redux - auth.profileInfo
+ * @param {logout} logout Dispatch function to logout the user from session
+ * @param {showTenantSelectionDropdown} showTenantSelectionDropdown Boolean - whether to show tenant list
  * @returns NexusUserAvatar
  */
-const NexusUserAvatar = ({profileInfo, logout}) => {
+const NexusUserAvatar = ({profileInfo, logout, showTenantSelectionDropdown}) => {
     /**
      *
      * @returns Render Header of Avatar
@@ -48,9 +49,9 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
     const RenderAvatarActions = () => {
         return (
             <div className="UserAvatarLogout">
-                <Button className="logout p-0" aria-label="LogOut" onClick={logout}>
+                <Button className="p-button-plain logout" aria-label="LogOut" onClick={logout}>
                     <LogoutIcon className="logoutIcon" />
-                    <span className="px-3">Log Out</span>
+                    <span className="logoutButtonText">Log Out</span>
                 </Button>
             </div>
         );
@@ -59,9 +60,9 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
     return (
         <div className="NexusUserAvatar">
             <RenderAvatarHeading />
-            <Divider />
-            <RenderTenantDropdown />
-            <Divider />
+            {showTenantSelectionDropdown && <Divider className="NexusUserDivider" />}
+            {showTenantSelectionDropdown && <RenderTenantDropdown />}
+            <Divider className="NexusUserDivider" />
             <RenderAvatarActions />
         </div>
     );
@@ -70,11 +71,13 @@ const NexusUserAvatar = ({profileInfo, logout}) => {
 NexusUserAvatar.propTypes = {
     profileInfo: PropTypes.object,
     logout: PropTypes.func,
+    showTenantSelectionDropdown: PropTypes.bool,
 };
 
 NexusUserAvatar.defaultProps = {
     profileInfo: {},
     logout: () => null,
+    showTenantSelectionDropdown: true,
 };
 
 const mapStateToProps = ({auth}) => {
