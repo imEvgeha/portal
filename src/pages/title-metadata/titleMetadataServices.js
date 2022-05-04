@@ -1,6 +1,6 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {encodedSerialize, getDomainName, prepareSortMatrixParamTitles} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getAuthConfig, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {get} from 'lodash';
 import {store} from '../../index';
@@ -115,7 +115,7 @@ export const unmergeTitle = async id => {
         }
 
         window.sessionStorage.setItem('unmerge', '1');
-        window.location.href = `${getDomainName()}${BASE_PATH}`;
+        window.location.href = `${getDomainName()}/${getAuthConfig().realm}${BASE_PATH}`;
 
         return true;
     } catch (err) {}
