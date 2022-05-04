@@ -2,10 +2,11 @@ import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@portal/portal-auth';
 import {injectUser, logout, setSelectedTenantInfo} from '@portal/portal-auth/authActions';
-import {getTokenDuration, getValidToken, wait} from '@portal/portal-auth/utils';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {checkIfClientExistsInKeycloak, getTokenDuration, getValidToken, wait} from '@portal/portal-auth/utils';
+import {getAuthConfig, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
-import {connect, useDispatch} from 'react-redux';
+import {isEmpty} from 'lodash';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {store} from '../index';
 import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions';
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
@@ -31,6 +32,8 @@ const AuthProvider = ({
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
+    // check if there is a persisted selectedTenant in Redux(from LocalStorage)
+    const persistedSelectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
 
     useEffect(() => {
         if (!configEndpointsLoading) {
@@ -56,13 +59,9 @@ const AuthProvider = ({
                 });
                 if (isAuthenticated) {
                     const {resourceAccess, token, refreshToken} = keycloak;
-                    const tmpRoles = resourceAccess?.['VU'].roles;
-                    // TODO: Default tenant for user is missing, defining staticly for now
-                    const selectedTenant = {
-                        id: 'VU',
-                        roles: tmpRoles,
-                    };
-                    dispatch(setSelectedTenantInfo(selectedTenant));
+
+                    // set default tenant
+                    AssignDefaultTenant(resourceAccess);
                     addUser({token, refreshToken});
                     loadUserAccount();
                     loadProfileInfo();
@@ -85,6 +84,46 @@ const AuthProvider = ({
             cancel = true;
         };
     }, []);
+
+    /**
+     * Assigns default tenant on application load if there is no data persisted on LocalStorage:
+     * 1. Redux persisted from LocalStorage
+     * 2. Realm (URL) - check the Realm from the /URL
+     * 3. Clients[0] - assign the first client as the default tenant
+     */
+    const AssignDefaultTenant = resourceAccess => {
+        // if there is no peristed default tenant in redux, move on to 2-3
+        if (isEmpty(persistedSelectedTenant)) {
+            // get the realm from URL
+            const realm = getAuthConfig().realm;
+            // check if realm(from URL) matches with any client from keycloak
+            const tenantFromRealm = checkIfClientExistsInKeycloak(realm, resourceAccess);
+            // if realm does not match with any clients, set the first client as default tenant
+            const defaultTenant = tenantFromRealm || Object.entries(resourceAccess)[0];
+            // construct the object and dispatch to redux
+            const selectedTenant = {
+                id: defaultTenant[0],
+                roles: defaultTenant[1].roles,
+            };
+            dispatch(setSelectedTenantInfo(selectedTenant));
+        } else {
+            // check if persistedTenant exists in clients from keycloak
+            const persistedTenantExistsInClients = checkIfClientExistsInKeycloak(
+                persistedSelectedTenant.id,
+                resourceAccess
+            );
+            // if the client does not exist, assign the clients[0] as the default
+            if (isEmpty(persistedTenantExistsInClients)) {
+                const defaultClient = Object.entries(resourceAccess)[0];
+                // construct the object and dispatch to redux
+                const defaultSelectedTenant = {
+                    id: defaultClient[0],
+                    roles: defaultClient[1].roles,
+                };
+                dispatch(setSelectedTenantInfo(defaultSelectedTenant));
+            }
+        }
+    };
 
     const loadUserAccount = async () => {
         const userAccount = await keycloak.loadUserProfile();
