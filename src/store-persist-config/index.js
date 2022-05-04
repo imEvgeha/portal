@@ -47,7 +47,7 @@ export const authPersistConfig = {
     version: 0,
     storage,
     stateReconciler: autoMergeLevel2,
-    whitelist: ['token', 'refreshToken'],
+    whitelist: ['token', 'refreshToken', 'selectedTenant'],
 };
 
 export const dopTasksPersistConfig = {

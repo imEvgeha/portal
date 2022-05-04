@@ -231,10 +231,12 @@ const ServicesTable = ({
     // if not specs available, show toast error on click
     const checkSpecOptions = e => {
         if (specOptions.length === 0) {
+            const errorDetails = e.data.recipient
+                ? `Formats Not Found for recipient "${e.data.recipient}"`
+                : `Recipient Not Found for ${e.data.barcode}`;
             showToastForErrors(null, {
                 errorToast: {
-                    title: 'Formats Not Found',
-                    description: `Formats Not Found for recipient "${e.data.recipient}"`,
+                    detail: errorDetails,
                 },
             });
         }
