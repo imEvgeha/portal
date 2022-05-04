@@ -4,9 +4,15 @@
     flex-direction: column;
     &--clear {
         align-self: flex-end;
+        margin-left: 8px;
     }
 }
 
 .nexus-c-custom-complex-filter__label {
     margin-bottom: 4px;
+}
+
+.nexus-c-custom-complex-filter--buttons-container {
+    display: flex;
+    justify-content: flex-end;
 }
