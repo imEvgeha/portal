@@ -2,7 +2,7 @@ import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@portal/portal-auth';
 import {injectUser, logout, setSelectedTenantInfo} from '@portal/portal-auth/authActions';
-import {getTokenDuration, getValidToken, wait} from '@portal/portal-auth/utils';
+import {checkIfClientExistsInKeycloak, getTokenDuration, getValidToken, wait} from '@portal/portal-auth/utils';
 import {getAuthConfig, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
 import {isEmpty} from 'lodash';
@@ -123,20 +123,6 @@ const AuthProvider = ({
                 dispatch(setSelectedTenantInfo(defaultSelectedTenant));
             }
         }
-    };
-
-    /**
-     * Receives current client and all clients and checks if user has access
-     * @param {*} currentClient Current Client that needs to be checked
-     * @param {*} resourceAccess All Clients fetched from keycloak
-     * @returns
-     */
-    const checkIfClientExistsInKeycloak = (currentClient, resourceAccess) => {
-        const clientExistsInKeycloak = Object.entries(resourceAccess).find(
-            resource => resource[0].toLowerCase() === currentClient.toLowerCase()
-        );
-
-        return clientExistsInKeycloak;
     };
 
     const loadUserAccount = async () => {
