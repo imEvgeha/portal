@@ -70,9 +70,9 @@ const RightToMatchView = ({
     const routeParams = useParams();
 
     const previousPageRoute = URL.isEmbedded()
-        ? `/avails/history/${availHistoryIds}/right-matching?embedded=true`
+        ? `/${routeParams.realm}/avails/history/${availHistoryIds}/right-matching?embedded=true`
         : focusedRight.id
-        ? `/avails/rights/${focusedRight.id}`
+        ? `/${routeParams.realm}/avails/rights/${focusedRight.id}`
         : AVAILS_PATH;
 
     // DOP Integration
