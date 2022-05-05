@@ -1,39 +1,103 @@
 .NexusUserAvatar {
     padding: 8px;
     color: black;
+}
+.p-tieredmenu.TenantSelection {
+    padding: 16px;
+    width: auto;
+
+    .p-menuitem {
+        padding: 8px;
+    }
+
+    .p-menuitem-active > .p-submenu-list {
+        max-height: 160px;
+        overflow-y: scroll;
+        padding: 8px;
+
+        .p-divider.p-divider-horizontal {
+            margin: 0.2rem 0;
+            padding: 0px;
+        }
+    }
+    .p-submenu-list {
+        .p-menuitem {
+            padding: 8px;
+        }
+    }
+
     .UserAvatarHeading {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
         .UserAvatarFullName {
             font: normal normal bold 20px/15px Arial;
         }
         .UserAvatarUsername {
-            margin-top: 4px;
             font: normal normal normal 12px/18px Arial;
         }
         .ApplicationVersion {
-            font: normal normal normal 12px/20px Arial;
+            font: normal normal normal 12px/26px Arial;
         }
     }
 
-    .p-divider-horizontal.NexusUserDivider {
-        margin: 0.8rem 0;
-    }
+    .tenant-option-item {
+        cursor: pointer;
 
-    .UserAvatarLogout {
-        padding: 8px;
-        .logoutIcon {
-            margin-right: 5px;
-        }
-        .logoutButtonText {
-            color: black;
-        }
-        .p-button.logout {
-            background: rgb(0 0 0 / 0%);
-            width: 100%;
-            border: 0;
+        .tenantName {
             padding: 8px;
         }
-        .p-button.logout:hover {
+        .tenantName:hover {
             background-color: rgba(128, 125, 125, 0.103);
         }
+    }
+
+    .tenant-selected-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 8px;
+
+        .tenantDescription {
+            display: flex;
+            align-items: center;
+            .tenantIcon {
+                margin-right: 10px;
+            }
+
+            .tenantName {
+                // margin-left: 10px;
+            }
+        }
+        .actionIcon {
+        }
+    }
+
+    .tenant-selected-item:hover {
+        background-color: rgba(128, 125, 125, 0.103);
+    }
+
+    .UserAvatarActions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 8px;
+
+        .tenant-logout-action {
+            display: flex;
+            align-items: center;
+            width: 100%;
+
+            .logoutIcon {
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .UserAvatarActions:hover {
+        background-color: rgba(128, 125, 125, 0.103);
     }
 }

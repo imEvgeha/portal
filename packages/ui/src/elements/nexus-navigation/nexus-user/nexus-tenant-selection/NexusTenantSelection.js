@@ -102,7 +102,7 @@ const NexusTenantSelection = ({selectedTenant}) => {
 
     return (
         <div className="UserAvatarTenantsSelection p-field">
-            <TieredMenu className="TenantSelection" model={tenants} appendTo="UserAvatarTenantsSelection" />
+            <TieredMenu className="TenantSelection" model={tenants} />
         </div>
     );
 };

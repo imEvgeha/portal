@@ -17,9 +17,9 @@ const NexusUser = () => {
             />
 
             {/* On Avatar click, render a popup overlay to show contents */}
-            <OverlayPanel id="overlay_panel" className="UserAvatarOverlay" ref={op} dismissable>
-                <NexusUserAvatar />
-            </OverlayPanel>
+            {/* <OverlayPanel id="overlay_panel" className="UserAvatarOverlay" ref={op} dismissable> */}
+            <NexusUserAvatar menu={op} />
+            {/* </OverlayPanel> */}
         </div>
     );
 };
