@@ -13,7 +13,6 @@
     .p-menuitem-active > .p-submenu-list {
         max-height: 160px;
         overflow-y: scroll;
-        padding: 8px;
 
         .p-divider.p-divider-horizontal {
             margin: 0.2rem 0;
@@ -22,7 +21,7 @@
     }
     .p-submenu-list {
         .p-menuitem {
-            padding: 8px;
+            padding: 0;
         }
     }
 
@@ -44,9 +43,12 @@
 
     .tenant-option-item {
         cursor: pointer;
+        padding: 0px;
+        display: flex;
+        flex-direction: column;
 
         .tenantName {
-            padding: 8px;
+            padding: 16px 8px 16px 8px;
         }
         .tenantName:hover {
             background-color: rgba(128, 125, 125, 0.103);
@@ -58,7 +60,8 @@
         align-items: center;
         justify-content: space-between;
         cursor: pointer;
-        padding: 8px;
+        padding: 8px 0 8px 0;
+        width: 100%;
 
         .tenantDescription {
             display: flex;
@@ -84,7 +87,8 @@
         align-items: center;
         justify-content: space-between;
         cursor: pointer;
-        padding: 8px;
+        padding: 8px 0 8px 0;
+        width: 100%;
 
         .tenant-logout-action {
             display: flex;

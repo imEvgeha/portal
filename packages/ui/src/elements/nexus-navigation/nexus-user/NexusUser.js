@@ -1,6 +1,5 @@
 import React, {useRef} from 'react';
 import {Avatar} from 'primereact/avatar';
-import {OverlayPanel} from 'primereact/overlaypanel';
 import NexusUserAvatar from './nexus-user-avatar/NexusUserAvatar';
 
 const NexusUser = () => {
@@ -16,10 +15,8 @@ const NexusUser = () => {
                 onClick={e => op.current.toggle(e)}
             />
 
-            {/* On Avatar click, render a popup overlay to show contents */}
-            {/* <OverlayPanel id="overlay_panel" className="UserAvatarOverlay" ref={op} dismissable> */}
+            {/* On Avatar click, render a menu overlay to show contents */}
             <NexusUserAvatar menu={op} />
-            {/* </OverlayPanel> */}
         </div>
     );
 };

@@ -88,6 +88,9 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
         );
     };
 
+    /**
+     * Contruct the dynamic tenants, based on the resourceAccess from keycloak
+     */
     const tenants = () => {
         return {
             label: selectedTenant.id,
@@ -137,6 +140,10 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
         );
     };
 
+    /**
+     * Contruct the items model as expected by TieredMenu
+     * Reference: https://www.primefaces.org/primereact/tieredmenu/
+     */
     const items = [
         {
             template: RenderAvatarHeading,
@@ -171,7 +178,7 @@ NexusUserAvatar.propTypes = {
 NexusUserAvatar.defaultProps = {
     profileInfo: {},
     logout: () => null,
-    showTenantSelectionDropdown: true,
+    showTenantSelectionDropdown: false,
     menu: null,
     selectedTenant: {},
 };
