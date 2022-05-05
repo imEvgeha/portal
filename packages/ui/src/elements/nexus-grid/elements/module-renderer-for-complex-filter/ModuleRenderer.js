@@ -31,6 +31,7 @@ const ModuleRenderer = ({item, formDetails}) => {
                         <MultiSelect
                             id={item.id}
                             options={options}
+                            maxSelectedLabels={3}
                             placeholder={`Select a ${labelName}`}
                             appendTo="self"
                         />
