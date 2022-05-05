@@ -5,7 +5,7 @@ import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
 import Spinner from '@atlaskit/spinner';
 import {minTwoDigits, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import './RightToMatchNavigation.scss';
 import {RIGHT_PAGE_SIZE} from '../../../../../legacy/constants/rightFetching';
 import {fetchRightMatchDataUntilFindId} from '../../../rightMatchingActions';
@@ -19,6 +19,8 @@ const RightToMatchNavigation = ({
     availHistoryIds,
 }) => {
     const navigate = useNavigate();
+    const routeParams = useParams();
+
     const [navigationData, setNavigationData] = useState({
         previousId: null,
         currentPosition: null,
@@ -96,7 +98,7 @@ const RightToMatchNavigation = ({
         }
     }, [getNavigationDataIfExist, rightMatchPageData]);
 
-    const url = `/avails/history/${availHistoryIds}/right-matching`;
+    const url = `/${routeParams.realm}/avails/history/${availHistoryIds}/right-matching`;
 
     const onPreviousRightClick = () => {
         if (navigationData.previousId) {
