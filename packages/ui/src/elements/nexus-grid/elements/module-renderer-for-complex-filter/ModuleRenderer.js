@@ -68,7 +68,7 @@ const ModuleRenderer = ({item, formDetails}) => {
                         register={register}
                         additionalValidation={{
                             pattern: {
-                                value: /^[0-9]+$/,
+                                value: /^\d{0,6}(\.\d{1,2})?$/,
                                 message: 'Please enter a valid number!',
                             },
                         }}
