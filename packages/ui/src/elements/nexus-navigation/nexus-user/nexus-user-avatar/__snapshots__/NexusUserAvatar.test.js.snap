@@ -6,6 +6,7 @@ exports[`NexusUserAvatar should match snapshot 1`] = `
 >
   <NexusUserAvatar
     logout={[Function]}
+    menu={null}
     profileInfo={
       Object {
         "email": "marios.charalambous@vubiquity.net",
@@ -15,6 +16,8 @@ exports[`NexusUserAvatar should match snapshot 1`] = `
         "username": "mcharalambous",
       }
     }
+    selectedTenant={Object {}}
+    showTenantSelectionDropdown={false}
     store={
       Object {
         "clearActions": [Function],

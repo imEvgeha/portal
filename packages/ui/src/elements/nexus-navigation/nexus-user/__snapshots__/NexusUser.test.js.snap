@@ -17,20 +17,12 @@ exports[`NexusUser should match snapshot 1`] = `
     style={null}
     template={null}
   />
-  <OverlayPanel
-    appendTo={null}
-    ariaCloseLabel="close"
-    breakpoints={null}
-    className="UserAvatarOverlay"
-    dismissable={true}
-    id="overlay_panel"
-    onHide={null}
-    onShow={null}
-    showCloseIcon={false}
-    style={null}
-    transitionOptions={null}
-  >
-    <Connect(NexusUserAvatar) />
-  </OverlayPanel>
+  <Connect(NexusUserAvatar)
+    menu={
+      Object {
+        "current": null,
+      }
+    }
+  />
 </div>
 `;
