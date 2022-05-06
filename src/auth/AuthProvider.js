@@ -6,7 +6,7 @@ import {checkIfClientExistsInKeycloak, getTokenDuration, getValidToken, wait} fr
 import {getAuthConfig, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
 import {isEmpty} from 'lodash';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {store} from '../index';
 import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions';
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
@@ -33,7 +33,7 @@ const AuthProvider = ({
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
     // check if there is a persisted selectedTenant in Redux(from LocalStorage)
-    const persistedSelectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
+    const persistedSelectedTenant = localStorage.getItem('selectedTenant');
 
     useEffect(() => {
         if (!configEndpointsLoading) {
@@ -92,14 +92,23 @@ const AuthProvider = ({
      * 3. Clients[0] - assign the first client as the default tenant
      */
     const AssignDefaultTenant = resourceAccess => {
+        // filter out clients that are not tenants
+        const filteredResourceAccess = {...resourceAccess};
+        delete filteredResourceAccess['account'];
+        delete filteredResourceAccess['realm-management'];
+
+        // Object.entries(resourceAccess)
+        //     // keycloak returns 'account' & 'realm-management' client by default
+        //     .filter(tenantClient => tenantClient[0] !== 'account' && tenantClient[0] !== 'realm-management')
+        //     .forEach(client => (filteredResourceAccess = {...filteredResourceAccess, [client[0]]: client[1]}));
         // if there is no peristed default tenant in redux, move on to 2-3
         if (isEmpty(persistedSelectedTenant)) {
             // get the realm from URL
             const realm = getAuthConfig().realm;
             // check if realm(from URL) matches with any client from keycloak
-            const tenantFromRealm = checkIfClientExistsInKeycloak(realm, resourceAccess);
+            const tenantFromRealm = checkIfClientExistsInKeycloak(realm, filteredResourceAccess);
             // if realm does not match with any clients, set the first client as default tenant
-            const defaultTenant = tenantFromRealm || Object.entries(resourceAccess)[0];
+            const defaultTenant = tenantFromRealm || Object.entries(filteredResourceAccess)[0];
             // construct the object and dispatch to redux
             const selectedTenant = {
                 id: defaultTenant[0],
@@ -109,18 +118,28 @@ const AuthProvider = ({
         } else {
             // check if persistedTenant exists in clients from keycloak
             const persistedTenantExistsInClients = checkIfClientExistsInKeycloak(
-                persistedSelectedTenant.id,
-                resourceAccess
+                persistedSelectedTenant,
+                filteredResourceAccess
             );
             // if the client does not exist, assign the clients[0] as the default
             if (isEmpty(persistedTenantExistsInClients)) {
-                const defaultClient = Object.entries(resourceAccess)[0];
+                const defaultClient = Object.entries(filteredResourceAccess)[0];
                 // construct the object and dispatch to redux
                 const defaultSelectedTenant = {
                     id: defaultClient[0],
                     roles: defaultClient[1].roles,
                 };
+                localStorage.setItem('selectedTenant', defaultClient[0]);
                 dispatch(setSelectedTenantInfo(defaultSelectedTenant));
+            }
+            // if tenant exists in localStorage, but is not set in the REDUX
+            else {
+                dispatch(
+                    setSelectedTenantInfo({
+                        id: persistedTenantExistsInClients[0],
+                        roles: persistedSelectedTenant[1].roles,
+                    })
+                );
             }
         }
     };

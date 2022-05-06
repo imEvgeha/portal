@@ -22,14 +22,11 @@ import './NexusUserAvatar.scss';
 const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelectionDropdown, menu}) => {
     const dispatch = useDispatch();
     // get client roles from keycloak
-    let {resourceAccess} = keycloak;
+    const {resourceAccess} = keycloak;
     // filter out clients that are not tenants
-    resourceAccess = {
-        ...Object.entries(resourceAccess)
-            // keycloak returns 'account' & 'realm-management' client by default
-            .filter(tenantClient => tenantClient[0] !== 'account' && tenantClient[0] !== 'realm-management'),
-    };
-
+    const filteredResourceAccess = {...resourceAccess};
+    delete filteredResourceAccess['account'];
+    delete filteredResourceAccess['realm-management'];
     /**
      * Template used for the selected Tenant in TieredMenu
      * @param {*} item Client item
@@ -72,7 +69,7 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
      * @returns
      */
     const renderDivider = index => {
-        return index + 1 < Object.keys(resourceAccess).length;
+        return index + 1 < Object.keys(filteredResourceAccess).length;
     };
 
     /**
@@ -86,6 +83,7 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
                 roles: selectedTenant[1].roles,
             })
         );
+        localStorage.setItem('selectedTenant', selectedTenant[0]);
     };
 
     /**
@@ -97,12 +95,12 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
             template: tenantSelectedTemplated,
             roles: selectedTenant.roles,
             items: [
-                ...Object.entries(resourceAccess).map((client, index) => {
+                ...Object.entries(filteredResourceAccess).map((client, index) => {
                     return {
-                        id: client[1][0],
-                        roles: [...client[1][1].roles],
-                        template: tenantOptionTemplate(client[1], index),
-                        label: client[1][0],
+                        id: client[0],
+                        roles: [...client[1].roles],
+                        template: tenantOptionTemplate(client, index),
+                        label: client[0],
                     };
                 }),
             ],
@@ -168,7 +166,7 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
 };
 
 NexusUserAvatar.propTypes = {
-    selectedTenant: PropTypes.object,
+    selectedTenant: PropTypes.array,
     profileInfo: PropTypes.object,
     logout: PropTypes.func,
     showTenantSelectionDropdown: PropTypes.bool,
