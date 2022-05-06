@@ -67,7 +67,8 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, job
 
     useEffect(() => {
         DOP.setDOPMessageCallback(selectedArtwork || jobIds.length !== 0 ? null : () => openDOPPopUp());
-    }, [selectedArtwork, openDOPPopUp]);
+    }, [selectedArtwork, openDOPPopUp, openModal]);
+    // [selectedArtwork, openDOPPopUp, openModal]
 
     const artworkClick = (id, uri) => {
         setSelectedArtwork(id);
@@ -90,7 +91,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, job
                     key={timing}
                     poster={item?.img}
                     timing={timing}
-                    onClick={artworkClick}
+                    onClick={() => artworkClick(timing, item?.url)}
                     isSelected={selectedArtwork === timing}
                 />
             </div>
