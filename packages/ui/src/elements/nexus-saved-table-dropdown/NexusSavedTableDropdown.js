@@ -7,7 +7,10 @@ import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Tooltip from '@atlaskit/tooltip';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty} from 'lodash';
+import {useDispatch, useSelector} from 'react-redux';
 import './NexusSavedTableDropdown.scss';
+import {setColumnOrder} from '../../../../../src/pages/avails/rights-repository/rightsActions';
+import {getLastUserColumnState} from '../../../../../src/pages/avails/rights-repository/rightsSelectors';
 import IconButton from '../../atlaskit/icon-button/IconButton';
 
 const insertNewGridModel = (viewId, userDefinedGridStates, model) => {
@@ -27,7 +30,6 @@ const NexusSavedTableDropdown = ({
     columnApi,
     username,
     externalFilter,
-    setUserDefinedGridState,
     applyPredefinedTableView,
     onUserDefinedViewSelected,
     tableLabels,
@@ -37,6 +39,8 @@ const NexusSavedTableDropdown = ({
     setCurrentUserView,
     currentUserView,
 }) => {
+    const dispatch = useDispatch();
+    const previousGridState = useSelector(getLastUserColumnState(username));
     const [selectedItem, setSelectedItem] = useState(currentUserView?.label ? currentUserView : tableOptions[0]);
 
     const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
@@ -45,6 +49,20 @@ const NexusSavedTableDropdown = ({
     useEffect(() => {
         setCurrentUserView(selectedItem);
     }, [selectedItem]);
+
+    useEffect(() => {
+        // will create the predefined user views in the dropdown
+        if (username && isEmpty(previousGridState)) {
+            const predefinedTableViews = tableOptions.map(({label, value}) => ({
+                id: value,
+                label,
+                value,
+                isPredefinedView: true,
+            }));
+
+            dispatch(setColumnOrder({[username]: predefinedTableViews}));
+        }
+    }, [username]);
 
     const setPredefinedView = item => {
         setSelectedItem(item);
@@ -80,13 +98,14 @@ const NexusSavedTableDropdown = ({
             const columnState = columnApi.getColumnState();
             const model = {id: viewId, filterModel, sortModel, columnState, externalFilter};
             const newUserData = insertNewGridModel(viewId, userDefinedGridStates, model);
-            setUserDefinedGridState({[username]: newUserData});
+            // merge the existing views of the user with new views
+            dispatch(setColumnOrder({[username]: [...newUserData, ...previousGridState]}));
         }
     };
 
     const removeUserDefinedGridState = id => {
         const filteredGridStates = userDefinedGridStates.filter(item => item.id !== id);
-        setUserDefinedGridState({[username]: filteredGridStates});
+        dispatch(setColumnOrder({[username]: filteredGridStates}));
     };
 
     const selectPredefinedTableView = filter => {
@@ -172,7 +191,6 @@ NexusSavedTableDropdown.propTypes = {
     gridApi: PropTypes.object,
     columnApi: PropTypes.object,
     username: PropTypes.string,
-    setUserDefinedGridState: PropTypes.func,
     externalFilter: PropTypes.object,
     applyPredefinedTableView: PropTypes.func,
     onUserDefinedViewSelected: PropTypes.func,
@@ -190,7 +208,6 @@ NexusSavedTableDropdown.defaultProps = {
     columnApi: {},
     username: '',
     externalFilter: {},
-    setUserDefinedGridState: () => null,
     applyPredefinedTableView: () => null,
     onUserDefinedViewSelected: () => null,
     tableLabels: {},

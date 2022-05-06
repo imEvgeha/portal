@@ -52,3 +52,8 @@ export const setCurrentUserViewActionAvails = payload => ({
     type: actionTypes.SET_CURRENT_USER_VIEW_AVAILS,
     payload,
 });
+
+export const setColumnOrder = payload => ({
+    type: actionTypes.SET_COLUMN_ORDER,
+    payload,
+});
