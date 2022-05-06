@@ -373,7 +373,6 @@ const RightsRepositoryTable = ({
                 setGridApis(api, columnApi);
                 api?.setFilterModel(rightsFilter?.column);
                 columnApi?.applyColumnState({state: currentViewColumnState, applyOrder: true});
-                columnApi?.getColumnState();
                 break;
             case FIRST_DATA_RENDERED:
                 updateMapping(api);
@@ -399,7 +398,6 @@ const RightsRepositoryTable = ({
             }
             case DRAG_STOPPED: {
                 const newColumnState = columnApi?.getColumnState();
-                columnApi?.applyColumnState({state: newColumnState});
 
                 const viewID = userView.value;
                 const defaultViews = ['all', 'in-error', 'ready-or-pending', 'Withdrawn', 'Removed from Catalog'];
