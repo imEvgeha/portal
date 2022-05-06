@@ -9,7 +9,7 @@ import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils'
 import {isEmpty} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import './NexusSavedTableDropdown.scss';
-import {setColumnOrder} from '../../../../../src/pages/avails/rights-repository/rightsActions';
+import {setColumnTableDefinition} from '../../../../../src/pages/avails/rights-repository/rightsActions';
 import {getLastUserColumnState} from '../../../../../src/pages/avails/rights-repository/rightsSelectors';
 import IconButton from '../../atlaskit/icon-button/IconButton';
 
@@ -60,7 +60,7 @@ const NexusSavedTableDropdown = ({
                 isPredefinedView: true,
             }));
 
-            dispatch(setColumnOrder({[username]: predefinedTableViews}));
+            dispatch(setColumnTableDefinition({[username]: predefinedTableViews}));
         }
     }, [username]);
 
@@ -99,13 +99,13 @@ const NexusSavedTableDropdown = ({
             const model = {id: viewId, filterModel, sortModel, columnState, externalFilter};
             const newUserData = insertNewGridModel(viewId, userDefinedGridStates, model);
             // merge the existing views of the user with new views
-            dispatch(setColumnOrder({[username]: [...newUserData, ...previousGridState]}));
+            dispatch(setColumnTableDefinition({[username]: [...newUserData, ...previousGridState]}));
         }
     };
 
     const removeUserDefinedGridState = id => {
         const filteredGridStates = userDefinedGridStates.filter(item => item.id !== id);
-        dispatch(setColumnOrder({[username]: filteredGridStates}));
+        dispatch(setColumnTableDefinition({[username]: filteredGridStates}));
     };
 
     const selectPredefinedTableView = filter => {

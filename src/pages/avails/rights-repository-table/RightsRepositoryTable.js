@@ -43,7 +43,7 @@ import Ingest from '../rights-repository/components/ingest/Ingest';
 import TooltipCellRenderer from '../rights-repository/components/tooltip/TooltipCellRenderer';
 import {RIGHTS_TAB} from '../rights-repository/constants';
 import {
-    setColumnOrder,
+    setColumnTableDefinition,
     setCurrentUserViewActionAvails,
     setPreplanRights,
     setRightsFilter,
@@ -411,7 +411,7 @@ const RightsRepositoryTable = ({
                     return viewObj;
                 });
 
-                dispatch(setColumnOrder({[username]: finalState}));
+                dispatch(setColumnTableDefinition({[username]: finalState}));
                 break;
             }
             default:
