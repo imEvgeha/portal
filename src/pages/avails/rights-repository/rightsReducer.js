@@ -130,7 +130,7 @@ const rightsReducer = (state = initialState, action = {}) => {
                 currentUserView: payload,
             };
         }
-        case actionTypes.SET_COLUMN_ORDER: {
+        case actionTypes.SET_AVAILS_GRID_STATE: {
             return {
                 ...state,
                 gridState: {...state.gridState, ...payload},

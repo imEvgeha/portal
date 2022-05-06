@@ -54,6 +54,6 @@ export const setCurrentUserViewActionAvails = payload => ({
 });
 
 export const setColumnTableDefinition = payload => ({
-    type: actionTypes.SET_COLUMN_ORDER,
+    type: actionTypes.SET_AVAILS_GRID_STATE,
     payload,
 });

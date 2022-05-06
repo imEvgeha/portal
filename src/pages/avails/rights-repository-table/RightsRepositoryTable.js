@@ -400,13 +400,10 @@ const RightsRepositoryTable = ({
                 const newColumnState = columnApi?.getColumnState();
 
                 const viewID = userView.value;
-                const defaultViews = ['all', 'in-error', 'ready-or-pending', 'Withdrawn', 'Removed from Catalog'];
 
                 const finalState = previousGridState?.map(viewObj => {
-                    if (defaultViews.includes(viewID)) {
+                    if (viewID === viewObj.id) {
                         viewObj = {...viewObj, columnState: newColumnState, isPredefinedView: true};
-                    } else {
-                        viewObj = {...viewObj, columnState: newColumnState, isPredefinedView: false};
                     }
                     return viewObj;
                 });
