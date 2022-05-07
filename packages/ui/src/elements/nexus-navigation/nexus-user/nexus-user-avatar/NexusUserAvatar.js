@@ -8,7 +8,7 @@ import TenantIcon from '@vubiquity-nexus/portal-assets/tenant.svg';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {Divider} from 'primereact/divider';
 import {TieredMenu} from 'primereact/tieredmenu';
-import {connect, useDispatch} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 
 import './NexusUserAvatar.scss';
 
@@ -21,6 +21,7 @@ import './NexusUserAvatar.scss';
  */
 const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelectionDropdown, menu}) => {
     const dispatch = useDispatch();
+    const currentLoggedInUsername = useSelector(state => state?.auth?.userAccount?.username);
     // get client roles from keycloak
     const {resourceAccess} = keycloak;
     // filter out clients that are not tenants
@@ -77,13 +78,12 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
      * @param {*} selectedTenant
      */
     const onTenantChange = selectedTenant => {
-        dispatch(
-            setSelectedTenantInfo({
-                id: selectedTenant[0],
-                roles: selectedTenant[1].roles,
-            })
-        );
-        localStorage.setItem('selectedTenant', selectedTenant[0]);
+        const tempSelectedTenant = {
+            id: selectedTenant[0],
+            roles: selectedTenant[1].roles,
+        };
+        dispatch(setSelectedTenantInfo(tempSelectedTenant));
+        localStorage.setItem('selectedTenant', JSON.stringify({[currentLoggedInUsername]: tempSelectedTenant}));
     };
 
     /**
@@ -166,7 +166,7 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
 };
 
 NexusUserAvatar.propTypes = {
-    selectedTenant: PropTypes.array,
+    selectedTenant: PropTypes.object,
     profileInfo: PropTypes.object,
     logout: PropTypes.func,
     showTenantSelectionDropdown: PropTypes.bool,
