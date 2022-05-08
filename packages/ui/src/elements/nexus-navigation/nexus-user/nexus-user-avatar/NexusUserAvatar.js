@@ -83,7 +83,13 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
             roles: selectedTenant[1].roles,
         };
         dispatch(setSelectedTenantInfo(tempSelectedTenant));
-        localStorage.setItem('selectedTenant', JSON.stringify({[currentLoggedInUsername]: tempSelectedTenant}));
+        localStorage.setItem(
+            'selectedTenant',
+            JSON.stringify({
+                ...JSON.parse(localStorage.getItem('selectedTenant')),
+                [currentLoggedInUsername]: tempSelectedTenant,
+            })
+        );
     };
 
     /**

@@ -32,13 +32,6 @@ const AuthProvider = ({
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
-    // check if there is a persisted selectedTenant in Redux(from LocalStorage)
-    const persistedSelectedTenants = JSON.parse(localStorage.getItem('selectedTenant'));
-    let persistedSelectedTenant;
-
-    if (!isEmpty(persistedSelectedTenants)) {
-        persistedSelectedTenant = get(persistedSelectedTenants, 'mcharalambous');
-    }
 
     useEffect(() => {
         if (!configEndpointsLoading) {
@@ -63,15 +56,13 @@ const AuthProvider = ({
                     refreshToken: getValidToken(refreshToken, getConfig('keycloak.url')),
                 });
                 if (isAuthenticated) {
-                    const {resourceAccess, token, refreshToken} = keycloak;
+                    const {token, refreshToken} = keycloak;
 
                     addUser({token, refreshToken});
                     loadUserAccount();
                     loadProfileInfo();
                     updateUserToken(token);
                     getSelectValues();
-                    // set default tenant
-                    AssignDefaultTenant(resourceAccess);
                 } else {
                     // window.location.reload();
                 }
@@ -96,14 +87,21 @@ const AuthProvider = ({
      * 2. Realm (URL) - check the Realm from the /URL
      * 3. Clients[0] - assign the first client as the default tenant
      */
-    const AssignDefaultTenant = resourceAccess => {
+    const AssignDefaultTenant = (resourceAccess, currentUser) => {
         // filter out clients from keycloak that are not tenants
         const filteredResourceAccess = {...resourceAccess};
         delete filteredResourceAccess['account'];
         delete filteredResourceAccess['realm-management'];
 
-        // TODO: dynamic username
-        const currentLoggedInUsername = 'mcharalambous';
+        // get current logged in user
+        const currentLoggedInUsername = currentUser.username;
+        // check if there is a persisted selectedTenant in Redux(from LocalStorage)
+        const persistedSelectedTenants = JSON.parse(localStorage.getItem('selectedTenant'));
+        let persistedSelectedTenant;
+
+        if (!isEmpty(persistedSelectedTenants)) {
+            persistedSelectedTenant = get(persistedSelectedTenants, currentLoggedInUsername);
+        }
 
         if (!isEmpty(currentLoggedInUsername)) {
             // if there is no peristed default tenant in localStorage, move on to 2-3
@@ -120,7 +118,13 @@ const AuthProvider = ({
                     roles: defaultTenant[1].roles,
                 };
                 dispatch(setSelectedTenantInfo(selectedTenant));
-                localStorage.setItem('selectedTenant', JSON.stringify({[currentLoggedInUsername]: selectedTenant}));
+                localStorage.setItem(
+                    'selectedTenant',
+                    JSON.stringify({
+                        ...JSON.parse(localStorage.getItem('selectedTenant')),
+                        [currentLoggedInUsername]: selectedTenant,
+                    })
+                );
             } else {
                 // check if persistedTenant exists in clients from keycloak
                 const persistedTenantExistsInClients = checkIfClientExistsInKeycloak(
@@ -137,7 +141,10 @@ const AuthProvider = ({
                     };
                     localStorage.setItem(
                         'selectedTenant',
-                        JSON.stringify({[currentLoggedInUsername]: defaultSelectedTenant})
+                        JSON.stringify({
+                            ...JSON.parse(localStorage.getItem('selectedTenant')),
+                            [currentLoggedInUsername]: defaultSelectedTenant,
+                        })
                     );
                     dispatch(setSelectedTenantInfo(defaultSelectedTenant));
                 }
@@ -158,6 +165,10 @@ const AuthProvider = ({
         const userAccount = await keycloak.loadUserProfile();
         DOPService.getSecurityTicket({token: keycloak.token});
         addUser({userAccount});
+
+        // set default tenant
+        const {resourceAccess} = keycloak;
+        AssignDefaultTenant(resourceAccess, userAccount);
         return userAccount;
     };
 
