@@ -59,7 +59,7 @@ const MatchRightView = ({
     validateRights,
 }) => {
     const activeFocusedRight = mergeRights ? {...prepareRight(pendingRight), id: null} : focusedRight;
-    const {availHistoryIds, rightId, matchedRightIds} = useParams();
+    const {availHistoryIds, rightId, matchedRightIds, routeParams} = useParams();
     const navigate = useNavigate();
 
     const selectedMatchedRights = [activeFocusedRight, ...rightsForMatching];
@@ -114,7 +114,9 @@ const MatchRightView = ({
             rightData: prepareRight(pendingRight),
             selectedRights: rightsForMatching.map(right => right.id),
             callback: () => {
-                const redirectPath = mergeRights ? AVAILS_PATH : `/avails/history/${availHistoryIds}/right-matching`;
+                const redirectPath = mergeRights
+                    ? AVAILS_PATH
+                    : `/${routeParams.realm}/avails/history/${availHistoryIds}/right-matching`;
                 const payload = {
                     rightIds: selectedMatchedRights.filter(right => right.id).map(right => right.id),
                     combinedRight: [combinedRight, ...(mergeRights ? [activeFocusedRight] : [])],
