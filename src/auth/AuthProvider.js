@@ -2,7 +2,14 @@ import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@portal/portal-auth';
 import {injectUser, logout, setSelectedTenantInfo} from '@portal/portal-auth/authActions';
-import {checkIfClientExistsInKeycloak, getTokenDuration, getValidToken, wait} from '@portal/portal-auth/utils';
+import {
+    checkIfClientExistsInKeycloak,
+    getTokenDuration,
+    getValidToken,
+    wait,
+    updateLocalStorageWithSelectedTenant,
+    transformSelectTenant,
+} from '@portal/portal-auth/utils';
 import {getAuthConfig, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
 import {isEmpty, get} from 'lodash';
@@ -13,7 +20,6 @@ import DOPService from '../pages/avails/selected-for-planning/DOP-services';
 import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
 import Loading from '../pages/static/Loading';
-import {updateLocalStorageWithSelectedTenant, transformSelectTenant} from './utils';
 
 const MIN_VALIDITY_SEC = 30;
 // eslint-disable-next-line no-magic-numbers

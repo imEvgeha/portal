@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {keycloak} from '@portal/portal-auth';
 import {logout, setSelectedTenantInfo} from '@portal/portal-auth/authActions';
+import {transformSelectTenant, updateLocalStorageWithSelectedTenant} from '@portal/portal-auth/utils';
 import ExpandRightIcon from '@vubiquity-nexus/portal-assets/expand_right.svg';
 import LogoutIcon from '@vubiquity-nexus/portal-assets/logout.svg';
 import TenantIcon from '@vubiquity-nexus/portal-assets/tenant.svg';
@@ -9,7 +10,6 @@ import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {Divider} from 'primereact/divider';
 import {TieredMenu} from 'primereact/tieredmenu';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {transformSelectTenant, updateLocalStorageWithSelectedTenant} from '../../../../../../../src/auth/utils';
 import './NexusUserAvatar.scss';
 
 /**
