@@ -3774,9 +3774,9 @@
   integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
 
 "@portal/portal-auth@^1.0.21-37":
-  version "1.0.21-38"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-auth/-/portal-auth-1.0.21-38.tgz#fa718edbebbf817b1192acb27a2762a22f947b87"
-  integrity sha512-dVUGskesZ2k6Qfj1xgh8gl2g1Ir2RNXI8hOLrquHTs33vIsdxXiMvXH1+ip4p7jpiHvIkzhHZ14+m/cuup2nJg==
+  version "1.0.21-46"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-auth/-/portal-auth-1.0.21-46.tgz#e2ea6c84fca29aeb73fecce3f0d11c1a948281e7"
+  integrity sha512-lPtjQf2DCLnuqeqG/9ovuFgk2OxZxW87ECeL5VvCBlKkgAyEBAire1gbTgZeYoiLa1on2qXIV0JXQ6efDow2EQ==
   dependencies:
     jwt-decode "2.x"
     keycloak-js "9.x"

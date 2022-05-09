@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {keycloak} from '@portal/portal-auth';
 import {logout, setSelectedTenantInfo} from '@portal/portal-auth/authActions';
+import {transformSelectTenant, updateLocalStorageWithSelectedTenant} from '@portal/portal-auth/utils';
 import ExpandRightIcon from '@vubiquity-nexus/portal-assets/expand_right.svg';
 import LogoutIcon from '@vubiquity-nexus/portal-assets/logout.svg';
 import TenantIcon from '@vubiquity-nexus/portal-assets/tenant.svg';
@@ -9,17 +10,15 @@ import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {Divider} from 'primereact/divider';
 import {TieredMenu} from 'primereact/tieredmenu';
 import {connect, useDispatch, useSelector} from 'react-redux';
-
 import './NexusUserAvatar.scss';
 
 /**
  *
  * @param {Object} profileInfo Redux - auth.profileInfo
  * @param {logout} logout Dispatch function to logout the user from session
- * @param {Boolean} showTenantSelectionDropdown Whether to show tenant list
  * @returns NexusUserAvatar
  */
-const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelectionDropdown, menu}) => {
+const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
     const dispatch = useDispatch();
     const currentLoggedInUsername = useSelector(state => state?.auth?.userAccount?.username);
     // get client roles from keycloak
@@ -75,21 +74,15 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, showTenantSelecti
 
     /**
      * onChange function when selecting a tenant from the Dropdown list
-     * @param {*} selectedTenant
+     * transforms key:value array to object
+     * updated Redux with the selected tenant for this session
+     * update LocalStorage with this user's selected tenant
+     * @param {array} selectedTenant - [0] - id, [1] - roles[]
      */
     const onTenantChange = selectedTenant => {
-        const tempSelectedTenant = {
-            id: selectedTenant[0],
-            roles: selectedTenant[1].roles,
-        };
+        const tempSelectedTenant = transformSelectTenant(selectedTenant);
         dispatch(setSelectedTenantInfo(tempSelectedTenant));
-        localStorage.setItem(
-            'selectedTenant',
-            JSON.stringify({
-                ...JSON.parse(localStorage.getItem('selectedTenant')),
-                [currentLoggedInUsername]: tempSelectedTenant,
-            })
-        );
+        updateLocalStorageWithSelectedTenant(currentLoggedInUsername, tempSelectedTenant);
     };
 
     /**
@@ -175,14 +168,12 @@ NexusUserAvatar.propTypes = {
     selectedTenant: PropTypes.object,
     profileInfo: PropTypes.object,
     logout: PropTypes.func,
-    showTenantSelectionDropdown: PropTypes.bool,
     menu: PropTypes.any,
 };
 
 NexusUserAvatar.defaultProps = {
     profileInfo: {},
     logout: () => null,
-    showTenantSelectionDropdown: false,
     menu: null,
     selectedTenant: {},
 };
