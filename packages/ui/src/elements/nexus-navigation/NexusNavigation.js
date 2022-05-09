@@ -67,30 +67,16 @@ const NexusNavigation = () => {
                           ]
                         : []),
                     {
-                        icon: EditorSettingsIcon,
-                        component: () => (
-                            <ComponentWrapper handleClick={() => handleClick(SETTINGS)} link={SETTINGS}>
-                                <EditorSettingsIcon />
-                            </ComponentWrapper>
-                        ),
-                        id: SETTINGS,
-                        tooltip: SETTINGS,
-                        isSelected: selectedItem === SETTINGS,
-                        onClick: () => handleClick(SETTINGS),
-                        resource: 'settingsMenuIcon',
-                    },
-
-                    {
                         icon: 'pi pi-sliders-h',
                         component: () => (
-                            <ComponentWrapper handleClick={() => handleClick('settings/v2')} link="settings/v2">
+                            <ComponentWrapper handleClick={() => handleClick('settings')} link="settings">
                                 <i className="pi pi-sliders-h" />
                             </ComponentWrapper>
                         ),
-                        id: 'settings/v2',
-                        tooltip: 'Settings V2',
-                        isSelected: selectedItem === 'settings/v2',
-                        onClick: () => handleClick('settings/v2'),
+                        id: 'settings',
+                        tooltip: 'Settings',
+                        isSelected: selectedItem === 'settings',
+                        onClick: () => handleClick('settings'),
                         resource: 'settingsMenuIcon',
                     },
 

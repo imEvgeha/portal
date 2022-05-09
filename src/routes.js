@@ -11,10 +11,6 @@ import Welcome from './pages/static/Welcome';
 import titleMetadataRoutes from './pages/title-metadata/titleMetadataRoutes';
 import withTracker from './util/hoc/withTracker';
 
-const Settings = React.lazy(() =>
-    import(/* webpackPrefetch: true, webpackChunkName: "Settings" */ './pages/legacy/containers/settings/Settings')
-);
-
 const SettingsPage = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "SettingsV2" */ './pages/settings/SettingsPage')
 );
@@ -28,11 +24,6 @@ const Unauthorized = React.lazy(() =>
 const staticRoutes = [
     {
         path: 'settings',
-        element: Settings,
-        resource: 'settingsPage',
-    },
-    {
-        path: 'settings/v2',
         element: SettingsPage,
         resource: 'settingsPage',
     },

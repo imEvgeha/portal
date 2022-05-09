@@ -4,10 +4,10 @@ import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/Ne
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
 import {TabMenu} from 'primereact/tabmenu';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchConfigApiEndpoints} from '../legacy/containers/settings/settingsActions';
-import * as selectors from '../legacy/containers/settings/settingsSelectors';
 import EndpointContainer from './enpoint-container/EndpointContainer';
 import Localization from './localization/Localization';
+import {fetchConfigApiEndpoints} from './settingsActions';
+import * as selectors from './settingsSelectors';
 import {SETTINGS_TABS} from './constants';
 import './SettingsPage.scss';
 

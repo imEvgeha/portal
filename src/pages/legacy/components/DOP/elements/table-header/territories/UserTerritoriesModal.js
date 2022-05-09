@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {updateSelectedTerritories} from '../../../../../stores/actions/DOP';
 import {connect} from 'react-redux';
-import {getConfigApiValues} from '../../../../../common/CommonConfigService';
+import {getConfigApiValues} from '../../../../../../settings/CommonConfigService';
 import {INPUT_TIMEOUT} from '../../../../../constants/common-ui';
 import {configFields} from '../../../../../containers/metadata/service/ConfigService';
 import {QuickSearch} from '@atlaskit/quick-search';

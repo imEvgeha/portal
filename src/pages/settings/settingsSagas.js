@@ -1,6 +1,6 @@
+import {loadConfigAPIEndPoints} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 import {call, put, all, take, fork, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './settingsActionTypes';
-import {loadConfigAPIEndPoints} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 
 export function* fetchConfigApiEndpoints(requestMethod) {
     try {

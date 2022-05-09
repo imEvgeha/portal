@@ -24,31 +24,6 @@
   dependencies:
     tslib "^2.0.0"
 
-"@atlaskit/analytics-next@^3.0.3", "@atlaskit/analytics-next@^3.1.2":
-  version "3.2.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-3.2.1.tgz#c6c3bafc6d5a4160dd8d7fe4be5b50e2c079819d"
-  integrity sha512-NHhis0wkzBHPnZKewAfBS5p8khiXoVnOA+00iKh1Mo4EIiVdgc4VXeFp97nb4hhyFcBguCoY3Zs6V1kta48nnw==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    babel-runtime "^6.26.0"
-    prop-types "^15.5.10"
-
-"@atlaskit/analytics-next@^4.0.3", "@atlaskit/analytics-next@^4.0.5":
-  version "4.0.5"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-4.0.5.tgz#ec92c74a1f283ecf334dc2ea568e73dd29346939"
-  integrity sha512-IqbKUQugMArrHZcCbm3MM9udbYGOzwE2D4vmiE1E/3waMDP+WybUi/5dwGcGY3FcVkW5/x2Mitt357K4ZOL8Dw==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    prop-types "^15.5.10"
-
-"@atlaskit/analytics-next@^5.0.0":
-  version "5.4.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-5.4.1.tgz#f62d721f8bc994064ddebe4533bd91091b5107d4"
-  integrity sha512-SmsoYOnLe+NlP7EWdXWiOwkodnyUYihVn/rTx0FImfgsQ3BM1R6oeze2nMbt5WABbgjb8GUiAyS8MCx7WqYC6g==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    prop-types "^15.5.10"
-
 "@atlaskit/analytics-next@^6.3.5", "@atlaskit/analytics-next@^6.3.6":
   version "6.3.8"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-6.3.8.tgz#35394fbff499e18d2f7bc2401e1962a6e1bee2d2"
@@ -155,31 +130,6 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/button@9.0.4":
-  version "9.0.4"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-9.0.4.tgz#5935ccb7d203f48c29671fa4488a41564b243d68"
-  integrity sha512-gtoTAfRjvOv1HyeahRL6G1XNho8X9KVl02TiJ9DMDH4X57fwf3hIeYMhcs1tK33uoM/qip588u3MGiV57zlYJg==
-  dependencies:
-    "@atlaskit/analytics-next" "^3.0.3"
-    "@atlaskit/spinner" "9.0.4"
-    "@atlaskit/theme" "^5.1.2"
-    babel-runtime "^6.26.0"
-
-"@atlaskit/button@^12.0.3":
-  version "12.0.8"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-12.0.8.tgz#ea39ac2deb6dc09b3e06a0a44b7457d990962e4d"
-  integrity sha512-wIZTHTZs1UjJFobPuH/yoQZpF3JC4upy4wfkhCLD1cA3wU1j8v+u4SQ4K0BGBbujW6m8NIoUSDcwHTzABLOTSg==
-  dependencies:
-    "@atlaskit/analytics-next" "^4.0.5"
-    "@atlaskit/spinner" "^10.0.7"
-    "@atlaskit/theme" "^8.1.9"
-    "@atlaskit/type-helpers" "^3.0.2"
-    "@babel/runtime" "^7.0.0"
-    "@emotion/core" "^10.0.9"
-    "@types/react-router-dom" "^4.3.1"
-    memoize-one "^3.0.1"
-    tslib "^1.9.3"
-
 "@atlaskit/button@^13.3.12", "@atlaskit/button@^13.3.7", "@atlaskit/button@^13.4.0":
   version "13.4.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-13.4.2.tgz#c0afe579465d16949432a42d8d73d8f6aa650ad0"
@@ -222,31 +172,6 @@
     "@emotion/core" "^10.0.9"
     date-fns "^2.17.0"
     react-uid "^2.2.0"
-
-"@atlaskit/calendar@^7.0.17":
-  version "7.0.22"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/calendar/-/calendar-7.0.22.tgz#b5e61fd0329d0520a61d3fad4dbc7e609da9a9a9"
-  integrity sha512-60vaUsLD1GR2etAWu7xf7CsCE5U10olDUkKGJ5JOkw+S/f0lg4O6LBAZLd5mCN607Uu0qXJokutynAKWfSz0Cw==
-  dependencies:
-    "@atlaskit/analytics-next" "^4.0.3"
-    "@atlaskit/button" "^12.0.3"
-    "@atlaskit/icon" "^16.0.9"
-    "@atlaskit/theme" "^8.1.7"
-    "@babel/runtime" "^7.0.0"
-    calendar-base "^0.3.0"
-    lodash.pick "^4.4.0"
-    react-uid "^2.2.0"
-
-"@atlaskit/checkbox@7.0.0":
-  version "7.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/checkbox/-/checkbox-7.0.0.tgz#d163f7c287b4e79bcdf8d3fa05b7330ae7cf868c"
-  integrity sha512-iTJXkA/wHqiP/6uE61Al6LvhLdnp80LbVpEYYXMbO4KpJHtGe4ePsJb168EOtfZGPWW8kuBBL7qZyGqEgVZ3cw==
-  dependencies:
-    "@atlaskit/analytics-next" "^5.0.0"
-    "@atlaskit/icon" "^17.0.0"
-    "@atlaskit/theme" "^9.0.0"
-    "@babel/runtime" "^7.0.0"
-    prop-types "^15.5.10"
 
 "@atlaskit/checkbox@^11.0.0":
   version "11.0.8"
@@ -299,24 +224,6 @@
     date-fns "^2.17.0"
     lodash "^4.17.21"
     react-scrolllock "^5.0.1"
-
-"@atlaskit/datetime-picker@^6.4.0":
-  version "6.5.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/datetime-picker/-/datetime-picker-6.5.1.tgz#e24fdd18c6565bc15ebd3280ddc1cbc14ad6ffd3"
-  integrity sha512-ZoDc4Gi/qxiGCM5SZ9YBiCPmodJ0iYjY6wXWH2wOWt7/h2prn7g+eI7FifCmiPyO8JtbPpOYUCwMq3SCE7Y+vA==
-  dependencies:
-    "@atlaskit/analytics-next" "^3.1.2"
-    "@atlaskit/calendar" "^7.0.17"
-    "@atlaskit/field-base" "^11.0.14"
-    "@atlaskit/icon" "^16.0.0"
-    "@atlaskit/popper" "^0.3.6"
-    "@atlaskit/select" "^7.0.0"
-    "@atlaskit/theme" "^7.0.1"
-    "@babel/runtime" "^7.0.0"
-    babel-runtime "^6.26.0"
-    date-fns "^1.30.1"
-    lodash.pick "^4.4.0"
-    react-scrolllock "^3.0.2"
 
 "@atlaskit/dropdown-menu@^10.0.0":
   version "10.1.9"
@@ -407,18 +314,6 @@
     "@emotion/core" "^10.0.9"
     react-beautiful-dnd "^12.1.1"
 
-"@atlaskit/field-base@^11.0.13", "@atlaskit/field-base@^11.0.14", "@atlaskit/field-base@^11.0.2":
-  version "11.0.15"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/field-base/-/field-base-11.0.15.tgz#bd06931a462bbe2ad4e9222f39b1734762f47342"
-  integrity sha512-Zlp/y5WaZsKoh377tUujB1xHsZvxSkOfvT5sUoKVlwTK4dYRnIg3uSteuAXPgn6YvuxCa4lVL/QwOlQ3+zpS1A==
-  dependencies:
-    "@atlaskit/icon" "^16.0.0"
-    "@atlaskit/inline-dialog" "^9.0.14"
-    "@atlaskit/spinner" "^9.0.13"
-    "@atlaskit/theme" "^7.0.1"
-    "@babel/runtime" "^7.0.0"
-    babel-runtime "^6.26.0"
-
 "@atlaskit/field-base@^15.0.0":
   version "15.0.6"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/field-base/-/field-base-15.0.6.tgz#27c8ead2dce393b4f29967a5941993a62897f619"
@@ -430,61 +325,15 @@
     "@atlaskit/theme" "^12.0.0"
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/field-radio-group@4.0.3":
-  version "4.0.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/field-radio-group/-/field-radio-group-4.0.3.tgz#b6f394579018a0dce9d4100633e99cfb531f4a3c"
-  integrity sha512-uKpnS08Gba1s2vvKfxx1rZ6sgXvoDYwx54U+OSDcAoRCzFKb9LzOstoP9LyGcJ62Q7pMo+X6ZOf2ymVZYyhLbA==
+"@atlaskit/field-text@^11.0.7":
+  version "11.0.7"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/field-text/-/field-text-11.0.7.tgz#ff11844d13257f3cebc1a8a4db92c0f5fd4d88de"
+  integrity sha512-qNlWKGIizm9V3BKAhnSBNmu/r825JcCrsk/nw8/OCrVwEk8XKuf4viQKwBs0zOXPC+wxjWWBW8ou2rJBl76fEQ==
   dependencies:
-    "@atlaskit/analytics-next" "^3.0.3"
-    "@atlaskit/field-base" "^11.0.2"
-    "@atlaskit/icon" "^13.2.2"
-    "@atlaskit/theme" "^5.1.2"
-
-"@atlaskit/field-range@5.0.2":
-  version "5.0.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/field-range/-/field-range-5.0.2.tgz#eccf27a159b1f32ffc0504b4b4dbc7fda497a131"
-  integrity sha512-565/7BVTsdyRvNZzlDInKttCTbLoT94y3VH3jGFgTVU5ON6hQ3x8ntNGqGAdG+K5+BjjFbgsBatnndJmHeFFyQ==
-  dependencies:
-    "@atlaskit/theme" "^5.1.2"
-    babel-runtime "^6.26.0"
-    prop-types "^15.5.10"
-
-"@atlaskit/field-text-area@4.0.16":
-  version "4.0.16"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/field-text-area/-/field-text-area-4.0.16.tgz#509e512131be9a1bbec1564abdb24877df90440b"
-  integrity sha512-85gYd/xf/BsVf80a6RaB2jjVfHniiFVL9H/cjQYZyMC1kWL5jC/jXb5IgxVYAaZQdjkR3Stwn6EnYnySWie/JQ==
-  dependencies:
-    "@atlaskit/analytics-next" "^3.1.2"
-    "@atlaskit/field-base" "^11.0.13"
-    "@atlaskit/theme" "^7.0.1"
+    "@atlaskit/analytics-next" "^8.0.0"
+    "@atlaskit/field-base" "^15.0.0"
+    "@atlaskit/theme" "^12.0.0"
     "@babel/runtime" "^7.0.0"
-    babel-runtime "^6.26.0"
-    prop-types "^15.5.10"
-
-"@atlaskit/field-text@7.0.20":
-  version "7.0.20"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/field-text/-/field-text-7.0.20.tgz#b02058e9596e054e500075e0a72c8d3a30011b4b"
-  integrity sha512-bEoLYqCp+dS9i7hZ6G28HjbMZskLKTbifKtK59uLNUfHRQW5Zf4W/BMDDcyr1K73cxZvNeVn+MmB4qR3jOhvWw==
-  dependencies:
-    "@atlaskit/analytics-next" "^3.1.2"
-    "@atlaskit/field-base" "^11.0.13"
-    "@atlaskit/theme" "^7.0.1"
-    "@babel/runtime" "^7.0.0"
-
-"@atlaskit/form@5.1.1":
-  version "5.1.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/form/-/form-5.1.1.tgz#497a40b157f5509d2362110a0e19f9ecd6fe14a4"
-  integrity sha512-qco9YW1zT16VYD2LL3WqcCJaGGmx5248lxNJ36tGix35MC8K5/dbfe9rgIZ5EL6+xLtfFrqR1hoveU7qvu0Ijw==
-  dependencies:
-    "@atlaskit/icon" "^15.0.2"
-    "@atlaskit/theme" "^7.0.1"
-    "@babel/runtime" "^7.0.0"
-    final-form "^4.10.0"
-    final-form-focus "^1.1.0"
-    memoize-one "^3.0.1"
-    shallow-equal "^1.0.0"
-    tiny-invariant "^0.0.3"
-    uuid "^3.1.0"
 
 "@atlaskit/form@^7.2.2":
   version "7.4.1"
@@ -515,52 +364,6 @@
     lodash "^4.17.21"
     react-uid "^2.2.0"
     tiny-invariant "^1.2.0"
-
-"@atlaskit/icon@13.2.3":
-  version "13.2.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-13.2.3.tgz#bb13c3ebe21ee163c9ad8caa793ed7367f14ef6d"
-  integrity sha512-f91NqLHD9goL/xjz1SEUG3K0IA/1jDZX89qpb42CXzHAJxicsNvnqkmB/Lun0ASzhesWwBAgcFoOGsy4CVrr3Q==
-  dependencies:
-    "@atlaskit/theme" "^5.1.2"
-    babel-runtime "^6.26.0"
-    uuid "^3.1.0"
-
-"@atlaskit/icon@^13.2.2":
-  version "13.9.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-13.9.0.tgz#6347e1f337c444e34ed6a2a371adf5c4100bcf0a"
-  integrity sha512-fITH6V+0HD6uLVHOIbZM6xKFn64+qAmYkITJh6oy6o8VOWPhkxdIH2RiihXJLmdEal91+UNdt6WqZvvKVUTxLQ==
-  dependencies:
-    "@atlaskit/theme" "^6.0.2"
-    babel-runtime "^6.26.0"
-    uuid "^3.1.0"
-
-"@atlaskit/icon@^15.0.2":
-  version "15.0.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-15.0.3.tgz#6071ac0a33d2445d6985972a66957c05d871423d"
-  integrity sha512-UAf7U0/+5giS2uMlOeVMYmhuWD4fQy0eRcp7r8oEDBqZXNH0yIuHrfu1bPgt2SbFotrjxZdPpOX1i1dXEu7y6g==
-  dependencies:
-    "@atlaskit/theme" "^7.0.1"
-    "@babel/runtime" "^7.0.0"
-    babel-runtime "^6.26.0"
-    uuid "^3.1.0"
-
-"@atlaskit/icon@^16.0.0", "@atlaskit/icon@^16.0.9":
-  version "16.0.9"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-16.0.9.tgz#4dff47273165671e907f78835c984cff29c4a98e"
-  integrity sha512-1gWuWgBsX6XZwX12iAPjoU0B0na92BZuCG0k8vHAIHJnhrgFpMJP7bqqV1IEob39qgbahk/4G9zagLBaNHWxoQ==
-  dependencies:
-    "@atlaskit/theme" "^8.1.7"
-    "@babel/runtime" "^7.0.0"
-    uuid "^3.1.0"
-
-"@atlaskit/icon@^17.0.0":
-  version "17.2.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-17.2.0.tgz#4fc3ec50844590dac5235e2ec83d5b2e0a017882"
-  integrity sha512-z1lad8viAgGeDJmxyop2lPxiqEhdpOjBULyr3fmbESuwCXF28oz01okJF61EY4rCLILjCWejSWWsGFm/R5Gszg==
-  dependencies:
-    "@atlaskit/theme" "^9.1.0"
-    "@babel/runtime" "^7.0.0"
-    uuid "^3.1.0"
 
 "@atlaskit/icon@^20.0.1", "@atlaskit/icon@^20.1.1", "@atlaskit/icon@^20.1.2":
   version "20.1.2"
@@ -615,17 +418,6 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
     bind-event-listener "^1.0.2"
-    react-node-resolver "^1.0.1"
-
-"@atlaskit/inline-dialog@^9.0.14":
-  version "9.0.15"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/inline-dialog/-/inline-dialog-9.0.15.tgz#e8c5bdd530aecba0226f74ae9169902b8e5cb4d9"
-  integrity sha512-MxhL2hfvvJE+db4gcXt794ljGdhL0SJJRkhIF5b1Eo6ZXvBSfZCvN9xxXy2VzIWOSL35oVAvKn54zlwo+YMnJQ==
-  dependencies:
-    "@atlaskit/analytics-next" "^3.1.2"
-    "@atlaskit/popper" "^0.3.6"
-    "@atlaskit/theme" "^7.0.1"
-    "@babel/runtime" "^7.0.0"
     react-node-resolver "^1.0.1"
 
 "@atlaskit/inline-edit@^10.0.33":
@@ -829,15 +621,6 @@
     "@emotion/core" "^10.0.9"
     memoize-one "^6.0.0"
 
-"@atlaskit/popper@^0.3.6":
-  version "0.3.7"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-0.3.7.tgz#0dbf6528294b5907789addf9024543622bc8699a"
-  integrity sha512-/eeruFjbSNhDjBB34Ty0MSmpQSb/9uIEkjHIGx5gTvCtC/hbbTGcAGI6Uwbi408l89wroVL2oZoXW9b26DQQGg==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    memoize-one "^3.0.1"
-    react-popper "1.0.2"
-
 "@atlaskit/popper@^3.1.12":
   version "3.1.13"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/popper/-/popper-3.1.13.tgz#dd128a11d661f94db0074deeadf38c206d8cffe1"
@@ -869,13 +652,6 @@
     "@emotion/core" "^10.0.9"
     bind-event-listener "^1.0.2"
     focus-trap "^2.4.5"
-
-"@atlaskit/portal@^0.0.3":
-  version "0.0.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/portal/-/portal-0.0.3.tgz#f4d5c60d2c9cf69639e7b6459ff60c59978a8b5a"
-  integrity sha512-YVEYpYwlFNG+L1c/A8rnKxCxaRpaLKckoe7qzME+t1Y5dCSeJHaoblOHTpKsWTykHbnFPr9OK0OBEthGxouQ8A==
-  dependencies:
-    tiny-invariant "^0.0.3"
 
 "@atlaskit/portal@^3.1.6", "@atlaskit/portal@^3.1.7":
   version "3.1.9"
@@ -931,25 +707,6 @@
     "@atlaskit/tokens" "^0.6.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
-
-"@atlaskit/select@6.1.19":
-  version "6.1.19"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/select/-/select-6.1.19.tgz#2035c4cb6cfe39a7768c2823fd33bd4e3064f8ca"
-  integrity sha512-zkQ7yCeH4SqITvtrBlv/ZTIWE27N2/3+qHm3S+hySh8hbdwoLRiZLKkvxJQiM46jPtn2JMgdgQgDcsaTLns1VQ==
-  dependencies:
-    "@atlaskit/analytics-next" "^3.1.2"
-    "@atlaskit/icon" "^16.0.0"
-    "@atlaskit/spinner" "^9.0.13"
-    "@atlaskit/theme" "^7.0.1"
-    "@babel/runtime" "^7.0.0"
-    focus-trap "^2.4.5"
-    memoize-one "^3.0.1"
-    react-fast-compare "^2.0.1"
-    react-node-resolver "^1.0.1"
-    react-popper "1.0.2"
-    react-select "~2.1.1"
-    react-transition-group "^2.2.1"
-    shallow-equal "^1.0.0"
 
 "@atlaskit/select@^13.0.0":
   version "13.3.1"
@@ -1019,25 +776,6 @@
     react-uid "^2.2.0"
     shallow-equal "^1.0.0"
 
-"@atlaskit/select@^7.0.0":
-  version "7.2.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/select/-/select-7.2.2.tgz#ee01a450ff644147fda1aac643062022a750822a"
-  integrity sha512-VcTXZynWUyptgqZ/kmWs5Z2XyRGNWC4cWbgRlgpnhv0iYlGFwnoTjAPLElb/+2nltQwrfb5D/HfwwZr8/qUglg==
-  dependencies:
-    "@atlaskit/analytics-next" "^3.1.2"
-    "@atlaskit/icon" "^16.0.0"
-    "@atlaskit/spinner" "^9.0.13"
-    "@atlaskit/theme" "^7.0.1"
-    "@babel/runtime" "^7.0.0"
-    focus-trap "^2.4.5"
-    memoize-one "^3.0.1"
-    react-fast-compare "^2.0.1"
-    react-node-resolver "^1.0.1"
-    react-popper "1.0.2"
-    react-select "^2.4.1"
-    react-transition-group "^2.2.1"
-    shallow-equal "^1.0.0"
-
 "@atlaskit/size-detector@^10.0.0":
   version "10.0.3"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/size-detector/-/size-detector-10.0.3.tgz#68a7a3ce7fb50ac4157a5bee6501fbcb1eee5bcd"
@@ -1045,24 +783,6 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
     raf-schd "^2.1.0"
-
-"@atlaskit/spinner@9.0.4":
-  version "9.0.4"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/spinner/-/spinner-9.0.4.tgz#05f768c23737660a74bb6f6c4ac95181e6118742"
-  integrity sha512-IXdWhj2GQWdAd+m4BKE3JClnI+Xhi0vYXRDZpBGjz6OwMqCSrDbhPYdZoUzOI7DofsdA86f/VM7ZalwUGA449A==
-  dependencies:
-    "@atlaskit/theme" "^5.1.2"
-    babel-runtime "^6.26.0"
-    react-transition-group "^2.2.1"
-
-"@atlaskit/spinner@^10.0.7":
-  version "10.0.7"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/spinner/-/spinner-10.0.7.tgz#b9c3b7a5fb3e262b894749d9145980176e4595c7"
-  integrity sha512-r2q0brw29q9TvgAKNkntXjQfR5LLjP9ow7Z9SbcJiROUGKH3JKWB4r38/V8PVEm0JcT2gBaGyghAwK4+pMAGLA==
-  dependencies:
-    "@atlaskit/theme" "^8.1.7"
-    "@babel/runtime" "^7.0.0"
-    react-transition-group "^2.2.1"
 
 "@atlaskit/spinner@^14.0.0":
   version "14.0.0"
@@ -1082,16 +802,6 @@
     "@atlaskit/tokens" "^0.6.0"
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
-
-"@atlaskit/spinner@^9.0.13":
-  version "9.0.13"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/spinner/-/spinner-9.0.13.tgz#030005c51a8acab842ce0771e16fe8c6cc7d585a"
-  integrity sha512-EA5weoo1lftixC1oxVT1ePNCWATNaWETrAwOf6uuj/fpPTXjZ5HEwbgddlyCLVZ3vcljpXFTwmM1Nj24sGnrdg==
-  dependencies:
-    "@atlaskit/theme" "^7.0.1"
-    "@babel/runtime" "^7.0.0"
-    babel-runtime "^6.26.0"
-    react-transition-group "^2.2.1"
 
 "@atlaskit/tag-group@^10.0.11":
   version "10.0.11"
@@ -1183,40 +893,7 @@
     "@atlaskit/tokens" "^0.6.0"
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/theme@^5.1.2":
-  version "5.1.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-5.1.3.tgz#2f856eb1b82e7003f0a2d5e6b203254c773f89b6"
-  integrity sha512-eM5fM+vCWo6kDckORQ9n4kGpSeQkEvqAh14lfS8z5DDcBXiLJomay8fExddjLgw3sCsgETagm3oOUDLQBV8T2g==
-  dependencies:
-    prop-types "^15.5.10"
-
-"@atlaskit/theme@^6.0.2":
-  version "6.2.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-6.2.1.tgz#2d84a5b8dbd05c5d94064c0ab29e6f6a2f1ff415"
-  integrity sha512-6u0OxpnZ2n+G7Wc1wckgtOEiYl3wmJ2HvBd28N7d+Fi/fbi+C4TzfBvyeENUqtrp1UIEhweVbB2WLoVoKA5c/w==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    prop-types "^15.5.10"
-
-"@atlaskit/theme@^7.0.1":
-  version "7.0.5"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-7.0.5.tgz#fc8f8171a54101107224ca913190165e831b4bab"
-  integrity sha512-VU0Z1wlAeqxvy80QO4ehMdKIARK2WpLGaJkhrTNE1KiRHSS1SVO9oaM70uX30mD7MxzkYjVweJ5+dIgDRoL8JA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    exenv "^1.2.2"
-    prop-types "^15.5.10"
-
-"@atlaskit/theme@^8.1.7", "@atlaskit/theme@^8.1.9":
-  version "8.1.9"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-8.1.9.tgz#ddad6f0458a07cef6b5273dfd510067c8420484b"
-  integrity sha512-Nre+B13l187f/FXLBixtybpBwuAmGNQs9er2uFApcS+tjWy+wmkmOxoFqapMuN0hPg/JGjPv8/kHFN9XedhTMw==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    exenv "^1.2.2"
-    prop-types "^15.5.10"
-
-"@atlaskit/theme@^9.0.0", "@atlaskit/theme@^9.1.0", "@atlaskit/theme@^9.5.1", "@atlaskit/theme@^9.5.3":
+"@atlaskit/theme@^9.5.1", "@atlaskit/theme@^9.5.3":
   version "9.5.6"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-9.5.6.tgz#fbc1068eee3af5dbb57c346276b5eb0913e89d0d"
   integrity sha512-DC+uIP+Gv6MrJQUjzCFHFukSZEoEj2fUzb0ejpnSWqrXoS8uGXvwJ2cI7/k4F+gFBQWOS4ChM+DOHn0UrleRPA==
@@ -1241,17 +918,6 @@
     "@babel/runtime" "^7.0.0"
     "@babel/traverse" "^7.15.0"
     "@babel/types" "^7.15.0"
-
-"@atlaskit/tooltip@12.0.4":
-  version "12.0.4"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/tooltip/-/tooltip-12.0.4.tgz#7e1e86296dcbb7d0222b96010ce8ded1145ade18"
-  integrity sha512-s2sBKxks6zUSP/stisOtbEnWahsPOev1ngShD5UKel9EbLcKxwGckoa4ht/ASrjCS78Tt/gtpBaT43zazHnzdA==
-  dependencies:
-    "@atlaskit/analytics-next" "^3.0.3"
-    "@atlaskit/portal" "^0.0.3"
-    "@atlaskit/theme" "^5.1.2"
-    react-node-resolver "^1.0.1"
-    react-transition-group "^2.2.1"
 
 "@atlaskit/tooltip@^15.0.15", "@atlaskit/tooltip@^15.2.7":
   version "15.2.9"
@@ -1297,13 +963,6 @@
     "@emotion/core" "^10.0.9"
     bind-event-listener "^1.0.2"
     react-uid "^2.2.0"
-
-"@atlaskit/type-helpers@^3.0.2":
-  version "3.0.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/type-helpers/-/type-helpers-3.0.2.tgz#d6da9a3367c177fad05d159db330d2e388ede90e"
-  integrity sha512-7QHB0Uegq2PBtLiA1VTt3pxI+KQijXWLLvWKRM/4LxgQC/dWXYuiMm7HfIY88gGWarg3cpOVUZKMU4CvbfT/5g==
-  dependencies:
-    react "^16.4.0"
 
 "@atlaskit/user-picker@^6.9.3":
   version "6.9.3"
@@ -4071,18 +3730,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/history@*":
-  version "5.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@types/history/-/history-5.0.0.tgz#29f919f0c8e302763798118f45b19cab4a886f14"
-  integrity sha512-hy8b7Y1J8OGe6LbAjj3xniQrj3v6lsivCcrmf4TzSgPzLkhIeKgc5IZnT7ReIqmEuodjfO8EYAuoFvIrHi/+jQ==
-  dependencies:
-    history "*"
-
-"@types/history@^4.7.11":
-  version "4.7.11"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@types/history/-/history-4.7.11.tgz#56588b17ae8f50c53983a524fc3cc47437969d64"
-  integrity sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==
-
 "@types/hoist-non-react-statics@^3.3.0", "@types/hoist-non-react-statics@^3.3.1":
   version "3.3.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
@@ -4208,23 +3855,6 @@
     "@types/react" "*"
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
-
-"@types/react-router-dom@^4.3.1":
-  version "4.3.5"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@types/react-router-dom/-/react-router-dom-4.3.5.tgz#72f229967690c890d00f96e6b85e9ee5780db31f"
-  integrity sha512-eFajSUASYbPHg2BDM1G8Btx+YqGgvROPIg6sBhl3O4kbDdYXdFdfrgQFf/pcBuQVObjfT9AL/dd15jilR5DIEA==
-  dependencies:
-    "@types/history" "*"
-    "@types/react" "*"
-    "@types/react-router" "*"
-
-"@types/react-router@*":
-  version "5.1.18"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@types/react-router/-/react-router-5.1.18.tgz#c8851884b60bc23733500d86c1266e1cfbbd9ef3"
-  integrity sha512-YYknwy0D0iOwKQgz9v8nOzt2J6l4gouBmDnWqUUznltOTaon+r8US8ky8HvN0tXvc38U9m6z/t2RsVsnd1zM0g==
-  dependencies:
-    "@types/history" "^4.7.11"
-    "@types/react" "*"
 
 "@types/react-select@^3.1.2":
   version "3.1.2"
@@ -5328,7 +4958,7 @@ babel-preset-jest@^27.5.1:
     babel-plugin-jest-hoist "^27.5.1"
     babel-preset-current-node-syntax "^1.0.0"
 
-babel-runtime@6.x.x, babel-runtime@^6.26.0:
+babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -5733,11 +5363,6 @@ cache-base@^1.0.1:
     union-value "^1.0.0"
     unset-value "^1.0.0"
 
-calendar-base@^0.3.0:
-  version "0.3.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/calendar-base/-/calendar-base-0.3.0.tgz#483d3d07c5befedf9969a9a81a6a845794a6e251"
-  integrity sha1-SD09B8W+/t+ZaamoGmqEV5Sm4lE=
-
 call-bind@^1.0.0, call-bind@^1.0.2:
   version "1.0.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/call-bind/-/call-bind-1.0.2.tgz#b1d4e89e688119c3c9a903ad30abb2f6a919be3c"
@@ -5773,7 +5398,7 @@ camelcase@^3.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/camelcase/-/camelcase-3.0.0.tgz#32fc4b9fcdaf845fcdf7e73bb97cac2261f0ab0a"
   integrity sha1-MvxLn82vhF/N9+c7uXysImHwqwo=
 
-camelcase@^5.0.0, camelcase@^5.3.1:
+camelcase@^5.3.1:
   version "5.3.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/camelcase/-/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
@@ -5870,7 +5495,7 @@ cheerio@^1.0.0-rc.3:
     parse5-htmlparser2-tree-adapter "^6.0.1"
     tslib "^2.2.0"
 
-"chokidar@>=3.0.0 <4.0.0", chokidar@^3.0.0, chokidar@^3.4.0, chokidar@^3.4.1, chokidar@^3.5.3:
+"chokidar@>=3.0.0 <4.0.0", chokidar@^3.4.0, chokidar@^3.4.1, chokidar@^3.5.3:
   version "3.5.3"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
   integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
@@ -6034,15 +5659,6 @@ cliui@^3.2.0:
     string-width "^1.0.1"
     strip-ansi "^3.0.1"
     wrap-ansi "^2.0.0"
-
-cliui@^6.0.0:
-  version "6.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/cliui/-/cliui-6.0.0.tgz#511d702c0c4e41ca156d7d0e96021f23e13225b1"
-  integrity sha512-t6wbgtoCXvAzst7QgXxJYqPt0usEfbgQdftEPbLL/cvv6HPE5VgvqCuAIDR0NgU52ds6rFwqrgakNLrHEjCbrQ==
-  dependencies:
-    string-width "^4.2.0"
-    strip-ansi "^6.0.0"
-    wrap-ansi "^6.2.0"
 
 cliui@^7.0.2:
   version "7.0.4"
@@ -6600,14 +6216,6 @@ create-react-context@^0.1.5:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/create-react-context/-/create-react-context-0.1.6.tgz#0f425931d907741127acc6e31acb4f9015dd9fdc"
   integrity sha512-eCnYYEUEc5i32LHwpE/W7NlddOB9oHwsPaWtWzYtflNkkwa3IfindIcoXdVWs12zCbwaMCavKNu84EXogVIWHw==
 
-create-react-context@^0.2.1:
-  version "0.2.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/create-react-context/-/create-react-context-0.2.3.tgz#9ec140a6914a22ef04b8b09b7771de89567cb6f3"
-  integrity sha512-CQBmD0+QGgTaxDL3OX1IDXYqjkp2It4RIbcb99jS6AEg27Ga+a9G3JtK6SIu0HBwPLZlmwt9F7UwWA4Bn92Rag==
-  dependencies:
-    fbjs "^0.8.0"
-    gud "^1.0.0"
-
 create-react-context@^0.3.0:
   version "0.3.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/create-react-context/-/create-react-context-0.3.0.tgz#546dede9dc422def0d3fc2fe03afe0bc0f4f7d8c"
@@ -6877,11 +6485,6 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-date-fns@^1.30.1:
-  version "1.30.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
-  integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
-
 date-fns@^2.16.1, date-fns@^2.17.0:
   version "2.28.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
@@ -6926,7 +6529,7 @@ decamelize-keys@^1.1.0:
     decamelize "^1.1.0"
     map-obj "^1.0.0"
 
-decamelize@^1.1.0, decamelize@^1.1.1, decamelize@^1.2.0:
+decamelize@^1.1.0, decamelize@^1.1.1:
   version "1.2.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
@@ -8260,7 +7863,7 @@ fbjs@^0.6.1:
     ua-parser-js "^0.7.9"
     whatwg-fetch "^0.9.0"
 
-fbjs@^0.8.0, fbjs@^0.8.16:
+fbjs@^0.8.16:
   version "0.8.18"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/fbjs/-/fbjs-0.8.18.tgz#9835e0addb9aca2eff53295cd79ca1cfc7c9662a"
   integrity sha512-EQaWFK+fEPSoibjNy8IxUtaFOMXcWsY0JaVrQoZR9zC8N2Ygf9iDITPWjUTVIax95b6I742JFLqASHfsag/vKA==
@@ -8364,7 +7967,7 @@ final-form-focus@^1.1.0, final-form-focus@^1.1.2:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/final-form-focus/-/final-form-focus-1.1.2.tgz#8ea5c4bd802e220cebaa47a587bb0be164eb6806"
   integrity sha512-Gd+Bd2Ll7ijo3/sd6kJ/bwLkhc2bUJPxTON6fIqee/008EJpACWhT+zoWCm9q6NcfMcWRS+Sp5ikRX8iqdXeGQ==
 
-final-form@^4.10.0, final-form@^4.14.1, final-form@^4.20.1:
+final-form@^4.14.1, final-form@^4.20.1:
   version "4.20.6"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/final-form/-/final-form-4.20.6.tgz#da42f3741db068c0c875e18950a2c4a9a148c63e"
   integrity sha512-fCdwIj49KOaFfDRlXB57Eo+GghIMZQWrA9TakQI3C9uQxHwaFHXqZSNRlUdfnQmNNeySwGOaGPZCvjy58hyv4w==
@@ -8501,17 +8104,6 @@ flatted@^3.1.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/flatted/-/flatted-3.2.5.tgz#76c8584f4fc843db64702a6bd04ab7a8bd666da3"
   integrity sha512-WIWGi2L3DyTUvUrwRKgGi9TwxQMUEqPOPQBVi71R96jZXJdFskXEmf54BoZaS1kknGODoIGASGEzBUYdyMCBJg==
 
-flow-copy-source@^2.0.2:
-  version "2.0.9"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/flow-copy-source/-/flow-copy-source-2.0.9.tgz#0c94ad842f2ae544d5a6b8ae720cee0b8678d742"
-  integrity sha512-7zX/oHSIHe8YRGiA9QIcC4SW6KF667ikdmiDfbST15up1Ona8dn7Xy0PmSrfw6ceBWDww8sRKlCLKsztStpYkQ==
-  dependencies:
-    chokidar "^3.0.0"
-    fs-extra "^8.1.0"
-    glob "^7.0.0"
-    kefir "^3.7.3"
-    yargs "^15.0.1"
-
 flush-write-stream@^1.0.0, flush-write-stream@^1.0.2:
   version "1.1.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/flush-write-stream/-/flush-write-stream-1.1.1.tgz#8dd7d873a1babc207d94ead0c2e0e44276ebf2e8"
@@ -8609,15 +8201,6 @@ from2@^2.1.0:
   dependencies:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
-
-fs-extra@^8.1.0:
-  version "8.1.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
-  integrity sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
-  dependencies:
-    graceful-fs "^4.2.0"
-    jsonfile "^4.0.0"
-    universalify "^0.1.0"
 
 fs-extra@^9.1.0:
   version "9.1.0"
@@ -8738,7 +8321,7 @@ get-caller-file@^1.0.1:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
   integrity sha512-3t6rVToeoZfYSGd8YoLFR2DJkiQrIiUrGcjvFX2mDw3bn6k2OtwHN0TNCLbBO+w8qTvimhDkv+LSscbJY1vE6w==
 
-get-caller-file@^2.0.1, get-caller-file@^2.0.5:
+get-caller-file@^2.0.5:
   version "2.0.5"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
   integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
@@ -9208,13 +8791,6 @@ he@^1.2.0:
   version "1.2.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
-
-history@*:
-  version "5.2.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/history/-/history-5.2.0.tgz#7cdd31cf9bac3c5d31f09c231c9928fad0007b7c"
-  integrity sha512-uPSF6lAJb3nSePJ43hN3eKj1dTWpN9gMod0ZssbFTIsen+WehTmEadgL+kg78xLJFdRfrrC//SavDzmRVdE+Ig==
-  dependencies:
-    "@babel/runtime" "^7.7.6"
 
 history@^5.2.0:
   version "5.3.0"
@@ -10707,13 +10283,6 @@ json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
-jsonfile@^4.0.0:
-  version "4.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
-  integrity sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
-  optionalDependencies:
-    graceful-fs "^4.1.6"
-
 jsonfile@^6.0.1:
   version "6.1.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/jsonfile/-/jsonfile-6.1.0.tgz#bc55b2634793c679ec6403094eb13698a6ec0aae"
@@ -10774,11 +10343,6 @@ jwt-decode@2.x, jwt-decode@^2.2.0:
   version "2.2.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/jwt-decode/-/jwt-decode-2.2.0.tgz#7d86bd56679f58ce6a84704a657dd392bba81a79"
   integrity sha1-fYa9VmefWM5qhHBKZX3TkruoGnk=
-
-kefir@^3.7.3:
-  version "3.8.8"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/kefir/-/kefir-3.8.8.tgz#235932ddfbed422acebf5d7cba503035e9ea05c5"
-  integrity sha512-xWga7QCZsR2Wjy2vNL3Kq/irT+IwxwItEWycRRlT5yhqHZK2fmEhziP+LzcJBWSTAMranGKtGTQ6lFpyJS3+jA==
 
 keycloak-js@9.x, keycloak-js@^9.0.2:
   version "9.0.3"
@@ -11143,11 +10707,6 @@ lodash.merge@^4.6.2:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash.pick@^4.4.0:
-  version "4.4.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
-  integrity sha1-UvBWEP/53tQiYRRB7R/BI6AwAbM=
-
 lodash.set@^4.3.2:
   version "4.3.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
@@ -11357,16 +10916,6 @@ memfs@^3.4.1:
   integrity sha512-1c9VPVvW5P7I85c35zAdEr1TD5+F11IToIHIlrVIcflfnzPkJa0ZoYEoEdYDP8KgPFoSZ/opDrUsAoZWym3mtw==
   dependencies:
     fs-monkey "1.0.3"
-
-memoize-one@^3.0.1:
-  version "3.1.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/memoize-one/-/memoize-one-3.1.1.tgz#ef609811e3bc28970eac2884eece64d167830d17"
-  integrity sha512-YqVh744GsMlZu6xkhGslPSqSurOv6P+kLN2J3ysBZfagLcL5FdRK/0UpgLoL8hwjjEvvAVkjJZyFP+1T6p1vgA==
-
-memoize-one@^4.0.0:
-  version "4.1.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/memoize-one/-/memoize-one-4.1.0.tgz#a2387c58c03fff27ca390c31b764a79addf3f906"
-  integrity sha512-2GApq0yI/b22J2j9rhbrAlsHb0Qcz+7yWxeLG8h+95sl1XPUgeLimQSOdur4Vw7cUhrBHwaUZxWFZueojqNRzA==
 
 memoize-one@^5.0.0, memoize-one@^5.0.4, memoize-one@^5.1.0, memoize-one@^5.1.1:
   version "5.2.1"
@@ -13569,32 +13118,6 @@ react-focus-lock@^1.19.1:
     prop-types "^15.6.2"
     react-clientside-effect "^1.2.0"
 
-react-forms-processor-atlaskit@0.0.43:
-  version "0.0.43"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-forms-processor-atlaskit/-/react-forms-processor-atlaskit-0.0.43.tgz#9a8412ce60ed815fb1ac6b5d06638bcf03c1346b"
-  integrity sha512-d4LGc3QFhZCqKELjctCr8N8UWXQ+2D4jzQlMiBEarzAAsJwIri9+y4SZxsQXu24YQGG0mHyAakMwa+Fpkug6xw==
-  dependencies:
-    "@atlaskit/button" "9.0.4"
-    "@atlaskit/checkbox" "7.0.0"
-    "@atlaskit/datetime-picker" "^6.4.0"
-    "@atlaskit/field-radio-group" "4.0.3"
-    "@atlaskit/field-range" "5.0.2"
-    "@atlaskit/field-text" "7.0.20"
-    "@atlaskit/field-text-area" "4.0.16"
-    "@atlaskit/form" "5.1.1"
-    "@atlaskit/icon" "13.2.3"
-    "@atlaskit/select" "6.1.19"
-    "@atlaskit/tooltip" "12.0.4"
-    lodash "^4.17.10"
-
-react-forms-processor@0.0.43:
-  version "0.0.43"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-forms-processor/-/react-forms-processor-0.0.43.tgz#79abada91fab5c7dcdf74a5c4510ea252fd41203"
-  integrity sha512-2fvXwiILjnsZ68zAKPMgWbViRsTQDv2sSg0Bxnce1/dOIgNGhqEZPdOv5C0B0yUyfdvARHGhXD802/rJHktN0Q==
-  dependencies:
-    flow-copy-source "^2.0.2"
-    lodash "^4.17.10"
-
 react-ga@^2.7.0:
   version "2.7.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-ga/-/react-ga-2.7.0.tgz#24328f157f31e8cffbf4de74a3396536679d8d7c"
@@ -13712,18 +13235,6 @@ react-onclickoutside@^6.7.1:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-onclickoutside/-/react-onclickoutside-6.12.1.tgz#92dddd28f55e483a1838c5c2930e051168c1e96b"
   integrity sha512-a5Q7CkWznBRUWPmocCvE8b6lEYw1s6+opp/60dCunhO+G6E4tDTO2Sd2jKE+leEnnrLAE2Wj5DlDHNqj5wPv1Q==
 
-react-popper@1.0.2:
-  version "1.0.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-popper/-/react-popper-1.0.2.tgz#0e72f338b7f15ab9f9ec884e36ae0dad78a3e301"
-  integrity sha512-vjZ94ki8sfCAg45MMi4uqnUUWdzbnYkb95sR2+HgiMaAPzQcy4DfDKYtYUOhhE+sdtkufWcUHLv09DmH2Js57w==
-  dependencies:
-    babel-runtime "6.x.x"
-    create-react-context "^0.2.1"
-    popper.js "^1.14.1"
-    prop-types "^15.6.1"
-    typed-styles "^0.0.5"
-    warning "^3.0.0"
-
 react-popper@1.3.6:
   version "1.3.6"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-popper/-/react-popper-1.3.6.tgz#32122f83af8fda01bdd4f86625ddacaf64fdd06d"
@@ -13784,13 +13295,6 @@ react-router@6.3.0:
   dependencies:
     history "^5.2.0"
 
-react-scrolllock@^3.0.2:
-  version "3.0.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-scrolllock/-/react-scrolllock-3.0.2.tgz#b1607cb5f6b8a3bce02c78e7dfb1cbe564c1e992"
-  integrity sha512-ZShCKvt4bxxhqngaegHsZuoTIUDt4QOHd0saJ/cfJAu0LwCOoRaQfRZe9UPT/bpDE944u/GhuTWBmGaW9YER7Q==
-  dependencies:
-    exenv "^1.2.2"
-
 react-scrolllock@^5.0.1:
   version "5.0.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-scrolllock/-/react-scrolllock-5.0.1.tgz#da1cfb7b6d55c86ae41dbad5274b778c307752b7"
@@ -13798,7 +13302,7 @@ react-scrolllock@^5.0.1:
   dependencies:
     exenv "^1.2.2"
 
-react-select@^2.1.1, react-select@^2.4.1:
+react-select@^2.1.1:
   version "2.4.4"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react-select/-/react-select-2.4.4.tgz#ba72468ef1060c7d46fbb862b0748f96491f1f73"
   integrity sha512-C4QPLgy9h42J/KkdrpVxNmkY6p4lb49fsrbDk/hRcZpX7JvZPNb6mGj+c5SzyEtBv1DmQ9oPH4NmhAFvCrg8Jw==
@@ -13837,19 +13341,6 @@ react-select@^4.3.1:
     prop-types "^15.6.0"
     react-input-autosize "^3.0.0"
     react-transition-group "^4.3.0"
-
-react-select@~2.1.1:
-  version "2.1.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-select/-/react-select-2.1.2.tgz#7a3e4c2b9efcd8c44ae7cf6ebb8b060ef69c513c"
-  integrity sha512-+ceiz2KwIeEBxT/PgAXBIGohLXfa9YhkfwFSHMlqpTL55JYvjhgkGoBxoasGcMGeQ49J3RhAKZDD+x6ZHKmj6g==
-  dependencies:
-    classnames "^2.2.5"
-    emotion "^9.1.2"
-    memoize-one "^4.0.0"
-    prop-types "^15.6.0"
-    raf "^3.4.0"
-    react-input-autosize "^2.2.1"
-    react-transition-group "^2.2.1"
 
 react-test-renderer@^16.0.0-0:
   version "16.14.0"
@@ -13914,7 +13405,7 @@ react-xml-viewer@^1.3.0:
   dependencies:
     xml-js "^1.6.11"
 
-react@16.14.0, react@^16.4.0, react@^16.8.0:
+react@16.14.0, react@^16.8.0:
   version "16.14.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
@@ -14358,11 +13849,6 @@ require-main-filename@^1.0.1:
   version "1.0.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
   integrity sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE=
-
-require-main-filename@^2.0.0:
-  version "2.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
-  integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
 
 requires-port@^1.0.0:
   version "1.0.0"
@@ -15976,11 +15462,6 @@ type@^2.5.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/type/-/type-2.6.0.tgz#3ca6099af5981d36ca86b78442973694278a219f"
   integrity sha512-eiDBDOmkih5pMbo9OqsqPRGMljLodLcwd5XD5JbtNB0o89xZAwynY9EdCDsJU7LtcVCClu9DvM7/0Ep1hYX3EQ==
 
-typed-styles@^0.0.5:
-  version "0.0.5"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/typed-styles/-/typed-styles-0.0.5.tgz#a60df245d482a9b1adf9c06c078d0f06085ed1cf"
-  integrity sha512-ht+rEe5UsdEBAa3gr64+QjUOqjOLJfWLvl5HZR5Ev9uo/OnD3p43wPeFSB1hNFc13GXQF/JU1Bn0YHLUqBRIlw==
-
 typed-styles@^0.0.7:
   version "0.0.7"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/typed-styles/-/typed-styles-0.0.7.tgz#93392a008794c4595119ff62dde6809dbc40a3d9"
@@ -16133,7 +15614,7 @@ universal-user-agent@^6.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/universal-user-agent/-/universal-user-agent-6.0.0.tgz#3381f8503b251c0d9cd21bc1de939ec9df5480ee"
   integrity sha512-isyNax3wXoKaulPDZWHQqbmIx1k2tb9fb3GGDBRxCscfYV2Ch7WxPArBsFEG8s/safwXTT7H4QGhaIkTp9447w==
 
-universalify@^0.1.0, universalify@^0.1.2:
+universalify@^0.1.2:
   version "0.1.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
   integrity sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==
@@ -16439,13 +15920,6 @@ walker@^1.0.7:
   dependencies:
     makeerror "1.0.12"
 
-warning@^3.0.0:
-  version "3.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
-  integrity sha1-MuU3fLVy3kqwR1O9+IIcAe1gW3w=
-  dependencies:
-    loose-envify "^1.0.0"
-
 warning@^4.0.2, warning@^4.0.3:
   version "4.0.3"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
@@ -16704,11 +16178,6 @@ which-module@^1.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/which-module/-/which-module-1.0.0.tgz#bba63ca861948994ff307736089e3b96026c2a4f"
   integrity sha1-u6Y8qGGUiZT/MHc2CJ47lgJsKk8=
 
-which-module@^2.0.0:
-  version "2.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
-  integrity sha1-2e8H3Od7mQK4o6j6SzHD4/fm6Ho=
-
 which-pm-runs@^1.0.0:
   version "1.0.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/which-pm-runs/-/which-pm-runs-1.0.0.tgz#670b3afbc552e0b55df6b7780ca74615f23ad1cb"
@@ -16907,14 +16376,6 @@ yargs-parser@20.2.4:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/yargs-parser/-/yargs-parser-20.2.4.tgz#b42890f14566796f85ae8e3a25290d205f154a54"
   integrity sha512-WOkpgNhPTlE73h4VFAFsOnomJVaovO8VqLDzy5saChRBFQFBoMYirowyW+Q9HB4HFF4Z7VZTiG3iSzJJA29yRA==
 
-yargs-parser@^18.1.2:
-  version "18.1.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/yargs-parser/-/yargs-parser-18.1.3.tgz#be68c4975c6b2abf469236b0c870362fab09a7b0"
-  integrity sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==
-  dependencies:
-    camelcase "^5.0.0"
-    decamelize "^1.2.0"
-
 yargs-parser@^20.2.2, yargs-parser@^20.2.3:
   version "20.2.9"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
@@ -16927,23 +16388,6 @@ yargs-parser@^5.0.1:
   dependencies:
     camelcase "^3.0.0"
     object.assign "^4.1.0"
-
-yargs@^15.0.1:
-  version "15.4.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/yargs/-/yargs-15.4.1.tgz#0d87a16de01aee9d8bec2bfbf74f67851730f4f8"
-  integrity sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==
-  dependencies:
-    cliui "^6.0.0"
-    decamelize "^1.2.0"
-    find-up "^4.1.0"
-    get-caller-file "^2.0.1"
-    require-directory "^2.1.1"
-    require-main-filename "^2.0.0"
-    set-blocking "^2.0.0"
-    string-width "^4.2.0"
-    which-module "^2.0.0"
-    y18n "^4.0.0"
-    yargs-parser "^18.1.2"
 
 yargs@^16.2.0:
   version "16.2.0"

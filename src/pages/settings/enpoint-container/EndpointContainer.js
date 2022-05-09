@@ -18,7 +18,7 @@ import {capitalize, cloneDeep} from 'lodash';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
-import {getConfigApiValues} from '../../legacy/common/CommonConfigService';
+import {getConfigApiValues} from '../CommonConfigService';
 import './EndpointContainer.scss';
 
 export const cache = {};
