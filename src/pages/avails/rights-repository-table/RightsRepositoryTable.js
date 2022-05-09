@@ -372,7 +372,7 @@ const RightsRepositoryTable = ({
             case READY:
                 setGridApis(api, columnApi);
                 api?.setFilterModel(rightsFilter?.column);
-                columnApi?.applyColumnState({state: currentViewColumnState});
+                columnApi?.applyColumnState({state: currentViewColumnState, applyOrder: true});
                 break;
             case FIRST_DATA_RENDERED:
                 updateMapping(api);
@@ -403,7 +403,7 @@ const RightsRepositoryTable = ({
 
                 const finalState = previousGridState?.map(viewObj => {
                     if (viewID === viewObj.id) {
-                        viewObj = {...viewObj, columnState: newColumnState, isPredefinedView: true};
+                        viewObj = {...viewObj, columnState: newColumnState};
                     }
                     return viewObj;
                 });
