@@ -8,6 +8,7 @@ import {
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {Button} from 'primereact/button';
 import {goBack, push} from 'redux-first-history';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
@@ -181,7 +182,7 @@ export function* saveCombinedRight(requestMethod, {payload}) {
         }
 
         const handleToastButtonClick = () => {
-            window.open(`/avails/rights/${focusedRight.id}`, '_blank');
+            window.open(`/${getAuthConfig().realm}/avails/rights/${focusedRight.id}`, '_blank');
         };
 
         yield put({

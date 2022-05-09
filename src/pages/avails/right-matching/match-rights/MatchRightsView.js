@@ -59,14 +59,15 @@ const MatchRightView = ({
     validateRights,
 }) => {
     const activeFocusedRight = mergeRights ? {...prepareRight(pendingRight), id: null} : focusedRight;
-    const {availHistoryIds, rightId, matchedRightIds} = useParams();
+    const {availHistoryIds, rightId, matchedRightIds, realm} = useParams();
+
     const navigate = useNavigate();
 
     const selectedMatchedRights = [activeFocusedRight, ...rightsForMatching];
     const [cellColoringSchema, setCellColoringSchema] = useState();
     const previousRoute = mergeRights
-        ? `/avails/right-matching`
-        : `/avails/history/${availHistoryIds}/right-matching/${rightId}`;
+        ? `${realm}/avails/right-matching`
+        : `${realm}/avails/history/${availHistoryIds}/right-matching/${rightId}`;
 
     // disable editing of columns
     const nonEditableMappings = mapping.map(mapping => ({...mapping, enableEdit: false}));
@@ -114,7 +115,9 @@ const MatchRightView = ({
             rightData: prepareRight(pendingRight),
             selectedRights: rightsForMatching.map(right => right.id),
             callback: () => {
-                const redirectPath = mergeRights ? AVAILS_PATH : `/avails/history/${availHistoryIds}/right-matching`;
+                const redirectPath = mergeRights
+                    ? AVAILS_PATH
+                    : `/${realm}/avails/history/${availHistoryIds}/right-matching`;
                 const payload = {
                     rightIds: selectedMatchedRights.filter(right => right.id).map(right => right.id),
                     combinedRight: [combinedRight, ...(mergeRights ? [activeFocusedRight] : [])],
