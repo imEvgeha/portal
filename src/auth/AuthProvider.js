@@ -2,11 +2,18 @@ import React, {useEffect, useLayoutEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@portal/portal-auth';
 import {injectUser, logout, setSelectedTenantInfo} from '@portal/portal-auth/authActions';
-import {checkIfClientExistsInKeycloak, getTokenDuration, getValidToken, wait} from '@portal/portal-auth/utils';
+import {
+    checkIfClientExistsInKeycloak,
+    getTokenDuration,
+    getValidToken,
+    wait,
+    updateLocalStorageWithSelectedTenant,
+    transformSelectTenant,
+} from '@portal/portal-auth/utils';
 import {getAuthConfig, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
-import {isEmpty} from 'lodash';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {isEmpty, get} from 'lodash';
+import {connect, useDispatch} from 'react-redux';
 import {store} from '../index';
 import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions';
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
@@ -32,8 +39,6 @@ const AuthProvider = ({
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
-    // check if there is a persisted selectedTenant in Redux(from LocalStorage)
-    const persistedSelectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
 
     useEffect(() => {
         if (!configEndpointsLoading) {
@@ -58,10 +63,8 @@ const AuthProvider = ({
                     refreshToken: getValidToken(refreshToken, getConfig('keycloak.url')),
                 });
                 if (isAuthenticated) {
-                    const {resourceAccess, token, refreshToken} = keycloak;
+                    const {token, refreshToken} = keycloak;
 
-                    // set default tenant
-                    AssignDefaultTenant(resourceAccess);
                     addUser({token, refreshToken});
                     loadUserAccount();
                     loadProfileInfo();
@@ -91,36 +94,58 @@ const AuthProvider = ({
      * 2. Realm (URL) - check the Realm from the /URL
      * 3. Clients[0] - assign the first client as the default tenant
      */
-    const AssignDefaultTenant = resourceAccess => {
-        // if there is no peristed default tenant in redux, move on to 2-3
-        if (isEmpty(persistedSelectedTenant)) {
-            // get the realm from URL
-            const realm = getAuthConfig().realm;
-            // check if realm(from URL) matches with any client from keycloak
-            const tenantFromRealm = checkIfClientExistsInKeycloak(realm, resourceAccess);
-            // if realm does not match with any clients, set the first client as default tenant
-            const defaultTenant = tenantFromRealm || Object.entries(resourceAccess)[0];
-            // construct the object and dispatch to redux
-            const selectedTenant = {
-                id: defaultTenant[0],
-                roles: defaultTenant[1].roles,
-            };
-            dispatch(setSelectedTenantInfo(selectedTenant));
-        } else {
-            // check if persistedTenant exists in clients from keycloak
-            const persistedTenantExistsInClients = checkIfClientExistsInKeycloak(
-                persistedSelectedTenant.id,
-                resourceAccess
-            );
-            // if the client does not exist, assign the clients[0] as the default
-            if (isEmpty(persistedTenantExistsInClients)) {
-                const defaultClient = Object.entries(resourceAccess)[0];
-                // construct the object and dispatch to redux
-                const defaultSelectedTenant = {
-                    id: defaultClient[0],
-                    roles: defaultClient[1].roles,
-                };
-                dispatch(setSelectedTenantInfo(defaultSelectedTenant));
+    const AssignDefaultTenant = (resourceAccess, currentUser) => {
+        // filter out clients from keycloak that are not tenants
+        const filteredResourceAccess = {...resourceAccess};
+        delete filteredResourceAccess['account'];
+        delete filteredResourceAccess['realm-management'];
+
+        // get current logged in user
+        const currentLoggedInUsername = currentUser.username;
+        // check if there is a persisted selectedTenant LocalStorage for all users
+        const persistedSelectedTenants = JSON.parse(localStorage.getItem('persistedSelectedTenants'));
+        let persistedSelectedTenant;
+
+        // get the selected tenant for the current user - user: {selectedTenant}
+        if (!isEmpty(persistedSelectedTenants)) {
+            persistedSelectedTenant = get(persistedSelectedTenants, currentLoggedInUsername);
+        }
+
+        if (!isEmpty(currentLoggedInUsername)) {
+            // if there is no peristed default tenant in localStorage, move on to 2-3
+            if (isEmpty(persistedSelectedTenant)) {
+                // get the realm from URL
+                const realm = getAuthConfig().realm;
+                // check if realm(from URL) matches with any client from keycloak
+                const tenantFromRealm = checkIfClientExistsInKeycloak(realm, filteredResourceAccess);
+                // if realm does not match with any clients, set the first client as default tenant
+                const defaultTenant = tenantFromRealm || Object.entries(filteredResourceAccess)[0];
+                const selectedTenant = transformSelectTenant(defaultTenant);
+                dispatch(setSelectedTenantInfo(selectedTenant));
+                updateLocalStorageWithSelectedTenant(currentLoggedInUsername, selectedTenant);
+            } else {
+                // check if persistedTenant exists in clients from keycloak
+                const persistedTenantExistsInClients = checkIfClientExistsInKeycloak(
+                    persistedSelectedTenant.id,
+                    filteredResourceAccess
+                );
+                // if the client does not exist, assign the clients[0] as the default
+                if (isEmpty(persistedTenantExistsInClients)) {
+                    const defaultClient = Object.entries(filteredResourceAccess)[0];
+                    // construct the object and dispatch to redux
+                    const defaultSelectedTenant = transformSelectTenant(defaultClient);
+                    dispatch(setSelectedTenantInfo(defaultSelectedTenant));
+                    updateLocalStorageWithSelectedTenant(currentLoggedInUsername, defaultSelectedTenant);
+                }
+                // if tenant exists in localStorage, but is not set in Redux
+                else {
+                    dispatch(
+                        setSelectedTenantInfo({
+                            id: persistedTenantExistsInClients[0],
+                            roles: persistedTenantExistsInClients[1].roles,
+                        })
+                    );
+                }
             }
         }
     };
@@ -129,6 +154,10 @@ const AuthProvider = ({
         const userAccount = await keycloak.loadUserProfile();
         DOPService.getSecurityTicket({token: keycloak.token});
         addUser({userAccount});
+
+        // set default tenant on LocalStorage and Redux
+        const {resourceAccess} = keycloak;
+        AssignDefaultTenant(resourceAccess, userAccount);
         return userAccount;
     };
 

@@ -17,7 +17,6 @@ exports[`NexusUserAvatar should match snapshot 1`] = `
       }
     }
     selectedTenant={Object {}}
-    showTenantSelectionDropdown={false}
     store={
       Object {
         "clearActions": [Function],
