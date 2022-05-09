@@ -53,7 +53,7 @@ export function* loadTitle({payload}) {
     });
 
     try {
-        const response = yield call(getTitleById, {id: payload.id, isMgm: payload.isMgm});
+        const response = yield call(getTitleById, {id: payload.id, tenantCode: payload.selectedTenant.id});
         const updatedResponse = yield call(loadParentTitle, response);
         yield put({
             type: actionTypes.GET_TITLE_SUCCESS,
@@ -115,7 +115,7 @@ export function* loadTerritoryMetadata({payload}) {
     }
 
     try {
-        const response = yield call(getTerritoryMetadataById, {id: payload.id, isMgm: payload.isMgm});
+        const response = yield call(getTerritoryMetadataById, {id: payload.id, tenantCode: payload.selectedTenant.id});
         yield put({
             type: actionTypes.GET_TERRITORY_METADATA_SUCCESS,
             payload: response,
@@ -138,7 +138,10 @@ export function* loadEditorialMetadata({payload}) {
     });
 
     try {
-        const response = yield call(getEditorialMetadataByTitleId, {id: payload.id, isMgm: payload.isMgm});
+        const response = yield call(getEditorialMetadataByTitleId, {
+            id: payload.id,
+            tenantCode: payload.selectedTenant.id,
+        });
         yield put({
             type: actionTypes.GET_EDITORIAL_METADATA_SUCCESS,
             payload: response,
