@@ -372,7 +372,7 @@ const RightsRepositoryTable = ({
             case READY:
                 setGridApis(api, columnApi);
                 api?.setFilterModel(rightsFilter?.column);
-                columnApi?.applyColumnState({state: currentViewColumnState, applyOrder: true});
+                columnApi?.applyColumnState({state: currentViewColumnState});
                 break;
             case FIRST_DATA_RENDERED:
                 updateMapping(api);
