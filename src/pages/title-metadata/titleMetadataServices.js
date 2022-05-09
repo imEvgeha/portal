@@ -9,9 +9,9 @@ import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';
 
 export const getTitleById = payload => {
-    const {id, isMgm} = payload;
+    const {id, tenantCode} = payload;
     const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/titles/${id}`;
-    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    const params = tenantCode ? {tenantCode} : {};
     return nexusFetch(url, {
         params: encodedSerialize(params),
         isWithErrorHandling: false,
@@ -31,21 +31,21 @@ export const getExternalIds = id => {
 };
 
 export const getTerritoryMetadataById = payload => {
-    const {id, isMgm} = payload;
+    const {id, tenantCode} = payload;
     const api = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/territorymetadata`;
     const url = `${api}?includeDeleted=false&titleId=${id}`;
-    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    const params = tenantCode ? {tenantCode} : {};
     return nexusFetch(url, {
         params: encodedSerialize(params),
     });
 };
 
 export const getEditorialMetadataByTitleId = payload => {
-    const {id, isMgm} = payload;
+    const {id, tenantCode} = payload;
     const url = `${getConfig('gateway.titleUrl')}${getConfig(
         'gateway.service.title'
     )}/editorialmetadata?titleId=${id}&includeDeleted=false`;
-    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    const params = tenantCode ? {tenantCode} : {};
     return nexusFetch(url, {
         params: encodedSerialize(params),
     });

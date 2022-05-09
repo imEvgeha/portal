@@ -90,6 +90,7 @@ const TitleDetails = ({
 
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
     const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
+    const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
 
     const {fields} = schema;
 
@@ -110,10 +111,10 @@ const TitleDetails = ({
             if (id) {
                 const nexusTitle = isNexusTitle(id);
                 const isMgm = isMgmTitle(id);
-                getTitle({id, isMgm});
+                getTitle({id, selectedTenant});
                 nexusTitle && !isMgm && getExternalIds({id});
-                getTerritoryMetadata({id, isMgm});
-                getEditorialMetadata({id, isMgm});
+                getTerritoryMetadata({id, selectedTenant});
+                getEditorialMetadata({id, selectedTenant});
                 clearSeasonPersons();
                 getEpisodesCount(id).then(res => {
                     setEpisodesCount(res);
