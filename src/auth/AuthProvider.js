@@ -13,6 +13,7 @@ import DOPService from '../pages/avails/selected-for-planning/DOP-services';
 import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
 import Loading from '../pages/static/Loading';
+import {updateLocalStorageWithSelectedTenant, transformSelectTenant} from './utils';
 
 const MIN_VALIDITY_SEC = 30;
 // eslint-disable-next-line no-magic-numbers
@@ -95,10 +96,11 @@ const AuthProvider = ({
 
         // get current logged in user
         const currentLoggedInUsername = currentUser.username;
-        // check if there is a persisted selectedTenant in Redux(from LocalStorage)
-        const persistedSelectedTenants = JSON.parse(localStorage.getItem('selectedTenant'));
+        // check if there is a persisted selectedTenant LocalStorage for all users
+        const persistedSelectedTenants = JSON.parse(localStorage.getItem('persistedSelectedTenants'));
         let persistedSelectedTenant;
 
+        // get the selected tenant for the current user - user: {selectedTenant}
         if (!isEmpty(persistedSelectedTenants)) {
             persistedSelectedTenant = get(persistedSelectedTenants, currentLoggedInUsername);
         }
@@ -112,19 +114,9 @@ const AuthProvider = ({
                 const tenantFromRealm = checkIfClientExistsInKeycloak(realm, filteredResourceAccess);
                 // if realm does not match with any clients, set the first client as default tenant
                 const defaultTenant = tenantFromRealm || Object.entries(filteredResourceAccess)[0];
-                // construct the object and dispatch to redux
-                const selectedTenant = {
-                    id: defaultTenant[0],
-                    roles: defaultTenant[1].roles,
-                };
+                const selectedTenant = transformSelectTenant(defaultTenant);
                 dispatch(setSelectedTenantInfo(selectedTenant));
-                localStorage.setItem(
-                    'selectedTenant',
-                    JSON.stringify({
-                        ...JSON.parse(localStorage.getItem('selectedTenant')),
-                        [currentLoggedInUsername]: selectedTenant,
-                    })
-                );
+                updateLocalStorageWithSelectedTenant(currentLoggedInUsername, selectedTenant);
             } else {
                 // check if persistedTenant exists in clients from keycloak
                 const persistedTenantExistsInClients = checkIfClientExistsInKeycloak(
@@ -135,20 +127,11 @@ const AuthProvider = ({
                 if (isEmpty(persistedTenantExistsInClients)) {
                     const defaultClient = Object.entries(filteredResourceAccess)[0];
                     // construct the object and dispatch to redux
-                    const defaultSelectedTenant = {
-                        id: defaultClient[0],
-                        roles: defaultClient[1].roles,
-                    };
-                    localStorage.setItem(
-                        'selectedTenant',
-                        JSON.stringify({
-                            ...JSON.parse(localStorage.getItem('selectedTenant')),
-                            [currentLoggedInUsername]: defaultSelectedTenant,
-                        })
-                    );
+                    const defaultSelectedTenant = transformSelectTenant(defaultClient);
                     dispatch(setSelectedTenantInfo(defaultSelectedTenant));
+                    updateLocalStorageWithSelectedTenant(currentLoggedInUsername, defaultSelectedTenant);
                 }
-                // if tenant exists in localStorage, but is not set in the REDUX
+                // if tenant exists in localStorage, but is not set in Redux
                 else {
                     dispatch(
                         setSelectedTenantInfo({
@@ -166,7 +149,7 @@ const AuthProvider = ({
         DOPService.getSecurityTicket({token: keycloak.token});
         addUser({userAccount});
 
-        // set default tenant
+        // set default tenant on LocalStorage and Redux
         const {resourceAccess} = keycloak;
         AssignDefaultTenant(resourceAccess, userAccount);
         return userAccount;
