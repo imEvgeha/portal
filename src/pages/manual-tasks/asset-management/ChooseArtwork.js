@@ -90,7 +90,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, job
                     key={timing}
                     poster={item?.img}
                     timing={timing}
-                    onClick={artworkClick}
+                    onClick={() => artworkClick(timing, item?.url)}
                     isSelected={selectedArtwork === timing}
                 />
             </div>
