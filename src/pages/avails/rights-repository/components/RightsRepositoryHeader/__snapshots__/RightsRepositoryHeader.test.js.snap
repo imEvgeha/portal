@@ -63,6 +63,7 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
         gridState={Object {}}
         isDisabled={false}
         onUserDefinedViewSelected={[Function]}
+        previousGridState={[MockFunction]}
         setBlockLastFilter={[Function]}
         setCurrentUserView={[Function]}
         setUserDefinedGridState={[Function]}
@@ -97,6 +98,7 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
             },
           ]
         }
+        updateColumnsAction={[Function]}
         userDefinedGridStates={Array []}
         username=""
       />

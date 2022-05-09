@@ -17,6 +17,7 @@ exports[`RepositorySelectsAndButtons should match snapshot 1`] = `
       isTitleMetadata={true}
       lastStoredFilter={Object {}}
       onUserDefinedViewSelected={[Function]}
+      previousGridState={Array []}
       setBlockLastFilter={[Function]}
       setCurrentUserView={[Function]}
       setUserDefinedGridState={[Function]}
@@ -34,6 +35,7 @@ exports[`RepositorySelectsAndButtons should match snapshot 1`] = `
           },
         ]
       }
+      updateColumnsAction={[Function]}
       userDefinedGridStates={Array []}
       username=""
     />

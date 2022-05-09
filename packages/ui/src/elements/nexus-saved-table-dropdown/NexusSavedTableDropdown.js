@@ -199,7 +199,7 @@ NexusSavedTableDropdown.propTypes = {
     isDisabled: PropTypes.bool,
     setCurrentUserView: PropTypes.func,
     currentUserView: PropTypes.object,
-    previousGridState: PropTypes.any,
+    previousGridState: PropTypes.array,
     updateColumnsAction: PropTypes.func,
 };
 
@@ -217,7 +217,7 @@ NexusSavedTableDropdown.defaultProps = {
     isDisabled: false,
     setCurrentUserView: () => null,
     currentUserView: {},
-    previousGridState: null,
+    previousGridState: [],
     updateColumnsAction: () => null,
 };
 
