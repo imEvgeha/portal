@@ -6,8 +6,8 @@ import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/load
 import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import {fetchConfigApiEndpoints} from '../../legacy/containers/settings/settingsActions';
-import * as settingsSelectors from '../../legacy/containers/settings/settingsSelectors';
+import {fetchConfigApiEndpoints} from '../../settings/settingsActions';
+import * as settingsSelectors from '../../settings/settingsSelectors';
 import Loading from '../../static/Loading';
 import {getRight, updateRight, clearRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';

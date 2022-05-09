@@ -15,8 +15,8 @@ import {connect, useSelector} from 'react-redux';
 import {useLocation, useParams} from 'react-router-dom';
 import ShowAllEpisodes from '../../../../common/components/showAllEpisodes/ShowAllEpisodes';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
-import {fetchConfigApiEndpoints} from '../../../legacy/containers/settings/settingsActions';
-import * as settingsSelectors from '../../../legacy/containers/settings/settingsSelectors';
+import {fetchConfigApiEndpoints} from '../../../settings/settingsActions';
+import * as settingsSelectors from '../../../settings/settingsSelectors';
 import Loading from '../../../static/Loading';
 import {FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SYNC, VZ} from '../../constants';
 import {
