@@ -62,7 +62,7 @@
     "@babel/runtime" "^7.0.0"
     prop-types "^15.5.10"
 
-"@atlaskit/avatar@^20.0.0", "@atlaskit/avatar@^20.5.5":
+"@atlaskit/avatar@^20.0.0":
   version "20.5.5"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/avatar/-/avatar-20.5.5.tgz#36db5a763b50f1267cd56b77b7b318f423d6dd11"
   integrity sha512-GoOlFOERtZAInQvDq/13zNlflWIOyveMaT1ZSKozDG6crI4nGQO4CVb9L9SHZKaIADdVHCQHo9e8Q1BNF/XyeQ==
@@ -365,7 +365,7 @@
     react-uid "^2.2.0"
     tiny-invariant "^1.2.0"
 
-"@atlaskit/icon@^20.0.1", "@atlaskit/icon@^20.1.1", "@atlaskit/icon@^20.1.2":
+"@atlaskit/icon@^20.0.1", "@atlaskit/icon@^20.1.1":
   version "20.1.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-20.1.2.tgz#1054196d5442cb818faefe17a47c3e528bc15ae7"
   integrity sha512-cDpE6kfiCxv4VNY4LKtRUPAdXTcx4t2eEU1K5Htm/5i6/rmJMHMITIvpZaRqF2R7XdBH5kE2MLxSfexBHC0DjQ==
@@ -594,17 +594,6 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
-
-"@atlaskit/pagination@^12.0.21":
-  version "12.0.21"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/pagination/-/pagination-12.0.21.tgz#8d46fbee62c6b409155e80f3d1c3f4116a373915"
-  integrity sha512-IPW7JbE+rwY8S6negzASjaWE3oxNvT/Uafyb8Z6S4bOKD4W90yKPEDSQzSI2qrZt4bfHdxtSuIdpdNF3fyCz0w==
-  dependencies:
-    "@atlaskit/analytics-next" "^6.3.5"
-    "@atlaskit/button" "^13.3.7"
-    "@atlaskit/icon" "^20.1.2"
-    "@atlaskit/theme" "^9.5.1"
-    tslib "^1.9.3"
 
 "@atlaskit/pagination@^14.0.0":
   version "14.1.3"
