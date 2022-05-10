@@ -6,7 +6,7 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
 import {TabMenu} from 'primereact/tabmenu';
-import {connect, useSelector} from 'react-redux';
+import {connect, useSelector, useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import Loading from '../../../../static/Loading';
 import {
@@ -54,6 +54,7 @@ export const RightsRepositoryHeader = ({
 }) => {
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const previousGridState = useSelector(getLastUserColumnState(username));
 
@@ -85,6 +86,20 @@ export const RightsRepositoryHeader = ({
         SELECTED_FOR_PLANNING_TAB,
         STATUS_TAB,
     ].includes(activeTab);
+
+    useEffect(() => {
+        // will create the predefined user views in the dropdown
+        if (username && isEmpty(previousGridState)) {
+            const predefinedTableViews = tableOptions.map(({label, value}) => ({
+                id: value,
+                label,
+                value,
+                isPredefinedView: true,
+            }));
+
+            dispatch(setColumnTableDefinition({[username]: predefinedTableViews}));
+        }
+    }, [username]);
 
     return (
         <div className="nexus-c-rights-repository-header row d-flex align-items-center">

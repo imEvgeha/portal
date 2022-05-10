@@ -49,20 +49,6 @@ const NexusSavedTableDropdown = ({
         setCurrentUserView(selectedItem);
     }, [selectedItem]);
 
-    useEffect(() => {
-        // will create the predefined user views in the dropdown
-        if (username && isEmpty(previousGridState)) {
-            const predefinedTableViews = tableOptions.map(({label, value}) => ({
-                id: value,
-                label,
-                value,
-                isPredefinedView: true,
-            }));
-
-            dispatch(updateColumnsAction({[username]: predefinedTableViews}));
-        }
-    }, [username]);
-
     const setPredefinedView = item => {
         setSelectedItem(item);
         selectPredefinedTableView(item.value);

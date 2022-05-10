@@ -403,7 +403,7 @@ const RightsRepositoryTable = ({
 
                 const finalState = previousGridState?.map(viewObj => {
                     if (viewID === viewObj.id) {
-                        viewObj = {...viewObj, columnState: newColumnState};
+                        Object.assign(viewObj, {...viewObj, columnState: newColumnState});
                     }
                     return viewObj;
                 });
