@@ -37,3 +37,12 @@ export const createFromSelectedTableSelector = () =>
 
 export const createStatusLogCountSelector = () =>
     createSelector(getStatusLogReducer, statusLog => statusLog?.count || 0);
+
+export const createRightGridStateSelector = username =>
+    createSelector(
+        state => state?.avails?.rights?.gridState?.[username],
+        userState => userState
+    );
+
+export const getLastUserColumnState = username =>
+    createSelector(getRightsReducer, rights => rights?.gridState?.[username]);

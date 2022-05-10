@@ -130,6 +130,12 @@ const rightsReducer = (state = initialState, action = {}) => {
                 currentUserView: payload,
             };
         }
+        case actionTypes.SET_AVAILS_GRID_STATE: {
+            return {
+                ...state,
+                gridState: {...state.gridState, ...payload},
+            };
+        }
         default:
             return state;
     }

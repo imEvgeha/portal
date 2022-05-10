@@ -52,3 +52,8 @@ export const setCurrentUserViewActionAvails = payload => ({
     type: actionTypes.SET_CURRENT_USER_VIEW_AVAILS,
     payload,
 });
+
+export const setColumnTableDefinition = payload => ({
+    type: actionTypes.SET_AVAILS_GRID_STATE,
+    payload,
+});

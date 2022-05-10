@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
 import * as colors from '@atlaskit/theme/colors';
-import {getUsername} from "@portal/portal-auth/authSelectors";
+import {getUsername} from '@portal/portal-auth/authSelectors';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
@@ -15,8 +15,8 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import {get, isEmpty, isEqual} from 'lodash';
-import {connect} from 'react-redux';
+import {get, isEqual, isEmpty} from 'lodash';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {useLocation} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -43,13 +43,14 @@ import Ingest from '../rights-repository/components/ingest/Ingest';
 import TooltipCellRenderer from '../rights-repository/components/tooltip/TooltipCellRenderer';
 import {RIGHTS_TAB} from '../rights-repository/constants';
 import {
+    setColumnTableDefinition,
     setCurrentUserViewActionAvails,
     setPreplanRights,
     setRightsFilter,
     setSelectedRights,
 } from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
-import {createAvailsCurrentUserViewSelector} from '../rights-repository/rightsSelectors';
+import {createAvailsCurrentUserViewSelector, getLastUserColumnState} from '../rights-repository/rightsSelectors';
 import {mapColumnDefinitions} from '../rights-repository/util/utils';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
@@ -80,8 +81,11 @@ const RightsRepositoryTable = ({
     setCurrentUserView,
     totalIngests,
     toggleRefreshGridData,
+    userView,
 }) => {
     const {search} = useLocation();
+    const dispatch = useDispatch();
+    const previousGridState = useSelector(getLastUserColumnState(username));
 
     const [showSelected, setShowSelected] = useState(false);
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
@@ -362,12 +366,13 @@ const RightsRepositoryTable = ({
     };
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
-        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
-
+        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED, DRAG_STOPPED} = GRID_EVENTS;
+        const currentViewColumnState = previousGridState?.find(d => d.id === userView.value)?.columnState || columnDefs;
         switch (type) {
             case READY:
                 setGridApis(api, columnApi);
                 api?.setFilterModel(rightsFilter?.column);
+                columnApi?.applyColumnState({state: currentViewColumnState, applyOrder: true});
                 break;
             case FIRST_DATA_RENDERED:
                 updateMapping(api);
@@ -389,6 +394,21 @@ const RightsRepositoryTable = ({
                 const filters = {column: {...filterModel}, external: {...rightsFilter.external}};
                 setRightsFilter(filters);
                 updateMapping(api);
+                break;
+            }
+            case DRAG_STOPPED: {
+                const newColumnState = columnApi?.getColumnState();
+
+                const viewID = userView.value;
+
+                const finalState = previousGridState?.map(viewObj => {
+                    if (viewID === viewObj.id) {
+                        viewObj = {...viewObj, columnState: newColumnState};
+                    }
+                    return viewObj;
+                });
+
+                dispatch(setColumnTableDefinition({[username]: finalState}));
                 break;
             }
             default:
@@ -482,6 +502,11 @@ const RightsRepositoryTable = ({
                     mapping={updatedMapping || mapping}
                     setTotalCount={setTotalCount}
                     onGridEvent={onRightsRepositoryGridEvent}
+                    onColumnMoved={onRightsRepositoryGridEvent}
+                    dragStopped={onRightsRepositoryGridEvent}
+                    newColumnsLoaded={onRightsRepositoryGridEvent}
+                    gridColumnsChanged={onRightsRepositoryGridEvent}
+                    columnEverythingChanged={onRightsRepositoryGridEvent}
                     initialFilter={rightsFilter.column}
                     params={rightsFilter.external}
                     multiSortKey="ctrl"
@@ -538,6 +563,7 @@ RightsRepositoryTable.propTypes = {
     setCurrentUserView: PropTypes.func.isRequired,
     totalIngests: PropTypes.number,
     toggleRefreshGridData: PropTypes.func,
+    userView: PropTypes.object,
 };
 
 RightsRepositoryTable.defaultProps = {
@@ -550,6 +576,7 @@ RightsRepositoryTable.defaultProps = {
     prePlanRights: {},
     totalIngests: 0,
     toggleRefreshGridData: () => null,
+    userView: {},
 };
 
 const mapStateToProps = () => {
@@ -573,6 +600,7 @@ const mapStateToProps = () => {
         prePlanRights: preplanRightsSelector(state, props),
         currentUserView: currentUserViewSelector(state),
         totalIngests: getTotalIngests(state),
+        userView: currentUserViewSelector(state),
     });
 };
 

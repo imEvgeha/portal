@@ -9,6 +9,7 @@ const GRID_EVENTS = {
     FILTER_CHANGED: 'filterChanged',
     ROW_DATA_CHANGED: 'rowDataChanged',
     GRID_SIZE_CHANGED: 'gridSizeChanged',
+    DRAG_STOPPED: 'dragStopped',
 };
 const ROW_BUFFER = 10;
 const PAGINATION_PAGE_SIZE = 100;

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {getUsername} from "@portal/portal-auth/authSelectors";
+import {getUsername} from '@portal/portal-auth/authSelectors';
 import {connect} from 'react-redux';
 import {fetchIngests} from '../ingest-panel/ingestActions';
 import {getFiltersToSend} from '../ingest-panel/utils';

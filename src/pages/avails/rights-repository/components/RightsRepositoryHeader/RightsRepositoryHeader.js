@@ -6,7 +6,7 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
 import {TabMenu} from 'primereact/tabmenu';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import Loading from '../../../../static/Loading';
 import {
@@ -26,8 +26,16 @@ import {
     STATUS_TAB,
 } from '../../constants';
 import './RightsRepositoryHeader.scss';
-import {setCurrentUserViewActionAvails, storeAvailsUserDefinedGrid} from '../../rightsActions';
-import {createAvailsCurrentUserViewSelector, createUserGridSelector} from '../../rightsSelectors';
+import {
+    setColumnTableDefinition,
+    setCurrentUserViewActionAvails,
+    storeAvailsUserDefinedGrid,
+} from '../../rightsActions';
+import {
+    createAvailsCurrentUserViewSelector,
+    createUserGridSelector,
+    getLastUserColumnState,
+} from '../../rightsSelectors';
 import {applyPredefinedTableView} from '../../util/utils';
 
 export const RightsRepositoryHeader = ({
@@ -47,6 +55,8 @@ export const RightsRepositoryHeader = ({
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
     const navigate = useNavigate();
 
+    const previousGridState = useSelector(getLastUserColumnState(username));
+
     useEffect(() => {
         if (activeTab === RIGHTS_SELECTED_TAB) {
             setActiveTabIndex(-1);
@@ -55,8 +65,11 @@ export const RightsRepositoryHeader = ({
 
     useEffect(() => {
         if (!isEmpty(gridState) && username) {
-            const userDefinedGridStates = get(gridState, username, []);
-            setUserDefinedGridStates(userDefinedGridStates);
+            // filter based on the flag to exclude the predefined user views
+            const filteredGridState = gridState[username].filter(obj => {
+                return obj.isPredefinedView !== true;
+            });
+            setUserDefinedGridStates(filteredGridState);
         }
     }, [gridState, username, get]);
 
@@ -105,6 +118,8 @@ export const RightsRepositoryHeader = ({
                             isDisabled={isItDisabledForCurrentTab}
                             setCurrentUserView={payload => setCurrentUserView(payload)}
                             currentUserView={currentUserView}
+                            previousGridState={previousGridState}
+                            updateColumnsAction={setColumnTableDefinition}
                         />
                     ) : activeTab === RIGHTS_TAB || activeTab === PRE_PLAN_TAB ? (
                         <Loading />
