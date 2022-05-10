@@ -21,7 +21,6 @@
     },
     "peerDependencies": {
         "@atlaskit/analytics-next": "^8.3.0",
-        "@atlaskit/avatar": "^20.5.5",
         "@atlaskit/button": "^16.1.6",
         "@atlaskit/checkbox": "^12.3.8",
         "@atlaskit/datetime-picker": "^11.1.5",
