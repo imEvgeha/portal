@@ -130,7 +130,6 @@
         "husky": "4.3.8",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^27.5.1",
-        "jest-environment-jsdom": "^27.5.1",
         "jest-react-hooks-shallow": "^1.5.1",
         "jest-transform-stub": "^2.0.0",
         "lerna": "^4.0.0",
