@@ -17,7 +17,6 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {get, isEqual, isEmpty} from 'lodash';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import {useLocation} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
 import usePrevious from '../../../util/hooks/usePrevious';
@@ -83,7 +82,6 @@ const RightsRepositoryTable = ({
     toggleRefreshGridData,
     userView,
 }) => {
-    const {search} = useLocation();
     const dispatch = useDispatch();
     const previousGridState = useSelector(getLastUserColumnState(username));
 
@@ -182,58 +180,15 @@ const RightsRepositoryTable = ({
         }
     }, [rightsFilter, mapping, previousExternalStatusFilter, gridApi]);
 
-    // Update with state from SelectedRightsTable
-    // useEffect(() => {
-    //     if (!isEmpty(fromSelectedTable) && username) {
-    //         const usersSelectedRights = get(fromSelectedTable, username, {});
-    //         setCurrentUserSelectedRights(Object.values(usersSelectedRights));
-    //     }
-    // }, [fromSelectedTable]);
-
-    useEffect(() => {
-        // let newSelectedRepoRights = currentUserSelectedRights;
-        // if (gridApi) {
-        //     const selectedIds = currentUserSelectedRights?.map(({id}) => id);
-        //     const loadedSelectedRights = [];
-        //
-        //     //     // Filter selected rights only when ingest is selected
-        //     if (selectedIngest) {
-        //         gridApi?.getSelectedRows()?.forEach(row => {
-        //             if (selectedIds?.includes(row.id)) {
-        //                 loadedSelectedRights.push(row);
-        //             }
-        //         });
-        //         newSelectedRepoRights = loadedSelectedRights;
-        //     }
-        //
-        //     // Added if statement to prevent state late updates when SelectedTable is used,
-        //     // Counter switched to use currentUserSelectedRights istead selectedRepoRight
-        //     gridApi?.forEachNode?.(node => {
-        //         const {data = {}} = node;
-        //
-        //         if (node.id) {
-        //             selectedIds.includes(data.id)
-        //                 ? node.setSelected(true, false, true)
-        //                 : node.setSelected(false, false, true);
-        //         }
-        //     });
-        // }
-        // setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
-        // setCurrentUserSelectedRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
-    }, [search, selectedRights, selectedIngest, gridApi, isTableDataLoading]);
-
-    const setHiddenFilters = isSelectedAt => {
+    const setHiddenFilters = () => {
         return mapping?.map(item => {
-            const isHiddenFilters = isSelectedAt
-                ? item.displayName === 'Territory' || item.displayName === 'Selected'
-                : item.displayName === 'Selected At';
+            const isHiddenFilters = item.displayName === 'Territory' || item.displayName === 'Selected';
             if (isHiddenFilters) return {...item, required: false, searchDataType: null};
             return item;
         });
     };
 
-    const hiddenSelectedAndTerritoryFilters = useMemo(() => setHiddenFilters(true), [mapping]);
-    const hiddenSelectedAtFilter = useMemo(() => setHiddenFilters(false), [mapping]);
+    const hiddenSelectedAndTerritoryFilters = useMemo(() => setHiddenFilters(), [mapping]);
 
     useEffect(() => {
         if (!tableColumnDefinitions.length) {
@@ -350,7 +305,6 @@ const RightsRepositoryTable = ({
             setUpdatedMapping(hiddenSelectedAndTerritoryFilters);
         } else if (checkActiveFilters.territory || checkActiveFilters.selected) {
             resetFilters(['territoryDateSelected']);
-            setUpdatedMapping(hiddenSelectedAtFilter);
         } else {
             setUpdatedMapping(mapping);
         }
