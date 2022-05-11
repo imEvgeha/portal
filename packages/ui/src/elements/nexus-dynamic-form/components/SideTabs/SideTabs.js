@@ -58,7 +58,7 @@ const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) =>
             const isDecorated = secs < 5;
             const isRatings = path === 'ratings';
 
-            if (checkSubTabValues(obj)) {
+            if (checkSubTabValues(obj) && !obj.isDeleted) {
                 toReturn.push(
                     <div
                         key={`${key}[${subIndex}]`}
