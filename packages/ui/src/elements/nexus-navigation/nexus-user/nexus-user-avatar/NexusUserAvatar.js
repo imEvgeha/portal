@@ -41,7 +41,8 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
                     <span className="tenantName">{item.label}</span>
                 </div>
                 <div className="actionIcon">
-                    <ExpandRightIcon className="expandIcon" />
+                    {/* Do not render an icon if there are not more than one tenant */}
+                    {Object.entries(filteredResourceAccess).length > 1 && <ExpandRightIcon className="expandIcon" />}
                 </div>
             </div>
         );
@@ -87,13 +88,20 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
 
     /**
      * Contruct the dynamic tenants, based on the resourceAccess from keycloak
+     * Reference: https://www.primefaces.org/primereact/tieredmenu/
      */
     const tenants = () => {
-        return {
+        // selected tenant, parent item
+        const tmpTenants = {
             label: selectedTenant.id,
             template: tenantSelectedTemplated,
             roles: selectedTenant.roles,
-            items: [
+        };
+
+        // sub items, tenants list
+        // check if there are more tenants to be add in a list, or just one tenant
+        if (Object.entries(filteredResourceAccess).length > 1) {
+            tmpTenants.items = [
                 ...Object.entries(filteredResourceAccess).map((client, index) => {
                     return {
                         id: client[0],
@@ -102,8 +110,10 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
                         label: client[0],
                     };
                 }),
-            ],
-        };
+            ];
+        }
+
+        return tmpTenants;
     };
 
     /**
