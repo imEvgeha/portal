@@ -6,7 +6,7 @@
         "DOPUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dop",
         "eventApiUrl": "https://vuapi.qa.vubiquity.com/vubiquity/events",
         "kongUrl": "https://vuapi.qa.vubiquity.com/vubiquity",
-        "mediaImageUrl": "https://mediaimage.qa.vubiquity.com",
+        "mediaImageUrl": "https://vuapi.qa.vubiquity.com/vubiquity/mediaimage",
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
         "publisher": "https://vuapi.qa.vubiquity.com/vubiquity/titlespublishermovida",
         "mediaStorageUrl": "https://vuapi.qa.vubiquity.com/vubiquity/mediastorage/media-storage/v1",

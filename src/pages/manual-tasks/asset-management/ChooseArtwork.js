@@ -17,7 +17,7 @@ import ArtworkItem from './components/artwork-item/ArtworkItem';
 
 const UPLOAD_ARTWORK_TITLE = 'Upload Artwork';
 const DOP_POP_UP_TITLE = 'Choose Artwork';
-const DOP_POP_UP_MESSAGE = 'Please, select at least one thumbnail!';
+const DOP_POP_UP_MESSAGE = 'Please select at least one image';
 const IMG_WIDTH = 300;
 const IMG_HEIGHT = 200;
 
@@ -66,8 +66,8 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, job
     }, []);
 
     useEffect(() => {
-        DOP.setDOPMessageCallback(selectedArtwork || jobIds.length !== 0 ? null : () => openDOPPopUp());
-    }, [selectedArtwork, openDOPPopUp]);
+        DOP.setDOPMessageCallback(selectedArtwork || jobIds.length !== 0 ? () => null : () => openDOPPopUp());
+    }, [selectedArtwork, jobIds, openDOPPopUp]);
 
     const artworkClick = (id, uri) => {
         setSelectedArtwork(id);
