@@ -13,6 +13,7 @@ node_modules/
 # misc
 .DS_Store
 .idea
+.vscode
 
 .env*
 !.env.example
@@ -25,4 +26,3 @@ yarn-error.log*
 debug.log
 
 packages/*/lib
-./vscode
