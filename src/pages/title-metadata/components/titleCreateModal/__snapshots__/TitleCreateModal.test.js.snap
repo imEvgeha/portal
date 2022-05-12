@@ -790,9 +790,6 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
             className="nexus-c-title-create_footer-container"
           >
             <div
-              className="nx-stylish list-group nexus-c-title-create_footer-alert-container"
-            />
-            <div
               className="nexus-c-title-create_footer-buttons-container"
             >
               <ForwardRef
@@ -1357,9 +1354,6 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           <div
             className="nexus-c-title-create_footer-container"
           >
-            <div
-              className="nx-stylish list-group nexus-c-title-create_footer-alert-container"
-            />
             <div
               className="nexus-c-title-create_footer-buttons-container"
             >

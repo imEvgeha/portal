@@ -6,7 +6,7 @@ import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-bod
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
-import {get, isEmpty} from 'lodash';
+import {isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
 import {Checkbox} from 'primereact/checkbox';
 import {Dialog} from 'primereact/dialog';
@@ -14,7 +14,6 @@ import {Dropdown} from 'primereact/dropdown';
 import {InputText} from 'primereact/inputtext';
 import {useForm, useWatch} from 'react-hook-form';
 import {useParams} from 'react-router-dom';
-import {Alert} from 'reactstrap';
 import {store} from '../../../..';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import {publisherService} from '../../../legacy/containers/metadata/service/PublisherService';
@@ -44,7 +43,6 @@ const TitleCreate = ({
         CREATE_TITLE_RESTRICTIONS;
     const addToast = toast => store.dispatch(toastDisplay(toast));
     const {id: focusedId} = focusedRight;
-    const [errorMessage, setErrorMessage] = useState('');
     const [isCreatingTitle, setIsCreatingTitle] = useState(false);
     const {
         register,
@@ -62,12 +60,18 @@ const TitleCreate = ({
     const routeParams = useParams();
 
     useEffect(() => {
-        setValue('catalogueOwner', tenantCode);
-    }, [tenantCode]);
+        if (error) {
+            addToast({
+                severity: 'error',
+                detail: error,
+                sticky: true,
+            });
+        }
+    }, [error]);
 
     useEffect(() => {
-        setErrorMessage(error);
-    }, [error]);
+        setValue('catalogueOwner', tenantCode);
+    }, [tenantCode]);
 
     useEffect(() => {
         if (!isEmpty(defaultValues)) {
@@ -80,19 +84,16 @@ const TitleCreate = ({
 
     const toggle = () => {
         onSave();
-        setErrorMessage('');
         reset();
     };
 
-    const handleError = (err, matching = false) => {
+    const handleError = err => {
         setIsCreatingTitle(false);
-        setErrorMessage(
-            get(
-                err,
-                'response.data.description',
-                matching ? constants.NEW_TITLE_TOAST_ERROR_PUBLISHING_MESSAGE : 'Title creation failed!'
-            )
-        );
+        addToast({
+            severity: 'error',
+            detail: err.message.description,
+            sticky: true,
+        });
     };
 
     const defaultCreateTitle = (title, params) => {
@@ -191,7 +192,6 @@ const TitleCreate = ({
     };
 
     const onSubmit = submitTitle => {
-        setErrorMessage('');
         const title = getTitleWithoutEmptyField(submitTitle);
         const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
         const params = {tenantCode, copyCastCrewFromSeason};
@@ -253,9 +253,6 @@ const TitleCreate = ({
 
     const renderFooter = () => (
         <div className="nexus-c-title-create_footer-container">
-            <div className="nx-stylish list-group nexus-c-title-create_footer-alert-container">
-                {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
-            </div>
             <div className="nexus-c-title-create_footer-buttons-container">
                 <Button
                     id="titleCancelBtn"
