@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "visualstudioexptteam.vscodeintellicode",
+    "eamodio.gitlens",
+    "dbaeumer.vscode-eslint",
+    "orta.vscode-jest",
+    "esbenp.prettier-vscode",
+    "github.vscode-pull-request-github",
+    "dsznajder.es7-react-js-snippets"
+  ]
+}

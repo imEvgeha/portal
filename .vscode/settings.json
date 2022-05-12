@@ -1,0 +1,87 @@
+{
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "jest.autoRun": "off",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true,
+  "search.useGlobalIgnoreFiles": true,
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.factorypath": true,
+    "**/.history": true,
+    "**/.idea": true,
+    "**/.project": true,
+    "**/.settings": true,
+  },
+  "files.watcherExclude": {
+    "**/.cache": true,
+    "**/.history": true,
+    "**/.idea": true,
+    "**/.vscode": true,
+    "**/**__snapshots__": true,
+    "**/build_reports": true,
+    "**/dist": true,
+    "**/lib": true,
+    "**/logs": true,
+    "**/node_modules": true,
+    "e2e": true,
+    "node_modules": true,
+    "www": true
+  },
+  "search.exclude": {
+    "**/.cache": true,
+    "**/.git": true,
+    "**/.history": true,
+    "**/.idea": true,
+    "**/.vscode": true,
+    "**/**.snap": true,
+    "**/dist": true,
+    "**/lib": true,
+    "**/lib/**": true,
+    "**/logs": true,
+    "**/node_modules": true,
+    "**/package-lock.json": true,
+    "/logs": true,
+    "build_reports": true,
+    "yarn.lock": true
+  },
+  "githubPullRequests.queries": [
+    {
+      "label": "Assigned To Me",
+      "query": "is:open assignee:${user}"
+    },
+    {
+      "label": "Waiting For My Review",
+      "query": "is:open review-requested:${user}"
+    },
+    {
+      "label": "Created",
+      "query": "is:open author:${user}"
+    },
+    {
+      "label": "Closed",
+      "query": "is:closed author:${user}"
+    },
+    {
+      "label": "Merged",
+      "query": "is:merged author:${user}"
+    },
+    {
+      "label": "Mentioned",
+      "query": "is:open mentions:${user}"
+    }
+  ],
+}
