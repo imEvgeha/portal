@@ -74,6 +74,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: 'Servicing Orders',
             isSelected: selectedItem === SERVICING_ORDERS,
             onClick: () => handleClick(SERVICING_ORDERS),
+            resource: 'servicingOrdersView',
         },
         {
             icon: RecentIcon,
