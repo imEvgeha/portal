@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import AddIcon from '@atlaskit/icon/glyph/add';
+import {Restricted} from '@portal/portal-auth/permissions';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
@@ -119,14 +120,16 @@ const IngestPanel = ({
                 })}
             </div>
             <div className="ingest-panel__btns">
-                <NexusUploadButton
-                    modalContext={NexusModalContext}
-                    modalCallback={buildForm}
-                    title={UPLOAD_TITLE}
-                    icon={AddIcon}
-                    withModal
-                    extensionsAccepted={getConfig('avails.upload.extensions')}
-                />
+                <Restricted resource="availsInjestButton">
+                    <NexusUploadButton
+                        modalContext={NexusModalContext}
+                        modalCallback={buildForm}
+                        title={UPLOAD_TITLE}
+                        icon={AddIcon}
+                        withModal
+                        extensionsAccepted={getConfig('avails.upload.extensions')}
+                    />
+                </Restricted>
                 <RefreshConfigBtn />
             </div>
         </div>
