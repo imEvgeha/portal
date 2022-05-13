@@ -45,7 +45,7 @@
     tslib "^2.0.0"
     use-memo-one "^1.1.1"
 
-"@atlaskit/analytics-next@^8.0.0", "@atlaskit/analytics-next@^8.2.0", "@atlaskit/analytics-next@^8.3.0":
+"@atlaskit/analytics-next@^8.0.0", "@atlaskit/analytics-next@^8.2.0":
   version "8.3.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-8.3.0.tgz#50f50d9dbd135c517a5ace77a9b7f0757dc12784"
   integrity sha512-TZqUtV5Nun6VFNFT8uZAqorb+ClstrFakw0opUsWONxqryQcnYuLlyafFJI8c3m672OGr4DgMx/uC9T2pVCRiQ==
@@ -3471,10 +3471,10 @@
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@popperjs/core/-/core-2.11.2.tgz#830beaec4b4091a9e9398ac50f865ddea52186b9"
   integrity sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==
 
-"@portal/portal-auth@^1.0.21-37":
-  version "1.0.21-46"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-auth/-/portal-auth-1.0.21-46.tgz#e2ea6c84fca29aeb73fecce3f0d11c1a948281e7"
-  integrity sha512-lPtjQf2DCLnuqeqG/9ovuFgk2OxZxW87ECeL5VvCBlKkgAyEBAire1gbTgZeYoiLa1on2qXIV0JXQ6efDow2EQ==
+"@portal/portal-auth@^1.0.21-58":
+  version "1.0.21-58"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-auth/-/portal-auth-1.0.21-58.tgz#625ca577c9deab3e65e2972849eb68c9979da5b3"
+  integrity sha512-nH/IxlwDwikXqPu7O+l5WTVi9phIWYGr6/kB5IaA41a+m9R81tJ1RWyEgbZ/7fZEdLnGnMxEET7Y/OTMQ5/c2Q==
   dependencies:
     jwt-decode "2.x"
     keycloak-js "9.x"
