@@ -22,7 +22,7 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
     const dispatch = useDispatch();
     const currentLoggedInUsername = useSelector(state => state?.auth?.userAccount?.username);
     // get client roles from keycloak
-    const {resourceAccess} = keycloak;
+    const {resourceAccess, realmAccess} = keycloak;
     // filter out clients that are not tenants
     const filteredResourceAccess = {...resourceAccess};
     delete filteredResourceAccess['account'];
@@ -82,6 +82,7 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
      */
     const onTenantChange = selectedTenant => {
         const tempSelectedTenant = transformSelectTenant(selectedTenant);
+        tempSelectedTenant.roles = [...tempSelectedTenant.roles, ...realmAccess.roles];
         dispatch(setSelectedTenantInfo(tempSelectedTenant));
         updateLocalStorageWithSelectedTenant(currentLoggedInUsername, tempSelectedTenant);
     };
