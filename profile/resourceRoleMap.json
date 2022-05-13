@@ -304,5 +304,11 @@
         "values": [
             "view-servicing-orders"
         ]
+    },
+    "servicingOrdersEdit": {
+        "operation": "AND",
+        "values": [
+            "manage-servicing-orders"
+        ]
     }
 }
