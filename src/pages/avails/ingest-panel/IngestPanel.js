@@ -120,7 +120,8 @@ const IngestPanel = ({
                 })}
             </div>
             <div className="ingest-panel__btns">
-                <Restricted resource="availsInjestButton">
+                <RefreshConfigBtn />
+                <Restricted resource="availsIngestButton">
                     <NexusUploadButton
                         modalContext={NexusModalContext}
                         modalCallback={buildForm}
@@ -130,7 +131,6 @@ const IngestPanel = ({
                         extensionsAccepted={getConfig('avails.upload.extensions')}
                     />
                 </Restricted>
-                <RefreshConfigBtn />
             </div>
         </div>
     );
