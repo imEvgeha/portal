@@ -36,6 +36,7 @@ export const FulfillmentOrder = ({
     cancelEditing,
     lastOrder,
     deteErrors,
+    userHasPermissions,
 }) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
@@ -88,7 +89,11 @@ export const FulfillmentOrder = ({
 
                 // Disable form if status is READY
                 const readiness = get(selectedFulfillmentOrder, fieldKeys.READINESS, '');
-                readiness === 'READY' ? setIsFormDisabled(true) : setIsFormDisabled(false);
+                userHasPermissions
+                    ? readiness === 'READY'
+                        ? setIsFormDisabled(true)
+                        : setIsFormDisabled(false)
+                    : setIsFormDisabled(true);
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -317,13 +322,16 @@ export const FulfillmentOrder = ({
                             </div>
                             <div className="fulfillment-order__save-buttons">
                                 <ButtonGroup>
-                                    <Button onClick={onCancel} isDisabled={isSaveDisabled || isSaving}>
+                                    <Button
+                                        onClick={onCancel}
+                                        isDisabled={userHasPermissions && (isSaveDisabled || isSaving)}
+                                    >
                                         Cancel
                                     </Button>
                                     <LoadingButton
                                         onClick={onSaveHandler}
                                         appearance="primary"
-                                        isDisabled={isSaveDisabled}
+                                        isDisabled={!userHasPermissions}
                                         isLoading={isSaving}
                                     >
                                         Save
@@ -376,7 +384,7 @@ export const FulfillmentOrder = ({
                                                         !get(fulfillmentOrder, fieldKeys.PREMIERING)
                                                     )
                                                 }
-                                                disabled={false}
+                                                disabled={!userHasPermissions}
                                             />
                                             <label htmlFor="inp-premiering" className="fo-gridhdr-radio">
                                                 Premiering
@@ -397,7 +405,7 @@ export const FulfillmentOrder = ({
                                                         !get(fulfillmentOrder, fieldKeys.WATERMARK)
                                                     )
                                                 }
-                                                disabled={false}
+                                                disabled={!userHasPermissions}
                                             />
                                             <label htmlFor="inp-watermark" className="fo-gridhdr-radio">
                                                 Watermark
@@ -418,7 +426,7 @@ export const FulfillmentOrder = ({
                                                         !get(fulfillmentOrder, fieldKeys.LATE)
                                                     )
                                                 }
-                                                disabled={false}
+                                                disabled={!userHasPermissions}
                                             />
                                             <label htmlFor="inp-late" className="fo-gridhdr-radio">
                                                 Late
@@ -440,7 +448,7 @@ export const FulfillmentOrder = ({
                                                 label: marketTypeOption && marketTypeOption.label,
                                             }}
                                             onChange={val => onFieldChange(fieldKeys.MARKET_TYPE, val.value)}
-                                            isDisabled={false}
+                                            isDisabled={!userHasPermissions}
                                         />
                                     </div>
                                 )}
@@ -456,7 +464,7 @@ export const FulfillmentOrder = ({
                                                 label: get(fulfillmentOrder, fieldKeys.LATE_FAULT) || 'NONE',
                                             }}
                                             onChange={val => onFieldChange(fieldKeys.LATE_FAULT, val.value)}
-                                            isDisabled={false}
+                                            isDisabled={!userHasPermissions}
                                         />
                                     </div>
                                 )}
@@ -471,7 +479,7 @@ export const FulfillmentOrder = ({
                                                 id="car"
                                                 value={get(fulfillmentOrder, fieldKeys.CAR, '') || ''}
                                                 onChange={e => onFieldChange(fieldKeys.CAR, e.target.value)}
-                                                isDisabled={false}
+                                                isDisabled={!userHasPermissions}
                                                 css={{height: 'auto'}}
                                             />
                                         </Tooltip>
@@ -490,7 +498,7 @@ export const FulfillmentOrder = ({
                                                     label: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
                                                 }}
                                                 onChange={val => onFieldChange(fieldKeys.LATE_REASON, val.value)}
-                                                isDisabled={false}
+                                                isDisabled={!userHasPermissions}
                                             />
                                         </Tooltip>
                                     </div>
@@ -535,6 +543,7 @@ export const FulfillmentOrder = ({
                                     disabled={false}
                                     resize="smart"
                                     isCompact
+                                    isDisabled={!userHasPermissions}
                                 />
                             </GridColumn>
                         </Grid>
@@ -558,6 +567,7 @@ FulfillmentOrder.propTypes = {
     cancelEditing: PropTypes.func,
     lastOrder: PropTypes.object,
     deteErrors: PropTypes.array,
+    userHasPermissions: PropTypes.bool,
 };
 
 FulfillmentOrder.defaultProps = {
@@ -571,6 +581,7 @@ FulfillmentOrder.defaultProps = {
     cancelEditing: () => null,
     lastOrder: {},
     deteErrors: [],
+    userHasPermissions: null,
 };
 
 export default FulfillmentOrder;
