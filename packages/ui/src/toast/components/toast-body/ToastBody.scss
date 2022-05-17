@@ -4,8 +4,9 @@
 
 .nexus-c-toast__container {
     flex: 1;
-    white-space: nowrap;
     overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-word;
     text-overflow: ellipsis;
 
     .nexus-c-toast__summary-title {
