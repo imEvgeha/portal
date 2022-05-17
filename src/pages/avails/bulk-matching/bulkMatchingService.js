@@ -19,17 +19,24 @@ export const getExistingBonusRights = (sourceRightIdList, coreTitleId = '') => {
 export const getRestrictedTitles = params => {
     const url = `${getConfig('gateway.url')}${getConfig(
         'gateway.service.avails'
-    )}/rights/restrictedCoreTitleIds?rightIds=${params}`;
-    return nexusFetch(url);
-};
+    )}/rights/restrictedCoreTitleIds`;
 
+    const body = {
+        impactedRightIds: [...params]
+    }
+    return nexusFetch(url, {method: 'post', body: JSON.stringify(body)});
+};
 // Sets Core title ID of each listed right to a given coreTitleId (bulk match)
 // If coreTitleId is omitted, it will remove coreTitleId for each right (bulk unmatch)
 export const setCoreTitleId = ({rightIds, coreTitleId = ''}) => {
     const url = `${getConfig('gateway.url')}${getConfig(
         'gateway.service.avails'
-    )}/rights/coreTitleId?coreTitleId=${coreTitleId}&rightIds=${rightIds}`;
-    return nexusFetch(url, {method: 'PATCH'});
+    )}/rights/coreTitleId?coreTitleId=${coreTitleId}`;
+
+    const body = {
+        impactedRightIds: [...rightIds]
+    }
+    return nexusFetch(url, {method: 'PATCH', body: JSON.stringify(body)});
 };
 
 export const createBonusRights = ({rightIds, coreTitleId = ''}) => {
