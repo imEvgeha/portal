@@ -29,7 +29,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
           >
             <ButtonGroup>
               <Button
-                isDisabled={true}
+                isDisabled={null}
                 onClick={[Function]}
               >
                 Cancel
@@ -82,7 +82,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               <div>
                 <input
                   checked={false}
-                  disabled={false}
+                  disabled={true}
                   id="inp-premiering"
                   onClick={[Function]}
                   type="checkbox"
@@ -99,7 +99,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               <div>
                 <input
                   checked={true}
-                  disabled={false}
+                  disabled={true}
                   id="inp-watermark"
                   onClick={[Function]}
                   type="checkbox"
@@ -116,7 +116,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               <div>
                 <input
                   checked={true}
-                  disabled={false}
+                  disabled={true}
                   id="inp-late"
                   onClick={[Function]}
                   type="checkbox"
@@ -143,7 +143,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               </label>
               <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
                 id="market-type"
-                isDisabled={false}
+                isDisabled={true}
                 name="market-type"
                 onChange={[Function]}
                 options={
@@ -180,7 +180,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               </label>
               <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
                 id="late-fault"
-                isDisabled={false}
+                isDisabled={true}
                 name="late-fault"
                 onChange={[Function]}
                 options={
@@ -221,7 +221,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                     }
                   }
                   id="car"
-                  isDisabled={false}
+                  isDisabled={true}
                   name="CAR"
                   onChange={[Function]}
                   value="Not sure what is this field"
@@ -241,7 +241,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               >
                 <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
                   id="late-reason"
-                  isDisabled={false}
+                  isDisabled={true}
                   name="late-reason"
                   onChange={[Function]}
                   options={Array []}
@@ -330,6 +330,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <NexusTextArea
               disabled={false}
               isCompact={true}
+              isDisabled={true}
               name="notes"
               notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               onTextChange={[Function]}
