@@ -17,11 +17,11 @@ const NexusGrid = ({
     onGridEvent,
     isGridHidden,
     frameworkComponents,
-    dragStopped,
     onGridReady,
     link,
     id,
     isRowSelectable,
+    dragStopped,
     ...restProps
 }) => {
     const isMounted = useRef(true);
@@ -96,11 +96,11 @@ NexusGrid.propTypes = {
     setRowData: PropTypes.func,
     isGridHidden: PropTypes.bool,
     frameworkComponents: PropTypes.object,
-    dragStopped: PropTypes.func,
     onGridReady: PropTypes.func,
     link: PropTypes.string,
     id: PropTypes.string,
     isRowSelectable: PropTypes.func,
+    dragStopped: PropTypes.func,
 };
 
 NexusGrid.defaultProps = {
@@ -110,11 +110,11 @@ NexusGrid.defaultProps = {
     setRowData: null,
     isGridHidden: false,
     frameworkComponents: {},
-    dragStopped: null,
     onGridReady: null,
     link: null,
     id: '',
     isRowSelectable: null,
+    dragStopped: null,
 };
 
 export default NexusGrid;

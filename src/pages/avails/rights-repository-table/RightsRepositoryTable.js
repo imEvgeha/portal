@@ -15,7 +15,7 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import {get, isEqual, isEmpty} from 'lodash';
+import {get, isEqual, isEmpty, cloneDeep} from 'lodash';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -320,7 +320,7 @@ const RightsRepositoryTable = ({
     };
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
-        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED, DRAG_STOPPED} = GRID_EVENTS;
+        const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
         const currentViewColumnState = previousGridState?.find(d => d.id === userView.value)?.columnState || columnDefs;
         switch (type) {
             case READY:
@@ -348,21 +348,6 @@ const RightsRepositoryTable = ({
                 const filters = {column: {...filterModel}, external: {...rightsFilter.external}};
                 setRightsFilter(filters);
                 updateMapping(api);
-                break;
-            }
-            case DRAG_STOPPED: {
-                const newColumnState = columnApi?.getColumnState();
-
-                const viewID = userView.value;
-
-                const finalState = previousGridState?.map(viewObj => {
-                    if (viewID === viewObj.id) {
-                        Object.assign(viewObj, {...viewObj, columnState: newColumnState});
-                    }
-                    return viewObj;
-                });
-
-                dispatch(setColumnTableDefinition({[username]: finalState}));
                 break;
             }
             default:
@@ -415,6 +400,35 @@ const RightsRepositoryTable = ({
         setSelectedRights({[username]: refreshedSelectedRights});
     };
 
+    const dragStoppedHandler = event => {
+        const updatedMappings = tableColumnDefinitions.length ? cloneDeep(tableColumnDefinitions) : cloneDeep(mapping);
+        const columnHeader = event.target.textContent.trim();
+        const columns = event.columnApi?.columnModel?.getAllGridColumns();
+
+        const moveTo = columns.findIndex(col => col.colDef.headerName === columnHeader);
+        const moveFrom = updatedMappings.findIndex(col => col.headerName === columnHeader);
+        const [movedColumn] = updatedMappings.splice(moveFrom, 1);
+        updatedMappings.splice(moveTo, 0, movedColumn);
+
+        setTableColumnDefinitions(updatedMappings);
+        saveColumnTableDef(event);
+    };
+
+    const saveColumnTableDef = event => {
+        const newColumnState = event.columnApi?.getColumnState();
+
+        const viewID = userView.value;
+
+        const finalState = previousGridState?.map(viewObj => {
+            if (viewID === viewObj.id) {
+                Object.assign(viewObj, {...viewObj, columnState: newColumnState});
+            }
+            return viewObj;
+        });
+
+        dispatch(setColumnTableDefinition({[username]: finalState}));
+    };
+
     return (
         <div className="rights-table-wrapper">
             {!isEmpty(selectedIngest) && attachment && !showSelected && (
@@ -456,11 +470,7 @@ const RightsRepositoryTable = ({
                     mapping={updatedMapping || mapping}
                     setTotalCount={setTotalCount}
                     onGridEvent={onRightsRepositoryGridEvent}
-                    onColumnMoved={onRightsRepositoryGridEvent}
-                    dragStopped={onRightsRepositoryGridEvent}
-                    newColumnsLoaded={onRightsRepositoryGridEvent}
-                    gridColumnsChanged={onRightsRepositoryGridEvent}
-                    columnEverythingChanged={onRightsRepositoryGridEvent}
+                    dragStopped={dragStoppedHandler}
                     initialFilter={rightsFilter.column}
                     params={rightsFilter.external}
                     multiSortKey="ctrl"
@@ -487,6 +497,7 @@ const RightsRepositoryTable = ({
                     selectedRights={getCurrentUserSelRights()}
                     username={username}
                     storeGridApi={storeSelectedRightsTabledApis}
+                    setTableColumnDefinitions={setTableColumnDefinitions}
                 />
             )}
         </div>

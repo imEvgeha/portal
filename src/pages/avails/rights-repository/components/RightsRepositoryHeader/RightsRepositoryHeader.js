@@ -52,11 +52,25 @@ export const RightsRepositoryHeader = ({
     setCurrentUserView,
     currentUserView,
 }) => {
+    const dispatch = useDispatch();
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     const previousGridState = useSelector(getLastUserColumnState(username));
+
+    useEffect(() => {
+        // will create the predefined user views in the dropdown
+        if (username && isEmpty(previousGridState)) {
+            const predefinedTableViews = tableOptions.map(({label, value}) => ({
+                id: value,
+                label,
+                value,
+                isPredefinedView: true,
+            }));
+
+            dispatch(setColumnTableDefinition({[username]: predefinedTableViews}));
+        }
+    }, [username]);
 
     useEffect(() => {
         if (activeTab === RIGHTS_SELECTED_TAB) {

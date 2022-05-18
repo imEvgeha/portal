@@ -27,7 +27,6 @@ import {
     FILTER_TYPE,
     FILTERABLE_DATA_TYPES,
     GRID_EVENTS,
-    NOT_FILTERABLE_COLUMNS,
 } from '../constants';
 import './hoc.scss';
 

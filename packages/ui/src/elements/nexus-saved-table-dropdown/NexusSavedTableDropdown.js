@@ -38,6 +38,7 @@ const NexusSavedTableDropdown = ({
     currentUserView,
     previousGridState,
     updateColumnsAction,
+    setUserDefinedGridState,
 }) => {
     const dispatch = useDispatch();
     const [selectedItem, setSelectedItem] = useState(currentUserView?.label ? currentUserView : tableOptions[0]);
@@ -83,14 +84,21 @@ const NexusSavedTableDropdown = ({
             const columnState = columnApi.getColumnState();
             const model = {id: viewId, filterModel, sortModel, columnState, externalFilter};
             const newUserData = insertNewGridModel(viewId, userDefinedGridStates, model);
-            // merge the existing views of the user with new views
-            dispatch(updateColumnsAction({[username]: [...newUserData, ...previousGridState]}));
+            setUserDefinedGridState({[username]: newUserData});
+
+            if (previousGridState) {
+                // merge the existing views of the user with new views for avails section
+                dispatch(updateColumnsAction({[username]: [...newUserData, ...previousGridState]}));
+            }
         }
     };
 
     const removeUserDefinedGridState = id => {
         const filteredGridStates = userDefinedGridStates.filter(item => item.id !== id);
-        dispatch(updateColumnsAction({[username]: filteredGridStates}));
+        setUserDefinedGridState({[username]: filteredGridStates});
+        if (previousGridState) {
+            dispatch(updateColumnsAction({[username]: filteredGridStates}));
+        }
     };
 
     const selectPredefinedTableView = filter => {
@@ -187,6 +195,7 @@ NexusSavedTableDropdown.propTypes = {
     currentUserView: PropTypes.object,
     previousGridState: PropTypes.array,
     updateColumnsAction: PropTypes.func,
+    setUserDefinedGridState: PropTypes.func,
 };
 
 NexusSavedTableDropdown.defaultProps = {
@@ -203,6 +212,7 @@ NexusSavedTableDropdown.defaultProps = {
     isDisabled: false,
     setCurrentUserView: () => null,
     currentUserView: {},
+    setUserDefinedGridState: () => null,
     previousGridState: [],
     updateColumnsAction: () => null,
 };

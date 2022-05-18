@@ -5,6 +5,7 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
+import {cloneDeep} from 'lodash';
 import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -26,6 +27,7 @@ const SelectedRightsTable = ({
     username,
     selectedIngest,
     storeGridApi,
+    setTableColumnDefinitions,
 }) => {
     const [selectedRightsState, setSelectedRightsState] = useState([...selectedRights]);
     const [gridApi, setGridApi] = useState(undefined);
@@ -85,6 +87,19 @@ const SelectedRightsTable = ({
         }
     };
 
+    const dragStoppedHandler = event => {
+        const updatedMappings = columnDefs.length ? cloneDeep(columnDefs) : cloneDeep(mapping);
+        const columnHeader = event.target.textContent.trim();
+        const columns = event.columnApi?.columnModel?.getAllGridColumns();
+
+        const moveTo = columns.findIndex(col => col.colDef.headerName === columnHeader);
+        const moveFrom = updatedMappings.findIndex(col => col.headerName === columnHeader);
+        const [movedColumn] = updatedMappings.splice(moveFrom, 1);
+        updatedMappings.splice(moveTo, 0, movedColumn);
+
+        setTableColumnDefinitions(updatedMappings);
+    };
+
     return (
         <SelectedRightsGrid
             id="selectedRightsRepo"
@@ -96,6 +111,7 @@ const SelectedRightsTable = ({
             rowSelection="multiple"
             mapping={mapping}
             rowData={selectedRightsState}
+            dragStopped={dragStoppedHandler}
         />
     );
 };
@@ -109,6 +125,7 @@ SelectedRightsTable.propTypes = {
     username: PropTypes.string,
     selectedIngest: PropTypes.object,
     storeGridApi: PropTypes.func.isRequired,
+    setTableColumnDefinitions: PropTypes.func,
 };
 
 SelectedRightsTable.defaultProps = {
@@ -119,6 +136,7 @@ SelectedRightsTable.defaultProps = {
     selectedRights: {},
     username: {},
     selectedIngest: {},
+    setTableColumnDefinitions: () => null,
 };
 
 export default SelectedRightsTable;
