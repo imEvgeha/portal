@@ -61,7 +61,12 @@ export const routes = [
                 element: Outlet,
                 children: [...dopTasksRoutes],
             },
-            {path: 'servicing-orders', element: Outlet, children: [...servicingOrdersRoutes]},
+            {
+                path: 'servicing-orders',
+                resource: 'servicingOrdersView',
+                element: Outlet,
+                children: [...servicingOrdersRoutes],
+            },
             {
                 path: 'event-management',
                 resource: 'eventManagementParentPage',

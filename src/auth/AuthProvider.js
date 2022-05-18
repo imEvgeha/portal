@@ -94,7 +94,7 @@ const AuthProvider = ({
      * 2. Realm (URL) - check the Realm from the /URL
      * 3. Clients[0] - assign the first client as the default tenant
      */
-    const AssignDefaultTenant = (resourceAccess, currentUser) => {
+    const AssignDefaultTenant = (resourceAccess, realmRoles, currentUser) => {
         // filter out clients from keycloak that are not tenants
         const filteredResourceAccess = {...resourceAccess};
         delete filteredResourceAccess['account'];
@@ -121,6 +121,7 @@ const AuthProvider = ({
                 // if realm does not match with any clients, set the first client as default tenant
                 const defaultTenant = tenantFromRealm || Object.entries(filteredResourceAccess)[0];
                 const selectedTenant = transformSelectTenant(defaultTenant);
+                selectedTenant.roles = [...selectedTenant.roles, ...realmRoles];
                 dispatch(setSelectedTenantInfo(selectedTenant));
                 updateLocalStorageWithSelectedTenant(currentLoggedInUsername, selectedTenant);
             } else {
@@ -134,6 +135,7 @@ const AuthProvider = ({
                     const defaultClient = Object.entries(filteredResourceAccess)[0];
                     // construct the object and dispatch to redux
                     const defaultSelectedTenant = transformSelectTenant(defaultClient);
+                    defaultSelectedTenant.roles = [...defaultSelectedTenant.roles, ...realmRoles];
                     dispatch(setSelectedTenantInfo(defaultSelectedTenant));
                     updateLocalStorageWithSelectedTenant(currentLoggedInUsername, defaultSelectedTenant);
                 }
@@ -142,7 +144,7 @@ const AuthProvider = ({
                     dispatch(
                         setSelectedTenantInfo({
                             id: persistedTenantExistsInClients[0],
-                            roles: persistedTenantExistsInClients[1].roles,
+                            roles: [...persistedTenantExistsInClients[1].roles, ...realmRoles],
                         })
                     );
                 }
@@ -156,8 +158,8 @@ const AuthProvider = ({
         addUser({userAccount});
 
         // set default tenant on LocalStorage and Redux
-        const {resourceAccess} = keycloak;
-        AssignDefaultTenant(resourceAccess, userAccount);
+        const {resourceAccess, realmAccess} = keycloak;
+        AssignDefaultTenant(resourceAccess, realmAccess.roles, userAccount);
         return userAccount;
     };
 

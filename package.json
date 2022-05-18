@@ -26,7 +26,6 @@
         "lint": "eslint-nibble --cache src"
     },
     "dependencies": {
-        "@atlaskit/analytics-next": "^8.3.0",
         "@atlaskit/badge": "^15.0.8",
         "@atlaskit/button": "^16.1.6",
         "@atlaskit/checkbox": "^12.3.8",
@@ -49,7 +48,7 @@
         "@atlaskit/textfield": "^5.1.6",
         "@atlaskit/theme": "^12.1.3",
         "@atlaskit/tooltip": "^15.0.15",
-        "@portal/portal-auth": "^1.0.21-37",
+        "@portal/portal-auth": "^1.0.21-64",
         "@vubiquity-nexus/portal-assets": "^1.1.0",
         "@vubiquity-nexus/portal-styles": "1.0.0",
         "@vubiquity-nexus/portal-ui": "1.0.57",

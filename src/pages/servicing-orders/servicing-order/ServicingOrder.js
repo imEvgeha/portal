@@ -1,6 +1,8 @@
 import React, {useEffect, useMemo, useState} from 'react';
+import {checkResourceFromResources} from '@portal/portal-auth/utils';
 import {sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {cloneDeep, get} from 'lodash';
+import {useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {PAGE_SIZE} from '../../avails/selected-for-planning/constants';
 import Loading from '../../static/Loading';
@@ -31,6 +33,8 @@ const ServicingOrder = () => {
     const [servicingOrderItemsLength, setServicingOrderItemsLength] = useState(0);
     const [recipientsOptions, setRecipientsOptions] = useState({});
     const routeParams = useParams();
+    // get the user resources from redux for the selected tenant
+    const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
 
@@ -178,7 +182,9 @@ const ServicingOrder = () => {
 
     const isFormDisabled = selectedOrder => {
         const {readiness, tenant, fs} = selectedOrder;
-        return (readiness === readinessStatus.READY && fs !== SERVICERS.DETE) || tenant === TENANTS.WB;
+        return checkResourceFromResources('manage-servicing-orders', selectedTenant?.roles)
+            ? !!((readiness === readinessStatus.READY && fs !== SERVICERS.DETE) || tenant === TENANTS.WB)
+            : true;
     };
 
     const cancelEdit = () => {
@@ -213,6 +219,10 @@ const ServicingOrder = () => {
                         cancelEditing={cancelEdit}
                         lastOrder={lastOrder}
                         deteErrors={selectedOrder.errors || []}
+                        userHasPermissions={checkResourceFromResources(
+                            'manage-servicing-orders',
+                            selectedTenant?.roles
+                        )}
                     >
                         {orderOrigin === 'JUICEBOX' ? (
                             <JuiceBoxSection

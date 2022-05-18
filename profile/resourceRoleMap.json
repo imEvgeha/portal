@@ -115,6 +115,10 @@
         "operation": "OR",
         "values": ["avails_viewer", "avails_user", "avails_admin"]
     },
+    "availsIngestButton": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
     "titleMetadataMenuIcon": {
         "operation": "OR",
         "values": ["metadata_view"]
@@ -178,5 +182,13 @@
     "editTitleDetails": {
         "operation": "AND",
         "values": ["metadata_update"]
+    },
+    "servicingOrdersView": {
+        "operation": "AND",
+        "values": ["view-servicing-orders"]
+    },
+    "servicingOrdersEdit": {
+        "operation": "AND",
+        "values": ["manage-servicing-orders"]
     }
 }
