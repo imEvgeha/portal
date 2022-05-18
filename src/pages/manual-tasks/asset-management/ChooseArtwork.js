@@ -66,7 +66,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, job
     }, []);
 
     useEffect(() => {
-        DOP.setDOPMessageCallback(selectedArtwork || jobIds.length !== 0 ? () => null : () => openDOPPopUp());
+        DOP.setDOPMessageCallback(selectedArtwork || jobIds.length !== 0 ? null : () => openDOPPopUp());
     }, [selectedArtwork, jobIds, openDOPPopUp]);
 
     const artworkClick = (id, uri) => {
