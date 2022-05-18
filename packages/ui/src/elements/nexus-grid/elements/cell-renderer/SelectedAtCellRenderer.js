@@ -46,7 +46,10 @@ const SelectedAtCellRenderer = params => {
             });
             return selectedAt ? selectedAt.slice(0, -2) : ''; // remove last comma
         }
-        if (data && Array.isArray(data['territory'])) {
+        if (api && data && Array.isArray(data['territorySelected'])) {
+            const items = data['territorySelected'].join(', ');
+            return [items];
+        } else if (data && Array.isArray(data['territory'])) {
             const items = data['territory']
                 .filter(item => item.selected)
                 .map(item => item.country)
