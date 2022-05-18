@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {getUsername} from "@portal/portal-auth/authSelectors";
+import {getUsername} from '@portal/portal-auth/authSelectors';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
@@ -10,7 +10,7 @@ import {
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import Loading from '../../static/Loading';
@@ -19,9 +19,9 @@ import PrePlanActions from '../pre-plan-actions/PrePlanActions';
 import {createRightMatchingColumnDefsSelector} from '../right-matching/rightMatchingSelectors';
 import TooltipCellRenderer from '../rights-repository/components/tooltip/TooltipCellRenderer';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
-import {setPreplanRights} from '../rights-repository/rightsActions';
+import {setPrePlanColumnDef, setPreplanRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
-import {mapColumnDefinitions} from '../rights-repository/util/utils';
+import {commonDragStoppedHandler, mapColumnDefinitions} from '../rights-repository/util/utils';
 import SelectedPreplanTable from './selected-preplan-table/SelectedPreplanTable';
 import {
     COLUMNS_TO_REORDER,
@@ -47,7 +47,10 @@ const PreplanRightsTable = ({
     prePlanRights,
     persistSelectedPPRights,
     persistedSelectedRights,
+    setPrePlanColumnDef,
 }) => {
+    const prePlanColumnDef = useSelector(selectors.getPrePlanColumnDefSelector());
+
     const [count, setCount] = useState(0);
     const [gridApi, setGridApi] = useState(undefined);
     const [columnApiState, setColumnApiState] = useState(undefined);
@@ -172,6 +175,7 @@ const PreplanRightsTable = ({
                 !columnApiState && setColumnApiState(columnApi);
                 setPrePlanGridApi(api);
                 setGridApi(api);
+                columnApi?.applyColumnState({state: prePlanColumnDef, applyOrder: true});
                 break;
             }
             case GRID_EVENTS.FIRST_DATA_RENDERED: {
@@ -195,6 +199,9 @@ const PreplanRightsTable = ({
                 setSelectedPPRights(api.getSelectedRows());
                 persistSelectedPPRights(api.getSelectedRows());
                 break;
+            case GRID_EVENTS.ROW_DATA_CHANGED:
+                setPreplanRights({[username]: allRights});
+                break;
             default:
                 break;
         }
@@ -215,6 +222,12 @@ const PreplanRightsTable = ({
     const storeSelectedRightsTabledApis = (api, cApi) => {
         setSelectedRightsGridApi(api);
         setSelectedRightsColumnApi(cApi);
+    };
+
+    const dragStoppedHandler = event => {
+        const updatedMappings = commonDragStoppedHandler(event, tableColumnDefinitions, mapping);
+        setTableColumnDefinitions(updatedMappings);
+        setPrePlanColumnDef(updatedMappings);
     };
 
     const toolbarActions = () => {
@@ -251,13 +264,14 @@ const PreplanRightsTable = ({
             {!showSelected && (
                 <PrePlanGrid
                     id="prePlanRightsRepo"
-                    columnDefs={tableColumnDefinitions}
+                    columnDefs={prePlanColumnDef.length ? prePlanColumnDef : tableColumnDefinitions}
                     singleClickEdit
                     rowSelection="multiple"
                     suppressRowClickSelection={true}
                     mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
                     rowData={allRights}
                     onGridEvent={onGridReady}
+                    dragStopped={dragStoppedHandler}
                     notFilterableColumns={['action', 'buttons']}
                 />
             )}
@@ -286,6 +300,7 @@ PreplanRightsTable.propTypes = {
     prePlanRights: PropTypes.object,
     persistSelectedPPRights: PropTypes.func.isRequired,
     persistedSelectedRights: PropTypes.array,
+    setPrePlanColumnDef: PropTypes.func,
 };
 
 PreplanRightsTable.defaultProps = {
@@ -295,6 +310,7 @@ PreplanRightsTable.defaultProps = {
     setPrePlanGridApi: () => null,
     prePlanRights: {},
     persistedSelectedRights: [],
+    setPrePlanColumnDef: () => null,
 };
 
 const mapStateToProps = () => {
@@ -309,6 +325,7 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => ({
     setPreplanRights: payload => dispatch(setPreplanRights(payload)),
+    setPrePlanColumnDef: payload => dispatch(setPrePlanColumnDef(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PreplanRightsTable);

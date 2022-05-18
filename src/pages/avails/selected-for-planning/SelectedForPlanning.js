@@ -10,10 +10,10 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
+import {commonDragStoppedHandler} from '../rights-repository/util/utils';
 import {prepareSelectForPlanningData} from './utils';
 import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
 import './SelectedForPlanning.scss';
@@ -78,15 +78,7 @@ export const SelectedForPlanning = ({username}) => {
     };
 
     const dragStoppedHandler = event => {
-        const updatedMappings = updatedColDef.length ? cloneDeep(updatedColDef) : cloneDeep(mappings);
-        const columnHeader = event.target.textContent.trim();
-        const columns = event.columnApi?.columnModel?.getAllGridColumns();
-
-        const moveTo = columns.findIndex(col => col.colDef.headerName === columnHeader);
-        const moveFrom = updatedMappings.findIndex(col => col.headerName === columnHeader);
-        const [movedColumn] = updatedMappings.splice(moveFrom, 1);
-        updatedMappings.splice(moveTo, 0, movedColumn);
-
+        const updatedMappings = commonDragStoppedHandler(event, updatedColDef, mappings);
         setUpdatedColDef(updatedMappings);
     };
 

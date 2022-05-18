@@ -15,7 +15,7 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import {get, isEqual, isEmpty, cloneDeep} from 'lodash';
+import {get, isEqual, isEmpty} from 'lodash';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -50,7 +50,7 @@ import {
 } from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import {createAvailsCurrentUserViewSelector, getLastUserColumnState} from '../rights-repository/rightsSelectors';
-import {mapColumnDefinitions} from '../rights-repository/util/utils';
+import {commonDragStoppedHandler, mapColumnDefinitions} from '../rights-repository/util/utils';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
 import constants from '../constants';
@@ -401,15 +401,7 @@ const RightsRepositoryTable = ({
     };
 
     const dragStoppedHandler = event => {
-        const updatedMappings = tableColumnDefinitions.length ? cloneDeep(tableColumnDefinitions) : cloneDeep(mapping);
-        const columnHeader = event.target.textContent.trim();
-        const columns = event.columnApi?.columnModel?.getAllGridColumns();
-
-        const moveTo = columns.findIndex(col => col.colDef.headerName === columnHeader);
-        const moveFrom = updatedMappings.findIndex(col => col.headerName === columnHeader);
-        const [movedColumn] = updatedMappings.splice(moveFrom, 1);
-        updatedMappings.splice(moveTo, 0, movedColumn);
-
+        const updatedMappings = commonDragStoppedHandler(event, tableColumnDefinitions, mapping);
         setTableColumnDefinitions(updatedMappings);
         saveColumnTableDef(event);
     };

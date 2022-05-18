@@ -57,3 +57,8 @@ export const setColumnTableDefinition = payload => ({
     type: actionTypes.SET_AVAILS_GRID_STATE,
     payload,
 });
+
+export const setPrePlanColumnDef = payload => ({
+    type: actionTypes.SET_PREPLAN_COLUMN_DEF,
+    payload,
+});

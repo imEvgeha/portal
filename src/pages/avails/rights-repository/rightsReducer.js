@@ -136,6 +136,12 @@ const rightsReducer = (state = initialState, action = {}) => {
                 gridState: {...state.gridState, ...payload},
             };
         }
+        case actionTypes.SET_PREPLAN_COLUMN_DEF: {
+            return {
+                ...state,
+                prePlanColumnDef: payload,
+            };
+        }
         default:
             return state;
     }

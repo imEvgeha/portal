@@ -1,5 +1,6 @@
 import React from 'react';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {cloneDeep} from 'lodash';
 import {NexusTooltip} from '../../../../ui/elements';
 import {
     READY_PENDING_VIEW,
@@ -77,3 +78,15 @@ export const mapColumnDefinitions = columnDefs =>
         }
         return updatedColumnDef;
     });
+
+export const commonDragStoppedHandler = (event, tableColumnDefinitions, mapping) => {
+    const updatedMappings = tableColumnDefinitions.length ? cloneDeep(tableColumnDefinitions) : cloneDeep(mapping);
+    const columnHeader = event.target.textContent.trim();
+    const columns = event.columnApi?.columnModel?.getAllGridColumns();
+
+    const moveTo = columns.findIndex(col => col.colDef.headerName === columnHeader);
+    const moveFrom = updatedMappings.findIndex(col => col.headerName === columnHeader);
+    const [movedColumn] = updatedMappings.splice(moveFrom, 1);
+    updatedMappings.splice(moveTo, 0, movedColumn);
+    return updatedMappings;
+};

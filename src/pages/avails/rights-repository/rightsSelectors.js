@@ -46,3 +46,6 @@ export const createRightGridStateSelector = username =>
 
 export const getLastUserColumnState = username =>
     createSelector(getRightsReducer, rights => rights?.gridState?.[username]);
+
+export const getPrePlanColumnDefSelector = () =>
+    createSelector(getRightsReducer, rights => rights?.prePlanColumnDef || []);
