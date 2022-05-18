@@ -31,7 +31,7 @@ module.exports = envFile => ({
         hotUpdateMainFilename: 'hot/[hash].hot-update.json',
     },
     devServer: {
-        port: (envFile && envFile.PORT) || 8001,
+        port: (envFile && envFile.PORT) || 3000,
         historyApiFallback: true,
         static: {
             watch: {
