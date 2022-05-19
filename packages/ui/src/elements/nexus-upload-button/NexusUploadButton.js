@@ -1,5 +1,6 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import {Restricted} from '@portal/portal-auth/permissions';
 import {Button} from 'primereact/button';
 import './NexusUploadButton.scss';
 
@@ -54,28 +55,34 @@ const NexusUploadButton = ({
     };
 
     return (
-        <div className={modalCallback(modalCallbackData) === undefined ? 'ingest-upload-with-border' : 'ingest-upload'}>
-            <input
-                className="ingest-upload__input"
-                type="file"
-                accept={extensionsAccepted}
-                ref={inputRef}
-                onInput={handleUpload}
-            />
-            {ingestData ? (
-                <button className="btn btn-primary" onClick={inputClick}>
-                    {buttonTitle}
-                </button>
-            ) : (
-                <Button
-                    className="p-button-text"
-                    icon={icon}
-                    onClick={inputClick}
-                    tooltip="Upload"
-                    tooltipOptions={{position: 'bottom'}}
+        <Restricted resource="createNewTitleButton">
+            <div
+                className={
+                    modalCallback(modalCallbackData) === undefined ? 'ingest-upload-with-border' : 'ingest-upload'
+                }
+            >
+                <input
+                    className="ingest-upload__input"
+                    type="file"
+                    accept={extensionsAccepted}
+                    ref={inputRef}
+                    onInput={handleUpload}
                 />
-            )}
-        </div>
+                {ingestData ? (
+                    <button className="btn btn-primary" onClick={inputClick}>
+                        {buttonTitle}
+                    </button>
+                ) : (
+                    <Button
+                        className="p-button-text"
+                        icon={icon}
+                        onClick={inputClick}
+                        tooltip="Upload"
+                        tooltipOptions={{position: 'bottom'}}
+                    />
+                )}
+            </div>
+        </Restricted>
     );
 };
 

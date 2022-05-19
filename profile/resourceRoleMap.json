@@ -159,6 +159,10 @@
         "operation": "AND",
         "values": ["metadata_create"]
     },
+    "uploadAttachmentButton": {
+        "operation": "AND",
+        "values": ["metadata_create"]
+    },
     "titleMetadataMergeTitle": {
         "operation": "AND",
         "values": ["metadata_legacy_merge"]
