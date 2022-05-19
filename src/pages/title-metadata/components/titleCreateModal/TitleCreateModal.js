@@ -470,7 +470,7 @@ const TitleCreate = ({
                                     title="Release Year"
                                     inputName="releaseYear"
                                     errors={errors.releaseYear}
-                                    required={currentValues.contentType !== 'SERIES'}
+                                    required={true}
                                     additionalValidation={{
                                         pattern: {
                                             value: /^[0-9]+$/,
