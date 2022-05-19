@@ -401,7 +401,8 @@ const RightsRepositoryTable = ({
     };
 
     const dragStoppedHandler = event => {
-        const updatedMappings = commonDragStoppedHandler(event, tableColumnDefinitions, mapping);
+        const currentColumnDefs = gridApi.getColumnDefs();
+        const updatedMappings = commonDragStoppedHandler(event, currentColumnDefs, mapping);
         setTableColumnDefinitions(updatedMappings);
         saveColumnTableDef(event);
     };

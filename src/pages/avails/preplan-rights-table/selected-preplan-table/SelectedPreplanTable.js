@@ -7,6 +7,7 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {isEmpty} from 'lodash';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../ui/elements';
+import {commonDragStoppedHandler} from '../../rights-repository/util/utils';
 
 const SelectedPreplanGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
 
@@ -18,6 +19,7 @@ const SelectedPreplanTable = ({
     setSelectedPrePlanRights,
     storeGridApis,
 }) => {
+    const [updatedColDef, setUpdatedColDef] = useState([]);
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
     const [gridApi, setGridApi] = useState(undefined);
 
@@ -50,14 +52,21 @@ const SelectedPreplanTable = ({
         }
     };
 
+    const dragStoppedHandler = event => {
+        const currentColDef = gridApi.getColumnDefs();
+        const updatedMappings = commonDragStoppedHandler(event, currentColDef, mapping);
+        setUpdatedColDef(updatedMappings);
+    };
+
     return (
         <SelectedPreplanGrid
             id="selectedRightsRepo"
             singleClickEdit
             suppressRowClickSelection={true}
             notFilterableColumns={['action', 'buttons']}
-            columnDefs={columnDefs}
+            columnDefs={updatedColDef.length ? updatedColDef : columnDefs}
             onGridEvent={onSelectedRightsRepositoryGridEvent}
+            dragStopped={dragStoppedHandler}
             rowSelection="multiple"
             mapping={mapping}
             rowData={currentUserSelectedRights}

@@ -225,7 +225,8 @@ const PreplanRightsTable = ({
     };
 
     const dragStoppedHandler = event => {
-        const updatedMappings = commonDragStoppedHandler(event, tableColumnDefinitions, mapping);
+        const currentColumnDefs = gridApi.getColumnDefs();
+        const updatedMappings = commonDragStoppedHandler(event, currentColumnDefs, mapping);
         setTableColumnDefinitions(updatedMappings);
         setPrePlanColumnDef(updatedMappings);
     };
@@ -278,7 +279,7 @@ const PreplanRightsTable = ({
 
             {showSelected && (
                 <SelectedPreplanTable
-                    columnDefs={tableColumnDefinitions}
+                    columnDefs={prePlanColumnDef.length ? prePlanColumnDef : tableColumnDefinitions}
                     mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
                     selectedRights={selectedPPRights}
                     username={username}

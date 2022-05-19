@@ -88,7 +88,8 @@ const SelectedRightsTable = ({
     };
 
     const dragStoppedHandler = event => {
-        const updatedMappings = commonDragStoppedHandler(event, columnDefs, mapping);
+        const currentColumnDefs = gridApi.getColumnDefs();
+        const updatedMappings = commonDragStoppedHandler(event, currentColumnDefs, mapping);
         setTableColumnDefinitions(updatedMappings);
     };
 
