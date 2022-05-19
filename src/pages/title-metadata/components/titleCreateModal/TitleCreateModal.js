@@ -98,7 +98,7 @@ const TitleCreate = ({
 
     const defaultCreateTitle = (title, params) => {
         titleService
-            .createTitle(title, params)
+            .createTitleV2(title, params)
             .then(response => {
                 if (currentValues.syncVZ || currentValues.syncMovida) {
                     // call registerTitle API
@@ -194,7 +194,7 @@ const TitleCreate = ({
     const onSubmit = submitTitle => {
         const title = getTitleWithoutEmptyField(submitTitle);
         const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
-        const params = {tenantCode, copyCastCrewFromSeason};
+        const params = {copyCastCrewFromSeason};
         setIsCreatingTitle(true);
 
         isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
@@ -203,9 +203,9 @@ const TitleCreate = ({
     const getTitleWithoutEmptyField = titleForm => {
         const isEpisodicEmpty = titleForm.seriesTitleName || titleForm.episodeNumber || titleForm.seasonNumber;
         return {
-            title: titleForm.title,
+            name: titleForm.title,
             releaseYear: titleForm.releaseYear || null,
-            contentType: titleForm.contentType,
+            contentType: titleForm.contentType.toLowerCase(),
             episodic: isEpisodicEmpty
                 ? {
                       seriesTitleName: titleForm.seriesTitleName || null,

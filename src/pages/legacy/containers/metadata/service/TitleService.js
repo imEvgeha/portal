@@ -90,8 +90,8 @@ export const titleService = {
         return nexusFetch(url, {params});
     },
 
-    createTitle: (title, params) => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/titles';
+    createTitleV2: (title, params) => {
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/titles';
         const queryParams = params ? params : {};
         return nexusFetch(url, {
             method: 'post',
