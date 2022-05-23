@@ -14,6 +14,12 @@ import DynamicElement from './dynamic-element/DynamicElement';
 
 export const constructFieldPerType = args => {
     const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi} = args;
+    const isControllerVisible = elementSchema.visible !== false;
+
+    if (isControllerVisible === false) {
+        return null;
+    }
+
     return (
         <div
             className={className || (elementSchema.type === 'array' ? 'col-sm-12' : 'col-sm-6 mb-1')}
