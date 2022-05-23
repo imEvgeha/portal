@@ -35,13 +35,22 @@ exports[`StatusLogRightsTable should match snapshot 1`] = `
       Array [
         Object {
           "colId": "status",
-          "dataType": "string",
+          "dataType": "select",
+          "displayName": "Status",
+          "enableEdit": true,
           "enableSearch": true,
           "field": "status",
           "headerName": "Status",
           "javaVariableName": "status",
           "minWidth": 100,
-          "searchDataType": "string",
+          "options": Array [
+            "SUCCESS",
+            "FAIL",
+            "PENDING",
+            "DELETED",
+          ],
+          "readOnly": false,
+          "searchDataType": "multiselect",
         },
         Object {
           "colId": "rightTitle",

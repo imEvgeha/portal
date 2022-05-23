@@ -3,6 +3,7 @@ import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import moment from 'moment';
 import {store} from '../../../index';
+import columnMappings from './columnMappings';
 import {saveStatusDataAction} from './statusLogActions';
 
 const PAGESIZE = 100;
@@ -23,6 +24,14 @@ export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
     };
     const updatedAtParams = getUpdatedAtParams();
     delete params.updatedAt;
+
+    columnMappings
+        .filter(item => item.searchDataType === 'multiselect')
+        .forEach(map => {
+            const key = map.javaVariableName;
+            params[`${key}List`] = params[key];
+            delete params[key];
+        });
 
     const qs = querystring.stringify({...queryParams, ...updatedAtParams, ...params});
     const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/publishInfo/search`;
