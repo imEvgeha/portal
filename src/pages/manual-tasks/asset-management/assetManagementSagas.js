@@ -103,7 +103,7 @@ function* uploadArtwork({payload}) {
         DOP.setErrorsCount(0);
         DOP.setData({
             chooseArtwork: {
-                assetID: artworkAssetID,
+                sourceMediaAssetID: artworkAssetID,
                 selectedArtworkUri: null,
                 importAssetJobID: jobId,
             },
