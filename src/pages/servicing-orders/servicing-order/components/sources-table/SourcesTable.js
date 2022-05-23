@@ -138,8 +138,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 if (barcodeIndex !== -1) {
                     showToastForErrors(null, {
                         errorToast: {
-                            title: 'Duplicate Entry',
-                            description: `Entry ${data.barcode.trim()} already exists in this list`,
+                            detail: `Duplicate Entry. Entry ${data.barcode.trim()} already exists in this list`,
                         },
                     });
                     api.setRowData(prevSources);
@@ -197,8 +196,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         if (sources[sources.length - 1].barcode === '')
             showToastForErrors(null, {
                 errorToast: {
-                    title: 'Invalid Action',
-                    description: 'Please add one row at a time',
+                    detail: 'Invalid Action. Please add one row at a time',
                 },
             });
         else {

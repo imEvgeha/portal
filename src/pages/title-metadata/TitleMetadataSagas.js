@@ -1,9 +1,7 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {SUCCESS_ICON, ERROR_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {showToastForErrors} from '@vubiquity-nexus/portal-utils/lib/http-client/handleError';
 import {uploadService} from '@vubiquity-nexus/portal-utils/lib/services/UploadService';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
-import {history} from '../../index';
 import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
 import * as actionTypes from './titleMetadataActionTypes';
 import {
@@ -64,8 +62,6 @@ export function* loadTitle({payload}) {
             payload: false,
         });
     } catch (error) {
-        const {bindingResult} = error.message;
-
         yield put({
             type: actionTypes.GET_TITLE_ERROR,
             payload: error,
@@ -74,14 +70,6 @@ export function* loadTitle({payload}) {
             type: actionTypes.GET_TITLE_LOADING,
             payload: false,
         });
-
-        showToastForErrors({
-            errorToast: {
-                description: bindingResult,
-            },
-        });
-
-        history.push('/metadata');
     }
 }
 
