@@ -102,7 +102,7 @@ export const titleService = {
     },
 
     createTitleWithoutErrorModal: title => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/titles';
+        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/titles';
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(title),
