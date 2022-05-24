@@ -22,8 +22,8 @@ import constants, {CONTENT_TYPE_ITEMS} from './TitleCreateModalConstants';
 import './Title.scss';
 
 const onViewTitleClick = (response, realm) => {
-    const {id} = response || {};
-    const url = `${getDomainName()}/${realm}/metadata/detail/${id}`;
+    const {meta} = response || {};
+    const url = `${getDomainName()}/${realm}/metadata/detail/${meta.id}`;
     window.open(url, '_blank');
 };
 
