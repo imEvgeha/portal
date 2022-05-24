@@ -28,6 +28,7 @@ const SelectedRightsTable = ({
     selectedIngest,
     storeGridApi,
     setTableColumnDefinitions,
+    saveColumnTableDef,
 }) => {
     const [selectedRightsState, setSelectedRightsState] = useState([...selectedRights]);
     const [gridApi, setGridApi] = useState(undefined);
@@ -91,6 +92,7 @@ const SelectedRightsTable = ({
         const currentColumnDefs = gridApi.getColumnDefs();
         const updatedMappings = commonDragStoppedHandler(event, currentColumnDefs, mapping);
         setTableColumnDefinitions(updatedMappings);
+        saveColumnTableDef(event);
     };
 
     return (
@@ -114,11 +116,12 @@ SelectedRightsTable.propTypes = {
     mapping: PropTypes.array,
     selectedFilter: PropTypes.object,
     setSelectedFilter: PropTypes.func,
-    selectedRights: PropTypes.object,
+    selectedRights: PropTypes.array,
     username: PropTypes.string,
     selectedIngest: PropTypes.object,
     storeGridApi: PropTypes.func.isRequired,
     setTableColumnDefinitions: PropTypes.func,
+    saveColumnTableDef: PropTypes.func,
 };
 
 SelectedRightsTable.defaultProps = {
@@ -126,10 +129,11 @@ SelectedRightsTable.defaultProps = {
     mapping: null,
     selectedFilter: {},
     setSelectedFilter: () => null,
-    selectedRights: {},
+    selectedRights: [],
     username: {},
     selectedIngest: {},
     setTableColumnDefinitions: () => null,
+    saveColumnTableDef: () => null,
 };
 
 export default SelectedRightsTable;

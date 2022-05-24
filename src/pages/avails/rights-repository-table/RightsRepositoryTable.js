@@ -23,6 +23,7 @@ import usePrevious from '../../../util/hooks/usePrevious';
 import useRowCountWithGridApiFix from '../../../util/hooks/useRowCountWithGridApiFix';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {processOptions} from '../../legacy/containers/avail/util/ProcessSelectOptions';
+import {TABLE_OPTIONS} from '../../title-metadata/constants';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {
     deselectIngest,
@@ -110,6 +111,8 @@ const RightsRepositoryTable = ({
             : usersSelectedRights;
     };
 
+    const getUserView = () => (isEmpty(userView) ? TABLE_OPTIONS[0] : userView);
+
     useEffect(() => {
         selectedRightsGridApi?.refreshCells();
     }, [selectedRights]);
@@ -191,8 +194,16 @@ const RightsRepositoryTable = ({
     const hiddenSelectedAndTerritoryFilters = useMemo(() => setHiddenFilters(), [mapping]);
 
     useEffect(() => {
+        const viewID = getUserView()?.value;
+        const newColumnState = previousGridState?.find(viewObj => viewID === viewObj.id)?.columnState;
+        const columnIds = newColumnState?.map(item => item.colId);
+
         if (!tableColumnDefinitions.length) {
-            const colDefs = constructColumnDefs(mapColumnDefinitions(columnDefs));
+            const colDefs = constructColumnDefs(
+                mapColumnDefinitions(
+                    columnDefs.sort((a, b) => columnIds?.indexOf(a.colId) - columnIds?.indexOf(b.colId))
+                )
+            );
             const updatedColumnDefs = colDefs.length
                 ? [
                       defineCheckboxSelectionColumn({
@@ -321,7 +332,8 @@ const RightsRepositoryTable = ({
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED, FIRST_DATA_RENDERED} = GRID_EVENTS;
-        const currentViewColumnState = previousGridState?.find(d => d.id === userView.value)?.columnState || columnDefs;
+        const currentViewColumnState =
+            previousGridState?.find(d => d.id === getUserView()?.value)?.columnState || columnDefs;
         switch (type) {
             case READY:
                 setGridApis(api, columnApi);
@@ -409,8 +421,7 @@ const RightsRepositoryTable = ({
 
     const saveColumnTableDef = event => {
         const newColumnState = event.columnApi?.getColumnState();
-
-        const viewID = userView.value;
+        const viewID = getUserView()?.value;
 
         const finalState = previousGridState?.map(viewObj => {
             if (viewID === viewObj.id) {
@@ -491,6 +502,7 @@ const RightsRepositoryTable = ({
                     username={username}
                     storeGridApi={storeSelectedRightsTabledApis}
                     setTableColumnDefinitions={setTableColumnDefinitions}
+                    saveColumnTableDef={saveColumnTableDef}
                 />
             )}
         </div>
