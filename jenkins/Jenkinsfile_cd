@@ -16,10 +16,11 @@ pipeline {
 
         stage('Kubernetes Deployment') {
             steps {
-                echo DEPLOY_DEV
-                echo DEPLOY_QA
-                if (DEPLOY_DEV.toBoolean()) {
-                    echo 'Deploying to DEV ...'
+                script {
+                    echo DEPLOY_DEV
+                    echo DEPLOY_QA
+                    if (DEPLOY_DEV.toBoolean()) {
+                        echo 'Deploying to DEV ...'
 //                    dir('kubernetes') {
 //                        git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
 //                        script {
@@ -29,13 +30,14 @@ pipeline {
 //                    dir('kubernetes/nexus-avails/portal') {
 //                        sh "./deploy.sh ${params.TARGET_ENVIRONMENT} nexus-avails ${imageTag}"
 //                    }
-                } else if (DEPLOY_QA.toBoolean()) {
-                    echo 'Deploying to QA ...'
-                    echo 'Triggering promote-qa--portal Pipeline'
+                    } else if (DEPLOY_QA.toBoolean()) {
+                        echo 'Deploying to QA ...'
+                        echo 'Triggering promote-qa--portal Pipeline'
 //                        echo "Triggering promote-qa--portal"
 //                        build job: 'promote-qa--portal', wait: true
-                } else {
-                    echo 'No Environment has been selected for Deployment'
+                    } else {
+                        echo 'No Environment has been selected for Deployment'
+                    }
                 }
             }
         }
