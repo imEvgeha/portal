@@ -9,21 +9,22 @@ pipeline {
         stage('Setup parameters') {
             steps {
                 echo IMAGE_TAG
+                echo 'Empty Step'
             }
         }
         stage('Setup Workspace') {
             steps {
-//                sh 'yarn run lint'
+                echo 'Empty Step'
             }
         }
         stage('Installing Dependencies') {
             steps {
-//                sh 'yarn run lint'
+                echo 'Empty Step'
             }
         }
         stage('Run Automation') {
             steps {
-//                sh 'yarn run lint'
+                echo 'Empty Step'
             }
         }
     }

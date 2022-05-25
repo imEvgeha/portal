@@ -52,6 +52,8 @@ pipeline {
                         imageTag = ''
                         tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
                         imageTag = "${tagTime}.${BUILD_NUMBER}"
+                        echo 'Portal UI Current Version: '
+                        echo imageTag
 //                        sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
 //                        sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
                         echo 'Portal UI Current Version: '
@@ -87,7 +89,7 @@ pipeline {
                         if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
                             echo 'Deploying using BRANCH_NAME'
                             if (DEPLOY_DEV) {
-                                echo 'Deploy to DEV has been selected'
+                                echo 'Triggering CD to Environment: DEV'
                                 build job: 'portal-ui-cd', parameters: [
                                     string(name: 'imageTag', value: imageTag),
                                     [$class: 'BooleanParameterValue', name: 'deployDev', value: true],
@@ -95,16 +97,15 @@ pipeline {
                                 ], wait: true
                             }
                             if (DEPLOY_QA) {
-                                echo 'Deploy to QA has been selected'
+                                echo 'Triggering CD to Environment: QA'
                                 build job: 'portal-ui-cd', parameters: [
                                     string(name: 'imageTag', value: imageTag),
                                     [$class: 'BooleanParameterValue', name: 'deployDev', value: false],
                                     [$class: 'BooleanParameterValue', name: 'deployQa', value: true],
                                 ], wait: true
                             }
-
                         } else {
-                            echo 'Not master branch, skipping Deployment'
+                            echo 'Not a valid branch(master/release), skipping Deployment'
                             echo BRANCH_NAME
                         }
                     }
