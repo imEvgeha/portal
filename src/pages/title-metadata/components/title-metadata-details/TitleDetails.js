@@ -151,6 +151,8 @@ const TitleDetails = ({
             }
         });
 
+        setRefresh(prev => !prev);
+
         prepareCategoryField(updatedValues);
         Promise.all([
             isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
@@ -166,7 +168,6 @@ const TitleDetails = ({
                 ),
             clearSeasonPersons(),
         ]).then(() => {
-            setRefresh(prev => !prev);
             setVZDisabled(true);
             setMOVDisabled(true);
             setMovIntDisabled(true);
