@@ -3,16 +3,19 @@ pipeline {
 
     environment {
         IMAGE_TAG = "${env.imageTag}"
-        TRIGGER_AT = "${env.triggerAT}"
         DEPLOY_DEV = "${env.deployDev}"
         DEPLOY_QA = "${env.deployQa}"
     }
 
     stages {
-        stage('Kubernetes Deployment') {
+        stage('Pull Docker') {
             steps {
                 echo IMAGE_TAG
-                echo TRIGGER_AT
+            }
+        }
+
+        stage('Kubernetes Deployment') {
+            steps {
                 echo DEPLOY_DEV
                 echo DEPLOY_QA
 //                dir('kubernetes') {

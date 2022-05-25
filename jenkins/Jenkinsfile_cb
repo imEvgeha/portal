@@ -66,10 +66,43 @@ pipeline {
                 script {
                     if (TRIGGER_AT) {
                         echo 'Triggering Automation . . .'
-                        if (BRANCH_NAME == 'origin/master') {
-                            echo 'Master Branch detected - Triggering AT'
+                        if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
+                            echo 'Master/Release Branch detected - Triggering AT'
+                            build job: 'portal-ui-at', parameters: [
+                                string(name: 'imageTag', value: imageTag)
+                            ], wait: true
+
+                        }
+                    }
+                }
+            }
+        }
+        stage('Triggering CD') {
+            steps {
+                script {
+                    if (DEPLOY_DEV || DEPLOY_DEV) {
+                        echo 'Triggering Deployment . . .'
+                        if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
+                            echo 'Deploying using BRANCH_NAME'
+                            if (DEPLOY_DEV) {
+                                echo 'Deploy to DEV has been selected'
+                                build job: 'portal-ui-cd', parameters: [
+                                    string(name: 'imageTag', value: imageTag),
+                                    boolean(name: 'deployDev', value: false),
+                                    boolean(name: 'deployQa', value: DEPLOY_QA),
+                                ], wait: true
+                            }
+                            if (DEPLOY_QA) {
+                                echo 'Deploy to QA has been selected'
+                                build job: 'portal-ui-cd', parameters: [
+                                    string(name: 'imageTag', value: imageTag),
+                                    boolean(name: 'deployDev', value: DEPLOY_DEV),
+                                    boolean(name: 'deployQa', value: false),
+                                ], wait: true
+                            }
+
                         } else {
-                            echo 'Not master branch, Triggering AT with feature branch'
+                            echo 'Not master branch, skipping Deployment'
                             echo BRANCH_NAME
                         }
                     }

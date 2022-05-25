@@ -12,19 +12,19 @@ pipeline {
             }
         }
         stage('Setup Workspace') {
-//            steps {
+            steps {
 //                sh 'yarn run lint'
-//            }
+            }
         }
         stage('Installing Dependencies') {
-//            steps {
+            steps {
 //                sh 'yarn run lint'
-//            }
+            }
         }
         stage('Run Automation') {
-//            steps {
+            steps {
 //                sh 'yarn run lint'
-//            }
+            }
         }
     }
     post {
