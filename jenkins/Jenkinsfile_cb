@@ -54,6 +54,8 @@ pipeline {
                         imageTag = "${tagTime}.${BUILD_NUMBER}"
 //                        sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
 //                        sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
+                        echo 'Portal UI Current Version: '
+                        echo imageTag
                     } else {
                         echo 'Not master/release branch, skipping creating docker image'
                         echo BRANCH_NAME
@@ -88,16 +90,16 @@ pipeline {
                                 echo 'Deploy to DEV has been selected'
                                 build job: 'portal-ui-cd', parameters: [
                                     string(name: 'imageTag', value: imageTag),
-                                    boolean(name: 'deployDev', value: false),
-                                    boolean(name: 'deployQa', value: DEPLOY_QA),
+                                    [$class: 'BooleanParameterValue', name: 'deployDev', value: true],
+                                    [$class: 'BooleanParameterValue', name: 'deployQa', value: false],
                                 ], wait: true
                             }
                             if (DEPLOY_QA) {
                                 echo 'Deploy to QA has been selected'
                                 build job: 'portal-ui-cd', parameters: [
                                     string(name: 'imageTag', value: imageTag),
-                                    boolean(name: 'deployDev', value: DEPLOY_DEV),
-                                    boolean(name: 'deployQa', value: false),
+                                    [$class: 'BooleanParameterValue', name: 'deployDev', value: false],
+                                    [$class: 'BooleanParameterValue', name: 'deployQa', value: true],
                                 ], wait: true
                             }
 
