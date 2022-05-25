@@ -84,11 +84,11 @@ pipeline {
         stage('Triggering CD') {
             steps {
                 script {
-                    if (DEPLOY_DEV || DEPLOY_DEV) {
+                    if (DEPLOY_DEV.toBoolean() || DEPLOY_QA.toBoolean()) {
                         echo 'Triggering Deployment . . .'
                         if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
                             echo 'Deploying using BRANCH_NAME'
-                            if (DEPLOY_DEV) {
+                            if (DEPLOY_DEV.toBoolean()) {
                                 echo 'Triggering CD to Environment: DEV'
                                 build job: 'portal-ui-cd', parameters: [
                                     string(name: 'imageTag', value: imageTag),
@@ -96,7 +96,7 @@ pipeline {
                                     [$class: 'BooleanParameterValue', name: 'deployQa', value: false],
                                 ], wait: true
                             }
-                            if (DEPLOY_QA) {
+                            if (DEPLOY_QA.toBoolean()) {
                                 echo 'Triggering CD to Environment: QA'
                                 build job: 'portal-ui-cd', parameters: [
                                     string(name: 'imageTag', value: imageTag),

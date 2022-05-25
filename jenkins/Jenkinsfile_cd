@@ -18,17 +18,27 @@ pipeline {
             steps {
                 echo DEPLOY_DEV
                 echo DEPLOY_QA
-//                dir('kubernetes') {
-//                    git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
-//                    script {
-//                        imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+                if (DEPLOY_DEV.toBoolean()) {
+                    echo 'Deploying to DEV ...'
+//                    dir('kubernetes') {
+//                        git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+//                        script {
+//                            imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+//                        }
 //                    }
-//                }
-//                dir('kubernetes/nexus-avails/portal') {
-//                    sh "./deploy.sh ${params.TARGET_ENVIRONMENT} nexus-avails ${imageTag}"
-//                }
+//                    dir('kubernetes/nexus-avails/portal') {
+//                        sh "./deploy.sh ${params.TARGET_ENVIRONMENT} nexus-avails ${imageTag}"
+//                    }
+                } else if (DEPLOY_QA.toBoolean()) {
+                    echo 'Deploying to QA ...'
+                    echo 'Triggering promote-qa--portal Pipeline'
+//                        echo "Triggering promote-qa--portal"
+//                        build job: 'promote-qa--portal', wait: true
+                } else {
+                    echo 'No Environment has been selected for Deployment'
+                }
             }
-        }  // kubernetes
+        }
     }
     post {
         success {
