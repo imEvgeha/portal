@@ -62,3 +62,8 @@ export const setPrePlanColumnDef = payload => ({
     type: actionTypes.SET_PREPLAN_COLUMN_DEF,
     payload,
 });
+
+export const setSelectedRightsColDef = payload => ({
+    type: actionTypes.SET_SELECTED_RIGHTS_COL_DEF,
+    payload,
+});
