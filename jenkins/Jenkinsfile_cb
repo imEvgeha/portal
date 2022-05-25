@@ -11,6 +11,10 @@ pipeline {
     stages {
         stage('Setup Workspace') {
             steps {
+                echo BRANCH_NAME
+                echo TRIGGER_AT
+                echo DEPLOY_DEV
+                echo DEPLOY_QA
                 sh 'rm -Rf node_modules'
                 sh 'rm -Rf dist'
             }
@@ -76,12 +80,10 @@ pipeline {
     post {
         success {
             sh 'echo Finished Successfully'
-            setBuildStatus("Build succeeded", "SUCCESS");
         }
         failure {
             // Vikings-VU@Amdocs.onmicrosoft.com
             mail to: 'mcharalambous@vubiquity.net', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
-            setBuildStatus("Build failed", "FAILURE");
         }
     }
 }
