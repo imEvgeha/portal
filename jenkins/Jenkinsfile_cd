@@ -1,0 +1,39 @@
+pipeline {
+    agent { label 'usla-jknd-p004' }
+
+    environment {
+        IMAGE_TAG = "${env.imageTag}"
+        TRIGGER_AT = "${env.triggerAT}"
+        DEPLOY_DEV = "${env.deployDev}"
+        DEPLOY_QA = "${env.deployQa}"
+    }
+
+    stages {
+        stage('Kubernetes Deployment') {
+            steps {
+                echo IMAGE_TAG
+                echo TRIGGER_AT
+                echo DEPLOY_DEV
+                echo DEPLOY_QA
+//                dir('kubernetes') {
+//                    git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+//                    script {
+//                        imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+//                    }
+//                }
+//                dir('kubernetes/nexus-avails/portal') {
+//                    sh "./deploy.sh ${params.TARGET_ENVIRONMENT} nexus-avails ${imageTag}"
+//                }
+            }
+        }  // kubernetes
+    }
+    post {
+        success {
+            sh 'echo Finished Successfully'
+        }
+        failure {
+            // Vikings-VU@Amdocs.onmicrosoft.com
+            mail to: 'mcharalambous@vubiquity.net', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+        }
+    }  // Post
+}

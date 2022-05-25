@@ -1,41 +1,56 @@
 void setBuildStatus(String message, String state) {
     step([
-        $class: "GitHubCommitStatusSetter",
-        reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github-us.production.tvn.com/Nexus/portal"],
-        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
-        errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-        statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+        $class            : "GitHubCommitStatusSetter",
+        reposSource       : [$class: "ManuallyEnteredRepositorySource", url: "https://github-us.production.tvn.com/Nexus/portal"],
+        contextSource     : [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
+        errorHandlers     : [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+        statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]]]
     ]);
 }
 
 pipeline {
     agent { label 'usla-jknd-p004' }
-     stages {
+    stages {
 
-         stage('Build') {
-             steps {
-                 sh 'rm -Rf node_modules'
-                 sh 'rm -Rf packages/ui/lib'
-                 sh 'rm -Rf packages/utils/lib'
-                 sh 'yarn'
-                 sh 'yarn prebuild'
-                 sh 'yarn build:local:prod'
-             }
-         }
-
-        stage('Test') {
+        stage('Setup Workspace') {
             steps {
-              sh 'yarn test'
+                sh 'rm -Rf node_modules'
+                sh 'rm -Rf dist'
             }
         }
-     }
+        stage('Installing Dependencies') {
+            steps {
+                sh 'yarn'
+            }
+        }
+        stage('Running Linter') {
+            steps {
+                sh 'yarn run lint'
+            }
+        }
+        stage('Building Packages') {
+            steps {
+                sh 'yarn prebuild'
+            }
+        }
+        stage('Building Portal') {
+            steps {
+                sh 'yarn build:local:prod'
+            }
+        }
+        stage('Running Tests') {
+            steps {
+                sh 'yarn test'
+            }
+        }
+    }
 
-       post {
-         success {
-             setBuildStatus("Build succeeded", "SUCCESS");
-         }
-         failure {
-             setBuildStatus("Build failed", "FAILURE");
-         }
-       }
- }
+    post {
+        success {
+            setBuildStatus("Build succeeded", "SUCCESS");
+        }
+        failure {
+            setBuildStatus("Build failed", "FAILURE");
+        }
+    }
+}

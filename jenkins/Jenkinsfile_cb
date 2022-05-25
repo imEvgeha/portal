@@ -1,0 +1,87 @@
+pipeline {
+    agent { label 'usla-jknd-p004' }
+
+    environment {
+        BRANCH_NAME = "${env.BRANCH}"
+        TRIGGER_AT = "${env.triggerAT}"
+        DEPLOY_DEV = "${env.deployDev}"
+        DEPLOY_QA = "${env.deployQa}"
+    }
+
+    stages {
+        stage('Setup Workspace') {
+            steps {
+                sh 'rm -Rf node_modules'
+                sh 'rm -Rf dist'
+            }
+        }
+        stage('Installing Dependencies') {
+            steps {
+                sh 'yarn'
+            }
+        }
+        stage('Running Linter') {
+            steps {
+                sh 'yarn run lint'
+            }
+        }
+        stage('Building Packages') {
+            steps {
+                sh 'yarn prebuild'
+            }
+        }
+        stage('Building Portal') {
+            steps {
+                sh 'yarn build:prod'
+            }
+        }
+        stage('Running Tests') {
+            steps {
+                sh 'yarn test'
+            }
+        }
+        stage('Docker') {
+            steps {
+                script {
+                    if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
+                        echo 'Master Branch detected - creating and pushing docker image'
+                        imageTag = ''
+                        tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
+                        imageTag = "${tagTime}.${BUILD_NUMBER}"
+//                        sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
+//                        sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
+                    } else {
+                        echo 'Not master/release branch, skipping creating docker image'
+                        echo BRANCH_NAME
+                    }
+                }
+            }
+        }
+        stage('Triggering AT') {
+            steps {
+                script {
+                    if (TRIGGER_AT) {
+                        echo 'Triggering Automation . . .'
+                        if (BRANCH_NAME == 'origin/master') {
+                            echo 'Master Branch detected - Triggering AT'
+                        } else {
+                            echo 'Not master branch, Triggering AT with feature branch'
+                            echo BRANCH_NAME
+                        }
+                    }
+                }
+            }
+        }
+    }
+    post {
+        success {
+            sh 'echo Finished Successfully'
+            setBuildStatus("Build succeeded", "SUCCESS");
+        }
+        failure {
+            // Vikings-VU@Amdocs.onmicrosoft.com
+            mail to: 'mcharalambous@vubiquity.net', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+            setBuildStatus("Build failed", "FAILURE");
+        }
+    }
+}

@@ -1,0 +1,39 @@
+pipeline {
+    agent { label 'usla-jknd-p004' }
+
+    environment {
+        IMAGE_TAG = "${env.imageTag}"
+    }
+
+    stages {
+        stage('Setup parameters') {
+            steps {
+                echo IMAGE_TAG
+            }
+        }
+        stage('Setup Workspace') {
+//            steps {
+//                sh 'yarn run lint'
+//            }
+        }
+        stage('Installing Dependencies') {
+//            steps {
+//                sh 'yarn run lint'
+//            }
+        }
+        stage('Run Automation') {
+//            steps {
+//                sh 'yarn run lint'
+//            }
+        }
+    }
+    post {
+        success {
+            sh 'echo Finished Successfully'
+        }
+        failure {
+            // Vikings-VU@Amdocs.onmicrosoft.com
+            mail to: 'mcharalambous@vubiquity.net', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+        }
+    }
+}
