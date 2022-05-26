@@ -77,7 +77,7 @@ const NexusDynamicForm = ({
                     isEmpty={isEmpty}
                     onCancel={onCancel}
                     seasonPersons={seasonPersons}
-                    showValidationError={showValidationError()}
+                    showValidationError={() => showValidationError()}
                 />
             </>
         );
