@@ -142,6 +142,12 @@ const rightsReducer = (state = initialState, action = {}) => {
                 prePlanColumnDef: payload,
             };
         }
+        case actionTypes.SET_SELECTED_RIGHTS_COL_DEF: {
+            return {
+                ...state,
+                selectedRightsColDef: payload,
+            };
+        }
         default:
             return state;
     }

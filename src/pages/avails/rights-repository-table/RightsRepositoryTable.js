@@ -50,7 +50,11 @@ import {
     setSelectedRights,
 } from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
-import {createAvailsCurrentUserViewSelector, getLastUserColumnState} from '../rights-repository/rightsSelectors';
+import {
+    createAvailsCurrentUserViewSelector,
+    getLastUserColumnState,
+    getSelectedRightsRepoColDefSelector,
+} from '../rights-repository/rightsSelectors';
 import {commonDragStoppedHandler, mapColumnDefinitions} from '../rights-repository/util/utils';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
@@ -85,6 +89,7 @@ const RightsRepositoryTable = ({
 }) => {
     const dispatch = useDispatch();
     const previousGridState = useSelector(getLastUserColumnState(username));
+    const selectedRightsRepoColDef = useSelector(getSelectedRightsRepoColDefSelector());
 
     const [showSelected, setShowSelected] = useState(false);
     const {count: totalCount, setCount: setTotalCount, api: gridApi, setApi: setGridApi} = useRowCountWithGridApiFix();
@@ -492,7 +497,7 @@ const RightsRepositoryTable = ({
 
             {showSelected && (
                 <SelectedRightsTable
-                    columnDefs={tableColumnDefinitions}
+                    columnDefs={selectedRightsRepoColDef.length ? selectedRightsRepoColDef : tableColumnDefinitions}
                     mapping={mapping}
                     notFilterableColumns={['action', 'buttons']}
                     selectedFilter={selectedFilter}

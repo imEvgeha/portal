@@ -8,7 +8,7 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
-import {setSelectedRights} from '../rights-repository/rightsActions';
+import {setSelectedRights, setSelectedRightsColDef} from '../rights-repository/rightsActions';
 import {commonDragStoppedHandler} from '../rights-repository/util/utils';
 
 const SelectedRightsGrid = compose(
@@ -27,8 +27,6 @@ const SelectedRightsTable = ({
     username,
     selectedIngest,
     storeGridApi,
-    setTableColumnDefinitions,
-    saveColumnTableDef,
 }) => {
     const [selectedRightsState, setSelectedRightsState] = useState([...selectedRights]);
     const [gridApi, setGridApi] = useState(undefined);
@@ -69,6 +67,7 @@ const SelectedRightsTable = ({
         switch (type) {
             case READY:
                 setGridApis(api, columnApi);
+                columnApi?.applyColumnState({state: columnDefs, applyOrder: true});
                 break;
             case SELECTION_CHANGED: {
                 const rightsNonSelectedIngest = selectedIngest?.id
@@ -91,8 +90,7 @@ const SelectedRightsTable = ({
     const dragStoppedHandler = event => {
         const currentColumnDefs = gridApi.getColumnDefs();
         const updatedMappings = commonDragStoppedHandler(event, currentColumnDefs, mapping);
-        setTableColumnDefinitions(updatedMappings);
-        saveColumnTableDef(event);
+        dispatch(setSelectedRightsColDef(updatedMappings));
     };
 
     return (
@@ -120,8 +118,6 @@ SelectedRightsTable.propTypes = {
     username: PropTypes.string,
     selectedIngest: PropTypes.object,
     storeGridApi: PropTypes.func.isRequired,
-    setTableColumnDefinitions: PropTypes.func,
-    saveColumnTableDef: PropTypes.func,
 };
 
 SelectedRightsTable.defaultProps = {
@@ -132,8 +128,6 @@ SelectedRightsTable.defaultProps = {
     selectedRights: [],
     username: {},
     selectedIngest: {},
-    setTableColumnDefinitions: () => null,
-    saveColumnTableDef: () => null,
 };
 
 export default SelectedRightsTable;

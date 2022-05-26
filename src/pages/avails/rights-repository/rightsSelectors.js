@@ -49,3 +49,6 @@ export const getLastUserColumnState = username =>
 
 export const getPrePlanColumnDefSelector = () =>
     createSelector(getRightsReducer, rights => rights?.prePlanColumnDef || []);
+
+export const getSelectedRightsRepoColDefSelector = () =>
+    createSelector(getRightsReducer, rights => rights?.selectedRightsColDef || []);
