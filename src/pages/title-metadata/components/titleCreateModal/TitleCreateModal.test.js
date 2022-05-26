@@ -1,4 +1,5 @@
 import React from 'react';
+import {isAllowed} from '@portal/portal-auth/permissions';
 import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
@@ -32,17 +33,22 @@ describe('TitleCreateModal', () => {
             expect(defaultWrapper.find('.nexus-c-title-create_dialog')).toHaveLength(1);
         });
 
-        it('should render footer for create title dialog window', () => {
-            expect(defaultWrapper.find('.nexus-c-title-create_footer-container')).toHaveLength(1);
-        });
-
         it('should render labels for create title dialog ControllerWrappers', () => {
-            expect(defaultWrapper.find(ControllerWrapper)).toHaveLength(5);
+            if (isAllowed('publishTitleMetadata')) {
+                expect(defaultWrapper.find(ControllerWrapper)).toHaveLength(5);
+            } else {
+                expect(defaultWrapper.find(ControllerWrapper)).toHaveLength(3);
+            }
         });
 
         it('should render checkbox container and checkboxes for create title dialog window', () => {
-            expect(defaultWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(1);
-            expect(defaultWrapper.find(Checkbox)).toHaveLength(2);
+            if (isAllowed('publishTitleMetadata')) {
+                expect(defaultWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(1);
+                expect(defaultWrapper.find(Checkbox)).toHaveLength(2);
+            } else {
+                expect(defaultWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(0);
+                expect(defaultWrapper.find(Checkbox)).toHaveLength(0);
+            }
         });
     });
 
@@ -61,10 +67,6 @@ describe('TitleCreateModal', () => {
 
         it('should render main dialog window for create title', () => {
             expect(matchingWrapper.find('.nexus-c-title-create_dialog')).toHaveLength(1);
-        });
-
-        it('should render footer for create title dialog window', () => {
-            expect(matchingWrapper.find('.nexus-c-title-create_footer-container')).toHaveLength(1);
         });
 
         it('should render labels for create title dialog inputs', () => {

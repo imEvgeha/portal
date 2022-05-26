@@ -14,7 +14,7 @@ import {unmergeTitle} from '../../../titleMetadataServices';
 const UNMERGE_TITLE = 'Unmerge';
 const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
-const ActionMenu = ({titleId}) => {
+const ActionMenu = ({titleId, containerClassName}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const {realmAccess} = keycloak;
     const {roles} = realmAccess || {};
@@ -42,7 +42,7 @@ const ActionMenu = ({titleId}) => {
     }, [titleId]);
 
     return isAbleSeeUnmergeBtn ? (
-        <div className="nexus-c-actions-menu-container">
+        <div className={containerClassName}>
             <NexusDropdown>
                 <DropdownToggle label="Actions" isMobile />
                 <DropdownOptions isMobile align="top">
@@ -59,8 +59,11 @@ const ActionMenu = ({titleId}) => {
 
 ActionMenu.propTypes = {
     titleId: PropTypes.string.isRequired,
+    containerClassName: PropTypes.string,
 };
 
-ActionMenu.defaultProps = {};
+ActionMenu.defaultProps = {
+    containerClassName: '',
+};
 
 export default ActionMenu;

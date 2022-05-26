@@ -112,7 +112,7 @@ const TitleDetails = ({
                 const nexusTitle = isNexusTitle(id);
                 const isMgm = isMgmTitle(id);
                 getTitle({id, selectedTenant});
-                nexusTitle && !isMgm && getExternalIds({id});
+                nexusTitle && isAllowed('publishTitleMetadata') && !isMgm && getExternalIds({id});
                 getTerritoryMetadata({id, selectedTenant});
                 getEditorialMetadata({id, selectedTenant});
                 clearSeasonPersons();
@@ -220,6 +220,10 @@ const TitleDetails = ({
 
     const syncPublishHandler = (externalSystem, buttonType) => {
         const {id} = routeParams;
+        if (!isAllowed('publishTitleMetadata')) {
+            return;
+        }
+
         if (buttonType === SYNC) {
             syncTitle({id, externalSystem});
         } else {
@@ -290,46 +294,57 @@ const TitleDetails = ({
                     />
                     <NexusStickyFooter>
                         <NexusStickyFooter.LeftActions>
-                            <NexusTooltip content={getDateTime(vzPublishedAt)}>
-                                <SyncPublish
-                                    externalSystem={VZ}
-                                    externalIds={externalIds}
-                                    onSyncPublish={syncPublishHandler}
-                                    isSyncing={isVZTitleSyncing}
-                                    isPublishing={isVZTitlePublishing}
-                                    isDisabled={VZDisabled}
-                                    titleUpdatedAt={title.updatedAt}
-                                    hasButtons={isNexusTitle(title.id)}
-                                />
-                            </NexusTooltip>
+                            <Restricted resource="publishTitleMetadata">
+                                <NexusTooltip content={getDateTime(vzPublishedAt)}>
+                                    <SyncPublish
+                                        externalSystem={VZ}
+                                        externalIds={externalIds}
+                                        onSyncPublish={syncPublishHandler}
+                                        isSyncing={isVZTitleSyncing}
+                                        isPublishing={isVZTitlePublishing}
+                                        isDisabled={VZDisabled}
+                                        titleUpdatedAt={title.updatedAt}
+                                        hasButtons={isNexusTitle(title.id)}
+                                    />
+                                </NexusTooltip>
+                                <NexusTooltip content={getDateTime(movidaUkPublishedAt)}>
+                                    <SyncPublish
+                                        externalSystem={MOVIDA_INTL}
+                                        externalIds={externalIds}
+                                        onSyncPublish={syncPublishHandler}
+                                        isSyncing={isMovIntTitleSyncing}
+                                        isPublishing={isMovIntTitlePublishing}
+                                        isDisabled={MovIntDisabled}
+                                        titleUpdatedAt={title.updatedAt}
+                                        hasButtons={isNexusTitle(title.id)}
+                                    />
+                                </NexusTooltip>
+                                <div className="nexus-c-line" />
+                                <NexusTooltip content={getDateTime(movidaPublishedAt)}>
+                                    <SyncPublish
+                                        externalSystem={MOVIDA}
+                                        externalIds={externalIds}
+                                        onSyncPublish={syncPublishHandler}
+                                        isSyncing={isMOVTitleSyncing}
+                                        isPublishing={isMOVTitlePublishing}
+                                        isDisabled={MOVDisabled}
+                                        titleUpdatedAt={title.updatedAt}
+                                        hasButtons={isNexusTitle(title.id)}
+                                    />
+                                </NexusTooltip>
+                            </Restricted>
 
-                            <NexusTooltip content={getDateTime(movidaUkPublishedAt)}>
-                                <SyncPublish
-                                    externalSystem={MOVIDA_INTL}
-                                    externalIds={externalIds}
-                                    onSyncPublish={syncPublishHandler}
-                                    isSyncing={isMovIntTitleSyncing}
-                                    isPublishing={isMovIntTitlePublishing}
-                                    isDisabled={MovIntDisabled}
-                                    titleUpdatedAt={title.updatedAt}
-                                    hasButtons={isNexusTitle(title.id)}
-                                />
-                            </NexusTooltip>
-                            <div className="nexus-c-line" />
-                            <NexusTooltip content={getDateTime(movidaPublishedAt)}>
-                                <SyncPublish
-                                    externalSystem={MOVIDA}
-                                    externalIds={externalIds}
-                                    onSyncPublish={syncPublishHandler}
-                                    isSyncing={isMOVTitleSyncing}
-                                    isPublishing={isMOVTitlePublishing}
-                                    isDisabled={MOVDisabled}
-                                    titleUpdatedAt={title.updatedAt}
-                                    hasButtons={isNexusTitle(title.id)}
-                                />
-                            </NexusTooltip>
                             <Restricted resource="titleDetailsActionMenu">
-                                {title.id && <ActionMenu titleId={title.id} />}
+                                {title.id && (
+                                    <ActionMenu
+                                        titleId={title.id}
+                                        containerClassName={
+                                            isAllowed('publishTitleMetadata')
+                                                ? 'nexus-c-actions-menu-container-without-buttons'
+                                                : 'nexus-c-actions-menu-container'
+                                        }
+                                    />
+                                )}
                             </Restricted>
                         </NexusStickyFooter.LeftActions>
                     </NexusStickyFooter>

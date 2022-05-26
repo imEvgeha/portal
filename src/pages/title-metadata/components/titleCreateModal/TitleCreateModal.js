@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {Restricted} from '@portal/portal-auth/permissions';
 import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
@@ -217,38 +218,40 @@ const TitleCreate = ({
     };
 
     const renderSyncCheckBoxes = () => (
-        <div className="nexus-c-title-create_checkbox-container">
-            <div className="row">
-                <div className="col nexus-c-title-create_checkbox-wrapper">
-                    <ControllerWrapper
-                        title="Publish to VZ and Movida Int`l"
-                        inputName="syncVZ"
-                        errors={errors.syncVZ}
-                        control={control}
-                        register={register}
-                        labelClassName="nexus-c-title-create_checkbox-label"
-                        isItCheckbox
-                    >
-                        <Checkbox id="syncVZ" inputId="syncVZ" className="nexus-c-title-create_checkbox" />
-                    </ControllerWrapper>
+        <Restricted resource="publishTitleMetadata">
+            <div className="nexus-c-title-create_checkbox-container">
+                <div className="row">
+                    <div className="col nexus-c-title-create_checkbox-wrapper">
+                        <ControllerWrapper
+                            title="Publish to VZ and Movida Int`l"
+                            inputName="syncVZ"
+                            errors={errors.syncVZ}
+                            control={control}
+                            register={register}
+                            labelClassName="nexus-c-title-create_checkbox-label"
+                            isItCheckbox
+                        >
+                            <Checkbox id="syncVZ" inputId="syncVZ" className="nexus-c-title-create_checkbox" />
+                        </ControllerWrapper>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col nexus-c-title-create_checkbox-wrapper">
+                        <ControllerWrapper
+                            title="Publish to Movida"
+                            inputName="syncMovida"
+                            errors={errors.syncMovida}
+                            control={control}
+                            register={register}
+                            labelClassName="nexus-c-title-create_checkbox-label"
+                            isItCheckbox
+                        >
+                            <Checkbox id="syncMovida" inputId="syncMovida" className="nexus-c-title-create_checkbox" />
+                        </ControllerWrapper>
+                    </div>
                 </div>
             </div>
-            <div className="row">
-                <div className="col nexus-c-title-create_checkbox-wrapper">
-                    <ControllerWrapper
-                        title="Publish to Movida"
-                        inputName="syncMovida"
-                        errors={errors.syncMovida}
-                        control={control}
-                        register={register}
-                        labelClassName="nexus-c-title-create_checkbox-label"
-                        isItCheckbox
-                    >
-                        <Checkbox id="syncMovida" inputId="syncMovida" className="nexus-c-title-create_checkbox" />
-                    </ControllerWrapper>
-                </div>
-            </div>
-        </div>
+        </Restricted>
     );
 
     const renderFooter = () => (

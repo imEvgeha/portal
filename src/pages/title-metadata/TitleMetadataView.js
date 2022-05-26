@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@portal/portal-auth/authSelectors';
+import {isAllowed} from '@portal/portal-auth/permissions';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_METADATA} from '@vubiquity-nexus/portal-utils/lib/constants';
@@ -21,7 +22,7 @@ import UploadMetadataTable from './components/upload-metadata-table/UploadMetada
 import './TitleMetadataView.scss';
 import {setCurrentUserViewAction, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
 import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
-import {TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
+import {TITLE_METADATA_SYNC_LOG_TAB, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
     toggleRefreshGridData,
@@ -69,6 +70,15 @@ export const TitleMetadataView = ({
         );
     };
 
+    const getTitleMetadataTabs = () => {
+        if (isAllowed('publishTitleMetadata')) {
+            const newTitleMetadataTabs = [...TITLE_METADATA_TABS];
+            newTitleMetadataTabs.splice(1, 0, TITLE_METADATA_SYNC_LOG_TAB);
+            return newTitleMetadataTabs;
+        }
+        return TITLE_METADATA_TABS;
+    };
+
     useEffect(() => {
         if (!isEmpty(gridState) && username) {
             setUserDefinedGridStates(gridState[`${username}`]);
@@ -93,8 +103,8 @@ export const TitleMetadataView = ({
     }, []);
 
     const getNameOfCurrentTab = () => {
-        const lastIndex = TITLE_METADATA_TABS.length - 1;
-        if (lastIndex >= 0) return TITLE_METADATA_TABS[activeIndex].value;
+        const lastIndex = getTitleMetadataTabs()?.length - 1;
+        if (lastIndex >= 0) return getTitleMetadataTabs()?.[activeIndex].value;
     };
 
     const isItTheSameTab = tabName => getNameOfCurrentTab() === tabName;
@@ -173,7 +183,7 @@ export const TitleMetadataView = ({
                     <div className="col-4 d-flex justify-content-center">
                         <TabMenu
                             className="nexus-c-title-metadata__tab-menu"
-                            model={TITLE_METADATA_TABS}
+                            model={getTitleMetadataTabs()}
                             activeIndex={activeIndex}
                             onTabChange={e => setActiveIndex(e.index)}
                         />
@@ -216,7 +226,7 @@ export const TitleMetadataView = ({
                     className="nexus-c-title-metadata__table"
                 />
             ) : null}
-            {isItTheSameTab('syncLog') ? <SyncLogTable /> : null}
+            {isItTheSameTab('syncLog') && isAllowed('publishTitleMetadata') ? <SyncLogTable /> : null}
             {isItTheSameTab('uploadLog') ? (
                 <UploadMetadataTable
                     catalogueOwner={catalogueOwner}

@@ -517,268 +517,272 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     </ControllerWrapper>
                   </div>
                 </div>
-                <div
-                  className="nexus-c-title-create_checkbox-container"
+                <Restricted
+                  resource="publishTitleMetadata"
                 >
                   <div
-                    className="row"
+                    className="nexus-c-title-create_checkbox-container"
                   >
                     <div
-                      className="col nexus-c-title-create_checkbox-wrapper"
+                      className="row"
                     >
-                      <ControllerWrapper
-                        additionalValidation={Object {}}
-                        control={
-                          Object {
-                            "_defaultValues": Object {
-                              "catalogueOwner": "vu",
-                            },
-                            "_fields": Object {},
-                            "_formState": Object {
-                              "dirtyFields": Object {},
-                              "errors": Object {},
-                              "isDirty": false,
-                              "isSubmitSuccessful": false,
-                              "isSubmitted": false,
-                              "isSubmitting": false,
-                              "isValid": false,
-                              "isValidating": false,
-                              "submitCount": 0,
-                              "touchedFields": Object {},
-                            },
-                            "_formValues": Object {
-                              "catalogueOwner": "vu",
-                            },
-                            "_getDirty": [Function],
-                            "_getFieldArray": [Function],
-                            "_getWatch": [Function],
-                            "_names": Object {
-                              "array": Set {},
-                              "mount": Set {},
-                              "unMount": Set {},
-                              "watch": Set {},
-                            },
-                            "_options": Object {
-                              "defaultValues": Object {
+                      <div
+                        className="col nexus-c-title-create_checkbox-wrapper"
+                      >
+                        <ControllerWrapper
+                          additionalValidation={Object {}}
+                          control={
+                            Object {
+                              "_defaultValues": Object {
                                 "catalogueOwner": "vu",
                               },
-                              "mode": "all",
-                              "reValidateMode": "onChange",
-                              "shouldFocusError": true,
-                            },
-                            "_proxyFormState": Object {
-                              "dirtyFields": "all",
-                              "errors": "all",
-                              "isDirty": false,
-                              "isValid": "all",
-                              "isValidating": false,
-                              "touchedFields": false,
-                            },
-                            "_removeUnmounted": [Function],
-                            "_stateFlags": Object {
-                              "action": false,
-                              "mount": true,
-                              "watch": false,
-                            },
-                            "_subjects": Object {
-                              "array": ye {
-                                "observers": Array [],
+                              "_fields": Object {},
+                              "_formState": Object {
+                                "dirtyFields": Object {},
+                                "errors": Object {},
+                                "isDirty": false,
+                                "isSubmitSuccessful": false,
+                                "isSubmitted": false,
+                                "isSubmitting": false,
+                                "isValid": false,
+                                "isValidating": false,
+                                "submitCount": 0,
+                                "touchedFields": Object {},
                               },
-                              "control": ye {
-                                "observers": Array [],
+                              "_formValues": Object {
+                                "catalogueOwner": "vu",
                               },
-                              "state": ye {
-                                "observers": Array [
-                                  me {
-                                    "closed": false,
-                                    "observer": Object {
-                                      "next": [Function],
+                              "_getDirty": [Function],
+                              "_getFieldArray": [Function],
+                              "_getWatch": [Function],
+                              "_names": Object {
+                                "array": Set {},
+                                "mount": Set {},
+                                "unMount": Set {},
+                                "watch": Set {},
+                              },
+                              "_options": Object {
+                                "defaultValues": Object {
+                                  "catalogueOwner": "vu",
+                                },
+                                "mode": "all",
+                                "reValidateMode": "onChange",
+                                "shouldFocusError": true,
+                              },
+                              "_proxyFormState": Object {
+                                "dirtyFields": "all",
+                                "errors": "all",
+                                "isDirty": false,
+                                "isValid": "all",
+                                "isValidating": false,
+                                "touchedFields": false,
+                              },
+                              "_removeUnmounted": [Function],
+                              "_stateFlags": Object {
+                                "action": false,
+                                "mount": true,
+                                "watch": false,
+                              },
+                              "_subjects": Object {
+                                "array": ye {
+                                  "observers": Array [],
+                                },
+                                "control": ye {
+                                  "observers": Array [],
+                                },
+                                "state": ye {
+                                  "observers": Array [
+                                    me {
+                                      "closed": false,
+                                      "observer": Object {
+                                        "next": [Function],
+                                      },
                                     },
-                                  },
-                                ],
-                              },
-                              "watch": ye {
-                                "observers": Array [
-                                  me {
-                                    "closed": false,
-                                    "observer": Object {
-                                      "next": [Function],
+                                  ],
+                                },
+                                "watch": ye {
+                                  "observers": Array [
+                                    me {
+                                      "closed": false,
+                                      "observer": Object {
+                                        "next": [Function],
+                                      },
                                     },
-                                  },
-                                ],
+                                  ],
+                                },
                               },
-                            },
-                            "_updateFieldArray": [Function],
-                            "_updateValid": [Function],
-                            "register": [Function],
-                            "unregister": [Function],
+                              "_updateFieldArray": [Function],
+                              "_updateValid": [Function],
+                              "register": [Function],
+                              "unregister": [Function],
+                            }
                           }
-                        }
-                        controllerClassName=""
-                        handleChange={[Function]}
-                        inputName="syncVZ"
-                        isItCheckbox={true}
-                        labelClassName="nexus-c-title-create_checkbox-label"
-                        register={[Function]}
-                        required={false}
-                        title="Publish to VZ and Movida Int\`l"
-                      >
-                        <Checkbox
-                          ariaLabelledBy={null}
-                          checked={false}
-                          className="nexus-c-title-create_checkbox"
-                          disabled={false}
-                          falseValue={false}
-                          icon="pi pi-check"
-                          id="syncVZ"
-                          inputId="syncVZ"
-                          inputRef={null}
-                          name={null}
-                          onChange={null}
-                          onContextMenu={null}
-                          onMouseDown={null}
-                          readOnly={false}
+                          controllerClassName=""
+                          handleChange={[Function]}
+                          inputName="syncVZ"
+                          isItCheckbox={true}
+                          labelClassName="nexus-c-title-create_checkbox-label"
+                          register={[Function]}
                           required={false}
-                          style={null}
-                          tabIndex={null}
-                          tooltip={null}
-                          tooltipOptions={null}
-                          trueValue={true}
-                          value={null}
-                        />
-                      </ControllerWrapper>
+                          title="Publish to VZ and Movida Int\`l"
+                        >
+                          <Checkbox
+                            ariaLabelledBy={null}
+                            checked={false}
+                            className="nexus-c-title-create_checkbox"
+                            disabled={false}
+                            falseValue={false}
+                            icon="pi pi-check"
+                            id="syncVZ"
+                            inputId="syncVZ"
+                            inputRef={null}
+                            name={null}
+                            onChange={null}
+                            onContextMenu={null}
+                            onMouseDown={null}
+                            readOnly={false}
+                            required={false}
+                            style={null}
+                            tabIndex={null}
+                            tooltip={null}
+                            tooltipOptions={null}
+                            trueValue={true}
+                            value={null}
+                          />
+                        </ControllerWrapper>
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    className="row"
-                  >
                     <div
-                      className="col nexus-c-title-create_checkbox-wrapper"
+                      className="row"
                     >
-                      <ControllerWrapper
-                        additionalValidation={Object {}}
-                        control={
-                          Object {
-                            "_defaultValues": Object {
-                              "catalogueOwner": "vu",
-                            },
-                            "_fields": Object {},
-                            "_formState": Object {
-                              "dirtyFields": Object {},
-                              "errors": Object {},
-                              "isDirty": false,
-                              "isSubmitSuccessful": false,
-                              "isSubmitted": false,
-                              "isSubmitting": false,
-                              "isValid": false,
-                              "isValidating": false,
-                              "submitCount": 0,
-                              "touchedFields": Object {},
-                            },
-                            "_formValues": Object {
-                              "catalogueOwner": "vu",
-                            },
-                            "_getDirty": [Function],
-                            "_getFieldArray": [Function],
-                            "_getWatch": [Function],
-                            "_names": Object {
-                              "array": Set {},
-                              "mount": Set {},
-                              "unMount": Set {},
-                              "watch": Set {},
-                            },
-                            "_options": Object {
-                              "defaultValues": Object {
+                      <div
+                        className="col nexus-c-title-create_checkbox-wrapper"
+                      >
+                        <ControllerWrapper
+                          additionalValidation={Object {}}
+                          control={
+                            Object {
+                              "_defaultValues": Object {
                                 "catalogueOwner": "vu",
                               },
-                              "mode": "all",
-                              "reValidateMode": "onChange",
-                              "shouldFocusError": true,
-                            },
-                            "_proxyFormState": Object {
-                              "dirtyFields": "all",
-                              "errors": "all",
-                              "isDirty": false,
-                              "isValid": "all",
-                              "isValidating": false,
-                              "touchedFields": false,
-                            },
-                            "_removeUnmounted": [Function],
-                            "_stateFlags": Object {
-                              "action": false,
-                              "mount": true,
-                              "watch": false,
-                            },
-                            "_subjects": Object {
-                              "array": ye {
-                                "observers": Array [],
+                              "_fields": Object {},
+                              "_formState": Object {
+                                "dirtyFields": Object {},
+                                "errors": Object {},
+                                "isDirty": false,
+                                "isSubmitSuccessful": false,
+                                "isSubmitted": false,
+                                "isSubmitting": false,
+                                "isValid": false,
+                                "isValidating": false,
+                                "submitCount": 0,
+                                "touchedFields": Object {},
                               },
-                              "control": ye {
-                                "observers": Array [],
+                              "_formValues": Object {
+                                "catalogueOwner": "vu",
                               },
-                              "state": ye {
-                                "observers": Array [
-                                  me {
-                                    "closed": false,
-                                    "observer": Object {
-                                      "next": [Function],
+                              "_getDirty": [Function],
+                              "_getFieldArray": [Function],
+                              "_getWatch": [Function],
+                              "_names": Object {
+                                "array": Set {},
+                                "mount": Set {},
+                                "unMount": Set {},
+                                "watch": Set {},
+                              },
+                              "_options": Object {
+                                "defaultValues": Object {
+                                  "catalogueOwner": "vu",
+                                },
+                                "mode": "all",
+                                "reValidateMode": "onChange",
+                                "shouldFocusError": true,
+                              },
+                              "_proxyFormState": Object {
+                                "dirtyFields": "all",
+                                "errors": "all",
+                                "isDirty": false,
+                                "isValid": "all",
+                                "isValidating": false,
+                                "touchedFields": false,
+                              },
+                              "_removeUnmounted": [Function],
+                              "_stateFlags": Object {
+                                "action": false,
+                                "mount": true,
+                                "watch": false,
+                              },
+                              "_subjects": Object {
+                                "array": ye {
+                                  "observers": Array [],
+                                },
+                                "control": ye {
+                                  "observers": Array [],
+                                },
+                                "state": ye {
+                                  "observers": Array [
+                                    me {
+                                      "closed": false,
+                                      "observer": Object {
+                                        "next": [Function],
+                                      },
                                     },
-                                  },
-                                ],
-                              },
-                              "watch": ye {
-                                "observers": Array [
-                                  me {
-                                    "closed": false,
-                                    "observer": Object {
-                                      "next": [Function],
+                                  ],
+                                },
+                                "watch": ye {
+                                  "observers": Array [
+                                    me {
+                                      "closed": false,
+                                      "observer": Object {
+                                        "next": [Function],
+                                      },
                                     },
-                                  },
-                                ],
+                                  ],
+                                },
                               },
-                            },
-                            "_updateFieldArray": [Function],
-                            "_updateValid": [Function],
-                            "register": [Function],
-                            "unregister": [Function],
+                              "_updateFieldArray": [Function],
+                              "_updateValid": [Function],
+                              "register": [Function],
+                              "unregister": [Function],
+                            }
                           }
-                        }
-                        controllerClassName=""
-                        handleChange={[Function]}
-                        inputName="syncMovida"
-                        isItCheckbox={true}
-                        labelClassName="nexus-c-title-create_checkbox-label"
-                        register={[Function]}
-                        required={false}
-                        title="Publish to Movida"
-                      >
-                        <Checkbox
-                          ariaLabelledBy={null}
-                          checked={false}
-                          className="nexus-c-title-create_checkbox"
-                          disabled={false}
-                          falseValue={false}
-                          icon="pi pi-check"
-                          id="syncMovida"
-                          inputId="syncMovida"
-                          inputRef={null}
-                          name={null}
-                          onChange={null}
-                          onContextMenu={null}
-                          onMouseDown={null}
-                          readOnly={false}
+                          controllerClassName=""
+                          handleChange={[Function]}
+                          inputName="syncMovida"
+                          isItCheckbox={true}
+                          labelClassName="nexus-c-title-create_checkbox-label"
+                          register={[Function]}
                           required={false}
-                          style={null}
-                          tabIndex={null}
-                          tooltip={null}
-                          tooltipOptions={null}
-                          trueValue={true}
-                          value={null}
-                        />
-                      </ControllerWrapper>
+                          title="Publish to Movida"
+                        >
+                          <Checkbox
+                            ariaLabelledBy={null}
+                            checked={false}
+                            className="nexus-c-title-create_checkbox"
+                            disabled={false}
+                            falseValue={false}
+                            icon="pi pi-check"
+                            id="syncMovida"
+                            inputId="syncMovida"
+                            inputRef={null}
+                            name={null}
+                            onChange={null}
+                            onContextMenu={null}
+                            onMouseDown={null}
+                            readOnly={false}
+                            required={false}
+                            style={null}
+                            tabIndex={null}
+                            tooltip={null}
+                            tooltipOptions={null}
+                            trueValue={true}
+                            value={null}
+                          />
+                        </ControllerWrapper>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Restricted>
               </div>
             </div>
           </form>

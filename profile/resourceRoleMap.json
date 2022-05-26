@@ -194,5 +194,13 @@
     "servicingOrdersEdit": {
         "operation": "AND",
         "values": ["manage-servicing-orders"]
+    },
+    "publishTitleMetadata": {
+        "operation": "AND",
+        "values": ["metadata_publish"]
+    },
+    "msvIDsForTitleMetadata": {
+        "operation": "AND",
+        "values": ["metadata_msv_ids"]
     }
 }
