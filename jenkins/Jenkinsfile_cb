@@ -63,6 +63,8 @@ pipeline {
                         if (CREATE_AND_PUSH_DOCKER.toBoolean()) {
                             sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
                             sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
+                        } else {
+                            echo 'Skipping docker creation and pushing'
                         }
 
                     } else {
