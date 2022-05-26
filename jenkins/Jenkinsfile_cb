@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     // if the branch is origin/master or any release* remote
-                    if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
+                    if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('refs/heads/release')) {
                         echo 'Master Branch detected - creating and pushing docker image'
                         imageTag = ''
                         tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
@@ -79,7 +79,7 @@ pipeline {
                 script {
                     if (TRIGGER_AT) {
                         echo 'Triggering Automation . . .'
-                        if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
+                        if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('refs/heads/release')) {
                             echo 'Master/Release Branch detected - Triggering AT'
                             build job: 'portal-ui-at', parameters: [
                                 string(name: 'imageTag', value: imageTag)
@@ -95,7 +95,7 @@ pipeline {
                 script {
                     if (DEPLOY_DEV.toBoolean() || DEPLOY_QA.toBoolean()) {
                         echo 'Triggering Deployment . . .'
-                        if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
+                        if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('refs/heads/release')) {
                             echo 'Deploying using BRANCH_NAME'
                             if (DEPLOY_DEV.toBoolean()) {
                                 echo 'Triggering CD to Environment: DEV'
