@@ -6,15 +6,18 @@ pipeline {
         TRIGGER_AT = "${env.triggerAT}"
         DEPLOY_DEV = "${env.deployDev}"
         DEPLOY_QA = "${env.deployQa}"
+        CREATE_AND_PUSH_DOCKER = "${env.createAndPublishDocker}"
     }
 
     stages {
         stage('Setup Workspace') {
             steps {
+                echo '*** Printing Parameters ***'
                 echo BRANCH_NAME
                 echo TRIGGER_AT
                 echo DEPLOY_DEV
                 echo DEPLOY_QA
+                echo CREATE_AND_PUSH_DOCKER
                 sh 'rm -Rf node_modules'
                 sh 'rm -Rf dist'
             }
@@ -47,6 +50,7 @@ pipeline {
         stage('Docker') {
             steps {
                 script {
+                    // if the branch is origin/master or any release* remote
                     if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
                         echo 'Master Branch detected - creating and pushing docker image'
                         imageTag = ''
@@ -54,10 +58,13 @@ pipeline {
                         imageTag = "${tagTime}.${BUILD_NUMBER}"
                         echo 'Portal UI Current Version: '
                         echo imageTag
-//                        sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
-//                        sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
-                        echo 'Portal UI Current Version: '
-                        echo imageTag
+
+                        // if flag for createAndPublishDocker is enabled
+                        if (CREATE_AND_PUSH_DOCKER.toBoolean()) {
+                            sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
+                            sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
+                        }
+
                     } else {
                         echo 'Not master/release branch, skipping creating docker image'
                         echo BRANCH_NAME
