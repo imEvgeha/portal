@@ -33,7 +33,7 @@ pipeline {
                     } else if (DEPLOY_QA.toBoolean()) {
                         echo 'Deploying to QA ...'
                         echo 'Triggering promote-qa--portal Pipeline'
-//                        echo "Triggering promote-qa--portal"
+
 //                        build job: 'promote-qa--portal', wait: true
                     } else {
                         echo 'No Environment has been selected for Deployment'
