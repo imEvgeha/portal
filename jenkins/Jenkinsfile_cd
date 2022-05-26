@@ -8,9 +8,18 @@ pipeline {
     }
 
     stages {
-        stage('Pull Docker') {
+        stage('Check Prerequisites') {
             steps {
-                echo IMAGE_TAG
+                script {
+                    if (!IMAGE_TAG.trim()) {
+                        echo 'Image Tag is empty'
+                        error("ERROR: Build failed because of no Image Tag input..")
+                    }
+                    if (!DEPLOY_DEV.toBoolean() && !DEPLOY_QA.toBoolean()) {
+                        echo 'No selected deployment - DEV (and/or) QA option is needed'
+                        error("ERROR: Build failed because of no selected parameter..")
+                    }
+                }
             }
         }
 
@@ -21,19 +30,21 @@ pipeline {
                     echo DEPLOY_QA
                     if (DEPLOY_DEV.toBoolean()) {
                         echo 'Deploying to DEV ...'
-//                    dir('kubernetes') {
-//                        git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
-//                        script {
-//                            imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+                        // deploy
+//                        dir('kubernetes') {
+//                            git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+//                            script {
+//                                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+//                            }
 //                        }
-//                    }
-//                    dir('kubernetes/nexus-avails/portal') {
-//                        sh "./deploy.sh dev nexus-avails ${imageTag}"
-//                    }
+//                        dir('kubernetes/nexus-avails/portal') {
+//                            sh "./deploy.sh dev nexus-avails ${IMAGE_TAG}"
+//                        }
                     } else if (DEPLOY_QA.toBoolean()) {
                         echo 'Deploying to QA ...'
                         echo 'Triggering promote-qa--portal Pipeline'
 
+                        // deploy
 //                        build job: 'promote-qa--portal', wait: true
                     } else {
                         echo 'No Environment has been selected for Deployment'
@@ -47,8 +58,7 @@ pipeline {
             sh 'echo Finished Successfully'
         }
         failure {
-            // Vikings-VU@Amdocs.onmicrosoft.com
-            mail to: 'mcharalambous@vubiquity.net', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+            mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
         }
     }  // Post
 }

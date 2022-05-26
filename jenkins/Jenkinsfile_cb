@@ -127,8 +127,7 @@ pipeline {
             sh 'echo Finished Successfully'
         }
         failure {
-            // Vikings-VU@Amdocs.onmicrosoft.com
-            mail to: 'mcharalambous@vubiquity.net', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+            mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
         }
     }
 }
