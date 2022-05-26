@@ -103,7 +103,7 @@ const TitleCreate = ({
                 if (currentValues.syncVZ || currentValues.syncMovida) {
                     // call registerTitle API
                     publisherService
-                        .registerTitle(response.id, currentValues.syncVZ, currentValues.syncMovida)
+                        .registerTitle(response?.meta?.id, currentValues.syncVZ, currentValues.syncMovida)
                         .then(response => {
                             addToast({
                                 severity: 'success',
