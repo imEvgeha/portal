@@ -1,4 +1,3 @@
-import {isAllowed} from '@portal/portal-auth/permissions';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {SUCCESS_ICON, ERROR_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {uploadService} from '@vubiquity-nexus/portal-utils/lib/services/UploadService';

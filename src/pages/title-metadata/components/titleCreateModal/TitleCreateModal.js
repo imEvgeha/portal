@@ -202,18 +202,10 @@ const TitleCreate = ({
     };
 
     const getTitleWithoutEmptyField = titleForm => {
-        const isEpisodicEmpty = titleForm.seriesTitleName || titleForm.episodeNumber || titleForm.seasonNumber;
         return {
             name: titleForm.title,
             releaseYear: titleForm.releaseYear || null,
             contentType: titleForm.contentType.toLowerCase(),
-            episodic: isEpisodicEmpty
-                ? {
-                      seriesTitleName: titleForm.seriesTitleName || null,
-                      episodeNumber: titleForm.episodeNumber || null,
-                      seasonNumber: titleForm.seasonNumber || null,
-                  }
-                : null,
         };
     };
 
