@@ -414,7 +414,9 @@ const RightsRepositoryTable = ({
         const {data} = res;
         const selectedIds = getCurrentUserSelRights().map(x => x.id);
         const refreshedSelectedRights = data.filter(x => selectedIds.includes(x.id));
-        setSelectedRights({[username]: refreshedSelectedRights});
+        if (refreshedSelectedRights.length) {
+            setSelectedRights({[username]: refreshedSelectedRights});
+        }
     };
 
     const dragStoppedHandler = event => {
