@@ -21,6 +21,7 @@ exports[`Settings Page should match snapshot 1`] = `
         className="col-4 d-flex justify-content-center"
       >
         <TabMenu
+          __TYPE="TabMenu"
           activeIndex={0}
           className="nexus-c-title-metadata__tab-menu"
           id={null}

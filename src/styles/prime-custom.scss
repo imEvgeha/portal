@@ -1,4 +1,4 @@
-@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+@import '~@portal/portal-components/styles/color-palette';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 
 // Variables
@@ -438,6 +438,7 @@ $element-color-orange-80: palette(orange, 80);
         width: 100%;
         margin-bottom: $element-margin-bottom;
         border-radius: $element-border-radius;
+        background-color: $element-background-color-2;
 
         font-size: 13px;
         color: palette(black, 100);
@@ -614,6 +615,7 @@ $element-color-orange-80: palette(orange, 80);
         width: 100%;
         margin-bottom: $element-margin-bottom;
         border-radius: $element-border-radius;
+        background-color: $element-background-color-2;
 
         &.p-inputwrapper {
             &.p-inputwrapper-filled {
@@ -887,6 +889,7 @@ $element-color-orange-80: palette(orange, 80);
 .p-badge {
     &.p-badge-dot {
         width: 8px;
+        min-width: 8px;
         height: 8px;
         background-color: $element-background-color-20;
 

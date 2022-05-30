@@ -7,7 +7,7 @@ import AtlaskitMoreIcon from '@vubiquity-nexus/portal-assets/atlaskit-more-icon.
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
-import { Button as PrimereactButton } from 'primereact/button';
+import {Button as PrimereactButton} from 'primereact/button';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import {RIGHTS_TAB, STATUS_TAB} from '../rights-repository/constants';
 import {CREATE_REPORT, END_YEAR, MOCK_YEAR, MONTHS, NEW_RELEASE_REPORT, START_YEAR} from './constants';
@@ -37,7 +37,9 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, total
                 setIsLoading(false);
                 setIsOpen(false);
                 addToast({
-                    detail: `${error?.type}: failed to create report. ${error.message ? `Details: ${error.message}` : ''}`,
+                    detail: `${error?.type}: failed to create report. ${
+                        error.message ? `Details: ${error.message}` : ''
+                    }`,
                     severity: 'error',
                 });
             });
@@ -74,7 +76,7 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, total
                 <PrimereactButton
                     label={isLoading ? '' : CREATE_REPORT}
                     loading={isLoading}
-                    className="p-custom-button p-button-fit-container nexus-c-right-repository-release-report-content__btn"
+                    className="w-100 p-button-outlined"
                     onClick={onCreateReport}
                 />
             </div>

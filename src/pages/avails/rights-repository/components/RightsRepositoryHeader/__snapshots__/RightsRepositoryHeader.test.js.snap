@@ -17,6 +17,7 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
     className="col-md-10 col-xl-7 d-flex justify-content-center"
   >
     <TabMenu
+      __TYPE="TabMenu"
       activeIndex={0}
       className="nexus-c-title-metadata__tab-menu"
       id={null}
@@ -104,13 +105,21 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
       />
     </div>
     <div>
-      <ForwardRef
+      <Button
+        __TYPE="Button"
+        badge={null}
+        badgeClassName={null}
         className="p-button-text"
+        disabled={false}
         icon={
           Object {
             "process": [Function],
           }
         }
+        iconPos="left"
+        label={null}
+        loading={false}
+        loadingIcon="pi pi-spinner pi-spin"
         onClick={[Function]}
         tooltip="Create New Right"
         tooltipOptions={

@@ -5,6 +5,7 @@ exports[`NexusUser should match snapshot 1`] = `
   className="NexusUser"
 >
   <Avatar
+    __TYPE="Avatar"
     className="mr-2 nav-user"
     icon="pi pi-user"
     image={null}

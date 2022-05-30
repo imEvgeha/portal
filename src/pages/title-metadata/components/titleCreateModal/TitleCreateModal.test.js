@@ -20,9 +20,9 @@ describe('TitleCreateModal', () => {
         withHooks(() => {
             defaultWrapper = shallow(
                 <TitleCreate store={store} display={true} onToggle={() => null} tenantCode="vu" isItMatching={false} />
-            )
-                .dive()
-                .shallow();
+            );
+            // .dive()
+            // .shallow();
         });
 
         it('should match snapshot', () => {
@@ -35,9 +35,9 @@ describe('TitleCreateModal', () => {
 
         it('should render labels for create title dialog ControllerWrappers', () => {
             if (isAllowed('publishTitleMetadata')) {
-                expect(defaultWrapper.find(ControllerWrapper)).toHaveLength(5);
+                expect(defaultWrapper.find('ControllerWrapper')).toHaveLength(5);
             } else {
-                expect(defaultWrapper.find(ControllerWrapper)).toHaveLength(3);
+                expect(defaultWrapper.find('ControllerWrapper')).toHaveLength(3);
             }
         });
 
@@ -56,9 +56,9 @@ describe('TitleCreateModal', () => {
         withHooks(() => {
             matchingWrapper = shallow(
                 <TitleCreate store={store} display={true} onToggle={() => null} isItMatching={true} />
-            )
-                .dive()
-                .shallow();
+            );
+            // .dive()
+            // .shallow();
         });
 
         it('should match snapshot', () => {
@@ -69,8 +69,13 @@ describe('TitleCreateModal', () => {
             expect(matchingWrapper.find('.nexus-c-title-create_dialog')).toHaveLength(1);
         });
 
+        it('should render footer for create title dialog window', () => {
+            const footerWrapper = shallow(matchingWrapper.find('Dialog').props().footer);
+            expect(footerWrapper.find('.nexus-c-title-create_footer-container')).toHaveLength(1);
+        });
+
         it('should render labels for create title dialog inputs', () => {
-            expect(matchingWrapper.find(ControllerWrapper)).toHaveLength(3);
+            expect(matchingWrapper.find('ControllerWrapper')).toHaveLength(3);
         });
 
         it('should not render checkbox container and checkboxes for create title dialog window', () => {

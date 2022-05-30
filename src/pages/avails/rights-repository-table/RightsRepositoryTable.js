@@ -2,7 +2,6 @@ import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
-import * as colors from '@atlaskit/theme/colors';
 import {getUsername} from '@portal/portal-auth/authSelectors';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
@@ -15,7 +14,7 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import {get, isEqual, isEmpty} from 'lodash';
+import {get, isEmpty, isEqual} from 'lodash';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -60,6 +59,9 @@ import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActi
 import SelectedRightsTable from '../selected-rights-table/SelectedRightsTable';
 import constants from '../constants';
 import './RightsRepositoryTable.scss';
+
+const RED_COLOR = '#FF8F73';
+const YELLOW_COLOR = '#FFE380';
 
 const RightsRepositoryTable = ({
     columnDefs,
@@ -297,7 +299,7 @@ const RightsRepositoryTable = ({
             });
 
             if (severityType !== '') {
-                styling.background = severityType === 'Error' ? colors.R100 : colors.Y100;
+                styling.background = severityType === 'Error' ? RED_COLOR : YELLOW_COLOR;
             }
         }
 

@@ -4,7 +4,7 @@ exports[`CloudDownloadButton should match snapshot 1`] = `
 <div
   className="nexus-c-button-cloud-download"
 >
-  <ForwardRef
+  <Button
     className="p-button-text"
     icon={
       Object {
@@ -20,30 +20,17 @@ exports[`CloudDownloadButton should match snapshot 1`] = `
     }
   />
   <Dialog
-    appendTo={null}
-    ariaCloseIconLabel="Close"
-    baseZIndex={0}
-    blockScroll={false}
-    breakpoints={null}
     className="nexus-c-button-dialog-for-emet-download"
-    closable={true}
-    closeOnEscape={true}
-    contentClassName={null}
-    contentStyle={null}
-    dismissableMask={false}
-    draggable={true}
-    focusOnShow={true}
+    closable={false}
     footer={
-      <div
-        className="nexus-c-download-emet-modal__buttons"
-      >
-        <ForwardRef
-          className="p-button-outlined p-button-secondary nexus-c-cancel-button"
+      <div>
+        <Button
+          className="p-button-outlined p-button-secondary"
           label="Cancel"
           onClick={[Function]}
         />
-        <ForwardRef
-          className="p-button-outlined nexus-c-download-emet-modal__button"
+        <Button
+          className="p-button-outlined"
           disabled={true}
           label="Download"
           onClick={[Function]}
@@ -51,38 +38,13 @@ exports[`CloudDownloadButton should match snapshot 1`] = `
       </div>
     }
     header="Download"
-    icons={null}
-    id={null}
-    keepInViewport={true}
-    maskClassName={null}
-    maskStyle={null}
-    maximizable={false}
-    maximized={false}
-    minX={0}
-    minY={0}
-    modal={true}
-    onClick={null}
-    onDrag={null}
-    onDragEnd={null}
-    onDragStart={null}
     onHide={[Function]}
-    onMaskClick={null}
-    onMaximize={null}
-    onResize={null}
-    onResizeEnd={null}
-    onResizeStart={null}
-    onShow={null}
-    position="center"
-    resizable={true}
-    rtl={false}
-    showHeader={true}
     style={
       Object {
         "minWidth": "505px",
         "width": "35vw",
       }
     }
-    transitionOptions={null}
     visible={false}
   >
     <Connect(DownloadEmetModal)

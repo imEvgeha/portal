@@ -29,6 +29,7 @@ exports[`DownloadEmetModal should match snapshot 1`] = `
         className="nexus-c-download-emet-modal__select-wrapper"
       >
         <Dropdown
+          __TYPE="Dropdown"
           appendTo={null}
           ariaLabel={null}
           ariaLabelledBy={null}
@@ -99,6 +100,7 @@ exports[`DownloadEmetModal should match snapshot 1`] = `
         className="nexus-c-download-emet-modal__select-wrapper"
       >
         <Dropdown
+          __TYPE="Dropdown"
           appendTo={null}
           ariaLabel={null}
           ariaLabelledBy={null}
@@ -169,6 +171,7 @@ exports[`DownloadEmetModal should match snapshot 1`] = `
         className="nexus-c-download-emet-modal__select-wrapper"
       >
         <Dropdown
+          __TYPE="Dropdown"
           appendTo={null}
           ariaLabel={null}
           ariaLabelledBy={null}

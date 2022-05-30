@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import {Button, Dialog} from '@portal/portal-components';
 import CloudDownloadIcon from '@vubiquity-nexus/portal-assets/action-cloud-download.svg';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Button} from 'primereact/button';
-import {Dialog} from 'primereact/dialog';
 import {exportService} from '../../../../../legacy/containers/avail/service/ExportService';
 import DownloadEmetModal from '../DownloadEmetModal/DownloadEmetModal';
 import './CloudDownloadButton.scss';
@@ -42,16 +41,12 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
 
     const renderFooter = () => {
         return (
-            <div className="nexus-c-download-emet-modal__buttons">
-                <Button
-                    onClick={closeModal}
-                    className="p-button-outlined p-button-secondary nexus-c-cancel-button"
-                    label={cancelButton}
-                />
+            <div>
+                <Button onClick={closeModal} className="p-button-outlined p-button-secondary" label={cancelButton} />
                 <Button
                     label={downloadButton}
                     onClick={handleDownload}
-                    className="p-button-outlined nexus-c-download-emet-modal__button"
+                    className="p-button-outlined"
                     disabled={isDisabled}
                 />
             </div>
@@ -74,6 +69,7 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
                 footer={renderFooter()}
                 onHide={closeModal}
                 className="nexus-c-button-dialog-for-emet-download"
+                closable={false}
             >
                 <DownloadEmetModal values={values} setValues={setValues} />
             </Dialog>

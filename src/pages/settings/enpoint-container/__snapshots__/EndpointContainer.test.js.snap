@@ -42,11 +42,19 @@ exports[`EndpointContainer should match snapshot 1`] = `
                 <i
                   className="pi pi-search"
                 />
-                <ForwardRef
+                <Memo(InputText)
+                  __TYPE="InputText"
                   className="nexus-c-search__inputbox"
                   id="config_search_field__inp"
+                  keyfilter={null}
                   name="config_search_field__inp"
                   onChange={[Function]}
+                  onInput={null}
+                  onKeyPress={null}
+                  onPaste={null}
+                  tooltip={null}
+                  tooltipOptions={null}
+                  validateOnly={false}
                 />
               </span>
             </div>
@@ -56,15 +64,25 @@ exports[`EndpointContainer should match snapshot 1`] = `
               <Restricted
                 resource="settingsCreate"
               >
-                <ForwardRef
+                <Memo(Button)
+                  __TYPE="Button"
+                  badge={null}
+                  badgeClassName={null}
                   className="p-button-text"
+                  disabled={false}
                   icon={
                     Object {
                       "process": [Function],
                     }
                   }
+                  iconPos="left"
                   id="add_new_config__btn"
+                  label={null}
+                  loading={false}
+                  loadingIcon="pi pi-spinner pi-spin"
                   onClick={[Function]}
+                  tooltip={null}
+                  tooltipOptions={null}
                 />
               </Restricted>
             </div>

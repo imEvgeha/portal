@@ -2,6 +2,7 @@
 
 exports[`CreateEditConfig should match snapshot 1`] = `
 <Dialog
+  __TYPE="Dialog"
   appendTo={null}
   ariaCloseIconLabel="Close"
   baseZIndex={0}
@@ -27,22 +28,42 @@ exports[`CreateEditConfig should match snapshot 1`] = `
       <div
         className="col-sm-12 text-end"
       >
-        <ForwardRef
+        <Memo(Button)
+          __TYPE="Button"
+          badge={null}
+          badgeClassName={null}
           className="p-button-outlined p-button-secondary"
+          disabled={false}
+          icon={null}
+          iconPos="left"
           label="Cancel"
+          loading={false}
+          loadingIcon="pi pi-spinner pi-spin"
           onClick={[Function]}
+          tooltip={null}
+          tooltipOptions={null}
         />
-        <ForwardRef
+        <Memo(Button)
+          __TYPE="Button"
+          badge={null}
+          badgeClassName={null}
           className="p-button-outlined"
           disabled={true}
+          icon={null}
+          iconPos="left"
           label="OK"
           loading={false}
+          loadingIcon="pi pi-spinner pi-spin"
           onClick={[Function]}
+          tooltip={null}
+          tooltipOptions={null}
         />
       </div>
     </div>
   }
   header="Label"
+  headerClassName={null}
+  headerStyle={null}
   icons={null}
   id={null}
   keepInViewport={true}
