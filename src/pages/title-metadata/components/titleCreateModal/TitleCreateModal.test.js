@@ -1,4 +1,5 @@
 import React from 'react';
+import ExternalIDsSection from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-extarnal-ids/ExternalIDsSection';
 import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
@@ -44,6 +45,10 @@ describe('TitleCreateModal', () => {
             expect(defaultWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(1);
             expect(defaultWrapper.find(Checkbox)).toHaveLength(2);
         });
+
+        it('should render external IDs section', () => {
+            expect(defaultWrapper.find(ExternalIDsSection)).toHaveLength(1);
+        });
     });
 
     describe('Matching TitleCreateModal', () => {
@@ -74,6 +79,10 @@ describe('TitleCreateModal', () => {
         it('should not render checkbox container and checkboxes for create title dialog window', () => {
             expect(matchingWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(0);
             expect(matchingWrapper.find(Checkbox)).toHaveLength(0);
+        });
+
+        it('should render external IDs section', () => {
+            expect(defaultWrapper.find(ExternalIDsSection)).toHaveLength(1);
         });
     });
 });

@@ -517,6 +517,96 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     </ControllerWrapper>
                   </div>
                 </div>
+                <ExternalIDsSection
+                  control={
+                    Object {
+                      "_defaultValues": Object {
+                        "catalogueOwner": "vu",
+                      },
+                      "_fields": Object {},
+                      "_formState": Object {
+                        "dirtyFields": Object {},
+                        "errors": Object {},
+                        "isDirty": false,
+                        "isSubmitSuccessful": false,
+                        "isSubmitted": false,
+                        "isSubmitting": false,
+                        "isValid": false,
+                        "isValidating": false,
+                        "submitCount": 0,
+                        "touchedFields": Object {},
+                      },
+                      "_formValues": Object {
+                        "catalogueOwner": "vu",
+                      },
+                      "_getDirty": [Function],
+                      "_getFieldArray": [Function],
+                      "_getWatch": [Function],
+                      "_names": Object {
+                        "array": Set {},
+                        "mount": Set {},
+                        "unMount": Set {},
+                        "watch": Set {},
+                      },
+                      "_options": Object {
+                        "defaultValues": Object {
+                          "catalogueOwner": "vu",
+                        },
+                        "mode": "all",
+                        "reValidateMode": "onChange",
+                        "shouldFocusError": true,
+                      },
+                      "_proxyFormState": Object {
+                        "dirtyFields": "all",
+                        "errors": "all",
+                        "isDirty": false,
+                        "isValid": "all",
+                        "isValidating": false,
+                        "touchedFields": false,
+                      },
+                      "_removeUnmounted": [Function],
+                      "_stateFlags": Object {
+                        "action": false,
+                        "mount": true,
+                        "watch": false,
+                      },
+                      "_subjects": Object {
+                        "array": ye {
+                          "observers": Array [],
+                        },
+                        "control": ye {
+                          "observers": Array [],
+                        },
+                        "state": ye {
+                          "observers": Array [
+                            me {
+                              "closed": false,
+                              "observer": Object {
+                                "next": [Function],
+                              },
+                            },
+                          ],
+                        },
+                        "watch": ye {
+                          "observers": Array [
+                            me {
+                              "closed": false,
+                              "observer": Object {
+                                "next": [Function],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      "_updateFieldArray": [Function],
+                      "_updateValid": [Function],
+                      "register": [Function],
+                      "unregister": [Function],
+                    }
+                  }
+                  errors={Object {}}
+                  register={[Function]}
+                />
                 <div
                   className="nexus-c-title-create_checkbox-container"
                 >
@@ -1344,6 +1434,96 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     </ControllerWrapper>
                   </div>
                 </div>
+                <ExternalIDsSection
+                  control={
+                    Object {
+                      "_defaultValues": Object {
+                        "catalogueOwner": undefined,
+                      },
+                      "_fields": Object {},
+                      "_formState": Object {
+                        "dirtyFields": Object {},
+                        "errors": Object {},
+                        "isDirty": false,
+                        "isSubmitSuccessful": false,
+                        "isSubmitted": false,
+                        "isSubmitting": false,
+                        "isValid": false,
+                        "isValidating": false,
+                        "submitCount": 0,
+                        "touchedFields": Object {},
+                      },
+                      "_formValues": Object {
+                        "catalogueOwner": undefined,
+                      },
+                      "_getDirty": [Function],
+                      "_getFieldArray": [Function],
+                      "_getWatch": [Function],
+                      "_names": Object {
+                        "array": Set {},
+                        "mount": Set {},
+                        "unMount": Set {},
+                        "watch": Set {},
+                      },
+                      "_options": Object {
+                        "defaultValues": Object {
+                          "catalogueOwner": undefined,
+                        },
+                        "mode": "all",
+                        "reValidateMode": "onChange",
+                        "shouldFocusError": true,
+                      },
+                      "_proxyFormState": Object {
+                        "dirtyFields": "all",
+                        "errors": "all",
+                        "isDirty": false,
+                        "isValid": "all",
+                        "isValidating": false,
+                        "touchedFields": false,
+                      },
+                      "_removeUnmounted": [Function],
+                      "_stateFlags": Object {
+                        "action": false,
+                        "mount": true,
+                        "watch": false,
+                      },
+                      "_subjects": Object {
+                        "array": ye {
+                          "observers": Array [],
+                        },
+                        "control": ye {
+                          "observers": Array [],
+                        },
+                        "state": ye {
+                          "observers": Array [
+                            me {
+                              "closed": false,
+                              "observer": Object {
+                                "next": [Function],
+                              },
+                            },
+                          ],
+                        },
+                        "watch": ye {
+                          "observers": Array [
+                            me {
+                              "closed": false,
+                              "observer": Object {
+                                "next": [Function],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      "_updateFieldArray": [Function],
+                      "_updateValid": [Function],
+                      "register": [Function],
+                      "unregister": [Function],
+                    }
+                  }
+                  errors={Object {}}
+                  register={[Function]}
+                />
               </div>
             </div>
           </form>

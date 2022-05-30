@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import ExternalIDsSection from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-extarnal-ids/ExternalIDsSection';
 import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
@@ -38,7 +39,7 @@ const TitleCreate = ({
     defaultValues,
     error,
 }) => {
-    const {CREATE_TITLE_RESTRICTIONS} = constants;
+    const {CREATE_TITLE_RESTRICTIONS, EXTERNAL_ID_TYPE_DUPLICATE_ERROR} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         CREATE_TITLE_RESTRICTIONS;
     const addToast = toast => store.dispatch(toastDisplay(toast));
@@ -192,6 +193,15 @@ const TitleCreate = ({
     };
 
     const onSubmit = submitTitle => {
+        if (areThereAnyExternalSystemDuplicates(submitTitle)) {
+            addToast({
+                severity: 'error',
+                detail: EXTERNAL_ID_TYPE_DUPLICATE_ERROR,
+                sticky: true,
+            });
+            return;
+        }
+
         const title = getTitleWithoutEmptyField(submitTitle);
         const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
         const params = {copyCastCrewFromSeason};
@@ -200,8 +210,18 @@ const TitleCreate = ({
         isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
     };
 
+    const areThereAnyExternalSystemDuplicates = title => {
+        const externalIdTypesArray = title?.externalSystemIds?.map(item => item.externalSystem);
+        const indexOfDuplicate = externalIdTypesArray.findIndex(
+            (item, index) => externalIdTypesArray.indexOf(item) !== index
+        );
+
+        return indexOfDuplicate >= 0;
+    };
+
     const getTitleWithoutEmptyField = titleForm => {
         const isEpisodicEmpty = titleForm.seriesTitleName || titleForm.episodeNumber || titleForm.seasonNumber;
+        const updatedExternalSystemIds = titleForm.externalSystemIds.length ? titleForm.externalSystemIds : null;
         return {
             name: titleForm.title,
             releaseYear: titleForm.releaseYear || null,
@@ -213,6 +233,7 @@ const TitleCreate = ({
                       seasonNumber: titleForm.seasonNumber || null,
                   }
                 : null,
+            externalSystemIds: updatedExternalSystemIds,
         };
     };
 
@@ -496,6 +517,7 @@ const TitleCreate = ({
                                 </ControllerWrapper>
                             </div>
                         </div>
+                        <ExternalIDsSection control={control} register={register} errors={errors} />
                         {isItMatching ? null : renderSyncCheckBoxes()}
                     </div>
                 </div>

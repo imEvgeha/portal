@@ -18,6 +18,7 @@ const NEW_TITLE_LABEL_SUBMIT = 'Match & Create';
 const NEW_TITLE_ERROR_ALREADY_EXISTS =
     'WARNING! Title already exists. Please select existing title or edit title details.';
 const NEW_TITLE_ERROR_EMPTY_FIELDS = 'WARNING! Please add all required fields.';
+const EXTERNAL_ID_TYPE_DUPLICATE_ERROR = 'External ID type cannot be duplicated.';
 
 const CREATE_TITLE_RESTRICTIONS = {
     MAX_TITLE_LENGTH: 250,
@@ -71,4 +72,5 @@ export default {
     NEW_TITLE_ERROR_EMPTY_FIELDS,
     CREATE_TITLE_RESTRICTIONS,
     TENANT_CODE_ITEMS,
+    EXTERNAL_ID_TYPE_DUPLICATE_ERROR,
 };
