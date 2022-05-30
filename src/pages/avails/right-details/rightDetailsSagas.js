@@ -1,6 +1,6 @@
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
-import {cloneDeep, uniqBy} from 'lodash';
+import {cloneDeep, sortBy, uniqBy} from 'lodash';
 import {all, call, put, select, takeEvery} from 'redux-saga/effects';
 import configEndpoints from './configEndpoints.json';
 import * as actionTypes from './rightDetailsActionTypes';
@@ -28,9 +28,10 @@ export function* getSelectValuesSaga() {
     fetchedOptions = fetchedOptions.reduce((a, c) => ({...a, ...c}));
     const areValid = yield select(selectors.areValidSelector());
     if (areValid) {
-        const options = configEndpoints.map(({field, configEndpoint}) => ({
-            [field]: fetchedOptions[configEndpoint],
-        }));
+        const options = configEndpoints.map(({field, configEndpoint}) => {
+            const values = sortBy(fetchedOptions[configEndpoint], ['countryName', 'value']);
+            return {[field]: values};
+        });
         const selectValues = formatSelectValues(options);
         yield put({
             type: actionTypes.STORE_SELECT_VALUES,
