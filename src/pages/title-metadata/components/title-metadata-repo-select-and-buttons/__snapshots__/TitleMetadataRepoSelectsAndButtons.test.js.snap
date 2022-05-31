@@ -46,13 +46,21 @@ exports[`RepositorySelectsAndButtons should match snapshot 1`] = `
     <Restricted
       resource="createNewTitleButton"
     >
-      <ForwardRef
+      <Button
+        __TYPE="Button"
+        badge={null}
+        badgeClassName={null}
         className="p-button-text nexus-c-title-metadata__create-btn"
+        disabled={false}
         icon={
           Object {
             "process": [Function],
           }
         }
+        iconPos="left"
+        label={null}
+        loading={false}
+        loadingIcon="pi pi-spinner pi-spin"
         onClick={[Function]}
         tooltip="Create New Title"
         tooltipOptions={

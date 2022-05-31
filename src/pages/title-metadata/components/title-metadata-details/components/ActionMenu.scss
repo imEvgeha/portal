@@ -1,8 +1,13 @@
-@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+@import '~@portal/portal-components/styles/color-palette';
 
 .nexus-c-actions-menu-container {
     padding-left: 48px;
     display: flex;
     justify-content: flex-end;
     border-left: 1px solid palette(black, 20);
+}
+
+.nexus-c-actions-menu-container-without-buttons {
+    display: flex;
+    justify-content: flex-end;
 }

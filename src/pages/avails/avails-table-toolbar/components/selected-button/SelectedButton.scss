@@ -1,7 +1,7 @@
 @import '~@vubiquity-nexus/portal-styles/scss/config';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
-@import '~@vubiquity-nexus/portal-styles/scss/color-palette';
+@import '~@portal/portal-components/styles/color-palette';
 
 .nexus-c-button__avails-selected {
     @include margin(0, 0, 0, 9);
@@ -18,7 +18,8 @@
     cursor: not-allowed;
     background: none !important;
 
-    &:hover, &:active {
+    &:hover,
+    &:active {
         color: palette(black, 20);
         span {
             color: palette(black, 20);

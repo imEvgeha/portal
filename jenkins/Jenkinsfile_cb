@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     // if the branch is origin/master or any release* remote
-                    if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
+                    if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('refs/heads/release')) {
                         echo 'Master Branch detected - creating and pushing docker image'
                         imageTag = ''
                         tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
@@ -63,6 +63,8 @@ pipeline {
                         if (CREATE_AND_PUSH_DOCKER.toBoolean()) {
                             sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
                             sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
+                        } else {
+                            echo 'Skipping docker creation and pushing'
                         }
 
                     } else {
@@ -77,7 +79,7 @@ pipeline {
                 script {
                     if (TRIGGER_AT) {
                         echo 'Triggering Automation . . .'
-                        if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
+                        if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('refs/heads/release')) {
                             echo 'Master/Release Branch detected - Triggering AT'
                             build job: 'portal-ui-at', parameters: [
                                 string(name: 'imageTag', value: imageTag)
@@ -93,7 +95,7 @@ pipeline {
                 script {
                     if (DEPLOY_DEV.toBoolean() || DEPLOY_QA.toBoolean()) {
                         echo 'Triggering Deployment . . .'
-                        if (BRANCH_NAME == 'origin/master' || BRANCH_NAME.contains('origin/release')) {
+                        if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('refs/heads/release')) {
                             echo 'Deploying using BRANCH_NAME'
                             if (DEPLOY_DEV.toBoolean()) {
                                 echo 'Triggering CD to Environment: DEV'
@@ -125,8 +127,7 @@ pipeline {
             sh 'echo Finished Successfully'
         }
         failure {
-            // Vikings-VU@Amdocs.onmicrosoft.com
-            mail to: 'mcharalambous@vubiquity.net', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+            mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
         }
     }
 }

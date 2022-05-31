@@ -1,5 +1,4 @@
 @import './legacy/variables';
-@import '~bootstrap/scss/bootstrap';
 @import '~react-datepicker/dist/react-datepicker.css';
 
 .fade:not(.show) {
@@ -10,10 +9,5 @@
     &.nexus-c-section {
         padding-top: 16px;
         padding-bottom: 16px;
-    }
-
-    > * {
-        padding-right: 16px;
-        padding-left: 16px;
     }
 }

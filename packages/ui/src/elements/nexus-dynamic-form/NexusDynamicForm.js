@@ -1,6 +1,7 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
+import {Restricted} from '@portal/portal-auth/permissions';
 import classnames from 'classnames';
 import {isEmpty, mergeWith, set} from 'lodash';
 import moment from 'moment';
@@ -77,7 +78,7 @@ const NexusDynamicForm = ({
                     isEmpty={isEmpty}
                     onCancel={onCancel}
                     seasonPersons={seasonPersons}
-                    showValidationError={showValidationError()}
+                    showValidationError={() => showValidationError()}
                 />
             </>
         );
@@ -169,46 +170,51 @@ const NexusDynamicForm = ({
                                                 tabs,
                                                 subTabs,
                                                 prefix,
+                                                resource,
                                             },
                                             sectionIndex
                                         ) => (
-                                            <Fragment key={`section-${sectionTitle}`}>
-                                                <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
-                                                {titleActionComponents &&
-                                                    titleActions.map(action =>
-                                                        titleActionComponents[action](
-                                                            setUpdate,
-                                                            getValues,
-                                                            setFieldValue,
-                                                            `${action}_${index}_${sectionIndex}`
-                                                        )
-                                                    )}
+                                            <Restricted key={`section-${sectionTitle}`} resource={resource}>
+                                                <Fragment key={`section-${sectionTitle}`}>
+                                                    <h3 className="nexus-c-dynamic-form__section-title">
+                                                        {sectionTitle}
+                                                    </h3>
+                                                    {titleActionComponents &&
+                                                        titleActions.map(action =>
+                                                            titleActionComponents[action](
+                                                                setUpdate,
+                                                                getValues,
+                                                                setFieldValue,
+                                                                `${action}_${index}_${sectionIndex}`
+                                                            )
+                                                        )}
 
-                                                {buildSection(
-                                                    fields,
-                                                    getValues,
-                                                    view,
-                                                    generateMsvIds,
-                                                    regenerateAutoDecoratedMetadata,
-                                                    setRefresh,
-                                                    {
-                                                        selectValues,
-                                                        initialData,
-                                                        setFieldValue,
-                                                        update,
-                                                        config: schema.config || [],
-                                                        isGridLayout,
-                                                        searchPerson,
-                                                        castCrewConfig,
-                                                        tabs,
-                                                        subTabs,
-                                                        setDisableSubmit,
-                                                        prefix,
-                                                        isTitlePage,
-                                                        setUpdate,
-                                                    }
-                                                )}
-                                            </Fragment>
+                                                    {buildSection(
+                                                        fields,
+                                                        getValues,
+                                                        view,
+                                                        generateMsvIds,
+                                                        regenerateAutoDecoratedMetadata,
+                                                        setRefresh,
+                                                        {
+                                                            selectValues,
+                                                            initialData,
+                                                            setFieldValue,
+                                                            update,
+                                                            config: schema.config || [],
+                                                            isGridLayout,
+                                                            searchPerson,
+                                                            castCrewConfig,
+                                                            tabs,
+                                                            subTabs,
+                                                            setDisableSubmit,
+                                                            prefix,
+                                                            isTitlePage,
+                                                            setUpdate,
+                                                        }
+                                                    )}
+                                                </Fragment>
+                                            </Restricted>
                                         )
                                     )}
                                 </div>

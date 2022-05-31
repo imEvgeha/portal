@@ -17,6 +17,7 @@ exports[`EntityActions should match snapshot 1`] = `
           className="col-sm-4"
         >
           <Tag
+            __TYPE="Tag"
             className={null}
             icon={null}
             rounded={false}
@@ -67,13 +68,22 @@ exports[`EntityActions should match snapshot 1`] = `
           className="col-2 text-center"
           key="action-icon_5"
         >
-          <ForwardRef
+          <Button
+            __TYPE="Button"
+            badge={null}
+            badgeClassName={null}
             className="p-button-text nexus-c-entity-button"
             disabled={true}
             icon={[Function]}
+            iconPos="left"
             id="fileBtn"
             key="fileBtn"
+            label={null}
+            loading={false}
+            loadingIcon="pi pi-spinner pi-spin"
             onClick={[Function]}
+            tooltip={null}
+            tooltipOptions={null}
           />
         </div>
       </div>

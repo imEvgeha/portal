@@ -2,6 +2,7 @@
 
 exports[`DynamicDropdown should match snapshot 1`] = `
 <Dropdown
+  __TYPE="Dropdown"
   appendTo={null}
   ariaLabel={null}
   ariaLabelledBy={null}

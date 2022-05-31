@@ -1,3 +1,5 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+
 .nexus-c-title-to-match {
     display: flex;
     flex-direction: column;
@@ -22,6 +24,11 @@
         font-weight: normal;
         font-size: 20px;
     }
+}
+
+.p-button-text-for-cell {
+    @include padding(0, 1, 0, 1);
+    height: 25px;
 }
 
 .nexus-c-title-matching-custom-actions {

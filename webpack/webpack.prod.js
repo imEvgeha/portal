@@ -1,7 +1,7 @@
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const paths = require('./paths');
 
@@ -15,8 +15,8 @@ module.exports = envFile => ({
     module: {
         rules: [
             {
-                test: /\.(scss|css)/,
-                use: [MiniCssExtractPlugin.loader, require.resolve('css-loader'), require.resolve('sass-loader')],
+                test: /.s?css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
         ],
     },
@@ -71,7 +71,7 @@ module.exports = envFile => ({
                     },
                 },
             }),
-            new OptimizeCSSAssetsPlugin(),
+            new CssMinimizerPlugin(),
         ],
     },
     performance: {

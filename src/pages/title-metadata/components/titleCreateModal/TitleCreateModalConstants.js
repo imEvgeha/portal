@@ -50,7 +50,6 @@ const TENANT_CODE_ITEMS = [
 ];
 
 export const CONTENT_TYPE_ITEMS = [
-    {label: 'Select Content Type', value: ''},
     {label: MOVIE.name, value: MOVIE.apiName},
     {label: SERIES.name, value: SERIES.apiName},
     {label: SEASON.name, value: SEASON.apiName},

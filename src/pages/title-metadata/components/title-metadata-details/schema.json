@@ -559,7 +559,8 @@
                             "type": "msvIds",
                             "path": "externalIds.msvAssociationId"
                         }
-                    }
+                    },
+                    "resource": "msvIDsForTitleMetadata"
                 }
             ]
         },

@@ -304,7 +304,7 @@ const InputForm = ({
                                     id="manual-upload-license-types"
                                     onChange={val => setSelectedLicenseTypes(val || [])}
                                     value={selectedLicenseTypes}
-                                    options={licenseTypes.map(lic => ({value: lic.value, label: lic.label}))}
+                                    options={licenseTypes.map(lic => ({value: lic.value, label: lic.value}))}
                                     placeholder="Select"
                                     isMulti
                                     {...selectProps}
@@ -316,7 +316,7 @@ const InputForm = ({
                                     id="manual-upload-territory"
                                     onChange={val => setSelectedTerritories(val || [])}
                                     value={selectedTerritories}
-                                    options={countries.map(lic => ({value: lic.value, label: lic.label}))}
+                                    options={countries.map(lic => ({value: lic.countryCode, label: lic.countryName}))}
                                     placeholder="Select"
                                     isMulti
                                     {...selectProps}

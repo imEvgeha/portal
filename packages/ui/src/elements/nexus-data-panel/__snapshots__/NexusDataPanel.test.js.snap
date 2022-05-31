@@ -11,6 +11,7 @@ exports[`NexusDataPanel should match snapshot 1`] = `
       className="col-12"
     >
       <BlockUI
+        __TYPE="BlockUI"
         autoZIndex={true}
         baseZIndex={0}
         blocked={false}
