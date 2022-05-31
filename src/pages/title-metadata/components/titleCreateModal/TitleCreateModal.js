@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Restricted} from '@portal/portal-auth/permissions';
+import {AutoComplete} from '@portal/portal-components';
 import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
@@ -59,6 +60,10 @@ const TitleCreate = ({
     });
     const currentValues = useWatch({control});
     const routeParams = useParams();
+
+    // filtering on series name
+    const [selectedSeries, setSelectedSeries] = useState(null);
+    const [filteredSeries, setFilteredSeries] = useState([]);
 
     useEffect(() => {
         if (error) {
@@ -201,6 +206,47 @@ const TitleCreate = ({
         isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
     };
 
+    /**
+     * Get the response of the /search api and show it as filtered data
+     * @param event Search string of the `Series` field
+     */
+    const searchSeries = async event => {
+        setTimeout(async () => {
+            const response = await titleService.freeTextSearch({title: event.query, tenantCode}, 0, 100);
+            let filteredSeries = [];
+            if (event.query.trim().length) {
+                filteredSeries = response.data.filter(series => {
+                    return series?.episodic?.seriesTitleName?.toLowerCase().startsWith(event.query.toLowerCase());
+                });
+            }
+
+            setFilteredSeries(filteredSeries);
+        }, 500);
+    };
+
+    /**
+     * Template used for the list options of the `Series` AutoComplete component
+     * @param seriesItem The found series object
+     * @returns {JSX.Element} Returns a JSX.Element to be rendered as an option
+     */
+    const seriesTemplate = seriesItem => {
+        return (
+            <div className="series-item">
+                {`${seriesItem.episodic.seriesTitleName}${seriesItem.releaseYear ? `, ${seriesItem.releaseYear}` : ``}`}
+            </div>
+        );
+    };
+
+    /**
+     * Selected Item template for `Series` AutoComplete.
+     * A concatination of series name and series year(if exists)
+     * @param seriesItem The selected series from the results found
+     * @returns {`${string}`|`${*}${string}`}
+     */
+    const selectedSeriesTemplate = seriesItem => {
+        return `${seriesItem.episodic.seriesTitleName}${seriesItem.releaseYear ? `, ${seriesItem.releaseYear}` : ``}`;
+    };
+
     const getTitleWithoutEmptyField = titleForm => {
         return {
             name: titleForm.title,
@@ -312,7 +358,7 @@ const TitleCreate = ({
                 <div className="row">
                     <div className="col">
                         <div className="row">
-                            <div className="col">
+                            <div className="col-lg-6 col-sm-12">
                                 <ControllerWrapper
                                     title="Title"
                                     inputName="title"
@@ -334,10 +380,7 @@ const TitleCreate = ({
                                     />
                                 </ControllerWrapper>
                             </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col">
+                            <div className="col-lg-6 col-sm-12">
                                 <ControllerWrapper
                                     title="Content Type"
                                     inputName="contentType"
@@ -360,7 +403,7 @@ const TitleCreate = ({
 
                         {fieldsToDisplay() ? (
                             <div className="row">
-                                <div className="col">
+                                <div className="col-lg-6 col-sm-12">
                                     <ControllerWrapper
                                         title="Series"
                                         inputName="seriesTitleName"
@@ -369,19 +412,21 @@ const TitleCreate = ({
                                         required={areFieldsRequired()}
                                         register={register}
                                     >
-                                        <InputText
-                                            placeholder="Enter Series Name"
+                                        <AutoComplete
                                             id="seriesTitleName"
-                                            className="nexus-c-title-create_input"
+                                            placeholder="Enter Series Name"
+                                            value={selectedSeries}
+                                            suggestions={filteredSeries}
+                                            completeMethod={searchSeries}
+                                            itemTemplate={seriesTemplate}
+                                            selectedItemTemplate={selectedSeriesTemplate}
+                                            columnClass="col-lg-12"
+                                            onChange={e => setSelectedSeries(e.value)}
+                                            aria-label="Series"
                                         />
                                     </ControllerWrapper>
                                 </div>
-                            </div>
-                        ) : null}
-
-                        {fieldsToDisplay() ? (
-                            <div className="row">
-                                <div className="col">
+                                <div className="col-lg-6 col-sm-12">
                                     <ControllerWrapper
                                         title="Season"
                                         inputName="seasonNumber"
@@ -407,8 +452,13 @@ const TitleCreate = ({
                                         />
                                     </ControllerWrapper>
                                 </div>
+                            </div>
+                        ) : null}
+
+                        {fieldsToDisplay() ? (
+                            <div className="row">
                                 {fieldsToDisplayAndHideForSeason ? (
-                                    <div className="col">
+                                    <div className="col-lg-6 col-sm-12">
                                         <ControllerWrapper
                                             title="Episode"
                                             inputName="episodeNumber"
@@ -440,7 +490,7 @@ const TitleCreate = ({
 
                         {fieldsToDisplayAndHideForSeason ? (
                             <div className="row">
-                                <div className="col nexus-c-title-create_checkbox-wrapper">
+                                <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper">
                                     <ControllerWrapper
                                         title="Add Cast Crew from Season to episode"
                                         inputName="addCrew"
@@ -461,7 +511,7 @@ const TitleCreate = ({
                         ) : null}
 
                         <div className="row">
-                            <div className="col">
+                            <div className="col-lg-6 col-sm-12">
                                 <ControllerWrapper
                                     title="Release Year"
                                     inputName="releaseYear"
