@@ -1,0 +1,1585 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
+<Dialog
+  __TYPE="Dialog"
+  appendTo={null}
+  ariaCloseIconLabel="Close"
+  baseZIndex={0}
+  blockScroll={false}
+  breakpoints={null}
+  className="nexus-c-title-create_dialog"
+  closable={false}
+  closeOnEscape={false}
+  contentClassName={null}
+  contentStyle={null}
+  dismissableMask={false}
+  draggable={true}
+  focusOnShow={true}
+  footer={
+    <div
+      className="nexus-c-title-create_footer-container"
+    >
+      <div
+        className="nexus-c-title-create_footer-buttons-container"
+      >
+        <Memo(Button)
+          __TYPE="Button"
+          badge={null}
+          badgeClassName={null}
+          className="p-button-outlined p-button-secondary"
+          disabled={false}
+          icon={null}
+          iconPos="left"
+          id="titleCancelBtn"
+          label="Cancel"
+          loading={false}
+          loadingIcon="pi pi-spinner pi-spin"
+          onClick={[Function]}
+          tooltip={null}
+          tooltipOptions={null}
+        />
+        <Memo(Button)
+          __TYPE="Button"
+          badge={null}
+          badgeClassName={null}
+          className="p-button-outlined"
+          disabled={true}
+          icon={null}
+          iconPos="right"
+          id="titleSaveBtn"
+          label="Save"
+          loading={false}
+          loadingIcon="pi pi-spin pi-spinner"
+          onClick={[Function]}
+          tooltip={null}
+          tooltipOptions={null}
+        />
+      </div>
+    </div>
+  }
+  header="Create Title"
+  headerClassName={null}
+  headerStyle={null}
+  icons={null}
+  id={null}
+  keepInViewport={true}
+  maskClassName={null}
+  maskStyle={null}
+  maximizable={false}
+  maximized={false}
+  minX={0}
+  minY={0}
+  modal={true}
+  onClick={null}
+  onDrag={null}
+  onDragEnd={null}
+  onDragStart={null}
+  onHide={[Function]}
+  onMaskClick={null}
+  onMaximize={null}
+  onResize={null}
+  onResizeEnd={null}
+  onResizeStart={null}
+  onShow={null}
+  position="center"
+  resizable={true}
+  rtl={false}
+  showHeader={true}
+  style={
+    Object {
+      "width": "40vw",
+    }
+  }
+  transitionOptions={null}
+  visible={true}
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          >
+            <ControllerWrapper
+              additionalValidation={
+                Object {
+                  "maxLength": Object {
+                    "message": "Max title length is 250!",
+                    "value": 250,
+                  },
+                }
+              }
+              control={
+                Object {
+                  "_defaultValues": Object {
+                    "catalogueOwner": "vu",
+                  },
+                  "_fields": Object {},
+                  "_formState": Object {
+                    "dirtyFields": Object {},
+                    "errors": Object {},
+                    "isDirty": false,
+                    "isSubmitSuccessful": false,
+                    "isSubmitted": false,
+                    "isSubmitting": false,
+                    "isValid": false,
+                    "isValidating": false,
+                    "submitCount": 0,
+                    "touchedFields": Object {},
+                  },
+                  "_formValues": Object {
+                    "catalogueOwner": "vu",
+                  },
+                  "_getDirty": [Function],
+                  "_getFieldArray": [Function],
+                  "_getWatch": [Function],
+                  "_names": Object {
+                    "array": Set {},
+                    "mount": Set {},
+                    "unMount": Set {},
+                    "watch": Set {},
+                  },
+                  "_options": Object {
+                    "defaultValues": Object {
+                      "catalogueOwner": "vu",
+                    },
+                    "mode": "all",
+                    "reValidateMode": "onChange",
+                    "shouldFocusError": true,
+                  },
+                  "_proxyFormState": Object {
+                    "dirtyFields": "all",
+                    "errors": "all",
+                    "isDirty": false,
+                    "isValid": "all",
+                    "isValidating": false,
+                    "touchedFields": false,
+                  },
+                  "_removeUnmounted": [Function],
+                  "_stateFlags": Object {
+                    "action": false,
+                    "mount": true,
+                    "watch": false,
+                  },
+                  "_subjects": Object {
+                    "array": ye {
+                      "observers": Array [],
+                    },
+                    "control": ye {
+                      "observers": Array [],
+                    },
+                    "state": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                    "watch": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  "_updateFieldArray": [Function],
+                  "_updateValid": [Function],
+                  "register": [Function],
+                  "unregister": [Function],
+                }
+              }
+              controllerClassName=""
+              handleChange={[Function]}
+              inputName="title"
+              isItCheckbox={false}
+              labelClassName=""
+              register={[Function]}
+              required={true}
+              title="Title"
+            >
+              <InputText
+                __TYPE="InputText"
+                className="nexus-c-title-create_input"
+                id="title"
+                keyfilter={null}
+                onInput={null}
+                onKeyPress={null}
+                onPaste={null}
+                placeholder="Enter Title"
+                tooltip={null}
+                tooltipOptions={null}
+                validateOnly={false}
+              />
+            </ControllerWrapper>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          >
+            <ControllerWrapper
+              additionalValidation={Object {}}
+              control={
+                Object {
+                  "_defaultValues": Object {
+                    "catalogueOwner": "vu",
+                  },
+                  "_fields": Object {},
+                  "_formState": Object {
+                    "dirtyFields": Object {},
+                    "errors": Object {},
+                    "isDirty": false,
+                    "isSubmitSuccessful": false,
+                    "isSubmitted": false,
+                    "isSubmitting": false,
+                    "isValid": false,
+                    "isValidating": false,
+                    "submitCount": 0,
+                    "touchedFields": Object {},
+                  },
+                  "_formValues": Object {
+                    "catalogueOwner": "vu",
+                  },
+                  "_getDirty": [Function],
+                  "_getFieldArray": [Function],
+                  "_getWatch": [Function],
+                  "_names": Object {
+                    "array": Set {},
+                    "mount": Set {},
+                    "unMount": Set {},
+                    "watch": Set {},
+                  },
+                  "_options": Object {
+                    "defaultValues": Object {
+                      "catalogueOwner": "vu",
+                    },
+                    "mode": "all",
+                    "reValidateMode": "onChange",
+                    "shouldFocusError": true,
+                  },
+                  "_proxyFormState": Object {
+                    "dirtyFields": "all",
+                    "errors": "all",
+                    "isDirty": false,
+                    "isValid": "all",
+                    "isValidating": false,
+                    "touchedFields": false,
+                  },
+                  "_removeUnmounted": [Function],
+                  "_stateFlags": Object {
+                    "action": false,
+                    "mount": true,
+                    "watch": false,
+                  },
+                  "_subjects": Object {
+                    "array": ye {
+                      "observers": Array [],
+                    },
+                    "control": ye {
+                      "observers": Array [],
+                    },
+                    "state": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                    "watch": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  "_updateFieldArray": [Function],
+                  "_updateValid": [Function],
+                  "register": [Function],
+                  "unregister": [Function],
+                }
+              }
+              controllerClassName=""
+              handleChange={[Function]}
+              inputName="contentType"
+              isItCheckbox={false}
+              labelClassName=""
+              register={[Function]}
+              required={true}
+              title="Content Type"
+            >
+              <Dropdown
+                __TYPE="Dropdown"
+                appendTo={null}
+                ariaLabel={null}
+                ariaLabelledBy={null}
+                autoFocus={false}
+                className="nexus-c-title-create_input"
+                dataKey={null}
+                disabled={false}
+                dropdownIcon="pi pi-chevron-down"
+                editable={false}
+                emptyFilterMessage={null}
+                emptyMessage={null}
+                filter={false}
+                filterBy={null}
+                filterInputAutoFocus={true}
+                filterMatchMode="contains"
+                filterPlaceholder={null}
+                id="contentType"
+                inputId={null}
+                inputRef={null}
+                itemTemplate={null}
+                maxLength={null}
+                name={null}
+                onBlur={null}
+                onChange={null}
+                onContextMenu={null}
+                onFilter={null}
+                onFocus={null}
+                onHide={null}
+                onMouseDown={null}
+                onShow={null}
+                optionDisabled={null}
+                optionGroupChildren={null}
+                optionGroupLabel={null}
+                optionGroupTemplate={null}
+                optionLabel="label"
+                optionValue={null}
+                options={
+                  Array [
+                    Object {
+                      "label": "Movie",
+                      "value": "MOVIE",
+                    },
+                    Object {
+                      "label": "Series",
+                      "value": "SERIES",
+                    },
+                    Object {
+                      "label": "Season",
+                      "value": "SEASON",
+                    },
+                    Object {
+                      "label": "Episode",
+                      "value": "EPISODE",
+                    },
+                    Object {
+                      "label": "Event",
+                      "value": "EVENT",
+                    },
+                    Object {
+                      "label": "Sports",
+                      "value": "SPORTS",
+                    },
+                    Object {
+                      "label": "Advertisement",
+                      "value": "AD",
+                    },
+                    Object {
+                      "label": "Special",
+                      "value": "SPECIAL",
+                    },
+                  ]
+                }
+                panelClassName={null}
+                panelStyle={null}
+                placeholder="Select a Content Type"
+                required={false}
+                resetFilterOnHide={false}
+                scrollHeight="200px"
+                showClear={false}
+                showFilterClear={false}
+                showOnFocus={false}
+                style={null}
+                tabIndex={null}
+                tooltip={null}
+                tooltipOptions={null}
+                transitionOptions={null}
+                value={null}
+                valueTemplate={null}
+                virtualScrollerOptions={null}
+              />
+            </ControllerWrapper>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          >
+            <ControllerWrapper
+              additionalValidation={
+                Object {
+                  "maxLength": Object {
+                    "message": "Max release year length is 4!",
+                    "value": 4,
+                  },
+                  "minLength": Object {
+                    "message": "Min release year length is 4!",
+                    "value": 4,
+                  },
+                  "pattern": Object {
+                    "message": "Please enter a valid year!",
+                    "value": /\\^\\[0-9\\]\\+\\$/,
+                  },
+                }
+              }
+              control={
+                Object {
+                  "_defaultValues": Object {
+                    "catalogueOwner": "vu",
+                  },
+                  "_fields": Object {},
+                  "_formState": Object {
+                    "dirtyFields": Object {},
+                    "errors": Object {},
+                    "isDirty": false,
+                    "isSubmitSuccessful": false,
+                    "isSubmitted": false,
+                    "isSubmitting": false,
+                    "isValid": false,
+                    "isValidating": false,
+                    "submitCount": 0,
+                    "touchedFields": Object {},
+                  },
+                  "_formValues": Object {
+                    "catalogueOwner": "vu",
+                  },
+                  "_getDirty": [Function],
+                  "_getFieldArray": [Function],
+                  "_getWatch": [Function],
+                  "_names": Object {
+                    "array": Set {},
+                    "mount": Set {},
+                    "unMount": Set {},
+                    "watch": Set {},
+                  },
+                  "_options": Object {
+                    "defaultValues": Object {
+                      "catalogueOwner": "vu",
+                    },
+                    "mode": "all",
+                    "reValidateMode": "onChange",
+                    "shouldFocusError": true,
+                  },
+                  "_proxyFormState": Object {
+                    "dirtyFields": "all",
+                    "errors": "all",
+                    "isDirty": false,
+                    "isValid": "all",
+                    "isValidating": false,
+                    "touchedFields": false,
+                  },
+                  "_removeUnmounted": [Function],
+                  "_stateFlags": Object {
+                    "action": false,
+                    "mount": true,
+                    "watch": false,
+                  },
+                  "_subjects": Object {
+                    "array": ye {
+                      "observers": Array [],
+                    },
+                    "control": ye {
+                      "observers": Array [],
+                    },
+                    "state": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                    "watch": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  "_updateFieldArray": [Function],
+                  "_updateValid": [Function],
+                  "register": [Function],
+                  "unregister": [Function],
+                }
+              }
+              controllerClassName=""
+              handleChange={[Function]}
+              inputName="releaseYear"
+              isItCheckbox={false}
+              labelClassName=""
+              register={[Function]}
+              required={true}
+              title="Release Year"
+            >
+              <InputText
+                __TYPE="InputText"
+                className="nexus-c-title-create_input"
+                id="titleReleaseYear"
+                keyfilter={null}
+                onInput={null}
+                onKeyPress={null}
+                onPaste={null}
+                placeholder="Enter Release Year"
+                tooltip={null}
+                tooltipOptions={null}
+                validateOnly={false}
+              />
+            </ControllerWrapper>
+          </div>
+        </div>
+        <ExternalIDsSection
+          control={
+            Object {
+              "_defaultValues": Object {
+                "catalogueOwner": "vu",
+              },
+              "_fields": Object {},
+              "_formState": Object {
+                "dirtyFields": Object {},
+                "errors": Object {},
+                "isDirty": false,
+                "isSubmitSuccessful": false,
+                "isSubmitted": false,
+                "isSubmitting": false,
+                "isValid": false,
+                "isValidating": false,
+                "submitCount": 0,
+                "touchedFields": Object {},
+              },
+              "_formValues": Object {
+                "catalogueOwner": "vu",
+              },
+              "_getDirty": [Function],
+              "_getFieldArray": [Function],
+              "_getWatch": [Function],
+              "_names": Object {
+                "array": Set {},
+                "mount": Set {},
+                "unMount": Set {},
+                "watch": Set {},
+              },
+              "_options": Object {
+                "defaultValues": Object {
+                  "catalogueOwner": "vu",
+                },
+                "mode": "all",
+                "reValidateMode": "onChange",
+                "shouldFocusError": true,
+              },
+              "_proxyFormState": Object {
+                "dirtyFields": "all",
+                "errors": "all",
+                "isDirty": false,
+                "isValid": "all",
+                "isValidating": false,
+                "touchedFields": false,
+              },
+              "_removeUnmounted": [Function],
+              "_stateFlags": Object {
+                "action": false,
+                "mount": true,
+                "watch": false,
+              },
+              "_subjects": Object {
+                "array": ye {
+                  "observers": Array [],
+                },
+                "control": ye {
+                  "observers": Array [],
+                },
+                "state": ye {
+                  "observers": Array [
+                    me {
+                      "closed": false,
+                      "observer": Object {
+                        "next": [Function],
+                      },
+                    },
+                  ],
+                },
+                "watch": ye {
+                  "observers": Array [
+                    me {
+                      "closed": false,
+                      "observer": Object {
+                        "next": [Function],
+                      },
+                    },
+                  ],
+                },
+              },
+              "_updateFieldArray": [Function],
+              "_updateValid": [Function],
+              "register": [Function],
+              "unregister": [Function],
+            }
+          }
+          errors={Object {}}
+          register={[Function]}
+        />
+        <Restricted
+          resource="publishTitleMetadata"
+        >
+          <div
+            className="nexus-c-title-create_checkbox-container"
+          >
+            <div
+              className="row"
+            >
+              <div
+                className="col nexus-c-title-create_checkbox-wrapper"
+              >
+                <ControllerWrapper
+                  additionalValidation={Object {}}
+                  control={
+                    Object {
+                      "_defaultValues": Object {
+                        "catalogueOwner": "vu",
+                      },
+                      "_fields": Object {},
+                      "_formState": Object {
+                        "dirtyFields": Object {},
+                        "errors": Object {},
+                        "isDirty": false,
+                        "isSubmitSuccessful": false,
+                        "isSubmitted": false,
+                        "isSubmitting": false,
+                        "isValid": false,
+                        "isValidating": false,
+                        "submitCount": 0,
+                        "touchedFields": Object {},
+                      },
+                      "_formValues": Object {
+                        "catalogueOwner": "vu",
+                      },
+                      "_getDirty": [Function],
+                      "_getFieldArray": [Function],
+                      "_getWatch": [Function],
+                      "_names": Object {
+                        "array": Set {},
+                        "mount": Set {},
+                        "unMount": Set {},
+                        "watch": Set {},
+                      },
+                      "_options": Object {
+                        "defaultValues": Object {
+                          "catalogueOwner": "vu",
+                        },
+                        "mode": "all",
+                        "reValidateMode": "onChange",
+                        "shouldFocusError": true,
+                      },
+                      "_proxyFormState": Object {
+                        "dirtyFields": "all",
+                        "errors": "all",
+                        "isDirty": false,
+                        "isValid": "all",
+                        "isValidating": false,
+                        "touchedFields": false,
+                      },
+                      "_removeUnmounted": [Function],
+                      "_stateFlags": Object {
+                        "action": false,
+                        "mount": true,
+                        "watch": false,
+                      },
+                      "_subjects": Object {
+                        "array": ye {
+                          "observers": Array [],
+                        },
+                        "control": ye {
+                          "observers": Array [],
+                        },
+                        "state": ye {
+                          "observers": Array [
+                            me {
+                              "closed": false,
+                              "observer": Object {
+                                "next": [Function],
+                              },
+                            },
+                          ],
+                        },
+                        "watch": ye {
+                          "observers": Array [
+                            me {
+                              "closed": false,
+                              "observer": Object {
+                                "next": [Function],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      "_updateFieldArray": [Function],
+                      "_updateValid": [Function],
+                      "register": [Function],
+                      "unregister": [Function],
+                    }
+                  }
+                  controllerClassName=""
+                  handleChange={[Function]}
+                  inputName="syncVZ"
+                  isItCheckbox={true}
+                  labelClassName="nexus-c-title-create_checkbox-label"
+                  register={[Function]}
+                  required={false}
+                  title="Publish to VZ and Movida Int\`l"
+                >
+                  <Checkbox
+                    __TYPE="Checkbox"
+                    aria-label={null}
+                    aria-labelledby={null}
+                    checked={false}
+                    className="nexus-c-title-create_checkbox"
+                    disabled={false}
+                    falseValue={false}
+                    icon="pi pi-check"
+                    id="syncVZ"
+                    inputId="syncVZ"
+                    inputRef={null}
+                    name={null}
+                    onChange={null}
+                    onContextMenu={null}
+                    onMouseDown={null}
+                    readOnly={false}
+                    required={false}
+                    style={null}
+                    tabIndex={null}
+                    tooltip={null}
+                    tooltipOptions={null}
+                    trueValue={true}
+                    value={null}
+                  />
+                </ControllerWrapper>
+              </div>
+            </div>
+            <div
+              className="row"
+            >
+              <div
+                className="col nexus-c-title-create_checkbox-wrapper"
+              >
+                <ControllerWrapper
+                  additionalValidation={Object {}}
+                  control={
+                    Object {
+                      "_defaultValues": Object {
+                        "catalogueOwner": "vu",
+                      },
+                      "_fields": Object {},
+                      "_formState": Object {
+                        "dirtyFields": Object {},
+                        "errors": Object {},
+                        "isDirty": false,
+                        "isSubmitSuccessful": false,
+                        "isSubmitted": false,
+                        "isSubmitting": false,
+                        "isValid": false,
+                        "isValidating": false,
+                        "submitCount": 0,
+                        "touchedFields": Object {},
+                      },
+                      "_formValues": Object {
+                        "catalogueOwner": "vu",
+                      },
+                      "_getDirty": [Function],
+                      "_getFieldArray": [Function],
+                      "_getWatch": [Function],
+                      "_names": Object {
+                        "array": Set {},
+                        "mount": Set {},
+                        "unMount": Set {},
+                        "watch": Set {},
+                      },
+                      "_options": Object {
+                        "defaultValues": Object {
+                          "catalogueOwner": "vu",
+                        },
+                        "mode": "all",
+                        "reValidateMode": "onChange",
+                        "shouldFocusError": true,
+                      },
+                      "_proxyFormState": Object {
+                        "dirtyFields": "all",
+                        "errors": "all",
+                        "isDirty": false,
+                        "isValid": "all",
+                        "isValidating": false,
+                        "touchedFields": false,
+                      },
+                      "_removeUnmounted": [Function],
+                      "_stateFlags": Object {
+                        "action": false,
+                        "mount": true,
+                        "watch": false,
+                      },
+                      "_subjects": Object {
+                        "array": ye {
+                          "observers": Array [],
+                        },
+                        "control": ye {
+                          "observers": Array [],
+                        },
+                        "state": ye {
+                          "observers": Array [
+                            me {
+                              "closed": false,
+                              "observer": Object {
+                                "next": [Function],
+                              },
+                            },
+                          ],
+                        },
+                        "watch": ye {
+                          "observers": Array [
+                            me {
+                              "closed": false,
+                              "observer": Object {
+                                "next": [Function],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      "_updateFieldArray": [Function],
+                      "_updateValid": [Function],
+                      "register": [Function],
+                      "unregister": [Function],
+                    }
+                  }
+                  controllerClassName=""
+                  handleChange={[Function]}
+                  inputName="syncMovida"
+                  isItCheckbox={true}
+                  labelClassName="nexus-c-title-create_checkbox-label"
+                  register={[Function]}
+                  required={false}
+                  title="Publish to Movida"
+                >
+                  <Checkbox
+                    __TYPE="Checkbox"
+                    aria-label={null}
+                    aria-labelledby={null}
+                    checked={false}
+                    className="nexus-c-title-create_checkbox"
+                    disabled={false}
+                    falseValue={false}
+                    icon="pi pi-check"
+                    id="syncMovida"
+                    inputId="syncMovida"
+                    inputRef={null}
+                    name={null}
+                    onChange={null}
+                    onContextMenu={null}
+                    onMouseDown={null}
+                    readOnly={false}
+                    required={false}
+                    style={null}
+                    tabIndex={null}
+                    tooltip={null}
+                    tooltipOptions={null}
+                    trueValue={true}
+                    value={null}
+                  />
+                </ControllerWrapper>
+              </div>
+            </div>
+          </div>
+        </Restricted>
+      </div>
+    </div>
+  </form>
+</Dialog>
+`;
+
+exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = `
+<Dialog
+  __TYPE="Dialog"
+  appendTo={null}
+  ariaCloseIconLabel="Close"
+  baseZIndex={0}
+  blockScroll={false}
+  breakpoints={null}
+  className="nexus-c-title-create_dialog"
+  closable={false}
+  closeOnEscape={false}
+  contentClassName={null}
+  contentStyle={null}
+  dismissableMask={false}
+  draggable={true}
+  focusOnShow={true}
+  footer={
+    <div
+      className="nexus-c-title-create_footer-container"
+    >
+      <div
+        className="nexus-c-title-create_footer-buttons-container"
+      >
+        <Memo(Button)
+          __TYPE="Button"
+          badge={null}
+          badgeClassName={null}
+          className="p-button-outlined p-button-secondary"
+          disabled={false}
+          icon={null}
+          iconPos="left"
+          id="titleCancelBtn"
+          label="Cancel"
+          loading={false}
+          loadingIcon="pi pi-spinner pi-spin"
+          onClick={[Function]}
+          tooltip={null}
+          tooltipOptions={null}
+        />
+        <Memo(Button)
+          __TYPE="Button"
+          badge={null}
+          badgeClassName={null}
+          className="p-button-outlined"
+          disabled={true}
+          icon={null}
+          iconPos="right"
+          id="titleSaveBtn"
+          label="Match & Create"
+          loading={false}
+          loadingIcon="pi pi-spin pi-spinner"
+          onClick={[Function]}
+          tooltip={null}
+          tooltipOptions={null}
+        />
+      </div>
+    </div>
+  }
+  header="Create Title"
+  headerClassName={null}
+  headerStyle={null}
+  icons={null}
+  id={null}
+  keepInViewport={true}
+  maskClassName={null}
+  maskStyle={null}
+  maximizable={false}
+  maximized={false}
+  minX={0}
+  minY={0}
+  modal={true}
+  onClick={null}
+  onDrag={null}
+  onDragEnd={null}
+  onDragStart={null}
+  onHide={[Function]}
+  onMaskClick={null}
+  onMaximize={null}
+  onResize={null}
+  onResizeEnd={null}
+  onResizeStart={null}
+  onShow={null}
+  position="center"
+  resizable={true}
+  rtl={false}
+  showHeader={true}
+  style={
+    Object {
+      "width": "40vw",
+    }
+  }
+  transitionOptions={null}
+  visible={true}
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          >
+            <ControllerWrapper
+              additionalValidation={
+                Object {
+                  "maxLength": Object {
+                    "message": "Max title length is 250!",
+                    "value": 250,
+                  },
+                }
+              }
+              control={
+                Object {
+                  "_defaultValues": Object {
+                    "catalogueOwner": undefined,
+                  },
+                  "_fields": Object {},
+                  "_formState": Object {
+                    "dirtyFields": Object {},
+                    "errors": Object {},
+                    "isDirty": false,
+                    "isSubmitSuccessful": false,
+                    "isSubmitted": false,
+                    "isSubmitting": false,
+                    "isValid": false,
+                    "isValidating": false,
+                    "submitCount": 0,
+                    "touchedFields": Object {},
+                  },
+                  "_formValues": Object {
+                    "catalogueOwner": undefined,
+                  },
+                  "_getDirty": [Function],
+                  "_getFieldArray": [Function],
+                  "_getWatch": [Function],
+                  "_names": Object {
+                    "array": Set {},
+                    "mount": Set {},
+                    "unMount": Set {},
+                    "watch": Set {},
+                  },
+                  "_options": Object {
+                    "defaultValues": Object {
+                      "catalogueOwner": undefined,
+                    },
+                    "mode": "all",
+                    "reValidateMode": "onChange",
+                    "shouldFocusError": true,
+                  },
+                  "_proxyFormState": Object {
+                    "dirtyFields": "all",
+                    "errors": "all",
+                    "isDirty": false,
+                    "isValid": "all",
+                    "isValidating": false,
+                    "touchedFields": false,
+                  },
+                  "_removeUnmounted": [Function],
+                  "_stateFlags": Object {
+                    "action": false,
+                    "mount": true,
+                    "watch": false,
+                  },
+                  "_subjects": Object {
+                    "array": ye {
+                      "observers": Array [],
+                    },
+                    "control": ye {
+                      "observers": Array [],
+                    },
+                    "state": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                    "watch": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  "_updateFieldArray": [Function],
+                  "_updateValid": [Function],
+                  "register": [Function],
+                  "unregister": [Function],
+                }
+              }
+              controllerClassName=""
+              handleChange={[Function]}
+              inputName="title"
+              isItCheckbox={false}
+              labelClassName=""
+              register={[Function]}
+              required={true}
+              title="Title"
+            >
+              <InputText
+                __TYPE="InputText"
+                className="nexus-c-title-create_input"
+                id="title"
+                keyfilter={null}
+                onInput={null}
+                onKeyPress={null}
+                onPaste={null}
+                placeholder="Enter Title"
+                tooltip={null}
+                tooltipOptions={null}
+                validateOnly={false}
+              />
+            </ControllerWrapper>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          >
+            <ControllerWrapper
+              additionalValidation={Object {}}
+              control={
+                Object {
+                  "_defaultValues": Object {
+                    "catalogueOwner": undefined,
+                  },
+                  "_fields": Object {},
+                  "_formState": Object {
+                    "dirtyFields": Object {},
+                    "errors": Object {},
+                    "isDirty": false,
+                    "isSubmitSuccessful": false,
+                    "isSubmitted": false,
+                    "isSubmitting": false,
+                    "isValid": false,
+                    "isValidating": false,
+                    "submitCount": 0,
+                    "touchedFields": Object {},
+                  },
+                  "_formValues": Object {
+                    "catalogueOwner": undefined,
+                  },
+                  "_getDirty": [Function],
+                  "_getFieldArray": [Function],
+                  "_getWatch": [Function],
+                  "_names": Object {
+                    "array": Set {},
+                    "mount": Set {},
+                    "unMount": Set {},
+                    "watch": Set {},
+                  },
+                  "_options": Object {
+                    "defaultValues": Object {
+                      "catalogueOwner": undefined,
+                    },
+                    "mode": "all",
+                    "reValidateMode": "onChange",
+                    "shouldFocusError": true,
+                  },
+                  "_proxyFormState": Object {
+                    "dirtyFields": "all",
+                    "errors": "all",
+                    "isDirty": false,
+                    "isValid": "all",
+                    "isValidating": false,
+                    "touchedFields": false,
+                  },
+                  "_removeUnmounted": [Function],
+                  "_stateFlags": Object {
+                    "action": false,
+                    "mount": true,
+                    "watch": false,
+                  },
+                  "_subjects": Object {
+                    "array": ye {
+                      "observers": Array [],
+                    },
+                    "control": ye {
+                      "observers": Array [],
+                    },
+                    "state": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                    "watch": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  "_updateFieldArray": [Function],
+                  "_updateValid": [Function],
+                  "register": [Function],
+                  "unregister": [Function],
+                }
+              }
+              controllerClassName=""
+              handleChange={[Function]}
+              inputName="contentType"
+              isItCheckbox={false}
+              labelClassName=""
+              register={[Function]}
+              required={true}
+              title="Content Type"
+            >
+              <Dropdown
+                __TYPE="Dropdown"
+                appendTo={null}
+                ariaLabel={null}
+                ariaLabelledBy={null}
+                autoFocus={false}
+                className="nexus-c-title-create_input"
+                dataKey={null}
+                disabled={true}
+                dropdownIcon="pi pi-chevron-down"
+                editable={false}
+                emptyFilterMessage={null}
+                emptyMessage={null}
+                filter={false}
+                filterBy={null}
+                filterInputAutoFocus={true}
+                filterMatchMode="contains"
+                filterPlaceholder={null}
+                id="contentType"
+                inputId={null}
+                inputRef={null}
+                itemTemplate={null}
+                maxLength={null}
+                name={null}
+                onBlur={null}
+                onChange={null}
+                onContextMenu={null}
+                onFilter={null}
+                onFocus={null}
+                onHide={null}
+                onMouseDown={null}
+                onShow={null}
+                optionDisabled={null}
+                optionGroupChildren={null}
+                optionGroupLabel={null}
+                optionGroupTemplate={null}
+                optionLabel="label"
+                optionValue={null}
+                options={
+                  Array [
+                    Object {
+                      "label": "Movie",
+                      "value": "MOVIE",
+                    },
+                    Object {
+                      "label": "Series",
+                      "value": "SERIES",
+                    },
+                    Object {
+                      "label": "Season",
+                      "value": "SEASON",
+                    },
+                    Object {
+                      "label": "Episode",
+                      "value": "EPISODE",
+                    },
+                    Object {
+                      "label": "Event",
+                      "value": "EVENT",
+                    },
+                    Object {
+                      "label": "Sports",
+                      "value": "SPORTS",
+                    },
+                    Object {
+                      "label": "Advertisement",
+                      "value": "AD",
+                    },
+                    Object {
+                      "label": "Special",
+                      "value": "SPECIAL",
+                    },
+                  ]
+                }
+                panelClassName={null}
+                panelStyle={null}
+                placeholder="Select a Content Type"
+                required={false}
+                resetFilterOnHide={false}
+                scrollHeight="200px"
+                showClear={false}
+                showFilterClear={false}
+                showOnFocus={false}
+                style={null}
+                tabIndex={null}
+                tooltip={null}
+                tooltipOptions={null}
+                transitionOptions={null}
+                value={null}
+                valueTemplate={null}
+                virtualScrollerOptions={null}
+              />
+            </ControllerWrapper>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          >
+            <ControllerWrapper
+              additionalValidation={
+                Object {
+                  "maxLength": Object {
+                    "message": "Max release year length is 4!",
+                    "value": 4,
+                  },
+                  "minLength": Object {
+                    "message": "Min release year length is 4!",
+                    "value": 4,
+                  },
+                  "pattern": Object {
+                    "message": "Please enter a valid year!",
+                    "value": /\\^\\[0-9\\]\\+\\$/,
+                  },
+                }
+              }
+              control={
+                Object {
+                  "_defaultValues": Object {
+                    "catalogueOwner": undefined,
+                  },
+                  "_fields": Object {},
+                  "_formState": Object {
+                    "dirtyFields": Object {},
+                    "errors": Object {},
+                    "isDirty": false,
+                    "isSubmitSuccessful": false,
+                    "isSubmitted": false,
+                    "isSubmitting": false,
+                    "isValid": false,
+                    "isValidating": false,
+                    "submitCount": 0,
+                    "touchedFields": Object {},
+                  },
+                  "_formValues": Object {
+                    "catalogueOwner": undefined,
+                  },
+                  "_getDirty": [Function],
+                  "_getFieldArray": [Function],
+                  "_getWatch": [Function],
+                  "_names": Object {
+                    "array": Set {},
+                    "mount": Set {},
+                    "unMount": Set {},
+                    "watch": Set {},
+                  },
+                  "_options": Object {
+                    "defaultValues": Object {
+                      "catalogueOwner": undefined,
+                    },
+                    "mode": "all",
+                    "reValidateMode": "onChange",
+                    "shouldFocusError": true,
+                  },
+                  "_proxyFormState": Object {
+                    "dirtyFields": "all",
+                    "errors": "all",
+                    "isDirty": false,
+                    "isValid": "all",
+                    "isValidating": false,
+                    "touchedFields": false,
+                  },
+                  "_removeUnmounted": [Function],
+                  "_stateFlags": Object {
+                    "action": false,
+                    "mount": true,
+                    "watch": false,
+                  },
+                  "_subjects": Object {
+                    "array": ye {
+                      "observers": Array [],
+                    },
+                    "control": ye {
+                      "observers": Array [],
+                    },
+                    "state": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                    "watch": ye {
+                      "observers": Array [
+                        me {
+                          "closed": false,
+                          "observer": Object {
+                            "next": [Function],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                  "_updateFieldArray": [Function],
+                  "_updateValid": [Function],
+                  "register": [Function],
+                  "unregister": [Function],
+                }
+              }
+              controllerClassName=""
+              handleChange={[Function]}
+              inputName="releaseYear"
+              isItCheckbox={false}
+              labelClassName=""
+              register={[Function]}
+              required={true}
+              title="Release Year"
+            >
+              <InputText
+                __TYPE="InputText"
+                className="nexus-c-title-create_input"
+                id="titleReleaseYear"
+                keyfilter={null}
+                onInput={null}
+                onKeyPress={null}
+                onPaste={null}
+                placeholder="Enter Release Year"
+                tooltip={null}
+                tooltipOptions={null}
+                validateOnly={false}
+              />
+            </ControllerWrapper>
+          </div>
+        </div>
+        <ExternalIDsSection
+          control={
+            Object {
+              "_defaultValues": Object {
+                "catalogueOwner": undefined,
+              },
+              "_fields": Object {},
+              "_formState": Object {
+                "dirtyFields": Object {},
+                "errors": Object {},
+                "isDirty": false,
+                "isSubmitSuccessful": false,
+                "isSubmitted": false,
+                "isSubmitting": false,
+                "isValid": false,
+                "isValidating": false,
+                "submitCount": 0,
+                "touchedFields": Object {},
+              },
+              "_formValues": Object {
+                "catalogueOwner": undefined,
+              },
+              "_getDirty": [Function],
+              "_getFieldArray": [Function],
+              "_getWatch": [Function],
+              "_names": Object {
+                "array": Set {},
+                "mount": Set {},
+                "unMount": Set {},
+                "watch": Set {},
+              },
+              "_options": Object {
+                "defaultValues": Object {
+                  "catalogueOwner": undefined,
+                },
+                "mode": "all",
+                "reValidateMode": "onChange",
+                "shouldFocusError": true,
+              },
+              "_proxyFormState": Object {
+                "dirtyFields": "all",
+                "errors": "all",
+                "isDirty": false,
+                "isValid": "all",
+                "isValidating": false,
+                "touchedFields": false,
+              },
+              "_removeUnmounted": [Function],
+              "_stateFlags": Object {
+                "action": false,
+                "mount": true,
+                "watch": false,
+              },
+              "_subjects": Object {
+                "array": ye {
+                  "observers": Array [],
+                },
+                "control": ye {
+                  "observers": Array [],
+                },
+                "state": ye {
+                  "observers": Array [
+                    me {
+                      "closed": false,
+                      "observer": Object {
+                        "next": [Function],
+                      },
+                    },
+                  ],
+                },
+                "watch": ye {
+                  "observers": Array [
+                    me {
+                      "closed": false,
+                      "observer": Object {
+                        "next": [Function],
+                      },
+                    },
+                  ],
+                },
+              },
+              "_updateFieldArray": [Function],
+              "_updateValid": [Function],
+              "register": [Function],
+              "unregister": [Function],
+            }
+          }
+          errors={Object {}}
+          register={[Function]}
+        />
+      </div>
+    </div>
+  </form>
+</Dialog>
+`;
