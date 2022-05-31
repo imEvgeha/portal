@@ -4,10 +4,13 @@ import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circl
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
+import {
+    EXTERNAL_SYSTEM_ID_EXAMPLE,
+    NEXUS_ENTITY_TYPES,
+} from '@vubiquity-nexus/portal-ui/src/elements/nexus-entity/constants';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {useFieldArray} from 'react-hook-form';
-import {EXTERNAL_SYSTEM_ID_EXAMPLE, NEXUS_ENTITY_TYPES} from '../nexus-entity/constants';
 import './ExternalIDsSection.scss';
 
 const ExternalIDsSection = ({control, register, errors}) => {

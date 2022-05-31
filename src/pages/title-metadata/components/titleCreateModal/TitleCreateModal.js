@@ -228,6 +228,7 @@ const TitleCreate = ({
             releaseYear: titleForm.releaseYear || null,
             contentType: titleForm.contentType.toLowerCase(),
             externalSystemIds: updatedExternalSystemIds,
+            contentSubType: titleForm.contentType.toLowerCase(),
         };
     };
 
