@@ -45,3 +45,17 @@ jest.mock('react-redux', () => {
         useSelector: () => mockSelector,
     };
 });
+
+export const mockUseFieldArray = {
+    fields: [],
+    append: () => jest.fn(),
+    remove: () => jest.fn(),
+};
+jest.mock('react-hook-form', () => {
+    const r = jest.requireActual('react-hook-form');
+
+    return {
+        ...r,
+        useFieldArray: () => mockUseFieldArray,
+    };
+});

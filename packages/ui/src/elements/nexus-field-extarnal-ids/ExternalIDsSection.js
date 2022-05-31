@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
+import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
+import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {useFieldArray} from 'react-hook-form';
-import NexusEntity from '../../../lib/elements/nexus-entity/NexusEntity';
-import ControllerWrapper from '../../../lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {EXTERNAL_SYSTEM_ID_EXAMPLE, NEXUS_ENTITY_TYPES} from '../nexus-entity/constants';
 import './ExternalIDsSection.scss';
 
