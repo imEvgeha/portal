@@ -389,10 +389,6 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       "value": "EPISODE",
                     },
                     Object {
-                      "label": "Event",
-                      "value": "EVENT",
-                    },
-                    Object {
                       "label": "Sports",
                       "value": "SPORTS",
                     },
@@ -1224,10 +1220,6 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     Object {
                       "label": "Episode",
                       "value": "EPISODE",
-                    },
-                    Object {
-                      "label": "Event",
-                      "value": "EVENT",
                     },
                     Object {
                       "label": "Sports",

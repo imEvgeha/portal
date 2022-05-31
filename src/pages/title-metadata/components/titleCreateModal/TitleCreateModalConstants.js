@@ -1,13 +1,4 @@
-import {
-    ADVERTISEMENT,
-    EPISODE,
-    EVENT,
-    MOVIE,
-    SEASON,
-    SERIES,
-    SPORTS,
-    SPECIAL,
-} from '../../../metadata/constants/contentType';
+import {ADVERTISEMENT, EPISODE, MOVIE, SEASON, SERIES, SPORTS, SPECIAL} from '../../../metadata/constants/contentType';
 
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
 const NEW_TITLE_TOAST_SUCCESS_MESSAGE = 'You successfully created a new title!';
@@ -53,7 +44,6 @@ export const CONTENT_TYPE_ITEMS = [
     {label: SERIES.name, value: SERIES.apiName},
     {label: SEASON.name, value: SEASON.apiName},
     {label: EPISODE.name, value: EPISODE.apiName},
-    {label: EVENT.name, value: EVENT.apiName},
     {label: SPORTS.name, value: SPORTS.apiName},
     {label: ADVERTISEMENT.name, value: ADVERTISEMENT.apiName},
     {label: SPECIAL.name, value: SPECIAL.apiName},

@@ -206,6 +206,7 @@ const TitleCreate = ({
             name: titleForm.title,
             releaseYear: titleForm.releaseYear || null,
             contentType: titleForm.contentType.toLowerCase(),
+            contentSubType: titleForm.contentType.toLowerCase(),
         };
     };
 
