@@ -213,12 +213,16 @@ const TitleCreate = ({
     const searchSeries = async event => {
         setTimeout(async () => {
             let filteredSeries = [];
+            // reset the selected series on new search string
+            setSelectedSeries(null);
             // only invoke the API when the search query string is not empty
             if (event.query.trim().length) {
-                const response = await titleService.freeTextSearch({title: event.query, tenantCode}, 0, 100);
-                filteredSeries = response.data.filter(series => {
-                    return series?.episodic?.seriesTitleName?.toLowerCase().startsWith(event.query.toLowerCase());
-                });
+                const response = await titleService.freeTextSearch(
+                    {title: event.query, contentType: 'SERIES', tenantCode},
+                    0,
+                    30
+                );
+                filteredSeries = response?.data;
             }
 
             setFilteredSeries(filteredSeries);
@@ -249,12 +253,30 @@ const TitleCreate = ({
     };
 
     const getTitleWithoutEmptyField = titleForm => {
-        return {
+        const tempTitle = {
             name: titleForm.title,
             releaseYear: titleForm.releaseYear || null,
             contentType: titleForm.contentType.toLowerCase(),
             contentSubType: titleForm.contentType.toLowerCase(),
         };
+        // in case of season/episode/sports, adding more properties to payload
+        if (fieldsToDisplay()) {
+            // if adding a new season
+            if (currentValues.contentType === 'SEASON') {
+                tempTitle.parentId = {
+                    contentType:
+                        titleForm.contentType.toLowerCase() === 'season'
+                            ? titleForm.seriesTitleName.contentType.toLowerCase() === 'series'
+                                ? 'SERIES'
+                                : ''
+                            : '',
+                    id: selectedSeries.id,
+                };
+                tempTitle.seasonNumber = titleForm.seasonNumber || null;
+            }
+        }
+
+        return tempTitle;
     };
 
     const renderSyncCheckBoxes = () => (
@@ -422,7 +444,7 @@ const TitleCreate = ({
                                             itemTemplate={seriesTemplate}
                                             selectedItemTemplate={selectedSeriesTemplate}
                                             columnClass="col-lg-12"
-                                            onChange={e => setSelectedSeries(e.value)}
+                                            onSelect={e => setSelectedSeries(e.value)}
                                             aria-label="Series"
                                         />
                                     </ControllerWrapper>
