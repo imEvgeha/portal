@@ -155,7 +155,7 @@ const TitleCreate = ({
         titleService
             .createTitleWithoutErrorModal(title)
             .then(res => {
-                const titleId = res.id;
+                const titleId = res.meta.id;
                 addToast({
                     severity: 'success',
                     content: (
@@ -177,13 +177,13 @@ const TitleCreate = ({
                     DOP.setData({
                         match: {
                             rightId: focusedId,
-                            titleId: res.id,
+                            titleId,
                         },
                     });
                 } else if (bulkTitleMatch) {
                     bulkTitleMatch(titleId, true);
                 } else {
-                    const updatedRight = {coreTitleId: res.id};
+                    const updatedRight = {coreTitleId: titleId};
                     rightsService.update(updatedRight, focusedId);
                 }
                 setIsCreatingTitle(false);
