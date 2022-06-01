@@ -212,9 +212,10 @@ const TitleCreate = ({
      */
     const searchSeries = async event => {
         setTimeout(async () => {
-            const response = await titleService.freeTextSearch({title: event.query, tenantCode}, 0, 100);
             let filteredSeries = [];
+            // only invoke the API when the search query string is not empty
             if (event.query.trim().length) {
+                const response = await titleService.freeTextSearch({title: event.query, tenantCode}, 0, 100);
                 filteredSeries = response.data.filter(series => {
                     return series?.episodic?.seriesTitleName?.toLowerCase().startsWith(event.query.toLowerCase());
                 });

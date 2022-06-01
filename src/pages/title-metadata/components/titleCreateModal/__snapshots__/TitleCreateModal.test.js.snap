@@ -107,7 +107,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
           className="row"
         >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={
@@ -228,12 +228,8 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
               />
             </ControllerWrapper>
           </div>
-        </div>
-        <div
-          className="row"
-        >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={Object {}}
@@ -427,7 +423,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
           className="row"
         >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={
@@ -940,7 +936,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           className="row"
         >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={
@@ -1061,12 +1057,8 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
               />
             </ControllerWrapper>
           </div>
-        </div>
-        <div
-          className="row"
-        >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={Object {}}
@@ -1260,7 +1252,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           className="row"
         >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={
