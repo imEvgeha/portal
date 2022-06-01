@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {InputText} from '@portal/portal-components';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
-import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {
     EXTERNAL_SYSTEM_ID_EXAMPLE,
     NEXUS_ENTITY_TYPES,
-} from '@vubiquity-nexus/portal-ui/src/elements/nexus-entity/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
 import {Button} from 'primereact/button';
-import {InputText} from 'primereact/inputtext';
 import {useFieldArray} from 'react-hook-form';
 import './ExternalIDsSection.scss';
 
@@ -39,41 +38,33 @@ const ExternalIDsSection = ({control, register, errors}) => {
                     key={field.id}
                 >
                     <div className="col-5 nexus-c-array-input-wrapper">
-                        <ControllerWrapper
-                            title="EXTERNAL ID TYPE"
-                            inputName={`externalSystemIds.${index}.externalSystem`}
-                            errors={errors?.externalSystemIds?.[index]?.externalSystem}
-                            labelClassName="nexus-c-array-label"
-                            required={true}
-                            control={control}
-                            register={register}
-                        >
-                            <InputText
-                                placeholder="Enter External ID type"
-                                id="externalIdType"
-                                name={`externalSystemIds.${index}.externalSystem`}
-                                className="nexus-c-title-create_input"
-                            />
-                        </ControllerWrapper>
+                        <InputText
+                            formControlOptions={{
+                                formControlName: 'firstName',
+                                rules: {
+                                    required: true,
+                                },
+                            }}
+                            placeholder="Enter External ID type"
+                            id="externalIdType"
+                            name={`externalSystemIds.${index}.externalSystem`}
+                            className="nexus-c-title-create_input"
+                        />
                     </div>
 
                     <div className="col-5 nexus-c-array-input-wrapper">
-                        <ControllerWrapper
-                            title="EXTERNAL ID"
-                            inputName={`externalSystemIds.${index}.titleId`}
-                            errors={errors?.externalSystemIds?.[index]?.titleId}
-                            labelClassName="nexus-c-array-label"
-                            required={true}
-                            control={control}
-                            register={register}
-                        >
-                            <InputText
-                                placeholder="Enter External ID"
-                                id="externalId"
-                                name={`externalSystemIds.${index}.titleId`}
-                                className="nexus-c-title-create_input"
-                            />
-                        </ControllerWrapper>
+                        <InputText
+                            formControlOptions={{
+                                formControlName: 'firstName',
+                                rules: {
+                                    required: true,
+                                },
+                            }}
+                            placeholder="Enter External ID"
+                            id="externalId"
+                            name={`externalSystemIds.${index}.titleId`}
+                            className="nexus-c-title-create_input"
+                        />
                     </div>
 
                     <div className="col-1 d-flex justify-content-end nexus-c-array-delete-button">
