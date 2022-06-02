@@ -1,12 +1,13 @@
 import React from 'react';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Link, useParams} from 'react-router-dom';
+import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {Link} from 'react-router-dom';
 import './LoadingCellRenderer.scss';
 import {renderTitleName} from './utils/utils';
 
 const LoadingCellRenderer = params => {
-    const routeParams = useParams();
+    const routeParams = getAuthConfig();
 
     const {
         data,
