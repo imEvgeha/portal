@@ -30,3 +30,16 @@
     align-items: baseline;
     margin-bottom: 18px;
 }
+
+.nexus-c-title-create_dialog {
+    .nexus-c-create-title-overview-header,
+    .nexus-c-create-title-publish-header {
+        .nexus-c-entity {
+            .nexus-c-entity-panel {
+                &.container-fluid {
+                    padding: 0 0;
+                }
+            }
+        }
+    }
+}

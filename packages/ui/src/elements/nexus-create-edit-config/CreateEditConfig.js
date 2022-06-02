@@ -29,7 +29,7 @@ const CreateEditConfig = ({
         (activeDynamicKeys.current = {...activeDynamicKeys.current, [schemaKey]: keys});
 
     const constructFields = (schema, form, values) => {
-        return schema?.map(elementSchema => {
+        return schema?.map((elementSchema, index) => {
             return constructFieldPerType({
                 elementSchema,
                 form,
@@ -39,6 +39,7 @@ const CreateEditConfig = ({
                 cb: elementSchema.dynamic ? getActiveDynamicKeys : undefined,
                 cache,
                 dataApi,
+                index,
             });
         });
     };

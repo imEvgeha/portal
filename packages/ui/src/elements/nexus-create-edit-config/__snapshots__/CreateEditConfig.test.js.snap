@@ -122,7 +122,7 @@ exports[`CreateEditConfig should match snapshot 1`] = `
     >
       <div
         className="col-sm-6 mb-1"
-        key="id_col"
+        key="id_col0"
       >
         <Component
           control={
@@ -205,7 +205,7 @@ exports[`CreateEditConfig should match snapshot 1`] = `
       </div>
       <div
         className="col-sm-6 mb-1"
-        key="createdAt_col"
+        key="createdAt_col1"
       >
         <Component
           control={

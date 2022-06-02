@@ -186,7 +186,10 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
         setHeaders(newHeaders);
     };
 
-    const renderGroupElements = group => group.map(fieldSchema => constructElement(fieldSchema, 'col-6 mb-2'));
+    const renderGroupElements = group => {
+        const className = group.find(s => s.type === 'array') ? 'col-12 mb-2' : 'col-6 mb-2';
+        return group.map((fieldSchema, index) => constructElement(fieldSchema, className, index));
+    };
 
     const groupActions = index => [
         new Action({
@@ -231,22 +234,24 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
         }
     };
 
-    const constructElement = (fieldSchema, className = 'mb-2') =>
+    const constructElement = (fieldSchema, className = 'mb-2', index) =>
         constructFieldPerType({
             elementSchema: fieldSchema,
             form,
             value: form?.getValues(fieldSchema.name) || values?.[fieldSchema?.name] || '',
             className,
             customOnChange: onChange,
+            undefined,
             cache,
             dataApi,
+            index,
         });
 
     const renderElement = fieldsIn => {
         return fieldsIn.map((fieldSchema, index) => {
             return (
                 <div className="row align-items-center my-2" key={`nexus-c-field-${index}`}>
-                    <div className="col-10">{constructElement(fieldSchema)}</div>
+                    <div className="col-10">{constructElement(fieldSchema, 'mb-2', index)}</div>
                     {arrayElementButtons(index, formFields.length, addField, () => onRemove(index, false), true)}
                 </div>
             );
