@@ -8,7 +8,7 @@ import {cloneDeep, isObject} from 'lodash';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {useDispatch, useSelector} from 'react-redux';
 import {uid} from 'react-uid';
-import {getConfigApiValues} from '../../../../../src/pages/settings/CommonConfigService';
+import {getConfigApiValues} from '../../settings/CommonConfigService';
 import {addToast} from '../../toast/NexusToastNotificationActions';
 import CreateEditConfig from '../nexus-create-edit-config/CreateEditConfig';
 import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
