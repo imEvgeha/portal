@@ -171,7 +171,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -286,7 +286,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -495,7 +495,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -634,7 +634,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                         "shouldFocusError": true,
                       },
                       "_proxyFormState": Object {
-                        "dirtyFields": "all",
+                        "dirtyFields": false,
                         "errors": "all",
                         "isDirty": false,
                         "isValid": "all",
@@ -765,7 +765,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                         "shouldFocusError": true,
                       },
                       "_proxyFormState": Object {
-                        "dirtyFields": "all",
+                        "dirtyFields": false,
                         "errors": "all",
                         "isDirty": false,
                         "isValid": "all",
@@ -1028,7 +1028,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -1143,7 +1143,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -1352,7 +1352,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",

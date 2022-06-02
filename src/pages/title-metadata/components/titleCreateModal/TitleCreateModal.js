@@ -54,7 +54,7 @@ const TitleCreate = ({
         handleSubmit,
         setValue,
         reset,
-        formState: {errors, isValid, dirtyFields},
+        formState: {errors, isValid},
     } = useForm({
         defaultValues: {...defaultValues, catalogueOwner: tenantCode},
         mode: 'all',
@@ -200,12 +200,15 @@ const TitleCreate = ({
     };
 
     const onSubmit = submitTitle => {
-        const title = getTitleWithoutEmptyField(submitTitle);
-        const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
-        const params = {copyCastCrewFromSeason};
-        setIsCreatingTitle(true);
+        // trigger the POST API only if the form is valid
+        if (isValid) {
+            const title = getTitleWithoutEmptyField(submitTitle);
+            const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
+            const params = {copyCastCrewFromSeason};
+            setIsCreatingTitle(true);
 
-        isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
+            isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
+        }
     };
 
     /**
@@ -222,7 +225,7 @@ const TitleCreate = ({
                 const response = await titleService.freeTextSearch(
                     {title: event.query, contentType: 'SERIES', tenantCode},
                     0,
-                    30
+                    100
                 );
                 filteredSeries = response?.data;
             }
@@ -342,7 +345,6 @@ const TitleCreate = ({
                     loadingIcon="pi pi-spin pi-spinner"
                     className="p-button-outlined"
                     iconPos="right"
-                    disabled={false}
                 />
             </div>
         </div>
