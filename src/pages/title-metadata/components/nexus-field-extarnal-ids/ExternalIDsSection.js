@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {InputText} from '@portal/portal-components';
+import {InputText, Button} from '@portal/portal-components';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
@@ -8,7 +8,6 @@ import {
     EXTERNAL_SYSTEM_ID_EXAMPLE,
     NEXUS_ENTITY_TYPES,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
-import {Button} from 'primereact/button';
 import {useFieldArray} from 'react-hook-form';
 import './ExternalIDsSection.scss';
 

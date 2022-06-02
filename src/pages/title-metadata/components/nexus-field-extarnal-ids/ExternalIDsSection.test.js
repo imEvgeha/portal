@@ -1,8 +1,8 @@
 import React from 'react';
+import {Button} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
-import {Button} from 'primereact/button';
 import {useForm} from 'react-hook-form';
 import ExternalIDsSection from './ExternalIDsSection';
 

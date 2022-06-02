@@ -18,23 +18,13 @@ exports[`External Ids Section should match snapshot 1`] = `
     className="d-flex align-items-center justify-content-end"
   >
     <Button
-      __TYPE="Button"
-      badge={null}
-      badgeClassName={null}
       className="p-button-text nexus-c-array-add-button"
-      disabled={false}
       icon={
         Object {
           "process": [Function],
         }
       }
-      iconPos="left"
-      label={null}
-      loading={false}
-      loadingIcon="pi pi-spinner pi-spin"
       onClick={[Function]}
-      tooltip={null}
-      tooltipOptions={null}
     />
   </div>
 </div>
