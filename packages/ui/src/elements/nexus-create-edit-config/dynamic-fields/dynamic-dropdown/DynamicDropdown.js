@@ -65,17 +65,10 @@ const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi
             }
             processOptions(cache[field.source.url][value], field);
         } else if (dataApi) {
-            const apiResponse = dataApi(field.source.url, 'servicingRegion', value).then(response => {
-                cache[field.source.url] = {
-                    ...cache[field.source.url],
-                    [value]: response.data,
-                };
+            cache[field.source.url] = dataApi(field.source.url, 'servicingRegion', value).then(response => {
+                cache[field.source.url] = [...response.data];
                 processOptions(response.data, field);
             });
-            cache[field.source.url] = {
-                ...cache[field.source.url],
-                [value]: apiResponse,
-            };
         }
     };
 
@@ -114,6 +107,7 @@ const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi
                         tooltip={elementSchema.description}
                         filter={options.length > 10}
                         filterBy="label"
+                        appendTo={document.body}
                     />
                 );
             }
@@ -130,6 +124,7 @@ const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi
                         tooltip={elementSchema.description}
                         filter={options.length > 10}
                         filterBy="label"
+                        appendTo={document.body}
                     />
                 );
             }

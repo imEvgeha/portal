@@ -3,7 +3,6 @@ import IconCalendar from '@vubiquity-nexus/portal-assets/calendar.svg';
 import {isEmpty} from 'lodash';
 import {Calendar} from 'primereact/calendar';
 import {Checkbox} from 'primereact/checkbox';
-import {Dropdown} from 'primereact/dropdown';
 import {InputText} from 'primereact/inputtext';
 import {Controller} from 'react-hook-form';
 import FieldError from '../../nexus-field-error/FieldError';
@@ -13,7 +12,7 @@ import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import DynamicElement from './dynamic-element/DynamicElement';
 
 export const constructFieldPerType = args => {
-    const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi} = args;
+    const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi, index} = args;
     const isControllerVisible = elementSchema.visible !== false;
 
     if (isControllerVisible === false) {
@@ -23,7 +22,7 @@ export const constructFieldPerType = args => {
     return (
         <div
             className={className || (elementSchema.type === 'array' ? 'col-sm-12' : 'col-sm-6 mb-1')}
-            key={`${elementSchema.id || elementSchema.name}_col`}
+            key={`${elementSchema.id || elementSchema.name}_col${index}`}
         >
             <Controller
                 name={elementSchema.name}
@@ -98,32 +97,6 @@ const getElement = args => {
             let tmpDate;
             let val;
 
-            // dynamically populate the years from the dropdown menu for the calendar
-            const currentYear = new Date().getFullYear();
-
-            const monthNavigatorTemplate = e => {
-                return (
-                    <Dropdown
-                        value={e.value}
-                        options={e.options}
-                        onChange={event => e.onChange(event.originalEvent, event.value)}
-                        style={{lineHeight: 1}}
-                    />
-                );
-            };
-
-            const yearNavigatorTemplate = e => {
-                return (
-                    <Dropdown
-                        value={e.value}
-                        options={e.options}
-                        onChange={event => e.onChange(event.originalEvent, event.value)}
-                        className="ml-2"
-                        style={{lineHeight: 1}}
-                    />
-                );
-            };
-
             if (field.value) {
                 tmpDate = new Date(field.value);
                 val = new Date(tmpDate.toLocaleString('en-US', {timeZone: 'UTC'}));
@@ -144,11 +117,7 @@ const getElement = args => {
                     showSeconds
                     showIcon
                     icon={IconCalendar}
-                    monthNavigator
-                    yearNavigator
-                    yearRange={`${currentYear - 5}:${currentYear + 10}`}
-                    monthNavigatorTemplate={monthNavigatorTemplate}
-                    yearNavigatorTemplate={yearNavigatorTemplate}
+                    appendTo={document.body}
                 />
             );
         }
