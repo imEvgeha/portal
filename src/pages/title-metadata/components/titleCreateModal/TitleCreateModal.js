@@ -337,13 +337,12 @@ const TitleCreate = ({
                 <Button
                     id="titleSaveBtn"
                     label={isItMatching ? 'Match & Create' : 'Save'}
-                    onClick={isValid || !isEmpty(dirtyFields) ? handleSubmit(onSubmit) : null}
+                    onClick={handleSubmit(onSubmit)}
                     loading={isCreatingTitle}
                     loadingIcon="pi pi-spin pi-spinner"
                     className="p-button-outlined"
                     iconPos="right"
                     disabled={false}
-                    // disabled={!isValid || isEmpty(dirtyFields)}
                 />
             </div>
         </div>
