@@ -284,43 +284,37 @@ const TitleCreate = ({
     const renderSyncCheckBoxes = () => (
         <Restricted resource="publishTitleMetadata">
             <div className="nexus-c-title-create_checkbox-container">
-                <div className="col-12">
+                <div className="row nexus-c-create-title-publish-header">
                     <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="PUBLISH" />
                 </div>
-                <div className="container-fluid nexus-c-entity-panel">
-                    <div className="row">
-                        <div className="col nexus-c-title-create_checkbox-wrapper">
-                            <ControllerWrapper
-                                title="Publish to VZ and Movida Int`l"
-                                inputName="syncVZ"
-                                errors={errors.syncVZ}
-                                control={control}
-                                register={register}
-                                labelClassName="nexus-c-title-create_checkbox-label"
-                                isItCheckbox
-                            >
-                                <Checkbox id="syncVZ" inputId="syncVZ" className="nexus-c-title-create_checkbox" />
-                            </ControllerWrapper>
-                        </div>
+                <div className="row">
+                    <div className="col nexus-c-title-create_checkbox-wrapper">
+                        <ControllerWrapper
+                            title="Publish to VZ and Movida Int`l"
+                            inputName="syncVZ"
+                            errors={errors.syncVZ}
+                            control={control}
+                            register={register}
+                            labelClassName="nexus-c-title-create_checkbox-label"
+                            isItCheckbox
+                        >
+                            <Checkbox id="syncVZ" inputId="syncVZ" className="nexus-c-title-create_checkbox" />
+                        </ControllerWrapper>
                     </div>
-                    <div className="row">
-                        <div className="col nexus-c-title-create_checkbox-wrapper">
-                            <ControllerWrapper
-                                title="Publish to Movida"
-                                inputName="syncMovida"
-                                errors={errors.syncMovida}
-                                control={control}
-                                register={register}
-                                labelClassName="nexus-c-title-create_checkbox-label"
-                                isItCheckbox
-                            >
-                                <Checkbox
-                                    id="syncMovida"
-                                    inputId="syncMovida"
-                                    className="nexus-c-title-create_checkbox"
-                                />
-                            </ControllerWrapper>
-                        </div>
+                </div>
+                <div className="row">
+                    <div className="col nexus-c-title-create_checkbox-wrapper">
+                        <ControllerWrapper
+                            title="Publish to Movida"
+                            inputName="syncMovida"
+                            errors={errors.syncMovida}
+                            control={control}
+                            register={register}
+                            labelClassName="nexus-c-title-create_checkbox-label"
+                            isItCheckbox
+                        >
+                            <Checkbox id="syncMovida" inputId="syncMovida" className="nexus-c-title-create_checkbox" />
+                        </ControllerWrapper>
                     </div>
                 </div>
             </div>
@@ -343,12 +337,13 @@ const TitleCreate = ({
                 <Button
                     id="titleSaveBtn"
                     label={isItMatching ? 'Match & Create' : 'Save'}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={isValid || !isEmpty(dirtyFields) ? handleSubmit(onSubmit) : null}
                     loading={isCreatingTitle}
                     loadingIcon="pi pi-spin pi-spinner"
                     className="p-button-outlined"
                     iconPos="right"
-                    disabled={!isValid || isEmpty(dirtyFields)}
+                    disabled={false}
+                    // disabled={!isValid || isEmpty(dirtyFields)}
                 />
             </div>
         </div>
@@ -381,7 +376,7 @@ const TitleCreate = ({
         <Dialog
             header="Create Title"
             visible={display}
-            style={{width: '45vw'}}
+            style={{width: '40vw'}}
             footer={renderFooter()}
             onHide={toggle}
             className="nexus-c-title-create_dialog"
@@ -390,195 +385,193 @@ const TitleCreate = ({
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="row">
-                    <div className="col">
-                        <div className="col-12">
+                    <div className="col-12">
+                        <div className="row nexus-c-create-title-overview-header">
                             <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="OVERVIEW" />
                         </div>
-                        <div className="container-fluid nexus-c-entity-panel">
+                        <div className="row">
+                            <div className="col-lg-6 col-sm-12">
+                                <ControllerWrapper
+                                    title="Title"
+                                    inputName="title"
+                                    errors={errors.title}
+                                    required={true}
+                                    additionalValidation={{
+                                        maxLength: {
+                                            value: MAX_TITLE_LENGTH,
+                                            message: `Max title length is ${MAX_TITLE_LENGTH}!`,
+                                        },
+                                    }}
+                                    control={control}
+                                    register={register}
+                                >
+                                    <InputText
+                                        placeholder="Enter Title"
+                                        id="title"
+                                        className="nexus-c-title-create_input"
+                                    />
+                                </ControllerWrapper>
+                            </div>
+                            <div className="col-lg-6 col-sm-12">
+                                <ControllerWrapper
+                                    title="Content Type"
+                                    inputName="contentType"
+                                    errors={errors.contentType}
+                                    required={true}
+                                    control={control}
+                                    register={register}
+                                >
+                                    <Dropdown
+                                        optionLabel="label"
+                                        options={CONTENT_TYPE_ITEMS}
+                                        disabled={isItMatching}
+                                        id="contentType"
+                                        className="nexus-c-title-create_input"
+                                        placeholder="Select a Content Type"
+                                    />
+                                </ControllerWrapper>
+                            </div>
+                        </div>
+
+                        {fieldsToDisplay() ? (
                             <div className="row">
                                 <div className="col-lg-6 col-sm-12">
                                     <ControllerWrapper
-                                        title="Title"
-                                        inputName="title"
-                                        errors={errors.title}
-                                        required={true}
-                                        additionalValidation={{
-                                            maxLength: {
-                                                value: MAX_TITLE_LENGTH,
-                                                message: `Max title length is ${MAX_TITLE_LENGTH}!`,
-                                            },
-                                        }}
+                                        title="Series"
+                                        inputName="seriesTitleName"
                                         control={control}
+                                        errors={errors.seriesTitleName}
+                                        required={areFieldsRequired()}
                                         register={register}
                                     >
-                                        <InputText
-                                            placeholder="Enter Title"
-                                            id="title"
-                                            className="nexus-c-title-create_input"
+                                        <AutoComplete
+                                            id="seriesTitleName"
+                                            placeholder="Enter Series Name"
+                                            value={selectedSeries}
+                                            suggestions={filteredSeries}
+                                            completeMethod={searchSeries}
+                                            itemTemplate={seriesTemplate}
+                                            selectedItemTemplate={selectedSeriesTemplate}
+                                            columnClass="col-lg-12"
+                                            onSelect={e => setSelectedSeries(e.value)}
+                                            aria-label="Series"
                                         />
                                     </ControllerWrapper>
                                 </div>
                                 <div className="col-lg-6 col-sm-12">
                                     <ControllerWrapper
-                                        title="Content Type"
-                                        inputName="contentType"
-                                        errors={errors.contentType}
-                                        required={true}
-                                        control={control}
+                                        title="Season"
+                                        inputName="seasonNumber"
+                                        required={areFieldsRequired()}
+                                        additionalValidation={{
+                                            pattern: {
+                                                value: /^[0-9]+$/,
+                                                message: 'Please enter a valid season!',
+                                            },
+                                            maxLength: {
+                                                value: MAX_SEASON_LENGTH,
+                                                message: `Max season length is ${MAX_SEASON_LENGTH}!`,
+                                            },
+                                        }}
                                         register={register}
+                                        control={control}
+                                        errors={errors.seasonNumber}
                                     >
-                                        <Dropdown
-                                            optionLabel="label"
-                                            options={CONTENT_TYPE_ITEMS}
-                                            disabled={isItMatching}
-                                            id="contentType"
+                                        <InputText
+                                            placeholder="Enter Season Number"
+                                            id="seasonNumber"
                                             className="nexus-c-title-create_input"
-                                            placeholder="Select a Content Type"
                                         />
                                     </ControllerWrapper>
                                 </div>
                             </div>
+                        ) : null}
 
-                            {fieldsToDisplay() ? (
-                                <div className="row">
+                        {fieldsToDisplay() ? (
+                            <div className="row">
+                                {fieldsToDisplayAndHideForSeason ? (
                                     <div className="col-lg-6 col-sm-12">
                                         <ControllerWrapper
-                                            title="Series"
-                                            inputName="seriesTitleName"
-                                            control={control}
-                                            errors={errors.seriesTitleName}
-                                            required={areFieldsRequired()}
-                                            register={register}
-                                        >
-                                            <AutoComplete
-                                                id="seriesTitleName"
-                                                placeholder="Enter Series Name"
-                                                value={selectedSeries}
-                                                suggestions={filteredSeries}
-                                                completeMethod={searchSeries}
-                                                itemTemplate={seriesTemplate}
-                                                selectedItemTemplate={selectedSeriesTemplate}
-                                                columnClass="col-lg-12"
-                                                onSelect={e => setSelectedSeries(e.value)}
-                                                aria-label="Series"
-                                            />
-                                        </ControllerWrapper>
-                                    </div>
-                                    <div className="col-lg-6 col-sm-12">
-                                        <ControllerWrapper
-                                            title="Season"
-                                            inputName="seasonNumber"
+                                            title="Episode"
+                                            inputName="episodeNumber"
                                             required={areFieldsRequired()}
                                             additionalValidation={{
                                                 pattern: {
                                                     value: /^[0-9]+$/,
-                                                    message: 'Please enter a valid season!',
+                                                    message: 'Please enter a valid episode!',
                                                 },
                                                 maxLength: {
-                                                    value: MAX_SEASON_LENGTH,
-                                                    message: `Max season length is ${MAX_SEASON_LENGTH}!`,
+                                                    value: MAX_EPISODE_LENGTH,
+                                                    message: `Max episode length is ${MAX_EPISODE_LENGTH}!`,
                                                 },
                                             }}
                                             register={register}
                                             control={control}
-                                            errors={errors.seasonNumber}
+                                            errors={errors.episodeNumber}
                                         >
                                             <InputText
-                                                placeholder="Enter Season Number"
-                                                id="seasonNumber"
+                                                placeholder="Enter Episode Number"
+                                                id="episodeNumber"
                                                 className="nexus-c-title-create_input"
                                             />
                                         </ControllerWrapper>
                                     </div>
-                                </div>
-                            ) : null}
+                                ) : null}
+                            </div>
+                        ) : null}
 
-                            {fieldsToDisplay() ? (
-                                <div className="row">
-                                    {fieldsToDisplayAndHideForSeason ? (
-                                        <div className="col-lg-6 col-sm-12">
-                                            <ControllerWrapper
-                                                title="Episode"
-                                                inputName="episodeNumber"
-                                                required={areFieldsRequired()}
-                                                additionalValidation={{
-                                                    pattern: {
-                                                        value: /^[0-9]+$/,
-                                                        message: 'Please enter a valid episode!',
-                                                    },
-                                                    maxLength: {
-                                                        value: MAX_EPISODE_LENGTH,
-                                                        message: `Max episode length is ${MAX_EPISODE_LENGTH}!`,
-                                                    },
-                                                }}
-                                                register={register}
-                                                control={control}
-                                                errors={errors.episodeNumber}
-                                            >
-                                                <InputText
-                                                    placeholder="Enter Episode Number"
-                                                    id="episodeNumber"
-                                                    className="nexus-c-title-create_input"
-                                                />
-                                            </ControllerWrapper>
-                                        </div>
-                                    ) : null}
-                                </div>
-                            ) : null}
-
-                            {fieldsToDisplayAndHideForSeason ? (
-                                <div className="row">
-                                    <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper">
-                                        <ControllerWrapper
-                                            title="Add Cast Crew from Season to episode"
-                                            inputName="addCrew"
-                                            errors={errors.addCrew}
-                                            control={control}
-                                            register={register}
-                                            labelClassName="nexus-c-title-create_checkbox-label"
-                                            isItCheckbox
-                                        >
-                                            <Checkbox
-                                                id="addCrew"
-                                                className="nexus-c-title-create_checkbox"
-                                                inputId="addCrew"
-                                            />
-                                        </ControllerWrapper>
-                                    </div>
-                                </div>
-                            ) : null}
-
+                        {fieldsToDisplayAndHideForSeason ? (
                             <div className="row">
-                                <div className="col-lg-6 col-sm-12">
+                                <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper">
                                     <ControllerWrapper
-                                        title="Release Year"
-                                        inputName="releaseYear"
-                                        errors={errors.releaseYear}
-                                        required={true}
-                                        additionalValidation={{
-                                            pattern: {
-                                                value: /^[0-9]+$/,
-                                                message: 'Please enter a valid year!',
-                                            },
-                                            maxLength: {
-                                                value: MAX_RELEASE_YEAR_LENGTH,
-                                                message: `Max release year length is ${MAX_RELEASE_YEAR_LENGTH}!`,
-                                            },
-                                            minLength: {
-                                                value: MAX_RELEASE_YEAR_LENGTH,
-                                                message: `Min release year length is ${MAX_RELEASE_YEAR_LENGTH}!`,
-                                            },
-                                        }}
+                                        title="Add Cast Crew from Season to episode"
+                                        inputName="addCrew"
+                                        errors={errors.addCrew}
                                         control={control}
                                         register={register}
+                                        labelClassName="nexus-c-title-create_checkbox-label"
+                                        isItCheckbox
                                     >
-                                        <InputText
-                                            placeholder="Enter Release Year"
-                                            id="titleReleaseYear"
-                                            className="nexus-c-title-create_input"
+                                        <Checkbox
+                                            id="addCrew"
+                                            className="nexus-c-title-create_checkbox"
+                                            inputId="addCrew"
                                         />
                                     </ControllerWrapper>
                                 </div>
+                            </div>
+                        ) : null}
+
+                        <div className="row">
+                            <div className="col-lg-6 col-sm-12">
+                                <ControllerWrapper
+                                    title="Release Year"
+                                    inputName="releaseYear"
+                                    errors={errors.releaseYear}
+                                    required={true}
+                                    additionalValidation={{
+                                        pattern: {
+                                            value: /^[0-9]+$/,
+                                            message: 'Please enter a valid year!',
+                                        },
+                                        maxLength: {
+                                            value: MAX_RELEASE_YEAR_LENGTH,
+                                            message: `Max release year length is ${MAX_RELEASE_YEAR_LENGTH}!`,
+                                        },
+                                        minLength: {
+                                            value: MAX_RELEASE_YEAR_LENGTH,
+                                            message: `Min release year length is ${MAX_RELEASE_YEAR_LENGTH}!`,
+                                        },
+                                    }}
+                                    control={control}
+                                    register={register}
+                                >
+                                    <InputText
+                                        placeholder="Enter Release Year"
+                                        id="titleReleaseYear"
+                                        className="nexus-c-title-create_input"
+                                    />
+                                </ControllerWrapper>
                             </div>
                         </div>
                         {isItMatching ? null : renderSyncCheckBoxes()}
