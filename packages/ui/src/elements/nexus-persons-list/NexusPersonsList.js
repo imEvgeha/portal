@@ -8,6 +8,7 @@ import {cloneDeep, isObject} from 'lodash';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {useDispatch, useSelector} from 'react-redux';
 import {uid} from 'react-uid';
+import {getConfigApiValues} from '../../../../../src/pages/settings/CommonConfigService';
 import {addToast} from '../../toast/NexusToastNotificationActions';
 import CreateEditConfig from '../nexus-create-edit-config/CreateEditConfig';
 import {PROPAGATE_TITLE} from '../nexus-dynamic-form/constants';
@@ -379,6 +380,8 @@ const NexusPersonsList = ({
         setCurrentRecord({});
     };
 
+    const dataApi = (url, param, value) => getConfigApiValues(url, 0, 1000, '', param, value);
+
     return (
         <>
             <div className="nexus-c-nexus-persons-list__heading">{uiConfig.title}</div>
@@ -394,6 +397,7 @@ const NexusPersonsList = ({
                             onSubmit={editRecord}
                             submitLoading={submitLoading}
                             onHide={closePersonModal}
+                            dataApi={dataApi}
                         />
                     )}
                     <div className="nexus-c-nexus-persons-list__add">
