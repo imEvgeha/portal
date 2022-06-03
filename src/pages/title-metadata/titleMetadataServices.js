@@ -209,15 +209,17 @@ export const titleService = {
             method: 'get',
         });
     },
-    addEditorialMetadata: (editorialMetadata, tenantCode) => {
-        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/editorialmetadata`;
-        const params = tenantCode ? {tenantCode} : {};
+
+    addEditorialMetadata: editorialMetadata => {
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/titles/${
+            editorialMetadata.parentId
+        }/editorials`;
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(editorialMetadata),
-            params: encodedSerialize(params),
         });
     },
+
     updateEditorialMetadata: (editedEditorialMetadata, tenantCode) => {
         const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/editorialmetadata`;
         const params = tenantCode ? {tenantCode} : {};
@@ -227,13 +229,13 @@ export const titleService = {
             params: encodedSerialize(params),
         });
     },
-    addTerritoryMetadata: (territoryMetadata, tenantCode) => {
-        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/territorymetadata`;
-        const params = tenantCode ? {tenantCode} : {};
+    addTerritoryMetadata: territoryMetadata => {
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/titles/${
+            territoryMetadata.parentId
+        }/territories`;
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(territoryMetadata),
-            params: encodedSerialize(params),
         });
     },
     updateTerritoryMetadata: (editedTerritoryMetadata, tenantCode) => {
