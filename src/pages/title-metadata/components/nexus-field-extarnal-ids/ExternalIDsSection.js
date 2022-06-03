@@ -39,11 +39,12 @@ const ExternalIDsSection = ({control, register, errors}) => {
                     <div className="col-5 nexus-c-array-input-wrapper">
                         <InputText
                             formControlOptions={{
-                                formControlName: 'firstName',
+                                formControlName: `externalSystemIds.${index}.externalSystem`,
                                 rules: {
-                                    required: true,
+                                    required: {value: true, message: 'Field cannot be empty!'},
                                 },
                             }}
+                            labelProps={{label: 'Enter External ID type', stacked: true, isRequired: true}}
                             placeholder="Enter External ID type"
                             id="externalIdType"
                             name={`externalSystemIds.${index}.externalSystem`}
@@ -54,11 +55,12 @@ const ExternalIDsSection = ({control, register, errors}) => {
                     <div className="col-5 nexus-c-array-input-wrapper">
                         <InputText
                             formControlOptions={{
-                                formControlName: 'firstName',
+                                formControlName: `externalSystemIds.${index}.titleId`,
                                 rules: {
-                                    required: true,
+                                    required: {value: true, message: 'Field cannot be empty!'},
                                 },
                             }}
+                            labelProps={{label: 'Enter External ID', stacked: true, isRequired: true}}
                             placeholder="Enter External ID"
                             id="externalId"
                             name={`externalSystemIds.${index}.titleId`}
