@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Restricted} from '@portal/portal-auth/permissions';
 import {AutoComplete} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
+import ExternalIDsSection from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-extarnal-ids/ExternalIDsSection';
 import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
@@ -42,7 +43,7 @@ const TitleCreate = ({
     defaultValues,
     error,
 }) => {
-    const {CREATE_TITLE_RESTRICTIONS} = constants;
+    const {CREATE_TITLE_RESTRICTIONS, EXTERNAL_ID_TYPE_DUPLICATE_ERROR} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         CREATE_TITLE_RESTRICTIONS;
     const addToast = toast => store.dispatch(toastDisplay(toast));
@@ -93,6 +94,7 @@ const TitleCreate = ({
     const toggle = () => {
         onSave();
         reset();
+        setValue('externalSystemIds', []);
     };
 
     const handleError = err => {
@@ -202,6 +204,15 @@ const TitleCreate = ({
     const onSubmit = submitTitle => {
         // trigger the POST API only if the form is valid
         if (isValid) {
+            if (areThereAnyExternalSystemDuplicates(submitTitle)) {
+                addToast({
+                    severity: 'error',
+                    detail: EXTERNAL_ID_TYPE_DUPLICATE_ERROR,
+                    sticky: true,
+                });
+                return;
+            }
+
             const title = getTitleWithoutEmptyField(submitTitle);
             const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
             const params = {copyCastCrewFromSeason};
@@ -257,11 +268,22 @@ const TitleCreate = ({
         return `${seriesItem.episodic.seriesTitleName}${seriesItem.releaseYear ? `, ${seriesItem.releaseYear}` : ``}`;
     };
 
+    const areThereAnyExternalSystemDuplicates = title => {
+        const externalIdTypesArray = title?.externalSystemIds?.map(item => item.externalSystem);
+        const indexOfDuplicate = externalIdTypesArray.findIndex(
+            (item, index) => externalIdTypesArray.indexOf(item) !== index
+        );
+
+        return indexOfDuplicate >= 0;
+    };
+
     const getTitleWithoutEmptyField = titleForm => {
+        const updatedExternalSystemIds = titleForm.externalSystemIds.length ? titleForm.externalSystemIds : null;
         const tempTitle = {
             name: titleForm.title,
             releaseYear: titleForm.releaseYear || null,
             contentType: titleForm.contentType.toLowerCase(),
+            externalSystemIds: updatedExternalSystemIds,
             contentSubType: titleForm.contentType.toLowerCase(),
         };
         // in case of season/episode/sports, adding more properties to payload
@@ -575,6 +597,7 @@ const TitleCreate = ({
                                 </ControllerWrapper>
                             </div>
                         </div>
+                        <ExternalIDsSection control={control} register={register} errors={errors} />
                         {isItMatching ? null : renderSyncCheckBoxes()}
                     </div>
                 </div>

@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`External Ids Section should match snapshot 1`] = `
+<div
+  className="nexus-c-array-element-wrapper"
+>
+  <NexusEntity
+    actions={Array []}
+    disableHover={false}
+    flag1=""
+    flag2=""
+    heading="EXTERNAL IDs"
+    isActive={false}
+    tag=""
+    type="subsection"
+  />
+  <div
+    className="d-flex align-items-center justify-content-end"
+  >
+    <Button
+      className="p-button-text nexus-c-array-add-button"
+      icon={
+        Object {
+          "process": [Function],
+        }
+      }
+      onClick={[Function]}
+    />
+  </div>
+</div>
+`;

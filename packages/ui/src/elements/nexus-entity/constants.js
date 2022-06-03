@@ -4,3 +4,5 @@ export const NEXUS_ENTITY_TYPES = {
     subsection: 'subsection',
     default: 'default',
 };
+
+export const EXTERNAL_SYSTEM_ID_EXAMPLE = {externalSystem: '', titleId: ''};
