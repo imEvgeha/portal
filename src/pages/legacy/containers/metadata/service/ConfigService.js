@@ -12,7 +12,7 @@ import {
     VOICE_TALENT,
     WRITER,
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
-import {getConfigApiValues} from '../../../../settings/CommonConfigService';
+import {getConfigApiValues} from '@vubiquity-nexus/portal-ui/lib/settings/CommonConfigService';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 

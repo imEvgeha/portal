@@ -227,12 +227,12 @@ export const updateTerritoryMetadata = async (values, titleId) => {
     }
 };
 
-export const formatEditorialBody = (data, titleId, isCreate) => {
-    const body = {};
+export const formatEditorialBody = (data, titleId) => {
+    const values = {};
     Object.keys(data).forEach(key => {
-        if (data[key] === undefined || data[key] === '') body[key] = null;
+        if (data[key] === undefined || data[key] === '') values[key] = null;
         else if (key === 'genres') {
-            body[key] =
+            values[key] =
                 data[key] &&
                 data[key].map((genre, i) => {
                     return {
@@ -241,7 +241,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                     };
                 });
         } else if (key === 'category') {
-            body[key] =
+            values[key] =
                 data[key] &&
                 data[key].map((category, index) => {
                     let categoryValue = category;
@@ -265,37 +265,27 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                     }
                 });
                 if (areAllEmpty) {
-                    body[key] = null;
+                    values[key] = null;
                 } else {
-                    body[key] = obj;
+                    values[key] = obj;
                 }
             } else {
-                body[key] = null;
+                values[key] = null;
             }
         } else if (key === 'metadataStatus') {
-            body[key] = get(data[key], 'value') ? get(data[key], 'value') : data[key];
-        } else body[key] = data[key];
+            values[key] = get(data[key], 'value') ? get(data[key], 'value') : data[key];
+        } else values[key] = data[key];
     });
-    if (body.isDeleted) {
-        body.metadataStatus = 'deleted';
+    if (values.isDeleted) {
+        values.metadataStatus = 'deleted';
     }
-    delete body.isUpdated;
-    delete body.isDeleted;
-    delete body.isCreated;
-    if (titleId) body.parentId = titleId;
-    const hasGeneratedChildren = get(body, 'hasGeneratedChildren', false);
-    return isCreate
-        ? {
-              itemIndex: '1',
-              body: {
-                  decorateEditorialMetadata: hasGeneratedChildren,
-                  editorialMetadata: body,
-              },
-          }
-        : {
-              itemIndex: null,
-              body,
-          };
+    delete values.isUpdated;
+    delete values.isDeleted;
+    delete values.isCreated;
+    if (titleId) values.parentId = titleId;
+
+    const {castCrew, category, copyright, format, genres, sasktelInventoryId, sasktelLineupId, ...body} = values;
+    return body;
 };
 
 export const updateEditorialMetadata = async (values, titleId) => {
@@ -318,7 +308,10 @@ export const updateEditorialMetadata = async (values, titleId) => {
 
     try {
         if (updatedEmets.length > 0) response = await titleService.updateEditorialMetadata(updatedEmets, tenantCode);
-        if (newEmets.length > 0) response = await titleService.addEditorialMetadata(newEmets, tenantCode);
+        if (newEmets.length > 0) {
+            response = newEmets.map(async emet => titleService.addEditorialMetadata(emet));
+            await Promise.all(response);
+        }
         if (response && response.length > 0) {
             let toast = errorToast;
             if (!get(response[0], 'response.failed') || get(response[0], 'response.failed').length === 0) {
