@@ -15,6 +15,8 @@ pipeline {
         stage('Setup Workspace') {
             steps {
                 sh 'rm -Rf node_modules'
+                sh 'rm -Rf packages/ui/lib'
+                sh 'rm -Rf packages/utils/lib'
                 sh 'rm -Rf dist'
             }
         }
