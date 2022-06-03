@@ -3,7 +3,7 @@
 exports[`DynamicDropdown should match snapshot 1`] = `
 <Dropdown
   __TYPE="Dropdown"
-  appendTo={null}
+  appendTo={<body />}
   ariaLabel={null}
   ariaLabelledBy={null}
   autoFocus={false}

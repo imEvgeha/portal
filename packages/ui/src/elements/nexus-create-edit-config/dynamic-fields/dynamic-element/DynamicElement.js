@@ -54,7 +54,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
         [sections]
     );
 
-    const constructSectionElement = sectionSchema => {
+    const constructSectionElement = (sectionSchema, index) => {
         const hasKey = !!sectionSchema.name?.split('.')?.[1];
         return (
             hasKey &&
@@ -65,6 +65,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
                 className: 'mb-2',
                 cache,
                 dataApi,
+                index,
             })
         );
     };
@@ -105,7 +106,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
         }),
     ];
 
-    const panelBody = section => (
+    const panelBody = (section, index) => (
         <div className="row">
             <div className="col-12">
                 <InputText
@@ -122,7 +123,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
                 />
             </div>
 
-            {constructSectionElement(section)}
+            {constructSectionElement(section, index)}
         </div>
     );
 
@@ -136,7 +137,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
                     <div className="col-12">
                         <NexusEntity
                             type={NEXUS_ENTITY_TYPES.default}
-                            body={panelBody(section)}
+                            body={panelBody(section, index)}
                             heading={labels[section.elementId]}
                             actions={panelActions(index)}
                         />

@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Restricted} from '@portal/portal-auth/permissions';
+import {AutoComplete} from '@portal/portal-components';
+import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import ExternalIDsSection from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-extarnal-ids/ExternalIDsSection';
 import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/src/elements/nexus-entity/constants';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {isEmpty} from 'lodash';
@@ -52,7 +55,7 @@ const TitleCreate = ({
         handleSubmit,
         setValue,
         reset,
-        formState: {errors, isValid, dirtyFields},
+        formState: {errors, isValid},
     } = useForm({
         defaultValues: {...defaultValues, catalogueOwner: tenantCode},
         mode: 'all',
@@ -60,6 +63,10 @@ const TitleCreate = ({
     });
     const currentValues = useWatch({control});
     const routeParams = useParams();
+
+    // filtering on series name
+    const [selectedSeries, setSelectedSeries] = useState(null);
+    const [filteredSeries, setFilteredSeries] = useState([]);
 
     useEffect(() => {
         if (error) {
@@ -87,6 +94,7 @@ const TitleCreate = ({
     const toggle = () => {
         onSave();
         reset();
+        setValue('externalSystemIds', []);
     };
 
     const handleError = err => {
@@ -156,7 +164,7 @@ const TitleCreate = ({
         titleService
             .createTitleWithoutErrorModal(title)
             .then(res => {
-                const titleId = res.id;
+                const titleId = res.meta.id;
                 addToast({
                     severity: 'success',
                     content: (
@@ -178,13 +186,13 @@ const TitleCreate = ({
                     DOP.setData({
                         match: {
                             rightId: focusedId,
-                            titleId: res.id,
+                            titleId,
                         },
                     });
                 } else if (bulkTitleMatch) {
                     bulkTitleMatch(titleId, true);
                 } else {
-                    const updatedRight = {coreTitleId: res.id};
+                    const updatedRight = {coreTitleId: titleId};
                     rightsService.update(updatedRight, focusedId);
                 }
                 setIsCreatingTitle(false);
@@ -194,21 +202,70 @@ const TitleCreate = ({
     };
 
     const onSubmit = submitTitle => {
-        if (areThereAnyExternalSystemDuplicates(submitTitle)) {
-            addToast({
-                severity: 'error',
-                detail: EXTERNAL_ID_TYPE_DUPLICATE_ERROR,
-                sticky: true,
-            });
-            return;
+        // trigger the POST API only if the form is valid
+        if (isValid) {
+            if (areThereAnyExternalSystemDuplicates(submitTitle)) {
+                addToast({
+                    severity: 'error',
+                    detail: EXTERNAL_ID_TYPE_DUPLICATE_ERROR,
+                    sticky: true,
+                });
+                return;
+            }
+
+            const title = getTitleWithoutEmptyField(submitTitle);
+            const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
+            const params = {copyCastCrewFromSeason};
+            setIsCreatingTitle(true);
+
+            isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
         }
+    };
 
-        const title = getTitleWithoutEmptyField(submitTitle);
-        const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
-        const params = {copyCastCrewFromSeason};
-        setIsCreatingTitle(true);
+    /**
+     * Get the response of the /search api and show it as filtered data
+     * @param event Search string of the `Series` field
+     */
+    const searchSeries = async event => {
+        setTimeout(async () => {
+            let filteredSeries = [];
+            // reset the selected series on new search string
+            setSelectedSeries(null);
+            // only invoke the API when the search query string is not empty
+            if (event.query.trim().length) {
+                const response = await titleService.freeTextSearch(
+                    {title: event.query, contentType: 'SERIES', tenantCode},
+                    0,
+                    100
+                );
+                filteredSeries = response?.data;
+            }
 
-        isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
+            setFilteredSeries(filteredSeries);
+        }, 500);
+    };
+
+    /**
+     * Template used for the list options of the `Series` AutoComplete component
+     * @param seriesItem The found series object
+     * @returns {JSX.Element} Returns a JSX.Element to be rendered as an option
+     */
+    const seriesTemplate = seriesItem => {
+        return (
+            <div className="series-item">
+                {`${seriesItem.episodic.seriesTitleName}${seriesItem.releaseYear ? `, ${seriesItem.releaseYear}` : ``}`}
+            </div>
+        );
+    };
+
+    /**
+     * Selected Item template for `Series` AutoComplete.
+     * A concatination of series name and series year(if exists)
+     * @param seriesItem The selected series from the results found
+     * @returns {`${string}`|`${*}${string}`}
+     */
+    const selectedSeriesTemplate = seriesItem => {
+        return `${seriesItem.episodic.seriesTitleName}${seriesItem.releaseYear ? `, ${seriesItem.releaseYear}` : ``}`;
     };
 
     const areThereAnyExternalSystemDuplicates = title => {
@@ -222,19 +279,39 @@ const TitleCreate = ({
 
     const getTitleWithoutEmptyField = titleForm => {
         const updatedExternalSystemIds = titleForm.externalSystemIds.length ? titleForm.externalSystemIds : null;
-
-        return {
+        const tempTitle = {
             name: titleForm.title,
             releaseYear: titleForm.releaseYear || null,
             contentType: titleForm.contentType.toLowerCase(),
             externalSystemIds: updatedExternalSystemIds,
             contentSubType: titleForm.contentType.toLowerCase(),
         };
+        // in case of season/episode/sports, adding more properties to payload
+        if (fieldsToDisplay()) {
+            // if adding a new season
+            if (currentValues.contentType === 'SEASON') {
+                tempTitle.parentId = {
+                    contentType:
+                        titleForm.contentType.toLowerCase() === 'season'
+                            ? titleForm.seriesTitleName.contentType.toLowerCase() === 'series'
+                                ? 'SERIES'
+                                : ''
+                            : '',
+                    id: selectedSeries.id,
+                };
+                tempTitle.seasonNumber = titleForm.seasonNumber || null;
+            }
+        }
+
+        return tempTitle;
     };
 
     const renderSyncCheckBoxes = () => (
         <Restricted resource="publishTitleMetadata">
             <div className="nexus-c-title-create_checkbox-container">
+                <div className="row nexus-c-create-title-publish-header">
+                    <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="PUBLISH" />
+                </div>
                 <div className="row">
                     <div className="col nexus-c-title-create_checkbox-wrapper">
                         <ControllerWrapper
@@ -290,7 +367,6 @@ const TitleCreate = ({
                     loadingIcon="pi pi-spin pi-spinner"
                     className="p-button-outlined"
                     iconPos="right"
-                    disabled={!isValid || isEmpty(dirtyFields)}
                 />
             </div>
         </div>
@@ -332,9 +408,12 @@ const TitleCreate = ({
         >
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="row">
-                    <div className="col">
+                    <div className="col-12">
+                        <div className="row nexus-c-create-title-overview-header">
+                            <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="OVERVIEW" />
+                        </div>
                         <div className="row">
-                            <div className="col">
+                            <div className="col-lg-6 col-sm-12">
                                 <ControllerWrapper
                                     title="Title"
                                     inputName="title"
@@ -356,10 +435,7 @@ const TitleCreate = ({
                                     />
                                 </ControllerWrapper>
                             </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col">
+                            <div className="col-lg-6 col-sm-12">
                                 <ControllerWrapper
                                     title="Content Type"
                                     inputName="contentType"
@@ -382,7 +458,7 @@ const TitleCreate = ({
 
                         {fieldsToDisplay() ? (
                             <div className="row">
-                                <div className="col">
+                                <div className="col-lg-6 col-sm-12">
                                     <ControllerWrapper
                                         title="Series"
                                         inputName="seriesTitleName"
@@ -391,19 +467,21 @@ const TitleCreate = ({
                                         required={areFieldsRequired()}
                                         register={register}
                                     >
-                                        <InputText
-                                            placeholder="Enter Series Name"
+                                        <AutoComplete
                                             id="seriesTitleName"
-                                            className="nexus-c-title-create_input"
+                                            placeholder="Enter Series Name"
+                                            value={selectedSeries}
+                                            suggestions={filteredSeries}
+                                            completeMethod={searchSeries}
+                                            itemTemplate={seriesTemplate}
+                                            selectedItemTemplate={selectedSeriesTemplate}
+                                            columnClass="col-lg-12"
+                                            onSelect={e => setSelectedSeries(e.value)}
+                                            aria-label="Series"
                                         />
                                     </ControllerWrapper>
                                 </div>
-                            </div>
-                        ) : null}
-
-                        {fieldsToDisplay() ? (
-                            <div className="row">
-                                <div className="col">
+                                <div className="col-lg-6 col-sm-12">
                                     <ControllerWrapper
                                         title="Season"
                                         inputName="seasonNumber"
@@ -429,8 +507,13 @@ const TitleCreate = ({
                                         />
                                     </ControllerWrapper>
                                 </div>
+                            </div>
+                        ) : null}
+
+                        {fieldsToDisplay() ? (
+                            <div className="row">
                                 {fieldsToDisplayAndHideForSeason ? (
-                                    <div className="col">
+                                    <div className="col-lg-6 col-sm-12">
                                         <ControllerWrapper
                                             title="Episode"
                                             inputName="episodeNumber"
@@ -462,7 +545,7 @@ const TitleCreate = ({
 
                         {fieldsToDisplayAndHideForSeason ? (
                             <div className="row">
-                                <div className="col nexus-c-title-create_checkbox-wrapper">
+                                <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper">
                                     <ControllerWrapper
                                         title="Add Cast Crew from Season to episode"
                                         inputName="addCrew"
@@ -483,7 +566,7 @@ const TitleCreate = ({
                         ) : null}
 
                         <div className="row">
-                            <div className="col">
+                            <div className="col-lg-6 col-sm-12">
                                 <ControllerWrapper
                                     title="Release Year"
                                     inputName="releaseYear"

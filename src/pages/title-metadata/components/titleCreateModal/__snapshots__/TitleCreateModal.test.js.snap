@@ -44,7 +44,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
           badge={null}
           badgeClassName={null}
           className="p-button-outlined"
-          disabled={true}
+          disabled={false}
           icon={null}
           iconPos="right"
           id="titleSaveBtn"
@@ -101,13 +101,27 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
       className="row"
     >
       <div
-        className="col"
+        className="col-12"
       >
+        <div
+          className="row nexus-c-create-title-overview-header"
+        >
+          <NexusEntity
+            actions={Array []}
+            disableHover={false}
+            flag1=""
+            flag2=""
+            heading="OVERVIEW"
+            isActive={false}
+            tag=""
+            type="subsection"
+          />
+        </div>
         <div
           className="row"
         >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={
@@ -157,7 +171,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -228,12 +242,8 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
               />
             </ControllerWrapper>
           </div>
-        </div>
-        <div
-          className="row"
-        >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={Object {}}
@@ -276,7 +286,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -427,7 +437,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
           className="row"
         >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={
@@ -485,7 +495,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -597,7 +607,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                 "shouldFocusError": true,
               },
               "_proxyFormState": Object {
-                "dirtyFields": "all",
+                "dirtyFields": false,
                 "errors": "all",
                 "isDirty": false,
                 "isValid": "all",
@@ -654,6 +664,20 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
             className="nexus-c-title-create_checkbox-container"
           >
             <div
+              className="row nexus-c-create-title-publish-header"
+            >
+              <NexusEntity
+                actions={Array []}
+                disableHover={false}
+                flag1=""
+                flag2=""
+                heading="PUBLISH"
+                isActive={false}
+                tag=""
+                type="subsection"
+              />
+            </div>
+            <div
               className="row"
             >
               <div
@@ -700,7 +724,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                         "shouldFocusError": true,
                       },
                       "_proxyFormState": Object {
-                        "dirtyFields": "all",
+                        "dirtyFields": false,
                         "errors": "all",
                         "isDirty": false,
                         "isValid": "all",
@@ -831,7 +855,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                         "shouldFocusError": true,
                       },
                       "_proxyFormState": Object {
-                        "dirtyFields": "all",
+                        "dirtyFields": false,
                         "errors": "all",
                         "isDirty": false,
                         "isValid": "all",
@@ -967,7 +991,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           badge={null}
           badgeClassName={null}
           className="p-button-outlined"
-          disabled={true}
+          disabled={false}
           icon={null}
           iconPos="right"
           id="titleSaveBtn"
@@ -1024,13 +1048,27 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
       className="row"
     >
       <div
-        className="col"
+        className="col-12"
       >
+        <div
+          className="row nexus-c-create-title-overview-header"
+        >
+          <NexusEntity
+            actions={Array []}
+            disableHover={false}
+            flag1=""
+            flag2=""
+            heading="OVERVIEW"
+            isActive={false}
+            tag=""
+            type="subsection"
+          />
+        </div>
         <div
           className="row"
         >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={
@@ -1080,7 +1118,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -1151,12 +1189,8 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
               />
             </ControllerWrapper>
           </div>
-        </div>
-        <div
-          className="row"
-        >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={Object {}}
@@ -1199,7 +1233,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -1350,7 +1384,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           className="row"
         >
           <div
-            className="col"
+            className="col-lg-6 col-sm-12"
           >
             <ControllerWrapper
               additionalValidation={
@@ -1408,7 +1442,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "shouldFocusError": true,
                   },
                   "_proxyFormState": Object {
-                    "dirtyFields": "all",
+                    "dirtyFields": false,
                     "errors": "all",
                     "isDirty": false,
                     "isValid": "all",
@@ -1520,7 +1554,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                 "shouldFocusError": true,
               },
               "_proxyFormState": Object {
-                "dirtyFields": "all",
+                "dirtyFields": false,
                 "errors": "all",
                 "isDirty": false,
                 "isValid": "all",
