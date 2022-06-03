@@ -1,10 +1,10 @@
 import React from 'react';
 import {isAllowed} from '@portal/portal-auth/permissions';
-import ExternalIDsSection from '@vubiquity-nexus/portal-ui/lib/elements/nexus-field-extarnal-ids/ExternalIDsSection';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
 import {Checkbox} from 'primereact/checkbox';
 import configureStore from 'redux-mock-store';
+import ExternalIDsSection from '../nexus-field-extarnal-ids/ExternalIDsSection';
 import TitleCreate from './TitleCreateModal';
 
 describe('TitleCreateModal', () => {
