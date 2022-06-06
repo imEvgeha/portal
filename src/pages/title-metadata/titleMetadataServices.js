@@ -221,6 +221,11 @@ export const titleService = {
         delete body['synopsis']['description'];
         delete body['synopsis']['shortDescription'];
 
+        body['castCrew'] = body.castCrew.map(({creditsOrder: order, ...rest}) => ({
+            order,
+            ...rest,
+        }));
+
         const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/titles/${
             body.parentId
         }/editorials`;
