@@ -227,12 +227,12 @@ export const updateTerritoryMetadata = async (values, titleId) => {
     }
 };
 
-export const formatEditorialBody = (data, titleId) => {
-    const values = {};
+export const formatEditorialBody = (data, titleId, isCreate) => {
+    const body = {};
     Object.keys(data).forEach(key => {
-        if (data[key] === undefined || data[key] === '') values[key] = null;
+        if (data[key] === undefined || data[key] === '') body[key] = null;
         else if (key === 'genres') {
-            values[key] =
+            body[key] =
                 data[key] &&
                 data[key].map((genre, i) => {
                     return {
@@ -241,7 +241,7 @@ export const formatEditorialBody = (data, titleId) => {
                     };
                 });
         } else if (key === 'category') {
-            values[key] =
+            body[key] =
                 data[key] &&
                 data[key].map((category, index) => {
                     let categoryValue = category;
@@ -265,27 +265,38 @@ export const formatEditorialBody = (data, titleId) => {
                     }
                 });
                 if (areAllEmpty) {
-                    values[key] = null;
+                    body[key] = null;
                 } else {
-                    values[key] = obj;
+                    body[key] = obj;
                 }
             } else {
-                values[key] = null;
+                body[key] = null;
             }
         } else if (key === 'metadataStatus') {
-            values[key] = get(data[key], 'value') ? get(data[key], 'value') : data[key];
-        } else values[key] = data[key];
+            body[key] = get(data[key], 'value') ? get(data[key], 'value') : data[key];
+        } else body[key] = data[key];
     });
-    if (values.isDeleted) {
-        values.metadataStatus = 'deleted';
+    if (body.isDeleted) {
+        body.metadataStatus = 'deleted';
     }
-    delete values.isUpdated;
-    delete values.isDeleted;
-    delete values.isCreated;
-    if (titleId) values.parentId = titleId;
+    delete body.isUpdated;
+    delete body.isDeleted;
+    delete body.isCreated;
+    if (titleId) body.parentId = titleId;
 
-    const {castCrew, category, copyright, format, genres, sasktelInventoryId, sasktelLineupId, ...body} = values;
-    return body;
+    const hasGeneratedChildren = get(body, 'hasGeneratedChildren', false);
+    return isCreate
+        ? {
+              itemIndex: '1',
+              body: {
+                  decorateEditorialMetadata: hasGeneratedChildren,
+                  editorialMetadata: body,
+              },
+          }
+        : {
+              itemIndex: null,
+              body,
+          };
 };
 
 export const updateEditorialMetadata = async (values, titleId) => {

@@ -211,12 +211,25 @@ export const titleService = {
     },
 
     addEditorialMetadata: editorialMetadata => {
+        const body = editorialMetadata?.body.editorialMetadata;
+
+        // change the synopsis to the new create API requirements
+        body['synopsis']['shortSynopsis'] = body['synopsis']['shortDescription'];
+        body['synopsis']['mediumSynopsis'] = body['synopsis']['description'];
+        body['synopsis']['longSynopsis'] = body['synopsis']['longDescription'];
+        delete body['synopsis']['longDescription'];
+        delete body['synopsis']['description'];
+        delete body['synopsis']['shortDescription'];
+
         const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/titles/${
-            editorialMetadata.parentId
+            body.parentId
         }/editorials`;
+
+        delete body.parentId;
+
         return nexusFetch(url, {
             method: 'post',
-            body: JSON.stringify(editorialMetadata),
+            body: JSON.stringify(body),
         });
     },
 
@@ -233,6 +246,10 @@ export const titleService = {
         const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/titles/${
             territoryMetadata.parentId
         }/territories`;
+
+        delete territoryMetadata.parentId;
+        delete territoryMetadata.territoryType;
+
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(territoryMetadata),
