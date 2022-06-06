@@ -464,6 +464,10 @@ $element-color-orange-80: palette(orange, 80);
                 width: 540px;
             }
         }
+
+        &.without-margin-bottom {
+            margin-bottom: 0px;
+        }
     }
 }
 

@@ -49,7 +49,7 @@ const ExternalIDsSection = ({control, register, errors}) => {
                             placeholder="Enter External ID type"
                             id="externalIdType"
                             name={`externalSystemIds.${index}.externalSystem`}
-                            className="nexus-c-title-create_input de"
+                            className="nexus-c-title-create_input without-margin-bottom"
                         />
                     </div>
 
@@ -65,7 +65,7 @@ const ExternalIDsSection = ({control, register, errors}) => {
                             placeholder="Enter External ID"
                             id="externalId"
                             name={`externalSystemIds.${index}.titleId`}
-                            className="nexus-c-title-create_input"
+                            className="nexus-c-title-create_input without-margin-bottom"
                         />
                     </div>
 
