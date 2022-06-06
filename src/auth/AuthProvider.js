@@ -83,6 +83,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
         // filter out clients from keycloak that are not tenants
         const filteredResourceAccess = {...resourceAccess};
         delete filteredResourceAccess['account'];
+        delete filteredResourceAccess['dop-workQueues'];
         delete filteredResourceAccess['realm-management'];
 
         // get current logged in user

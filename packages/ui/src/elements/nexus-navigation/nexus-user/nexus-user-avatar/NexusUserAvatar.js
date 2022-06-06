@@ -26,6 +26,7 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
     // filter out clients that are not tenants
     const filteredResourceAccess = {...resourceAccess};
     delete filteredResourceAccess['account'];
+    delete filteredResourceAccess['dop-workQueues'];
     delete filteredResourceAccess['realm-management'];
     /**
      * Template used for the selected Tenant in TieredMenu
