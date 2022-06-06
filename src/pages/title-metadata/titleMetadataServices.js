@@ -211,7 +211,7 @@ export const titleService = {
     },
 
     addEditorialMetadata: editorialMetadata => {
-        const body = editorialMetadata?.body.editorialMetadata;
+        const body = Object.assign({}, editorialMetadata?.body.editorialMetadata);
 
         // change the synopsis to the new create API requirements
         body['synopsis']['shortSynopsis'] = body['synopsis']['shortDescription'];
