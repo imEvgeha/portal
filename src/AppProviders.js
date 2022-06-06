@@ -12,6 +12,7 @@ import {useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {PersistGate} from 'redux-persist/integration/react';
 import {ThemeProvider} from 'styled-components';
+import AppLoadProvider from './appLoad/AppLoadProvider';
 import AuthProvider from './auth/AuthProvider';
 import {registerFetchInterceptor} from './util/httpInterceptor';
 
@@ -26,25 +27,27 @@ const AppProviders = ({children, persistor}) => {
     registerFetchInterceptor(selectedTenant);
 
     return (
-        <PermissionProvider
-            roles={roles}
-            resourceRolesMap={rolesResourceMap}
-            unauthorizedAction={() => navigate(`/${getAuthConfig().realm}/401`)}
-        >
-            <CustomIntlProvider>
-                <NexusDateTimeProvider>
-                    <NexusOverlayProvider>
-                        <NexusModalProvider>
-                            <PersistGate loading={null} persistor={persistor}>
-                                <ThemeProvider theme={theme}>
-                                    <AuthProvider>{children}</AuthProvider>
-                                </ThemeProvider>
-                            </PersistGate>
-                        </NexusModalProvider>
-                    </NexusOverlayProvider>
-                </NexusDateTimeProvider>
-            </CustomIntlProvider>
-        </PermissionProvider>
+        <AuthProvider>
+            <PermissionProvider
+                roles={roles}
+                resourceRolesMap={rolesResourceMap}
+                unauthorizedAction={() => navigate(`/${getAuthConfig().realm}/401`)}
+            >
+                <CustomIntlProvider>
+                    <NexusDateTimeProvider>
+                        <NexusOverlayProvider>
+                            <NexusModalProvider>
+                                <PersistGate loading={null} persistor={persistor}>
+                                    <ThemeProvider theme={theme}>
+                                        <AppLoadProvider>{children}</AppLoadProvider>
+                                    </ThemeProvider>
+                                </PersistGate>
+                            </NexusModalProvider>
+                        </NexusOverlayProvider>
+                    </NexusDateTimeProvider>
+                </CustomIntlProvider>
+            </PermissionProvider>
+        </AuthProvider>
     );
 };
 

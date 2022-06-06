@@ -13,9 +13,8 @@ import {
 import {getAuthConfig, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
 import {isEmpty, get} from 'lodash';
-import {connect, useDispatch} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {store} from '../index';
-import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions';
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
 import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
@@ -25,26 +24,13 @@ const MIN_VALIDITY_SEC = 30;
 // eslint-disable-next-line no-magic-numbers
 const BEFORE_TOKEN_EXP = (MIN_VALIDITY_SEC - 5) * 1000;
 
-const AuthProvider = ({
-    children,
-    options = KEYCLOAK_INIT_OPTIONS,
-    appOptions,
-    configEndpointsLoading,
-    addUser,
-    getAppOptions,
-    logoutUser,
-    getSelectValues,
-}) => {
+const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, addUser, logoutUser}) => {
     // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (!configEndpointsLoading) {
-            getAppOptions();
-        }
-    }, [configEndpointsLoading]);
+    const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
+    const roles = get(selectedTenant, 'roles', []);
 
     useEffect(() => {
         if (isAuthenticatedUser) {
@@ -69,7 +55,6 @@ const AuthProvider = ({
                     loadUserAccount();
                     loadProfileInfo();
                     updateUserToken(token);
-                    getSelectValues();
                 } else {
                     // window.location.reload();
                 }
@@ -190,11 +175,11 @@ const AuthProvider = ({
         }
     };
 
-    if (isLoading) {
+    if (isLoading || !roles.length) {
         return <Loading />;
     }
 
-    return children;
+    return roles.length && children;
 };
 
 const mapStateToProps = state => {
@@ -207,7 +192,6 @@ const mapDispatchToProps = dispatch => ({
     getAppOptions: () => dispatch(fetchAvailMapping()),
     addUser: payload => dispatch(injectUser(payload)),
     logoutUser: () => dispatch(logout()),
-    getSelectValues: () => dispatch(getSelectValues()),
 });
 
 AuthProvider.defaultProps = {
@@ -216,7 +200,6 @@ AuthProvider.defaultProps = {
     addUser: undefined,
     getAppOptions: undefined,
     logoutUser: undefined,
-    getSelectValues: undefined,
 };
 
 AuthProvider.propTypes = {
@@ -225,7 +208,6 @@ AuthProvider.propTypes = {
     addUser: PropTypes.any,
     getAppOptions: PropTypes.any,
     logoutUser: PropTypes.any,
-    getSelectValues: PropTypes.any,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthProvider);
