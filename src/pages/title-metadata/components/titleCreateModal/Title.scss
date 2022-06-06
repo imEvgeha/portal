@@ -25,6 +25,15 @@
     margin-left: 8px;
 }
 
+.nexus-c-title-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+
+    .checkbox-label {
+        margin-left: 8px;
+    }
+}
+
 .nexus-c-title-create_checkbox-wrapper {
     display: flex;
     align-items: baseline;

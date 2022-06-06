@@ -232,6 +232,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     },
                   }
                 }
+                childWrapperClassName=""
                 control={
                   Object {
                     "_defaultValues": Object {
@@ -347,6 +348,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
             >
               <ControllerWrapper
                 additionalValidation={Object {}}
+                childWrapperClassName=""
                 control={
                   Object {
                     "_defaultValues": Object {
@@ -556,6 +558,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     },
                   }
                 }
+                childWrapperClassName=""
                 control={
                   Object {
                     "_defaultValues": Object {
@@ -785,6 +788,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                 >
                   <ControllerWrapper
                     additionalValidation={Object {}}
+                    childWrapperClassName=""
                     control={
                       Object {
                         "_defaultValues": Object {
@@ -916,6 +920,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                 >
                   <ControllerWrapper
                     additionalValidation={Object {}}
+                    childWrapperClassName=""
                     control={
                       Object {
                         "_defaultValues": Object {
@@ -1280,6 +1285,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     },
                   }
                 }
+                childWrapperClassName=""
                 control={
                   Object {
                     "_defaultValues": Object {
@@ -1395,6 +1401,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
             >
               <ControllerWrapper
                 additionalValidation={Object {}}
+                childWrapperClassName=""
                 control={
                   Object {
                     "_defaultValues": Object {
@@ -1604,6 +1611,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     },
                   }
                 }
+                childWrapperClassName=""
                 control={
                   Object {
                     "_defaultValues": Object {

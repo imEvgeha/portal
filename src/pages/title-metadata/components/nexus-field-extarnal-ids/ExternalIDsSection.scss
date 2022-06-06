@@ -2,12 +2,9 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 @import '~@portal/portal-components/styles/color-palette';
 
-.nexus-c-array-add-button {
-    @include margin(0, 0, 6, 0);
-}
-
 .nexus-c-array-delete-button {
     @include padding(0, 0, 0, 0);
+    @include margin(6, 0, 0, 0);
 }
 
 .nexus-c-array-input-wrapper {

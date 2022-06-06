@@ -33,10 +33,7 @@ const ExternalIDsSection = ({control, register, errors}) => {
     const renderGroups = () => {
         return fields.map((field, index) => {
             return (
-                <div
-                    className="row d-flex align-items-center justify-content-between nexus-c-array-item"
-                    key={field.id}
-                >
+                <div className="row d-flex align-items-start justify-content-between nexus-c-array-item" key={field.id}>
                     <div className="col-5 nexus-c-array-input-wrapper">
                         <InputText
                             formControlOptions={{
