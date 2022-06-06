@@ -19,11 +19,7 @@
 }
 
 .nexus-c-array-item {
-    &:first-child {
-        @include margin(0, 0, 0, 0);
-    }
-
-    @include margin(6, 0, 0, 0);
+    @include margin(0, 0, 0, 0);
 }
 
 .nexus-c-array-label {
