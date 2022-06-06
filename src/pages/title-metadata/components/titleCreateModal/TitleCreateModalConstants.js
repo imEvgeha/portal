@@ -40,6 +40,17 @@ const TENANT_CODE_ITEMS = [
     },
 ];
 
+export const CONTENT_TYPES = {
+    MOVIE: 'MOVIE',
+    EPISODE: 'EPISODE',
+    EVENT: 'EVENT',
+    SERIES: 'SERIES',
+    SEASON: 'SEASON',
+    SPORTS: 'SPORTS',
+    AD: 'AD',
+    SPECIAL: 'SPECIAL',
+};
+
 export const CONTENT_TYPE_ITEMS = [
     {label: MOVIE.name, value: MOVIE.apiName},
     {label: SERIES.name, value: SERIES.apiName},

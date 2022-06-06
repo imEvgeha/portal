@@ -23,7 +23,7 @@ import {rightsService} from '../../../legacy/containers/avail/service/RightsServ
 import {publisherService} from '../../../legacy/containers/metadata/service/PublisherService';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
 import ExternalIDsSection from '../nexus-field-extarnal-ids/ExternalIDsSection';
-import constants, {CONTENT_TYPE_ITEMS} from './TitleCreateModalConstants';
+import constants, {CONTENT_TYPE_ITEMS, CONTENT_TYPES} from './TitleCreateModalConstants';
 import './Title.scss';
 
 const onViewTitleClick = (response, realm) => {
@@ -235,7 +235,7 @@ const TitleCreate = ({
             // only invoke the API when the search query string is not empty
             if (event.query.trim().length) {
                 const response = await titleService.freeTextSearch(
-                    {title: event.query, contentType: 'SERIES', tenantCode},
+                    {title: event.query, contentType: CONTENT_TYPES.SERIES, tenantCode},
                     0,
                     100
                 );
@@ -290,12 +290,12 @@ const TitleCreate = ({
         // in case of season/episode/sports, adding more properties to payload
         if (fieldsToDisplay()) {
             // if adding a new season
-            if (currentValues.contentType === 'SEASON') {
+            if (currentValues.contentType === CONTENT_TYPES.SEASON) {
                 tempTitle.parentId = {
                     contentType:
                         titleForm.contentType.toLowerCase() === 'season'
                             ? titleForm.seriesTitleName.contentType.toLowerCase() === 'series'
-                                ? 'SERIES'
+                                ? CONTENT_TYPES.SERIES
                                 : ''
                             : '',
                     id: selectedSeries.id,
@@ -375,21 +375,21 @@ const TitleCreate = ({
 
     const fieldsToDisplay = () => {
         switch (currentValues.contentType) {
-            case 'SEASON':
-            case 'EPISODE':
-            case 'EVENT':
-            case 'SPORTS':
+            case CONTENT_TYPES.SEASON:
+            case CONTENT_TYPES.EPISODE:
+            case CONTENT_TYPES.EVENT:
+            case CONTENT_TYPES.SPORTS:
                 return true;
             default:
                 return false;
         }
     };
-    const fieldsToDisplayAndHideForSeason = fieldsToDisplay() && currentValues.contentType !== 'SEASON';
+    const fieldsToDisplayAndHideForSeason = fieldsToDisplay() && currentValues.contentType !== CONTENT_TYPES.SEASON;
 
     const areFieldsRequired = () => {
         switch (currentValues.contentType) {
-            case 'SEASON':
-            case 'EPISODE':
+            case CONTENT_TYPES.SEASON:
+            case CONTENT_TYPES.EPISODE:
                 return true;
             default:
                 return false;
@@ -573,7 +573,7 @@ const TitleCreate = ({
                                         title="Release Year"
                                         inputName="releaseYear"
                                         errors={errors.releaseYear}
-                                        required={true}
+                                        required={currentValues.contentType !== CONTENT_TYPES.SEASON}
                                         additionalValidation={{
                                             pattern: {
                                                 value: /^[0-9]+$/,
