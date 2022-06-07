@@ -18,11 +18,12 @@ export const getTitleById = payload => {
     });
 };
 
-export const getEpisodesCount = id => {
+export const getEpisodesCount = (id, tenantCode) => {
     const url = `${getConfig('gateway.titleUrl')}${getConfig(
         'gateway.service.title'
     )}/titles/search?parentId=${id}&contentType=EPISODE`;
-    return nexusFetch(url);
+    const params = tenantCode ? {tenantCode} : {};
+    return nexusFetch(url, {params: encodedSerialize(params)});
 };
 
 export const getExternalIds = id => {
