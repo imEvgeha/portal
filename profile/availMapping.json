@@ -1976,7 +1976,7 @@
             "readOnly": true,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true
+            "required": false
         },
         {
             "javaVariableName": "updatedAt",
@@ -1987,7 +1987,7 @@
             "readOnly": true,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true
+            "required": false
         },
         {
             "javaVariableName": "createdBy",
