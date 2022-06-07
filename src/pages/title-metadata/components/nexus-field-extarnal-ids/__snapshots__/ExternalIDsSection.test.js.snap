@@ -5,7 +5,19 @@ exports[`External Ids Section should match snapshot 1`] = `
   className="nexus-c-array-element-wrapper"
 >
   <NexusEntity
-    actions={Array []}
+    actions={
+      Array [
+        Action {
+          "action": [Function],
+          "buttonId": "btnAddSection",
+          "disabled": false,
+          "icon": Object {
+            "process": [Function],
+          },
+          "position": 5,
+        },
+      ]
+    }
     disableHover={false}
     flag1=""
     flag2=""
@@ -14,18 +26,5 @@ exports[`External Ids Section should match snapshot 1`] = `
     tag=""
     type="subsection"
   />
-  <div
-    className="d-flex align-items-center justify-content-end"
-  >
-    <Button
-      className="p-button-text nexus-c-array-add-button"
-      icon={
-        Object {
-          "process": [Function],
-        }
-      }
-      onClick={[Function]}
-    />
-  </div>
 </div>
 `;

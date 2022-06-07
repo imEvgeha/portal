@@ -2,7 +2,7 @@
 
 exports[`FieldError should match snapshot 1`] = `
 <span
-  className="p-error-message d-inline-flex align-items-center"
+  className="p-error-message false d-inline-flex align-items-center"
 >
   <i
     className="pi pi-exclamation-circle mx-1"

@@ -8,6 +8,7 @@ import {
     EXTERNAL_SYSTEM_ID_EXAMPLE,
     NEXUS_ENTITY_TYPES,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
+import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
 import {useFieldArray} from 'react-hook-form';
 import './ExternalIDsSection.scss';
 
@@ -32,10 +33,7 @@ const ExternalIDsSection = ({control, register, errors}) => {
     const renderGroups = () => {
         return fields.map((field, index) => {
             return (
-                <div
-                    className="row d-flex align-items-center justify-content-between nexus-c-array-item"
-                    key={field.id}
-                >
+                <div className="row d-flex align-items-start justify-content-between nexus-c-array-item" key={field.id}>
                     <div className="col-5 nexus-c-array-input-wrapper">
                         <InputText
                             formControlOptions={{
@@ -48,7 +46,7 @@ const ExternalIDsSection = ({control, register, errors}) => {
                             placeholder="Enter External ID type"
                             id="externalIdType"
                             name={`externalSystemIds.${index}.externalSystem`}
-                            className="nexus-c-title-create_input"
+                            className="nexus-c-title-create_input without-margin-bottom"
                         />
                     </div>
 
@@ -64,7 +62,7 @@ const ExternalIDsSection = ({control, register, errors}) => {
                             placeholder="Enter External ID"
                             id="externalId"
                             name={`externalSystemIds.${index}.titleId`}
-                            className="nexus-c-title-create_input"
+                            className="nexus-c-title-create_input without-margin-bottom"
                         />
                     </div>
 
@@ -80,17 +78,20 @@ const ExternalIDsSection = ({control, register, errors}) => {
         });
     };
 
+    const groupActions = () => [
+        new Action({
+            icon: IconActionAdd,
+            action: e => onAddField(e),
+            position: 5,
+            disabled: false,
+            buttonId: 'btnAddSection',
+        }),
+    ];
+
     return (
         <div className="nexus-c-array-element-wrapper">
-            <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="EXTERNAL IDs" />
+            <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} actions={groupActions()} heading="EXTERNAL IDs" />
             {renderGroups()}
-            <div className="d-flex align-items-center justify-content-end">
-                <Button
-                    className="p-button-text nexus-c-array-add-button"
-                    icon={IconActionAdd}
-                    onClick={e => onAddField(e)}
-                />
-            </div>
         </div>
     );
 };

@@ -17,6 +17,7 @@ const ControllerWrapper = ({
     controllerClassName,
     isItCheckbox,
     labelClassName,
+    childWrapperClassName,
     children,
 }) => {
     const FieldTitle = () => (
@@ -45,7 +46,11 @@ const ControllerWrapper = ({
                 render={({field}) => (
                     <div>
                         {!isItCheckbox && <FieldTitle />}
-                        <div className={!isEmpty(errors) ? 'p-field p-field-error' : 'p-field'}>
+                        <div
+                            className={`${
+                                !isEmpty(errors) ? 'p-field p-field-error' : 'p-field'
+                            } ${childWrapperClassName}`}
+                        >
                             {React.Children.map(children, child => {
                                 if (React.isValidElement(child)) {
                                     return React.cloneElement(child, {
@@ -60,7 +65,7 @@ const ControllerWrapper = ({
                                 return child;
                             })}
                             {isItCheckbox && <FieldTitle />}
-                            <FieldError error={errors} />
+                            <FieldError error={errors} isAbsolute />
                         </div>
                     </div>
                 )}
@@ -80,6 +85,7 @@ ControllerWrapper.propTypes = {
     controllerClassName: PropTypes.string,
     isItCheckbox: PropTypes.bool,
     labelClassName: PropTypes.string,
+    childWrapperClassName: PropTypes.string,
     required: PropTypes.bool,
 };
 
@@ -90,6 +96,7 @@ ControllerWrapper.defaultProps = {
     controllerClassName: '',
     isItCheckbox: false,
     labelClassName: '',
+    childWrapperClassName: '',
     required: false,
 };
 

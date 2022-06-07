@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FieldError = ({error}) => {
+const FieldError = ({error, isAbsolute}) => {
     const getErrorMessage = () => {
         if (error?.length) {
             return error?.map(e => e.message)?.join('. ');
@@ -9,7 +9,7 @@ const FieldError = ({error}) => {
         return error.message;
     };
     return error ? (
-        <span className="p-error-message d-inline-flex align-items-center">
+        <span className={`p-error-message ${isAbsolute && 'p-error-absolute'} d-inline-flex align-items-center`}>
             <i className="pi pi-exclamation-circle mx-1" />
             {getErrorMessage()}
         </span>
@@ -17,10 +17,12 @@ const FieldError = ({error}) => {
 };
 FieldError.propTypes = {
     error: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    isAbsolute: PropTypes.bool,
 };
 
 FieldError.defaultProps = {
     error: undefined,
+    isAbsolute: false,
 };
 
 export default FieldError;
