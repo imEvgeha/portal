@@ -18,7 +18,8 @@ export const getTitleById = payload => {
     });
 };
 
-export const getEpisodesCount = (id, tenantCode) => {
+export const getEpisodesCount = (id, selectedTenant) => {
+    const tenantCode = selectedTenant.id;
     const url = `${getConfig('gateway.titleUrl')}${getConfig(
         'gateway.service.title'
     )}/titles/search?parentId=${id}&contentType=EPISODE`;

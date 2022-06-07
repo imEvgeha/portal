@@ -107,7 +107,7 @@ const TitleDetails = ({
     useEffect(() => {
         if (refresh) {
             fetchConfigApiEndpoints();
-            const {id, realm} = routeParams;
+            const {id} = routeParams;
             if (id) {
                 const nexusTitle = isNexusTitle(id);
                 const isMgm = isMgmTitle(id);
@@ -116,7 +116,7 @@ const TitleDetails = ({
                 getTerritoryMetadata({id, selectedTenant});
                 getEditorialMetadata({id, selectedTenant});
                 clearSeasonPersons();
-                getEpisodesCount(id, realm).then(res => {
+                getEpisodesCount(id, selectedTenant).then(res => {
                     setEpisodesCount(res);
                     setRefresh(false);
                 });
