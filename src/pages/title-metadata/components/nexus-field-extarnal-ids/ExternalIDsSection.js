@@ -12,7 +12,7 @@ import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entit
 import {useFieldArray} from 'react-hook-form';
 import './ExternalIDsSection.scss';
 
-const ExternalIDsSection = ({control, register, errors}) => {
+const ExternalIDsSection = ({control}) => {
     const {fields, append, remove} = useFieldArray({
         control,
         name: 'externalSystemIds',
@@ -98,12 +98,8 @@ const ExternalIDsSection = ({control, register, errors}) => {
 
 ExternalIDsSection.propTypes = {
     control: PropTypes.any.isRequired,
-    register: PropTypes.func.isRequired,
-    errors: PropTypes.any,
 };
 
-ExternalIDsSection.defaultProps = {
-    errors: undefined,
-};
+ExternalIDsSection.defaultProps = {};
 
 export default ExternalIDsSection;

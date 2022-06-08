@@ -2,26 +2,57 @@
     padding: 8px;
     color: black;
 }
-.p-tieredmenu.TenantSelection {
+.p-tieredmenu {
     padding: 16px;
     width: auto;
 
-    .p-menuitem {
-        padding: 8px;
-    }
+    &.TenantSelection {
+        .p-menuitem {
+            padding: 8px;
+        }
 
-    .p-menuitem-active > .p-submenu-list {
-        max-height: 160px;
-        overflow-y: scroll;
+        .p-menuitem-active > .p-submenu-list {
+            max-height: 160px;
+            overflow-y: scroll;
 
-        .p-divider.p-divider-horizontal {
-            margin: 0.2rem 0;
-            padding: 0px;
+            .p-divider.p-divider-horizontal {
+                margin: 0.2rem 0;
+                padding: 0px;
+            }
+        }
+        .p-submenu-list {
+            .p-menuitem {
+                padding: 0;
+            }
+        }
+
+        .tenant-selected-item:hover {
+            background-color: rgba(128, 125, 125, 0.103);
         }
     }
-    .p-submenu-list {
+
+    &.OneItemTenantSelection {
         .p-menuitem {
-            padding: 0;
+            padding: 8px;
+            margin-top: 0px;
+
+            &:first-child {
+                padding-bottom: 0px;
+            }
+
+            &:nth-child(2n) {
+                padding-top: 0px;
+            }
+        }
+
+        .p-submenu-list {
+            .p-menuitem {
+                padding: 0;
+            }
+        }
+
+        .tenant-selected-item {
+            cursor: default;
         }
     }
 
@@ -63,6 +94,11 @@
         padding: 8px 0 8px 0;
         width: 100%;
 
+        &.tenant-selected-for-one-item {
+            padding-top: 0px;
+            margin-top: 0px;
+        }
+
         .tenantDescription {
             display: flex;
             align-items: center;
@@ -76,10 +112,6 @@
         }
         .actionIcon {
         }
-    }
-
-    .tenant-selected-item:hover {
-        background-color: rgba(128, 125, 125, 0.103);
     }
 
     .UserAvatarActions {

@@ -36,7 +36,12 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
      */
     const tenantSelectedTemplated = (item, options) => {
         return (
-            <div className="tenant-selected-item" onClick={options.onClick}>
+            <div
+                className={`tenant-selected-item ${
+                    Object.keys(filteredResourceAccess).length > 1 ? '' : 'tenant-selected-for-one-item'
+                }`}
+                onClick={options.onClick}
+            >
                 <div className="tenantDescription">
                     <TenantIcon className="tenantIcon" />
                     <span className="tenantName">{item.label}</span>
@@ -153,25 +158,38 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
      * Contruct the items model as expected by TieredMenu
      * Reference: https://www.primefaces.org/primereact/tieredmenu/
      */
-    const items = [
-        {
-            template: RenderAvatarHeading,
-        },
-        {
+    const generateMenuItems = () => {
+        const separator = {
             separator: true,
-        },
-        tenants(),
-        {
-            separator: true,
-        },
-        {
-            template: RenderAvatarActions,
-        },
-    ];
+        };
+        const items = [
+            {
+                template: RenderAvatarHeading,
+            },
+            tenants(),
+            separator,
+            {
+                template: RenderAvatarActions,
+            },
+        ];
+
+        if (Object.entries(filteredResourceAccess).length > 1) {
+            items.splice(1, 0, separator);
+        }
+
+        return items;
+    };
 
     return (
         <div className="NexusUserAvatar">
-            <TieredMenu model={items} className="TenantSelection" popup ref={menu} />
+            <TieredMenu
+                model={generateMenuItems()}
+                className={
+                    Object.keys(filteredResourceAccess).length > 1 ? 'TenantSelection' : 'OneItemTenantSelection'
+                }
+                popup
+                ref={menu}
+            />
         </div>
     );
 };
