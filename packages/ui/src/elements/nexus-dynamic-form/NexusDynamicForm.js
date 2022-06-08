@@ -67,19 +67,21 @@ const NexusDynamicForm = ({
                         </ErrorMessage>
                     </div>
                 )}
-                <ButtonsBuilder
-                    dirty={dirty}
-                    reset={reset}
-                    validationErrorCount={validationErrorCount}
-                    errors={validationErrorCount}
-                    disableSubmit={disableSubmit}
-                    canEdit={canEdit}
-                    isSaving={isSaving}
-                    isEmpty={isEmpty}
-                    onCancel={onCancel}
-                    seasonPersons={seasonPersons}
-                    showValidationError={() => showValidationError()}
-                />
+                {canEdit && (
+                    <ButtonsBuilder
+                        dirty={dirty}
+                        reset={reset}
+                        validationErrorCount={validationErrorCount}
+                        errors={validationErrorCount}
+                        disableSubmit={disableSubmit}
+                        canEdit={canEdit}
+                        isSaving={isSaving}
+                        isEmpty={isEmpty}
+                        onCancel={onCancel}
+                        seasonPersons={seasonPersons}
+                        showValidationError={() => showValidationError()}
+                    />
+                )}
             </>
         );
     };
