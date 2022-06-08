@@ -106,6 +106,7 @@ const TitleDetails = ({
 
     useEffect(() => {
         if (refresh) {
+            clearTitle();
             fetchConfigApiEndpoints();
             const {id} = routeParams;
             if (id) {
