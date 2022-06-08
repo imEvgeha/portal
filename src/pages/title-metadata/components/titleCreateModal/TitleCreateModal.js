@@ -68,6 +68,7 @@ const TitleCreate = ({
     // filtering on series name
     const [selectedSeries, setSelectedSeries] = useState(null);
     const [filteredSeries, setFilteredSeries] = useState([]);
+    const [seasons, setSeasons] = useState([]);
 
     useEffect(() => {
         if (error) {
@@ -239,11 +240,40 @@ const TitleCreate = ({
                     0,
                     100
                 );
-                filteredSeries = response?.data;
+                if (response?.total > 0) {
+                    filteredSeries = response?.data;
+                } else {
+                    filteredSeries = [];
+                }
             }
 
             setFilteredSeries(filteredSeries);
         }, 500);
+    };
+
+    /**
+     * Returns the seasons of the selected series
+     * @param series series object param to fetch the seasons
+     */
+    const fetchSeasonsForSelectedSeries = series => {
+        if (series) {
+            titleService
+                .freeTextSearch(
+                    {parentId: series.id, contentType: CONTENT_TYPES.SEASON, tenantCode, sort: 'seasonNumber'},
+                    0,
+                    100
+                )
+                .then(response => {
+                    setSeasons(
+                        // map the properties needed for the dropdown
+                        response.data.map(season => {
+                            return {
+                                ...season.episodic,
+                            };
+                        })
+                    );
+                });
+        }
     };
 
     /**
@@ -288,6 +318,7 @@ const TitleCreate = ({
             contentSubType: titleForm.contentType.toLowerCase(),
         };
         // in case of season/episode/sports, adding more properties to payload
+        // this can not be simplified as payload accept parentId in season and parentId(s) in episode
         if (fieldsToDisplay()) {
             // if adding a new season
             if (currentValues.contentType === CONTENT_TYPES.SEASON) {
@@ -302,8 +333,21 @@ const TitleCreate = ({
                 };
                 tempTitle.seasonNumber = titleForm.seasonNumber || null;
             }
+            // if adding a new episode, add property parentId(s)
+            else if (currentValues.contentType === 'EPISODE') {
+                tempTitle.parentIds = [
+                    {
+                        contentType: 'series',
+                        id: selectedSeries.id,
+                    },
+                    {
+                        contentType: 'season',
+                        id: currentValues.seasonNumber.seasonId,
+                    },
+                ];
+                tempTitle.episodeNumber = currentValues.episodeNumber;
+            }
         }
-
         return tempTitle;
     };
 
@@ -478,7 +522,10 @@ const TitleCreate = ({
                                                 itemTemplate={seriesTemplate}
                                                 selectedItemTemplate={selectedSeriesTemplate}
                                                 columnClass="col-lg-12"
-                                                onSelect={e => setSelectedSeries(e.value)}
+                                                onSelect={e => {
+                                                    setSelectedSeries(e.value);
+                                                    fetchSeasonsForSelectedSeries(e.value);
+                                                }}
                                                 aria-label="Series"
                                             />
                                         </ControllerWrapper>
@@ -502,11 +549,23 @@ const TitleCreate = ({
                                             control={control}
                                             errors={errors.seasonNumber}
                                         >
-                                            <InputText
-                                                placeholder="Enter Season Number"
-                                                id="seasonNumber"
-                                                className="nexus-c-title-create_input"
-                                            />
+                                            {currentValues.contentType === CONTENT_TYPES.SEASON ? (
+                                                <InputText
+                                                    placeholder="Enter Season Number"
+                                                    id="seasonNumber"
+                                                    className="nexus-c-title-create_input"
+                                                />
+                                            ) : (
+                                                <Dropdown
+                                                    key="seasonNumber-dropdown"
+                                                    id="seasonNumber"
+                                                    className="nexus-c-title-create_dropdown"
+                                                    options={seasons}
+                                                    optionLabel="seasonNumber"
+                                                    columnClass="col-12"
+                                                    placeholder="Select Season Number"
+                                                />
+                                            )}
                                         </ControllerWrapper>
                                     </div>
                                 </div>

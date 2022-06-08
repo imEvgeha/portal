@@ -7,6 +7,9 @@ This issue relates to [JIRA TICKET](replace_jira_url_here)
 **Resolution:**
 
 
+**Addition of new libraries:**
+- [ ] Update of any core packages(portal-components, portal-auth) needed?
+
 # Checklist:
 
 - [ ] Added the necessary [Pull Request Labels](https://github-us.production.tvn.com/Nexus/portal/labels)?
