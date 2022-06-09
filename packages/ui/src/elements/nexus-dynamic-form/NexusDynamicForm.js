@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
-import {Restricted} from '@portal/portal-auth/permissions';
+import {Restricted, isAllowed} from '@portal/portal-auth/permissions';
 import classnames from 'classnames';
 import {isEmpty, mergeWith, set} from 'lodash';
 import moment from 'moment';
@@ -28,12 +28,11 @@ const NexusDynamicForm = ({
     seasonPersons,
     titleActionComponents,
 }) => {
+    const showButtonsBuilder = () => isAllowed('editTitleDetails');
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
-
     const view = canEdit ? VIEWS.EDIT : VIEWS.VIEW;
-
     const {fields} = schema;
 
     useEffect(() => {
@@ -67,7 +66,7 @@ const NexusDynamicForm = ({
                         </ErrorMessage>
                     </div>
                 )}
-                {canEdit && (
+                {showButtonsBuilder && (
                     <ButtonsBuilder
                         dirty={dirty}
                         reset={reset}
