@@ -33,7 +33,7 @@ const NexusDynamicForm = ({
     const [validationErrorCount, setValidationErrorCount] = useState(0);
     const view = canEdit ? VIEWS.EDIT : VIEWS.VIEW;
     const {fields} = schema;
-    const showButtonsBuilder = () => isAllowed('editTitleDetails');
+    const hasPermissionsToEdit = () => isAllowed('editTitleDetails');
 
     useEffect(() => {
         update && setUpdate(false);
@@ -66,7 +66,7 @@ const NexusDynamicForm = ({
                         </ErrorMessage>
                     </div>
                 )}
-                {showButtonsBuilder && (
+                {hasPermissionsToEdit() && (
                     <ButtonsBuilder
                         dirty={dirty}
                         reset={reset}
