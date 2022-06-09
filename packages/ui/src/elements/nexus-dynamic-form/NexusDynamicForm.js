@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
-import {Restricted} from '@portal/portal-auth/permissions';
+import {Restricted, isAllowed} from '@portal/portal-auth/permissions';
 import classnames from 'classnames';
 import {isEmpty, mergeWith, set} from 'lodash';
 import moment from 'moment';
@@ -31,10 +31,9 @@ const NexusDynamicForm = ({
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
-
     const view = canEdit ? VIEWS.EDIT : VIEWS.VIEW;
-
     const {fields} = schema;
+    const hasPermissionsToEdit = () => isAllowed('editTitleDetails');
 
     useEffect(() => {
         update && setUpdate(false);
@@ -67,19 +66,21 @@ const NexusDynamicForm = ({
                         </ErrorMessage>
                     </div>
                 )}
-                <ButtonsBuilder
-                    dirty={dirty}
-                    reset={reset}
-                    validationErrorCount={validationErrorCount}
-                    errors={validationErrorCount}
-                    disableSubmit={disableSubmit}
-                    canEdit={canEdit}
-                    isSaving={isSaving}
-                    isEmpty={isEmpty}
-                    onCancel={onCancel}
-                    seasonPersons={seasonPersons}
-                    showValidationError={() => showValidationError()}
-                />
+                {hasPermissionsToEdit() && (
+                    <ButtonsBuilder
+                        dirty={dirty}
+                        reset={reset}
+                        validationErrorCount={validationErrorCount}
+                        errors={validationErrorCount}
+                        disableSubmit={disableSubmit}
+                        canEdit={canEdit}
+                        isSaving={isSaving}
+                        isEmpty={isEmpty}
+                        onCancel={onCancel}
+                        seasonPersons={seasonPersons}
+                        showValidationError={() => showValidationError()}
+                    />
+                )}
             </>
         );
     };
