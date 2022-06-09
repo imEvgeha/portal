@@ -28,12 +28,12 @@ const NexusDynamicForm = ({
     seasonPersons,
     titleActionComponents,
 }) => {
-    const showButtonsBuilder = () => isAllowed('editTitleDetails');
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
     const view = canEdit ? VIEWS.EDIT : VIEWS.VIEW;
     const {fields} = schema;
+    const showButtonsBuilder = () => isAllowed('editTitleDetails');
 
     useEffect(() => {
         update && setUpdate(false);
