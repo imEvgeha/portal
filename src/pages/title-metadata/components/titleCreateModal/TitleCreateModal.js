@@ -59,6 +59,7 @@ const TitleCreate = ({
         control,
         handleSubmit,
         setValue,
+        setError,
         reset,
         formState: {errors, isValid},
     } = form;
@@ -97,6 +98,7 @@ const TitleCreate = ({
         onSave();
         reset();
         setValue('externalSystemIds', []);
+        setSelectedSeries(null);
     };
 
     const handleError = err => {
@@ -106,6 +108,14 @@ const TitleCreate = ({
             detail: err.message.description,
             sticky: true,
         });
+    };
+
+    const isSeriesValid = () => {
+        if (selectedSeries || !areFieldsRequired()) {
+            return true;
+        }
+        setError('seriesTitleName', {type: 'custom', message: 'Invalid series name'});
+        return false;
     };
 
     const defaultCreateTitle = (title, params) => {
@@ -204,6 +214,10 @@ const TitleCreate = ({
     };
 
     const onSubmit = submitTitle => {
+        if (!isSeriesValid()) {
+            return;
+        }
+
         // trigger the POST API only if the form is valid
         if (isValid) {
             if (areThereAnyExternalSystemDuplicates(submitTitle)) {
@@ -407,7 +421,10 @@ const TitleCreate = ({
                 <Button
                     id="titleSaveBtn"
                     label={isItMatching ? 'Match & Create' : 'Save'}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={async e => {
+                        await handleSubmit(onSubmit)(e);
+                        isSeriesValid();
+                    }}
                     loading={isCreatingTitle}
                     loadingIcon="pi pi-spin pi-spinner"
                     className="p-button-outlined"
@@ -435,6 +452,8 @@ const TitleCreate = ({
             case CONTENT_TYPES.SEASON:
             case CONTENT_TYPES.EPISODE:
                 return true;
+            case CONTENT_TYPES.SPORTS:
+                return false;
             default:
                 return false;
         }
