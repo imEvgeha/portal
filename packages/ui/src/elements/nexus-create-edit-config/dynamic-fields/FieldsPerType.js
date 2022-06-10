@@ -56,14 +56,11 @@ export const constructFieldPerType = args => {
                         form
                     );
 
-                    // visibleWhen logic - avoid rendering jsx element
                     if (isVisibleWhen === false && 'visibleWhen' in elementSchema) {
                         if (field.value !== '') {
-                            form.clearErrors(elementSchema.name);
                             form.setValue(elementSchema.name, '');
-                            setArrayVisibleWhenFields && setArrayVisibleWhenFields([]);
+                            field.value = '';
                         }
-                        return;
                     }
 
                     const argsField = {elementSchema, form, value, cb, cache, dataApi};
