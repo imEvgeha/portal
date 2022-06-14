@@ -32,16 +32,11 @@ export const constructFieldPerType = args => {
         return null;
     }
 
-    const isVisibleWhenCondition = 'visibleWhen' in elementSchema && getVisibleWhenValue(elementSchema, form) === false;
-
-    if (isVisibleWhenCondition && arrayVisibleWhenFields.includes(elementSchema.name)) {
+    const isNotVisibleWhen = 'visibleWhen' in elementSchema && getVisibleWhenValue(elementSchema, form) === false;
+    if (isNotVisibleWhen && arrayVisibleWhenFields.includes(elementSchema.name)) {
         if (value !== '') {
-            form.setValue(elementSchema.name, undefined, {isDirty: true});
+            form.setValue(elementSchema.name, undefined);
         }
-        return null;
-    }
-    if ('requiredWhen' in elementSchema) {
-        elementSchema.required = !!arrayVisibleWhenFields.includes(elementSchema.name);
     }
 
     return (
@@ -62,14 +57,8 @@ export const constructFieldPerType = args => {
                         setArrayVisibleWhenFields && setArrayVisibleWhenFields([]);
                     };
 
-                    setVisibleWhenLogic(arrayVisibleWhenFields, setArrayVisibleWhenFields, elementSchema, form);
-                    if ('requiredWhen' in elementSchema && arrayVisibleWhenFields.includes(elementSchema.name)) {
-                        elementSchema.required = setRequiredWhenLogic(
-                            arrayVisibleWhenFields,
-                            setArrayVisibleWhenFields,
-                            elementSchema,
-                            form
-                        );
+                    if (!setVisibleWhenLogic(arrayVisibleWhenFields, setArrayVisibleWhenFields, elementSchema, form)) {
+                        return null;
                     }
 
                     const argsField = {elementSchema, form, value, cb, cache, dataApi};
@@ -275,9 +264,10 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
 const setVisibleWhenLogic = (arrayVisibleWhenFields, setArrayVisibleWhenFields, elementSchema, form) => {
     // getting parent path so we can getValues of a certain element sibling(visibleWhen.field)
     const isVisibleWhenValid = setArrayVisibleWhenFields && arrayVisibleWhenFields && 'visibleWhen' in elementSchema;
+    let isVisibleWhenValue = true;
     if (isVisibleWhenValid) {
         // loop through .visibleWhen conditions
-        const isVisibleWhenValue = getVisibleWhenValue(elementSchema, form);
+        isVisibleWhenValue = getVisibleWhenValue(elementSchema, form);
         if ('required' in elementSchema) {
             elementSchema.required = isVisibleWhenValue;
         }
@@ -285,6 +275,7 @@ const setVisibleWhenLogic = (arrayVisibleWhenFields, setArrayVisibleWhenFields, 
             setArrayVisibleWhenFields(oldArray => [...oldArray, elementSchema.name]);
         }
     }
+    return isVisibleWhenValue;
 };
 
 const getVisibleWhenValue = (elementSchema, form) => {
@@ -298,24 +289,4 @@ const getVisibleWhenValue = (elementSchema, form) => {
         }
     });
     return isVisibleWhen;
-};
-
-const setRequiredWhenLogic = (arrayVisibleWhenFields, setArrayVisibleWhenFields, elementSchema, form) => {
-    let isRequiredWhenValue = false;
-    const parentPathName = elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
-    const isRequiredWhenValid = 'requiredWhen' in elementSchema;
-    if (isRequiredWhenValid) {
-        elementSchema.requiredWhen.forEach(element => {
-            const fieldNamePath = parentPathName ? `${parentPathName}.${element.field}` : element.field;
-            if ('is' in element) {
-                isRequiredWhenValue = isRequiredWhenValue && !!element.is.includes(form.getValues(fieldNamePath));
-            }
-        });
-        elementSchema.required = isRequiredWhenValue;
-    }
-    if (!arrayVisibleWhenFields.includes(elementSchema.name) && isRequiredWhenValue === false) {
-        setArrayVisibleWhenFields(oldArray => [...oldArray, elementSchema.name]);
-    }
-
-    return isRequiredWhenValue;
 };
