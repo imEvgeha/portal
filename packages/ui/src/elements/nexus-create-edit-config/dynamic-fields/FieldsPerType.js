@@ -1,5 +1,4 @@
 import React from 'react';
-import {element} from 'prop-types';
 import IconCalendar from '@vubiquity-nexus/portal-assets/calendar.svg';
 import {isEmpty} from 'lodash';
 import {Calendar} from 'primereact/calendar';
