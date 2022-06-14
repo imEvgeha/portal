@@ -1,4 +1,5 @@
 import React from 'react';
+import {element} from 'prop-types';
 import IconCalendar from '@vubiquity-nexus/portal-assets/calendar.svg';
 import {isEmpty} from 'lodash';
 import {Calendar} from 'primereact/calendar';
@@ -39,6 +40,9 @@ export const constructFieldPerType = args => {
         }
         return null;
     }
+    if ('requiredWhen' in elementSchema) {
+        elementSchema.required = !!arrayVisibleWhenFields.includes(elementSchema.name);
+    }
 
     return (
         <div
@@ -55,11 +59,18 @@ export const constructFieldPerType = args => {
                     const onFormElementChanged = e => {
                         field && field.onChange(e);
                         customOnChange && customOnChange(field);
-                        if (Array.isArray(arrayVisibleWhenFields) && arrayVisibleWhenFields.length > 0)
-                            setArrayVisibleWhenFields && setArrayVisibleWhenFields([]);
+                        setArrayVisibleWhenFields && setArrayVisibleWhenFields([]);
                     };
 
                     setVisibleWhenLogic(arrayVisibleWhenFields, setArrayVisibleWhenFields, elementSchema, form);
+                    if ('requiredWhen' in elementSchema && arrayVisibleWhenFields.includes(elementSchema.name)) {
+                        elementSchema.required = setRequiredWhenLogic(
+                            arrayVisibleWhenFields,
+                            setArrayVisibleWhenFields,
+                            elementSchema,
+                            form
+                        );
+                    }
 
                     const argsField = {elementSchema, form, value, cb, cache, dataApi};
                     return createDynamicFormField(field, fieldState, argsField, onFormElementChanged);
@@ -255,7 +266,7 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
 };
 
 /**
- * Create and Set value of a new attribute to elementSchema named isVisibleWhenValue to all elements with visibleWhen attribute
+ * Set Logic for visibleWhen attribute
  * @param {*} arrayVisibleWhenFields        const [arrayVisibleWhenFields, setArrayVisibleWhenFields] = useState([]);   -- arrayElement.js
  * @param {*} setArrayVisibleWhenFields     const [arrayVisibleWhenFields, setArrayVisibleWhenFields] = useState([]);   -- arrayElement.js
  * @param {*} elementSchema
@@ -287,4 +298,24 @@ const getVisibleWhenValue = (elementSchema, form) => {
         }
     });
     return isVisibleWhen;
+};
+
+const setRequiredWhenLogic = (arrayVisibleWhenFields, setArrayVisibleWhenFields, elementSchema, form) => {
+    let isRequiredWhenValue = false;
+    const parentPathName = elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
+    const isRequiredWhenValid = 'requiredWhen' in elementSchema;
+    if (isRequiredWhenValid) {
+        elementSchema.requiredWhen.forEach(element => {
+            const fieldNamePath = parentPathName ? `${parentPathName}.${element.field}` : element.field;
+            if ('is' in element) {
+                isRequiredWhenValue = isRequiredWhenValue && !!element.is.includes(form.getValues(fieldNamePath));
+            }
+        });
+        elementSchema.required = isRequiredWhenValue;
+    }
+    if (!arrayVisibleWhenFields.includes(elementSchema.name) && isRequiredWhenValue === false) {
+        setArrayVisibleWhenFields(oldArray => [...oldArray, elementSchema.name]);
+    }
+
+    return isRequiredWhenValue;
 };
