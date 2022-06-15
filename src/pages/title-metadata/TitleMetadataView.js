@@ -65,7 +65,7 @@ export const TitleMetadataView = ({
         store.dispatch(
             addToast({
                 severity: 'error',
-                detail: `${failureDownloadDesc} Details: ${err}`,
+                detail: `${failureDownloadDesc} ${err?.error?.message ? `Details: ${err?.error?.message}` : ''}`,
             })
         );
     };
