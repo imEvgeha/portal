@@ -215,13 +215,15 @@ export const titleService = {
     addEditorialMetadata: editorialMetadata => {
         const body = Object.assign({}, editorialMetadata?.body.editorialMetadata);
 
-        // change the synopsis to the new create API requirements
+        // change the body to the new create API requirements
         body['synopsis']['shortSynopsis'] = body['synopsis']['shortDescription'];
         body['synopsis']['mediumSynopsis'] = body['synopsis']['description'];
         body['synopsis']['longSynopsis'] = body['synopsis']['longDescription'];
+        body['categories'] = body['category'];
         delete body['synopsis']['longDescription'];
         delete body['synopsis']['description'];
         delete body['synopsis']['shortDescription'];
+        delete body['category'];
 
         body['castCrew'] = body.castCrew.map(({creditsOrder: order, ...rest}) => ({
             order,

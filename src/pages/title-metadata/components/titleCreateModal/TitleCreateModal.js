@@ -533,6 +533,8 @@ const TitleCreate = ({
                                             register={register}
                                         >
                                             <AutoComplete
+                                                forceSelection
+                                                field="title"
                                                 id="seriesTitleName"
                                                 placeholder="Enter Series Name"
                                                 value={selectedSeries}
