@@ -275,7 +275,7 @@ const constructVisibleWhenLogic = (arrayVisibleWhenFields, setArrayVisibleWhenFi
         for (let j = 0; j < elementSchema.visibleWhen.length; j++) {
             const element = elementSchema.visibleWhen[j];
             const fieldNamePath = parentPathName ? `${parentPathName}.${element.field}` : element.field;
-            elementSchema.visibleWhen[j].isVisibleWhenValue = !!(form.getValues(fieldNamePath) === element.is[0]);
+            elementSchema.visibleWhen[j].isVisibleWhenValue = !!(form.getValues(fieldNamePath) === element?.is?.[0]);
             if (!arrayVisibleWhenFields.includes(element.field)) {
                 setArrayVisibleWhenFields(arr => [...arr, element.field]);
             }
