@@ -622,29 +622,26 @@ const TitleCreate = ({
                                             </ControllerWrapper>
                                         </div>
                                     ) : null}
-                                </div>
-                            ) : null}
-
-                            {fieldsToDisplayAndHideForSeason ? (
-                                <div className="row">
-                                    <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper">
-                                        <ControllerWrapper
-                                            title="Add Cast Crew from Season to episode"
-                                            inputName="addCrew"
-                                            errors={errors.addCrew}
-                                            control={control}
-                                            register={register}
-                                            labelClassName="nexus-c-title-create_checkbox-label"
-                                            childWrapperClassName="nexus-c-title-checkbox-wrapper"
-                                            isItCheckbox
-                                        >
-                                            <Checkbox
-                                                id="addCrew"
-                                                className="nexus-c-title-create_checkbox"
-                                                inputId="addCrew"
-                                            />
-                                        </ControllerWrapper>
-                                    </div>
+                                    {fieldsToDisplayAndHideForSeason ? (
+                                        <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper d-flex align-items-center">
+                                            <ControllerWrapper
+                                                title="Add Cast Crew from Season to episode"
+                                                inputName="addCrew"
+                                                errors={errors.addCrew}
+                                                control={control}
+                                                register={register}
+                                                labelClassName="nexus-c-title-create_checkbox-label"
+                                                childWrapperClassName="nexus-c-title-checkbox-wrapper"
+                                                isItCheckbox
+                                            >
+                                                <Checkbox
+                                                    id="addCrew"
+                                                    className="nexus-c-title-create_checkbox"
+                                                    inputId="addCrew"
+                                                />
+                                            </ControllerWrapper>
+                                        </div>
+                                    ) : null}
                                 </div>
                             ) : null}
 
