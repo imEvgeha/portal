@@ -55,10 +55,13 @@ export const exportService = {
     },
 
     bulkExportMetadata: async params => {
-        const headers = new Headers();
         const {token} = keycloak;
-        headers.append('Authorization', `Bearer ${token}`);
-        headers.append('Accept', `application/vnd.ms-excel`);
+
+        let headers = {
+            Authorization: `Bearer ${token}`,
+            Accept: `application/vnd.ms-excel`,
+        };
+
         const {locale, language, status} = params;
         const statusUrl = status !== 'openDopTasks' ? `&emetStatus=${status}` : ``;
         const url = `${
@@ -66,11 +69,16 @@ export const exportService = {
         }/editorialmetadata/download?locale=${locale}&language=${language}&byDopEmtTasks=${
             status === 'openDopTasks'
         }${statusUrl}`;
+
         const abortAfter = getConfig('avails.export.http.timeout');
 
-        return nexusFetch(url, {
-            method: 'get',
-            headers,
-        });
+        return nexusFetch(
+            url,
+            {
+                method: 'get',
+                headers,
+            },
+            abortAfter
+        );
     },
 };
