@@ -70,6 +70,7 @@ const TitleCreate = ({
     const [selectedSeries, setSelectedSeries] = useState(null);
     const [filteredSeries, setFilteredSeries] = useState([]);
     const [seasons, setSeasons] = useState([]);
+    const [fetchingSeasons, setFetchingSeasons] = useState(false);
 
     useEffect(() => {
         if (error) {
@@ -260,8 +261,11 @@ const TitleCreate = ({
                     filteredSeries = [];
                 }
             }
-
-            setFilteredSeries(filteredSeries);
+            const newFilteredSeries = filteredSeries.map(s => ({
+                newTitleReleaseYear: toSeriesAndRelease(s),
+                ...s,
+            }));
+            setFilteredSeries(newFilteredSeries);
         }, 500);
     };
 
@@ -271,6 +275,9 @@ const TitleCreate = ({
      */
     const fetchSeasonsForSelectedSeries = series => {
         if (series) {
+            setFetchingSeasons(true);
+            setSeasons([]);
+
             titleService
                 .freeTextSearch(
                     {parentId: series.id, contentType: CONTENT_TYPES.SEASON, tenantCode, sort: 'seasonNumber'},
@@ -286,8 +293,16 @@ const TitleCreate = ({
                             };
                         })
                     );
+                    setFetchingSeasons(false);
+                })
+                .catch(() => {
+                    setFetchingSeasons(false);
                 });
         }
+    };
+
+    const toSeriesAndRelease = a => {
+        return `${a?.episodic?.seriesTitleName}${a?.releaseYear ? `, ${a?.releaseYear}` : ``}`;
     };
 
     /**
@@ -296,11 +311,7 @@ const TitleCreate = ({
      * @returns {JSX.Element} Returns a JSX.Element to be rendered as an option
      */
     const seriesTemplate = seriesItem => {
-        return (
-            <div className="series-item">
-                {`${seriesItem.episodic.seriesTitleName}${seriesItem.releaseYear ? `, ${seriesItem.releaseYear}` : ``}`}
-            </div>
-        );
+        return <div className="series-item">{seriesItem.newTitleReleaseYear}</div>;
     };
 
     /**
@@ -534,18 +545,18 @@ const TitleCreate = ({
                                         >
                                             <AutoComplete
                                                 forceSelection
-                                                field="title"
                                                 id="seriesTitleName"
+                                                field="newTitleReleaseYear"
                                                 placeholder="Enter Series Name"
                                                 value={selectedSeries}
                                                 suggestions={filteredSeries}
                                                 completeMethod={searchSeries}
                                                 itemTemplate={seriesTemplate}
-                                                selectedItemTemplate={selectedSeriesTemplate}
                                                 columnClass="col-lg-12"
                                                 onSelect={e => {
                                                     setSelectedSeries(e.value);
-                                                    fetchSeasonsForSelectedSeries(e.value);
+                                                    e.originalEvent.type !== 'blur' &&
+                                                        fetchSeasonsForSelectedSeries(e.value);
                                                 }}
                                                 aria-label="Series"
                                             />
@@ -585,6 +596,7 @@ const TitleCreate = ({
                                                     optionLabel="seasonNumber"
                                                     columnClass="col-12"
                                                     placeholder="Select Season Number"
+                                                    disabled={fetchingSeasons}
                                                 />
                                             )}
                                         </ControllerWrapper>

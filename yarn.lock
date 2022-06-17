@@ -3509,22 +3509,22 @@
     react-global-configuration "1.x"
     reselect "4.x"
 
-"@portal/portal-build-scripts@1.0.0-14":
-  version "1.0.0-14"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-build-scripts/-/portal-build-scripts-1.0.0-14.tgz#4f8d6b79136c6b8a781894d1399636c8b4012670"
-  integrity sha512-Q8lRQPtJtqyQ19JVpyr+66CozPTFdeHD3poS9dXvus6e407ZRe299rm6l7Gp+lH4D3ZR+0QDJNrTBJ/selKQNA==
+"@portal/portal-build-scripts@1.0.0-18":
+  version "1.0.0-18"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-build-scripts/-/portal-build-scripts-1.0.0-18.tgz#e209b0d7c17003f46fda58df308bbc7807f03d70"
+  integrity sha512-E4i0rXuenZLm3scNXf5l83xgFhXps2fC4lL7LWXqcZ3uOqFzVXA345wgRZ0Ot5bNCvJlfxKsbsQThI3HY84DuA==
   dependencies:
     cross-spawn "^7.0.3"
     fancy-log "^2.0.0"
     pacote "^13.1.1"
     semver "^7.3.7"
 
-"@portal/portal-components@^1.0.0-54":
-  version "1.0.0-54"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-components/-/portal-components-1.0.0-54.tgz#7995c4efeb05e170453873633a16c03e8f17af77"
-  integrity sha512-+otmINMgFcDCLrupe/8GDY7BneHNyWNTrI0pixrdK0rkY2IGC5DDlmdFuiEq94n+gQfucpU1FVNOEP9UaWiTeA==
+"@portal/portal-components@^1.0.0-55":
+  version "1.0.0-55"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-components/-/portal-components-1.0.0-55.tgz#be1652bf5eef7ed865a7728d9bdac97727c501e8"
+  integrity sha512-JtNpVCN2uygPjQfsmB0sIlya9gZPZrgbnMeksXFN35bolNGqitCDsXbzKm01RtLGuq8zGCRjz5iugCNCz5C0jw==
   dependencies:
-    "@portal/portal-build-scripts" "1.0.0-14"
+    "@portal/portal-build-scripts" "1.0.0-18"
     "@testing-library/jest-dom" "^5.16.4"
     "@testing-library/react" "^13.2.0"
     "@testing-library/user-event" "^13.5.0"
