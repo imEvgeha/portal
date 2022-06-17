@@ -10,7 +10,7 @@ import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/src/elements/nexus-entity/constants';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
-import {isEmpty} from 'lodash';
+import {isEmpty, isObject} from 'lodash';
 import {Button} from 'primereact/button';
 import {Checkbox} from 'primereact/checkbox';
 import {Dialog} from 'primereact/dialog';
@@ -67,7 +67,6 @@ const TitleCreate = ({
     const routeParams = useParams();
 
     // filtering on series name
-    const [selectedSeries, setSelectedSeries] = useState(null);
     const [filteredSeries, setFilteredSeries] = useState([]);
     const [seasons, setSeasons] = useState([]);
     const [fetchingSeasons, setFetchingSeasons] = useState(false);
@@ -87,6 +86,12 @@ const TitleCreate = ({
     }, [tenantCode]);
 
     useEffect(() => {
+        if (currentValues.seriesTitleName === '') {
+            setSeasons([]);
+        }
+    }, [currentValues.seriesTitleName]);
+
+    useEffect(() => {
         if (!isEmpty(defaultValues)) {
             const keys = Object.keys(defaultValues);
             keys.forEach(key => {
@@ -99,7 +104,8 @@ const TitleCreate = ({
         onSave();
         reset();
         setValue('externalSystemIds', []);
-        setSelectedSeries(null);
+        setFilteredSeries([]);
+        setSeasons([]);
     };
 
     const handleError = err => {
@@ -112,7 +118,7 @@ const TitleCreate = ({
     };
 
     const isSeriesValid = () => {
-        if (selectedSeries || !areFieldsRequired()) {
+        if (isObject(currentValues.seriesTitleName) || !areFieldsRequired()) {
             return true;
         }
         setError('seriesTitleName', {type: 'custom', message: 'Invalid series name'});
@@ -246,8 +252,6 @@ const TitleCreate = ({
     const searchSeries = async event => {
         setTimeout(async () => {
             let filteredSeries = [];
-            // reset the selected series on new search string
-            setSelectedSeries(null);
             // only invoke the API when the search query string is not empty
             if (event.query.trim().length) {
                 const response = await titleService.freeTextSearch(
@@ -287,7 +291,7 @@ const TitleCreate = ({
                 .then(response => {
                     setSeasons(
                         // map the properties needed for the dropdown
-                        response.data.map(season => {
+                        response?.data?.map(season => {
                             return {
                                 ...season.episodic,
                             };
@@ -320,9 +324,6 @@ const TitleCreate = ({
      * @param seriesItem The selected series from the results found
      * @returns {`${string}`|`${*}${string}`}
      */
-    const selectedSeriesTemplate = seriesItem => {
-        return `${seriesItem.episodic.seriesTitleName}${seriesItem.releaseYear ? `, ${seriesItem.releaseYear}` : ``}`;
-    };
 
     const areThereAnyExternalSystemDuplicates = title => {
         const externalIdTypesArray = title?.externalSystemIds?.map(item => item.externalSystem);
@@ -354,7 +355,7 @@ const TitleCreate = ({
                                 ? CONTENT_TYPES.SERIES
                                 : ''
                             : '',
-                    id: selectedSeries.id,
+                    id: currentValues.seriesTitleName?.id,
                 };
                 tempTitle.seasonNumber = titleForm.seasonNumber || null;
             }
@@ -363,7 +364,7 @@ const TitleCreate = ({
                 tempTitle.parentIds = [
                     {
                         contentType: 'series',
-                        id: selectedSeries.id,
+                        id: currentValues.seriesTitleName?.id,
                     },
                     {
                         contentType: 'season',
@@ -424,7 +425,7 @@ const TitleCreate = ({
                     label="Cancel"
                     onClick={() => {
                         onCloseModal();
-                        reset();
+                        toggle();
                     }}
                     disabled={isCreatingTitle}
                     className="p-button-outlined p-button-secondary"
@@ -535,32 +536,29 @@ const TitleCreate = ({
                             {fieldsToDisplay() ? (
                                 <div className="row">
                                     <div className="col-lg-6 col-sm-12">
-                                        <ControllerWrapper
-                                            title="Series"
-                                            inputName="seriesTitleName"
-                                            control={control}
-                                            errors={errors.seriesTitleName}
-                                            required={areFieldsRequired()}
-                                            register={register}
-                                        >
-                                            <AutoComplete
-                                                forceSelection
-                                                id="seriesTitleName"
-                                                field="newTitleReleaseYear"
-                                                placeholder="Enter Series Name"
-                                                value={selectedSeries}
-                                                suggestions={filteredSeries}
-                                                completeMethod={searchSeries}
-                                                itemTemplate={seriesTemplate}
-                                                columnClass="col-lg-12"
-                                                onSelect={e => {
-                                                    setSelectedSeries(e.value);
-                                                    e.originalEvent.type !== 'blur' &&
-                                                        fetchSeasonsForSelectedSeries(e.value);
-                                                }}
-                                                aria-label="Series"
-                                            />
-                                        </ControllerWrapper>
+                                        <AutoComplete
+                                            labelProps={{label: 'Series', stacked: true, isRequired: true}}
+                                            formControlOptions={{
+                                                formControlName: `seriesTitleName`,
+                                                rules: {
+                                                    required: {value: true, message: 'Field cannot be empty!'},
+                                                },
+                                            }}
+                                            forceSelection
+                                            id="seriesTitleName"
+                                            field="newTitleReleaseYear"
+                                            placeholder="Enter Series Name"
+                                            value={currentValues.seriesTitleName}
+                                            suggestions={filteredSeries}
+                                            completeMethod={searchSeries}
+                                            itemTemplate={seriesTemplate}
+                                            columnClass="col-lg-12"
+                                            onSelect={e => {
+                                                e.originalEvent.type !== 'blur' &&
+                                                    fetchSeasonsForSelectedSeries(e.value);
+                                            }}
+                                            aria-label="Series"
+                                        />
                                     </div>
                                     <div className="col-lg-6 col-sm-12">
                                         <ControllerWrapper
