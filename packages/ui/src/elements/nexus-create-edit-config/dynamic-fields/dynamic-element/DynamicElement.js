@@ -11,8 +11,6 @@ import {constructFieldPerType} from '../FieldsPerType';
 import './DynamicElement.scss';
 
 const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dataApi}) => {
-    const [arrayVisibleWhenFields, setArrayVisibleWhenFields] = useState([]);
-
     const initializeSections = () => {
         const sectionKeys = isEmpty(values) ? ['unset'] : Object.keys(values);
 
@@ -65,12 +63,10 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
                 form,
                 value: sectionSchema.values || '',
                 className: 'mb-2',
-                undefined,
-                undefined,
+                customOnChange: undefined,
+                cb: undefined,
                 cache,
                 dataApi,
-                arrayVisibleWhenFields,
-                setArrayVisibleWhenFields,
                 index,
             })
         );

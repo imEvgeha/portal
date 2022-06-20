@@ -12,7 +12,6 @@ import './ArrayElement.scss';
 
 const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
     const isGroup = useRef(false);
-    const [arrayVisibleWhenFields, setArrayVisibleWhenFields] = useState([]);
     const constructFormFieldsState = () => {
         // Needed when adding new as no values still exist.
         const newConfig = [0];
@@ -242,11 +241,9 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
             value: form?.getValues(fieldSchema.name) || values?.[fieldSchema?.name] || '',
             className,
             customOnChange: onChange,
-            undefined,
+            cb: undefined,
             cache,
             dataApi,
-            arrayVisibleWhenFields,
-            setArrayVisibleWhenFields,
             index,
         });
 

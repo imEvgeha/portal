@@ -22,8 +22,6 @@ const CreateEditConfig = ({
     dataApi,
 }) => {
     const [isVisible, setIsVisible] = useState(visible);
-    const [arrayVisibleWhenFields, setArrayVisibleWhenFields] = useState([]);
-
     const form = useForm({mode: 'all', reValidateMode: 'onChange'});
     const activeDynamicKeys = useRef({});
 
@@ -41,8 +39,6 @@ const CreateEditConfig = ({
                 cb: elementSchema.dynamic ? getActiveDynamicKeys : undefined,
                 cache,
                 dataApi,
-                arrayVisibleWhenFields,
-                setArrayVisibleWhenFields,
                 index,
             });
         });
