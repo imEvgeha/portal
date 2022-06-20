@@ -270,9 +270,5 @@ const getVisibleWhenConditionValue = (elementSchema, form) => {
         }
     });
 
-    if ('required' in elementSchema) {
-        elementSchema.required = isVisibleWhen;
-    }
-
     return isVisibleWhen;
 };
