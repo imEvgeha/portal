@@ -121,7 +121,11 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
                     const defaultClient = Object.entries(filteredResourceAccess)[0];
                     // construct the object and dispatch to redux
                     const defaultSelectedTenant = transformSelectTenant(defaultClient);
-                    defaultSelectedTenant.roles = [...defaultSelectedTenant.roles, ...realmRoles, selectedTenant.id];
+                    defaultSelectedTenant.roles = [
+                        ...defaultSelectedTenant.roles,
+                        ...realmRoles,
+                        defaultSelectedTenant.id,
+                    ];
                     dispatch(setSelectedTenantInfo(defaultSelectedTenant));
                     updateLocalStorageWithSelectedTenant(currentLoggedInUsername, defaultSelectedTenant);
                 }
@@ -130,7 +134,11 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
                     dispatch(
                         setSelectedTenantInfo({
                             id: persistedTenantExistsInClients[0],
-                            roles: [...persistedTenantExistsInClients[1].roles, ...realmRoles],
+                            roles: [
+                                ...persistedTenantExistsInClients[1].roles,
+                                ...realmRoles,
+                                persistedTenantExistsInClients[0],
+                            ],
                         })
                     );
                 }
