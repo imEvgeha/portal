@@ -1,17 +1,17 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import {cloneDeep, get, isObjectLike, isEqual} from 'lodash';
+import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
 import {titleService} from './titleMetadataServices';
 import {
-    NEXUS,
-    VZ,
     MOVIDA,
+    NEXUS,
+    PROPAGATE_SEASON_PERSONS_SUCCESS,
     UPDATE_EDITORIAL_METADATA_ERROR,
     UPDATE_EDITORIAL_METADATA_SUCCESS,
-    UPDATE_TERRITORY_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_ERROR,
-    PROPAGATE_SEASON_PERSONS_SUCCESS,
+    UPDATE_TERRITORY_METADATA_SUCCESS,
+    VZ,
 } from './constants';
 
 export const isNexusTitle = titleId => {
@@ -37,9 +37,16 @@ export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     return null;
 };
 
-export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedParams) => {
+export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedParams, body, selectedTenant) => {
     try {
-        const response = await titleService.advancedSearch(searchCriteria, offset, limit, sortedParams);
+        const response = await titleService.advancedSearch(
+            searchCriteria,
+            offset,
+            limit,
+            sortedParams,
+            body,
+            selectedTenant
+        );
         const {data = [], page, size, total} = response || {};
         const tableData = data.reduce((acc, obj) => {
             const {
@@ -439,12 +446,11 @@ const handleDirtyEMETValues = (initialValues, values) => {
             const isUpdated = Object.keys(cleanEditorial).some(
                 item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
             );
-            const updatedEmetRecord = {
+            values.editorialMetadata[index] = {
                 ...values.editorialMetadata[index],
                 ...editorial,
                 isUpdated,
             };
-            values.editorialMetadata[index] = updatedEmetRecord;
         }
 
         values.editorialMetadata.forEach((emet, i) => {
@@ -463,7 +469,7 @@ const handleDirtyTMETValues = (initialValues, values) => {
     const territorialMetadata = get(values, 'territorialMetadata');
 
     if (territorialMetadata.length) {
-        const updatedTerritorialMetadata = territorialMetadata.map((elem, i) => {
+        values.territorialMetadata = territorialMetadata.map((elem, i) => {
             const cleanTerritorial = cleanObject(elem);
             const isUpdated = Object.keys(cleanTerritorial).some(
                 item => !isEqual(initialValues.territorialMetadata[i]?.[item], cleanTerritorial?.[item])
@@ -473,8 +479,6 @@ const handleDirtyTMETValues = (initialValues, values) => {
                 isUpdated,
             };
         });
-
-        values.territorialMetadata = updatedTerritorialMetadata;
     }
     if (territorial) {
         const index =
@@ -488,11 +492,9 @@ const handleDirtyTMETValues = (initialValues, values) => {
 
             delete updatedTmetRecord.isUpdated;
             const cleanTerritorial = cleanObject(updatedTmetRecord);
-            const isUpdated = Object.keys(cleanTerritorial).some(
+            updatedTmetRecord.isUpdated = Object.keys(cleanTerritorial).some(
                 item => !isEqual(initialValues.territorialMetadata[index]?.[item], cleanTerritorial?.[item])
             );
-
-            updatedTmetRecord.isUpdated = isUpdated;
             values.territorialMetadata[index] = updatedTmetRecord;
         }
     }

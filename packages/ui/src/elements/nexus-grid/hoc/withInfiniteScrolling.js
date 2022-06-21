@@ -3,7 +3,7 @@ import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {cleanObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {omit, isEqual, debounce} from 'lodash';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {useDateTimeContext} from '../../../../lib/elements/nexus-date-time-context/NexusDateTimeProvider';
 import {toggleRefreshGridData} from '../../../grid/gridActions';
 import {getShouldGridRefresh} from '../../../grid/gridSelectors';
@@ -39,6 +39,7 @@ const withInfiniteScrolling =
             const previousParams = usePrevious(props.params);
             const [gridApi, setGridApi] = useState();
             const {isLocal} = useDateTimeContext();
+            const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
 
             useEffect(() => {
                 return () => {
@@ -125,7 +126,7 @@ const withInfiniteScrolling =
                     props.setDataLoading(true);
                 }
 
-                fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
+                fetchData(preparedParams, pageNumber, pageSize, sortParams, body, selectedTenant)
                     .then(response => {
                         const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
 

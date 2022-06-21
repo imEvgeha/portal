@@ -146,7 +146,7 @@ export const registerTitle = payload => {
 };
 
 export const titleService = {
-    advancedSearch: (searchCriteria, page, size, sortedParams) => {
+    advancedSearch: (searchCriteria, page, size, sortedParams, body, selectedTenant) => {
         const queryParams = {};
         const filterIsActive =
             !!Object.keys(searchCriteria).length &&
@@ -181,7 +181,7 @@ export const titleService = {
             filterIsActive ? 'search' : ''
         }${prepareSortMatrixParamTitles(sortedParams)}`;
 
-        const params = encodedSerialize({...queryParams, page, size});
+        const params = encodedSerialize({...queryParams, page, size, tenantCode: selectedTenant.id});
         return partialContentTypeSearch && nexusFetch(url, {params});
     },
     addMsvAssociationIds: (id, licensor, licensee, existingMsvAssociations) => {
