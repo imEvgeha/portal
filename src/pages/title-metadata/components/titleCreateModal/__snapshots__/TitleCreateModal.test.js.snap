@@ -101,6 +101,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
         "_defaultValues": Object {
           "catalogueOwner": "vu",
         },
+        "_executeSchema": [Function],
         "_fields": Object {},
         "_formState": Object {
           "dirtyFields": Object {},
@@ -149,44 +150,43 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
           "watch": false,
         },
         "_subjects": Object {
-          "array": ye {
+          "array": Object {
+            "next": [Function],
             "observers": Array [],
+            "subscribe": [Function],
+            "unsubscribe": [Function],
           },
-          "control": ye {
-            "observers": Array [],
-          },
-          "state": ye {
+          "state": Object {
+            "next": [Function],
             "observers": Array [
-              me {
-                "closed": false,
-                "observer": Object {
-                  "next": [Function],
-                },
+              Object {
+                "next": [Function],
               },
             ],
+            "subscribe": [Function],
+            "unsubscribe": [Function],
           },
-          "watch": ye {
-            "observers": Array [
-              me {
-                "closed": false,
-                "observer": Object {
-                  "next": [Function],
-                },
-              },
-            ],
+          "watch": Object {
+            "next": [Function],
+            "observers": Array [],
+            "subscribe": [Function],
+            "unsubscribe": [Function],
           },
         },
         "_updateFieldArray": [Function],
         "_updateValid": [Function],
+        "getFieldState": [Function],
         "register": [Function],
         "unregister": [Function],
       }
     }
     formState={Object {}}
+    getFieldState={[Function]}
     getValues={[Function]}
     handleSubmit={[Function]}
     register={[Function]}
     reset={[Function]}
+    resetField={[Function]}
     setError={[Function]}
     setFocus={[Function]}
     setValue={[Function]}
@@ -238,6 +238,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "_defaultValues": Object {
                       "catalogueOwner": "vu",
                     },
+                    "_executeSchema": [Function],
                     "_fields": Object {},
                     "_formState": Object {
                       "dirtyFields": Object {},
@@ -286,35 +287,32 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       "watch": false,
                     },
                     "_subjects": Object {
-                      "array": ye {
+                      "array": Object {
+                        "next": [Function],
                         "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "control": ye {
-                        "observers": Array [],
-                      },
-                      "state": ye {
+                      "state": Object {
+                        "next": [Function],
                         "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
+                          Object {
+                            "next": [Function],
                           },
                         ],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "watch": ye {
-                        "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
-                          },
-                        ],
+                      "watch": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
                     },
                     "_updateFieldArray": [Function],
                     "_updateValid": [Function],
+                    "getFieldState": [Function],
                     "register": [Function],
                     "unregister": [Function],
                   }
@@ -354,6 +352,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "_defaultValues": Object {
                       "catalogueOwner": "vu",
                     },
+                    "_executeSchema": [Function],
                     "_fields": Object {},
                     "_formState": Object {
                       "dirtyFields": Object {},
@@ -402,35 +401,32 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       "watch": false,
                     },
                     "_subjects": Object {
-                      "array": ye {
+                      "array": Object {
+                        "next": [Function],
                         "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "control": ye {
-                        "observers": Array [],
-                      },
-                      "state": ye {
+                      "state": Object {
+                        "next": [Function],
                         "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
+                          Object {
+                            "next": [Function],
                           },
                         ],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "watch": ye {
-                        "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
-                          },
-                        ],
+                      "watch": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
                     },
                     "_updateFieldArray": [Function],
                     "_updateValid": [Function],
+                    "getFieldState": [Function],
                     "register": [Function],
                     "unregister": [Function],
                   }
@@ -564,6 +560,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "_defaultValues": Object {
                       "catalogueOwner": "vu",
                     },
+                    "_executeSchema": [Function],
                     "_fields": Object {},
                     "_formState": Object {
                       "dirtyFields": Object {},
@@ -612,35 +609,32 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       "watch": false,
                     },
                     "_subjects": Object {
-                      "array": ye {
+                      "array": Object {
+                        "next": [Function],
                         "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "control": ye {
-                        "observers": Array [],
-                      },
-                      "state": ye {
+                      "state": Object {
+                        "next": [Function],
                         "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
+                          Object {
+                            "next": [Function],
                           },
                         ],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "watch": ye {
-                        "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
-                          },
-                        ],
+                      "watch": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
                     },
                     "_updateFieldArray": [Function],
                     "_updateValid": [Function],
+                    "getFieldState": [Function],
                     "register": [Function],
                     "unregister": [Function],
                   }
@@ -676,6 +670,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                 "_defaultValues": Object {
                   "catalogueOwner": "vu",
                 },
+                "_executeSchema": [Function],
                 "_fields": Object {},
                 "_formState": Object {
                   "dirtyFields": Object {},
@@ -724,35 +719,32 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                   "watch": false,
                 },
                 "_subjects": Object {
-                  "array": ye {
+                  "array": Object {
+                    "next": [Function],
                     "observers": Array [],
+                    "subscribe": [Function],
+                    "unsubscribe": [Function],
                   },
-                  "control": ye {
-                    "observers": Array [],
-                  },
-                  "state": ye {
+                  "state": Object {
+                    "next": [Function],
                     "observers": Array [
-                      me {
-                        "closed": false,
-                        "observer": Object {
-                          "next": [Function],
-                        },
+                      Object {
+                        "next": [Function],
                       },
                     ],
+                    "subscribe": [Function],
+                    "unsubscribe": [Function],
                   },
-                  "watch": ye {
-                    "observers": Array [
-                      me {
-                        "closed": false,
-                        "observer": Object {
-                          "next": [Function],
-                        },
-                      },
-                    ],
+                  "watch": Object {
+                    "next": [Function],
+                    "observers": Array [],
+                    "subscribe": [Function],
+                    "unsubscribe": [Function],
                   },
                 },
                 "_updateFieldArray": [Function],
                 "_updateValid": [Function],
+                "getFieldState": [Function],
                 "register": [Function],
                 "unregister": [Function],
               }
@@ -794,6 +786,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                         "_defaultValues": Object {
                           "catalogueOwner": "vu",
                         },
+                        "_executeSchema": [Function],
                         "_fields": Object {},
                         "_formState": Object {
                           "dirtyFields": Object {},
@@ -842,35 +835,32 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                           "watch": false,
                         },
                         "_subjects": Object {
-                          "array": ye {
+                          "array": Object {
+                            "next": [Function],
                             "observers": Array [],
+                            "subscribe": [Function],
+                            "unsubscribe": [Function],
                           },
-                          "control": ye {
-                            "observers": Array [],
-                          },
-                          "state": ye {
+                          "state": Object {
+                            "next": [Function],
                             "observers": Array [
-                              me {
-                                "closed": false,
-                                "observer": Object {
-                                  "next": [Function],
-                                },
+                              Object {
+                                "next": [Function],
                               },
                             ],
+                            "subscribe": [Function],
+                            "unsubscribe": [Function],
                           },
-                          "watch": ye {
-                            "observers": Array [
-                              me {
-                                "closed": false,
-                                "observer": Object {
-                                  "next": [Function],
-                                },
-                              },
-                            ],
+                          "watch": Object {
+                            "next": [Function],
+                            "observers": Array [],
+                            "subscribe": [Function],
+                            "unsubscribe": [Function],
                           },
                         },
                         "_updateFieldArray": [Function],
                         "_updateValid": [Function],
+                        "getFieldState": [Function],
                         "register": [Function],
                         "unregister": [Function],
                       }
@@ -926,6 +916,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                         "_defaultValues": Object {
                           "catalogueOwner": "vu",
                         },
+                        "_executeSchema": [Function],
                         "_fields": Object {},
                         "_formState": Object {
                           "dirtyFields": Object {},
@@ -974,35 +965,32 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                           "watch": false,
                         },
                         "_subjects": Object {
-                          "array": ye {
+                          "array": Object {
+                            "next": [Function],
                             "observers": Array [],
+                            "subscribe": [Function],
+                            "unsubscribe": [Function],
                           },
-                          "control": ye {
-                            "observers": Array [],
-                          },
-                          "state": ye {
+                          "state": Object {
+                            "next": [Function],
                             "observers": Array [
-                              me {
-                                "closed": false,
-                                "observer": Object {
-                                  "next": [Function],
-                                },
+                              Object {
+                                "next": [Function],
                               },
                             ],
+                            "subscribe": [Function],
+                            "unsubscribe": [Function],
                           },
-                          "watch": ye {
-                            "observers": Array [
-                              me {
-                                "closed": false,
-                                "observer": Object {
-                                  "next": [Function],
-                                },
-                              },
-                            ],
+                          "watch": Object {
+                            "next": [Function],
+                            "observers": Array [],
+                            "subscribe": [Function],
+                            "unsubscribe": [Function],
                           },
                         },
                         "_updateFieldArray": [Function],
                         "_updateValid": [Function],
+                        "getFieldState": [Function],
                         "register": [Function],
                         "unregister": [Function],
                       }
@@ -1154,6 +1142,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
         "_defaultValues": Object {
           "catalogueOwner": undefined,
         },
+        "_executeSchema": [Function],
         "_fields": Object {},
         "_formState": Object {
           "dirtyFields": Object {},
@@ -1202,44 +1191,43 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           "watch": false,
         },
         "_subjects": Object {
-          "array": ye {
+          "array": Object {
+            "next": [Function],
             "observers": Array [],
+            "subscribe": [Function],
+            "unsubscribe": [Function],
           },
-          "control": ye {
-            "observers": Array [],
-          },
-          "state": ye {
+          "state": Object {
+            "next": [Function],
             "observers": Array [
-              me {
-                "closed": false,
-                "observer": Object {
-                  "next": [Function],
-                },
+              Object {
+                "next": [Function],
               },
             ],
+            "subscribe": [Function],
+            "unsubscribe": [Function],
           },
-          "watch": ye {
-            "observers": Array [
-              me {
-                "closed": false,
-                "observer": Object {
-                  "next": [Function],
-                },
-              },
-            ],
+          "watch": Object {
+            "next": [Function],
+            "observers": Array [],
+            "subscribe": [Function],
+            "unsubscribe": [Function],
           },
         },
         "_updateFieldArray": [Function],
         "_updateValid": [Function],
+        "getFieldState": [Function],
         "register": [Function],
         "unregister": [Function],
       }
     }
     formState={Object {}}
+    getFieldState={[Function]}
     getValues={[Function]}
     handleSubmit={[Function]}
     register={[Function]}
     reset={[Function]}
+    resetField={[Function]}
     setError={[Function]}
     setFocus={[Function]}
     setValue={[Function]}
@@ -1291,6 +1279,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "_defaultValues": Object {
                       "catalogueOwner": undefined,
                     },
+                    "_executeSchema": [Function],
                     "_fields": Object {},
                     "_formState": Object {
                       "dirtyFields": Object {},
@@ -1339,35 +1328,32 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                       "watch": false,
                     },
                     "_subjects": Object {
-                      "array": ye {
+                      "array": Object {
+                        "next": [Function],
                         "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "control": ye {
-                        "observers": Array [],
-                      },
-                      "state": ye {
+                      "state": Object {
+                        "next": [Function],
                         "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
+                          Object {
+                            "next": [Function],
                           },
                         ],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "watch": ye {
-                        "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
-                          },
-                        ],
+                      "watch": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
                     },
                     "_updateFieldArray": [Function],
                     "_updateValid": [Function],
+                    "getFieldState": [Function],
                     "register": [Function],
                     "unregister": [Function],
                   }
@@ -1407,6 +1393,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "_defaultValues": Object {
                       "catalogueOwner": undefined,
                     },
+                    "_executeSchema": [Function],
                     "_fields": Object {},
                     "_formState": Object {
                       "dirtyFields": Object {},
@@ -1455,35 +1442,32 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                       "watch": false,
                     },
                     "_subjects": Object {
-                      "array": ye {
+                      "array": Object {
+                        "next": [Function],
                         "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "control": ye {
-                        "observers": Array [],
-                      },
-                      "state": ye {
+                      "state": Object {
+                        "next": [Function],
                         "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
+                          Object {
+                            "next": [Function],
                           },
                         ],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "watch": ye {
-                        "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
-                          },
-                        ],
+                      "watch": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
                     },
                     "_updateFieldArray": [Function],
                     "_updateValid": [Function],
+                    "getFieldState": [Function],
                     "register": [Function],
                     "unregister": [Function],
                   }
@@ -1617,6 +1601,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "_defaultValues": Object {
                       "catalogueOwner": undefined,
                     },
+                    "_executeSchema": [Function],
                     "_fields": Object {},
                     "_formState": Object {
                       "dirtyFields": Object {},
@@ -1665,35 +1650,32 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                       "watch": false,
                     },
                     "_subjects": Object {
-                      "array": ye {
+                      "array": Object {
+                        "next": [Function],
                         "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "control": ye {
-                        "observers": Array [],
-                      },
-                      "state": ye {
+                      "state": Object {
+                        "next": [Function],
                         "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
+                          Object {
+                            "next": [Function],
                           },
                         ],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
-                      "watch": ye {
-                        "observers": Array [
-                          me {
-                            "closed": false,
-                            "observer": Object {
-                              "next": [Function],
-                            },
-                          },
-                        ],
+                      "watch": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
                       },
                     },
                     "_updateFieldArray": [Function],
                     "_updateValid": [Function],
+                    "getFieldState": [Function],
                     "register": [Function],
                     "unregister": [Function],
                   }
@@ -1729,6 +1711,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                 "_defaultValues": Object {
                   "catalogueOwner": undefined,
                 },
+                "_executeSchema": [Function],
                 "_fields": Object {},
                 "_formState": Object {
                   "dirtyFields": Object {},
@@ -1777,35 +1760,32 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                   "watch": false,
                 },
                 "_subjects": Object {
-                  "array": ye {
+                  "array": Object {
+                    "next": [Function],
                     "observers": Array [],
+                    "subscribe": [Function],
+                    "unsubscribe": [Function],
                   },
-                  "control": ye {
-                    "observers": Array [],
-                  },
-                  "state": ye {
+                  "state": Object {
+                    "next": [Function],
                     "observers": Array [
-                      me {
-                        "closed": false,
-                        "observer": Object {
-                          "next": [Function],
-                        },
+                      Object {
+                        "next": [Function],
                       },
                     ],
+                    "subscribe": [Function],
+                    "unsubscribe": [Function],
                   },
-                  "watch": ye {
-                    "observers": Array [
-                      me {
-                        "closed": false,
-                        "observer": Object {
-                          "next": [Function],
-                        },
-                      },
-                    ],
+                  "watch": Object {
+                    "next": [Function],
+                    "observers": Array [],
+                    "subscribe": [Function],
+                    "unsubscribe": [Function],
                   },
                 },
                 "_updateFieldArray": [Function],
                 "_updateValid": [Function],
+                "getFieldState": [Function],
                 "register": [Function],
                 "unregister": [Function],
               }

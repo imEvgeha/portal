@@ -128,6 +128,7 @@ exports[`CreateEditConfig should match snapshot 1`] = `
           control={
             Object {
               "_defaultValues": Object {},
+              "_executeSchema": [Function],
               "_fields": Object {},
               "_formState": Object {
                 "dirtyFields": Object {},
@@ -171,28 +172,28 @@ exports[`CreateEditConfig should match snapshot 1`] = `
                 "watch": false,
               },
               "_subjects": Object {
-                "array": ye {
+                "array": Object {
+                  "next": [Function],
                   "observers": Array [],
+                  "subscribe": [Function],
+                  "unsubscribe": [Function],
                 },
-                "control": ye {
+                "state": Object {
+                  "next": [Function],
                   "observers": Array [],
+                  "subscribe": [Function],
+                  "unsubscribe": [Function],
                 },
-                "state": ye {
-                  "observers": Array [
-                    me {
-                      "closed": false,
-                      "observer": Object {
-                        "next": [Function],
-                      },
-                    },
-                  ],
-                },
-                "watch": ye {
+                "watch": Object {
+                  "next": [Function],
                   "observers": Array [],
+                  "subscribe": [Function],
+                  "unsubscribe": [Function],
                 },
               },
               "_updateFieldArray": [Function],
               "_updateValid": [Function],
+              "getFieldState": [Function],
               "register": [Function],
               "unregister": [Function],
             }
@@ -211,6 +212,7 @@ exports[`CreateEditConfig should match snapshot 1`] = `
           control={
             Object {
               "_defaultValues": Object {},
+              "_executeSchema": [Function],
               "_fields": Object {},
               "_formState": Object {
                 "dirtyFields": Object {},
@@ -254,28 +256,28 @@ exports[`CreateEditConfig should match snapshot 1`] = `
                 "watch": false,
               },
               "_subjects": Object {
-                "array": ye {
+                "array": Object {
+                  "next": [Function],
                   "observers": Array [],
+                  "subscribe": [Function],
+                  "unsubscribe": [Function],
                 },
-                "control": ye {
+                "state": Object {
+                  "next": [Function],
                   "observers": Array [],
+                  "subscribe": [Function],
+                  "unsubscribe": [Function],
                 },
-                "state": ye {
-                  "observers": Array [
-                    me {
-                      "closed": false,
-                      "observer": Object {
-                        "next": [Function],
-                      },
-                    },
-                  ],
-                },
-                "watch": ye {
+                "watch": Object {
+                  "next": [Function],
                   "observers": Array [],
+                  "subscribe": [Function],
+                  "unsubscribe": [Function],
                 },
               },
               "_updateFieldArray": [Function],
               "_updateValid": [Function],
+              "getFieldState": [Function],
               "register": [Function],
               "unregister": [Function],
             }
