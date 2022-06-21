@@ -4,7 +4,7 @@ import {isEmpty} from 'lodash';
 import {Calendar} from 'primereact/calendar';
 import {Checkbox} from 'primereact/checkbox';
 import {InputText} from 'primereact/inputtext';
-import {Controller, useWatch} from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 import FieldError from '../../nexus-field-error/FieldError';
 import FieldLabel from '../../nexus-field-label/FieldLabel';
 import ArrayElement from './array-element/ArrayElement';
@@ -15,7 +15,7 @@ let isValidatingForm = false;
 
 export const constructFieldPerType = args => {
     const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi, index} = args;
-    setWatchedControlsForVisibleWhen(elementSchema, form.control);
+    setWatchedControlsForVisibleWhen(elementSchema, form);
 
     const isControllerVisible = elementSchema.visible !== false;
     if (isControllerVisible === false) {
@@ -257,19 +257,16 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
  * @param {*} elementSchema
  * @param {*} control
  */
-const setWatchedControlsForVisibleWhen = (elementSchema, control) => {
+const setWatchedControlsForVisibleWhen = (elementSchema, form) => {
     const arrWatchedControls = [];
     const parentPathName = getParentPathName(elementSchema);
 
     elementSchema?.visibleWhen?.forEach(element => {
         const fieldNamePath = getVisibleWhenField(parentPathName, element);
         if (fieldNamePath && !arrWatchedControls.includes(fieldNamePath)) {
-            arrWatchedControls.push(fieldNamePath);
+            // watching controls
+            form.watch(fieldNamePath);
         }
-    });
-    // watching controls
-    arrWatchedControls.forEach(watchControl => {
-        useWatch({control, name: watchControl});
     });
 };
 
