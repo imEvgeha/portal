@@ -11,11 +11,12 @@ import {
     cancelButton,
     downloadButton,
     downloadFormFields,
+    failureDownloadDesc,
     successDownloadDesc,
     successDownloadingStarted,
 } from '../constants';
 
-const CloudDownloadButton = ({showSuccess, showError}) => {
+const CloudDownloadButton = ({showSuccess}) => {
     const initialValues = createInitialValues(downloadFormFields);
     const [displayModal, setDisplayModal] = useState(false);
     const [values, setValues] = useState(initialValues);
@@ -30,13 +31,10 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
     const handleDownload = () => {
         closeModal();
         showSuccess(successDownloadingStarted);
-        exportService
-            .bulkExportMetadata(values)
-            .then(response => {
-                showSuccess(successDownloadDesc);
-                downloadFile(response, 'Editorial_Metadata');
-            })
-            .catch(err => showError(err.message));
+        exportService.bulkExportMetadata(values, {errorMessage: failureDownloadDesc}).then(response => {
+            showSuccess(successDownloadDesc);
+            downloadFile(response, 'Editorial_Metadata');
+        });
     };
 
     const renderFooter = () => {
@@ -79,12 +77,10 @@ const CloudDownloadButton = ({showSuccess, showError}) => {
 
 CloudDownloadButton.propTypes = {
     showSuccess: PropTypes.func,
-    showError: PropTypes.func,
 };
 
 CloudDownloadButton.defaultProps = {
     showSuccess: () => null,
-    showError: () => null,
 };
 
 export default CloudDownloadButton;

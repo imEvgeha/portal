@@ -5,7 +5,6 @@ import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-bod
 import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {Button} from 'primereact/button';
 import {store} from '../../../../src';
-import {errorModal} from '../../../../src/pages/legacy/components/modal/ErrorModal';
 
 /*
     Passing errorToasts in param:
@@ -23,66 +22,49 @@ import {errorModal} from '../../../../src/pages/legacy/components/modal/ErrorMod
     remove toast after 4 seconds
 */
 
-const showErrorModal = error => {
-    const {status, config: {url = '', method = ''} = {}} = error || {};
-    const ACCESS_DENIED = {
-        codes: [401, 403, 451, 511],
-        title: 'Access denied',
-    };
+const appendCustomMsg = (errorMessage, customMessage) =>
+    customMessage ? `${customMessage} Details: ${errorMessage}` : errorMessage;
 
-    if (ACCESS_DENIED.codes.includes(status)) {
-        const description = `Status: ${status},\nURI: ${url},\nMethod: ${method.toUpperCase()}`;
-        errorModal.open(ACCESS_DENIED.title, () => null, {description, status});
-        return true;
-    }
-};
+export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast = [], errorMessage}) => {
+    const {error} = errorObj;
 
-export const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) => {
-    let {status, data = {}, message, description} = error || {};
-    if (typeof error === 'string') message = error;
+    const fallbackErrorMessage = 'Unexpected error occurred. Please try again later';
 
-    const errorMessage = 'Unexpected error occurred. Please try again later';
-    const ERROR_MODAL = {
+    const TOAST_ACTIONS = {
         codes: [503],
-        title: errorMessage,
-    };
-    const defaultErrorToast = {
-        severity: 'error',
+        title: fallbackErrorMessage,
     };
 
     let toast = null;
-    const [err] = errorCodesToast.filter(error => error.status === status);
+    const [err] = errorCodesToast.filter(error => error.status === error.code);
 
     if (err) {
         toast = {
-            ...defaultErrorToast,
+            severity: 'error',
             ...err,
-            description: err.description || data.message || message || errorMessage,
+            description: appendCustomMsg(err.description || error.message, errorMessage),
         };
     } else {
-        toast = errorToast
-            ? {
-                  ...defaultErrorToast,
-                  ...errorToast,
-              }
-            : {
-                  severity: 'error',
-                  content: (
-                      <ToastBody
-                          summary={ERROR_TITLE}
-                          detail={description || message || data.message || JSON.stringify(data) || errorMessage}
-                          severity="error"
-                      >
-                          {ERROR_MODAL.codes.includes(status) ? (
-                              <Button
-                                  label="Ok"
-                                  className="p-button-link p-toast-button-link"
-                                  onClick={() => store.dispatch(removeToast())}
-                              />
-                          ) : null}
-                      </ToastBody>
-                  ),
-              };
+        toast = {
+            severity: 'error',
+            ...(errorToast || {
+                content: (
+                    <ToastBody
+                        summary={ERROR_TITLE}
+                        detail={appendCustomMsg(error.message, errorMessage)}
+                        severity="error"
+                    >
+                        {TOAST_ACTIONS.codes.includes(error.status) ? (
+                            <Button
+                                label="Ok"
+                                className="p-button-link p-toast-button-link"
+                                onClick={() => store.dispatch(removeToast())}
+                            />
+                        ) : null}
+                    </ToastBody>
+                ),
+            }),
+        };
     }
     store.dispatch(addToast(toast));
 };
@@ -93,14 +75,12 @@ const handleError = (error, options = {isWithErrorHandling: true}) => {
     // TODO: this should be removed from http client error handling
     // it considers UI level (modal and toast) and should be called inside ui|redux actions|redux sagas
     if (status) {
-        const isModalOpened = showErrorModal(errorMessage);
-
         const errorOptions = {
             isWithErrorHandling: true,
             ...options,
         };
 
-        if (errorOptions.isWithErrorHandling && !isModalOpened) {
+        if (errorOptions.isWithErrorHandling) {
             showToastForErrors(errorMessage, errorOptions);
         }
     }

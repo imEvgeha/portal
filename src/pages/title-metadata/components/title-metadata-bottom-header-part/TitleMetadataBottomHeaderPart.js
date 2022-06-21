@@ -23,7 +23,6 @@ export const TitleMetadataBottomHeaderPart = ({
     setDateTo,
     dateTo,
     showSuccess,
-    showError,
 }) => {
     const [dateError, setDateError] = useState(null);
 
@@ -37,7 +36,7 @@ export const TitleMetadataBottomHeaderPart = ({
                         uploadCallback={uploadHandler}
                         extensionsAccepted={getConfig('avails.upload.extensions')}
                     />
-                    <CloudDownloadButton showSuccess={showSuccess} showError={showError} />
+                    <CloudDownloadButton showSuccess={showSuccess} />
                 </div>
             </div>
         );
@@ -96,14 +95,12 @@ TitleMetadataBottomHeaderPart.propTypes = {
     setDateTo: PropTypes.func.isRequired,
     dateTo: PropTypes.string.isRequired,
     showSuccess: PropTypes.func,
-    showError: PropTypes.func,
 };
 
 TitleMetadataBottomHeaderPart.defaultProps = {
     isItTheSameTab: () => null,
     uploadHandler: () => null,
     showSuccess: () => null,
-    showError: () => null,
 };
 
 const mapStateToProps = state => ({

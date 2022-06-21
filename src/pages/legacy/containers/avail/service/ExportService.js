@@ -54,7 +54,7 @@ export const exportService = {
         );
     },
 
-    bulkExportMetadata: async params => {
+    bulkExportMetadata: async (params, options) => {
         const {token} = keycloak;
 
         let headers = {
@@ -77,6 +77,7 @@ export const exportService = {
             {
                 method: 'get',
                 headers,
+                ...options,
             },
             abortAfter
         );

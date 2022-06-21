@@ -78,7 +78,6 @@ exports[`TitleMetadataView should match snapshot 1`] = `
         <Connect(TitleMetadataBottomHeaderPart)
           className="nexus-c-title-metadata-header__bottom"
           isItTheSameTab={[Function]}
-          showError={[Function]}
           showSuccess={[Function]}
           uploadHandler={[Function]}
         />

@@ -14,7 +14,6 @@ import {resetTitle} from '../metadata/metadataActions';
 import SyncLogTable from '../sync-log/SyncLogTable';
 import TitleMetadataBottomHeaderPart from './components/title-metadata-bottom-header-part/TitleMetadataBottomHeaderPart';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
-import {failureDownloadDesc} from './components/title-metadata-header/components/constants';
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import TitleCreate from './components/titleCreateModal/TitleCreateModal';
@@ -57,15 +56,6 @@ export const TitleMetadataView = ({
                 severity: 'success',
                 detail,
                 life: 3000,
-            })
-        );
-    };
-
-    const showError = err => {
-        store.dispatch(
-            addToast({
-                severity: 'error',
-                detail: `${failureDownloadDesc} ${err?.error?.message ? `Details: ${err?.error?.message}` : ''}`,
             })
         );
     };
@@ -209,7 +199,6 @@ export const TitleMetadataView = ({
                         <TitleMetadataBottomHeaderPart
                             className="nexus-c-title-metadata-header__bottom"
                             showSuccess={showSuccess}
-                            showError={showError}
                             uploadHandler={uploadHandler}
                             isItTheSameTab={isItTheSameTab}
                         />

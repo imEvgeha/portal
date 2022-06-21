@@ -1,4 +1,4 @@
-import {keycloak} from "@portal/portal-auth";
+import {keycloak} from '@portal/portal-auth';
 import handleError from './handleError';
 import handleResponse from './handleResponse';
 
@@ -33,11 +33,9 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT, fetchHe
 
     try {
         const response = await fetch(url, allOptions);
-        const parsedResponse = await handleResponse(response, fetchHeaders);
-        return parsedResponse;
+        return await handleResponse(response, fetchHeaders);
     } catch (error) {
-        const handledError = await handleError(error, options);
-        throw handledError;
+        throw handleError(error, options);
     } finally {
         controller = null;
         clearTimeout(timeoutId);
