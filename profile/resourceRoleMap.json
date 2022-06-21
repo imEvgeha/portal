@@ -12,20 +12,38 @@
         "values": ["configuration_admin"]
     },
     "availsPage": {
-        "operation": "OR",
-        "values": ["avails_viewer", "avails_user", "avails_admin"]
+        "operation": "AND",
+        "values": [
+            "VU",
+            {
+                "operation": "OR",
+                "values": ["avails_viewer", "avails_user", "avails_admin"]
+            }
+        ]
     },
     "titleMetadataPage": {
         "operation": "OR",
         "values": ["metadata_view"]
     },
     "eventManagementParentPage": {
-        "operation": "OR",
-        "values": ["event_viewer", "event_admin"]
+        "operation": "AND",
+        "values": [
+            "VU",
+            {
+                "operation": "OR",
+                "values": ["event_viewer", "event_admin"]
+            }
+        ]
     },
     "dopPage": {
         "operation": "AND",
-        "values": ["dop_viewer"]
+        "values": [
+            "VU",
+            {
+                "operation": "OR",
+                "values": ["dop_viewer"]
+            }
+        ]
     },
     "createRightPage": {
         "operation": "OR",
@@ -112,8 +130,14 @@
         "values": ["configuration_viewer", "configuration_user", "configuration_admin"]
     },
     "availsMenuIcon": {
-        "operation": "OR",
-        "values": ["avails_viewer", "avails_user", "avails_admin"]
+        "operation": "AND",
+        "values": [
+            "VU",
+            {
+                "operation": "OR",
+                "values": ["avails_viewer", "avails_user", "avails_admin"]
+            }
+        ]
     },
     "availsIngestButton": {
         "operation": "OR",
@@ -125,11 +149,23 @@
     },
     "dopTasksMenuIcon": {
         "operation": "AND",
-        "values": ["dop_viewer"]
+        "values": [
+            "VU",
+            {
+                "operation": "OR",
+                "values": ["dop_viewer"]
+            }
+        ]
     },
     "eventManagementMenuIcon": {
-        "operation": "OR",
-        "values": ["event_viewer", "event_admin"]
+        "operation": "AND",
+        "values": [
+            "VU",
+            {
+                "operation": "OR",
+                "values": ["event_viewer", "event_admin"]
+            }
+        ]
     },
     "openAuditHistoryModalButton": {
         "operation": "AND",
@@ -189,7 +225,13 @@
     },
     "servicingOrdersView": {
         "operation": "AND",
-        "values": ["view-servicing-orders"]
+        "values": [
+            "VU",
+            {
+                "operation": "OR",
+                "values": ["view-servicing-orders"]
+            }
+        ]
     },
     "servicingOrdersEdit": {
         "operation": "AND",

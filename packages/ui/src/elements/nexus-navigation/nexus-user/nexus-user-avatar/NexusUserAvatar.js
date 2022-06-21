@@ -88,7 +88,7 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
      */
     const onTenantChange = selectedTenant => {
         const tempSelectedTenant = transformSelectTenant(selectedTenant);
-        tempSelectedTenant.roles = [...tempSelectedTenant.roles, ...realmAccess.roles];
+        tempSelectedTenant.roles = [...tempSelectedTenant.roles, ...realmAccess.roles, tempSelectedTenant.id];
         dispatch(setSelectedTenantInfo(tempSelectedTenant));
         updateLocalStorageWithSelectedTenant(currentLoggedInUsername, tempSelectedTenant);
     };

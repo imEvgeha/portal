@@ -107,7 +107,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
                 // if realm does not match with any clients, set the first client as default tenant
                 const defaultTenant = tenantFromRealm || Object.entries(filteredResourceAccess)[0];
                 const selectedTenant = transformSelectTenant(defaultTenant);
-                selectedTenant.roles = [...selectedTenant.roles, ...realmRoles];
+                selectedTenant.roles = [...selectedTenant.roles, ...realmRoles, selectedTenant.id];
                 dispatch(setSelectedTenantInfo(selectedTenant));
                 updateLocalStorageWithSelectedTenant(currentLoggedInUsername, selectedTenant);
             } else {
@@ -121,7 +121,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
                     const defaultClient = Object.entries(filteredResourceAccess)[0];
                     // construct the object and dispatch to redux
                     const defaultSelectedTenant = transformSelectTenant(defaultClient);
-                    defaultSelectedTenant.roles = [...defaultSelectedTenant.roles, ...realmRoles];
+                    defaultSelectedTenant.roles = [...defaultSelectedTenant.roles, ...realmRoles, selectedTenant.id];
                     dispatch(setSelectedTenantInfo(defaultSelectedTenant));
                     updateLocalStorageWithSelectedTenant(currentLoggedInUsername, defaultSelectedTenant);
                 }
