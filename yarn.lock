@@ -13757,10 +13757,10 @@ react-global-configuration@1.x:
     object-assign "^4.1.1"
     serialize-javascript "^4.0.0"
 
-react-hook-form@7.17.5:
-  version "7.17.5"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-hook-form/-/react-hook-form-7.17.5.tgz#3852f294159378d0b5893c9fcc89e313937c6f89"
-  integrity sha512-4bPtPGkpVhZlgtTbtMGi0RFphKHgxCj5u3AsGz3SBdleELlG1pDf9zRQOtfGlOGkZlc7u78RzD0xu9kOw7PYdQ==
+react-hook-form@7.32.2:
+  version "7.32.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-hook-form/-/react-hook-form-7.32.2.tgz#58ec2ab0239ce97969baa2faa03ced13fae913ac"
+  integrity sha512-F1A6n762xaRhvtQH5SkQQhMr19cCkHZYesTcKJJeNmrphiZp/cYFTIzC05FnQry0SspM54oPJ9tXFXlzya8VNQ==
 
 react-hot-loader@^4.12.20:
   version "4.13.0"

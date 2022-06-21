@@ -11,6 +11,8 @@ import ArrayElement from './array-element/ArrayElement';
 import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import DynamicElement from './dynamic-element/DynamicElement';
 
+let isValidatingForm = false;
+
 export const constructFieldPerType = args => {
     const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi, index} = args;
     setWatchedControlsForVisibleWhen(elementSchema, form.control);
@@ -20,8 +22,19 @@ export const constructFieldPerType = args => {
         return null;
     }
 
-    if (elementSchema.visibleWhen && !getVisibleWhenConditionValue(elementSchema, form)) {
-        value !== '' && form.setValue(elementSchema.name, null);
+    const elementIsHidden = elementSchema.visibleWhen && !getVisibleWhenConditionValue(elementSchema, form);
+    if (elementIsHidden) {
+        value !== '' && form.setValue(elementSchema.name, null, {shouldValidate: true});
+        form.getFieldState(elementSchema.name).error && form.clearErrors(elementSchema.name);
+
+        if (!isEmpty(form.formState.dirtyFields) && !form.formState.isValid && isEmpty(form.formState.errors)) {
+            if (!isValidatingForm) {
+                isValidatingForm = true;
+                form.trigger(elementSchema.name).then(() => {
+                    isValidatingForm = false;
+                });
+            }
+        }
         return null;
     }
 
@@ -194,7 +207,7 @@ export const createRules = elementSchema => {
             }
         });
 
-    if (elementSchema.visibleWhen === undefined && elementSchema.required) {
+    if (elementSchema.required) {
         const minLength = rulesObj?.minLength;
         rulesObj = {
             ...rulesObj,
@@ -216,7 +229,7 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
                         htmlFor={elementSchema.id}
                         label={elementSchema.label}
                         additionalLabel={elementSchema.type === 'timestamp' ? ' (UTC)' : ''}
-                        isRequired={!!elementSchema.required && getVisibleWhenConditionValue(elementSchema, form)}
+                        isRequired={!!elementSchema.required}
                     />
                 </div>
             )}
@@ -246,9 +259,10 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
  */
 const setWatchedControlsForVisibleWhen = (elementSchema, control) => {
     const arrWatchedControls = [];
+    const parentPathName = getParentPathName(elementSchema);
+
     elementSchema?.visibleWhen?.forEach(element => {
-        const parentPathName = elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
-        const fieldNamePath = parentPathName ? `${parentPathName}.${element.field}` : element.field;
+        const fieldNamePath = getVisibleWhenField(parentPathName, element);
         if (fieldNamePath && !arrWatchedControls.includes(fieldNamePath)) {
             arrWatchedControls.push(fieldNamePath);
         }
@@ -261,14 +275,21 @@ const setWatchedControlsForVisibleWhen = (elementSchema, control) => {
 
 const getVisibleWhenConditionValue = (elementSchema, form) => {
     let isVisibleWhen = true;
-    const parentPathName = elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
+    const parentPathName = getParentPathName(elementSchema);
 
     elementSchema?.visibleWhen?.forEach(element => {
-        const fieldNamePath = parentPathName ? `${parentPathName}.${element.field}` : element.field;
+        const fieldNamePath = getVisibleWhenField(parentPathName, element);
         if ('is' in element) {
             isVisibleWhen = isVisibleWhen && !!element.is.includes(form.getValues(fieldNamePath));
         }
     });
 
     return isVisibleWhen;
+};
+const getVisibleWhenField = (parentPathName, element) => {
+    return parentPathName ? `${parentPathName}.${element.field}` : element.field;
+};
+
+const getParentPathName = elementSchema => {
+    return elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
 };

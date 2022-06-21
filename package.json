@@ -75,7 +75,7 @@
         "react-dom": "17.0.1",
         "react-dropzone": "^11.3.4",
         "react-ga": "^2.7.0",
-        "react-hook-form": "7.17.5",
+        "react-hook-form": "7.32.2",
         "react-hot-loader": "^4.12.20",
         "react-intl": "^3.3.2",
         "react-multiselect-checkboxes": "^0.1.1",
