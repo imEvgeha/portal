@@ -17,17 +17,17 @@ import {isMgmTitle} from './utils';
 import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR, UPLOAD_SUCCESS_MESSAGE} from './constants';
 
 export function* loadParentTitle(title) {
-    const {parentIds} = title.data;
+    const {parentIds} = title;
     if (parentIds) {
         const parent = parentIds.find(e => e.contentType === 'SERIES');
         if (parent) {
             try {
                 const isMgm = isMgmTitle(parent.id);
                 const response = yield call(getTitleById, {id: parent.id, isMgm});
-                const newEpisodic = Object.assign(title.data.episodic, {
+                const newEpisodic = Object.assign(title.episodic, {
                     seriesTitleName: response.title,
                 });
-                return Object.assign(title.data, {
+                return Object.assign(title, {
                     episodic: newEpisodic,
                 });
             } catch (error) {
@@ -38,7 +38,7 @@ export function* loadParentTitle(title) {
             }
         }
     }
-    return title.data;
+    return title;
 }
 
 export function* loadTitle({payload}) {
@@ -52,7 +52,7 @@ export function* loadTitle({payload}) {
 
     try {
         const response = yield call(getTitleById, {id: payload.id, tenantCode: payload.selectedTenant.id});
-        const updatedResponse = yield call(loadParentTitle, {data: response, tenantCode: payload.selectedTenant.id});
+        const updatedResponse = yield call(loadParentTitle, response);
         yield put({
             type: actionTypes.GET_TITLE_SUCCESS,
             payload: updatedResponse,
