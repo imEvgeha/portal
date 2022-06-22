@@ -11,8 +11,6 @@ import ArrayElement from './array-element/ArrayElement';
 import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import DynamicElement from './dynamic-element/DynamicElement';
 
-let isValidatingForm = false;
-
 export const constructFieldPerType = args => {
     const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi, index} = args;
     setWatchedControlsForVisibleWhen(elementSchema, form);
@@ -25,16 +23,10 @@ export const constructFieldPerType = args => {
     const elementIsHidden = elementSchema.visibleWhen && !getVisibleWhenConditionValue(elementSchema, form);
     if (elementIsHidden) {
         value !== '' && form.setValue(elementSchema.name, null, {shouldValidate: true});
-        form.getFieldState(elementSchema.name).error && form.clearErrors(elementSchema.name);
+        form.getFieldState(elementSchema.name).error &&
+            form.clearErrors(elementSchema.name) &&
+            form.unregister(elementSchema.name);
 
-        if (!isEmpty(form.formState.dirtyFields) && !form.formState.isValid && isEmpty(form.formState.errors)) {
-            if (!isValidatingForm) {
-                isValidatingForm = true;
-                form.trigger(elementSchema.name).then(() => {
-                    isValidatingForm = false;
-                });
-            }
-        }
         return null;
     }
 
