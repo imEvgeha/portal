@@ -12,22 +12,21 @@ import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import DynamicElement from './dynamic-element/DynamicElement';
 
 export const constructFieldPerType = args => {
-    const {
-        elementSchema,
-        form,
-        value,
-        className,
-        customOnChange,
-        cb,
-        cache,
-        dataApi,
-        arrayVisibleWhenFields,
-        setArrayVisibleWhenFields,
-        index,
-    } = args;
-    const isControllerVisible = elementSchema.visible !== false;
+    const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi, index} = args;
+    setWatchedControlsForVisibleWhen(elementSchema, form);
 
+    const isControllerVisible = elementSchema.visible !== false;
     if (isControllerVisible === false) {
+        return null;
+    }
+
+    const elementIsHidden = elementSchema.visibleWhen && !getVisibleWhenConditionValue(elementSchema, form);
+    if (elementIsHidden) {
+        value !== '' && form.setValue(elementSchema.name, null, {shouldValidate: true});
+        form.getFieldState(elementSchema.name).error &&
+            form.clearErrors(elementSchema.name) &&
+            form.unregister(elementSchema.name);
+
         return null;
     }
 
@@ -41,31 +40,12 @@ export const constructFieldPerType = args => {
                 key={`${elementSchema.id}_controller`}
                 control={form.control}
                 defaultValue={value || elementSchema.defaultValue}
-                rules={{...createRules(!!elementSchema.required, elementSchema.validWhen)}}
+                rules={{...createRules(elementSchema)}}
                 render={({field, fieldState}) => {
                     const onFormElementChanged = e => {
                         field && field.onChange(e);
                         customOnChange && customOnChange(field);
-                        if (arrayVisibleWhenFields?.includes(elementSchema.id)) {
-                            setArrayVisibleWhenFields && setArrayVisibleWhenFields([]);
-                        }
                     };
-
-                    constructVisibleWhenLogic(arrayVisibleWhenFields, setArrayVisibleWhenFields, elementSchema, form);
-
-                    // visibleWhen logic - avoid rendering jsx element
-                    if (elementSchema?.visibleWhen) {
-                        for (let index = 0; index < elementSchema.visibleWhen.length; index++) {
-                            const element = elementSchema.visibleWhen[index];
-                            if (element?.isVisibleWhenValue === false) {
-                                if (field.value !== '') {
-                                    form.clearErrors(elementSchema.name);
-                                    form.setValue(elementSchema.name, '');
-                                }
-                                return null;
-                            }
-                        }
-                    }
 
                     const argsField = {elementSchema, form, value, cb, cache, dataApi};
                     return createDynamicFormField(field, fieldState, argsField, onFormElementChanged);
@@ -189,10 +169,11 @@ const getElement = args => {
     }
 };
 
-export const createRules = (required, rulesSchema) => {
+export const createRules = elementSchema => {
     let rulesObj = {};
-    rulesSchema &&
-        Object.entries(rulesSchema).forEach(rule => {
+
+    elementSchema.validWhen &&
+        Object.entries(elementSchema.validWhen).forEach(rule => {
             let newRule = {};
             switch (rule[0]) {
                 case 'matchesRegEx':
@@ -218,9 +199,12 @@ export const createRules = (required, rulesSchema) => {
             }
         });
 
-    if (required) {
+    if (elementSchema.required) {
         const minLength = rulesObj?.minLength;
-        rulesObj = {...rulesObj, required: minLength?.value === 0 ? minLength.message : 'Value is required'};
+        rulesObj = {
+            ...rulesObj,
+            required: minLength?.value === 0 ? minLength.message : 'Value is required',
+        };
     }
 
     return rulesObj;
@@ -261,24 +245,40 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
 };
 
 /**
- * Create and Set value of a new attribute to elementSchema named isVisibleWhenValue to all elements with visibleWhen attribute
- * @param {*} arrayVisibleWhenFields        const [arrayVisibleWhenFields, setArrayVisibleWhenFields] = useState([]);   -- arrayElement.js
- * @param {*} setArrayVisibleWhenFields     const [arrayVisibleWhenFields, setArrayVisibleWhenFields] = useState([]);   -- arrayElement.js
+ * useWatch hook is used for reRendering react form when "watched" controls change state
  * @param {*} elementSchema
- * @param {*} form
- *  */
-const constructVisibleWhenLogic = (arrayVisibleWhenFields, setArrayVisibleWhenFields, elementSchema, form) => {
-    // getting parent path so we can getValues of a certain element sibling(visibleWhen.field)
-    const parentPathName = elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
-    if (setArrayVisibleWhenFields && arrayVisibleWhenFields && elementSchema?.visibleWhen) {
-        // loop through .visibleWhen conditions
-        for (let j = 0; j < elementSchema.visibleWhen.length; j++) {
-            const element = elementSchema.visibleWhen[j];
-            const fieldNamePath = parentPathName ? `${parentPathName}.${element.field}` : element.field;
-            elementSchema.visibleWhen[j].isVisibleWhenValue = !!(form.getValues(fieldNamePath) === element?.is?.[0]);
-            if (!arrayVisibleWhenFields.includes(element.field)) {
-                setArrayVisibleWhenFields(arr => [...arr, element.field]);
-            }
+ * @param {*} control
+ */
+const setWatchedControlsForVisibleWhen = (elementSchema, form) => {
+    const arrWatchedControls = [];
+    const parentPathName = getParentPathName(elementSchema);
+
+    elementSchema?.visibleWhen?.forEach(element => {
+        const fieldNamePath = getVisibleWhenField(parentPathName, element);
+        if (fieldNamePath && !arrWatchedControls.includes(fieldNamePath)) {
+            // watching controls
+            form.watch(fieldNamePath);
         }
-    }
+    });
+};
+
+const getVisibleWhenConditionValue = (elementSchema, form) => {
+    let isVisibleWhen = true;
+    const parentPathName = getParentPathName(elementSchema);
+
+    elementSchema?.visibleWhen?.forEach(element => {
+        const fieldNamePath = getVisibleWhenField(parentPathName, element);
+        if ('is' in element) {
+            isVisibleWhen = isVisibleWhen && !!element.is.includes(form.getValues(fieldNamePath));
+        }
+    });
+
+    return isVisibleWhen;
+};
+const getVisibleWhenField = (parentPathName, element) => {
+    return parentPathName ? `${parentPathName}.${element.field}` : element.field;
+};
+
+const getParentPathName = elementSchema => {
+    return elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
 };
