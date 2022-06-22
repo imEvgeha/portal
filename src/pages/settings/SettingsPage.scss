@@ -6,5 +6,13 @@
     gap: 20px;
     .nexus-c-settings-content {
         overflow: hidden;
+        .nexus-c-row-entity,
+        .nexus-c-entity {
+            padding: 0 0 0 15px;
+        }
+
+        .nexus-c-row-entity {
+            border-radius: 10px;
+        }
     }
 }

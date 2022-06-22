@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {InputText, Button} from '@portal/portal-components';
+import {Button, InputText} from '@portal/portal-components';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
@@ -33,8 +33,8 @@ const ExternalIDsSection = ({control}) => {
     const renderGroups = () => {
         return fields.map((field, index) => {
             return (
-                <div className="row d-flex align-items-start justify-content-between nexus-c-array-item" key={field.id}>
-                    <div className="col-5 nexus-c-array-input-wrapper">
+                <div className="row align-items-center" key={field.id}>
+                    <div className="col-6">
                         <InputText
                             formControlOptions={{
                                 formControlName: `externalSystemIds.${index}.externalSystem`,
@@ -50,7 +50,7 @@ const ExternalIDsSection = ({control}) => {
                         />
                     </div>
 
-                    <div className="col-5 nexus-c-array-input-wrapper">
+                    <div className="col-5">
                         <InputText
                             formControlOptions={{
                                 formControlName: `externalSystemIds.${index}.titleId`,
@@ -66,7 +66,7 @@ const ExternalIDsSection = ({control}) => {
                         />
                     </div>
 
-                    <div className="col-1 d-flex justify-content-end nexus-c-array-delete-button">
+                    <div className="col-1  px-2 text-md-start text-lg-start text-xl-center">
                         <Button
                             className="p-button-text"
                             icon={ActionCrossCircle}
@@ -82,16 +82,20 @@ const ExternalIDsSection = ({control}) => {
         new Action({
             icon: IconActionAdd,
             action: e => onAddField(e),
-            position: 5,
+            position: 4,
             disabled: false,
             buttonId: 'btnAddSection',
         }),
     ];
 
     return (
-        <div className="nexus-c-array-element-wrapper">
-            <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} actions={groupActions()} heading="EXTERNAL IDs" />
-            {renderGroups()}
+        <div className="external-ids-section">
+            <div className="row">
+                <div className="col-12">
+                    <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} actions={groupActions()} heading="EXTERNAL IDs" />
+                    {renderGroups()}
+                </div>
+            </div>
         </div>
     );
 };
