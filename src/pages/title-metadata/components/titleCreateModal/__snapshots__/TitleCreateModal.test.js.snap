@@ -88,7 +88,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
   showHeader={true}
   style={
     Object {
-      "width": "40vw",
+      "width": "50vw",
     }
   }
   transitionOptions={null}
@@ -206,16 +206,20 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
           <div
             className="row nexus-c-create-title-overview-header"
           >
-            <NexusEntity
-              actions={Array []}
-              disableHover={false}
-              flag1=""
-              flag2=""
-              heading="OVERVIEW"
-              isActive={false}
-              tag=""
-              type="subsection"
-            />
+            <div
+              className="col-12"
+            >
+              <NexusEntity
+                actions={Array []}
+                disableHover={false}
+                flag1=""
+                flag2=""
+                heading="OVERVIEW"
+                isActive={false}
+                tag=""
+                type="subsection"
+              />
+            </div>
           </div>
           <div
             className="row"
@@ -664,94 +668,102 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
               </ControllerWrapper>
             </div>
           </div>
-          <ExternalIDsSection
-            control={
-              Object {
-                "_defaultValues": Object {
-                  "catalogueOwner": "vu",
-                },
-                "_executeSchema": [Function],
-                "_fields": Object {},
-                "_formState": Object {
-                  "dirtyFields": Object {},
-                  "errors": Object {},
-                  "isDirty": false,
-                  "isSubmitSuccessful": false,
-                  "isSubmitted": false,
-                  "isSubmitting": false,
-                  "isValid": false,
-                  "isValidating": false,
-                  "submitCount": 0,
-                  "touchedFields": Object {},
-                },
-                "_formValues": Object {
-                  "catalogueOwner": "vu",
-                },
-                "_getDirty": [Function],
-                "_getFieldArray": [Function],
-                "_getWatch": [Function],
-                "_names": Object {
-                  "array": Set {},
-                  "mount": Set {},
-                  "unMount": Set {},
-                  "watch": Set {},
-                },
-                "_options": Object {
-                  "defaultValues": Object {
-                    "catalogueOwner": "vu",
-                  },
-                  "mode": "all",
-                  "reValidateMode": "onChange",
-                  "shouldFocusError": true,
-                },
-                "_proxyFormState": Object {
-                  "dirtyFields": false,
-                  "errors": "all",
-                  "isDirty": false,
-                  "isValid": "all",
-                  "isValidating": false,
-                  "touchedFields": false,
-                },
-                "_removeUnmounted": [Function],
-                "_stateFlags": Object {
-                  "action": false,
-                  "mount": true,
-                  "watch": false,
-                },
-                "_subjects": Object {
-                  "array": Object {
-                    "next": [Function],
-                    "observers": Array [],
-                    "subscribe": [Function],
-                    "unsubscribe": [Function],
-                  },
-                  "state": Object {
-                    "next": [Function],
-                    "observers": Array [
-                      Object {
-                        "next": [Function],
+          <div
+            className="row"
+          >
+            <div
+              className="col-12"
+            >
+              <ExternalIDsSection
+                control={
+                  Object {
+                    "_defaultValues": Object {
+                      "catalogueOwner": "vu",
+                    },
+                    "_executeSchema": [Function],
+                    "_fields": Object {},
+                    "_formState": Object {
+                      "dirtyFields": Object {},
+                      "errors": Object {},
+                      "isDirty": false,
+                      "isSubmitSuccessful": false,
+                      "isSubmitted": false,
+                      "isSubmitting": false,
+                      "isValid": false,
+                      "isValidating": false,
+                      "submitCount": 0,
+                      "touchedFields": Object {},
+                    },
+                    "_formValues": Object {
+                      "catalogueOwner": "vu",
+                    },
+                    "_getDirty": [Function],
+                    "_getFieldArray": [Function],
+                    "_getWatch": [Function],
+                    "_names": Object {
+                      "array": Set {},
+                      "mount": Set {},
+                      "unMount": Set {},
+                      "watch": Set {},
+                    },
+                    "_options": Object {
+                      "defaultValues": Object {
+                        "catalogueOwner": "vu",
                       },
-                    ],
-                    "subscribe": [Function],
-                    "unsubscribe": [Function],
-                  },
-                  "watch": Object {
-                    "next": [Function],
-                    "observers": Array [],
-                    "subscribe": [Function],
-                    "unsubscribe": [Function],
-                  },
-                },
-                "_updateFieldArray": [Function],
-                "_updateValid": [Function],
-                "getFieldState": [Function],
-                "register": [Function],
-                "unregister": [Function],
-              }
-            }
-            errors={Object {}}
-            register={[Function]}
-          />
+                      "mode": "all",
+                      "reValidateMode": "onChange",
+                      "shouldFocusError": true,
+                    },
+                    "_proxyFormState": Object {
+                      "dirtyFields": false,
+                      "errors": "all",
+                      "isDirty": false,
+                      "isValid": "all",
+                      "isValidating": false,
+                      "touchedFields": false,
+                    },
+                    "_removeUnmounted": [Function],
+                    "_stateFlags": Object {
+                      "action": false,
+                      "mount": true,
+                      "watch": false,
+                    },
+                    "_subjects": Object {
+                      "array": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
+                      },
+                      "state": Object {
+                        "next": [Function],
+                        "observers": Array [
+                          Object {
+                            "next": [Function],
+                          },
+                        ],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
+                      },
+                      "watch": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
+                      },
+                    },
+                    "_updateFieldArray": [Function],
+                    "_updateValid": [Function],
+                    "getFieldState": [Function],
+                    "register": [Function],
+                    "unregister": [Function],
+                  }
+                }
+                errors={Object {}}
+                register={[Function]}
+              />
+            </div>
+          </div>
           <Restricted
             resource="publishTitleMetadata"
           >
@@ -761,16 +773,20 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
               <div
                 className="row nexus-c-create-title-publish-header"
               >
-                <NexusEntity
-                  actions={Array []}
-                  disableHover={false}
-                  flag1=""
-                  flag2=""
-                  heading="PUBLISH"
-                  isActive={false}
-                  tag=""
-                  type="subsection"
-                />
+                <div
+                  className="col-12"
+                >
+                  <NexusEntity
+                    actions={Array []}
+                    disableHover={false}
+                    flag1=""
+                    flag2=""
+                    heading="PUBLISH"
+                    isActive={false}
+                    tag=""
+                    type="subsection"
+                  />
+                </div>
               </div>
               <div
                 className="row"
@@ -1129,7 +1145,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
   showHeader={true}
   style={
     Object {
-      "width": "40vw",
+      "width": "50vw",
     }
   }
   transitionOptions={null}
@@ -1247,16 +1263,20 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           <div
             className="row nexus-c-create-title-overview-header"
           >
-            <NexusEntity
-              actions={Array []}
-              disableHover={false}
-              flag1=""
-              flag2=""
-              heading="OVERVIEW"
-              isActive={false}
-              tag=""
-              type="subsection"
-            />
+            <div
+              className="col-12"
+            >
+              <NexusEntity
+                actions={Array []}
+                disableHover={false}
+                flag1=""
+                flag2=""
+                heading="OVERVIEW"
+                isActive={false}
+                tag=""
+                type="subsection"
+              />
+            </div>
           </div>
           <div
             className="row"
@@ -1705,94 +1725,102 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
               </ControllerWrapper>
             </div>
           </div>
-          <ExternalIDsSection
-            control={
-              Object {
-                "_defaultValues": Object {
-                  "catalogueOwner": undefined,
-                },
-                "_executeSchema": [Function],
-                "_fields": Object {},
-                "_formState": Object {
-                  "dirtyFields": Object {},
-                  "errors": Object {},
-                  "isDirty": false,
-                  "isSubmitSuccessful": false,
-                  "isSubmitted": false,
-                  "isSubmitting": false,
-                  "isValid": false,
-                  "isValidating": false,
-                  "submitCount": 0,
-                  "touchedFields": Object {},
-                },
-                "_formValues": Object {
-                  "catalogueOwner": undefined,
-                },
-                "_getDirty": [Function],
-                "_getFieldArray": [Function],
-                "_getWatch": [Function],
-                "_names": Object {
-                  "array": Set {},
-                  "mount": Set {},
-                  "unMount": Set {},
-                  "watch": Set {},
-                },
-                "_options": Object {
-                  "defaultValues": Object {
-                    "catalogueOwner": undefined,
-                  },
-                  "mode": "all",
-                  "reValidateMode": "onChange",
-                  "shouldFocusError": true,
-                },
-                "_proxyFormState": Object {
-                  "dirtyFields": false,
-                  "errors": "all",
-                  "isDirty": false,
-                  "isValid": "all",
-                  "isValidating": false,
-                  "touchedFields": false,
-                },
-                "_removeUnmounted": [Function],
-                "_stateFlags": Object {
-                  "action": false,
-                  "mount": true,
-                  "watch": false,
-                },
-                "_subjects": Object {
-                  "array": Object {
-                    "next": [Function],
-                    "observers": Array [],
-                    "subscribe": [Function],
-                    "unsubscribe": [Function],
-                  },
-                  "state": Object {
-                    "next": [Function],
-                    "observers": Array [
-                      Object {
-                        "next": [Function],
+          <div
+            className="row"
+          >
+            <div
+              className="col-12"
+            >
+              <ExternalIDsSection
+                control={
+                  Object {
+                    "_defaultValues": Object {
+                      "catalogueOwner": undefined,
+                    },
+                    "_executeSchema": [Function],
+                    "_fields": Object {},
+                    "_formState": Object {
+                      "dirtyFields": Object {},
+                      "errors": Object {},
+                      "isDirty": false,
+                      "isSubmitSuccessful": false,
+                      "isSubmitted": false,
+                      "isSubmitting": false,
+                      "isValid": false,
+                      "isValidating": false,
+                      "submitCount": 0,
+                      "touchedFields": Object {},
+                    },
+                    "_formValues": Object {
+                      "catalogueOwner": undefined,
+                    },
+                    "_getDirty": [Function],
+                    "_getFieldArray": [Function],
+                    "_getWatch": [Function],
+                    "_names": Object {
+                      "array": Set {},
+                      "mount": Set {},
+                      "unMount": Set {},
+                      "watch": Set {},
+                    },
+                    "_options": Object {
+                      "defaultValues": Object {
+                        "catalogueOwner": undefined,
                       },
-                    ],
-                    "subscribe": [Function],
-                    "unsubscribe": [Function],
-                  },
-                  "watch": Object {
-                    "next": [Function],
-                    "observers": Array [],
-                    "subscribe": [Function],
-                    "unsubscribe": [Function],
-                  },
-                },
-                "_updateFieldArray": [Function],
-                "_updateValid": [Function],
-                "getFieldState": [Function],
-                "register": [Function],
-                "unregister": [Function],
-              }
-            }
-            errors={Object {}}
-            register={[Function]}
-          />
+                      "mode": "all",
+                      "reValidateMode": "onChange",
+                      "shouldFocusError": true,
+                    },
+                    "_proxyFormState": Object {
+                      "dirtyFields": false,
+                      "errors": "all",
+                      "isDirty": false,
+                      "isValid": "all",
+                      "isValidating": false,
+                      "touchedFields": false,
+                    },
+                    "_removeUnmounted": [Function],
+                    "_stateFlags": Object {
+                      "action": false,
+                      "mount": true,
+                      "watch": false,
+                    },
+                    "_subjects": Object {
+                      "array": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
+                      },
+                      "state": Object {
+                        "next": [Function],
+                        "observers": Array [
+                          Object {
+                            "next": [Function],
+                          },
+                        ],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
+                      },
+                      "watch": Object {
+                        "next": [Function],
+                        "observers": Array [],
+                        "subscribe": [Function],
+                        "unsubscribe": [Function],
+                      },
+                    },
+                    "_updateFieldArray": [Function],
+                    "_updateValid": [Function],
+                    "getFieldState": [Function],
+                    "register": [Function],
+                    "unregister": [Function],
+                  }
+                }
+                errors={Object {}}
+                register={[Function]}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </form>

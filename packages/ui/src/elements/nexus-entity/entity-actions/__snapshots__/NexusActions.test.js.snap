@@ -8,7 +8,7 @@ exports[`EntityActions should match snapshot 1`] = `
     className="row text-center text-sm-start align-items-center"
   >
     <div
-      className="col-12 col-sm-4 col-lg-4"
+      className="col-12 col-sm-6 col-lg-4"
     >
       <div
         className="row"
@@ -39,53 +39,27 @@ exports[`EntityActions should match snapshot 1`] = `
       </div>
     </div>
     <div
-      className="col-12 col-sm-8 col-lg-8 text-end"
+      className="col-12 col-sm-6 col-lg-8"
     >
       <div
         className="row"
       >
         <div
-          className="col-2 text-center"
+          className="col text-center"
           key="action-icon_0"
         />
         <div
-          className="col-2 text-center"
+          className="col text-center"
           key="action-icon_1"
         />
         <div
-          className="col-2 text-center"
+          className="col text-center"
           key="action-icon_2"
         />
         <div
-          className="col-2 text-center"
+          className="col text-center"
           key="action-icon_3"
         />
-        <div
-          className="col-2 text-center"
-          key="action-icon_4"
-        />
-        <div
-          className="col-2 text-center"
-          key="action-icon_5"
-        >
-          <Button
-            __TYPE="Button"
-            badge={null}
-            badgeClassName={null}
-            className="p-button-text nexus-c-entity-button"
-            disabled={true}
-            icon={[Function]}
-            iconPos="left"
-            id="fileBtn"
-            key="fileBtn"
-            label={null}
-            loading={false}
-            loadingIcon="pi pi-spinner pi-spin"
-            onClick={[Function]}
-            tooltip={null}
-            tooltipOptions={null}
-          />
-        </div>
       </div>
     </div>
   </div>

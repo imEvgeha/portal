@@ -2,29 +2,37 @@
 
 exports[`External Ids Section should match snapshot 1`] = `
 <div
-  className="nexus-c-array-element-wrapper"
+  className="external-ids-section"
 >
-  <NexusEntity
-    actions={
-      Array [
-        Action {
-          "action": [Function],
-          "buttonId": "btnAddSection",
-          "disabled": false,
-          "icon": Object {
-            "process": [Function],
-          },
-          "position": 5,
-        },
-      ]
-    }
-    disableHover={false}
-    flag1=""
-    flag2=""
-    heading="EXTERNAL IDs"
-    isActive={false}
-    tag=""
-    type="subsection"
-  />
+  <div
+    className="row"
+  >
+    <div
+      className="col-12"
+    >
+      <NexusEntity
+        actions={
+          Array [
+            Action {
+              "action": [Function],
+              "buttonId": "btnAddSection",
+              "disabled": false,
+              "icon": Object {
+                "process": [Function],
+              },
+              "position": 4,
+            },
+          ]
+        }
+        disableHover={false}
+        flag1=""
+        flag2=""
+        heading="EXTERNAL IDs"
+        isActive={false}
+        tag=""
+        type="subsection"
+      />
+    </div>
+  </div>
 </div>
 `;

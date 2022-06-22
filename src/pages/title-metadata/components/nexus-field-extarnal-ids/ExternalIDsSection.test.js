@@ -18,7 +18,7 @@ describe('External Ids Section', () => {
     });
 
     it('should render main wrapper component', () => {
-        expect(wrapper.find('.nexus-c-array-element-wrapper')).toHaveLength(1);
+        expect(wrapper.find('.external-ids-section')).toHaveLength(1);
     });
 
     it('should render NexusEntity title', () => {

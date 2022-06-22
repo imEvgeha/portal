@@ -28,7 +28,7 @@ exports[`EndpointContainer should match snapshot 1`] = `
           type="subheader"
         />
         <div
-          className="nexus-c-searchbox-wrapper container-fluid nexus-c-search-wrapper-padding-right"
+          className="nexus-c-searchbox-wrapper w-100 container-fluid nexus-c-search-wrapper-padding-right"
         >
           <div
             className="row my-2 align-items-center"
