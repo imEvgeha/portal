@@ -15,7 +15,7 @@ import {NEXUS_ENTITY_TYPES} from './constants';
 //         action: () => {
 //             console.log('icon clicked');
 //         },
-//         position: 6,
+//         position: 4,
 //         disabled: false,
 //         buttonId: 'fileBtn',
 //     }),
@@ -34,7 +34,7 @@ const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, i
                     e.stopPropagation();
                     setIsBodyExpanded(!isBodyExpanded);
                 },
-                position: 6,
+                position: 4,
                 disabled: false,
                 buttonId: 'btnEditConfig',
             });
@@ -57,38 +57,42 @@ const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, i
 
     const divider = () =>
         type === NEXUS_ENTITY_TYPES.default ? (
-            <div className="w-100 px-3">
+            <div className="px-1">
                 <Divider className="m-0" />
             </div>
         ) : null;
 
     return (
-        <div className="nexus-c-entity">
-            {divider()}
-            <div
-                className={`container-fluid nexus-c-entity-panel ${isActive ? 'nexus-c-entity-active' : ''} ${
-                    type === NEXUS_ENTITY_TYPES.default ? 'nexus-c-row-entity' : ''
-                }`}
-                onMouseEnter={() => setIsMouseOver(true)}
-                onMouseLeave={() => setIsMouseOver(false)}
-            >
-                <div className={`row nexus-c-section mx-0 align-items-center nexus-c-section-${type}`}>
-                    <div className="col-12 nexus-c-heading text-center text-sm-start col-sm-6">{heading}</div>
-                    <div className="col-12 text-center text-sm-start col-sm-6">
-                        <EntityActions
-                            actions={getActions()}
-                            tag={tag}
-                            flag1={flag1}
-                            flag2={flag2}
-                            totalEnabled={disableHover ? true : isMouseOver}
-                        />
+        <div className="nexus-c-entity row">
+            <div className="col-12">
+                {divider()}
+                <div
+                    className={`nexus-c-entity-panel row ${isActive ? 'nexus-c-entity-active' : ''} ${
+                        type === NEXUS_ENTITY_TYPES.default ? 'nexus-c-row-entity' : ''
+                    }`}
+                    onMouseEnter={() => setIsMouseOver(true)}
+                    onMouseLeave={() => setIsMouseOver(false)}
+                >
+                    <div className="col-12">
+                        <div className={`row nexus-c-section align-items-center nexus-c-section-${type}`}>
+                            <div className="col-12 nexus-c-heading text-center text-sm-start col-sm-6">{heading}</div>
+                            <div className="col-12 text-center text-sm-start col-sm-6">
+                                <EntityActions
+                                    actions={getActions()}
+                                    tag={tag}
+                                    flag1={flag1}
+                                    flag2={flag2}
+                                    totalEnabled={disableHover ? true : isMouseOver}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {divider()}
+                {divider()}
 
-            {!!body && isBodyExpanded && <div className="nexus-c-entity-body px-4 pt-4 pb-1">{body}</div>}
-            {!!body && isBodyExpanded && divider()}
+                {!!body && isBodyExpanded && <div className="nexus-c-entity-body px-4 pt-4 pb-1">{body}</div>}
+                {!!body && isBodyExpanded && divider()}
+            </div>
         </div>
     );
 };

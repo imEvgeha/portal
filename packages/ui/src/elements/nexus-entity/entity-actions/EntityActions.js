@@ -7,7 +7,7 @@ import './EntityActions.scss';
 
 const EntityActions = ({tag, flag1, flag2, actions, totalEnabled}) => {
     const constructActions = () => {
-        const maxActions = 6;
+        const maxActions = 4;
         let counter = 0;
         const tmpActionItems = [];
 
@@ -24,7 +24,7 @@ const EntityActions = ({tag, flag1, flag2, actions, totalEnabled}) => {
         const actionCols = [];
         while (counter < maxActions) {
             const col = (
-                <div className="col-2 text-center" key={`action-icon_${counter}`}>
+                <div className="col text-center" key={`action-icon_${counter}`}>
                     {!!tmpActionItems[counter]?.icon && (
                         <Button
                             key={tmpActionItems[counter].buttonId}
@@ -47,14 +47,14 @@ const EntityActions = ({tag, flag1, flag2, actions, totalEnabled}) => {
     return (
         <div className="nexus-c-entity-actions">
             <div className="row text-center text-sm-start align-items-center">
-                <div className="col-12 col-sm-4 col-lg-4">
+                <div className="col-12 col-sm-6 col-lg-4">
                     <div className="row">
                         <div className="col-sm-4">{!!tag && <Tag value={tag} />}</div>
                         <div className="col-sm-3">{flag1}</div>
                         <div className="col-sm-3">{flag2}</div>
                     </div>
                 </div>
-                <div className="col-12 col-sm-8 col-lg-8 text-end">
+                <div className="col-12 col-sm-6 col-lg-8">
                     <div className="row">{constructActions()}</div>
                 </div>
             </div>

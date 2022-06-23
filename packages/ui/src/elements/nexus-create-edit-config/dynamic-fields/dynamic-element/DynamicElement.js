@@ -102,7 +102,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
                 e.stopPropagation();
                 removeSection(index);
             },
-            position: 5,
+            position: 3,
             disabled: false,
             buttonId: 'btnDeleteSection',
         }),
@@ -195,7 +195,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
                 e.stopPropagation();
                 addSection();
             },
-            position: 6,
+            position: 4,
             disabled: false,
             buttonId: 'btnEditConfig',
         }),

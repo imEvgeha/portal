@@ -381,7 +381,9 @@ const TitleCreate = ({
         <Restricted resource="publishTitleMetadata">
             <div className="nexus-c-title-create_checkbox-container">
                 <div className="row nexus-c-create-title-publish-header">
-                    <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="PUBLISH" />
+                    <div className="col-12">
+                        <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="PUBLISH" />
+                    </div>
                 </div>
                 <div className="row">
                     <div className="col nexus-c-title-create_checkbox-wrapper">
@@ -475,7 +477,7 @@ const TitleCreate = ({
         <Dialog
             header="Create Title"
             visible={display}
-            style={{width: '40vw'}}
+            style={{width: '50vw'}}
             footer={renderFooter()}
             onHide={toggle}
             className="nexus-c-title-create_dialog"
@@ -487,7 +489,9 @@ const TitleCreate = ({
                     <div className="row">
                         <div className="col-12">
                             <div className="row nexus-c-create-title-overview-header">
-                                <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="OVERVIEW" />
+                                <div className="col-12">
+                                    <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} heading="OVERVIEW" />
+                                </div>
                             </div>
                             <div className="row">
                                 <div className="col-lg-6 col-sm-12">
@@ -687,7 +691,11 @@ const TitleCreate = ({
                                     </ControllerWrapper>
                                 </div>
                             </div>
-                            <ExternalIDsSection control={control} register={register} errors={errors} />
+                            <div className="row">
+                                <div className="col-12">
+                                    <ExternalIDsSection control={control} register={register} errors={errors} />
+                                </div>
+                            </div>
                             {isItMatching ? null : renderSyncCheckBoxes()}
                         </div>
                     </div>

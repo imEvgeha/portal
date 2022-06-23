@@ -98,7 +98,7 @@ const EndpointContainer = ({endpoint}) => {
     const searchPanel = () => {
         return (
             <div
-                className={`nexus-c-searchbox-wrapper container-fluid ${
+                className={`nexus-c-searchbox-wrapper w-100 container-fluid ${
                     canLoadMore() ? '' : 'nexus-c-search-wrapper-padding-right'
                 }`}
             >
@@ -168,7 +168,7 @@ const EndpointContainer = ({endpoint}) => {
                     setSelectedConfig(entry);
                     setShowEditConfigModal(true);
                 },
-                position: 5,
+                position: 3,
                 disabled: false,
                 buttonId: 'btnEditConfig',
             }),
@@ -176,7 +176,7 @@ const EndpointContainer = ({endpoint}) => {
                 new Action({
                     icon: ActionCrossCircle,
                     action: () => confirmDeletion(entry),
-                    position: 6,
+                    position: 4,
                     disabled: false,
                     buttonId: 'btnDeleteConfig',
                 }),

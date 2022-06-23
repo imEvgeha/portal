@@ -199,7 +199,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
                 e.stopPropagation();
                 onRemove(index, true);
             },
-            position: 5,
+            position: 3,
             disabled: false,
             buttonId: 'btnDeleteSection',
         }),
@@ -266,7 +266,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
                 e.stopPropagation();
                 isGroup.current ? addGroup() : addField();
             },
-            position: 6,
+            position: 4,
             disabled: false,
             buttonId: 'btnEditConfig',
         }),

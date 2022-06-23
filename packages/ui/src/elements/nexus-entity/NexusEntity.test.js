@@ -14,7 +14,7 @@ describe('NexusEntity', () => {
         new Action({
             icon: File,
             action: () => {},
-            position: 6,
+            position: 5,
             disabled: false,
             buttonId: 'fileBtn',
         }),
