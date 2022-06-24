@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button, InputText} from '@portal/portal-components';
+import {InputText, Dropdown, Button} from '@portal/portal-components';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
@@ -9,10 +9,11 @@ import {
     NEXUS_ENTITY_TYPES,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
 import {Action} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/entity-actions/Actions.class';
+import {isEmpty} from 'lodash';
 import {useFieldArray} from 'react-hook-form';
 import './ExternalIDsSection.scss';
 
-const ExternalIDsSection = ({control}) => {
+const ExternalIDsSection = ({control, externalDropdownOptions}) => {
     const {fields, append, remove} = useFieldArray({
         control,
         name: 'externalSystemIds',
@@ -33,20 +34,25 @@ const ExternalIDsSection = ({control}) => {
     const renderGroups = () => {
         return fields.map((field, index) => {
             return (
-                <div className="row align-items-center" key={field.id}>
-                    <div className="col-6">
-                        <InputText
+                <div className="row d-flex align-items-start justify-content-between nexus-c-array-item" key={field.id}>
+                    <div className="col-6 nexus-c-array-input-wrapper">
+                        <Dropdown
+                            labelProps={{label: 'External ID type', stacked: true, isRequired: true}}
+                            placeholder="Select External ID type"
+                            id="externalIdType"
+                            name={`externalSystemIds.${index}.externalSystem`}
+                            className="nexus-c-title-create_input without-margin-bottom"
+                            options={
+                                !isEmpty(externalDropdownOptions)
+                                    ? externalDropdownOptions?.values.map(e => e.displayName)
+                                    : []
+                            }
                             formControlOptions={{
                                 formControlName: `externalSystemIds.${index}.externalSystem`,
                                 rules: {
                                     required: {value: true, message: 'Field cannot be empty!'},
                                 },
                             }}
-                            labelProps={{label: 'Enter External ID type', stacked: true, isRequired: true}}
-                            placeholder="Enter External ID type"
-                            id="externalIdType"
-                            name={`externalSystemIds.${index}.externalSystem`}
-                            className="nexus-c-title-create_input without-margin-bottom"
                         />
                     </div>
 
@@ -58,7 +64,7 @@ const ExternalIDsSection = ({control}) => {
                                     required: {value: true, message: 'Field cannot be empty!'},
                                 },
                             }}
-                            labelProps={{label: 'Enter External ID', stacked: true, isRequired: true}}
+                            labelProps={{label: 'External ID', stacked: true, isRequired: true}}
                             placeholder="Enter External ID"
                             id="externalId"
                             name={`externalSystemIds.${index}.titleId`}
@@ -102,8 +108,11 @@ const ExternalIDsSection = ({control}) => {
 
 ExternalIDsSection.propTypes = {
     control: PropTypes.any.isRequired,
+    externalDropdownOptions: PropTypes.object,
 };
 
-ExternalIDsSection.defaultProps = {};
+ExternalIDsSection.defaultProps = {
+    externalDropdownOptions: {},
+};
 
 export default ExternalIDsSection;

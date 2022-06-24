@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Restricted} from '@portal/portal-auth/permissions';
-import {AutoComplete} from '@portal/portal-components';
+import {InputText, Dropdown, Checkbox, AutoComplete} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
-import ControllerWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexus-react-hook-form/ControllerWrapper';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
@@ -12,10 +11,7 @@ import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {isEmpty, isObject} from 'lodash';
 import {Button} from 'primereact/button';
-import {Checkbox} from 'primereact/checkbox';
 import {Dialog} from 'primereact/dialog';
-import {Dropdown} from 'primereact/dropdown';
-import {InputText} from 'primereact/inputtext';
 import {FormProvider, useForm, useWatch} from 'react-hook-form';
 import {useParams} from 'react-router-dom';
 import {store} from '../../../..';
@@ -42,6 +38,7 @@ const TitleCreate = ({
     bulkTitleMatch,
     defaultValues,
     error,
+    externalDropdownOptions,
 }) => {
     const {CREATE_TITLE_RESTRICTIONS, EXTERNAL_ID_TYPE_DUPLICATE_ERROR} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
@@ -238,7 +235,14 @@ const TitleCreate = ({
 
             const title = getTitleWithoutEmptyField(submitTitle);
             const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
-            const params = {copyCastCrewFromSeason};
+            const getParentIdForParams = () => {
+                const updatedParams = {};
+                if (submitTitle?.season?.seasonId || submitTitle?.seriesTitleName?.id) {
+                    updatedParams.parentTitleId = submitTitle.season.seasonId || submitTitle.seriesTitleName.id;
+                }
+                return updatedParams;
+            };
+            const params = {copyCastCrewFromSeason, ...getParentIdForParams()};
             setIsCreatingTitle(true);
 
             isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
@@ -326,54 +330,28 @@ const TitleCreate = ({
      */
 
     const areThereAnyExternalSystemDuplicates = title => {
+        const externalIdArray = title?.externalSystemIds?.map(item => item.titleId);
         const externalIdTypesArray = title?.externalSystemIds?.map(item => item.externalSystem);
-        const indexOfDuplicate = externalIdTypesArray.findIndex(
-            (item, index) => externalIdTypesArray.indexOf(item) !== index
-        );
+        const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
 
-        return indexOfDuplicate >= 0;
+        const indexOfDuplicateID = findDuplicates(externalIdArray).length;
+        const indexOfDuplicateType = findDuplicates(externalIdTypesArray).length;
+
+        return !!(indexOfDuplicateID && indexOfDuplicateType);
     };
 
     const getTitleWithoutEmptyField = titleForm => {
         const updatedExternalSystemIds = titleForm.externalSystemIds.length ? titleForm.externalSystemIds : null;
+        const seasonNumber = isObject(titleForm.season) ? titleForm.season.seasonNumber : titleForm.season;
         const tempTitle = {
             name: titleForm.title,
             releaseYear: titleForm.releaseYear || null,
             contentType: titleForm.contentType.toLowerCase(),
             externalSystemIds: updatedExternalSystemIds,
             contentSubType: titleForm.contentType.toLowerCase(),
+            seasonNumber: seasonNumber || null,
+            episodeNumber: titleForm.episodeNumber || null,
         };
-        // in case of season/episode/sports, adding more properties to payload
-        // this can not be simplified as payload accept parentId in season and parentId(s) in episode
-        if (fieldsToDisplay()) {
-            // if adding a new season
-            if (currentValues.contentType === CONTENT_TYPES.SEASON) {
-                tempTitle.parentId = {
-                    contentType:
-                        titleForm.contentType.toLowerCase() === 'season'
-                            ? titleForm.seriesTitleName.contentType.toLowerCase() === 'series'
-                                ? CONTENT_TYPES.SERIES
-                                : ''
-                            : '',
-                    id: currentValues.seriesTitleName?.id,
-                };
-                tempTitle.seasonNumber = titleForm.seasonNumber || null;
-            }
-            // if adding a new episode, add property parentId(s)
-            else if (currentValues.contentType === 'EPISODE') {
-                tempTitle.parentIds = [
-                    {
-                        contentType: 'series',
-                        id: currentValues.seriesTitleName?.id,
-                    },
-                    {
-                        contentType: 'season',
-                        id: currentValues.seasonNumber.seasonId,
-                    },
-                ];
-                tempTitle.episodeNumber = currentValues.episodeNumber;
-            }
-        }
         return tempTitle;
     };
 
@@ -387,32 +365,38 @@ const TitleCreate = ({
                 </div>
                 <div className="row">
                     <div className="col nexus-c-title-create_checkbox-wrapper">
-                        <ControllerWrapper
-                            title="Publish to VZ and Movida Int`l"
-                            inputName="syncVZ"
-                            errors={errors.syncVZ}
-                            control={control}
-                            register={register}
-                            labelClassName="nexus-c-title-create_checkbox-label"
-                            isItCheckbox
-                        >
-                            <Checkbox id="syncVZ" inputId="syncVZ" className="nexus-c-title-create_checkbox" />
-                        </ControllerWrapper>
+                        <Checkbox
+                            formControlOptions={{
+                                formControlName: `syncVZ`,
+                            }}
+                            checked={currentValues?.syncVZ}
+                            id="syncVZ"
+                            className="nexus-c-title-create_checkbox"
+                            inputId="syncVZ"
+                            labelProps={{
+                                label: 'Publish to VZ and Movida Int`l',
+                                shouldUpper: true,
+                            }}
+                            labelPosition="right"
+                        />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col nexus-c-title-create_checkbox-wrapper">
-                        <ControllerWrapper
-                            title="Publish to Movida"
-                            inputName="syncMovida"
-                            errors={errors.syncMovida}
-                            control={control}
-                            register={register}
-                            labelClassName="nexus-c-title-create_checkbox-label"
-                            isItCheckbox
-                        >
-                            <Checkbox id="syncMovida" inputId="syncMovida" className="nexus-c-title-create_checkbox" />
-                        </ControllerWrapper>
+                        <Checkbox
+                            formControlOptions={{
+                                formControlName: `syncMovida`,
+                            }}
+                            checked={currentValues?.syncMovida}
+                            id="syncMovida"
+                            className="nexus-c-title-create_checkbox"
+                            inputId="syncMovida"
+                            labelProps={{
+                                label: 'Publish to Movida',
+                                shouldUpper: true,
+                            }}
+                            labelPosition="right"
+                        />
                     </div>
                 </div>
             </div>
@@ -495,45 +479,39 @@ const TitleCreate = ({
                             </div>
                             <div className="row">
                                 <div className="col-lg-6 col-sm-12">
-                                    <ControllerWrapper
-                                        title="Title"
-                                        inputName="title"
-                                        errors={errors.title}
-                                        required={true}
-                                        additionalValidation={{
-                                            maxLength: {
-                                                value: MAX_TITLE_LENGTH,
-                                                message: `Max title length is ${MAX_TITLE_LENGTH}!`,
+                                    <InputText
+                                        formControlOptions={{
+                                            formControlName: `title`,
+                                            rules: {
+                                                required: {value: true, message: 'Field cannot be empty!'},
+                                                maxLength: {
+                                                    value: MAX_TITLE_LENGTH,
+                                                    message: `Max title length is ${MAX_TITLE_LENGTH}!`,
+                                                },
                                             },
                                         }}
-                                        control={control}
-                                        register={register}
-                                    >
-                                        <InputText
-                                            placeholder="Enter Title"
-                                            id="title"
-                                            className="nexus-c-title-create_input"
-                                        />
-                                    </ControllerWrapper>
+                                        labelProps={{label: 'Title', stacked: true, isRequired: true}}
+                                        id="title"
+                                        className="nexus-c-title-create_input"
+                                        placeholder="Enter Title"
+                                    />
                                 </div>
                                 <div className="col-lg-6 col-sm-12">
-                                    <ControllerWrapper
-                                        title="Content Type"
-                                        inputName="contentType"
-                                        errors={errors.contentType}
-                                        required={true}
-                                        control={control}
-                                        register={register}
-                                    >
-                                        <Dropdown
-                                            optionLabel="label"
-                                            options={CONTENT_TYPE_ITEMS}
-                                            disabled={isItMatching}
-                                            id="contentType"
-                                            className="nexus-c-title-create_input"
-                                            placeholder="Select a Content Type"
-                                        />
-                                    </ControllerWrapper>
+                                    <Dropdown
+                                        formControlOptions={{
+                                            formControlName: `contentType`,
+                                            rules: {
+                                                required: {value: true, message: 'Field cannot be empty!'},
+                                            },
+                                        }}
+                                        labelProps={{label: 'Content Type', stacked: true, isRequired: true}}
+                                        optionLabel="label"
+                                        options={CONTENT_TYPE_ITEMS}
+                                        disabled={isItMatching}
+                                        id="contentType"
+                                        className="nexus-c-title-create_input"
+                                        placeholder="Select a Content Type"
+                                    />
                                 </div>
                             </div>
 
@@ -565,43 +543,45 @@ const TitleCreate = ({
                                         />
                                     </div>
                                     <div className="col-lg-6 col-sm-12">
-                                        <ControllerWrapper
-                                            title="Season"
-                                            inputName="seasonNumber"
-                                            required={areFieldsRequired()}
-                                            additionalValidation={{
-                                                pattern: {
-                                                    value: /^[0-9]+$/,
-                                                    message: 'Please enter a valid season!',
-                                                },
-                                                maxLength: {
-                                                    value: MAX_SEASON_LENGTH,
-                                                    message: `Max season length is ${MAX_SEASON_LENGTH}!`,
-                                                },
-                                            }}
-                                            register={register}
-                                            control={control}
-                                            errors={errors.seasonNumber}
-                                        >
-                                            {currentValues.contentType === CONTENT_TYPES.SEASON ? (
-                                                <InputText
-                                                    placeholder="Enter Season Number"
-                                                    id="seasonNumber"
-                                                    className="nexus-c-title-create_input"
-                                                />
-                                            ) : (
-                                                <Dropdown
-                                                    key="seasonNumber-dropdown"
-                                                    id="seasonNumber"
-                                                    className="nexus-c-title-create_dropdown"
-                                                    options={seasons}
-                                                    optionLabel="seasonNumber"
-                                                    columnClass="col-12"
-                                                    placeholder="Select Season Number"
-                                                    disabled={fetchingSeasons}
-                                                />
-                                            )}
-                                        </ControllerWrapper>
+                                        {currentValues.contentType === CONTENT_TYPES.SEASON ? (
+                                            <InputText
+                                                formControlOptions={{
+                                                    formControlName: `season`,
+                                                    rules: {
+                                                        required: {value: true, message: 'Field cannot be empty!'},
+                                                        pattern: {
+                                                            value: /^[0-9]+$/,
+                                                            message: 'Please enter a valid season!',
+                                                        },
+                                                        maxLength: {
+                                                            value: MAX_SEASON_LENGTH,
+                                                            message: `Max season length is ${MAX_SEASON_LENGTH}!`,
+                                                        },
+                                                    },
+                                                }}
+                                                labelProps={{label: 'Season', stacked: true, isRequired: true}}
+                                                id="season"
+                                                className="nexus-c-title-create_input"
+                                                placeholder="Enter Season Number"
+                                            />
+                                        ) : (
+                                            <Dropdown
+                                                formControlOptions={{
+                                                    formControlName: `season`,
+                                                    rules: {
+                                                        required: {value: true, message: 'Field cannot be empty!'},
+                                                    },
+                                                }}
+                                                labelProps={{label: 'Season', stacked: true, isRequired: true}}
+                                                id="season"
+                                                className="nexus-c-title-create_dropdown"
+                                                options={seasons}
+                                                optionLabel="seasonNumber"
+                                                columnClass="col-12"
+                                                placeholder="Select Season Number"
+                                                disabled={fetchingSeasons}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                             ) : null}
@@ -610,90 +590,88 @@ const TitleCreate = ({
                                 <div className="row">
                                     {fieldsToDisplayAndHideForSeason ? (
                                         <div className="col-lg-6 col-sm-12">
-                                            <ControllerWrapper
-                                                title="Episode"
-                                                inputName="episodeNumber"
-                                                required={areFieldsRequired()}
-                                                additionalValidation={{
-                                                    pattern: {
-                                                        value: /^[0-9]+$/,
-                                                        message: 'Please enter a valid episode!',
-                                                    },
-                                                    maxLength: {
-                                                        value: MAX_EPISODE_LENGTH,
-                                                        message: `Max episode length is ${MAX_EPISODE_LENGTH}!`,
+                                            <InputText
+                                                formControlOptions={{
+                                                    formControlName: `episodeNumber`,
+                                                    rules: {
+                                                        required: {value: true, message: 'Field cannot be empty!'},
+                                                        pattern: {
+                                                            value: /^[0-9]+$/,
+                                                            message: 'Please enter a valid episode!',
+                                                        },
+                                                        maxLength: {
+                                                            value: MAX_EPISODE_LENGTH,
+                                                            message: `Max episode length is ${MAX_EPISODE_LENGTH}!`,
+                                                        },
                                                     },
                                                 }}
-                                                register={register}
-                                                control={control}
-                                                errors={errors.episodeNumber}
-                                            >
-                                                <InputText
-                                                    placeholder="Enter Episode Number"
-                                                    id="episodeNumber"
-                                                    className="nexus-c-title-create_input"
-                                                />
-                                            </ControllerWrapper>
-                                        </div>
-                                    ) : null}
-                                    {fieldsToDisplayAndHideForSeason ? (
-                                        <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper d-flex align-items-center">
-                                            <ControllerWrapper
-                                                title="Add Cast Crew from Season to episode"
-                                                inputName="addCrew"
-                                                errors={errors.addCrew}
-                                                control={control}
-                                                register={register}
-                                                labelClassName="nexus-c-title-create_checkbox-label"
-                                                childWrapperClassName="nexus-c-title-checkbox-wrapper"
-                                                isItCheckbox
-                                            >
-                                                <Checkbox
-                                                    id="addCrew"
-                                                    className="nexus-c-title-create_checkbox"
-                                                    inputId="addCrew"
-                                                />
-                                            </ControllerWrapper>
+                                                labelProps={{label: 'Episode', stacked: true, isRequired: true}}
+                                                id="episodeNumber"
+                                                className="nexus-c-title-create_input"
+                                                placeholder="Enter Episode Number"
+                                            />
                                         </div>
                                     ) : null}
                                 </div>
                             ) : null}
 
+                            {fieldsToDisplayAndHideForSeason ? (
+                                <div className="row">
+                                    <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper d-flex align-items-center">
+                                        <Checkbox
+                                            formControlOptions={{
+                                                formControlName: `addCrew`,
+                                            }}
+                                            checked={currentValues?.addCrew}
+                                            id="addCrew"
+                                            className="nexus-c-title-create_checkbox"
+                                            inputId="addCrew"
+                                            labelProps={{
+                                                label: 'Add Cast Crew from Season to episode',
+                                                shouldUpper: false,
+                                            }}
+                                            labelPosition="right"
+                                        />
+                                    </div>
+                                </div>
+                            ) : null}
+
                             <div className="row">
                                 <div className="col-lg-6 col-sm-12">
-                                    <ControllerWrapper
-                                        title="Release Year"
-                                        inputName="releaseYear"
-                                        errors={errors.releaseYear}
-                                        required={currentValues.contentType !== CONTENT_TYPES.SEASON}
-                                        additionalValidation={{
-                                            pattern: {
-                                                value: /^[0-9]+$/,
-                                                message: 'Please enter a valid year!',
-                                            },
-                                            maxLength: {
-                                                value: MAX_RELEASE_YEAR_LENGTH,
-                                                message: `Max release year length is ${MAX_RELEASE_YEAR_LENGTH}!`,
-                                            },
-                                            minLength: {
-                                                value: MAX_RELEASE_YEAR_LENGTH,
-                                                message: `Min release year length is ${MAX_RELEASE_YEAR_LENGTH}!`,
+                                    <InputText
+                                        formControlOptions={{
+                                            formControlName: `releaseYear`,
+                                            rules: {
+                                                required: {value: true, message: 'Field cannot be empty!'},
+                                                pattern: {
+                                                    value: /^[0-9]+$/,
+                                                    message: 'Please enter a valid year!',
+                                                },
+                                                maxLength: {
+                                                    value: MAX_RELEASE_YEAR_LENGTH,
+                                                    message: `Max release year length is ${MAX_RELEASE_YEAR_LENGTH}!`,
+                                                },
+                                                minLength: {
+                                                    value: MAX_RELEASE_YEAR_LENGTH,
+                                                    message: `Min release year length is ${MAX_RELEASE_YEAR_LENGTH}!`,
+                                                },
                                             },
                                         }}
-                                        control={control}
-                                        register={register}
-                                    >
-                                        <InputText
-                                            placeholder="Enter Release Year"
-                                            id="titleReleaseYear"
-                                            className="nexus-c-title-create_input"
-                                        />
-                                    </ControllerWrapper>
+                                        labelProps={{label: 'Release Year', stacked: true, isRequired: true}}
+                                        id="titleReleaseYear"
+                                        className="nexus-c-title-create_input"
+                                        placeholder="Enter Release Year"
+                                    />
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-12">
-                                    <ExternalIDsSection control={control} register={register} errors={errors} />
+                                    <ExternalIDsSection
+                                        control={control}
+                                        register={register}
+                                        errors={errors}
+                                        externalDropdownOptions={externalDropdownOptions}
+                                    />
                                 </div>
                             </div>
                             {isItMatching ? null : renderSyncCheckBoxes()}
@@ -715,6 +693,7 @@ TitleCreate.propTypes = {
     onCloseModal: PropTypes.func.isRequired,
     defaultValues: PropTypes.object,
     error: PropTypes.string,
+    externalDropdownOptions: PropTypes.object,
 };
 
 TitleCreate.defaultProps = {
@@ -724,6 +703,7 @@ TitleCreate.defaultProps = {
     focusedRight: {},
     defaultValues: {},
     error: '',
+    externalDropdownOptions: {},
 };
 
 export default TitleCreate;

@@ -435,7 +435,6 @@ $element-color-orange-80: palette(orange, 80);
 
     &.p-component {
         width: 100%;
-        margin-bottom: $element-margin-bottom;
         border-radius: $element-border-radius;
         background-color: $element-background-color-2;
 
@@ -527,12 +526,12 @@ $element-color-orange-80: palette(orange, 80);
 .p-dropdown {
     &.p-component {
         width: 100%;
-        margin-bottom: 18px;
         border-radius: $element-border-radius;
         box-shadow: none;
         font-size: 13px;
         color: palette(black, 100);
         letter-spacing: normal;
+        max-width: 97%;
 
         &:hover:active {
             border: $element-border-20;

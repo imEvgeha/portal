@@ -62,5 +62,8 @@ export const createCurrentUserViewSelector = () =>
 export const createSelectedIdSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.selectedId || '');
 
+export const createExternalDropdownIDsSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.externalDropdownIDs || {});
+
 export const propagateAddPersonsSelector = state => state?.titleMetadata?.propagateAddPersons || [];
 export const propagateRemovePersonsSelector = state => state?.titleMetadata?.propagateRemovePersons || [];

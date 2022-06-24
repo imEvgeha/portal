@@ -145,6 +145,16 @@ export const registerTitle = payload => {
     });
 };
 
+export const getExternalIDType = () => {
+    const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/configuration/titles/enums`;
+    const params = {item: 'external-id-type'};
+
+    return nexusFetch(url, {
+        method: 'get',
+        params: encodedSerialize(params),
+    });
+};
+
 export const titleService = {
     advancedSearch: (searchCriteria, page, size, sortedParams, body, selectedTenant) => {
         const queryParams = {};
