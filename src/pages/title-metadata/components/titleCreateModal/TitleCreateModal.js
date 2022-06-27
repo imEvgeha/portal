@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Restricted} from '@portal/portal-auth/permissions';
-import {InputText, Dropdown, Checkbox, AutoComplete} from '@portal/portal-components';
+import {AutoComplete, Checkbox, Dropdown, InputText} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
@@ -107,6 +107,7 @@ const TitleCreate = ({
 
     const handleError = err => {
         setIsCreatingTitle(false);
+        reset();
         addToast({
             severity: 'error',
             detail: err.message.description,
@@ -343,7 +344,7 @@ const TitleCreate = ({
     const getTitleWithoutEmptyField = titleForm => {
         const updatedExternalSystemIds = titleForm.externalSystemIds.length ? titleForm.externalSystemIds : null;
         const seasonNumber = isObject(titleForm.season) ? titleForm.season.seasonNumber : titleForm.season;
-        const tempTitle = {
+        return {
             name: titleForm.title,
             releaseYear: titleForm.releaseYear || null,
             contentType: titleForm.contentType.toLowerCase(),
@@ -352,7 +353,6 @@ const TitleCreate = ({
             seasonNumber: seasonNumber || null,
             episodeNumber: titleForm.episodeNumber || null,
         };
-        return tempTitle;
     };
 
     const renderSyncCheckBoxes = () => (
@@ -422,6 +422,7 @@ const TitleCreate = ({
                     onClick={async e => {
                         await handleSubmit(onSubmit)(e);
                         isSeriesValid();
+                        toggle();
                     }}
                     loading={isCreatingTitle}
                     loadingIcon="pi pi-spin pi-spinner"
