@@ -8,12 +8,15 @@ import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE, WARNING_TITLE} from '@vubiquity-
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
 import {Button} from 'primereact/button';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import TitleSystems from '../../metadata/constants/systems';
 import TitleCreate from '../../title-metadata/components/titleCreateModal/TitleCreateModal';
 import {CONTENT_TYPE_ITEMS} from '../../title-metadata/components/titleCreateModal/TitleCreateModalConstants';
+import {setExternalIdValues} from '../../title-metadata/titleMetadataActions';
+import {createExternalDropdownIDsSelector} from '../../title-metadata/titleMetadataSelectors';
+import {getExternalIDType} from '../../title-metadata/titleMetadataServices';
 import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import {
@@ -55,7 +58,11 @@ export const BulkMatching = ({
     selectedItems,
     getRestrictedIds,
     onReloadData,
+    setExternalIdValues,
+    externalIdOptions,
 }) => {
+    const selectedTenant = useSelector(state => get(state, 'auth.selectedTenant'));
+
     const isMounted = useRef(true);
     const [showModal, setShowModal] = useState(false);
     const [selectedTableData, setSelectedTableData] = useState([]);
@@ -73,7 +80,22 @@ export const BulkMatching = ({
 
     const changeActiveTab = tab => tab !== activeTab && setActiveTab(tab);
 
+    const updateExternalIdDropdown = async () => {
+        return getExternalIDType();
+    };
+
+    const getExternalIdDropdownValues = () => {
+        let currentTenant;
+        if (externalIdOptions.length) {
+            currentTenant = externalIdOptions.find(e => e.tenantCode === selectedTenant.id);
+        }
+        if (currentTenant?.tenantCode !== selectedTenant.id) {
+            updateExternalIdDropdown().then(responseOptions => setExternalIdValues({responseOptions}));
+        }
+    };
+
     useEffect(() => {
+        getExternalIdDropdownValues();
         return () => {
             isMounted.current = false;
         };
@@ -339,6 +361,7 @@ export const BulkMatching = ({
                     )?.value,
                 }}
                 bulkTitleMatch={bulkTitleMatch}
+                externalDropdownOptions={externalIdOptions.find(e => e.tenantCode === selectedTenant.id)}
             />
         </div>
     );
@@ -361,6 +384,8 @@ BulkMatching.propTypes = {
     matchList: PropTypes.object,
     duplicateList: PropTypes.object,
     onReloadData: PropTypes.func,
+    setExternalIdValues: PropTypes.func.isRequired,
+    externalIdOptions: PropTypes.array,
 };
 
 BulkMatching.defaultProps = {
@@ -379,10 +404,22 @@ BulkMatching.defaultProps = {
     matchList: {},
     duplicateList: {},
     onReloadData: () => null,
+    externalIdOptions: [],
+};
+
+const mapStateToProps = () => {
+    const externalIdSelector = createExternalDropdownIDsSelector();
+    return state => ({
+        externalIdOptions: externalIdSelector(state),
+    });
 };
 
 const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+    setExternalIdValues: payload => dispatch(setExternalIdValues(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(withToasts(compose(withMatchAndDuplicateList())(BulkMatching)));
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(withToasts(compose(withMatchAndDuplicateList())(BulkMatching)));

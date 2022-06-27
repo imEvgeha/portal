@@ -101,6 +101,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     defaultValues={Object {}}
     display={false}
     error=""
+    externalDropdownOptions={Object {}}
     focusedRight={Object {}}
     isItMatching={false}
     onCloseModal={[Function]}

@@ -83,3 +83,8 @@ export const setCurrentUserViewAction = payload => ({
     type: actionTypes.SET_CURRENT_USER_VIEW,
     payload,
 });
+
+export const setExternalIdValues = payload => ({
+    type: actionTypes.SET_EXTERNAL_ID_DROPDOWN,
+    payload,
+});

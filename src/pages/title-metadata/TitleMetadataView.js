@@ -19,8 +19,18 @@ import TitleMetadataTable from './components/title-metadata-table/TitleMetadataT
 import TitleCreate from './components/titleCreateModal/TitleCreateModal';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
 import './TitleMetadataView.scss';
-import {setCurrentUserViewAction, storeTitleUserDefinedGridState, uploadMetadata} from './titleMetadataActions';
-import {createGridStateSelector, createTitleMetadataFilterSelector} from './titleMetadataSelectors';
+import {
+    setCurrentUserViewAction,
+    setExternalIdValues,
+    storeTitleUserDefinedGridState,
+    uploadMetadata,
+} from './titleMetadataActions';
+import {
+    createExternalDropdownIDsSelector,
+    createGridStateSelector,
+    createTitleMetadataFilterSelector,
+} from './titleMetadataSelectors';
+import {getExternalIDType} from './titleMetadataServices';
 import {TITLE_METADATA_SYNC_LOG_TAB, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
@@ -32,6 +42,8 @@ export const TitleMetadataView = ({
     titleMetadataFilter,
     uploadMetadata,
     setCurrentUserView,
+    setExternalIdValues,
+    externalIdOptions,
 }) => {
     const selectedTenant = useSelector(state => get(state, 'auth.selectedTenant'));
     const [showModal, setShowModal] = useState(false);
@@ -49,6 +61,20 @@ export const TitleMetadataView = ({
             tenantCode: selectedTenant.id,
         });
     }, [selectedTenant]);
+
+    useEffect(() => {
+        let currentTenant;
+        if (externalIdOptions.length) {
+            currentTenant = externalIdOptions.find(e => e.tenantCode === selectedTenant.id);
+        }
+        if (currentTenant?.tenantCode !== selectedTenant.id) {
+            updateExternalIdDropdown().then(responseOptions => setExternalIdValues({responseOptions}));
+        }
+    }, [selectedTenant]);
+
+    const updateExternalIdDropdown = async () => {
+        return getExternalIDType();
+    };
 
     const showSuccess = detail => {
         store.dispatch(
@@ -231,6 +257,7 @@ export const TitleMetadataView = ({
                 onSave={closeModalAndRefreshTable}
                 onCloseModal={onCloseModal}
                 tenantCode={catalogueOwner.tenantCode}
+                externalDropdownOptions={externalIdOptions.find(e => e.tenantCode === selectedTenant.id)}
             />
         </div>
     );
@@ -239,10 +266,12 @@ export const TitleMetadataView = ({
 const mapStateToProps = () => {
     const gridStateSelector = createGridStateSelector();
     const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
+    const externalIdSelector = createExternalDropdownIDsSelector();
     return state => ({
         username: getUsername(state),
         gridState: gridStateSelector(state),
         titleMetadataFilter: titleMetadataFilterSelector(state),
+        externalIdOptions: externalIdSelector(state),
     });
 };
 
@@ -252,6 +281,7 @@ const mapDispatchToProps = dispatch => ({
     storeTitleUserDefinedGridState: payload => dispatch(storeTitleUserDefinedGridState(payload)),
     uploadMetadata: payload => dispatch(uploadMetadata(payload)),
     setCurrentUserView: payload => dispatch(setCurrentUserViewAction(payload)),
+    setExternalIdValues: payload => dispatch(setExternalIdValues(payload)),
 });
 
 TitleMetadataView.propTypes = {
@@ -261,8 +291,10 @@ TitleMetadataView.propTypes = {
     username: PropTypes.string,
     gridState: PropTypes.object,
     titleMetadataFilter: PropTypes.object,
+    externalIdOptions: PropTypes.array,
     uploadMetadata: PropTypes.func,
     setCurrentUserView: PropTypes.func.isRequired,
+    setExternalIdValues: PropTypes.func.isRequired,
 };
 
 TitleMetadataView.defaultProps = {
@@ -272,6 +304,7 @@ TitleMetadataView.defaultProps = {
     username: '',
     gridState: {},
     titleMetadataFilter: {},
+    externalIdOptions: [],
     uploadMetadata: () => null,
 };
 

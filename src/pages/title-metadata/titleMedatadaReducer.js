@@ -26,6 +26,7 @@ const initialState = {
     selectedId: '',
     isEditorial: false,
     currentUserView: {},
+    externalDropdownIDs: [],
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
@@ -177,6 +178,11 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 currentUserView: payload,
+            };
+        case actionTypes.SET_EXTERNAL_ID_DROPDOWN:
+            return {
+                ...state,
+                externalDropdownIDs: [...state.externalDropdownIDs, ...payload.responseOptions],
             };
         default:
             return state;
