@@ -34,8 +34,8 @@ const ExternalIDsSection = ({control, externalDropdownOptions}) => {
     const renderGroups = () => {
         return fields.map((field, index) => {
             return (
-                <div className="row d-flex align-items-start justify-content-between nexus-c-array-item" key={field.id}>
-                    <div className="col-6 nexus-c-array-input-wrapper">
+                <div className="row align-items-center" key={field.id}>
+                    <div className="col-6">
                         <Dropdown
                             labelProps={{label: 'External ID type', stacked: true, isRequired: true}}
                             placeholder="Select External ID type"
