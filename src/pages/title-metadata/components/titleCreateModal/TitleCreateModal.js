@@ -247,6 +247,8 @@ const TitleCreate = ({
             setIsCreatingTitle(true);
 
             isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
+
+            toggle();
         }
     };
 
@@ -422,7 +424,6 @@ const TitleCreate = ({
                     onClick={async e => {
                         await handleSubmit(onSubmit)(e);
                         isSeriesValid();
-                        toggle();
                     }}
                     loading={isCreatingTitle}
                     loadingIcon="pi pi-spin pi-spinner"
