@@ -446,6 +446,7 @@ const TitleCreate = ({
         }
     };
     const fieldsToDisplayAndHideForSeason = fieldsToDisplay() && currentValues.contentType !== CONTENT_TYPES.SEASON;
+    const isReleaseYearMandatory = currentValues.contentType !== CONTENT_TYPES.SERIES;
 
     const areFieldsRequired = () => {
         switch (currentValues.contentType) {
@@ -644,7 +645,10 @@ const TitleCreate = ({
                                         formControlOptions={{
                                             formControlName: `releaseYear`,
                                             rules: {
-                                                required: {value: true, message: 'Field cannot be empty!'},
+                                                required: {
+                                                    value: isReleaseYearMandatory,
+                                                    message: 'Field cannot be empty!',
+                                                },
                                                 pattern: {
                                                     value: /^[0-9]+$/,
                                                     message: 'Please enter a valid year!',
@@ -659,7 +663,11 @@ const TitleCreate = ({
                                                 },
                                             },
                                         }}
-                                        labelProps={{label: 'Release Year', stacked: true, isRequired: true}}
+                                        labelProps={{
+                                            label: 'Release Year',
+                                            stacked: true,
+                                            isRequired: isReleaseYearMandatory,
+                                        }}
                                         id="titleReleaseYear"
                                         className="nexus-c-title-create_input"
                                         placeholder="Enter Release Year"
