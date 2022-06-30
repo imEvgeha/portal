@@ -6,7 +6,7 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
-import {get} from 'lodash';
+import {get, toLower} from 'lodash';
 import {Button} from 'primereact/button';
 import {connect, useSelector} from 'react-redux';
 import {compose} from 'redux';
@@ -361,7 +361,9 @@ export const BulkMatching = ({
                     )?.value,
                 }}
                 bulkTitleMatch={bulkTitleMatch}
-                externalDropdownOptions={externalIdOptions.find(e => e.tenantCode === selectedTenant.id)}
+                externalDropdownOptions={externalIdOptions.find(
+                    e => toLower(e.tenantCode) === toLower(selectedTenant.id)
+                )}
             />
         </div>
     );

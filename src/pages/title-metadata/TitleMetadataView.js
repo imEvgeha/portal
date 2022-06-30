@@ -6,7 +6,7 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_METADATA} from '@vubiquity-nexus/portal-utils/lib/constants';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {isEmpty, get} from 'lodash';
+import {isEmpty, get, toLower} from 'lodash';
 import {TabMenu} from 'primereact/tabmenu';
 import {connect, useSelector} from 'react-redux';
 import {store} from '../../index';
@@ -257,7 +257,9 @@ export const TitleMetadataView = ({
                 onSave={closeModalAndRefreshTable}
                 onCloseModal={onCloseModal}
                 tenantCode={catalogueOwner.tenantCode}
-                externalDropdownOptions={externalIdOptions.find(e => e.tenantCode === selectedTenant.id)}
+                externalDropdownOptions={externalIdOptions.find(
+                    e => toLower(e.tenantCode) === toLower(selectedTenant.id)
+                )}
             />
         </div>
     );
