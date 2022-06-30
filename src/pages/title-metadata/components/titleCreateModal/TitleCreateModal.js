@@ -446,7 +446,7 @@ const TitleCreate = ({
         }
     };
     const fieldsToDisplayAndHideForSeason = fieldsToDisplay() && currentValues.contentType !== CONTENT_TYPES.SEASON;
-    const isReleaseYearMandatory = currentValues.contentType !== CONTENT_TYPES.SERIES;
+    const isReleaseYearMandatory = currentValues.contentType !== CONTENT_TYPES.SEASON;
 
     const areFieldsRequired = () => {
         switch (currentValues.contentType) {
