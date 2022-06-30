@@ -48,7 +48,7 @@
         "@atlaskit/textfield": "^5.1.6",
         "@atlaskit/tooltip": "^15.0.15",
         "@portal/portal-auth": "^1.0.21-64",
-        "@portal/portal-components": "^1.0.0-61",
+        "@portal/portal-components": "^1.0.0-63",
         "@vubiquity-nexus/portal-assets": "^1.1.0",
         "@vubiquity-nexus/portal-styles": "1.0.0",
         "@vubiquity-nexus/portal-ui": "1.0.57",
