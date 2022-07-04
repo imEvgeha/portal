@@ -928,9 +928,13 @@ $element-color-orange-80: palette(orange, 80);
     }
 }
 
-// removing margin for components coming from portal components
+// style updates for components coming from portal components
 .portal-component {
     .p-component {
         margin-bottom: 0px;
+    }
+
+    + .validation-message-wrapper .p-error-message {
+        position: relative;
     }
 }
