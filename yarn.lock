@@ -3519,10 +3519,10 @@
     pacote "^13.1.1"
     semver "^7.3.7"
 
-"@portal/portal-components@^1.0.0-64":
-  version "1.0.0-64"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-components/-/portal-components-1.0.0-64.tgz#00838eae69487e2b90ad755c381ceabbfb39a699"
-  integrity sha512-3DLvzUkQjQ6GDtpufBsrsTB1QHcmpaYa2X8w1gsTfLugbuSgdfbzPz2zpy0dy6MIM1zUCECTyC2uCnMNMr2VHA==
+"@portal/portal-components@^1.0.0-65":
+  version "1.0.0-65"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-components/-/portal-components-1.0.0-65.tgz#9116f713f9006ef044936e97ad3da5b788138b5c"
+  integrity sha512-PbbVTCt+VdyrR8FgBP7O2YjI2aBcwTnN7A2ca+fo3RL2TZA5DjS6l4bukC+EeLbAUEXBVQiT+XDupNzsxLpysA==
   dependencies:
     "@portal/portal-build-scripts" "1.0.0-18"
     "@testing-library/jest-dom" "^5.16.4"
