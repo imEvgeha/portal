@@ -107,7 +107,6 @@ const TitleCreate = ({
 
     const handleError = err => {
         setIsCreatingTitle(false);
-        reset();
         addToast({
             severity: 'error',
             detail: err.message.description,
@@ -154,7 +153,6 @@ const TitleCreate = ({
                         .catch(e => handleError(e, true));
                 }
                 setIsCreatingTitle(false);
-                toggle();
                 addToast({
                     severity: 'success',
                     content: () => {
@@ -173,6 +171,7 @@ const TitleCreate = ({
                         );
                     },
                 });
+                toggle();
             })
             .catch(handleError);
     };
@@ -247,8 +246,6 @@ const TitleCreate = ({
             setIsCreatingTitle(true);
 
             isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
-
-            toggle();
         }
     };
 
