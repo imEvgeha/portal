@@ -435,6 +435,7 @@ $element-color-orange-80: palette(orange, 80);
 
     &.p-component {
         width: 100%;
+        margin-bottom: $element-margin-bottom;
         border-radius: $element-border-radius;
         background-color: $element-background-color-2;
 
@@ -526,12 +527,12 @@ $element-color-orange-80: palette(orange, 80);
 .p-dropdown {
     &.p-component {
         width: 100%;
+        margin-bottom: $element-margin-bottom;
         border-radius: $element-border-radius;
         box-shadow: none;
         font-size: 13px;
         color: palette(black, 100);
         letter-spacing: normal;
-        max-width: 97%;
 
         &:hover:active {
             border: $element-border-20;
@@ -721,10 +722,8 @@ $element-color-orange-80: palette(orange, 80);
 
 // Field Error Message
 .p-error-message {
-    &.p-error-absolute {
-        position: absolute;
-        left: 2px;
-    }
+    position: absolute;
+    left: 2px;
     bottom: 0;
     font-size: 12px;
     color: palette(orange, 80);
@@ -926,5 +925,12 @@ $element-color-orange-80: palette(orange, 80);
     .p-progress-spinner-circle {
         animation: none;
         stroke: $element-background-color-20;
+    }
+}
+
+// removing margin for components coming from portal components
+.portal-component {
+    .p-component {
+        margin-bottom: 0px;
     }
 }
