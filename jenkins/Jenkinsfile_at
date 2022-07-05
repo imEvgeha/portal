@@ -46,26 +46,25 @@ pipeline {
                 }
             }
         }
-    }
-    stage('Trigger Automation Pipeline') {
-        steps {
-            script {
-                if (DEPLOY_AND_RUN_ON_DEV.toBoolean()) {
-                    build job: 'LTP/DEV/Sanity/UISanityTests', wait: true
-                }
-                if (DEPLOY_AND_RUN_ON_QA.toBoolean()) {
-                    build job: 'LTP/QA/Sanity/UISanityTests', wait: true
+        stage('Trigger Automation Pipeline') {
+            steps {
+                script {
+                    if (DEPLOY_AND_RUN_ON_DEV.toBoolean()) {
+                        build job: 'LTP/DEV/Sanity/UISanityTests', wait: true
+                    }
+                    if (DEPLOY_AND_RUN_ON_QA.toBoolean()) {
+                        build job: 'LTP/QA/Sanity/UISanityTests', wait: true
+                    }
                 }
             }
         }
     }
-}
-post {
-    success {
-        sh 'echo Finished Successfully'
+    post {
+        success {
+            sh 'echo Finished Successfully'
+        }
+        failure {
+            mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+        }
     }
-    failure {
-        mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
-    }
-}
 }
