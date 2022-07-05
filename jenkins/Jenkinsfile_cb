@@ -11,7 +11,6 @@ pipeline {
 
     stages {
         stage('Setup Workspace') {
-
             steps {
                 echo '*** Printing Parameters ***'
                 echo BRANCH_NAME
@@ -21,11 +20,7 @@ pipeline {
                 echo CREATE_AND_PUSH_DOCKER
                 sh 'rm -Rf node_modules'
                 sh 'rm -Rf dist'
-                sh 'PACKAGE_VERSION=$(cat package.json \\\n' +
-                    '  | grep version \\\n' +
-                    '  | head -1 \\\n' +
-                    '  | awk -F: \'{ print $2 }\' \\\n' +
-                    '  | sed \'s/[",]//g\')'
+                echo PACKAGE_VERSION
             }
         }
         stage('Installing Dependencies') {
