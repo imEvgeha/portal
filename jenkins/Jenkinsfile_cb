@@ -20,7 +20,22 @@ pipeline {
                 echo CREATE_AND_PUSH_DOCKER
                 sh 'rm -Rf node_modules'
                 sh 'rm -Rf dist'
-                echo PACKAGE_VERSION
+
+            }
+        }
+        stage('Versioning') {
+            steps {
+                // add branch + build number to package.json, before dist(no commit)
+                VERSIONING_BRANCH=''
+                if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('origin/master')) {
+                    VERSIONING_BRANCH='master'
+                } else if(BRANCH_NAME.contains('refs/heads/release') || BRANCH_NAME.contains('origin/release')){
+                    VERSIONING_BRANCH='release'
+                } else if(BRANCH_NAME.contains('refs/heads/feature') || BRANCH_NAME.contains('origin/feature')){
+                    VERSIONING_BRANCH='feature'
+                }
+
+                sh "npm version 1.0.0-$VERSIONING_BRANCH-$BUILD_NUMBER --no-git-tag-version"
             }
         }
         stage('Installing Dependencies') {
@@ -51,7 +66,6 @@ pipeline {
         stage('Docker') {
             steps {
                 script {
-                    echo PACKAGE_VERSION
                     // if the branch is origin/master, any 'release/*' or any 'feature/*' branch
                     if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('origin/master')
                         || BRANCH_NAME.contains('refs/heads/release') || BRANCH_NAME.contains('origin/release')
