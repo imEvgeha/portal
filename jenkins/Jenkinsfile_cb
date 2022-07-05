@@ -86,7 +86,11 @@ pipeline {
                             || BRANCH_NAME.contains('refs/heads/feature') || BRANCH_NAME.contains('origin/feature')) {
                             echo 'Master/Release/Feature Branch detected - Triggering AT'
                             build job: 'portal-ui-at', parameters: [
-                                string(name: 'imageTag', value: imageTag)
+                                string(name: 'imageTag', value: imageTag),
+                                [$class: 'BooleanParameterValue', name: 'deployAndRunOnDev', value: false],
+                                [$class: 'BooleanParameterValue', name: 'deployAndRunOnQa', value: false],
+                                [$class: 'BooleanParameterValue', name: 'runOnDev', value: false],
+                                [$class: 'BooleanParameterValue', name: 'runOnQA', value: false]
                             ], wait: true
 
                         } else {

@@ -5,6 +5,8 @@ pipeline {
         IMAGE_TAG = "${env.imageTag}"
         DEPLOY_AND_RUN_ON_DEV = "${env.deployAndRunOnDev}"
         DEPLOY_AND_RUN_ON_QA = "${env.deployAndRunOnQa}"
+        RUN_ON_DEV = "${env.runOnDev}"
+        RUN_ON_QA = "${env.runOnQA}"
     }
 
     stages {
@@ -14,34 +16,26 @@ pipeline {
                 echo 'Empty Step'
             }
         }
-        stage('Deployment AT') {
+        stage('Deployment') {
             steps {
                 script {
                     if (DEPLOY_AND_RUN_ON_DEV.toBoolean()) {
                         echo 'Deploying to DEV Environment ...'
-//                        // deploy
-//                        dir('kubernetes') {
-//                            git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
-//                            script {
-//                                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
-//                            }
-//                        }
-//                        dir('kubernetes/nexus-avails/portal') {
-//                            sh "./deploy.sh dev nexus-avails ${IMAGE_TAG}"
-//                        }
+                        // deploy to DEV
+                        build job: 'portal-ui-cd', parameters: [
+                            string(name: 'imageTag', value: imageTag),
+                            [$class: 'BooleanParameterValue', name: 'deployDev', value: true],
+                            [$class: 'BooleanParameterValue', name: 'deployQa', value: false],
+                        ], wait: true
                     }
                     if (DEPLOY_AND_RUN_ON_QA.toBoolean()) {
                         echo 'Deploying to QA Environment ...'
-                        // deploy
-//                        dir('kubernetes') {
-//                            git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
-//                            script {
-//                                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh qa nexus-avails portal").trim()
-//                            }
-//                        }
-//                        dir('kubernetes/nexus-avails/portal') {
-//                            sh "./deploy.sh qa nexus-avails ${IMAGE_TAG}"
-//                        }
+                        // deploy to QA
+                        build job: 'portal-ui-cd', parameters: [
+                            string(name: 'imageTag', value: imageTag),
+                            [$class: 'BooleanParameterValue', name: 'deployDev', value: false],
+                            [$class: 'BooleanParameterValue', name: 'deployQa', value: true],
+                        ], wait: true
                     }
                 }
             }
@@ -49,10 +43,10 @@ pipeline {
         stage('Trigger Automation Pipeline') {
             steps {
                 script {
-                    if (DEPLOY_AND_RUN_ON_DEV.toBoolean()) {
+                    if (DEPLOY_AND_RUN_ON_DEV.toBoolean() || RUN_ON_DEV.toBoolean()) {
                         build job: 'LTP/DEV/Sanity/UISanityTests', wait: true
                     }
-                    if (DEPLOY_AND_RUN_ON_QA.toBoolean()) {
+                    if (DEPLOY_AND_RUN_ON_QA.toBoolean() || RUN_ON_QA.toBoolean()) {
                         build job: 'LTP/QA/Sanity/UISanityTests', wait: true
                     }
                 }

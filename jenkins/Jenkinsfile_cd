@@ -17,7 +17,7 @@ pipeline {
                     }
                     if (!DEPLOY_DEV.toBoolean() && !DEPLOY_QA.toBoolean()) {
                         echo 'No selected deployment - DEV (and/or) QA option is needed'
-                        error("ERROR: Build failed because of no selected parameter..")
+                        error("ERROR: No selected deployment - DEV (and/or) QA option is needed..")
                     }
                 }
             }
@@ -31,21 +31,29 @@ pipeline {
                     if (DEPLOY_DEV.toBoolean()) {
                         echo 'Deploying to DEV ...'
                         // deploy
-//                        dir('kubernetes') {
-//                            git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
-//                            script {
-//                                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
-//                            }
-//                        }
-//                        dir('kubernetes/nexus-avails/portal') {
-//                            sh "./deploy.sh dev nexus-avails ${IMAGE_TAG}"
-//                        }
+                        dir('kubernetes') {
+                            git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+                            script {
+                                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+                                echo imageTag
+                            }
+                        }
+                        dir('kubernetes/nexus-avails/portal') {
+                            sh "./deploy.sh dev nexus-avails ${IMAGE_TAG}"
+                        }
                     } else if (DEPLOY_QA.toBoolean()) {
                         echo 'Deploying to QA ...'
-                        echo 'Triggering promote-qa--portal Pipeline'
 
-                        // deploy
-//                        build job: 'promote-qa--portal', wait: true
+                        dir('kubernetes') {
+                            git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+                            script {
+                                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh qa nexus-avails portal").trim()
+                                echo imageTag
+                            }
+                        }
+                        dir('kubernetes/nexus-avails/portal') {
+                            sh "./deploy.sh qa nexus-avails ${IMAGE_TAG}"
+                        }
                     } else {
                         echo 'No Environment has been selected for Deployment'
                     }
