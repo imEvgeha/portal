@@ -50,9 +50,9 @@ pipeline {
         stage('Docker') {
             steps {
                 script {
-                    // if the branch is origin/master or any release* remote
-                    if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('refs/heads/release')) {
-                        echo 'Master Branch detected - creating and pushing docker image'
+                    // if the branch is origin/master, any 'release/*' or any 'feature/*' branch
+                    if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('refs/heads/release') || BRANCH_NAME.contains('refs/heads/feature')) {
+                        echo 'Branch detected - creating and pushing docker image'
                         imageTag = ''
                         tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
                         imageTag = "${tagTime}.${BUILD_NUMBER}"
@@ -68,7 +68,7 @@ pipeline {
                         }
 
                     } else {
-                        echo 'Not master/release branch, skipping creating docker image'
+                        echo 'Not master/release/feature branch, skipping creating docker image'
                         echo BRANCH_NAME
                     }
                 }
@@ -80,7 +80,7 @@ pipeline {
                     if (TRIGGER_AT) {
                         echo 'Triggering Automation . . .'
                         if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('refs/heads/release')) {
-                            echo 'Master/Release Branch detected - Triggering AT'
+                            echo 'Master/Release/Feature Branch detected - Triggering AT'
                             build job: 'portal-ui-at', parameters: [
                                 string(name: 'imageTag', value: imageTag)
                             ], wait: true
