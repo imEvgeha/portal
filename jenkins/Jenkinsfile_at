@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         IMAGE_TAG = "${env.imageTag}"
+        DEPLOY_AND_RUN_ON_DEV = "${env.deployAndRunOnDev}"
+        DEPLOY_AND_RUN_ON_QA = "${env.deployAndRunOnQa}"
     }
 
     stages {
@@ -12,28 +14,58 @@ pipeline {
                 echo 'Empty Step'
             }
         }
-        stage('Setup Workspace') {
+        stage('Deployment AT') {
             steps {
-                echo 'Empty Step'
-            }
-        }
-        stage('Installing Dependencies') {
-            steps {
-                echo 'Empty Step'
-            }
-        }
-        stage('Run Automation') {
-            steps {
-                echo 'Empty Step'
+                script {
+                    if (DEPLOY_AND_RUN_ON_DEV.toBoolean()) {
+                        echo 'Deploying to DEV Environment ...'
+//                        // deploy
+//                        dir('kubernetes') {
+//                            git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+//                            script {
+//                                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh dev nexus-avails portal").trim()
+//                            }
+//                        }
+//                        dir('kubernetes/nexus-avails/portal') {
+//                            sh "./deploy.sh dev nexus-avails ${IMAGE_TAG}"
+//                        }
+                    }
+                    if (DEPLOY_AND_RUN_ON_QA.toBoolean()) {
+                        echo 'Deploying to QA Environment ...'
+                        // deploy
+//                        dir('kubernetes') {
+//                            git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+//                            script {
+//                                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh qa nexus-avails portal").trim()
+//                            }
+//                        }
+//                        dir('kubernetes/nexus-avails/portal') {
+//                            sh "./deploy.sh qa nexus-avails ${IMAGE_TAG}"
+//                        }
+                    }
+                }
             }
         }
     }
-    post {
-        success {
-            sh 'echo Finished Successfully'
-        }
-        failure {
-            mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+    stage('Trigger Automation Pipeline') {
+        steps {
+            script {
+                if (DEPLOY_AND_RUN_ON_DEV.toBoolean()) {
+                    build job: 'LTP/DEV/Sanity/UISanityTests', wait: true
+                }
+                if (DEPLOY_AND_RUN_ON_QA.toBoolean()) {
+                    build job: 'LTP/QA/Sanity/UISanityTests', wait: true
+                }
+            }
         }
     }
+}
+post {
+    success {
+        sh 'echo Finished Successfully'
+    }
+    failure {
+        mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+    }
+}
 }
