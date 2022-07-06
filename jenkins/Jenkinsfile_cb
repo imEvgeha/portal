@@ -72,15 +72,16 @@ pipeline {
                     if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('origin/master')
                         || BRANCH_NAME.contains('refs/heads/release') || BRANCH_NAME.contains('origin/release')
                         || BRANCH_NAME.contains('refs/heads/feature') || BRANCH_NAME.contains('origin/feature')) {
-                        echo 'Branch detected - creating and pushing docker image'
-                        imageTag = ''
-                        tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
-                        imageTag = "${tagTime}.${BUILD_NUMBER}"
-                        echo 'Portal UI Current Version: '
-                        echo imageTag
-
-                        // if flag for createAndPublishDocker is enabled
+                        // if flag for createAndPublishDocker is true
                         if (CREATE_AND_PUSH_DOCKER.toBoolean()) {
+                            // create tag for image
+                            echo 'Branch detected - creating and pushing docker image'
+                            imageTag = ''
+                            tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
+                            imageTag = "${tagTime}.${BUILD_NUMBER}"
+                            echo 'Portal UI Current Version: '
+                            echo imageTag
+                            // push to nexus the new docker image
                             sh "docker build -t nexus.vubiquity.com:8445/portal:${imageTag} ."
                             sh "docker push nexus.vubiquity.com:8445/portal:${imageTag}"
                         } else {
@@ -97,7 +98,7 @@ pipeline {
         stage('Triggering AT') {
             steps {
                 script {
-                    if (TRIGGER_AT) {
+                    if (TRIGGER_AT.toBoolean()) {
                         echo 'Triggering Automation . . .'
                         if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('origin/master')
                             || BRANCH_NAME.contains('refs/heads/release') || BRANCH_NAME.contains('origin/release')
