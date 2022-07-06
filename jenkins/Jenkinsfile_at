@@ -28,7 +28,7 @@ pipeline {
                         echo 'Deploying to DEV Environment ...'
                         // deploy to DEV
                         build job: 'portal-ui-cd', parameters: [
-                            string(name: 'imageTag', value: imageTag),
+                            string(name: 'imageTag', value: IMAGE_TAG),
                             [$class: 'BooleanParameterValue', name: 'deployDev', value: true],
                             [$class: 'BooleanParameterValue', name: 'deployQa', value: false],
                         ], wait: true
@@ -37,7 +37,7 @@ pipeline {
                         echo 'Deploying to QA Environment ...'
                         // deploy to QA
                         build job: 'portal-ui-cd', parameters: [
-                            string(name: 'imageTag', value: imageTag),
+                            string(name: 'imageTag', value: IMAGE_TAG),
                             [$class: 'BooleanParameterValue', name: 'deployDev', value: false],
                             [$class: 'BooleanParameterValue', name: 'deployQa', value: true],
                         ], wait: true
