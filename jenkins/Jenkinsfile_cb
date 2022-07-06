@@ -131,24 +131,28 @@ pipeline {
                             || BRANCH_NAME.contains('refs/heads/release') || BRANCH_NAME.contains('origin/release')
                             || BRANCH_NAME.contains('refs/heads/feature') || BRANCH_NAME.contains('origin/feature')) {
                             echo 'Deploying using BRANCH_NAME'
-                            if (DEPLOY_DEV.toBoolean()) {
-                                echo 'Triggering CD to Environment: DEV'
-                                build job: 'portal-ui-cd', parameters: [
-                                    string(name: 'imageTag', value: imageTag),
-                                    [$class: 'BooleanParameterValue', name: 'deployDev', value: true],
-                                    [$class: 'BooleanParameterValue', name: 'deployQa', value: false],
-                                ], wait: true
-                            }
-                            if (DEPLOY_QA.toBoolean()) {
-                                echo 'Triggering CD to Environment: QA'
-                                build job: 'portal-ui-cd', parameters: [
-                                    string(name: 'imageTag', value: imageTag),
-                                    [$class: 'BooleanParameterValue', name: 'deployDev', value: false],
-                                    [$class: 'BooleanParameterValue', name: 'deployQa', value: true],
-                                ], wait: true
+                            if (!imageTag.isEmpty() || !CREATE_AND_PUSH_DOCKER.toBoolean()) {
+                                if (DEPLOY_DEV.toBoolean()) {
+                                    echo 'Triggering CD to Environment: DEV'
+                                    build job: 'portal-ui-cd', parameters: [
+                                        string(name: 'imageTag', value: imageTag),
+                                        [$class: 'BooleanParameterValue', name: 'deployDev', value: true],
+                                        [$class: 'BooleanParameterValue', name: 'deployQa', value: false],
+                                    ], wait: true
+                                }
+                                if (DEPLOY_QA.toBoolean()) {
+                                    echo 'Triggering CD to Environment: QA'
+                                    build job: 'portal-ui-cd', parameters: [
+                                        string(name: 'imageTag', value: imageTag),
+                                        [$class: 'BooleanParameterValue', name: 'deployDev', value: false],
+                                        [$class: 'BooleanParameterValue', name: 'deployQa', value: true],
+                                    ], wait: true
+                                }
+                            } else {
+                                echo 'Docker Image not created for this build, skipping Deployment'
                             }
                         } else {
-                            echo 'Not a valid branch(master/release), skipping Deployment'
+                            echo 'Not a valid branch(master/release/feature), skipping Deployment'
                             echo BRANCH_NAME
                         }
                     } else {
