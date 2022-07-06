@@ -12,8 +12,13 @@ pipeline {
     stages {
         stage('Setup parameters') {
             steps {
-                echo IMAGE_TAG
-                echo 'Empty Step'
+                script {
+                    // if deploying but no imageTag input, throw error
+                    if ((!RUN_ON_DEV.toBoolean() || !RUN_ON_QA.toBoolean()) && !IMAGE_TAG.trim()) {
+                        echo 'imageTag is empty'
+                        error("ERROR: Build failed because of no imageTag input for running AT..")
+                    }
+                }
             }
         }
         stage('Deployment') {
