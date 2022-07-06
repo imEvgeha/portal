@@ -14,9 +14,12 @@ pipeline {
             steps {
                 script {
                     // if deploying but no imageTag input, throw error
-                    if ((!RUN_ON_DEV.toBoolean() || !RUN_ON_QA.toBoolean()) && !IMAGE_TAG) {
-                        echo 'imageTag is empty'
-                        error("ERROR: Build failed because of no imageTag input for running AT..")
+                    if (!RUN_ON_DEV.toBoolean() || !RUN_ON_QA.toBoolean()) {
+                        // check if deployment is needed, make sure imageTag is there
+                        if((DEPLOY_AND_RUN_ON_DEV.toBoolean() || DEPLOY_AND_RUN_ON_QA.toBoolean()) && env.imageTag.isEmpty()) {
+                            echo 'imageTag is empty - Needed for Deployment'
+                            error("ERROR: Build failed because of no imageTag input for running AT with deployment..")
+                        }
                     }
                 }
             }
@@ -24,7 +27,7 @@ pipeline {
         stage('Deployment') {
             steps {
                 script {
-                    if (DEPLOY_AND_RUN_ON_DEV.toBoolean()) {
+                    if (DEPLOY_AND_RUN_ON_DEV.toBoolean() && !IMAGE_TAG.isEmpty()) {
                         echo 'Deploying to DEV Environment ...'
                         // deploy to DEV
                         build job: 'portal-ui-cd', parameters: [
@@ -33,7 +36,7 @@ pipeline {
                             [$class: 'BooleanParameterValue', name: 'deployQa', value: false],
                         ], wait: true
                     }
-                    if (DEPLOY_AND_RUN_ON_QA.toBoolean()) {
+                    if (DEPLOY_AND_RUN_ON_QA.toBoolean() && !IMAGE_TAG.isEmpty()) {
                         echo 'Deploying to QA Environment ...'
                         // deploy to QA
                         build job: 'portal-ui-cd', parameters: [
