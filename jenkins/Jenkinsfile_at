@@ -66,7 +66,13 @@ pipeline {
             sh 'echo Finished Successfully'
         }
         failure {
-            mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "Build ${currentBuild.fullDisplayName} FAILED", body: "Please go to ${env.BUILD_URL}/consoleText for more details."
+            script {
+                if (RUN_ON_DEV.toBoolean() || DEPLOY_AND_RUN_ON_DEV.toBoolean()) {
+                    mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "AT FAILED on DEV - ${env.BUILD_DISPLAY_NAME}", body: "ENV: DEV \nReason: Please check job for more information. \nBuild: ${env.BUILD_TAG} failed. \n\nBuild URL: ${env.BUILD_URL}"
+                } else if (RUN_ON_QA.toBoolean() || DEPLOY_AND_RUN_ON_QA.toBoolean()) {
+                    mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "AT FAILED on QA - ${env.BUILD_DISPLAY_NAME}", body: "ENV: QA \nReason: Please check job for more information. \nBuild: ${env.BUILD_TAG} failed. \n\nBuild URL: ${env.BUILD_URL}"
+                }
+            }
         }
     }
 }
