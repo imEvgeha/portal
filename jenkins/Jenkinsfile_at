@@ -68,15 +68,9 @@ pipeline {
         failure {
             script {
                 if (RUN_ON_DEV.toBoolean() || DEPLOY_AND_RUN_ON_DEV.toBoolean()) {
-                    mail to: 'mcharalambous@vubiquity.net,anikolaou@vubiquity.net,Petros.Demetriou@amdocs.com,Miroslav.Sabev@amdocs.com,elyashenko@vubiquity.net',
-                        cc: 'Vaishali.Tiwari@vubiquity.net,Elena.Kampouri@amdocs.com,Marios.Georgiou1@amdocs.com,Gunjan.Garg@amdocs.com',
-                        subject: "AT FAILED on DEV - ${env.BUILD_DISPLAY_NAME}",
-                        body: "ENV: DEV \nReason: Please check job for more information. \nBuild: ${env.BUILD_TAG} failed. \n\nBuild URL: ${env.BUILD_URL}"
+                    mail to: "mcharalambous@vubiquity.net, anikolaou@vubiquity.net, PDemetriou@vubiquity.net, Miroslav.Sabev@vubiquity.net, elyashenko@vubiquity.net",cc: "Vaishali.Tiwari@vubiquity.net, ekampouri@vubiquity.net, marios.georgiou@vubiquity.net, gunjan.garg@vubiquity.net",subject: "AT FAILED on DEV - ${env.BUILD_DISPLAY_NAME}",body: "ENV: DEV \nReason: Please check job for more information. \nBuild: ${env.BUILD_TAG} failed. \n\nBuild URL: ${env.BUILD_URL}"
                 } else if (RUN_ON_QA.toBoolean() || DEPLOY_AND_RUN_ON_QA.toBoolean()) {
-                    mail to: 'mcharalambous@vubiquity.net,anikolaou@vubiquity.net,Petros.Demetriou@amdocs.com,Miroslav.Sabev@amdocs.com,elyashenko@vubiquity.net',
-                        cc: 'Vaishali.Tiwari@vubiquity.net,Elena.Kampouri@amdocs.com,Marios.Georgiou1@amdocs.com,Gunjan.Garg@amdocs.com',
-                        subject: "AT FAILED on QA - ${env.BUILD_DISPLAY_NAME}",
-                        body: "ENV: QA \nReason: Please check job for more information. \nBuild: ${env.BUILD_TAG} failed. \n\nBuild URL: ${env.BUILD_URL}"
+                    mail to: "mcharalambous@vubiquity.net, anikolaou@vubiquity.net, PDemetriou@vubiquity.net, Miroslav.Sabev@vubiquity.net, elyashenko@vubiquity.net",cc: "Vaishali.Tiwari@vubiquity.net, ekampouri@vubiquity.net, marios.georgiou@vubiquity.net, gunjan.garg@vubiquity.net",subject: "AT FAILED on QA - ${env.BUILD_DISPLAY_NAME}",body: "ENV: QA \nReason: Please check job for more information. \nBuild: ${env.BUILD_TAG} failed. \n\nBuild URL: ${env.BUILD_URL}"
                 }
             }
         }
