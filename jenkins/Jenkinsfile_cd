@@ -67,18 +67,24 @@ pipeline {
             sh 'echo Finished Successfully'
             script {
                 if (DEPLOY_DEV.toBoolean()) {
-                    mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "DEV Environment Updated!", body: "DEV Environment has been upgraded with Build: ${env.imageTag}. \nParams: \nDeploy Dev: ${env.DEPLOY_DEV} \nDeploy QA: ${env.DEPLOY_QA} \n\nURL: ${env.BUILD_URL}. "
+                    mail to: 'mcharalambous@vubiquity.net,anikolaou@vubiquity.net,Petros.Demetriou@amdocs.com,Miroslav.Sabev@amdocs.com,elyashenko@vubiquity.net',
+                        cc: 'Vaishali.Tiwari@vubiquity.net,Elena.Kampouri@amdocs.com,Marios.Georgiou1@amdocs.com,Gunjan.Garg@amdocs.com,Christos.Laoutaris@amdocs.com,papaevrm@amdocs.com',
+                        subject: "DEV Environment Updated!",
+                        body: "DEV Environment has been upgraded with Build: ${env.imageTag}. \nParams: \nDeploy Dev: ${env.DEPLOY_DEV} \nDeploy QA: ${env.DEPLOY_QA} \n\nURL: ${env.BUILD_URL}. "
                 } else if (DEPLOY_QA.toBoolean()) {
-                    mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "QA Environment Updated!", body: "QA Environment has been upgraded with Build: ${env.imageTag}. \nParams: \nDeploy Dev: ${env.DEPLOY_DEV} \nDeploy QA: ${env.DEPLOY_QA} \n\nURL: ${env.BUILD_URL}. "
+                    mail to: 'mcharalambous@vubiquity.net,anikolaou@vubiquity.net,Petros.Demetriou@amdocs.com,Miroslav.Sabev@amdocs.com,elyashenko@vubiquity.net',
+                        cc: 'Vaishali.Tiwari@vubiquity.net,Elena.Kampouri@amdocs.com,Marios.Georgiou1@amdocs.com,Gunjan.Garg@amdocs.com,Christos.Laoutaris@amdocs.com,papaevrm@amdocs.com',
+                        subject: "QA Environment Updated!",
+                        body: "QA Environment has been upgraded with Build: ${env.imageTag}. \nParams: \nDeploy Dev: ${env.DEPLOY_DEV} \nDeploy QA: ${env.DEPLOY_QA} \n\nURL: ${env.BUILD_URL}. "
                 }
             }
         }
         failure {
             script {
                 if(env.imageTag.isEmpty()) {
-                    mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "CD FAILED - ${env.BUILD_DISPLAY_NAME} - missing ImageTag", body: "Reason: Failed due to missing ImageTag parameter \nBuild: ${env.BUILD_TAG}. \n\nBuild URL: ${env.BUILD_URL}"
+                    mail to: 'mcharalambous@vubiquity.net,anikolaou@vubiquity.net,Petros.Demetriou@amdocs.com,Miroslav.Sabev@amdocs.com,elyashenko@vubiquity.net', cc: '', subject: "CD FAILED - ${env.BUILD_DISPLAY_NAME} - missing ImageTag", body: "Reason: Failed due to missing ImageTag parameter \nBuild: ${env.BUILD_TAG}. \n\nBuild URL: ${env.BUILD_URL}"
                 } else{
-                    mail to: 'Vikings-VU@Amdocs.onmicrosoft.com', subject: "CD FAILED - ${env.BUILD_DISPLAY_NAME}", body: "Reason: Please check job for more information. \nBuild: ${env.BUILD_TAG} failed. \n\nBuild URL: ${env.BUILD_URL}"
+                    mail to: 'mcharalambous@vubiquity.net,anikolaou@vubiquity.net,Petros.Demetriou@amdocs.com,Miroslav.Sabev@amdocs.com,elyashenko@vubiquity.net', subject: "CD FAILED - ${env.BUILD_DISPLAY_NAME}", body: "Reason: Please check job for more information. \nBuild: ${env.BUILD_TAG} failed. \n\nBuild URL: ${env.BUILD_URL}"
                 }
             }
         }
