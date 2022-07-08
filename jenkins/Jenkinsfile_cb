@@ -26,8 +26,12 @@ pipeline {
         stage('Versioning') {
             steps {
                 script {
-                    // add branch + build number to package.json, before dist(no commit)
+                    // Portal Version from NPM package.json
+                    PORTAL_VERSION = '1.0.0'
+                    // define the version based on the branch(master/release/feature)
                     VERSIONING_BRANCH = ''
+                    // the result version for this build - date.npm_version-branch.build_number
+                    BUILD_VERSION = ''
                     if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('origin/master')) {
                         VERSIONING_BRANCH = 'master'
                     }
@@ -43,8 +47,9 @@ pipeline {
                         featureId = BRANCH_NAME.substring(BRANCH_NAME.lastIndexOf('-') + 1, BRANCH_NAME.length())
                         VERSIONING_BRANCH = 'f' + featureId
                     }
+                    BUILD_VERSION = PORTAL_VERSION + '-' + VERSIONING_BRANCH + '.' + BUILD_NUMBER
 
-                    sh "npm version 1.0.0-$VERSIONING_BRANCH.$BUILD_NUMBER --no-git-tag-version"
+                    sh "npm version $BUILD_VERSION --no-git-tag-version"
                 }
             }
         }
@@ -86,7 +91,7 @@ pipeline {
                             echo 'Branch detected - creating and pushing docker image'
                             imageTag = ''
                             tagTime = sh(returnStdout: true, script: 'echo $(date +%Y%m%d)').trim()
-                            imageTag = "${tagTime}.${BUILD_NUMBER}"
+                            imageTag = "${tagTime}.${BUILD_VERSION}"
                             echo 'Portal UI Current Version: '
                             echo imageTag
                             // push to nexus the new docker image
