@@ -100,6 +100,10 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
       Object {
         "_defaultValues": Object {
           "catalogueOwner": "vu",
+          "contentSubtype": null,
+          "contentType": null,
+          "releaseYear": "",
+          "title": "",
         },
         "_executeSchema": [Function],
         "_fields": Object {},
@@ -117,6 +121,10 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
         },
         "_formValues": Object {
           "catalogueOwner": "vu",
+          "contentSubtype": null,
+          "contentType": null,
+          "releaseYear": "",
+          "title": "",
         },
         "_getDirty": [Function],
         "_getFieldArray": [Function],
@@ -130,6 +138,10 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
         "_options": Object {
           "defaultValues": Object {
             "catalogueOwner": "vu",
+            "contentSubtype": null,
+            "contentType": null,
+            "releaseYear": "",
+            "title": "",
           },
           "mode": "all",
           "reValidateMode": "onChange",
@@ -225,7 +237,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
             className="row"
           >
             <div
-              className="col-lg-6 col-sm-12"
+              className="col-12 nexus-c-title-create_input-wrapper"
             >
               <InputText
                 className="nexus-c-title-create_input"
@@ -255,11 +267,15 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                 placeholder="Enter Title"
               />
             </div>
+          </div>
+          <div
+            className="row"
+          >
             <div
               className="col-lg-6 col-sm-12"
             >
               <Dropdown
-                className="nexus-c-title-create_input"
+                className="nexus-c-title-create_input-dropdown"
                 disabled={false}
                 formControlOptions={
                   Object {
@@ -277,43 +293,42 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                   Object {
                     "isRequired": true,
                     "label": "Content Type",
+                    "shouldUpper": true,
                     "stacked": true,
                   }
                 }
-                optionLabel="label"
-                options={
-                  Array [
-                    Object {
-                      "label": "Movie",
-                      "value": "MOVIE",
-                    },
-                    Object {
-                      "label": "Series",
-                      "value": "SERIES",
-                    },
-                    Object {
-                      "label": "Season",
-                      "value": "SEASON",
-                    },
-                    Object {
-                      "label": "Episode",
-                      "value": "EPISODE",
-                    },
-                    Object {
-                      "label": "Sports",
-                      "value": "SPORTS",
-                    },
-                    Object {
-                      "label": "Advertisement",
-                      "value": "AD",
-                    },
-                    Object {
-                      "label": "Special",
-                      "value": "SPECIAL",
-                    },
-                  ]
-                }
+                options={Array []}
                 placeholder="Select a Content Type"
+              />
+            </div>
+            <div
+              className="col-lg-6 col-sm-12"
+            >
+              <Dropdown
+                className="nexus-c-title-create_input-dropdown"
+                formControlOptions={
+                  Object {
+                    "formControlName": "contentSubtype",
+                    "rules": Object {
+                      "required": Object {
+                        "message": "Field cannot be empty!",
+                        "value": true,
+                      },
+                    },
+                  }
+                }
+                id="contentSubtype"
+                labelProps={
+                  Object {
+                    "isRequired": true,
+                    "label": "Content Subtype",
+                    "shouldUpper": true,
+                    "stacked": true,
+                  }
+                }
+                options={Array []}
+                placeholder="Select a Content Sub Type"
+                value={null}
               />
             </div>
           </div>
@@ -371,6 +386,10 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                   Object {
                     "_defaultValues": Object {
                       "catalogueOwner": "vu",
+                      "contentSubtype": null,
+                      "contentType": null,
+                      "releaseYear": "",
+                      "title": "",
                     },
                     "_executeSchema": [Function],
                     "_fields": Object {},
@@ -388,6 +407,10 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     },
                     "_formValues": Object {
                       "catalogueOwner": "vu",
+                      "contentSubtype": null,
+                      "contentType": null,
+                      "releaseYear": "",
+                      "title": "",
                     },
                     "_getDirty": [Function],
                     "_getFieldArray": [Function],
@@ -401,6 +424,10 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                     "_options": Object {
                       "defaultValues": Object {
                         "catalogueOwner": "vu",
+                        "contentSubtype": null,
+                        "contentType": null,
+                        "releaseYear": "",
+                        "title": "",
                       },
                       "mode": "all",
                       "reValidateMode": "onChange",
@@ -640,6 +667,10 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
       Object {
         "_defaultValues": Object {
           "catalogueOwner": undefined,
+          "contentSubtype": null,
+          "contentType": null,
+          "releaseYear": "",
+          "title": "",
         },
         "_executeSchema": [Function],
         "_fields": Object {},
@@ -657,6 +688,10 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
         },
         "_formValues": Object {
           "catalogueOwner": undefined,
+          "contentSubtype": null,
+          "contentType": null,
+          "releaseYear": "",
+          "title": "",
         },
         "_getDirty": [Function],
         "_getFieldArray": [Function],
@@ -670,6 +705,10 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
         "_options": Object {
           "defaultValues": Object {
             "catalogueOwner": undefined,
+            "contentSubtype": null,
+            "contentType": null,
+            "releaseYear": "",
+            "title": "",
           },
           "mode": "all",
           "reValidateMode": "onChange",
@@ -765,7 +804,7 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
             className="row"
           >
             <div
-              className="col-lg-6 col-sm-12"
+              className="col-12 nexus-c-title-create_input-wrapper"
             >
               <InputText
                 className="nexus-c-title-create_input"
@@ -795,11 +834,15 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                 placeholder="Enter Title"
               />
             </div>
+          </div>
+          <div
+            className="row"
+          >
             <div
               className="col-lg-6 col-sm-12"
             >
               <Dropdown
-                className="nexus-c-title-create_input"
+                className="nexus-c-title-create_input-dropdown"
                 disabled={true}
                 formControlOptions={
                   Object {
@@ -817,43 +860,42 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                   Object {
                     "isRequired": true,
                     "label": "Content Type",
+                    "shouldUpper": true,
                     "stacked": true,
                   }
                 }
-                optionLabel="label"
-                options={
-                  Array [
-                    Object {
-                      "label": "Movie",
-                      "value": "MOVIE",
-                    },
-                    Object {
-                      "label": "Series",
-                      "value": "SERIES",
-                    },
-                    Object {
-                      "label": "Season",
-                      "value": "SEASON",
-                    },
-                    Object {
-                      "label": "Episode",
-                      "value": "EPISODE",
-                    },
-                    Object {
-                      "label": "Sports",
-                      "value": "SPORTS",
-                    },
-                    Object {
-                      "label": "Advertisement",
-                      "value": "AD",
-                    },
-                    Object {
-                      "label": "Special",
-                      "value": "SPECIAL",
-                    },
-                  ]
-                }
+                options={Array []}
                 placeholder="Select a Content Type"
+              />
+            </div>
+            <div
+              className="col-lg-6 col-sm-12"
+            >
+              <Dropdown
+                className="nexus-c-title-create_input-dropdown"
+                formControlOptions={
+                  Object {
+                    "formControlName": "contentSubtype",
+                    "rules": Object {
+                      "required": Object {
+                        "message": "Field cannot be empty!",
+                        "value": true,
+                      },
+                    },
+                  }
+                }
+                id="contentSubtype"
+                labelProps={
+                  Object {
+                    "isRequired": true,
+                    "label": "Content Subtype",
+                    "shouldUpper": true,
+                    "stacked": true,
+                  }
+                }
+                options={Array []}
+                placeholder="Select a Content Sub Type"
+                value={null}
               />
             </div>
           </div>
@@ -911,6 +953,10 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                   Object {
                     "_defaultValues": Object {
                       "catalogueOwner": undefined,
+                      "contentSubtype": null,
+                      "contentType": null,
+                      "releaseYear": "",
+                      "title": "",
                     },
                     "_executeSchema": [Function],
                     "_fields": Object {},
@@ -928,6 +974,10 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     },
                     "_formValues": Object {
                       "catalogueOwner": undefined,
+                      "contentSubtype": null,
+                      "contentType": null,
+                      "releaseYear": "",
+                      "title": "",
                     },
                     "_getDirty": [Function],
                     "_getFieldArray": [Function],
@@ -941,6 +991,10 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                     "_options": Object {
                       "defaultValues": Object {
                         "catalogueOwner": undefined,
+                        "contentSubtype": null,
+                        "contentType": null,
+                        "releaseYear": "",
+                        "title": "",
                       },
                       "mode": "all",
                       "reValidateMode": "onChange",

@@ -145,9 +145,9 @@ export const registerTitle = payload => {
     });
 };
 
-export const getExternalIDType = () => {
+export const getEnums = enumItem => {
     const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/configuration/titles/enums`;
-    const params = {item: 'external-id-type'};
+    const params = {item: enumItem};
 
     return nexusFetch(url, {
         method: 'get',

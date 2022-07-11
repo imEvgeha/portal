@@ -34,6 +34,22 @@ export const titleService = {
         return nexusFetch(url, {params});
     },
 
+    freeTextSearchV2: (searchCriteria, page, size, sortedParams) => {
+        const queryParams = {};
+        for (const key in searchCriteria) {
+            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+                queryParams[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
+            }
+        }
+        const url =
+            getConfig('gateway.titleUrl') +
+            getConfig('gateway.service.titleV2') +
+            '/titles' +
+            prepareSortMatrixParamTitles(sortedParams);
+        const params = encodedSerialize({...queryParams, page, size});
+        return nexusFetch(url, {params});
+    },
+
     freeTextSearchWithGenres: (searchCriteria, page, pageSize, sortedParams) => {
         const GENRE_KEY = 'editorialGenres';
 
@@ -97,15 +113,6 @@ export const titleService = {
             method: 'post',
             body: JSON.stringify(title),
             params: encodedSerialize(queryParams),
-            isWithErrorHandling: false,
-        });
-    },
-
-    createTitleWithoutErrorModal: title => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/titles';
-        return nexusFetch(url, {
-            method: 'post',
-            body: JSON.stringify(title),
             isWithErrorHandling: false,
         });
     },

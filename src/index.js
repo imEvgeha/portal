@@ -53,6 +53,7 @@ const setEnvConfiguration = async env => {
     });
 };
 
+// Setup Environment
 // setEnvConfiguration('qa')
 setEnvConfiguration()
     .then(() => renderApp())

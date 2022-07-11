@@ -30,7 +30,7 @@ import {
     createGridStateSelector,
     createTitleMetadataFilterSelector,
 } from './titleMetadataSelectors';
-import {getExternalIDType} from './titleMetadataServices';
+import {getEnums} from './titleMetadataServices';
 import {TITLE_METADATA_SYNC_LOG_TAB, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
@@ -73,7 +73,7 @@ export const TitleMetadataView = ({
     }, [selectedTenant]);
 
     const updateExternalIdDropdown = async () => {
-        return getExternalIDType();
+        return getEnums('external-id-type');
     };
 
     const showSuccess = detail => {

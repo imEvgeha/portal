@@ -1,6 +1,6 @@
 import React from 'react';
 import {isAllowed} from '@portal/portal-auth/permissions';
-import {Checkbox as PortalCheckbox} from '@portal/portal-components';
+import {Checkbox, Dropdown} from '@portal/portal-components';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
 import configureStore from 'redux-mock-store';
@@ -14,15 +14,28 @@ describe('TitleCreateModal', () => {
     let store = null;
 
     mockStore = configureStore();
-    store = mockStore({ui: {toast: {list: []}}});
+    store = mockStore({
+        ui: {toast: {list: []}},
+        titleMetadata: {
+            filter: {
+                filterModel: {},
+                sortModel: null,
+                columnState: [],
+                contentTypes: [],
+            },
+        },
+        auth: {
+            selectedTenant: {},
+        },
+    });
 
     describe('Default TitleCreateModal', () => {
         withHooks(() => {
             defaultWrapper = shallow(
                 <TitleCreate store={store} display={true} onToggle={() => null} tenantCode="vu" isItMatching={false} />
-            );
-            // .dive()
-            // .shallow();
+            )
+                .dive()
+                .shallow();
         });
 
         it('should match snapshot', () => {
@@ -33,19 +46,18 @@ describe('TitleCreateModal', () => {
             expect(defaultWrapper.find('.nexus-c-title-create_dialog')).toHaveLength(1);
         });
 
-        it('should render labels for create title dialog PortalDropdown', () => {
-            if (isAllowed('publishTitleMetadata')) {
-                expect(defaultWrapper.find('Dropdown')).toHaveLength(1);
-            }
+        it('should render portal dropdowns for create title', () => {
+            expect(defaultWrapper.find('.nexus-c-title-create_input-dropdown')).toHaveLength(2);
+            expect(defaultWrapper.find(Dropdown)).toHaveLength(2);
         });
 
         it('should render checkbox container and checkboxes for create title dialog window', () => {
             if (isAllowed('publishTitleMetadata')) {
                 expect(defaultWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(1);
-                expect(defaultWrapper.find(PortalCheckbox)).toHaveLength(2);
+                expect(defaultWrapper.find(Checkbox)).toHaveLength(2);
             } else {
                 expect(defaultWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(0);
-                expect(defaultWrapper.find(PortalCheckbox)).toHaveLength(0);
+                expect(defaultWrapper.find(Checkbox)).toHaveLength(0);
             }
         });
 
@@ -58,9 +70,9 @@ describe('TitleCreateModal', () => {
         withHooks(() => {
             matchingWrapper = shallow(
                 <TitleCreate store={store} display={true} onToggle={() => null} isItMatching={true} />
-            );
-            // .dive()
-            // .shallow();
+            )
+                .dive()
+                .shallow();
         });
 
         it('should match snapshot', () => {
@@ -71,18 +83,19 @@ describe('TitleCreateModal', () => {
             expect(matchingWrapper.find('.nexus-c-title-create_dialog')).toHaveLength(1);
         });
 
+        it('should render portal dropdowns for create title', () => {
+            expect(defaultWrapper.find('.nexus-c-title-create_input-dropdown')).toHaveLength(2);
+            expect(defaultWrapper.find(Dropdown)).toHaveLength(2);
+        });
+
         it('should render footer for create title dialog window', () => {
             const footerWrapper = shallow(matchingWrapper.find('Dialog').props().footer);
             expect(footerWrapper.find('.nexus-c-title-create_footer-container')).toHaveLength(1);
         });
 
-        it('should render labels for create title dialog inputs', () => {
-            expect(matchingWrapper.find('InputText')).toHaveLength(2);
-        });
-
-        it('should not render checkbox container and checkboxes for create title dialog window', () => {
+        it('should not render checkboxes for create title dialog window', () => {
             expect(matchingWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(0);
-            expect(matchingWrapper.find(PortalCheckbox)).toHaveLength(0);
+            expect(matchingWrapper.find(Checkbox)).toHaveLength(0);
         });
 
         it('should render external IDs section', () => {

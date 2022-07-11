@@ -1,5 +1,3 @@
-import {ADVERTISEMENT, EPISODE, MOVIE, SEASON, SERIES, SPORTS, SPECIAL} from '../../../metadata/constants/contentType';
-
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
 const NEW_TITLE_TOAST_SUCCESS_MESSAGE = 'You successfully created a new title!';
 const NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE = 'You successfully published the new title!';
@@ -41,25 +39,26 @@ const TENANT_CODE_ITEMS = [
 ];
 
 export const CONTENT_TYPES = {
-    MOVIE: 'MOVIE',
-    EPISODE: 'EPISODE',
-    EVENT: 'EVENT',
-    SERIES: 'SERIES',
-    SEASON: 'SEASON',
-    SPORTS: 'SPORTS',
-    AD: 'AD',
-    SPECIAL: 'SPECIAL',
+    MOVIE: 'Movie',
+    SERIES: 'Series',
+    MINI_SERIES: 'Mini Series',
+    SEASON: 'Season',
+    EPISODE: 'Episode',
+    PREVIEW: 'Preview',
+    SPORTS: 'Sports',
+    SPECIAL: 'Special',
+    PAID_PROGRAMMING: 'Paid Programming',
+    AD: 'Advertisement',
+    PODCAST: 'Podcast',
+    DOCUMENTARY: 'Documentary',
 };
 
-export const CONTENT_TYPE_ITEMS = [
-    {label: MOVIE.name, value: MOVIE.apiName},
-    {label: SERIES.name, value: SERIES.apiName},
-    {label: SEASON.name, value: SEASON.apiName},
-    {label: EPISODE.name, value: EPISODE.apiName},
-    {label: SPORTS.name, value: SPORTS.apiName},
-    {label: ADVERTISEMENT.name, value: ADVERTISEMENT.apiName},
-    {label: SPECIAL.name, value: SPECIAL.apiName},
-];
+export const DEFAULT_VALUES = {
+    title: '',
+    contentType: null,
+    contentSubtype: null,
+    releaseYear: '',
+};
 
 export default {
     NEW_TITLE_TOAST_SUCCESS_MESSAGE,

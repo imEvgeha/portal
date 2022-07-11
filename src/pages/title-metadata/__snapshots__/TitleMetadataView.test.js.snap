@@ -96,14 +96,8 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     setColumnApi={[Function]}
     setGridApi={[Function]}
   />
-  <TitleCreate
-    bulkTitleMatch={[Function]}
-    defaultValues={Object {}}
+  <Connect(TitleCreate)
     display={false}
-    error=""
-    externalDropdownOptions={Object {}}
-    focusedRight={Object {}}
-    isItMatching={false}
     onCloseModal={[Function]}
     onSave={[Function]}
   />

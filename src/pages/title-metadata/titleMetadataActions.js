@@ -84,6 +84,11 @@ export const setCurrentUserViewAction = payload => ({
     payload,
 });
 
+export const storeTitleContentTypes = payload => ({
+    type: actionTypes.SET_TITLE_CONTENT_TYPES,
+    payload,
+});
+
 export const setExternalIdValues = payload => ({
     type: actionTypes.SET_EXTERNAL_ID_DROPDOWN,
     payload,

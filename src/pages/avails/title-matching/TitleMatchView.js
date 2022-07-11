@@ -16,7 +16,6 @@ import mappings from '../../../../profile/titleMatchingRightMappings.json';
 import {NexusGrid, NexusTitle} from '../../../ui/elements';
 import {getSearchCriteria} from '../../legacy/stores/selectors/metadata/titleSelectors';
 import TitleCreate from '../../title-metadata/components/titleCreateModal/TitleCreateModal';
-import {CONTENT_TYPE_ITEMS} from '../../title-metadata/components/titleCreateModal/TitleCreateModalConstants';
 import {createColumnDefs as getRightColumns} from '../utils';
 import TitlesList from './components/TitlesList';
 import {createColumnDefs, fetchFocusedRight, mergeTitles} from './titleMatchingActions';
@@ -143,7 +142,7 @@ const TitleMatchView = ({
                 isItMatching={true}
                 defaultValues={{
                     ...focusedRight,
-                    contentType: CONTENT_TYPE_ITEMS?.find(item => item.label === focusedContentType)?.value,
+                    contentType: focusedContentType,
                 }}
                 error={error}
             />

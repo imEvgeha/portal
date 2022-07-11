@@ -62,17 +62,14 @@ exports[`BulkMatching should match snapshot 1`] = `
       }
     />
   </div>
-  <TitleCreate
+  <Connect(TitleCreate)
     bulkTitleMatch={[Function]}
     defaultValues={
       Object {
-        "contentType": undefined,
+        "contentType": "",
       }
     }
     display={false}
-    error=""
-    externalDropdownOptions={Object {}}
-    focusedRight={Object {}}
     isItMatching={true}
     onCloseModal={[Function]}
     onSave={[Function]}

@@ -26,7 +26,7 @@ const appendCustomMsg = (errorMessage, customMessage) =>
     customMessage ? `${customMessage} Details: ${errorMessage}` : errorMessage;
 
 export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast = [], errorMessage}) => {
-    const {error} = errorObj;
+    const {error, description} = errorObj;
 
     const fallbackErrorMessage = 'Unexpected error occurred. Please try again later';
 
@@ -36,7 +36,7 @@ export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast
     };
 
     let toast = null;
-    const [err] = errorCodesToast.filter(error => error.status === error.code);
+    const [err] = errorCodesToast.filter(error => error?.status === error?.code);
 
     if (err) {
         toast = {
@@ -51,10 +51,10 @@ export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast
                 content: (
                     <ToastBody
                         summary={ERROR_TITLE}
-                        detail={appendCustomMsg(error.message, errorMessage)}
+                        detail={appendCustomMsg(description || err?.description || error?.message, errorMessage)}
                         severity="error"
                     >
-                        {TOAST_ACTIONS.codes.includes(error.status) ? (
+                        {TOAST_ACTIONS.codes.includes(error?.status) ? (
                             <Button
                                 label="Ok"
                                 className="p-button-link p-toast-button-link"

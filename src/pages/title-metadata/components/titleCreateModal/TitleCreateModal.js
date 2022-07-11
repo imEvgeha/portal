@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Restricted} from '@portal/portal-auth/permissions';
 import {AutoComplete, Checkbox, Dropdown, InputText} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
-import {addToast as toastDisplay} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/src/elements/nexus-entity/constants';
@@ -13,13 +13,16 @@ import {isEmpty, isObject} from 'lodash';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {FormProvider, useForm, useWatch} from 'react-hook-form';
+import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
-import {store} from '../../../..';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import {publisherService} from '../../../legacy/containers/metadata/service/PublisherService';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
+import {storeTitleContentTypes} from '../../titleMetadataActions';
+import {createContentTypesSelector} from '../../titleMetadataSelectors';
+import {getEnums} from '../../titleMetadataServices';
 import ExternalIDsSection from '../nexus-field-extarnal-ids/ExternalIDsSection';
-import constants, {CONTENT_TYPE_ITEMS, CONTENT_TYPES} from './TitleCreateModalConstants';
+import constants, {CONTENT_TYPES, DEFAULT_VALUES} from './TitleCreateModalConstants';
 import './Title.scss';
 
 const onViewTitleClick = (response, realm) => {
@@ -38,16 +41,19 @@ const TitleCreate = ({
     bulkTitleMatch,
     defaultValues,
     error,
+    contentTypes,
+    selectedTenant,
+    addToast,
+    storeTitleContentTypes,
     externalDropdownOptions,
 }) => {
     const {CREATE_TITLE_RESTRICTIONS, EXTERNAL_ID_TYPE_DUPLICATE_ERROR} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         CREATE_TITLE_RESTRICTIONS;
-    const addToast = toast => store.dispatch(toastDisplay(toast));
     const {id: focusedId} = focusedRight;
-    const [isCreatingTitle, setIsCreatingTitle] = useState(false);
+    const initialValues = {...defaultValues, ...DEFAULT_VALUES, catalogueOwner: tenantCode};
     const form = useForm({
-        defaultValues: {...defaultValues, catalogueOwner: tenantCode},
+        defaultValues: initialValues,
         mode: 'all',
         reValidateMode: 'onChange',
     });
@@ -63,10 +69,23 @@ const TitleCreate = ({
     const currentValues = useWatch({control});
     const routeParams = useParams();
 
+    const isItMiniSeriesEpisode =
+        currentValues?.contentType === CONTENT_TYPES.EPISODE &&
+        currentValues?.contentSubtype === CONTENT_TYPES.MINI_SERIES;
+
     // filtering on series name
     const [filteredSeries, setFilteredSeries] = useState([]);
+    const [contentSubTypes, setContentSubTypes] = useState([]);
     const [seasons, setSeasons] = useState([]);
+    const [isCreatingTitle, setIsCreatingTitle] = useState(false);
     const [fetchingSeasons, setFetchingSeasons] = useState(false);
+    const [isFieldRequired, setIsFieldRequired] = useState(false);
+
+    useEffect(() => {
+        getEnums('content-type').then(resp => {
+            resp.length ? storeTitleContentTypes(resp?.[0].values) : storeTitleContentTypes([]);
+        });
+    }, [selectedTenant.id]);
 
     useEffect(() => {
         if (error) {
@@ -97,12 +116,27 @@ const TitleCreate = ({
         }
     }, [defaultValues]);
 
+    useEffect(() => {
+        const {contentType} = currentValues;
+        if (contentType && contentTypes) {
+            getAndSetContentSubTypes(contentType);
+        }
+    }, [currentValues.contentType]);
+
+    useEffect(() => {
+        const {contentType} = currentValues;
+        if (contentType && contentTypes && !contentSubTypes) {
+            getAndSetContentSubTypes(contentType);
+        }
+    }, [defaultValues]);
+
     const toggle = () => {
         onSave();
-        reset();
+        reset(initialValues);
         setValue('externalSystemIds', []);
         setFilteredSeries([]);
         setSeasons([]);
+        setContentSubTypes([]);
     };
 
     const handleError = err => {
@@ -114,8 +148,37 @@ const TitleCreate = ({
         });
     };
 
+    const handleIsFieldRequired = () => {
+        const {contentType} = currentValues;
+        switch (contentType) {
+            case CONTENT_TYPES.SPORTS:
+                return setIsFieldRequired(false);
+            default:
+                return setIsFieldRequired(true);
+        }
+    };
+
+    useEffect(() => {
+        const {contentType} = currentValues;
+        if (contentType && contentTypes) {
+            const currentContentType = contentTypes.find(item => item.displayName === contentType);
+            const currentContentSubTypes = currentContentType?.values;
+            const currentContentSubTypeNames = currentContentSubTypes?.map(item => item.displayName);
+            setContentSubTypes(currentContentSubTypeNames);
+            setValue('contentSubtype', currentContentSubTypes?.find(item => item.isDefault)?.displayName);
+        }
+        handleIsFieldRequired();
+    }, [currentValues.contentType, defaultValues]);
+
+    const getAndSetContentSubTypes = contentType => {
+        const currentContentType = contentTypes.find(item => item.displayName === contentType);
+        const currentContentSubTypeNames = currentContentType?.values?.map(item => item.displayName);
+        setValue('contentSubtype', currentContentType?.values?.find(item => item.isDefault)?.displayName);
+        setContentSubTypes(currentContentSubTypeNames);
+    };
+
     const isSeriesValid = () => {
-        if (isObject(currentValues.seriesTitleName) || !areFieldsRequired()) {
+        if (isObject(currentValues.seriesTitleName) || !areFieldsRequired() || isItMiniSeriesEpisode) {
             return true;
         }
         setError('seriesTitleName', {type: 'custom', message: 'Invalid series name'});
@@ -176,9 +239,9 @@ const TitleCreate = ({
             .catch(handleError);
     };
 
-    const matchCreateTitle = title => {
+    const matchCreateTitle = (title, params) => {
         titleService
-            .createTitleWithoutErrorModal(title)
+            .createTitleV2(title, params)
             .then(res => {
                 const titleId = res.meta.id;
                 addToast({
@@ -237,15 +300,17 @@ const TitleCreate = ({
             const copyCastCrewFromSeason = Boolean(currentValues.addCrew);
             const getParentIdForParams = () => {
                 const updatedParams = {};
-                if (submitTitle?.season?.seasonId || submitTitle?.seriesTitleName?.id) {
-                    updatedParams.parentTitleId = submitTitle.season.seasonId || submitTitle.seriesTitleName.id;
+                const {season, seriesTitleName, miniseriesTitleName} = submitTitle;
+                if (season?.titleId || seriesTitleName?.titleId || miniseriesTitleName?.titleId) {
+                    updatedParams.parentTitleId =
+                        season?.titleId || seriesTitleName?.titleId || miniseriesTitleName?.titleId;
                 }
                 return updatedParams;
             };
             const params = {copyCastCrewFromSeason, ...getParentIdForParams()};
             setIsCreatingTitle(true);
 
-            isItMatching ? matchCreateTitle(title) : defaultCreateTitle(title, params);
+            isItMatching ? matchCreateTitle(title, params) : defaultCreateTitle(title, params);
         }
     };
 
@@ -256,15 +321,18 @@ const TitleCreate = ({
     const searchSeries = async event => {
         setTimeout(async () => {
             let filteredSeries = [];
+            const params = {};
+            const getContentTypeName = displayName => contentTypes.find(item => item.displayName === displayName)?.name;
+            params.titleName = event.query;
+            params.contentType = getContentTypeName(
+                isItMiniSeriesEpisode ? CONTENT_TYPES.MINI_SERIES : CONTENT_TYPES.SERIES
+            );
+
             // only invoke the API when the search query string is not empty
             if (event.query.trim().length) {
-                const response = await titleService.freeTextSearch(
-                    {title: event.query, contentType: CONTENT_TYPES.SERIES, tenantCode},
-                    0,
-                    100
-                );
-                if (response?.total > 0) {
-                    filteredSeries = response?.data;
+                const response = await titleService.freeTextSearchV2({...params}, 0, 100);
+                if (response?.titles?.length) {
+                    filteredSeries = response?.titles;
                 } else {
                     filteredSeries = [];
                 }
@@ -287,20 +355,9 @@ const TitleCreate = ({
             setSeasons([]);
 
             titleService
-                .freeTextSearch(
-                    {parentId: series.id, contentType: CONTENT_TYPES.SEASON, tenantCode, sort: 'seasonNumber'},
-                    0,
-                    100
-                )
+                .freeTextSearchV2({parentId: series.titleId, contentType: CONTENT_TYPES.SEASON}, 0, 100)
                 .then(response => {
-                    setSeasons(
-                        // map the properties needed for the dropdown
-                        response?.data?.map(season => {
-                            return {
-                                ...season.episodic,
-                            };
-                        })
-                    );
+                    setSeasons(response.titles);
                     setFetchingSeasons(false);
                 })
                 .catch(() => {
@@ -310,7 +367,7 @@ const TitleCreate = ({
     };
 
     const toSeriesAndRelease = a => {
-        return `${a?.episodic?.seriesTitleName}${a?.releaseYear ? `, ${a?.releaseYear}` : ``}`;
+        return `${a?.titleName}${a?.releaseYear ? `, ${a?.releaseYear}` : ``}`;
     };
 
     /**
@@ -332,7 +389,7 @@ const TitleCreate = ({
     const areThereAnyExternalSystemDuplicates = title => {
         const externalIdArray = title?.externalSystemIds?.map(item => item.titleId);
         const externalIdTypesArray = title?.externalSystemIds?.map(item => item.externalSystem);
-        const findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index);
+        const findDuplicates = arr => arr?.filter((item, index) => arr.indexOf(item) !== index);
 
         const indexOfDuplicateID = findDuplicates(externalIdArray).length;
         const indexOfDuplicateType = findDuplicates(externalIdTypesArray).length;
@@ -341,16 +398,28 @@ const TitleCreate = ({
     };
 
     const getTitleWithoutEmptyField = titleForm => {
+        const getValueOrEmptyObject = (key, value) => {
+            if (value) {
+                return {[key]: value};
+            }
+            return {};
+        };
+
         const updatedExternalSystemIds = titleForm.externalSystemIds.length ? titleForm.externalSystemIds : null;
-        const seasonNumber = isObject(titleForm.season) ? titleForm.season.seasonNumber : titleForm.season;
+        const seasonNumber = isObject(titleForm.season) ? titleForm.season.number : titleForm.season;
+        const currentContentType = contentTypes?.find(item => item.displayName === titleForm.contentType);
+        const currentContentSubType = currentContentType?.values?.find(
+            item => item.displayName === titleForm.contentSubtype
+        );
         return {
             name: titleForm.title,
-            releaseYear: titleForm.releaseYear || null,
-            contentType: titleForm.contentType.toLowerCase(),
-            externalSystemIds: updatedExternalSystemIds,
-            contentSubType: titleForm.contentType.toLowerCase(),
-            seasonNumber: seasonNumber || null,
-            episodeNumber: titleForm.episodeNumber || null,
+            ...getValueOrEmptyObject('releaseYear', titleForm.releaseYear),
+            ...getValueOrEmptyObject('contentType', currentContentType.name),
+            ...getValueOrEmptyObject('contentSubType', currentContentSubType.name),
+            ...getValueOrEmptyObject('externalSystemIds', updatedExternalSystemIds),
+            ...getValueOrEmptyObject('miniseries', titleForm.miniseriesTitleName?.title),
+            ...getValueOrEmptyObject('seasonNumber', seasonNumber),
+            ...getValueOrEmptyObject('episodeNumber', titleForm.episodeNumber),
         };
     };
 
@@ -409,8 +478,8 @@ const TitleCreate = ({
                     id="titleCancelBtn"
                     label="Cancel"
                     onClick={() => {
-                        onCloseModal();
                         toggle();
+                        onCloseModal();
                     }}
                     disabled={isCreatingTitle}
                     className="p-button-outlined p-button-secondary"
@@ -435,7 +504,6 @@ const TitleCreate = ({
         switch (currentValues.contentType) {
             case CONTENT_TYPES.SEASON:
             case CONTENT_TYPES.EPISODE:
-            case CONTENT_TYPES.EVENT:
             case CONTENT_TYPES.SPORTS:
                 return true;
             default:
@@ -478,7 +546,7 @@ const TitleCreate = ({
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-lg-6 col-sm-12">
+                                <div className="col-12 nexus-c-title-create_input-wrapper">
                                     <InputText
                                         formControlOptions={{
                                             formControlName: `title`,
@@ -496,34 +564,70 @@ const TitleCreate = ({
                                         placeholder="Enter Title"
                                     />
                                 </div>
+                            </div>
+
+                            <div className="row">
                                 <div className="col-lg-6 col-sm-12">
                                     <Dropdown
+                                        labelProps={{
+                                            isRequired: true,
+                                            label: 'Content Type',
+                                            shouldUpper: true,
+                                            stacked: true,
+                                        }}
                                         formControlOptions={{
                                             formControlName: `contentType`,
                                             rules: {
                                                 required: {value: true, message: 'Field cannot be empty!'},
                                             },
                                         }}
-                                        labelProps={{label: 'Content Type', stacked: true, isRequired: true}}
-                                        optionLabel="label"
-                                        options={CONTENT_TYPE_ITEMS}
+                                        options={contentTypes?.map(e => e.displayName)}
                                         disabled={isItMatching}
                                         id="contentType"
-                                        className="nexus-c-title-create_input"
+                                        className="nexus-c-title-create_input-dropdown"
                                         placeholder="Select a Content Type"
+                                    />
+                                </div>
+
+                                <div className="col-lg-6 col-sm-12">
+                                    <Dropdown
+                                        labelProps={{
+                                            isRequired: true,
+                                            label: 'Content Subtype',
+                                            shouldUpper: true,
+                                            stacked: true,
+                                        }}
+                                        formControlOptions={{
+                                            formControlName: `contentSubtype`,
+                                            rules: {
+                                                required: {value: true, message: 'Field cannot be empty!'},
+                                            },
+                                        }}
+                                        value={currentValues.contentSubtype}
+                                        options={contentSubTypes}
+                                        id="contentSubtype"
+                                        className="nexus-c-title-create_input-dropdown"
+                                        placeholder="Select a Content Sub Type"
                                     />
                                 </div>
                             </div>
 
-                            {fieldsToDisplay() ? (
+                            {fieldsToDisplay() && !isItMiniSeriesEpisode ? (
                                 <div className="row">
                                     <div className="col-lg-6 col-sm-12">
                                         <AutoComplete
-                                            labelProps={{label: 'Series', stacked: true, isRequired: true}}
+                                            labelProps={{
+                                                label: 'Series',
+                                                stacked: true,
+                                                isRequired: isFieldRequired,
+                                            }}
                                             formControlOptions={{
                                                 formControlName: `seriesTitleName`,
                                                 rules: {
-                                                    required: {value: true, message: 'Field cannot be empty!'},
+                                                    required: {
+                                                        value: isFieldRequired,
+                                                        message: 'Field cannot be empty!',
+                                                    },
                                                 },
                                             }}
                                             forceSelection
@@ -569,14 +673,21 @@ const TitleCreate = ({
                                                 formControlOptions={{
                                                     formControlName: `season`,
                                                     rules: {
-                                                        required: {value: true, message: 'Field cannot be empty!'},
+                                                        required: {
+                                                            value: isFieldRequired,
+                                                            message: 'Field cannot be empty!',
+                                                        },
                                                     },
                                                 }}
-                                                labelProps={{label: 'Season', stacked: true, isRequired: true}}
+                                                labelProps={{
+                                                    label: 'Season',
+                                                    stacked: true,
+                                                    isRequired: isFieldRequired,
+                                                }}
                                                 id="season"
                                                 className="nexus-c-title-create_dropdown"
                                                 options={seasons}
-                                                optionLabel="seasonNumber"
+                                                optionLabel="number"
                                                 columnClass="col-12"
                                                 placeholder="Select Season Number"
                                                 disabled={fetchingSeasons}
@@ -588,51 +699,82 @@ const TitleCreate = ({
 
                             {fieldsToDisplay() ? (
                                 <div className="row">
-                                    {fieldsToDisplayAndHideForSeason ? (
+                                    {isItMiniSeriesEpisode ? (
                                         <div className="col-lg-6 col-sm-12">
-                                            <InputText
+                                            <AutoComplete
+                                                labelProps={{label: 'Miniseries', stacked: true, isRequired: true}}
                                                 formControlOptions={{
-                                                    formControlName: `episodeNumber`,
+                                                    formControlName: `miniseriesTitleName`,
                                                     rules: {
                                                         required: {value: true, message: 'Field cannot be empty!'},
-                                                        pattern: {
-                                                            value: /^[0-9]+$/,
-                                                            message: 'Please enter a valid episode!',
-                                                        },
-                                                        maxLength: {
-                                                            value: MAX_EPISODE_LENGTH,
-                                                            message: `Max episode length is ${MAX_EPISODE_LENGTH}!`,
-                                                        },
                                                     },
                                                 }}
-                                                labelProps={{label: 'Episode', stacked: true, isRequired: true}}
-                                                id="episodeNumber"
-                                                className="nexus-c-title-create_input"
-                                                placeholder="Enter Episode Number"
+                                                forceSelection
+                                                id="miniseriesTitleName"
+                                                field="newTitleReleaseYear"
+                                                placeholder="Enter Title"
+                                                value={currentValues.miniseriesTitleName}
+                                                suggestions={filteredSeries}
+                                                completeMethod={searchSeries}
+                                                itemTemplate={seriesTemplate}
+                                                columnClass="col-lg-12"
+                                                aria-label="Series"
                                             />
                                         </div>
                                     ) : null}
-                                </div>
-                            ) : null}
 
-                            {fieldsToDisplayAndHideForSeason ? (
-                                <div className="row">
-                                    <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper d-flex align-items-center">
-                                        <Checkbox
-                                            formControlOptions={{
-                                                formControlName: `addCrew`,
-                                            }}
-                                            checked={currentValues?.addCrew}
-                                            id="addCrew"
-                                            className="nexus-c-title-create_checkbox"
-                                            inputId="addCrew"
-                                            labelProps={{
-                                                label: 'Add Cast Crew from Season to episode',
-                                                shouldUpper: false,
-                                            }}
-                                            labelPosition="right"
-                                        />
-                                    </div>
+                                    {fieldsToDisplay() ? (
+                                        <div className="col-lg-6 col-sm-12">
+                                            {fieldsToDisplayAndHideForSeason ? (
+                                                <InputText
+                                                    formControlOptions={{
+                                                        formControlName: `episodeNumber`,
+                                                        rules: {
+                                                            required: {
+                                                                value: isFieldRequired,
+                                                                message: 'Field cannot be empty!',
+                                                            },
+                                                            pattern: {
+                                                                value: /^[0-9]+$/,
+                                                                message: 'Please enter a valid episode!',
+                                                            },
+                                                            maxLength: {
+                                                                value: MAX_EPISODE_LENGTH,
+                                                                message: `Max episode length is ${MAX_EPISODE_LENGTH}!`,
+                                                            },
+                                                        },
+                                                    }}
+                                                    labelProps={{
+                                                        label: 'Episode',
+                                                        stacked: true,
+                                                        isRequired: isFieldRequired,
+                                                    }}
+                                                    id="episodeNumber"
+                                                    className="nexus-c-title-create_input"
+                                                    placeholder="Enter Episode Number"
+                                                />
+                                            ) : null}
+                                        </div>
+                                    ) : null}
+
+                                    {fieldsToDisplayAndHideForSeason && !isItMiniSeriesEpisode ? (
+                                        <div className="col-lg-6 col-sm-12 nexus-c-title-create_checkbox-wrapper d-flex align-items-center">
+                                            <Checkbox
+                                                formControlOptions={{
+                                                    formControlName: `addCrew`,
+                                                }}
+                                                checked={currentValues?.addCrew}
+                                                id="addCrew"
+                                                className="nexus-c-title-create_checkbox"
+                                                inputId="addCrew"
+                                                labelProps={{
+                                                    label: 'Add Cast Crew from Season to episode',
+                                                    shouldUpper: false,
+                                                }}
+                                                labelPosition="right"
+                                            />
+                                        </div>
+                                    ) : null}
                                 </div>
                             ) : null}
 
@@ -700,6 +842,10 @@ TitleCreate.propTypes = {
     onCloseModal: PropTypes.func.isRequired,
     defaultValues: PropTypes.object,
     error: PropTypes.string,
+    contentTypes: PropTypes.array,
+    selectedTenant: PropTypes.object,
+    addToast: PropTypes.func,
+    storeTitleContentTypes: PropTypes.func,
     externalDropdownOptions: PropTypes.object,
 };
 
@@ -710,7 +856,26 @@ TitleCreate.defaultProps = {
     focusedRight: {},
     defaultValues: {},
     error: '',
+    contentTypes: [],
+    selectedTenant: {},
+    addToast: () => null,
+    storeTitleContentTypes: () => null,
     externalDropdownOptions: {},
 };
 
-export default TitleCreate;
+const mapStateToProps = () => {
+    const contentTypesSelector = createContentTypesSelector();
+    const selectedTenantSelector = state => state?.auth?.selectedTenant || {};
+
+    return state => ({
+        contentTypes: contentTypesSelector(state),
+        selectedTenant: selectedTenantSelector(state),
+    });
+};
+
+const mapDispatchToProps = dispatch => ({
+    addToast: payload => dispatch(addToast(payload)),
+    storeTitleContentTypes: payload => dispatch(storeTitleContentTypes(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TitleCreate);

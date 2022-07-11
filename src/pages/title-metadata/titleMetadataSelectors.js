@@ -62,6 +62,9 @@ export const createCurrentUserViewSelector = () =>
 export const createSelectedIdSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.selectedId || '');
 
+export const createContentTypesSelector = () =>
+    createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.contentTypes || []);
+
 export const createExternalDropdownIDsSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.externalDropdownIDs || {});
 
