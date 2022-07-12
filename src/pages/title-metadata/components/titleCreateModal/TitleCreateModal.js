@@ -108,11 +108,16 @@ const TitleCreate = ({
     }, [currentValues.seriesTitleName]);
 
     useEffect(() => {
+        const {contentType} = currentValues;
         if (!isEmpty(defaultValues)) {
             const keys = Object.keys(defaultValues);
             keys.forEach(key => {
                 setValue(key, defaultValues[key]);
             });
+        }
+
+        if (contentType && contentTypes && !contentSubTypes) {
+            getAndSetContentSubTypes(contentType);
         }
     }, [defaultValues]);
 
@@ -122,13 +127,6 @@ const TitleCreate = ({
             getAndSetContentSubTypes(contentType);
         }
     }, [currentValues.contentType]);
-
-    useEffect(() => {
-        const {contentType} = currentValues;
-        if (contentType && contentTypes && !contentSubTypes) {
-            getAndSetContentSubTypes(contentType);
-        }
-    }, [defaultValues]);
 
     const toggle = () => {
         onSave();
@@ -158,23 +156,12 @@ const TitleCreate = ({
         }
     };
 
-    useEffect(() => {
-        const {contentType} = currentValues;
-        if (contentType && contentTypes) {
-            const currentContentType = contentTypes.find(item => item.displayName === contentType);
-            const currentContentSubTypes = currentContentType?.values;
-            const currentContentSubTypeNames = currentContentSubTypes?.map(item => item.displayName);
-            setContentSubTypes(currentContentSubTypeNames);
-            setValue('contentSubtype', currentContentSubTypes?.find(item => item.isDefault)?.displayName);
-        }
-        handleIsFieldRequired();
-    }, [currentValues.contentType, defaultValues]);
-
     const getAndSetContentSubTypes = contentType => {
         const currentContentType = contentTypes.find(item => item.displayName === contentType);
         const currentContentSubTypeNames = currentContentType?.values?.map(item => item.displayName);
         setValue('contentSubtype', currentContentType?.values?.find(item => item.isDefault)?.displayName);
         setContentSubTypes(currentContentSubTypeNames);
+        handleIsFieldRequired();
     };
 
     const isSeriesValid = () => {
