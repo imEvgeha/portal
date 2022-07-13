@@ -434,6 +434,10 @@ $element-color-orange-80: palette(orange, 80);
     }
 
     &.p-component {
+        &.p-inputnumber-input {
+            margin-bottom: 0;
+        }
+
         width: 100%;
         margin-bottom: $element-margin-bottom;
         border-radius: $element-border-radius;

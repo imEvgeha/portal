@@ -18,7 +18,7 @@ import * as detailsSelectors from '../../../avails/right-details/rightDetailsSel
 import {fetchConfigApiEndpoints} from '../../../settings/settingsActions';
 import * as settingsSelectors from '../../../settings/settingsSelectors';
 import Loading from '../../../static/Loading';
-import {FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SYNC, VZ} from '../../constants';
+import {EPISODE, FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SEASON, SYNC, VZ} from '../../constants';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -27,16 +27,16 @@ import {
     getTerritoryMetadata,
     getTitle,
     publishTitle,
+    setExternalIdValues,
     syncTitle,
     updateTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
-import {generateMsvIds, getEpisodesCount, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
+import {generateMsvIds, getEnums, regenerateAutoDecoratedMetadata, titleService} from '../../titleMetadataServices';
 import {
     handleDirtyValues,
     handleEditorialGenresAndCategory,
     handleTitleCategory,
-    isMgmTitle,
     isNexusTitle,
     isStateEditable,
     prepareCategoryField,
@@ -47,8 +47,8 @@ import {
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
-import './TitleDetails.scss';
 import schema from './schema.json';
+import './TitleDetails.scss';
 
 const TitleDetails = ({
     title,
@@ -78,19 +78,26 @@ const TitleDetails = ({
     emetLoading,
     clearSeasonPersons,
     externalIdsLoading,
+    setExternalIdValues,
 }) => {
     const containerRef = useRef();
+    const isFetchingExternalIdTypes = useRef(false);
     const [refresh, setRefresh] = useState(false);
     const [VZDisabled, setVZDisabled] = useState(true);
     const [MOVDisabled, setMOVDisabled] = useState(true);
     const [MovIntDisabled, setMovIntDisabled] = useState(true);
     const [episodesCount, setEpisodesCount] = useState('0');
+    const [seasonsCount, setSeasonsCount] = useState('0');
     const routeParams = useParams();
     const location = useLocation();
 
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
     const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
     const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
+
+    const externalIdTypes = useSelector(
+        state => state?.titleMetadata?.externalDropdownIDs.find(entry => entry.tenantCode === selectedTenant.id)?.values
+    );
 
     const {fields} = schema;
 
@@ -111,21 +118,34 @@ const TitleDetails = ({
             const {id} = routeParams;
             if (id) {
                 const nexusTitle = isNexusTitle(id);
-                const isMgm = isMgmTitle(id);
-                getTitle({id, selectedTenant});
-                nexusTitle && isAllowed('publishTitleMetadata') && !isMgm && getExternalIds({id});
+                getTitle({id});
+                nexusTitle && isAllowed('publishTitleMetadata') && getExternalIds({id});
                 getTerritoryMetadata({id, selectedTenant});
                 getEditorialMetadata({id, selectedTenant});
                 clearSeasonPersons();
-                getEpisodesCount(id, selectedTenant).then(res => {
-                    setEpisodesCount(res);
-                    setRefresh(false);
-                });
+                let searchCriteria = {
+                    parentId: id,
+                    contentType: EPISODE,
+                };
+                titleService
+                    .advancedSearch(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
+                    .then(res => {
+                        setEpisodesCount(res);
+                        setRefresh(false);
+                    });
+                searchCriteria = {...searchCriteria, contentType: SEASON};
+                titleService
+                    .advancedSearch(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
+                    .then(res => {
+                        setSeasonsCount(res);
+                        setRefresh(false);
+                    });
             }
         }
     }, [refresh]);
 
     const onSubmit = (values, initialValues) => {
+        isFetchingExternalIdTypes.current = false;
         handleDirtyValues(initialValues, values);
 
         const isTitleUpdated = values.isUpdated;
@@ -155,8 +175,8 @@ const TitleDetails = ({
         prepareCategoryField(updatedValues);
         Promise.all([
             isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
-            isTmetUpdated && updateTerritoryMetadata(values, id),
-            isEmetUpdated && updateEditorialMetadata(values, id),
+            isTmetUpdated && updateTerritoryMetadata(values, id, selectedTenant),
+            isEmetUpdated && updateEditorialMetadata(values, id, selectedTenant),
             (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
                 propagateSeasonsPersonsToEpisodes(
                     {
@@ -207,15 +227,23 @@ const TitleDetails = ({
 
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
+        // v2 consists of object.data and object.meta, merging meta.id to obj
+        const updatedTerritorialMetadata = territoryMetadata.map(metadata => {
+            return {
+                id: metadata.meta.id,
+                ...metadata.data,
+            };
+        });
 
         return {
             ...updatedTitle,
             episodesCount: episodesCount.total ? episodesCount.total : '0',
+            seasonsCount: seasonsCount.total ? seasonsCount.total : '0',
             vzExternalIds,
             movidaExternalIds,
             movidaUkExternalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
-            territorialMetadata: territoryMetadata,
+            territorialMetadata: updatedTerritorialMetadata,
         };
     };
 
@@ -248,12 +276,31 @@ const TitleDetails = ({
 
     const isEditPermitted = () => isAllowed('editTitleDetails');
 
-    const canEdit = isNexusTitle(title.id) && isStateEditable(title.metadataStatus) && isEditPermitted();
+    const canEdit = isNexusTitle(title?.id) && isStateEditable(title?.metadataStatus) && isEditPermitted();
 
     const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
+
+    const getSelectValues = () => {
+        let res = {...selectValues};
+
+        if (externalIdTypes) {
+            res = {...selectValues, externalSystem: externalIdTypes};
+        } else if (!isFetchingExternalIdTypes.current) {
+            isFetchingExternalIdTypes.current = true;
+            getEnums().then(responseOptions => setExternalIdValues({responseOptions}));
+        }
+
+        return res;
+    };
+
     return (
         <div className={classnames(loading ? 'nexus-c-title-details__loading' : 'nexus-c-title-details')}>
-            <TitleDetailsHeader title={title} containerRef={containerRef} canEdit={canEdit} />
+            <TitleDetailsHeader
+                title={title}
+                containerRef={containerRef}
+                canEdit={canEdit}
+                selectedTenant={selectedTenant}
+            />
             {loading ? (
                 <Loading />
             ) : (
@@ -265,7 +312,7 @@ const TitleDetails = ({
                         initialData={extendTitleWithExternalIds()}
                         canEdit={canEdit}
                         containerRef={containerRef}
-                        selectValues={selectValues}
+                        selectValues={getSelectValues()}
                         seasonPersons={propagateAddPersons}
                         onSubmit={onSubmit}
                         generateMsvIds={generateMsvIds}
@@ -383,6 +430,7 @@ TitleDetails.propTypes = {
     titleLoading: PropTypes.bool,
     emetLoading: PropTypes.bool,
     externalIdsLoading: PropTypes.bool,
+    setExternalIdValues: PropTypes.func.isRequired,
 };
 
 TitleDetails.defaultProps = {
@@ -464,6 +512,7 @@ const mapDispatchToProps = dispatch => ({
     syncTitle: payload => dispatch(syncTitle(payload)),
     publishTitle: payload => dispatch(publishTitle(payload)),
     fetchConfigApiEndpoints: payload => dispatch(fetchConfigApiEndpoints(payload)),
+    setExternalIdValues: payload => dispatch(setExternalIdValues(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleDetails);

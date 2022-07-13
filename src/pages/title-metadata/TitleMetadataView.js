@@ -26,7 +26,7 @@ import {
     uploadMetadata,
 } from './titleMetadataActions';
 import {
-    createExternalDropdownIDsSelector,
+    externalIDTypesSelector,
     createGridStateSelector,
     createTitleMetadataFilterSelector,
 } from './titleMetadataSelectors';
@@ -268,7 +268,7 @@ export const TitleMetadataView = ({
 const mapStateToProps = () => {
     const gridStateSelector = createGridStateSelector();
     const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
-    const externalIdSelector = createExternalDropdownIDsSelector();
+    const externalIdSelector = externalIDTypesSelector();
     return state => ({
         username: getUsername(state),
         gridState: gridStateSelector(state),

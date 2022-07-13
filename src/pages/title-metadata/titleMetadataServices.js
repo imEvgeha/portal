@@ -9,22 +9,9 @@ import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';
 
 export const getTitleById = payload => {
-    const {id, tenantCode} = payload;
-    const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/titles/${id}`;
-    const params = tenantCode ? {tenantCode} : {};
-    return nexusFetch(url, {
-        params: encodedSerialize(params),
-        isWithErrorHandling: false,
-    });
-};
-
-export const getEpisodesCount = (id, selectedTenant) => {
-    const tenantCode = selectedTenant.id;
-    const url = `${getConfig('gateway.titleUrl')}${getConfig(
-        'gateway.service.title'
-    )}/titles/search?parentId=${id}&contentType=EPISODE`;
-    const params = tenantCode ? {tenantCode} : {};
-    return nexusFetch(url, {params: encodedSerialize(params)});
+    const {id} = payload;
+    const url = `${getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2')}/titles/${id}`;
+    return nexusFetch(url);
 };
 
 export const getExternalIds = id => {
@@ -33,13 +20,9 @@ export const getExternalIds = id => {
 };
 
 export const getTerritoryMetadataById = payload => {
-    const {id, tenantCode} = payload;
-    const api = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/territorymetadata`;
-    const url = `${api}?includeDeleted=false&titleId=${id}`;
-    const params = tenantCode ? {tenantCode} : {};
-    return nexusFetch(url, {
-        params: encodedSerialize(params),
-    });
+    const {id} = payload;
+    const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/titles/${id}/territories`;
+    return nexusFetch(url, {});
 };
 
 export const getEditorialMetadataByTitleId = payload => {
@@ -55,9 +38,8 @@ export const getEditorialMetadataByTitleId = payload => {
 
 export const updateTitle = (title, syncToVZ, syncToMovida) => {
     const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
-    const {catalogOwner: tenantCode} = title;
-    const params = legacySystemNames ? {legacySystemNames, tenantCode} : {tenantCode};
-    const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/titles/${title.id}`;
+    const params = legacySystemNames ? {legacySystemNames} : {};
+    const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/titles/${title.id}`;
 
     return nexusFetch(url, {
         method: 'put',
@@ -222,6 +204,26 @@ export const titleService = {
         });
     },
 
+    addEditorialMetadataV1: (editorialMetadata, tenantCode) => {
+        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/editorialmetadata`;
+        const updatedEditorialMetadata = editorialMetadata.map(item => ({
+            ...item,
+            body: {
+                ...item?.body,
+                editorialMetadata: {
+                    ...item?.body?.editorialMetadata,
+                    type: 'editorialMetadata',
+                },
+            },
+        }));
+        const params = tenantCode ? {tenantCode} : {};
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(updatedEditorialMetadata),
+            params: encodedSerialize(params),
+        });
+    },
+
     addEditorialMetadata: editorialMetadata => {
         const body = Object.assign({}, editorialMetadata?.body.editorialMetadata);
 
@@ -235,7 +237,7 @@ export const titleService = {
         delete body['synopsis']['shortDescription'];
         delete body['category'];
 
-        body['castCrew'] = body.castCrew.map(({creditsOrder: order, ...rest}) => ({
+        body['castCrew'] = body.castCrew.map(({order, ...rest}) => ({
             order,
             ...rest,
         }));
@@ -261,26 +263,23 @@ export const titleService = {
             params: encodedSerialize(params),
         });
     },
-    addTerritoryMetadata: territoryMetadata => {
-        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/titles/${
-            territoryMetadata.parentId
-        }/territories`;
-
-        delete territoryMetadata.parentId;
-        delete territoryMetadata.territoryType;
+    addTerritoryMetadata: (territoryMetadata, titleId) => {
+        const url = `${getConfig('gateway.titleUrl')}${getConfig(
+            'gateway.service.titleV2'
+        )}/titles/${titleId}/territories`;
 
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(territoryMetadata),
         });
     },
-    updateTerritoryMetadata: (editedTerritoryMetadata, tenantCode) => {
-        const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/territorymetadata`;
-        const params = tenantCode ? {tenantCode} : {};
+    updateTerritoryMetadata: (editedTerritoryMetadata, titleId, tmetId) => {
+        const url = `${getConfig('gateway.titleUrl')}${getConfig(
+            'gateway.service.titleV2'
+        )}/titles/${titleId}/territories/${tmetId}`;
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(editedTerritoryMetadata),
-            params: encodedSerialize(params),
         });
     },
     propagateSeasonsPersonsToEpisodes: seasonPersons => {

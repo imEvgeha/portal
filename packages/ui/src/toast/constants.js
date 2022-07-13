@@ -18,7 +18,6 @@ export const CREATE_NEW_RIGHT_SUCCESS_MESSAGE = 'You have successfully declared 
 export const CREATE_NEW_RIGHT_ERROR_TITLE = 'Right creation failed!';
 export const EDIT_RIGHT_ERROR_TITLE = 'Editing right failed!';
 export const RIGHT_ERROR_MSG_MERGED = 'Review and merge rights';
-export const LICENSOR_ERROR = 'Licensor already exists!';
 
 export const WARNING_TITLE = 'Alert';
 export const ERROR_TITLE = 'Warning';

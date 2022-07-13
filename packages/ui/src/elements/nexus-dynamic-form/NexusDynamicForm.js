@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
-import {Restricted, isAllowed} from '@portal/portal-auth/permissions';
+import {isAllowed, Restricted} from '@portal/portal-auth/permissions';
 import classnames from 'classnames';
 import {isEmpty, mergeWith, set} from 'lodash';
 import moment from 'moment';
@@ -27,6 +27,8 @@ const NexusDynamicForm = ({
     castCrewConfig,
     seasonPersons,
     titleActionComponents,
+    isFullScreen,
+    formFooter,
 }) => {
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
@@ -139,7 +141,7 @@ const NexusDynamicForm = ({
     };
 
     return (
-        <div className="nexus-c-dynamic-form">
+        <div className={isFullScreen ? 'nexus-c-dynamic-form-fullscreen' : 'nexus-c-dynamic-form'}>
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
                 {({formProps, dirty, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
@@ -177,9 +179,11 @@ const NexusDynamicForm = ({
                                         ) => (
                                             <Restricted key={`section-${sectionTitle}`} resource={resource}>
                                                 <Fragment key={`section-${sectionTitle}`}>
-                                                    <h3 className="nexus-c-dynamic-form__section-title">
-                                                        {sectionTitle}
-                                                    </h3>
+                                                    {sectionTitle && (
+                                                        <h3 className="nexus-c-dynamic-form__section-title">
+                                                            {sectionTitle}
+                                                        </h3>
+                                                    )}
                                                     {titleActionComponents &&
                                                         titleActions.map(action =>
                                                             titleActionComponents[action](
@@ -221,6 +225,7 @@ const NexusDynamicForm = ({
                                 </div>
                             ))}
                         </div>
+                        {formFooter && formFooter}
                     </form>
                 )}
             </AKForm>
@@ -246,6 +251,8 @@ NexusDynamicForm.propTypes = {
     storedInitialData: PropTypes.object,
     seasonPersons: PropTypes.array,
     titleActionComponents: PropTypes.object,
+    isFullScreen: PropTypes.bool,
+    formFooter: PropTypes.element,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -266,6 +273,8 @@ NexusDynamicForm.defaultProps = {
     storedInitialData: null,
     seasonPersons: [],
     titleActionComponents: {},
+    isFullScreen: false,
+    formFooter: undefined,
 };
 
 export default NexusDynamicForm;

@@ -12,7 +12,7 @@ export const ERROR = 'error';
 export const EMPTY = 'empty';
 export const SYNC = 'sync';
 export const PUBLISH = 'publish';
-export const CONTENT_TYPE = ['MOVIE', 'EPISODE', 'EVENT', 'SERIES', 'SEASON', 'SPORTS', 'AD', 'SPECIAL'];
+export const CONTENT_TYPE = ['movie', 'episode', 'event', 'series', 'season', 'sports', 'ad', 'special'];
 export const LEGACY_TOOLTIP_TEXT = 'This is Legacy title. Click to Reconcile';
 
 export const CATALOGUE_OWNER_DROPDOWN_PLACEHOLDER = 'Select Catalogue Owner';
@@ -32,6 +32,9 @@ export const PROPAGATE_SEASON_PERSONS_SUCCESS = 'Season cast and crew propagated
 export const UNMERGE_TITLE_SUCCESS = 'Title succesfully unmerged!';
 
 export const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded a Title.';
+export const SERIES = 'SERIES';
+export const SEASON = 'SEASON';
+export const EPISODE = 'EPISODE';
 
 export const UPLOADED_EMETS_COLUMN_MAPPINGS = [
     {
@@ -192,10 +195,10 @@ export const UPLOADED_EMETS_COLUMN_MAPPINGS = [
         hide: true,
     },
     {
-        colId: 'category',
-        field: 'category',
+        colId: 'categories',
+        field: 'categories',
         headerName: 'Category',
-        javaVariableName: 'category',
+        javaVariableName: 'categories',
         dataType: 'select',
         enableSearch: false,
         readOnly: true,

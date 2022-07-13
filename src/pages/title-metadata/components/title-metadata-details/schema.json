@@ -12,7 +12,7 @@
                         "title": {
                             "name": "Title",
                             "type": "string",
-                            "path": "title",
+                            "path": "name",
                             "isRequired": true
                         },
                         "countryOfOrigin": {
@@ -28,7 +28,8 @@
                             "name": "Type",
                             "type": "string",
                             "path": "contentType",
-                            "isReadOnly": true
+                            "isReadOnly": true,
+                            "shouldUpperCase": true
                         },
                         "originalLanguage": {
                             "name": "Original Language",
@@ -38,6 +39,23 @@
                                 "defaultValuePath": "languageCode",
                                 "defaultLabelPath": "languageName"
                             }
+                        },
+                        "contentSubType": {
+                            "name": "Content Subtype",
+                            "type": "string",
+                            "path": "contentSubType",
+                            "isReadOnly": true,
+                            "shouldUpperCase": true
+                        },
+                        "duration": {
+                            "name": "Duration",
+                            "type": "string",
+                            "path": "duration",
+                            "validation": [
+                                {
+                                    "name": "isTime"
+                                }
+                            ]
                         },
                         "releaseYear": {
                             "name": "Year",
@@ -50,15 +68,10 @@
                                 }
                             ]
                         },
-                        "duration": {
-                            "name": "Duration",
-                            "type": "string",
-                            "path": "duration",
-                            "validation": [
-                                {
-                                    "name": "isTime"
-                                }
-                            ]
+                        "animated": {
+                            "name": "Animated",
+                            "type": "boolean",
+                            "path": "animated"
                         },
                         "metadataStatus": {
                             "name": "Metadata Status",
@@ -74,32 +87,6 @@
                                     {
                                         "label": "Complete",
                                         "value": "Complete"
-                                    }
-                                ]
-                            }
-                        },
-                        "animated": {
-                            "name": "Animated",
-                            "type": "boolean",
-                            "path": "animated"
-                        },
-                        "contentSubType": {
-                            "name": "Content Sub Type",
-                            "type": "select",
-                            "path": "contentSubType",
-                            "optionsConfig": {
-                                "options": [
-                                    {
-                                        "label": "Select...",
-                                        "value": null
-                                    },
-                                    {
-                                        "label": "KIDS",
-                                        "value": "KIDS"
-                                    },
-                                    {
-                                        "label": "ADULT",
-                                        "value": "ADULT"
                                     }
                                 ]
                             }
@@ -125,15 +112,45 @@
                                 ]
                             }
                         },
+                        "audience": {
+                            "name": "Audience",
+                            "type": "select",
+                            "path": "audience",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Select...",
+                                        "value": null
+                                    },
+                                    {
+                                        "label": "KIDS",
+                                        "value": "KIDS"
+                                    },
+                                    {
+                                        "label": "ADULT",
+                                        "value": "ADULT"
+                                    }
+                                ]
+                            }
+                        },
+                        "categories": {
+                            "name": "Category",
+                            "path": "categories",
+                            "type": "multiselect"
+                        },
                         "usBoxOffice": {
                             "name": "US Box Office",
                             "path": "usBoxOffice",
-                            "type": "number"
-                        },
-                        "category": {
-                            "name": "Category",
-                            "path": "category",
-                            "type": "multiselect"
+                            "type": "number",
+                            "locale": "en-US",
+                            "mode": "currency",
+                            "currency": "USD",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "movie"
+                                }
+                            ]
                         },
                         "imdbLink": {
                             "name": "IMDB Link",
@@ -142,39 +159,39 @@
                         },
                         "seriesTitleName": {
                             "name": "Series",
-                            "path": "episodic.seriesTitleName",
+                            "path": "seriesTitleName",
                             "isReadOnlyInEdit": true,
                             "type": "link",
                             "linkConfig": {
                                 "baseUrl": "",
-                                "contentType": "SERIES"
+                                "contentType": "series"
                             },
                             "showWhen": [
                                 {
                                     "field": "contentType",
-                                    "hasValue": "SEASON"
+                                    "hasValue": "season"
                                 },
                                 {
                                     "field": "contentType",
-                                    "hasValue": "EPISODE"
+                                    "hasValue": "episode"
                                 },
                                 [
                                     {
                                         "field": "contentType",
-                                        "hasValue": "EVENT"
+                                        "hasValue": "event"
                                     },
                                     {
-                                        "field": "episodic.seriesTitleName",
+                                        "field": "seriesTitleName",
                                         "hasValue": "any"
                                     }
                                 ],
                                 [
                                     {
                                         "field": "contentType",
-                                        "hasValue": "SPORTS"
+                                        "hasValue": "sports"
                                     },
                                     {
-                                        "field": "episodic.seriesTitleName",
+                                        "field": "seriesTitleName",
                                         "hasValue": "any"
                                     }
                                 ]
@@ -182,63 +199,82 @@
                         },
                         "seasonTitleName": {
                             "name": "Season",
-                            "path": "episodic.seasonTitleName",
+                            "path": "seasonTitleName",
                             "type": "string",
                             "isReadOnlyInEdit": true,
                             "showWhen": [
                                 {
                                     "field": "contentType",
-                                    "hasValue": "EPISODE"
+                                    "hasValue": "episode"
                                 }
                             ]
                         },
                         "totalEpisodes": {
-                            "name": "Total Episodes",
+                            "name": "Number of Episodes",
                             "path": "totalNumberOfEpisodes",
                             "type": "number",
                             "showWhen": [
                                 {
                                     "field": "contentType",
-                                    "hasValue": "SEASON"
+                                    "hasValue": "season"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "series"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "mini-series"
+                                }
+                            ]
+                        },
+                        "totalSeasons": {
+                            "name": "Number of Seasons",
+                            "path": "totalNumberOfSeasons",
+                            "type": "number",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "series"
                                 }
                             ]
                         },
                         "seasonNumber": {
                             "name": "Season Number",
-                            "path": "episodic.seasonNumber",
+                            "path": "seasonNumber",
                             "type": "link",
                             "isRequired": true,
                             "isReadOnlyInEdit": true,
                             "linkConfig": {
                                 "baseUrl": "",
-                                "contentType": "SEASON"
+                                "contentType": "season"
                             },
                             "showWhen": [
                                 {
                                     "field": "contentType",
-                                    "hasValue": "SEASON"
+                                    "hasValue": "season"
                                 },
                                 {
                                     "field": "contentType",
-                                    "hasValue": "EPISODE"
+                                    "hasValue": "episode"
                                 },
                                 [
                                     {
                                         "field": "contentType",
-                                        "hasValue": "EVENT"
+                                        "hasValue": "event"
                                     },
                                     {
-                                        "field": "episodic.seriesTitleName",
+                                        "field": "seriesTitleName",
                                         "hasValue": "any"
                                     }
                                 ],
                                 [
                                     {
                                         "field": "contentType",
-                                        "hasValue": "SPORTS"
+                                        "hasValue": "sports"
                                     },
                                     {
-                                        "field": "episodic.seriesTitleName",
+                                        "field": "seriesTitleName",
                                         "hasValue": "any"
                                     }
                                 ]
@@ -250,7 +286,7 @@
                                     "fields": [
                                         {
                                             "name": "contentType",
-                                            "value": "EPISODE"
+                                            "value": "episode"
                                         }
                                     ]
                                 }
@@ -263,7 +299,27 @@
                             "showWhen": [
                                 {
                                     "field": "contentType",
-                                    "hasValue": "SEASON"
+                                    "hasValue": "season"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "series"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "mini-series"
+                                }
+                            ],
+                            "isReadOnly": true
+                        },
+                        "seasonCount": {
+                            "name": "Season Count",
+                            "path": "seasonsCount",
+                            "type": "string",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "series"
                                 }
                             ],
                             "isReadOnly": true
@@ -275,36 +331,36 @@
                             "showWhen": [
                                 {
                                     "field": "contentType",
-                                    "hasValue": "SEASON"
+                                    "hasValue": "season"
                                 }
                             ]
                         },
                         "episodeNumber": {
                             "name": "Episode Number",
-                            "path": "episodic.episodeNumber",
+                            "path": "episodeNumber",
                             "type": "string",
                             "showWhen": [
                                 {
                                     "field": "contentType",
-                                    "hasValue": "EPISODE"
+                                    "hasValue": "episode"
                                 },
                                 [
                                     {
                                         "field": "contentType",
-                                        "hasValue": "EVENT"
+                                        "hasValue": "event"
                                     },
                                     {
-                                        "field": "episodic.seriesTitleName",
+                                        "field": "seriesTitleName",
                                         "hasValue": "any"
                                     }
                                 ],
                                 [
                                     {
                                         "field": "contentType",
-                                        "hasValue": "SPORTS"
+                                        "hasValue": "sports"
                                     },
                                     {
-                                        "field": "episodic.seriesTitleName",
+                                        "field": "seriesTitleName",
                                         "hasValue": "any"
                                     }
                                 ]
@@ -317,25 +373,25 @@
                             "showWhen": [
                                 {
                                     "field": "contentType",
-                                    "hasValue": "EPISODE"
+                                    "hasValue": "episode"
                                 },
                                 [
                                     {
                                         "field": "contentType",
-                                        "hasValue": "EVENT"
+                                        "hasValue": "event"
                                     },
                                     {
-                                        "field": "episodic.seriesTitleName",
+                                        "field": "seriesTitleName",
                                         "hasValue": "any"
                                     }
                                 ],
                                 [
                                     {
                                         "field": "contentType",
-                                        "hasValue": "SPORTS"
+                                        "hasValue": "sports"
                                     },
                                     {
-                                        "field": "episodic.seriesTitleName",
+                                        "field": "seriesTitleName",
                                         "hasValue": "any"
                                     }
                                 ]
@@ -451,7 +507,59 @@
             "title": "External ID's",
             "sections": [
                 {
-                    "title": "External IDs",
+                    "title": "Tenant Defined External IDs",
+                    "fields": {
+                        "tenantDefExtIds": {
+                            "name": "tenantDefExtIds",
+                            "type": "rowDataItem",
+                            "path": "externalSystemIds",
+                            "firstColLbl": "External ID Type:",
+                            "firstColKey": "externalSystem",
+                            "secondColLbl": "External ID:",
+                            "secondColKey": "titleId",
+                            "canAdd": true,
+                            "canDelete": false,
+                            "addNewModalOptions": {
+                                "header": "Add External ID",
+                                "triggerBtnLabel": "+ Add External ID",
+                                "valuesPath": "externalSystem",
+                                "uniqueByFields": ["externalSystem", "titleId"],
+                                "duplicationErrorMessage": "External ID Type + External ID must be unique.",
+                                "fields": [
+                                    {
+                                        "sections": [
+                                            {
+                                                "fields": {
+                                                    "externalSystem": {
+                                                        "stackLabel": true,
+                                                        "name": "External ID Type",
+                                                        "path": "externalSystem",
+                                                        "type": "select",
+                                                        "inModal": true,
+                                                        "optionsConfig": {
+                                                            "defaultValuePath": "name",
+                                                            "defaultLabelPath": "displayName"
+                                                        },
+                                                        "isRequired": true
+                                                    },
+                                                    "titleId": {
+                                                        "stackLabel": true,
+                                                        "name": "External ID",
+                                                        "path": "titleId",
+                                                        "type": "string",
+                                                        "isRequired": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "title": "MetaVU Originated External IDs",
                     "isGridLayout": true,
                     "fields": {
                         "alid": {
@@ -538,6 +646,11 @@
                             "name": "Asset Name",
                             "type": "string",
                             "path": "externalIds.assetName"
+                        },
+                        "tags": {
+                            "name": "Tags",
+                            "type": "string",
+                            "path": "tags"
                         }
                     }
                 },
@@ -546,8 +659,54 @@
                     "fields": {
                         "licensors": {
                             "name": "Licensors",
-                            "type": "licensors",
-                            "path": "licensors"
+                            "type": "rowDataItem",
+                            "path": "licensors",
+                            "firstColLbl": "Licensor:",
+                            "firstColKey": "licensor",
+                            "secondColLbl": "Licensor Title ID:",
+                            "secondColKey": "licensorTitleId",
+                            "canAdd": true,
+                            "canDelete": true,
+                            "addNewModalOptions": {
+                                "header": "Add Licensor",
+                                "triggerBtnLabel": "+ Add Licensor",
+                                "valuesPath": "licensor",
+                                "uniqueByFields": ["licensor"],
+                                "duplicationErrorMessage": "Licensor already exists!",
+                                "fields": [
+                                    {
+                                        "sections": [
+                                            {
+                                                "fields": {
+                                                    "licensor": {
+                                                        "stackLabel": true,
+                                                        "name": "Licensor",
+                                                        "path": "licensor",
+                                                        "type": "select",
+                                                        "inModal": true,
+                                                        "outputMap": {
+                                                            "id": "id",
+                                                            "licensor": "name"
+                                                        },
+                                                        "optionsConfig": {
+                                                            "defaultValuePath": "id",
+                                                            "defaultLabelPath": "name"
+                                                        },
+                                                        "isRequired": true
+                                                    },
+                                                    "licensorTitleId": {
+                                                        "stackLabel": true,
+                                                        "name": "Licensor Title ID",
+                                                        "path": "licensorTitleId",
+                                                        "type": "string",
+                                                        "isRequired": true
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
                         }
                     }
                 },
@@ -1062,7 +1221,21 @@
                                     "name": "Theatrical Release Date",
                                     "type": "datetime",
                                     "dateType": "regionalMidnight",
-                                    "path": "theatricalReleaseDate"
+                                    "path": "theatricalReleaseDate",
+                                    "showWhen": [
+                                        {
+                                            "field": "contentType",
+                                            "hasValue": "documentary"
+                                        },
+                                        {
+                                            "field": "contentType",
+                                            "hasValue": "movie"
+                                        },
+                                        {
+                                            "field": "contentType",
+                                            "hasValue": "special"
+                                        }
+                                    ]
                                 },
                                 "territorial.estReleaseDate": {
                                     "name": "Est Release Date",

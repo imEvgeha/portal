@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddRowDataItem should match snapshot 1`] = `
+<NexusDynamicForm
+  canEdit={true}
+  castCrewConfig={Object {}}
+  containerRef={null}
+  formFooter={
+    <FormFooter>
+      <Memo(Button)
+        appearance="danger"
+        className="className='mx-2'"
+        onClick={[Function]}
+      >
+        Cancel
+      </Memo(Button)>
+      <Memo(Button)
+        appearance="primary"
+        className="mx-2"
+        type="submit"
+      >
+        Submit
+      </Memo(Button)>
+    </FormFooter>
+  }
+  hasButtons={false}
+  initialData={Object {}}
+  isFullScreen={true}
+  isSaving={false}
+  isTitlePage={false}
+  onSubmit={[Function]}
+  schema={
+    Object {
+      "duplicationErrorMessage": "Licensor already exists!",
+      "fields": Array [
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Object {
+                "licensor": Object {
+                  "inModal": true,
+                  "isRequired": true,
+                  "name": "Licensor",
+                  "optionsConfig": Object {
+                    "defaultLabelPath": "name",
+                    "defaultValuePath": "id",
+                  },
+                  "outputMap": Object {
+                    "id": "id",
+                    "licensor": "name",
+                  },
+                  "path": "licensor",
+                  "stackLabel": true,
+                  "type": "select",
+                },
+              },
+            },
+          ],
+        },
+      ],
+      "header": "Add Licensor",
+      "triggerBtnLabel": "+ Add Licensor",
+      "uniqueByField": "licensor",
+      "valuesPath": "licensor",
+    }
+  }
+  seasonPersons={Array []}
+  selectValues={Array []}
+  setRefresh={[Function]}
+  storedInitialData={null}
+  titleActionComponents={Object {}}
+/>
+`;

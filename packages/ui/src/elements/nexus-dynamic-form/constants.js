@@ -20,7 +20,7 @@ export const INCORRECT_TIME = 'INCORRECT TIME: MUST BE IN FORMAT HH:MM:SS';
 export const INCORRECT_DURATION = 'INCORRECT DURATION FORMAT: SEE TOOLTIP';
 export const RIGHT_STATUS_CANCELED = 'RIGHT STATUS SHOULD BE WITHDRAWN/CANCELED IF ALL TERRITORIES ARE WITHDRAWN';
 
-export const FIELDS_WITHOUT_LABEL = ['castCrew', 'licensors'];
+export const FIELDS_WITHOUT_LABEL = ['castCrew', 'licensors', 'rowDataItem'];
 
 export const NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS = {
     editorialMetadata: 'editorial',
@@ -49,9 +49,10 @@ export const TABS_MAPPINGS = [
     {tabName: 'Sync Log', id: 'Sync Log'},
 ];
 
-export const SEASON = 'SEASON';
-export const SERIES = 'SERIES';
-export const EPISODE = 'EPISODE';
+export const SEASON = 'season';
+export const SERIES = 'series';
+export const EPISODE = 'episode';
+export const MINI_SERIES = 'mini-series';
 export const CORE_TITLE_SECTION = 'Core Title';
 export const CAST_AND_CREW_TITLE = 'Cast & Crew';
 export const PROPAGATE_TITLE = 'Propagate';

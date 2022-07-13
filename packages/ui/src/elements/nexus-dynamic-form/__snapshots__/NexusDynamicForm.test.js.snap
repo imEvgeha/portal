@@ -31,6 +31,7 @@ exports[`NexusDynamicForm should match snapshot 1`] = `
     hasButtons={true}
     initialData={Object {}}
     isEdit={true}
+    isFullScreen={false}
     isSaving={false}
     isTitlePage={false}
     schema={

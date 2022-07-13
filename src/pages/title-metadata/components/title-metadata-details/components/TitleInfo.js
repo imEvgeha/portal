@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ImagePlaceholderIcon from '@vubiquity-nexus/portal-assets/img/img_placeholder.png';
 import './TitleInfo.scss';
 
-const TitleInfo = ({title, releaseYear, contentType, titleImages, catalogueOwner}) => {
+const TitleInfo = ({title, releaseYear, contentType, titleImages, tenantCode}) => {
     const image = titleImages && titleImages.length ? titleImages[0] : ImagePlaceholderIcon;
     return (
         <div className="nexus-c-title-info-container">
@@ -20,10 +20,10 @@ const TitleInfo = ({title, releaseYear, contentType, titleImages, catalogueOwner
                     <span className="nexus-c-title-info-container__label">Type:</span>
                     <span>{contentType}</span>
                 </div>
-                {catalogueOwner && (
+                {tenantCode && (
                     <div>
                         <span className="nexus-c-title-info-container__label--co">Catalogue Owner:</span>
-                        <span>{catalogueOwner}</span>
+                        <span>{tenantCode}</span>
                     </div>
                 )}
             </div>
@@ -36,7 +36,7 @@ TitleInfo.propTypes = {
     releaseYear: PropTypes.string,
     contentType: PropTypes.string,
     titleImages: PropTypes.array,
-    catalogueOwner: PropTypes.string,
+    tenantCode: PropTypes.string,
 };
 
 TitleInfo.defaultProps = {
@@ -44,7 +44,7 @@ TitleInfo.defaultProps = {
     releaseYear: null,
     contentType: null,
     titleImages: [],
-    catalogueOwner: null,
+    tenantCode: null,
 };
 
 export default TitleInfo;

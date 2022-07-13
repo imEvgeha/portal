@@ -124,11 +124,11 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
 
     const handleAddSeasonOption = () => {
         const seasonCastCrewPropagateData = persons.map(person => {
-            const {id, personType, creditsOrder} = person;
+            const {id, personType, order} = person;
             return {
                 id,
                 personType,
-                creditsOrder,
+                order,
                 propagateToEmet: radioValue === 'emets',
             };
         });

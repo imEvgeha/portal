@@ -65,7 +65,7 @@ export const createSelectedIdSelector = () =>
 export const createContentTypesSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.contentTypes || []);
 
-export const createExternalDropdownIDsSelector = () =>
+export const externalIDTypesSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.externalDropdownIDs || {});
 
 export const propagateAddPersonsSelector = state => state?.titleMetadata?.propagateAddPersons || [];

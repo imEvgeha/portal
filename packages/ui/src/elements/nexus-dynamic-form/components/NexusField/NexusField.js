@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {CheckboxField, Field as AKField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
+import {InputNumber} from '@portal/portal-components';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
 import {Link} from 'react-router-dom';
@@ -14,8 +15,8 @@ import {
     FIELD_REQUIRED,
     FIELDS_WITHOUT_LABEL,
     LOCALIZED_VALUE_NOT_DEFINED,
-    VIEWS,
     RIGHT_STATUS_CANCELED,
+    VIEWS,
 } from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {
@@ -30,9 +31,9 @@ import {
 } from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
-import Licensors from './components/Licensors/Licensors';
 import MsvIds from './components/MsvIds/MsvIds';
 import './NexusField.scss';
+import RowDataItem from './components/RowDataItem/RowDataItem';
 
 const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
 
@@ -87,6 +88,7 @@ const NexusField = ({
     setUpdate,
     allData,
     forMetadata,
+    shouldUpperCase,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -163,11 +165,15 @@ const NexusField = ({
                 );
             case 'number':
                 return (
-                    <TextFieldWithOptional
+                    <InputNumber
+                        {...props}
                         {...fieldProps}
-                        {...addedProps}
-                        type="Number"
-                        placeholder={`Enter ${label}`}
+                        columnClass="col-12"
+                        showButtons={true}
+                        value={fieldProps?.value?.value || fieldProps?.value}
+                        onChange={e => {
+                            fieldProps.onChange(e?.value);
+                        }}
                     />
                 );
             case 'boolean':
@@ -227,7 +233,7 @@ const NexusField = ({
                         path={path}
                         isRequired={isRequired}
                         isMultiselect={false}
-                        addedProps={addedProps}
+                        addedProps={{...addedProps, inModal: props.inModal}}
                         defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
                         optionsFilterParameter={checkDependencies('values')}
                         isCreateMode={view === VIEWS.CREATE}
@@ -251,7 +257,7 @@ const NexusField = ({
                     });
 
                     selectLocalizedValues = Object.assign({}, selectValues);
-                    const newValues = selectLocalizedValues[path]?.map(item => {
+                    selectLocalizedValues[path] = selectLocalizedValues[path]?.map(item => {
                         const localLang = item.localizations.find(local => {
                             const isEmetLanguageObject = isObject(emetLanguage) && path === 'genres';
                             const initialEmetLanguage = isEmetLanguageObject ? emetLanguage.value : emetLanguage;
@@ -267,7 +273,6 @@ const NexusField = ({
                         else item.displayName = enName;
                         return item;
                     });
-                    selectLocalizedValues[path] = newValues;
                     // displayName is used in dropdown for display purpose only. to send to api, use "name"
                     newOptionsConfig = {...optionsConfig, defaultLabelPath: 'displayName'};
                 }
@@ -341,14 +346,9 @@ const NexusField = ({
                         {...fieldProps}
                     />
                 );
-            case 'licensors':
+            case 'rowDataItem':
                 return (
-                    <Licensors
-                        {...fieldProps}
-                        selectValues={selectValues}
-                        data={fieldProps.value ? fieldProps.value : []}
-                        isEdit={true}
-                    />
+                    <RowDataItem {...props} {...fieldProps} selectValues={selectValues} data={fieldProps.value || []} />
                 );
             case 'msvIds':
                 return (
@@ -372,8 +372,7 @@ const NexusField = ({
     };
 
     const hasLocalizedValue = value => {
-        if (typeof value === 'string' && value.includes('(') && value.includes(')*')) return false;
-        return true;
+        return !(typeof value === 'string' && value.includes('(') && value.includes(')*'));
     };
 
     const getLabel = item => {
@@ -466,12 +465,15 @@ const NexusField = ({
                         language={isVerticalLayout ? get(formData, 'editorial.language', 'en') : 'en'}
                     />
                 );
-            case 'licensors':
+            case 'rowDataItem':
                 return (
-                    <Licensors
+                    <RowDataItem
+                        {...props}
+                        {...fieldProps}
                         selectValues={selectValues}
-                        data={fieldProps.value ? fieldProps.value : []}
-                        isEdit={false}
+                        data={fieldProps.value || []}
+                        canDelete={false}
+                        canAdd={false}
                     />
                 );
             case 'msvIds':
@@ -526,29 +528,31 @@ const NexusField = ({
                     }
                     {...props}
                 >
-                    {({fieldProps, error}) => (
-                        <>
-                            {!FIELDS_WITHOUT_LABEL.includes(type) &&
-                                renderLabel(
-                                    label,
-                                    checkDependencies('required') || isRequired,
-                                    tooltip,
-                                    isGridLayout,
-                                    isRequiredVZ,
-                                    oneIsRequiredVZ
-                                )}
-                            <div className="nexus-c-field__value-section">
-                                <div className="nexus-c-field__value">
-                                    {!getIsReadOnly() && (view === VIEWS.EDIT || view === VIEWS.CREATE)
-                                        ? renderFieldEditMode(fieldProps)
-                                        : renderFieldViewMode(fieldProps)}
+                    {({fieldProps, error}) => {
+                        return (
+                            <div className={props.stackLabel ? 'stack-label w-100' : 'display-contents'}>
+                                {!FIELDS_WITHOUT_LABEL.includes(type) &&
+                                    renderLabel(
+                                        label,
+                                        checkDependencies('required') || isRequired,
+                                        tooltip,
+                                        isGridLayout,
+                                        isRequiredVZ,
+                                        oneIsRequiredVZ
+                                    )}
+                                <div className="nexus-c-field__value-section">
+                                    <div className={`nexus-c-field__value ${shouldUpperCase ? 'text-uppercase' : ''}`}>
+                                        {!getIsReadOnly() && (view === VIEWS.EDIT || view === VIEWS.CREATE)
+                                            ? renderFieldEditMode(fieldProps)
+                                            : renderFieldViewMode(fieldProps)}
+                                    </div>
+                                    {error && validationName('areAllWithdrawn')
+                                        ? renderError(RIGHT_STATUS_CANCELED)
+                                        : error && renderError(FIELD_REQUIRED)}
                                 </div>
-                                {error && validationName('areAllWithdrawn')
-                                    ? renderError(RIGHT_STATUS_CANCELED)
-                                    : error && renderError(FIELD_REQUIRED)}
                             </div>
-                        </>
-                    )}
+                        );
+                    }}
                 </AKField>
             </div>
         </ErrorBoundary>
@@ -602,6 +606,9 @@ NexusField.propTypes = {
     setUpdate: PropTypes.func,
     allData: PropTypes.object,
     forMetadata: PropTypes.bool,
+    shouldUpperCase: PropTypes.bool,
+    stackLabel: PropTypes.bool,
+    inModal: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -648,6 +655,9 @@ NexusField.defaultProps = {
     setUpdate: () => null,
     allData: {},
     forMetadata: false,
+    shouldUpperCase: false,
+    stackLabel: false,
+    inModal: false,
 };
 
 export default NexusField;

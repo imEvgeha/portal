@@ -7,9 +7,11 @@ exports[`NexusField should match snapshot 1`] = `
   >
     <Field
       defaultValue="rght_zrp8g"
+      inModal={false}
       isDisabled={true}
       isRequired={false}
       name="rightId"
+      stackLabel={false}
       validate={[Function]}
     >
       <Component />

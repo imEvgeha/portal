@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
 import {useNavigate} from 'react-router-dom';
-import {MGM} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import TitleInfo from './TitleInfo';
 import './TitleDetailsHeader.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const TitleDetailsHeader = ({title, containerRef, canEdit}) => {
+const TitleDetailsHeader = ({title, containerRef, canEdit, selectedTenant}) => {
     const [isShrinked, setIsShrinked] = useState(false);
     const navigate = useNavigate();
 
@@ -53,15 +52,15 @@ const TitleDetailsHeader = ({title, containerRef, canEdit}) => {
                 <div
                     className={classnames('nexus-c-title-details-header__title-info-container', {
                         'nexus-c-title-details-header__title-info-container--no-border':
-                            title.catalogOwner === MGM || !isNexusTitle(title.id) || canEdit,
+                            !isNexusTitle(title.id) || canEdit,
                     })}
                 >
                     <TitleInfo
-                        title={title.title}
+                        title={title.name}
                         releaseYear={title.releaseYear}
-                        contentType={title.contentType}
+                        contentType={title.contentType ? title.contentType.toUpperCase() : ''}
                         titleImages={title.images}
-                        catalogueOwner={title.catalogOwner}
+                        tenantCode={title.tenantCode}
                     />
                 </div>
             </div>
@@ -80,12 +79,14 @@ TitleDetailsHeader.propTypes = {
     title: PropTypes.object,
     containerRef: PropTypes.any,
     canEdit: PropTypes.bool,
+    selectedTenant: PropTypes.object,
 };
 
 TitleDetailsHeader.defaultProps = {
     title: {},
     containerRef: null,
     canEdit: false,
+    selectedTenant: {},
 };
 
 export default TitleDetailsHeader;

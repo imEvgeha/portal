@@ -76,6 +76,7 @@ exports[`NexusArray should match snapshot 1`] = `
             getCurrentValues={[Function]}
             getValues={[Function]}
             id="[0].selected"
+            inModal={false}
             initialData={
               Object {
                 "comment": "yyyyy",
@@ -112,7 +113,9 @@ exports[`NexusArray should match snapshot 1`] = `
             setFieldValue={[MockFunction]}
             setUpdate={[Function]}
             setUpdatedValues={[Function]}
+            shouldUpperCase={false}
             showLocalized={false}
+            stackLabel={false}
             tooltip={null}
             type="boolean"
             useCurrentDate={false}
@@ -138,6 +141,7 @@ exports[`NexusArray should match snapshot 1`] = `
             getCurrentValues={[Function]}
             getValues={[Function]}
             id="[0].country"
+            inModal={false}
             initialData={
               Object {
                 "comment": "yyyyy",
@@ -174,7 +178,9 @@ exports[`NexusArray should match snapshot 1`] = `
             setFieldValue={[MockFunction]}
             setUpdate={[Function]}
             setUpdatedValues={[Function]}
+            shouldUpperCase={false}
             showLocalized={false}
+            stackLabel={false}
             tooltip={null}
             type="string"
             useCurrentDate={false}
@@ -213,6 +219,7 @@ exports[`NexusArray should match snapshot 1`] = `
             getCurrentValues={[Function]}
             getValues={[Function]}
             id="[1].selected"
+            inModal={false}
             initialData={
               Object {
                 "comment": "",
@@ -249,7 +256,9 @@ exports[`NexusArray should match snapshot 1`] = `
             setFieldValue={[MockFunction]}
             setUpdate={[Function]}
             setUpdatedValues={[Function]}
+            shouldUpperCase={false}
             showLocalized={false}
+            stackLabel={false}
             tooltip={null}
             type="boolean"
             useCurrentDate={false}
@@ -275,6 +284,7 @@ exports[`NexusArray should match snapshot 1`] = `
             getCurrentValues={[Function]}
             getValues={[Function]}
             id="[1].country"
+            inModal={false}
             initialData={
               Object {
                 "comment": "",
@@ -311,7 +321,9 @@ exports[`NexusArray should match snapshot 1`] = `
             setFieldValue={[MockFunction]}
             setUpdate={[Function]}
             setUpdatedValues={[Function]}
+            shouldUpperCase={false}
             showLocalized={false}
+            stackLabel={false}
             tooltip={null}
             type="string"
             useCurrentDate={false}

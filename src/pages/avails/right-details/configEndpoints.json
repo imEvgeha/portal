@@ -124,6 +124,10 @@
         "configEndpoint": "/advisories"
     },
     {
+        "field": "categories",
+        "configEndpoint": "/categories"
+    },
+    {
         "field": "category",
         "configEndpoint": "/categories"
     },

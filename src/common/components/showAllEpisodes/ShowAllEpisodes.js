@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {EPISODE, SEASON, SERIES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/constants';
+import {
+    EPISODE,
+    SEASON,
+    SERIES,
+    MINI_SERIES,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/constants';
 import {useDispatch} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {clearTitleMetadataFilter} from '../../../pages/title-metadata/titleMetadataActions';
@@ -9,7 +14,7 @@ import './ShowAllEpisodes.scss';
 const ShowAllEpisodes = ({contentType, titleId}) => {
     const dispatch = useDispatch();
     const routeParams = useParams();
-    const allowedContents = [SEASON, SERIES];
+    const allowedContents = [SEASON, SERIES, MINI_SERIES];
 
     const createLink = contentType => {
         const baseUrl = '/metadata/?parentId=';

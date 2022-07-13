@@ -1,0 +1,33 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
+.nexus-c-row-data-item {
+    width: 100%;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 47.5% 47.5% 5%;
+    @include margin(0, 0, 4, 0);
+    @include padding(4);
+    box-shadow: 0.3em 0.3em 1em map-get($light-neutral-colors, light-neutral-1);
+
+    .nexus-c-row-data-item-col__1 {
+        > span:first-child {
+            color: map-get($neutrals, N300);
+            @include margin(0, 4, 0, 0);
+        }
+    }
+
+    .nexus-c-remove-row_button {
+        cursor: pointer;
+        &:hover {
+            color: map-get($reds, R400);
+        }
+    }
+
+    .nexus-c-row-data-item-col__2 {
+        > span:first-child {
+            color: map-get($neutrals, N300);
+            @include margin(0, 4, 0, 0);
+        }
+    }
+}

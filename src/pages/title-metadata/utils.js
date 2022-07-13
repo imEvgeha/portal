@@ -22,10 +22,6 @@ export const isStateEditable = state => {
     return state !== 'deleted';
 };
 
-export const isMgmTitle = titleId => {
-    return titleId && (titleId.startsWith('titl_mgm') || titleId.startsWith('titl_MGM'));
-};
-
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ && syncToMovida) {
         return `${VZ?.value},${MOVIDA?.value}`;
@@ -61,7 +57,7 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                 eventType = '',
                 originalLanguage = '',
                 usBoxOffice = '',
-                category = '',
+                categories = '',
                 externalIds = {},
                 episodic = {},
             } = obj || {};
@@ -94,7 +90,7 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                     eventType,
                     originalLanguage,
                     usBoxOffice,
-                    category,
+                    categories,
                     assetName,
                     eidrTitleId,
                     tmsId,
@@ -132,30 +128,30 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
 };
 
 export const handleTitleCategory = data => {
-    if (get(data, 'category')) {
-        let newData = cloneDeep(data.category);
+    if (get(data, 'categories')) {
+        let newData = cloneDeep(data.categories);
         newData = newData.map(record => {
             const {name} = record;
             return name;
         });
         return {
             ...data,
-            category: newData,
+            categories: newData,
         };
     }
     return data;
 };
 
 export const prepareCategoryField = data => {
-    if (get(data, 'category')) {
+    if (get(data, 'categories')) {
         const updatedCategory = [];
-        data.category.forEach((category, index) => {
+        data.categories.forEach((category, index) => {
             updatedCategory.push({
                 name: category,
                 order: index,
             });
         });
-        data.category = updatedCategory;
+        data.categories = updatedCategory;
     }
 };
 
@@ -180,7 +176,7 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     );
 };
 
-const formatTerritoryBody = (data, titleId) => {
+const formatTerritoryBody = data => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined) body[key] = null;
@@ -188,8 +184,6 @@ const formatTerritoryBody = (data, titleId) => {
             body[key] = get(data[key], 'value') ? get(data[key], 'value') : data[key];
         } else body[key] = data[key];
     });
-    body.territoryType = 'country';
-    if (titleId) body.parentId = titleId;
     if (body.isDeleted) {
         body.metadataStatus = 'deleted';
     }
@@ -199,9 +193,15 @@ const formatTerritoryBody = (data, titleId) => {
     return body;
 };
 
-export const updateTerritoryMetadata = async (values, titleId) => {
+/**
+ * Used for POST/PUT TMETs
+ * @param values
+ * @param titleId
+ * @param selectedTenant
+ * @returns {Promise<void>}
+ */
+export const updateTerritoryMetadata = async (values, titleId, selectedTenant) => {
     const data = values.territorialMetadata || [];
-    const {catalogOwner: tenantCode} = values;
     try {
         // eslint-disable-next-line init-declarations
         let response;
@@ -209,16 +209,18 @@ export const updateTerritoryMetadata = async (values, titleId) => {
             data.map(async tmet => {
                 if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
                     const body = formatTerritoryBody(tmet);
-                    response = await titleService.updateTerritoryMetadata(body, tenantCode);
+                    const {id: tmetId} = body;
+                    delete body.id;
+                    response = await titleService.updateTerritoryMetadata(body, titleId, tmetId);
                 } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
-                    const body = formatTerritoryBody(tmet, titleId);
-                    response = await titleService.addTerritoryMetadata(body, tenantCode);
+                    const body = formatTerritoryBody(tmet);
+                    // POST is on V2
+                    response = await titleService.addTerritoryMetadata(body, titleId);
                 }
             })
         );
         if (response) {
-            const isMgm = isMgmTitle(titleId);
-            store.dispatch(getTerritoryMetadata({id: titleId, isMgm}));
+            store.dispatch(getTerritoryMetadata({id: titleId, selectedTenant}));
             const successToast = {
                 severity: 'success',
                 detail: UPDATE_TERRITORY_METADATA_SUCCESS,
@@ -306,14 +308,14 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
           };
 };
 
-export const updateEditorialMetadata = async (values, titleId) => {
+export const updateEditorialMetadata = async (values, titleId, selectedTenant) => {
     let response = [];
     const errorToast = {
         severity: 'error',
         detail: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
-    const {catalogOwner: tenantCode} = values;
+    const {tenantCode} = values;
     const updatedEmets = [];
     const newEmets = [];
     data.forEach(emet => {
@@ -326,15 +328,17 @@ export const updateEditorialMetadata = async (values, titleId) => {
 
     try {
         if (updatedEmets.length > 0) response = await titleService.updateEditorialMetadata(updatedEmets, tenantCode);
-        if (newEmets.length > 0) {
-            response = newEmets.map(async emet => titleService.addEditorialMetadata(emet));
-            await Promise.all(response);
-        }
+        if (newEmets.length > 0) response = await titleService.addEditorialMetadataV1(newEmets, tenantCode);
+
+        // Temporarily block new version
+        // if (newEmets.length > 0) {
+        //     response = newEmets.map(async emet => titleService.addEditorialMetadata(emet));
+        //     await Promise.all(response);
+        // }
         if (response && response.length > 0) {
             let toast = errorToast;
             if (!get(response[0], 'response.failed') || get(response[0], 'response.failed').length === 0) {
-                const isMgm = isMgmTitle(titleId);
-                store.dispatch(getEditorialMetadata({id: titleId, isMgm}));
+                store.dispatch(getEditorialMetadata({id: titleId, selectedTenant}));
                 toast = {
                     severity: 'success',
                     detail: UPDATE_EDITORIAL_METADATA_SUCCESS,

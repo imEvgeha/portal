@@ -62,7 +62,7 @@ const NexusPersonsList = ({
         updatedPersons.forEach((person, index) => {
             // Avails crew doesn't come with id so displayName is used instead
             !person.hasOwnProperty('id') ? (person.id = person.displayName) : person;
-            person.creditsOrder = index;
+            person.order = index;
         });
         setPersons(updatedPersons);
     }, [personsList]);
@@ -125,7 +125,7 @@ const NexusPersonsList = ({
 
         const isCast = uiConfig.type === CAST;
         updatedPersons.forEach((person, index) => {
-            person.creditsOrder = index;
+            person.order = index;
         });
         setPersons(updatedPersons);
         updateCastCrew(updatedPersons, isCast);
@@ -138,7 +138,7 @@ const NexusPersonsList = ({
 
         const isCast = uiConfig.type === CAST;
         updatedPersons.forEach((person, index) => {
-            person.creditsOrder = index;
+            person.order = index;
         });
         setPersons(updatedPersons);
         updateCastCrew(updatedPersons, isCast);
@@ -151,10 +151,10 @@ const NexusPersonsList = ({
                 }
             });
 
-            const {id, personType, creditsOrder} = person;
+            const {id, personType, order} = person;
             const payload = isDuplicate
                 ? propagateRemovePersons
-                : [...propagateRemovePersons, {id, personType, creditsOrder, propagateToEmet: true}];
+                : [...propagateRemovePersons, {id, personType, order, propagateToEmet: true}];
 
             dispatch(removeSeasonPerson(payload));
         }
@@ -257,7 +257,7 @@ const NexusPersonsList = ({
         }
         const updatedPersons = reorder(persons, result.source.index, result.destination.index);
         updatedPersons.forEach((person, index) => {
-            person.creditsOrder = index;
+            person.order = index;
         });
         setPersons(updatedPersons);
         const isCast = uiConfig.type === CAST;
@@ -339,7 +339,7 @@ const NexusPersonsList = ({
                         if (person.id === newVal.id) {
                             return {
                                 displayName: response.displayName,
-                                creditsOrder: person.creditsOrder,
+                                order: person.order,
                                 personType: person.personType,
                                 id: response.id,
                                 firstName: response.firstName,

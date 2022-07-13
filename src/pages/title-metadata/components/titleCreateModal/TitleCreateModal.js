@@ -22,7 +22,7 @@ import {storeTitleContentTypes} from '../../titleMetadataActions';
 import {createContentTypesSelector} from '../../titleMetadataSelectors';
 import {getEnums} from '../../titleMetadataServices';
 import ExternalIDsSection from '../nexus-field-extarnal-ids/ExternalIDsSection';
-import constants, {CONTENT_TYPES, DEFAULT_VALUES} from './TitleCreateModalConstants';
+import constants, {CONTENT_TYPES, DEFAULT_VALUES_FOR_TITLE_CREATE_MODAL} from './TitleCreateModalConstants';
 import './Title.scss';
 
 const onViewTitleClick = (response, realm) => {
@@ -51,7 +51,7 @@ const TitleCreate = ({
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         CREATE_TITLE_RESTRICTIONS;
     const {id: focusedId} = focusedRight;
-    const initialValues = {...defaultValues, ...DEFAULT_VALUES, catalogueOwner: tenantCode};
+    const initialValues = {...defaultValues, ...DEFAULT_VALUES_FOR_TITLE_CREATE_MODAL, catalogueOwner: tenantCode};
     const form = useForm({
         defaultValues: initialValues,
         mode: 'all',
@@ -67,6 +67,7 @@ const TitleCreate = ({
         formState: {errors, isValid},
     } = form;
     const currentValues = useWatch({control});
+    const currentContentType = currentValues.contentType?.toLowerCase();
     const routeParams = useParams();
 
     const isItMiniSeriesEpisode =
@@ -369,8 +370,8 @@ const TitleCreate = ({
     /**
      * Selected Item template for `Series` AutoComplete.
      * A concatination of series name and series year(if exists)
-     * @param seriesItem The selected series from the results found
      * @returns {`${string}`|`${*}${string}`}
+     * @param title
      */
 
     const areThereAnyExternalSystemDuplicates = title => {
@@ -488,7 +489,7 @@ const TitleCreate = ({
     );
 
     const fieldsToDisplay = () => {
-        switch (currentValues.contentType) {
+        switch (currentContentType) {
             case CONTENT_TYPES.SEASON:
             case CONTENT_TYPES.EPISODE:
             case CONTENT_TYPES.SPORTS:
@@ -497,11 +498,11 @@ const TitleCreate = ({
                 return false;
         }
     };
-    const fieldsToDisplayAndHideForSeason = fieldsToDisplay() && currentValues.contentType !== CONTENT_TYPES.SEASON;
-    const isReleaseYearMandatory = currentValues.contentType !== CONTENT_TYPES.SEASON;
+    const fieldsToDisplayAndHideForSeason = fieldsToDisplay() && currentContentType !== CONTENT_TYPES.SEASON;
+    const isReleaseYearMandatory = currentContentType !== CONTENT_TYPES.SEASON;
 
     const areFieldsRequired = () => {
-        switch (currentValues.contentType) {
+        switch (currentContentType) {
             case CONTENT_TYPES.SEASON:
             case CONTENT_TYPES.EPISODE:
                 return true;
@@ -634,7 +635,7 @@ const TitleCreate = ({
                                         />
                                     </div>
                                     <div className="col-lg-6 col-sm-12">
-                                        {currentValues.contentType === CONTENT_TYPES.SEASON ? (
+                                        {currentContentType === CONTENT_TYPES.SEASON ? (
                                             <InputText
                                                 formControlOptions={{
                                                     formControlName: `season`,

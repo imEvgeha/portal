@@ -54,7 +54,7 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
                     configCastList.push(newCastCrew);
                 });
     }
-    return configCastList.sort((a, b) => a.creditsOrder - b.creditsOrder);
+    return configCastList.sort((a, b) => a.order - b.order);
 };
 
 export const isCastPersonType = (item, isConfig) => {
@@ -136,7 +136,7 @@ export const getFilteredCrewList = (originalConfigCrewList, isConfig) => {
                 }
             });
 
-    return configCrewList.sort((a, b) => a.creditsOrder - b.creditsOrder);
+    return configCrewList.sort((a, b) => a.order - b.order);
 };
 
 export const getFormatTypeName = personType => {

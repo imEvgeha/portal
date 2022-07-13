@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select';
 import {cloneDeep} from 'lodash';
@@ -114,6 +114,18 @@ const NexusSelect = ({
         });
     }
 
+    const extraProps = {
+        ...(addedProps.inModal && {menuPortalTarget: document.body}),
+        ...(addedProps.inModal && {
+            styles: {
+                menuPortal: base => ({
+                    ...base,
+                    zIndex: 9999,
+                }),
+            },
+        }),
+    };
+
     return isMultiselect ? (
         <SelectWithOptional
             {...fieldProps}
@@ -122,6 +134,7 @@ const NexusSelect = ({
             defaultValue={defaultValue}
             {...addedProps}
             formatOptionLabel={showLocalized ? formatOptionLabel : null}
+            {...extraProps}
         />
     ) : (
         <SelectWithOptional
@@ -131,6 +144,7 @@ const NexusSelect = ({
             {...addedProps}
             className="nexus-c-nexus-select-container"
             classNamePrefix="nexus-c-nexus-select"
+            {...extraProps}
         />
     );
 };

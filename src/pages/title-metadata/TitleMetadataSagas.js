@@ -1,29 +1,27 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
-import {SUCCESS_ICON, ERROR_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {ERROR_ICON, SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {uploadService} from '@vubiquity-nexus/portal-utils/lib/services/UploadService';
-import {put, all, call, takeEvery} from 'redux-saga/effects';
+import {all, call, put, takeEvery} from 'redux-saga/effects';
 import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
 import * as actionTypes from './titleMetadataActionTypes';
 import {
-    getTitleById,
+    getEditorialMetadataByTitleId,
     getExternalIds,
     getTerritoryMetadataById,
-    getEditorialMetadataByTitleId,
-    updateTitle as updateTitleService,
-    syncTitle as syncTitleService,
+    getTitleById,
     registerTitle,
+    syncTitle as syncTitleService,
+    updateTitle as updateTitleService,
 } from './titleMetadataServices';
-import {isMgmTitle} from './utils';
-import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR, UPLOAD_SUCCESS_MESSAGE} from './constants';
+import {SERIES, UPDATE_TITLE_ERROR, UPDATE_TITLE_SUCCESS, UPLOAD_SUCCESS_MESSAGE} from './constants';
 
 export function* loadParentTitle(title) {
-    const {parentIds} = title;
+    const {parentIds} = title.meta;
     if (parentIds) {
-        const parent = parentIds.find(e => e.contentType === 'SERIES');
+        const parent = parentIds.find(e => e.contentType === SERIES);
         if (parent) {
             try {
-                const isMgm = isMgmTitle(parent.id);
-                const response = yield call(getTitleById, {id: parent.id, isMgm});
+                const response = yield call(getTitleById, {id: parent.id});
                 const newEpisodic = Object.assign(title.episodic, {
                     seriesTitleName: response.title,
                 });
@@ -51,11 +49,15 @@ export function* loadTitle({payload}) {
     });
 
     try {
-        const response = yield call(getTitleById, {id: payload.id, tenantCode: payload.selectedTenant.id});
+        const response = yield call(getTitleById, {id: payload.id});
         const updatedResponse = yield call(loadParentTitle, response);
+        const mergedResponse = {
+            ...updatedResponse.data,
+            ...updatedResponse.meta,
+        };
         yield put({
             type: actionTypes.GET_TITLE_SUCCESS,
-            payload: updatedResponse,
+            payload: mergedResponse,
         });
         yield put({
             type: actionTypes.GET_TITLE_LOADING,
@@ -103,7 +105,7 @@ export function* loadTerritoryMetadata({payload}) {
     }
 
     try {
-        const response = yield call(getTerritoryMetadataById, {id: payload.id, tenantCode: payload.selectedTenant.id});
+        const response = yield call(getTerritoryMetadataById, {id: payload.id});
         yield put({
             type: actionTypes.GET_TERRITORY_METADATA_SUCCESS,
             payload: response,
@@ -200,10 +202,9 @@ export function* updateTitle({payload}) {
             payload: false,
         });
     } finally {
-        const isMgm = isMgmTitle(payload.id);
         yield put({
             type: actionTypes.GET_TITLE,
-            payload: {...payload, isMgm},
+            payload: {...payload},
         });
     }
 }

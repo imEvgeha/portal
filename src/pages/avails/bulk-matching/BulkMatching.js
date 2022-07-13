@@ -14,7 +14,7 @@ import {titleService} from '../../legacy/containers/metadata/service/TitleServic
 import TitleSystems from '../../metadata/constants/systems';
 import TitleCreate from '../../title-metadata/components/titleCreateModal/TitleCreateModal';
 import {setExternalIdValues} from '../../title-metadata/titleMetadataActions';
-import {createExternalDropdownIDsSelector} from '../../title-metadata/titleMetadataSelectors';
+import {externalIDTypesSelector} from '../../title-metadata/titleMetadataSelectors';
 import {getEnums} from '../../title-metadata/titleMetadataServices';
 import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
@@ -407,7 +407,7 @@ BulkMatching.defaultProps = {
 };
 
 const mapStateToProps = () => {
-    const externalIdSelector = createExternalDropdownIDsSelector();
+    const externalIdSelector = externalIDTypesSelector();
     return state => ({
         externalIdOptions: externalIdSelector(state),
     });

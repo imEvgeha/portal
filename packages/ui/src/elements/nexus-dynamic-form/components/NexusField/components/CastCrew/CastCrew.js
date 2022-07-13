@@ -29,16 +29,8 @@ const CastCrew = ({
 
     useEffect(() => {
         setPersonsWithLocalization(persons || []);
-        setCast(
-            persons
-                .filter(person => !CREW_LIST.includes(person.personType))
-                .sort((a, b) => a.creditsOrder - b.creditsOrder)
-        );
-        setCrew(
-            persons
-                .filter(person => CREW_LIST.includes(person.personType))
-                .sort((a, b) => a.creditsOrder - b.creditsOrder)
-        );
+        setCast(persons.filter(person => !CREW_LIST.includes(person.personType)).sort((a, b) => a.order - b.order));
+        setCrew(persons.filter(person => CREW_LIST.includes(person.personType)).sort((a, b) => a.order - b.order));
     }, [persons]);
 
     useEffect(() => {
@@ -68,12 +60,12 @@ const CastCrew = ({
         setCast(
             personsWithLocalization
                 .filter(person => !CREW_LIST.includes(person.personType))
-                .sort((a, b) => a.creditsOrder - b.creditsOrder)
+                .sort((a, b) => a.order - b.order)
         );
         setCrew(
             personsWithLocalization
                 .filter(person => CREW_LIST.includes(person.personType))
-                .sort((a, b) => a.creditsOrder - b.creditsOrder)
+                .sort((a, b) => a.order - b.order)
         );
     };
 

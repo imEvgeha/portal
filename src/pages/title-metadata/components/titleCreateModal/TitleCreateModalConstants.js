@@ -53,7 +53,7 @@ export const CONTENT_TYPES = {
     DOCUMENTARY: 'Documentary',
 };
 
-export const DEFAULT_VALUES = {
+export const DEFAULT_VALUES_FOR_TITLE_CREATE_MODAL = {
     title: '',
     contentType: null,
     contentSubtype: null,

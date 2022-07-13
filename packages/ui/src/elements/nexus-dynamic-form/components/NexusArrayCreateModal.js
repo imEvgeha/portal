@@ -64,7 +64,7 @@ const NexusArrayCreateModal = ({
                                             castCrewConfig,
                                             initialData: {contentType: initialData.contentType},
                                             setUpdatedValues,
-                                            updatedValues,
+                                            updatedValues: {...updatedValues, contentType: initialData.contentType},
                                             prefix,
                                             allData,
                                         })}
