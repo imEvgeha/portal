@@ -230,6 +230,7 @@ export function* reconcileTitles({payload}) {
         // error handling
         yield put({
             type: actionTypes.TITLES_RECONCILE_ERROR,
+            payload: {},
         });
     }
 }
