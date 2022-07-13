@@ -287,7 +287,7 @@ const TitleDetails = ({
             res = {...selectValues, externalSystem: externalIdTypes};
         } else if (!isFetchingExternalIdTypes.current) {
             isFetchingExternalIdTypes.current = true;
-            getEnums().then(responseOptions => setExternalIdValues({responseOptions}));
+            getEnums('external-id-type').then(responseOptions => setExternalIdValues({responseOptions}));
         }
 
         return res;
