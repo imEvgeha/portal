@@ -13,7 +13,7 @@ import {
     syncTitle as syncTitleService,
     updateTitle as updateTitleService,
 } from './titleMetadataServices';
-import {SERIES, UPDATE_TITLE_ERROR, UPDATE_TITLE_SUCCESS, UPLOAD_SUCCESS_MESSAGE} from './constants';
+import {SERIES, UPDATE_TITLE_SUCCESS, UPLOAD_SUCCESS_MESSAGE} from './constants';
 
 export function* loadParentTitle(title) {
     const {parentIds} = title.meta;
@@ -185,13 +185,6 @@ export function* updateTitle({payload}) {
             payload: false,
         });
     } catch (error) {
-        yield put({
-            type: ADD_TOAST,
-            payload: {
-                severity: ERROR_ICON,
-                detail: UPDATE_TITLE_ERROR,
-            },
-        });
         yield put({
             type: actionTypes.UPDATE_TITLE_ERROR,
             payload: error,
