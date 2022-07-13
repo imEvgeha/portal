@@ -67,7 +67,7 @@ const TitleCreate = ({
         formState: {errors, isValid},
     } = form;
     const currentValues = useWatch({control});
-    const currentContentType = currentValues.contentType?.toLowerCase();
+    const currentContentType = currentValues.contentType;
     const routeParams = useParams();
 
     const isItMiniSeriesEpisode =
@@ -158,9 +158,9 @@ const TitleCreate = ({
     };
 
     const getAndSetContentSubTypes = contentType => {
-        const currentContentType = contentTypes.find(item => item.displayName === contentType);
-        const currentContentSubTypeNames = currentContentType?.values?.map(item => item.displayName);
-        setValue('contentSubtype', currentContentType?.values?.find(item => item.isDefault)?.displayName);
+        const currentContentTypeDetails = contentTypes.find(item => item.displayName === contentType);
+        const currentContentSubTypeNames = currentContentTypeDetails?.values?.map(item => item.displayName);
+        setValue('contentSubtype', currentContentTypeDetails?.values?.find(item => item.isDefault)?.displayName);
         setContentSubTypes(currentContentSubTypeNames);
         handleIsFieldRequired();
     };
@@ -395,14 +395,14 @@ const TitleCreate = ({
 
         const updatedExternalSystemIds = titleForm.externalSystemIds.length ? titleForm.externalSystemIds : null;
         const seasonNumber = isObject(titleForm.season) ? titleForm.season.number : titleForm.season;
-        const currentContentType = contentTypes?.find(item => item.displayName === titleForm.contentType);
-        const currentContentSubType = currentContentType?.values?.find(
+        const currentContentTypeDetails = contentTypes?.find(item => item.displayName === titleForm.contentType);
+        const currentContentSubType = currentContentTypeDetails?.values?.find(
             item => item.displayName === titleForm.contentSubtype
         );
         return {
             name: titleForm.title,
             ...getValueOrEmptyObject('releaseYear', titleForm.releaseYear),
-            ...getValueOrEmptyObject('contentType', currentContentType.name),
+            ...getValueOrEmptyObject('contentType', currentContentTypeDetails.name),
             ...getValueOrEmptyObject('contentSubType', currentContentSubType.name),
             ...getValueOrEmptyObject('externalSystemIds', updatedExternalSystemIds),
             ...getValueOrEmptyObject('miniseries', titleForm.miniseriesTitleName?.title),
