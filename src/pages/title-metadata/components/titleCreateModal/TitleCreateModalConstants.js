@@ -58,6 +58,8 @@ export const DEFAULT_VALUES_FOR_TITLE_CREATE_MODAL = {
     contentType: null,
     contentSubtype: null,
     releaseYear: '',
+    syncVZ: false,
+    syncMovida: false,
 };
 
 export default {

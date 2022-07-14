@@ -103,6 +103,8 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
           "contentSubtype": null,
           "contentType": null,
           "releaseYear": "",
+          "syncMovida": false,
+          "syncVZ": false,
           "title": "",
         },
         "_executeSchema": [Function],
@@ -124,6 +126,8 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
           "contentSubtype": null,
           "contentType": null,
           "releaseYear": "",
+          "syncMovida": false,
+          "syncVZ": false,
           "title": "",
         },
         "_getDirty": [Function],
@@ -141,6 +145,8 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
             "contentSubtype": null,
             "contentType": null,
             "releaseYear": "",
+            "syncMovida": false,
+            "syncVZ": false,
             "title": "",
           },
           "mode": "all",
@@ -389,6 +395,8 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       "contentSubtype": null,
                       "contentType": null,
                       "releaseYear": "",
+                      "syncMovida": false,
+                      "syncVZ": false,
                       "title": "",
                     },
                     "_executeSchema": [Function],
@@ -410,6 +418,8 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                       "contentSubtype": null,
                       "contentType": null,
                       "releaseYear": "",
+                      "syncMovida": false,
+                      "syncVZ": false,
                       "title": "",
                     },
                     "_getDirty": [Function],
@@ -427,6 +437,8 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                         "contentSubtype": null,
                         "contentType": null,
                         "releaseYear": "",
+                        "syncMovida": false,
+                        "syncVZ": false,
                         "title": "",
                       },
                       "mode": "all",
@@ -515,6 +527,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                   className="col nexus-c-title-create_checkbox-wrapper"
                 >
                   <Checkbox
+                    checked={false}
                     className="nexus-c-title-create_checkbox"
                     formControlOptions={
                       Object {
@@ -540,6 +553,7 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
                   className="col nexus-c-title-create_checkbox-wrapper"
                 >
                   <Checkbox
+                    checked={false}
                     className="nexus-c-title-create_checkbox"
                     formControlOptions={
                       Object {
@@ -670,6 +684,8 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           "contentSubtype": null,
           "contentType": null,
           "releaseYear": "",
+          "syncMovida": false,
+          "syncVZ": false,
           "title": "",
         },
         "_executeSchema": [Function],
@@ -691,6 +707,8 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
           "contentSubtype": null,
           "contentType": null,
           "releaseYear": "",
+          "syncMovida": false,
+          "syncVZ": false,
           "title": "",
         },
         "_getDirty": [Function],
@@ -708,6 +726,8 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
             "contentSubtype": null,
             "contentType": null,
             "releaseYear": "",
+            "syncMovida": false,
+            "syncVZ": false,
             "title": "",
           },
           "mode": "all",
@@ -956,6 +976,8 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                       "contentSubtype": null,
                       "contentType": null,
                       "releaseYear": "",
+                      "syncMovida": false,
+                      "syncVZ": false,
                       "title": "",
                     },
                     "_executeSchema": [Function],
@@ -977,6 +999,8 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                       "contentSubtype": null,
                       "contentType": null,
                       "releaseYear": "",
+                      "syncMovida": false,
+                      "syncVZ": false,
                       "title": "",
                     },
                     "_getDirty": [Function],
@@ -994,6 +1018,8 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
                         "contentSubtype": null,
                         "contentType": null,
                         "releaseYear": "",
+                        "syncMovida": false,
+                        "syncVZ": false,
                         "title": "",
                       },
                       "mode": "all",
