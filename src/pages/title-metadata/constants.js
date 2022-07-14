@@ -20,7 +20,6 @@ export const DEFAULT_CATALOGUE_OWNER = 'VU';
 export const REPOSITORY_COLUMN_ID = 'repository';
 
 export const UPDATE_TITLE_SUCCESS = 'Title updated successfully';
-export const UPDATE_TITLE_ERROR = 'Error while updating Title';
 
 export const UPDATE_TERRITORY_METADATA_SUCCESS = 'Territorial Metadata updated successfully';
 export const UPDATE_TERRITORY_METADATA_ERROR = 'Error while updating Territorial Metadata';
