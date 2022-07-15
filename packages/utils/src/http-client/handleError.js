@@ -3,6 +3,7 @@ import React from 'react';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
 import {store} from '../../../../src';
 
@@ -72,7 +73,15 @@ export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast
 };
 
 const handleError = (error, options = {isWithErrorHandling: true}) => {
-    const {status, statusText, name, errorMessage} = error || {};
+    const isErrorValid = !(isEmpty(error) || (error?.request && isEmpty(error?.request)));
+    const defaultError = {
+        status: 'Default Error',
+        errorMessage: {
+            bindingResult: 'Default Error',
+            description: 'Unknown error. Please try again.',
+        },
+    };
+    const {status, statusText, name, errorMessage} = isErrorValid ? error : defaultError;
 
     // TODO: this should be removed from http client error handling
     // it considers UI level (modal and toast) and should be called inside ui|redux actions|redux sagas
