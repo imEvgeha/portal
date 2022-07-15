@@ -9,6 +9,7 @@ import {isEmpty} from 'lodash';
 import {ProgressSpinner} from 'primereact/progressspinner';
 import {useDispatch, useSelector} from 'react-redux';
 import './PropagateForm.scss';
+import {ADVERTISEMENT} from '../../../../../../../src/pages/metadata/constants/contentType';
 import {checkIfEmetIsEditorial} from '../../../nexus-dynamic-form/utils';
 import {
     CAST_CREW,
@@ -174,7 +175,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             ) : (
                 <>
                     <div className="propagate-form__section">
-                        <h5>{contentTypeUpperCase !== 'AD' ? contentTypeUpperCase : 'ADVERTISMENT'}</h5>
+                        <h5>{contentTypeUpperCase !== 'AD' ? contentTypeUpperCase : ADVERTISEMENT.name}</h5>
                         <Checkbox
                             id="emets"
                             label={EMETS}
