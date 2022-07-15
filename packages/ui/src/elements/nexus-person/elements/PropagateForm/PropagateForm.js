@@ -62,6 +62,8 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
     const isCastCrewEmpty = !castCrew?.length;
     const isEMetsEmpty = !editorialMetadata?.length;
 
+    const contentTypeUpperCase = contentType ? contentType.toUpperCase() : '';
+
     useEffect(() => {
         async function fetchLocalizationPersons() {
             setIsLoading(true);
@@ -172,7 +174,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             ) : (
                 <>
                     <div className="propagate-form__section">
-                        <h5>{contentType !== 'AD' ? contentType : 'ADVERTISMENT'}</h5>
+                        <h5>{contentTypeUpperCase !== 'AD' ? contentTypeUpperCase : 'ADVERTISMENT'}</h5>
                         <Checkbox
                             id="emets"
                             label={EMETS}
@@ -181,7 +183,7 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                             isDisabled={isCastCrewEmpty || isEMetsEmpty}
                         />
                     </div>
-                    {contentType === SEASON && (
+                    {contentTypeUpperCase === SEASON && (
                         <>
                             <hr className="solid" />
                             <div className="propagate-form__section">
