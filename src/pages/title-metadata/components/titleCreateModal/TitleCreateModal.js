@@ -129,8 +129,8 @@ const TitleCreate = ({
         }
     }, [currentValues.contentType]);
 
-    const toggle = () => {
-        onSave();
+    const toggle = (isCancelClicked = false) => {
+        !isCancelClicked && onSave();
         reset(initialValues);
         setValue('externalSystemIds', []);
         setFilteredSeries([]);
@@ -466,7 +466,8 @@ const TitleCreate = ({
                     id="titleCancelBtn"
                     label="Cancel"
                     onClick={() => {
-                        toggle();
+                        const isCancelClicked = true;
+                        toggle(isCancelClicked);
                         onCloseModal();
                     }}
                     disabled={isCreatingTitle}
