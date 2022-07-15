@@ -646,11 +646,6 @@
                             "name": "Asset Name",
                             "type": "string",
                             "path": "externalIds.assetName"
-                        },
-                        "tags": {
-                            "name": "Tags",
-                            "type": "string",
-                            "path": "tags"
                         }
                     }
                 },
