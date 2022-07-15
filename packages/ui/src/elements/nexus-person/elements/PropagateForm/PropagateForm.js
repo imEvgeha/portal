@@ -175,7 +175,9 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
             ) : (
                 <>
                     <div className="propagate-form__section">
-                        <h5>{contentTypeUpperCase !== 'AD' ? contentTypeUpperCase : ADVERTISEMENT.name}</h5>
+                        <h5>
+                            {contentTypeUpperCase !== ADVERTISEMENT.apiName ? contentTypeUpperCase : ADVERTISEMENT.name}
+                        </h5>
                         <Checkbox
                             id="emets"
                             label={EMETS}
