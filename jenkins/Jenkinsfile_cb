@@ -26,7 +26,7 @@ pipeline {
         stage('Versioning') {
             steps {
                 script {
-                    // Portal Version from NPM package.json
+                    //TODO: To retrieve this from package.json
                     PORTAL_VERSION = '1.0.0'
                     // define the version based on the branch(master/release/feature)
                     VERSIONING_BRANCH = ''
@@ -34,20 +34,22 @@ pipeline {
                     BUILD_VERSION = ''
                     if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('origin/master')) {
                         VERSIONING_BRANCH = 'master'
+                        BUILD_VERSION = PORTAL_VERSION + '-' + VERSIONING_BRANCH + '.' + BUILD_NUMBER
                     }
                     // if release, concat release number with Build Number
                     // i.e refs/heads/release/16.0 -> 1.0.0-r16.0.191
                     else if (BRANCH_NAME.contains('refs/heads/release') || BRANCH_NAME.contains('origin/release')) {
                         releaseId = BRANCH_NAME.substring(BRANCH_NAME.lastIndexOf('/') + 1, BRANCH_NAME.length())
                         VERSIONING_BRANCH = 'r' + releaseId
+                        BUILD_VERSION = PORTAL_VERSION + '-' + VERSIONING_BRANCH
                     }
                     // if feature branch, concat feature ID with Build Number
                     // i.e refs/heads/feature/VBQT-545 -> 1.0.0-f545.191
                     else if (BRANCH_NAME.contains('refs/heads/feature') || BRANCH_NAME.contains('origin/feature')) {
                         featureId = BRANCH_NAME.substring(BRANCH_NAME.lastIndexOf('-') + 1, BRANCH_NAME.length())
                         VERSIONING_BRANCH = 'f' + featureId
+                        BUILD_VERSION = PORTAL_VERSION + '-' + VERSIONING_BRANCH + '.' + BUILD_NUMBER
                     }
-                    BUILD_VERSION = PORTAL_VERSION + '-' + VERSIONING_BRANCH + '.' + BUILD_NUMBER
 
                     sh "npm version $BUILD_VERSION --no-git-tag-version"
                 }
