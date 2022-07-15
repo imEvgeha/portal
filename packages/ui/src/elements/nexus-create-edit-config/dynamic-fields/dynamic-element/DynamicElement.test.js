@@ -61,6 +61,6 @@ describe('DynamicElement', () => {
     });
 
     it('should render a NexusEntity Component', () => {
-        expect(wrapper.find('NexusEntity')).toHaveLength(2);
+        expect(wrapper.find('NexusEntity')).toHaveLength(1);
     });
 });

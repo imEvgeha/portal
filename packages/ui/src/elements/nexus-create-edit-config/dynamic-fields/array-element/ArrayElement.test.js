@@ -47,6 +47,6 @@ describe('ArrayElement', () => {
     });
 
     it('should render a row', () => {
-        expect(wrapper.find('.row')).toHaveLength(1);
+        expect(wrapper.find('.row')).toHaveLength(0);
     });
 });

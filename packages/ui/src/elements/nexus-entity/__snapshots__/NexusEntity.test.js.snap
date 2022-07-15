@@ -36,6 +36,9 @@ exports[`NexusEntity should match snapshot 1`] = `
             <h1>
               Heading
             </h1>
+            <FieldRequired
+              required={false}
+            />
           </div>
           <div
             className="col-12 text-center text-sm-start col-sm-6"

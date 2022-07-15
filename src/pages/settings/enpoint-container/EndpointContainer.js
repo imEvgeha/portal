@@ -80,7 +80,10 @@ const EndpointContainer = ({endpoint}) => {
     const headerTemplate = () => {
         return (
             <div>
-                <NexusEntity heading={endpoint.displayName} type={NEXUS_ENTITY_TYPES.subheader} />
+                <NexusEntity
+                    heading={totalRecords ? `${endpoint.displayName} (${totalRecords})` : endpoint.displayName}
+                    type={NEXUS_ENTITY_TYPES.subheader}
+                />
                 {searchPanel()}
             </div>
         );

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ChevronDown from '@vubiquity-nexus/portal-assets/icon-nav-chevron-down-black.svg';
 import ChevronUp from '@vubiquity-nexus/portal-assets/icon-nav-chevron-up-black.svg';
 import {Divider} from 'primereact/divider';
+import FieldRequired from '../nexus-field-required/FieldRequired';
 import {Action} from './entity-actions/Actions.class';
 import EntityActions from './entity-actions/EntityActions';
 import './NexusEntity.scss';
@@ -21,7 +22,7 @@ import {NEXUS_ENTITY_TYPES} from './constants';
 //     }),
 // ];
 
-const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, isActive, body}) => {
+const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, isActive, body, isRequired}) => {
     const [isMouseOver, setIsMouseOver] = useState(false);
     const [isBodyExpanded, setIsBodyExpanded] = useState(false);
 
@@ -62,6 +63,8 @@ const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, i
             </div>
         ) : null;
 
+    const newActions = getActions();
+    const hasActions = (Array.isArray(newActions) && newActions.length > 0) || !!tag || !!flag1 || !!flag2;
     return (
         <div className="nexus-c-entity row">
             <div className="col-12">
@@ -75,16 +78,25 @@ const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, i
                 >
                     <div className="col-12">
                         <div className={`row nexus-c-section align-items-center nexus-c-section-${type}`}>
-                            <div className="col-12 nexus-c-heading text-center text-sm-start col-sm-6">{heading}</div>
-                            <div className="col-12 text-center text-sm-start col-sm-6">
-                                <EntityActions
-                                    actions={getActions()}
-                                    tag={tag}
-                                    flag1={flag1}
-                                    flag2={flag2}
-                                    totalEnabled={disableHover ? true : isMouseOver}
-                                />
+                            <div
+                                className={`col-12 nexus-c-heading text-center text-sm-start ${
+                                    hasActions ? 'col-sm-6' : 'col-sm-12'
+                                }`}
+                            >
+                                {heading}
+                                <FieldRequired required={!!isRequired} />
                             </div>
+                            {hasActions && (
+                                <div className="col-12 text-center text-sm-start col-sm-6">
+                                    <EntityActions
+                                        actions={newActions}
+                                        tag={tag}
+                                        flag1={flag1}
+                                        flag2={flag2}
+                                        totalEnabled={disableHover ? true : isMouseOver}
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -107,6 +119,7 @@ NexusEntity.propTypes = {
     disableHover: PropTypes.bool,
     isActive: PropTypes.bool,
     body: PropTypes.element,
+    isRequired: PropTypes.bool,
 };
 
 NexusEntity.defaultProps = {
@@ -119,6 +132,7 @@ NexusEntity.defaultProps = {
     disableHover: false,
     isActive: false,
     body: undefined,
+    isRequired: false,
 };
 
 export default NexusEntity;

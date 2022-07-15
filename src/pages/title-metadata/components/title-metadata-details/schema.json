@@ -324,51 +324,9 @@
                             ],
                             "isReadOnly": true
                         },
-                        "seasonId": {
-                            "name": "Season ID",
-                            "path": "episodic.seasonId",
-                            "type": "string",
-                            "showWhen": [
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "season"
-                                }
-                            ]
-                        },
                         "episodeNumber": {
                             "name": "Episode Number",
                             "path": "episodeNumber",
-                            "type": "string",
-                            "showWhen": [
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "episode"
-                                },
-                                [
-                                    {
-                                        "field": "contentType",
-                                        "hasValue": "event"
-                                    },
-                                    {
-                                        "field": "seriesTitleName",
-                                        "hasValue": "any"
-                                    }
-                                ],
-                                [
-                                    {
-                                        "field": "contentType",
-                                        "hasValue": "sports"
-                                    },
-                                    {
-                                        "field": "seriesTitleName",
-                                        "hasValue": "any"
-                                    }
-                                ]
-                            ]
-                        },
-                        "episodeId": {
-                            "name": "Episode ID",
-                            "path": "episodic.episodeId",
                             "type": "string",
                             "showWhen": [
                                 {

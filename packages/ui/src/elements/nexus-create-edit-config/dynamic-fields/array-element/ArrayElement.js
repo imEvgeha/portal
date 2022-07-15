@@ -12,31 +12,34 @@ import './ArrayElement.scss';
 
 const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
     const isGroup = useRef(false);
-    const constructFormFieldsState = () => {
-        // Needed when adding new as no values still exist.
-        const newConfig = [0];
 
-        if (elementsSchema?.misc?.fields?.length > 1) {
-            const group = (values?.length ? values : newConfig).map((val, index) =>
+    const constructFormFieldsState = () => {
+        isGroup.current = elementsSchema?.misc?.fields?.length > 1;
+
+        if (isGroup.current && values?.length) {
+            const group = values.map((val, index) =>
                 elementsSchema?.misc?.fields.map(f => ({
                     ...f,
                     name: `${elementsSchema.name}.${index}.${f.id}`,
                 }))
             );
-
-            isGroup.current = true;
             return group;
         }
 
-        return (Array.isArray(values) && values.length ? values : newConfig).map(
-            (val, index) =>
-                elementsSchema?.misc?.fields.map(f => {
-                    return {
-                        ...f,
-                        name: `${elementsSchema.name}.${index}`,
-                    };
-                })[0]
-        );
+        if (!isGroup.current && Array.isArray(values) && values.length) {
+            const singleElement = values.map(
+                (val, index) =>
+                    elementsSchema?.misc?.fields.map(f => {
+                        return {
+                            ...f,
+                            name: `${elementsSchema.name}.${index}`,
+                        };
+                    })[0]
+            );
+            return singleElement;
+        }
+
+        return [];
     };
 
     const getInitHeader = () => {
@@ -95,10 +98,11 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
     const addField = () => {
         const newFields = [...formFields];
         const fieldName = `${elementsSchema.name}.${newFields.length}`;
+        const fieldType = elementsSchema?.misc?.fields[0].type;
         newFields.push({
             ...(newFields?.[0] || {}),
             id: new Date().getTime(),
-            type: newFields?.[0]?.type,
+            type: newFields?.[0]?.type ? newFields?.[0]?.type : fieldType,
             name: fieldName,
         });
 
@@ -108,7 +112,12 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
 
     const addGroup = () => {
         const newFields = [...formFields];
-        const formFieldsTmp = [...formFields[0]];
+        const formFieldsTmp = [
+            ...elementsSchema?.misc?.fields.map(f => ({
+                ...f,
+                name: `${elementsSchema.name}.${formFields.length}.${f.id}`,
+            })),
+        ];
 
         newFields.push(mapElementEntry(formFieldsTmp, formFields.length));
 
@@ -218,6 +227,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
                             type={NEXUS_ENTITY_TYPES.default}
                             body={body}
                             heading={heading}
+                            isRequired={elementsSchema.required}
                             actions={groupActions(index)}
                         />
                     </div>
@@ -252,7 +262,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
             return (
                 <div className="row align-items-center my-2" key={`nexus-c-field-${index}`}>
                     <div className="col-10">{constructElement(fieldSchema, 'mb-2', index)}</div>
-                    {arrayElementButtons(index, formFields.length, addField, () => onRemove(index, false), true)}
+                    {arrayElementButtons(index, formFields.length + 1, addField, () => onRemove(index, false), true)}
                 </div>
             );
         });
@@ -278,6 +288,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
                 <NexusEntity
                     type={NEXUS_ENTITY_TYPES.subsection}
                     heading={toUpper(elementsSchema.label)}
+                    isRequired={elementsSchema.required}
                     actions={constructActions()}
                 />
             )}

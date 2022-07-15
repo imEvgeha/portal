@@ -24,6 +24,7 @@ exports[`EndpointContainer should match snapshot 1`] = `
           flag2=""
           heading=""
           isActive={false}
+          isRequired={false}
           tag=""
           type="subheader"
         />

@@ -23,78 +23,9 @@ exports[`DynamicElement should match snapshot 1`] = `
     flag2=""
     heading="TYPE"
     isActive={false}
+    isRequired={false}
     tag=""
     type="subsection"
   />
-  <div
-    className="row align-items-center nexus-c-dynamic-element-entry my-2"
-    key="nexus-c-field-group0"
-  >
-    <div
-      className="col-12"
-    >
-      <NexusEntity
-        actions={
-          Array [
-            Action {
-              "action": [Function],
-              "buttonId": "btnDeleteSection",
-              "disabled": false,
-              "icon": Object {
-                "process": [Function],
-              },
-              "position": 3,
-            },
-          ]
-        }
-        body={
-          <div
-            className="row"
-          >
-            <div
-              className="col-12"
-            >
-              <Memo(InputText)
-                __TYPE="InputText"
-                id="element_0_inp_id"
-                keyfilter={null}
-                name="type.unset_inp_name"
-                onChange={[Function]}
-                onInput={null}
-                onKeyPress={[Function]}
-                onPaste={null}
-                placeholder="Section Key Name"
-                tooltip="Section Key Name"
-                tooltipOptions={null}
-                validateOnly={false}
-                value="unset"
-              />
-            </div>
-            <div
-              className="mb-2"
-            >
-              <Unknown
-                defaultValue={Array []}
-                name="type.unset"
-                render={[Function]}
-                rules={
-                  Object {
-                    "required": "Value is required",
-                  }
-                }
-              />
-            </div>
-          </div>
-        }
-        disableHover={false}
-        flag1=""
-        flag2=""
-        heading="unset"
-        isActive={false}
-        tag=""
-        type="default"
-      />
-    </div>
-  </div>
 </div>
 `;

@@ -68,6 +68,7 @@ exports[`Settings Page should match snapshot 1`] = `
                   flag2=""
                   heading="APIs"
                   isActive={false}
+                  isRequired={false}
                   tag=""
                   type="subheader"
                 />

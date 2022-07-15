@@ -29,6 +29,7 @@ exports[`External Ids Section should match snapshot 1`] = `
         flag2=""
         heading="EXTERNAL IDs"
         isActive={false}
+        isRequired={false}
         tag=""
         type="subsection"
       />

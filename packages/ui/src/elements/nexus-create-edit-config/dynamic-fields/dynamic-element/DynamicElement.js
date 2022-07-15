@@ -14,6 +14,10 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
     const initializeSections = () => {
         const sectionKeys = isEmpty(values) ? ['unset'] : Object.keys(values);
 
+        if (isEmpty(values)) {
+            return [];
+        }
+
         return sectionKeys.map((key, index) => ({
             ...elementsSchema,
             key,

@@ -112,6 +112,7 @@ exports[`CreateEditConfig should match snapshot 1`] = `
           flag2=""
           heading="SUMMARY"
           isActive={false}
+          isRequired={false}
           tag=""
           type="subsection"
         />

@@ -23,69 +23,9 @@ exports[`ArrayElement should match snapshot 1`] = `
     flag2=""
     heading="TERRITORY METADATA"
     isActive={false}
+    isRequired={false}
     tag=""
     type="subsection"
   />
-  <div
-    className="row align-items-center nexus-c-entity-group my-2"
-    key="nexus-c-field-group0"
-  >
-    <div
-      className="col-12"
-    >
-      <NexusEntity
-        actions={
-          Array [
-            Action {
-              "action": [Function],
-              "buttonId": "btnDeleteSection",
-              "disabled": false,
-              "icon": Object {
-                "process": [Function],
-              },
-              "position": 3,
-            },
-          ]
-        }
-        body={
-          <div
-            className="row"
-          >
-            <div
-              className="col-6 mb-2"
-            >
-              <Unknown
-                defaultValue="value"
-                name="territoryMetadata.0.type"
-                render={[Function]}
-                rules={
-                  Object {
-                    "required": "Value is required",
-                  }
-                }
-              />
-            </div>
-            <div
-              className="col-6 mb-2"
-            >
-              <Unknown
-                defaultValue="value"
-                name="territoryMetadata.0.name"
-                render={[Function]}
-                rules={Object {}}
-              />
-            </div>
-          </div>
-        }
-        disableHover={false}
-        flag1=""
-        flag2=""
-        heading="unset"
-        isActive={false}
-        tag=""
-        type="default"
-      />
-    </div>
-  </div>
 </div>
 `;
