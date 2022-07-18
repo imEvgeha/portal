@@ -9,7 +9,7 @@ import {isEmpty} from 'lodash';
 import {ProgressSpinner} from 'primereact/progressspinner';
 import {useDispatch, useSelector} from 'react-redux';
 import './PropagateForm.scss';
-import {ADVERTISEMENT} from '../../../../../../../src/pages/metadata/constants/contentType';
+import {ADVERTISEMENT} from '../../../../constants/contentType';
 import {checkIfEmetIsEditorial} from '../../../nexus-dynamic-form/utils';
 import {
     CAST_CREW,
