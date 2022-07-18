@@ -18,7 +18,7 @@ import {
     SERIES,
     SPECIAL,
     SPORTS,
-} from '@vubiquity-nexus/portal-ui/src/constants/contentType';
+} from '@vubiquity-nexus/portal-ui/lib/constants/contentType';
 import {Button as PrimeReactButton} from 'primereact/button';
 import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
