@@ -27,7 +27,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
         }
 
         if (!isGroup.current && Array.isArray(values) && values.length) {
-            const singleElement = values.map(
+            return values.map(
                 (val, index) =>
                     elementsSchema?.misc?.fields.map(f => {
                         return {
@@ -36,7 +36,6 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
                         };
                     })[0]
             );
-            return singleElement;
         }
 
         return [];
@@ -149,7 +148,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
         let newFormFields = [...formFields];
 
         if (isGroup) {
-            const headerKey = newFormFields[index].find(x => x.id === elementsSchema.misc.idAttribute).name;
+            const headerKey = newFormFields[index].find(x => x.id === elementsSchema.misc.idAttribute)?.name;
             adjustHeaders(headerKey, index);
         }
 
