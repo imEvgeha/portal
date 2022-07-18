@@ -181,7 +181,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
         tmpSections.splice(index, 1);
 
         const formValue = form.getValues(elementsSchema.name);
-        delete formValue[sections[index].key];
+        delete formValue?.[sections[index].key];
         form.setValue(elementsSchema.name, {...formValue}, {shouldDirty: true});
 
         const lbls = {...labels};
