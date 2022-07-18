@@ -29,6 +29,7 @@
             "servicingOrder": "",
             "DOPProjectManagementBase": "/dop/be-services/projectManagement",
             "DOPProjectManagementProject": "/dop/be-services/projectManagement/project",
+            "DOPTaskManagementSearch": "/dop/be-services/taskManagement/task/search",
             "DOPLoginWithKeycloak": "/AmdocsOSS/Portal/services/LoginWithKeycloak",
             "DOPLogout": "/AmdocsOSS/Portal/services/PortalLogout",
             "DOPTasksPotentialOwners": "/dop/be-services/taskManagement/taskPotentialOwner",

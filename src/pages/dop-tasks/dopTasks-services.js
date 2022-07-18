@@ -1,4 +1,4 @@
-import {getUsername} from "@portal/portal-auth/authSelectors";
+import {getUsername} from '@portal/portal-auth/authSelectors';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {store} from '../../index';
@@ -19,7 +19,7 @@ const DEFAULT_TIMEOUT = 60000;
 
 const DopTasksService = {
     getTasks: (externalFilter, offset = 1, limit = PAGE_LIMIT) => {
-        const url = `${getConfig('gateway.DOPUrl')}/dop/be-services/taskManagement/task/search`;
+        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPTaskManagementSearch')}`;
         const payload = prepareFilterPayload(INITIAL_SEARCH_PARAMS, externalFilter);
         const body = {...payload, offset, limit};
         return nexusFetch(
