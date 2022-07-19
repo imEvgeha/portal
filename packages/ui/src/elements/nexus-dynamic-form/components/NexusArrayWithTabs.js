@@ -299,7 +299,14 @@ const NexusArrayWithTabs = ({
         const updatedGroupedData = {...groupedData};
         updatedGroupedData[key] = updatedGroupedData[key] ? updatedGroupedData[key] : [];
         updatedGroupedData[key].push(properValues);
-        setGroupedData(updatedGroupedData);
+        const sortObjectsByKey = Object.keys(updatedGroupedData)
+            .sort()
+            .reduce((accumulator, key) => {
+                accumulator[key] = updatedGroupedData[key];
+
+                return accumulator;
+            }, {});
+        setGroupedData(sortObjectsByKey);
 
         if (!currentData && !Object.keys(groupedData).length) {
             setCurrentData(properValues);
