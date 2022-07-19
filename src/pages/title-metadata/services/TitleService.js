@@ -1,5 +1,4 @@
 /* eslint-disable no-useless-constructor */
-import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import HttpService from '../../../util/http/HttpService';
 import TitleSystems from '../../metadata/constants/systems';
 
@@ -60,17 +59,19 @@ export default class TitleService extends HttpService {
             pathParams: `${payload.id}`,
             isWithErrorHandling: false,
         }).then(response => {
-            this.setCreatedTitle(response.data);
+            this.setUpdatedTitle(response.data);
         });
     }
 
     /** Other APIS */
     async search(searchCriteria, page, size, sortedParams) {
-        const queryParams = this.transformQueryParams(searchCriteria);
-        const url = this.constructUrl('titles/search', true, this.prepareSortMatrixParamTitles(sortedParams));
-        const params = this.encodedSerialize({...queryParams, page, size});
+        const params = this.encodedSerialize({...searchCriteria, page, size});
 
-        return nexusFetch(url, {params}).then(response => {
+        await this.callApi('v1', '/search', {
+            params,
+            pathParams: this.prepareSortMatrixParamTitles(sortedParams),
+            isWithErrorHandling: false,
+        }).then(response => {
             this.setSearchedTitles(response.data);
         });
     }
