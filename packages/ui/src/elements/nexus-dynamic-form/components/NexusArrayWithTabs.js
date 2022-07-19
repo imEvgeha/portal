@@ -42,7 +42,7 @@ const NexusArrayWithTabs = ({
 
     useEffect(() => {
         const groupedObj = data ? groupBy(data) : {};
-        setGroupedData(groupedObj);
+        setGroupedData(sortObjectsByKey(groupedObj));
     }, [data, isUpdate]);
 
     const clearIsRemoved = () => {
@@ -224,7 +224,7 @@ const NexusArrayWithTabs = ({
         if (updatedGroupedData[key].length === 0) {
             delete updatedGroupedData[key];
         }
-        setGroupedData(updatedGroupedData);
+        setGroupedData(sortObjectsByKey(updatedGroupedData));
         const keys = Object.keys(updatedGroupedData);
         const newCurrentData = keys.length ? updatedGroupedData[keys[0]][0] : null;
         setCurrentData(newCurrentData);
@@ -299,14 +299,7 @@ const NexusArrayWithTabs = ({
         const updatedGroupedData = {...groupedData};
         updatedGroupedData[key] = updatedGroupedData[key] ? updatedGroupedData[key] : [];
         updatedGroupedData[key].push(properValues);
-        const sortObjectsByKey = Object.keys(updatedGroupedData)
-            .sort()
-            .reduce((accumulator, key) => {
-                accumulator[key] = updatedGroupedData[key];
-
-                return accumulator;
-            }, {});
-        setGroupedData(sortObjectsByKey);
+        setGroupedData(sortObjectsByKey(updatedGroupedData));
 
         if (!currentData && !Object.keys(groupedData).length) {
             setCurrentData(properValues);
@@ -382,6 +375,16 @@ const NexusArrayWithTabs = ({
                 setRegenerateLoading(false);
             }
         }
+    };
+
+    const sortObjectsByKey = object => {
+        return Object.keys(object)
+            .sort()
+            .reduce((accumulator, key) => {
+                accumulator[key] = object[key];
+
+                return accumulator;
+            }, {});
     };
 
     const renderFields = () => {
