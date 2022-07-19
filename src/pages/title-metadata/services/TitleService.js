@@ -40,7 +40,7 @@ export default class TitleService extends HttpService {
     async create(queryParams, payload) {
         await this.callApi('v1', '', {
             method: 'post',
-            body: JSON.stringify(payload),
+            body: payload,
             params: queryParams,
             isWithErrorHandling: false,
         }).then(response => {
@@ -56,7 +56,7 @@ export default class TitleService extends HttpService {
             method: 'put',
             body: payload,
             params,
-            pathParams: `${payload.id}`,
+            pathParams: payload.id,
             isWithErrorHandling: false,
         }).then(response => {
             this.setUpdatedTitle(response.data);
