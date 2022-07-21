@@ -42,20 +42,11 @@ function* fetchIngests({payload}) {
         });
         payload[FILE_NAME] = payload[FILE_NAME].replaceAll(' ', '_');
 
-        let allData = [];
-        let totalRecords;
-        let counter = 0;
-        while (counter <= page) {
-            const response = yield call(historyService.advancedSearch, payload, counter, PAGE_SIZE, sortParams);
-            const {data, total} = response || {};
-            allData = [...allData, ...(data || [])];
-            totalRecords = total;
-            counter++;
-        }
-
+        const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE * (page + 1), sortParams);
+        const {data, total} = response || {};
         yield put({
             type: actionTypes.FETCH_INGESTS_SUCCESS,
-            payload: {data: normalizeDataForStore(allData), total: totalRecords},
+            payload: {data: normalizeDataForStore(data), total},
         });
 
         yield put({
