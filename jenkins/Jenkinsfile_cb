@@ -5,6 +5,7 @@ pipeline {
         BRANCH_NAME = "${env.BRANCH}"
         TRIGGER_AT = "${env.triggerAT}"
         DEPLOY_DEV = "${env.deployDev}"
+        DEPLOY_DEV1 = "${env.deployDev1}"
         DEPLOY_QA = "${env.deployQa}"
         CREATE_AND_PUSH_DOCKER = "${env.createAndPublishDocker}"
     }
@@ -16,6 +17,7 @@ pipeline {
                 echo BRANCH_NAME
                 echo TRIGGER_AT
                 echo DEPLOY_DEV
+                echo DEPLOY_DEV1
                 echo DEPLOY_QA
                 echo CREATE_AND_PUSH_DOCKER
                 sh 'rm -Rf node_modules'
@@ -140,7 +142,7 @@ pipeline {
         stage('Triggering CD') {
             steps {
                 script {
-                    if (DEPLOY_DEV.toBoolean() || DEPLOY_QA.toBoolean()) {
+                    if (DEPLOY_DEV.toBoolean() || DEPLOY_DEV1.toBoolean() || DEPLOY_QA.toBoolean()) {
                         echo 'Triggering Deployment . . .'
                         if (BRANCH_NAME == 'refs/heads/master' || BRANCH_NAME.contains('origin/master')
                             || BRANCH_NAME.contains('refs/heads/release') || BRANCH_NAME.contains('origin/release')
@@ -152,14 +154,27 @@ pipeline {
                                     build job: 'portal-ui-cd', parameters: [
                                         string(name: 'imageTag', value: imageTag),
                                         [$class: 'BooleanParameterValue', name: 'deployDev', value: true],
+                                        [$class: 'BooleanParameterValue', name: 'deployDev1', value: false],
                                         [$class: 'BooleanParameterValue', name: 'deployQa', value: false],
                                     ], wait: true
                                 }
+
+                                if (DEPLOY_DEV1.toBoolean()) {
+                                    echo 'Triggering CD to Environment: DEV'
+                                    build job: 'portal-ui-cd', parameters: [
+                                        string(name: 'imageTag', value: imageTag),
+                                        [$class: 'BooleanParameterValue', name: 'deployDev', value: false],
+                                        [$class: 'BooleanParameterValue', name: 'deployDev1', value: true],
+                                        [$class: 'BooleanParameterValue', name: 'deployQa', value: false],
+                                    ], wait: true
+                                }
+
                                 if (DEPLOY_QA.toBoolean()) {
                                     echo 'Triggering CD to Environment: QA'
                                     build job: 'portal-ui-cd', parameters: [
                                         string(name: 'imageTag', value: imageTag),
                                         [$class: 'BooleanParameterValue', name: 'deployDev', value: false],
+                                        [$class: 'BooleanParameterValue', name: 'deployDev1', value: false],
                                         [$class: 'BooleanParameterValue', name: 'deployQa', value: true],
                                     ], wait: true
                                 }
