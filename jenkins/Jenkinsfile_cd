@@ -4,6 +4,7 @@ pipeline {
     environment {
         IMAGE_TAG = "${env.imageTag}"
         DEPLOY_DEV = "${env.deployDev}"
+        DEPLOY_DEV1 = "${env.deployDev1}"
         DEPLOY_QA = "${env.deployQa}"
     }
 
@@ -15,9 +16,9 @@ pipeline {
                         echo 'Image Tag is empty'
                         error("Build failed because of no Image Tag input..")
                     }
-                    if (!DEPLOY_DEV.toBoolean() && !DEPLOY_QA.toBoolean()) {
-                        echo 'No selected deployment - DEV (and/or) QA option is needed'
-                        error("No selected deployment - DEV (and/or) QA option is needed..")
+                    if (!DEPLOY_DEV.toBoolean() && !DEPLOY_QA.toBoolean() && !DEPLOY_DEV1.toBoolean()) {
+                        echo 'No selected deployment - DEV (and/or) DEV1 (and/or) QA option is needed'
+                        error("No selected deployment - DEV (and/or) DEV1 (and/or) QA option is needed..")
                     }
                 }
             }
@@ -27,6 +28,7 @@ pipeline {
             steps {
                 script {
                     echo DEPLOY_DEV
+                    echo DEPLOY_DEV1
                     echo DEPLOY_QA
                     if (DEPLOY_DEV.toBoolean()) {
                         echo 'Deploying to DEV ...'
@@ -41,20 +43,28 @@ pipeline {
                         dir('kubernetes/nexus-avails/portal') {
                             sh "./deploy.sh dev nexus-avails ${IMAGE_TAG}"
                         }
-                    } else if (DEPLOY_QA.toBoolean()) {
-                        echo 'Deploying to QA ...'
+                    } else if (DEPLOY_DEV1.toBoolean()) {
+                        echo 'Deploying to DEV 1 ...'
+                        echo 'Triggering deploy_Portal1app'
 
-                        dir('kubernetes') {
-                            git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
-                            script {
-                                imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh qa nexus-avails portal").trim()
-                                echo imageTag
-                            }
-                        }
-                        dir('kubernetes/nexus-avails/portal') {
-                            sh "./deploy.sh qa nexus-avails ${IMAGE_TAG}"
-                        }
-                    } else {
+                        build job: 'deploy_Portal1app', parameters: [
+                            string(name: 'VERSION', value: imageTag)
+                        ], wait: true
+
+                    } else if (DEPLOY_QA.toBoolean()) {
+                         echo 'Deploying to QA ...'
+
+                         dir('kubernetes') {
+                             git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
+                             script {
+                                 imageTag = imageTag ?: sh(returnStdout: true, script: "./image-versions.sh qa nexus-avails portal").trim()
+                                 echo imageTag
+                             }
+                         }
+                         dir('kubernetes/nexus-avails/portal') {
+                             sh "./deploy.sh qa nexus-avails ${IMAGE_TAG}"
+                         }
+                     } else {
                         echo 'No Environment has been selected for Deployment'
                     }
                 }
@@ -67,10 +77,13 @@ pipeline {
             script {
                 if (DEPLOY_DEV.toBoolean()) {
                     echo 'Successfully Deployed on Dev'
-                    mail to: "mcharalambous@vubiquity.net, anikolaou@vubiquity.net, PDemetriou@vubiquity.net, Miroslav.Sabev@vubiquity.net, elyashenko@vubiquity.net",cc: "Vaishali.Tiwari@vubiquity.net, ekampouri@vubiquity.net, marios.georgiou@vubiquity.net, gunjan.garg@vubiquity.net, christos.laoutaris@vubiquity.net, marianne.papaevripiades@vubiquity.net",subject: "DEV Environment Updated!",body: "DEV Environment has been upgraded with Build: ${env.imageTag}. \nParams: \nDeploy Dev: ${env.DEPLOY_DEV} \nDeploy QA: ${env.DEPLOY_QA} \n\nURL: ${env.BUILD_URL}. "
+                    mail to: "mcharalambous@vubiquity.net, anikolaou@vubiquity.net, PDemetriou@vubiquity.net, Miroslav.Sabev@vubiquity.net, elyashenko@vubiquity.net",cc: "Vaishali.Tiwari@vubiquity.net, ekampouri@vubiquity.net, marios.georgiou@vubiquity.net, gunjan.garg@vubiquity.net, christos.laoutaris@vubiquity.net, marianne.papaevripiades@vubiquity.net",subject: "DEV Environment Updated!",body: "DEV Environment has been upgraded with Build: ${env.imageTag}. \nParams: \nDeploy Dev: ${env.DEPLOY_DEV} \nDeploy Dev1: ${env.DEPLOY_DEV1} \nDeploy QA: ${env.DEPLOY_QA} \n\nURL: ${env.BUILD_URL}. "
+                } else if (DEPLOY_DEV1.toBoolean()) {
+                   echo 'Successfully Deployed on Dev'
+                   mail to: "mcharalambous@vubiquity.net, anikolaou@vubiquity.net, PDemetriou@vubiquity.net, Miroslav.Sabev@vubiquity.net, elyashenko@vubiquity.net",cc: "Vaishali.Tiwari@vubiquity.net, ekampouri@vubiquity.net, marios.georgiou@vubiquity.net, gunjan.garg@vubiquity.net, christos.laoutaris@vubiquity.net, marianne.papaevripiades@vubiquity.net",subject: "DEV Environment Updated!",body: "DEV 1 Environment has been upgraded with Build: ${env.imageTag}. \nParams: \nDeploy Dev: ${env.DEPLOY_DEV} \nDeploy Dev1: ${env.DEPLOY_DEV1} \nDeploy QA: ${env.DEPLOY_QA} \n\nURL: ${env.BUILD_URL}. "
                 } else if (DEPLOY_QA.toBoolean()) {
                     echo 'Successfully Deployed on QA'
-                    mail to: "mcharalambous@vubiquity.net, anikolaou@vubiquity.net, PDemetriou@vubiquity.net, Miroslav.Sabev@vubiquity.net, elyashenko@vubiquity.net",cc: "Vaishali.Tiwari@vubiquity.net, ekampouri@vubiquity.net, marios.georgiou@vubiquity.net, gunjan.garg@vubiquity.net, christos.laoutaris@vubiquity.net, marianne.papaevripiades@vubiquity.net",subject: "QA Environment Updated!",body: "QA Environment has been upgraded with Build: ${env.imageTag}. \nParams: \nDeploy Dev: ${env.DEPLOY_DEV} \nDeploy QA: ${env.DEPLOY_QA} \n\nURL: ${env.BUILD_URL}. "
+                    mail to: "mcharalambous@vubiquity.net, anikolaou@vubiquity.net, PDemetriou@vubiquity.net, Miroslav.Sabev@vubiquity.net, elyashenko@vubiquity.net",cc: "Vaishali.Tiwari@vubiquity.net, ekampouri@vubiquity.net, marios.georgiou@vubiquity.net, gunjan.garg@vubiquity.net, christos.laoutaris@vubiquity.net, marianne.papaevripiades@vubiquity.net",subject: "QA Environment Updated!",body: "QA Environment has been upgraded with Build: ${env.imageTag}. \nParams: \nDeploy Dev: ${env.DEPLOY_DEV} \nDeploy Dev1: ${env.DEPLOY_DEV1} \nDeploy QA: ${env.DEPLOY_QA} \n\nURL: ${env.BUILD_URL}. "
                 }
             }
         }
