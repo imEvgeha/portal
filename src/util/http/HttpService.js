@@ -1,5 +1,3 @@
-/* eslint-disable no-console,no-unused-vars */
-
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 
@@ -17,7 +15,7 @@ export default class HttpService {
         return this.instance;
     }
 
-    callApi(apiVersion = 'v1', apiSignature = '', options = {}) {
+    callApi = async (apiVersion = 'v1', apiSignature = '', options = {}) => {
         this.setLoading(true);
 
         let {pathParams} = options;
@@ -28,8 +26,8 @@ export default class HttpService {
 
         const signatureWithPathParams = `${apiSignature}${pathParams}`;
         const url = this.constructEndpoint(signatureWithPathParams, apiVersion);
-        return nexusFetch(url, tempOptions).then(() => this.setLoading(false));
-    }
+        return nexusFetch(url, tempOptions);
+    };
 
     // constructHeaders() {}
 
@@ -40,11 +38,24 @@ export default class HttpService {
         // construct base url for the needed service
         switch (serviceReference) {
             case 'TitleService':
+                baseUrl += `/titles${
+                    apiVersion === 'v1' ? getConfig('gateway.service.title') : getConfig('gateway.service.titleV2')
+                }/titles`;
+                break;
             case 'TitleEditorialService':
+                baseUrl += `/titles${
+                    apiVersion === 'v1' ? getConfig('gateway.service.title') : getConfig('gateway.service.titleV2')
+                }`;
+                break;
             case 'TitleTerittorialService':
                 baseUrl += `/titles${
                     apiVersion === 'v1' ? getConfig('gateway.service.title') : getConfig('gateway.service.titleV2')
                 }/titles`;
+                break;
+            case 'PublishService':
+                baseUrl += `/titlespublishermovida${
+                    apiVersion === 'v1' ? getConfig('gateway.service.publisher') : 'v2'
+                }`;
                 break;
             default:
                 baseUrl = '';
@@ -53,9 +64,7 @@ export default class HttpService {
     }
 
     constructEndpoint(apiSignature, apiVersion) {
-        const fullUrl = `${this.constructBaseUrl(apiVersion)}${apiSignature}`;
-        console.log(fullUrl);
-        return fullUrl;
+        return `${this.constructBaseUrl(apiVersion)}${apiSignature}`;
     }
 
     // Getters & Setters
@@ -73,7 +82,7 @@ export default class HttpService {
         return {
             params: options.params ? this.encodedSerialize(options.params) : options.params,
             body: options.body ? JSON.stringify(options.body) : options.body,
-            method: options.method,
+            method: options.method ? `${options.method}` : 'get',
         };
     };
 
