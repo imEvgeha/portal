@@ -8,7 +8,6 @@ import TitleEditorialService from './services/TitleEditorialService';
 import TitleService from './services/TitleService';
 import TitleTerittorialService from './services/TitleTerittorialService';
 import * as actionTypes from './titleMetadataActionTypes';
-import {registerTitle} from './titleMetadataServices';
 import {SERIES, UPDATE_TITLE_SUCCESS, UPLOAD_SUCCESS_MESSAGE} from './constants';
 
 const titleServiceInstance = TitleService.getInstance();
@@ -254,7 +253,7 @@ export function* publishTitle({payload}) {
     });
 
     try {
-        const [response] = yield call(registerTitle, payload);
+        const [response] = yield call(publishServiceInstance.registerTitle, payload);
         const newPayload = {id: response.titleId};
 
         yield call(loadExternalIds, {payload: newPayload});

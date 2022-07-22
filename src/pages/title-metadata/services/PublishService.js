@@ -45,6 +45,19 @@ export default class PublishService extends HttpService {
         return response;
     };
 
+    registerTitle = async payload => {
+        const {id: titleId, externalSystem} = payload;
+        const params = {externalSystem, titleId};
+
+        const response = await this.callApi('v1', '/registerTitle', {
+            method: 'post',
+            params,
+        });
+
+        this.setSyncTitle(response);
+        return response;
+    };
+
     /** Getters & Setters * */
     getExternalIds() {
         return this.externalIds;
