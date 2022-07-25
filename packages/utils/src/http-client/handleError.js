@@ -38,8 +38,7 @@ export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast
 
     let toast = null;
     const [err] = errorCodesToast.filter(error => error?.status === error?.code);
-    const errorDetail =
-        description || err?.description || error?.message || message || 'Unknown error. Please try again.';
+    const errorDetail = description || err?.description || error?.message || message;
 
     if (err) {
         toast = {
