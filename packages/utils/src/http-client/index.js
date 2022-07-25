@@ -1,5 +1,4 @@
 import {keycloak} from '@portal/portal-auth';
-import {isEmpty} from 'lodash';
 import handleError from './handleError';
 import handleResponse from './handleResponse';
 
@@ -36,14 +35,7 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT, fetchHe
         const response = await fetch(url, allOptions);
         return await handleResponse(response, fetchHeaders);
     } catch (error) {
-        const defaultErrorMsg = {
-            errorMessage: {
-                bindingResult: 'Bla',
-                description: 'Unknown error. Please try again.',
-            },
-        };
-        const errorDetails = error?.request && isEmpty(error?.request) ? defaultErrorMsg : error;
-        throw handleError(errorDetails, options);
+        throw handleError(error, options);
     } finally {
         controller = null;
         clearTimeout(timeoutId);
