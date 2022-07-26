@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
@@ -13,30 +13,30 @@ import {compose} from 'redux';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import TitleSystems from '../../metadata/constants/systems';
 import TitleCreate from '../../title-metadata/components/titleCreateModal/TitleCreateModal';
+import TitleConfigurationService from '../../title-metadata/services/TitleConfigurationService';
 import {setExternalIdValues} from '../../title-metadata/titleMetadataActions';
 import {externalIDTypesSelector} from '../../title-metadata/titleMetadataSelectors';
-import {getEnums} from '../../title-metadata/titleMetadataServices';
 import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import {
+    createBonusRights,
     getAffectedRights,
+    getExistingBonusRights,
     getRestrictedTitles,
     setCoreTitleId,
-    getExistingBonusRights,
-    createBonusRights,
 } from './bulkMatchingService';
 import BonusRightsReview from './components/bonus-rights-review/BonusRightsReview';
 import BulkMatchingReview from './components/bulk-match-review/BulkMatchingReview';
 import HeaderSection from './components/header-section/HeaderSection';
 import TitlesSection from './components/titles-section/TitlesSection';
 import {
+    BONUS_RIGHTS_REVIEW_HEADER,
+    EXISTING_CORE_TITLE_ID_WARNING,
+    RIGHT_TABS,
+    TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE,
+    TITLE_BULK_MATCH_SUCCESS_MESSAGE,
     TITLE_MATCHING_MSG,
     TITLE_MATCHING_REVIEW_HEADER,
-    RIGHT_TABS,
-    EXISTING_CORE_TITLE_ID_WARNING,
-    BONUS_RIGHTS_REVIEW_HEADER,
-    TITLE_BULK_MATCH_SUCCESS_MESSAGE,
-    TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE,
 } from './constants';
 import './BulkMatching.scss';
 
@@ -61,7 +61,7 @@ export const BulkMatching = ({
     externalIdOptions,
 }) => {
     const selectedTenant = useSelector(state => get(state, 'auth.selectedTenant'));
-
+    const titleConfigurationService = TitleConfigurationService.getInstance();
     const isMounted = useRef(true);
     const [showModal, setShowModal] = useState(false);
     const [selectedTableData, setSelectedTableData] = useState([]);
@@ -80,7 +80,7 @@ export const BulkMatching = ({
     const changeActiveTab = tab => tab !== activeTab && setActiveTab(tab);
 
     const updateExternalIdDropdown = async () => {
-        return getEnums('external-id-type');
+        return titleConfigurationService.getEnums('external-id-type');
     };
 
     const getExternalIdDropdownValues = () => {

@@ -1,20 +1,25 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {normalizeDataForStore, URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getDomainName, normalizeDataForStore, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {get} from 'lodash';
 import {Button} from 'primereact/button';
 import {push} from 'redux-first-history';
-import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
+import {all, call, fork, put, select, take, takeEvery} from 'redux-saga/effects';
 import {titleService} from '../legacy/containers/metadata/service/TitleService';
+import TitleService from '../title-metadata/services/TitleService';
 import * as actionTypes from './metadataActionTypes';
 import * as selectors from './metadataSelectors';
+
+const titleServiceSingleton = TitleService.getInstance();
 
 export function* fetchTitle(action) {
     const {payload} = action || {};
     const requestMethod = titleService.getTitleById;
+    // const requestMethod = titleServiceSingleton.getTitleById;
     try {
         yield put({
             type: actionTypes.FETCH_TITLE_REQUEST,

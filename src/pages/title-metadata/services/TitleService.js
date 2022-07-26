@@ -28,8 +28,8 @@ export default class TitleService extends HttpService {
     }
 
     /** CRUD APIs * */
-    getById = async (id, tenantCode) => {
-        const response = await this.callApi('v2', '', {
+    getById = async (id, tenantCode, version = 'v2') => {
+        const response = await this.callApi(version, '', {
             pathParams: id,
             params: tenantCode,
         });
@@ -63,7 +63,7 @@ export default class TitleService extends HttpService {
         return response;
     };
 
-    /** Other APIS */
+    /** ***************** Other APIS *************** */
     getExternalIds = async id => {
         const response = await this.callApi('v2', '', {
             pathParams: id,
@@ -98,7 +98,7 @@ export default class TitleService extends HttpService {
         });
     };
 
-    /** utils * */
+    /** ***************** Utils *************** */
     prepareSortMatrixParamTitles(sortedParams) {
         let matrix = '';
 
@@ -127,7 +127,7 @@ export default class TitleService extends HttpService {
         return null;
     };
 
-    /** Getters & Setters * */
+    /** ***************** Getters & Setters *************** */
     getTitles() {
         return this.titles;
     }

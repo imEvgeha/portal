@@ -19,6 +19,7 @@ import {fetchConfigApiEndpoints} from '../../../settings/settingsActions';
 import * as settingsSelectors from '../../../settings/settingsSelectors';
 import Loading from '../../../static/Loading';
 import {EPISODE, FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SEASON, SYNC, VZ} from '../../constants';
+import TitleConfigurationService from '../../services/TitleConfigurationService';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -32,7 +33,7 @@ import {
     updateTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
-import {generateMsvIds, getEnums, regenerateAutoDecoratedMetadata, titleService} from '../../titleMetadataServices';
+import {generateMsvIds, regenerateAutoDecoratedMetadata, titleService} from '../../titleMetadataServices';
 import {
     handleDirtyValues,
     handleEditorialGenresAndCategory,
@@ -90,6 +91,8 @@ const TitleDetails = ({
     const [seasonsCount, setSeasonsCount] = useState('0');
     const routeParams = useParams();
     const location = useLocation();
+
+    const titleConfigurationService = TitleConfigurationService.getInstance();
 
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
     const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
@@ -287,7 +290,9 @@ const TitleDetails = ({
             res = {...selectValues, externalSystem: externalIdTypes};
         } else if (!isFetchingExternalIdTypes.current) {
             isFetchingExternalIdTypes.current = true;
-            getEnums('external-id-type').then(responseOptions => setExternalIdValues({responseOptions}));
+            titleConfigurationService
+                .getEnums('external-id-type')
+                .then(responseOptions => setExternalIdValues({responseOptions}));
         }
 
         return res;

@@ -18,9 +18,9 @@ import {useParams} from 'react-router-dom';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import {publisherService} from '../../../legacy/containers/metadata/service/PublisherService';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
+import TitleConfigurationService from '../../services/TitleConfigurationService';
 import {storeTitleContentTypes} from '../../titleMetadataActions';
 import {createContentTypesSelector} from '../../titleMetadataSelectors';
-import {getEnums} from '../../titleMetadataServices';
 import ExternalIDsSection from '../nexus-field-extarnal-ids/ExternalIDsSection';
 import constants, {CONTENT_TYPES, DEFAULT_VALUES_FOR_TITLE_CREATE_MODAL} from './TitleCreateModalConstants';
 import './Title.scss';
@@ -47,6 +47,7 @@ const TitleCreate = ({
     storeTitleContentTypes,
     externalDropdownOptions,
 }) => {
+    const titleConfigurationService = TitleConfigurationService.getInstance();
     const {CREATE_TITLE_RESTRICTIONS, EXTERNAL_ID_TYPE_DUPLICATE_ERROR} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         CREATE_TITLE_RESTRICTIONS;
@@ -83,7 +84,7 @@ const TitleCreate = ({
     const [isFieldRequired, setIsFieldRequired] = useState(false);
 
     useEffect(() => {
-        getEnums('content-type').then(resp => {
+        titleConfigurationService.getEnums('content-type').then(resp => {
             resp.length ? storeTitleContentTypes(resp?.[0].values) : storeTitleContentTypes([]);
         });
     }, [selectedTenant.id]);

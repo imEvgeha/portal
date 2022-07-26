@@ -52,6 +52,11 @@ export default class HttpService {
                     apiVersion === 'v1' ? getConfig('gateway.service.title') : getConfig('gateway.service.titleV2')
                 }/titles`;
                 break;
+            case 'TitleConfigurationService':
+                baseUrl += `/titles${
+                    apiVersion === 'v1' ? getConfig('gateway.service.title') : getConfig('gateway.service.titleV2')
+                }`;
+                break;
             case 'PublishService':
                 baseUrl += `/titlespublishermovida${
                     apiVersion === 'v1' ? getConfig('gateway.service.publisher') : 'v2'
