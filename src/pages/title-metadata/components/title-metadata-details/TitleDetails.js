@@ -20,6 +20,7 @@ import * as settingsSelectors from '../../../settings/settingsSelectors';
 import Loading from '../../../static/Loading';
 import {EPISODE, FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SEASON, SYNC, VZ} from '../../constants';
 import TitleConfigurationService from '../../services/TitleConfigurationService';
+import TitleService from '../../services/TitleService';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -33,7 +34,7 @@ import {
     updateTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
-import {generateMsvIds, regenerateAutoDecoratedMetadata, titleService} from '../../titleMetadataServices';
+import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
 import {
     handleDirtyValues,
     handleEditorialGenresAndCategory,
@@ -93,6 +94,7 @@ const TitleDetails = ({
     const location = useLocation();
 
     const titleConfigurationService = TitleConfigurationService.getInstance();
+    const titleServiceSingleton = TitleService.getInstance();
 
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
     const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
@@ -130,15 +132,15 @@ const TitleDetails = ({
                     parentId: id,
                     contentType: EPISODE,
                 };
-                titleService
-                    .advancedSearch(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
+                titleServiceSingleton
+                    .advancedSearchTitles(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
                     .then(res => {
                         setEpisodesCount(res);
                         setRefresh(false);
                     });
                 searchCriteria = {...searchCriteria, contentType: SEASON};
-                titleService
-                    .advancedSearch(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
+                titleServiceSingleton
+                    .advancedSearchTitles(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
                     .then(res => {
                         setSeasonsCount(res);
                         setRefresh(false);

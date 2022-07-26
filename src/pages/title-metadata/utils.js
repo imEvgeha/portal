@@ -1,6 +1,7 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
+import TitleService from './services/TitleService';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
 import {titleService} from './titleMetadataServices';
 import {
@@ -13,6 +14,8 @@ import {
     UPDATE_TERRITORY_METADATA_SUCCESS,
     VZ,
 } from './constants';
+
+const titleServiceSingleton = TitleService.getInstance();
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
@@ -35,7 +38,7 @@ export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
 
 export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedParams, body, selectedTenant) => {
     try {
-        const response = await titleService.advancedSearch(
+        const response = await titleServiceSingleton.advancedSearchTitles(
             searchCriteria,
             offset,
             limit,

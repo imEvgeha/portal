@@ -77,6 +77,27 @@ export default class TitleEditorialService extends HttpService {
         });
     };
 
+    /** ***************** Other APIS *************** */
+    uploadMetadata = async ({file, externalId, params = {}}) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        if (externalId) {
+            params.externalId = externalId;
+        }
+        // do not remove options cuz we need it for request
+        const queryParams = new URLSearchParams({...params}).toString();
+
+        const response = await this.callApi('v1', '/editorialmetadata/upload', {
+            method: 'post',
+            body: formData,
+            file,
+            pathParams: queryParams,
+        });
+
+        return response;
+    };
+
+    /** ***************** Utils *************** */
     setEditorialsByTitleId(editorialsByTitleId) {
         this.editorialsByTitleId = editorialsByTitleId;
     }
