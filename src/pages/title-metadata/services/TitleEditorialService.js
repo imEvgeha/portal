@@ -24,15 +24,18 @@ export default class TitleEditorialService extends HttpService {
     }
 
     /** CRUD APIs * */
-    async getByTitleId(payload) {
-        const {id, tenantCode} = payload;
-        await this.callApi('v1', '/editorialmetadata', {
-            pathParams: `titleId=${id}&includeDeleted=false`,
-            params: tenantCode ? {tenantCode} : {},
-        }).then(response => {
-            this.setEditorialsByTitleId(response);
+    getEditorialsByTitleId = async payload => {
+        const {id, selectedTenant} = payload;
+        const response = await this.callApi('v1', '/editorialmetadata', {
+            params: {
+                titleId: `${id}`,
+                includeDeleted: false,
+                tenantCode: selectedTenant ? selectedTenant.id : '',
+            },
         });
-    }
+        this.setEditorialsByTitleId(response);
+        return response;
+    };
 
     create = async payload => {
         const body = Object.assign({}, payload?.body.editorialMetadata);

@@ -24,15 +24,11 @@ export default class TitleTerittorialService extends HttpService {
     }
 
     /** CRUD APIs * */
-    async getByTitleId(payload) {
-        const {id, tenantCode} = payload;
-        await this.callApi('v1', '/territorymetadata', {
-            pathParams: `includeDeleted=false&titleId=${id}`,
-            params: tenantCode ? {tenantCode} : {},
-        }).then(response => {
-            this.setTerritorialsByTitleId(response);
-        });
-    }
+    getByTitleId = async id => {
+        const response = await this.callApi('v2', `/${id}/territories`);
+        this.setTerritorialsByTitleId(response);
+        return response;
+    };
 
     create = async payload => {
         // delete payload.parentId;

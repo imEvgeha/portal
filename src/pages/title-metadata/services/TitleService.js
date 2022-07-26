@@ -28,42 +28,50 @@ export default class TitleService extends HttpService {
     }
 
     /** CRUD APIs * */
-    async getById(id, tenantCode) {
-        await this.callApi('v1', '', {
+    getById = async (id, tenantCode, version = 'v2') => {
+        const response = await this.callApi(version, '', {
             pathParams: id,
             params: tenantCode,
-        }).then(response => {
-            this.setTitleById(response);
         });
-    }
+        this.setTitleById(response);
+        return response;
+    };
 
-    async create(queryParams, payload) {
-        await this.callApi('v1', '', {
+    create = async (queryParams, payload) => {
+        const response = await this.callApi('v1', '', {
             method: 'post',
             body: payload,
             params: queryParams,
             isWithErrorHandling: false,
-        }).then(response => {
-            this.setCreatedTitle(response.data);
         });
-    }
+        this.setCreatedTitle(response);
+        return response;
+    };
 
-    async update(payload, syncToVZ, syncToMovida) {
+    update = async (payload, syncToVZ, syncToMovida) => {
         const legacySystemNames = this.getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
 
-        await this.callApi('v1', '', {
+        const response = await this.callApi('v2', '', {
             method: 'put',
             body: payload,
             params,
             pathParams: payload.id,
-            isWithErrorHandling: false,
-        }).then(response => {
-            this.setUpdatedTitle(response.data);
         });
-    }
 
-    /** Other APIS */
+        this.setUpdatedTitle(response);
+        return response;
+    };
+
+    /** ***************** Other APIS *************** */
+    getExternalIds = async id => {
+        const response = await this.callApi('v2', '', {
+            pathParams: id,
+        });
+        this.setTitleById(response);
+        return response;
+    };
+
     async search(searchCriteria, page, size, sortedParams) {
         const params = this.encodedSerialize({...searchCriteria, page, size});
 
@@ -90,7 +98,7 @@ export default class TitleService extends HttpService {
         });
     };
 
-    /** utils * */
+    /** ***************** Utils *************** */
     prepareSortMatrixParamTitles(sortedParams) {
         let matrix = '';
 
@@ -119,7 +127,7 @@ export default class TitleService extends HttpService {
         return null;
     };
 
-    /** Getters & Setters * */
+    /** ***************** Getters & Setters *************** */
     getTitles() {
         return this.titles;
     }
