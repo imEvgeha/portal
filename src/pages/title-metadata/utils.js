@@ -1,9 +1,10 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
+import TitleEditorialService from './services/TitleEditorialService';
 import TitleService from './services/TitleService';
+import TitleTerittorialService from './services/TitleTerittorialService';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
-import {titleService} from './titleMetadataServices';
 import {
     MOVIDA,
     NEXUS,
@@ -16,6 +17,8 @@ import {
 } from './constants';
 
 const titleServiceSingleton = TitleService.getInstance();
+const titleTerritorialService = TitleTerittorialService.getInstance();
+const titleEditorialService = TitleEditorialService.getInstance();
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
@@ -214,11 +217,11 @@ export const updateTerritoryMetadata = async (values, titleId, selectedTenant) =
                     const body = formatTerritoryBody(tmet);
                     const {id: tmetId} = body;
                     delete body.id;
-                    response = await titleService.updateTerritoryMetadata(body, titleId, tmetId);
+                    response = await titleTerritorialService.update(body, titleId, tmetId);
                 } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
                     const body = formatTerritoryBody(tmet);
                     // POST is on V2
-                    response = await titleService.addTerritoryMetadata(body, titleId);
+                    response = await titleTerritorialService.create(body, titleId);
                 }
             })
         );
@@ -330,8 +333,8 @@ export const updateEditorialMetadata = async (values, titleId, selectedTenant) =
     });
 
     try {
-        if (updatedEmets.length > 0) response = await titleService.updateEditorialMetadata(updatedEmets, tenantCode);
-        if (newEmets.length > 0) response = await titleService.addEditorialMetadataV1(newEmets, tenantCode);
+        if (updatedEmets.length > 0) response = await titleEditorialService.update(updatedEmets, tenantCode);
+        if (newEmets.length > 0) response = await titleEditorialService.create(newEmets);
 
         // Temporarily block new version
         // if (newEmets.length > 0) {
@@ -355,7 +358,7 @@ export const updateEditorialMetadata = async (values, titleId, selectedTenant) =
 };
 
 export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
-    const response = await titleService.propagateSeasonsPersonsToEpisodes({
+    const response = await titleServiceSingleton.propagateSeasonsPersonsToEpisodes({
         ...data,
         seasonId: id,
     });

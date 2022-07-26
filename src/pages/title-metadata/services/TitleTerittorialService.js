@@ -30,37 +30,36 @@ export default class TitleTerittorialService extends HttpService {
         return response;
     };
 
-    create = async payload => {
+    create = async (body, titleId) => {
         // delete payload.parentId;
-        delete payload.territoryType;
+        delete body.territoryType;
 
         await this.callApi('v2', ``, {
             method: 'post',
-            pathParams: `${payload.parentId}`,
-            body: payload,
+            pathParams: `${titleId}/territories`,
+            body,
         }).then(response => {
             this.setCreatedTerritorial(response);
         });
     };
 
-    update = async (payload, tenantCode) => {
-        const params = tenantCode ? {tenantCode} : {};
-
-        await this.callApi('v2', `/territorymetadata`, {
+    update = async (body, titleId, tmetId) => {
+        const response = await this.callApi('v2', `/${titleId}/territories/${tmetId}`, {
             method: 'put',
-            body: payload,
-            params,
+            body,
         }).then(response => {
-            this.setUpdatedEditorial(response);
+            this.setUpdatedTerritorial(response);
         });
+        this.setUpdatedTerritorial(response);
+        return response;
     };
 
     setTerritorialsByTitleId(editorialsByTitleId) {
         this.territorialsByTitleId = editorialsByTitleId;
     }
 
-    setUpdatedEditorial(updatedEditorial) {
-        this.updatedTerritorial = updatedEditorial;
+    setUpdatedTerritorial(updatedTerritorial) {
+        this.updatedTerritorial = updatedTerritorial;
     }
 
     setCreatedTerritorial(createdEditorial) {

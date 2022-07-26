@@ -142,6 +142,15 @@ export default class TitleService extends HttpService {
         return response;
     };
 
+    propagateSeasonsPersonsToEpisodes = async body => {
+        const response = await this.callApi('v1', `/seasonsPersonsToEpisodes`, {
+            method: 'put',
+            body,
+        });
+
+        return response;
+    };
+
     /** ***************** Utils *************** */
     prepareSortMatrixParamTitles(sortedParams) {
         let matrix = '';
