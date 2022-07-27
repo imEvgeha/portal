@@ -37,29 +37,21 @@ export default class TitleEditorialService extends HttpService {
         return response;
     };
 
-    create = async payload => {
-        const body = Object.assign({}, payload?.body.editorialMetadata);
-
-        // change the body to the new create API requirements
-        body['synopsis']['shortSynopsis'] = body['synopsis']['shortDescription'];
-        body['synopsis']['mediumSynopsis'] = body['synopsis']['description'];
-        body['synopsis']['longSynopsis'] = body['synopsis']['longDescription'];
-        body['categories'] = body['category'];
-        delete body['synopsis']['longDescription'];
-        delete body['synopsis']['description'];
-        delete body['synopsis']['shortDescription'];
-        delete body['category'];
-
-        body['castCrew'] = body.castCrew.map(({creditsOrder: order, ...rest}) => ({
-            order,
-            ...rest,
+    create = async (payload, apiVersion = 'v2') => {
+        const updatedEditorialMetadata = payload.map(item => ({
+            ...item,
+            body: {
+                ...item?.body,
+                editorialMetadata: {
+                    ...item?.body?.editorialMetadata,
+                    type: 'editorialMetadata',
+                },
+            },
         }));
 
-        delete body.parentId;
-
-        await this.callApi('v2', `/${body.parentId}/editorials`, {
+        await this.callApi(apiVersion, `/editorialmetadata`, {
             method: 'post',
-            body,
+            body: updatedEditorialMetadata,
         }).then(response => {
             this.setCreatedEditorial(response);
         });
@@ -77,6 +69,27 @@ export default class TitleEditorialService extends HttpService {
         });
     };
 
+    /** ***************** Other APIS *************** */
+    uploadMetadata = async ({file, externalId, params = {}}) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        if (externalId) {
+            params.externalId = externalId;
+        }
+        // do not remove options cuz we need it for request
+        const queryParams = new URLSearchParams({...params}).toString();
+
+        const response = await this.callApi('v1', '/editorialmetadata/upload', {
+            method: 'post',
+            body: formData,
+            file,
+            pathParams: queryParams,
+        });
+
+        return response;
+    };
+
+    /** ***************** Utils *************** */
     setEditorialsByTitleId(editorialsByTitleId) {
         this.editorialsByTitleId = editorialsByTitleId;
     }
