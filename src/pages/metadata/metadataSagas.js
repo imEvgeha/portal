@@ -10,11 +10,8 @@ import {Button} from 'primereact/button';
 import {push} from 'redux-first-history';
 import {all, call, fork, put, select, take, takeEvery} from 'redux-saga/effects';
 import {titleService} from '../legacy/containers/metadata/service/TitleService';
-import TitleService from '../title-metadata/services/TitleService';
 import * as actionTypes from './metadataActionTypes';
 import * as selectors from './metadataSelectors';
-
-const titleServiceSingleton = TitleService.getInstance();
 
 export function* fetchTitle(action) {
     const {payload} = action || {};
