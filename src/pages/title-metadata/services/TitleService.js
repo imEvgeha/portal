@@ -40,10 +40,11 @@ export default class TitleService extends HttpService {
         return response;
     };
 
-    create = async (queryParams, payload) => {
-        const response = await this.callApi('v1', '', {
+    create = async (body, params, apiVersion = 'v2') => {
+        const queryParams = params || {};
+        const response = await this.callApi(apiVersion, '', {
             method: 'post',
-            body: payload,
+            body,
             params: queryParams,
             isWithErrorHandling: false,
         });
@@ -146,6 +147,22 @@ export default class TitleService extends HttpService {
         const response = await this.callApi('v1', `/seasonsPersonsToEpisodes`, {
             method: 'put',
             body,
+        });
+
+        return response;
+    };
+
+    freeTextSearch = async (searchCriteria, page, size, sortedParams, apiVersion = 'v2') => {
+        const queryParams = {};
+        for (const key in searchCriteria) {
+            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+                queryParams[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
+            }
+        }
+
+        const response = await this.callApi(apiVersion, ``, {
+            params: {...queryParams, page, size},
+            pathParams: this.prepareSortMatrixParamTitles(sortedParams),
         });
 
         return response;
