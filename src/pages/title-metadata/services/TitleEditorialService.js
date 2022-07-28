@@ -7,6 +7,7 @@ export default class TitleEditorialService extends HttpService {
     editorialsByTitleId = [];
     createdEditorial = {};
     updatedEditorial = {};
+    lastModified = undefined;
 
     /**
      * Initialize new TitleService, if not exist

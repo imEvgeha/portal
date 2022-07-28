@@ -20,6 +20,7 @@ import * as settingsSelectors from '../../../settings/settingsSelectors';
 import Loading from '../../../static/Loading';
 import {EPISODE, FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SEASON, SYNC, VZ} from '../../constants';
 import TitleConfigurationService from '../../services/TitleConfigurationService';
+import TitleService from '../../services/TitleService';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -151,7 +152,6 @@ const TitleDetails = ({
         isFetchingExternalIdTypes.current = false;
         handleDirtyValues(initialValues, values);
 
-        const isTitleUpdated = values.isUpdated;
         const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
         const isTmetUpdated = values.territorialMetadata.some(item => item.isUpdated);
         const {id} = routeParams;
@@ -175,9 +175,19 @@ const TitleDetails = ({
             }
         });
 
+        const canUpdateTitle = !!(values.isUpdated && title?.id);
+
+        const updatePayload = {...updatedValues, id: title?.id};
+        canUpdateTitle &&
+            TitleService.getInstance()
+                .update(updatePayload)
+                .then(res => {
+                    updateTitle({updatePayload, updateResponse: res});
+                });
+
         prepareCategoryField(updatedValues);
         Promise.all([
-            isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
+            // isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
             isTmetUpdated && updateTerritoryMetadata(values, id, selectedTenant),
             isEmetUpdated && updateEditorialMetadata(values, id, selectedTenant),
             (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
@@ -189,8 +199,7 @@ const TitleDetails = ({
                     id
                 ),
             clearSeasonPersons(),
-        ]).then(() => {
-            setRefresh(true);
+        ]).then(res => {
             setVZDisabled(true);
             setMOVDisabled(true);
             setMovIntDisabled(true);

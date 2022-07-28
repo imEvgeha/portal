@@ -113,9 +113,17 @@ const NexusDynamicForm = ({
             });
             Object.keys(properValues).forEach(key => set(correctValues, key, properValues[key]));
 
+            Object.keys(correctValues).forEach(k => {
+                correctValues[k] =
+                    Array.isArray(correctValues[k]) && !correctValues[k].length ? undefined : correctValues[k];
+            });
+
             const valuesData = mergeWith({}, initialData, correctValues, (obj, src) => {
                 if (Array.isArray(src)) {
-                    return src;
+                    if (src.length) {
+                        return src;
+                    }
+                    return undefined;
                 }
                 // keep original null value if updated value is object and all its properties are falsy
                 // non object values are null already if not edited

@@ -3,6 +3,7 @@ import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 
 export default class HttpService {
     loading = true;
+    lastModified = undefined;
 
     /**
      * Initialize new TitleService, if not exist
@@ -15,7 +16,7 @@ export default class HttpService {
         return this.instance;
     }
 
-    callApi = async (apiVersion = 'v1', apiSignature = '', options = {}) => {
+    callApi = async (apiVersion = 'v1', apiSignature = '', options = {}, fetchHeaders = false, abortAfter = 60000) => {
         this.setLoading(true);
 
         let {pathParams} = options;
@@ -26,7 +27,7 @@ export default class HttpService {
 
         const signatureWithPathParams = `${apiSignature}${pathParams}`;
         const url = this.constructEndpoint(signatureWithPathParams, apiVersion);
-        return nexusFetch(url, tempOptions);
+        return nexusFetch(url, tempOptions, abortAfter, fetchHeaders);
     };
 
     // constructHeaders() {}
@@ -85,6 +86,7 @@ export default class HttpService {
     /** utils * */
     constructParams = options => {
         return {
+            ...options,
             params: options.params ? this.encodedSerialize(options.params) : options.params,
             body: options.body ? JSON.stringify(options.body) : options.body,
             method: options.method ? `${options.method}` : 'get',

@@ -11,7 +11,6 @@ export default class TitleService extends HttpService {
     titleById = {};
     updatedTitle = {};
     createdTitle = {};
-
     /**
      * Initialize new TitleService, if not exist
      * @returns {null} Instance of Singleton Class
@@ -29,12 +28,18 @@ export default class TitleService extends HttpService {
 
     /** CRUD APIs * */
     getById = async (id, tenantCode, version = 'v2') => {
-        const response = await this.callApi(version, '', {
-            pathParams: id,
-            params: tenantCode,
-        });
-        this.setTitleById(response);
-        return response;
+        const response = await this.callApi(
+            version,
+            '',
+            {
+                pathParams: id,
+                params: tenantCode,
+            },
+            true
+        );
+        this.lastModified = response[1].get('last-modified');
+        this.setTitleById(response[0]);
+        return response[0];
     };
 
     create = async (queryParams, payload) => {
@@ -51,14 +56,33 @@ export default class TitleService extends HttpService {
     update = async (payload, syncToVZ, syncToMovida) => {
         const legacySystemNames = this.getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
+        const errorOptions = {
+            errorMessage:
+                'Unable to save changes, title has recently been updated. Click below for latest version and resubmit.',
+            shouldAppendMsgs: false,
+            actionType: 'link',
+            toastAction: {
+                label: 'View Title',
+                icon: 'pi pi-external-link',
+                iconPos: 'right',
+                className: 'p-button-link p-toast-button-link',
+                onClick: () => window.open(window.location.href, '_blank'),
+            },
+        };
 
-        const response = await this.callApi('v2', '', {
+        const options = {
             method: 'put',
             body: payload,
             params,
             pathParams: payload.id,
-        });
+            isWithErrorHandling: true,
+            headers: {
+                'If-Unmodified-Since': this.lastModified,
+            },
+            ...errorOptions,
+        };
 
+        const response = await this.callApi('v2', '', options);
         this.setUpdatedTitle(response);
         return response;
     };

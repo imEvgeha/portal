@@ -8,6 +8,7 @@
         "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
     },
     "peerDependencies": {
+        "@portal/portal-components": "^1.0.0-70",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
         "prop-types": "15.x",

@@ -266,10 +266,23 @@ $element-color-orange-80: palette(orange, 80);
 
     // Links
     &.p-button-link {
-        color: #0065ff;
-        text-decoration: underline;
-        font-size: 12px;
+        color: palette(blue, 100);
+        font-size: 14px;
         padding: 0;
+        background: none;
+        border: none;
+
+        .p-button-label {
+            text-decoration: underline;
+        }
+
+        .p-button-icon {
+            font-size: 14px;
+        }
+
+        &:enabled:focus {
+            box-shadow: none;
+        }
     }
 }
 

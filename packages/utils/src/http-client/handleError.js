@@ -1,10 +1,10 @@
 /* eslint-disable no-magic-numbers */
 import React from 'react';
+import {Button} from '@portal/portal-components';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {isEmpty} from 'lodash';
-import {Button} from 'primereact/button';
 import {store} from '../../../../src';
 
 /*
@@ -26,7 +26,10 @@ import {store} from '../../../../src';
 const appendCustomMsg = (errorMessage, customMessage) =>
     customMessage ? `${customMessage} Details: ${errorMessage}` : errorMessage;
 
-export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast = [], errorMessage}) => {
+export const showToastForErrors = (
+    errorObj,
+    {errorToast = null, errorCodesToast = [], errorMessage, shouldAppendMsgs = true, actionType = 'button', toastAction}
+) => {
     const {error, description, message} = errorObj;
 
     const fallbackErrorMessage = 'Unexpected error occurred. Please try again later';
@@ -41,6 +44,23 @@ export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast
     const errorDetail =
         description || err?.description || error?.message || message || 'Unknown error. Please try again.';
 
+    const toastActions = () => {
+        switch (actionType) {
+            case 'link': {
+                return <Button {...toastAction} />;
+            }
+            default: {
+                return TOAST_ACTIONS.codes.includes(error?.status) ? (
+                    <Button
+                        label="Ok"
+                        className="p-button-link p-toast-button-link"
+                        onClick={() => store.dispatch(removeToast())}
+                    />
+                ) : null;
+            }
+        }
+    };
+
     if (err) {
         toast = {
             severity: 'error',
@@ -54,16 +74,10 @@ export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast
                 content: (
                     <ToastBody
                         summary={ERROR_TITLE}
-                        detail={appendCustomMsg(errorDetail, errorMessage)}
+                        detail={shouldAppendMsgs ? appendCustomMsg(errorDetail, errorMessage) : errorMessage}
                         severity="error"
                     >
-                        {TOAST_ACTIONS.codes.includes(error?.status) ? (
-                            <Button
-                                label="Ok"
-                                className="p-button-link p-toast-button-link"
-                                onClick={() => store.dispatch(removeToast())}
-                            />
-                        ) : null}
+                        {toastActions()}
                     </ToastBody>
                 ),
             }),

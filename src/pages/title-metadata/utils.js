@@ -376,11 +376,21 @@ export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
-    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'editorial', 'movidaUkExternalIds', 'territorial'];
+    const unnecessaryValues = [
+        'vzExternalIds',
+        'movidaExternalIds',
+        'editorial',
+        'movidaUkExternalIds',
+        'territorial',
+        'editorialMetadata',
+    ];
     const isTitleChanged = Object.keys(cleanValues).some(item => {
         const initialItem = initialValues?.[item] === undefined ? null : initialValues?.[item];
         const cleanItem = cleanValues?.[item];
-        if (unnecessaryValues.includes(item)) return false;
+        if (unnecessaryValues.includes(item)) {
+            return false;
+        }
+
         if (Array.isArray(initialItem) && Array.isArray(cleanItem)) {
             return !isEqual(initialItem.length, cleanItem.length);
         }
@@ -405,7 +415,7 @@ const handleDirtyRatingsValues = values => {
         advisoriesCode,
         advisoriesFreeText,
     };
-    const index = values?.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
+    const index = values?.ratings?.findIndex(elem => elem.ratingSystem === ratingSystem);
     if (index !== null && index >= 0) {
         values.ratings[index] = updatedRatingRecord;
     }

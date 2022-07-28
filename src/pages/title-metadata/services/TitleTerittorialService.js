@@ -7,6 +7,7 @@ export default class TitleTerittorialService extends HttpService {
     territorialsByTitleId = [];
     createdTerritorial = {};
     updatedTerritorial = {};
+    lastModified = undefined;
 
     /**
      * Initialize new TitleService, if not exist
@@ -25,9 +26,10 @@ export default class TitleTerittorialService extends HttpService {
 
     /** CRUD APIs * */
     getByTitleId = async id => {
-        const response = await this.callApi('v2', `/${id}/territories`);
-        this.setTerritorialsByTitleId(response);
-        return response;
+        const response = await this.callApi('v2', `/${id}/territories`, {}, true);
+        this.lastModified = response[1].get('last-modified');
+        this.setTerritorialsByTitleId(response[0]);
+        return response[0];
     };
 
     create = async payload => {
@@ -38,6 +40,9 @@ export default class TitleTerittorialService extends HttpService {
             method: 'post',
             pathParams: `${payload.parentId}`,
             body: payload,
+            headers: {
+                'If-Unmodified-Since': this.lastModified,
+            },
         }).then(response => {
             this.setCreatedTerritorial(response);
         });
@@ -49,6 +54,9 @@ export default class TitleTerittorialService extends HttpService {
         await this.callApi('v2', `/territorymetadata`, {
             method: 'put',
             body: payload,
+            headers: {
+                'If-Unmodified-Since': this.lastModified,
+            },
             params,
         }).then(response => {
             this.setUpdatedEditorial(response);
