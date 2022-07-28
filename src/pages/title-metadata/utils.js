@@ -182,7 +182,7 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     );
 };
 
-const formatTerritoryBody = data => {
+export const formatTerritoryBody = data => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined) body[key] = null;

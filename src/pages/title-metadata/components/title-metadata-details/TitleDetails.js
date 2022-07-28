@@ -7,6 +7,7 @@ import PropagateButtonWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexu
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
+import {addToast} from '@vubiquity-nexus/portal-ui/src/toast/NexusToastNotificationActions';
 import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
 import {get, isEmpty} from 'lodash';
@@ -14,13 +15,25 @@ import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
 import {useLocation, useParams} from 'react-router-dom';
 import ShowAllEpisodes from '../../../../common/components/showAllEpisodes/ShowAllEpisodes';
+import {store} from '../../../../index';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {fetchConfigApiEndpoints} from '../../../settings/settingsActions';
 import * as settingsSelectors from '../../../settings/settingsSelectors';
 import Loading from '../../../static/Loading';
-import {EPISODE, FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SEASON, SYNC, VZ} from '../../constants';
+import {
+    EPISODE,
+    FIELDS_TO_REMOVE,
+    MOVIDA,
+    MOVIDA_INTL,
+    SEASON,
+    SYNC,
+    UPDATE_TERRITORY_METADATA_ERROR,
+    UPDATE_TERRITORY_METADATA_SUCCESS,
+    VZ,
+} from '../../constants';
 import TitleConfigurationService from '../../services/TitleConfigurationService';
 import TitleService from '../../services/TitleService';
+import TitleTerittorialService from '../../services/TitleTerittorialService';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -36,6 +49,7 @@ import {
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
 import {
+    formatTerritoryBody,
     handleDirtyValues,
     handleEditorialGenresAndCategory,
     handleTitleCategory,
@@ -44,7 +58,6 @@ import {
     prepareCategoryField,
     propagateSeasonsPersonsToEpisodes,
     updateEditorialMetadata,
-    updateTerritoryMetadata,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
@@ -177,19 +190,28 @@ const TitleDetails = ({
         });
 
         const canUpdateTitle = !!(values.isUpdated && title?.id);
-
-        const updatePayload = {...updatedValues, id: title?.id};
-        canUpdateTitle &&
-            TitleService.getInstance()
-                .update(updatePayload)
-                .then(res => {
-                    updateTitle({updatePayload, updateResponse: res});
-                });
-
         prepareCategoryField(updatedValues);
+        const updatePayload = {...updatedValues, id: title?.id};
+
+        let promises = [];
+
+        canUpdateTitle && promises.push(TitleService.getInstance().update(updatePayload));
+        promises = [...promises, ...getTerritoryMetadataPromises(values?.territorialMetadata, id, selectedTenant)];
+
+        Promise.all(promises).then(
+            res => {
+                canUpdateTitle && updateTitle({updatePayload, updateResponse: res});
+
+                isTmetUpdated && onUpdateTerritorySuccess(id);
+            },
+            error => {
+                isTmetUpdated && onUpdateTerritoryError();
+            }
+        );
+
         Promise.all([
             // isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
-            isTmetUpdated && updateTerritoryMetadata(values, id, selectedTenant),
+            // isTmetUpdated && updateTerritoryMetadata(values, id, selectedTenant),
             isEmetUpdated && updateEditorialMetadata(values, id, selectedTenant),
             (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
                 propagateSeasonsPersonsToEpisodes(
@@ -205,6 +227,40 @@ const TitleDetails = ({
             setMOVDisabled(true);
             setMovIntDisabled(true);
         });
+    };
+
+    const getTerritoryMetadataPromises = (territorialMetadata = [], titleId, selectedTenant) => {
+        const titleTerritorialService = TitleTerittorialService.getInstance();
+
+        const promises = [];
+        territorialMetadata.forEach(tmet => {
+            if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
+                const {id, ...body} = formatTerritoryBody(tmet);
+                promises.push(titleTerritorialService.update(body, titleId, id));
+            } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
+                const body = formatTerritoryBody(tmet);
+                // POST is on V2
+                promises.push(titleTerritorialService.create(body, titleId));
+            }
+        });
+        return promises;
+    };
+
+    const onUpdateTerritorySuccess = titleId => {
+        getTerritoryMetadata({id: titleId, selectedTenant});
+        const successToast = {
+            severity: 'success',
+            detail: UPDATE_TERRITORY_METADATA_SUCCESS,
+        };
+        store.dispatch(addToast(successToast));
+    };
+
+    const onUpdateTerritoryError = () => {
+        const errorToast = {
+            severity: 'error',
+            detail: UPDATE_TERRITORY_METADATA_ERROR,
+        };
+        store.dispatch(addToast(errorToast));
     };
 
     const getExternaIds = repo => {

@@ -7,7 +7,6 @@ export default class TitleTerittorialService extends HttpService {
     territorialsByTitleId = [];
     createdTerritorial = {};
     updatedTerritorial = {};
-    lastModified = undefined;
 
     /**
      * Initialize new TitleService, if not exist
@@ -36,24 +35,22 @@ export default class TitleTerittorialService extends HttpService {
         // delete payload.parentId;
         delete body.territoryType;
 
-        await this.callApi('v2', ``, {
+        const response = await this.callApi('v2', ``, {
             method: 'post',
             pathParams: `${titleId}/territories`,
             body,
             headers: {
                 'If-Unmodified-Since': this.lastModified,
             },
-        }).then(response => {
-            this.setCreatedTerritorial(response);
         });
+        this.setCreatedTerritorial(response);
+        return response;
     };
 
     update = async (body, titleId, tmetId) => {
         const response = await this.callApi('v2', `/${titleId}/territories/${tmetId}`, {
             method: 'put',
             body,
-        }).then(response => {
-            this.setUpdatedTerritorial(response);
         });
         this.setUpdatedTerritorial(response);
         return response;
