@@ -804,12 +804,14 @@ const TitleCreate = ({
                             </div>
                             <div className="row">
                                 <div className="col-12">
-                                    <ExternalIDsSection
-                                        control={control}
-                                        register={register}
-                                        errors={errors}
-                                        externalDropdownOptions={externalDropdownOptions}
-                                    />
+                                    {externalDropdownOptions?.values && (
+                                        <ExternalIDsSection
+                                            control={control}
+                                            register={register}
+                                            errors={errors}
+                                            externalDropdownOptions={externalDropdownOptions}
+                                        />
+                                    )}
                                 </div>
                             </div>
                             {isItMatching ? null : renderSyncCheckBoxes()}

@@ -3,7 +3,7 @@ import {ErrorMessage} from '@atlaskit/form';
 import {Restricted} from '@portal/portal-auth/permissions';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
-import {get, isObjectLike, isObject} from 'lodash';
+import {get, isObject, isObjectLike} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
@@ -15,7 +15,7 @@ import {isInteger} from './valdationUtils/isInteger';
 import {isTime} from './valdationUtils/isTime';
 import {isYear} from './valdationUtils/isYear';
 import {lengthEqual} from './valdationUtils/lengthEqual';
-import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, MANDATORY_VZ, ONE_MANDATORY_VZ} from './constants';
+import {FIELD_REQUIRED, MANDATORY_VZ, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, ONE_MANDATORY_VZ, VIEWS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
     const viewConfig =
@@ -198,13 +198,13 @@ export const formatOptions = (options, optionsConfig) => {
     const valueField = defaultValuePath !== undefined ? defaultValuePath : 'value';
     const labelField = defaultLabelPath !== undefined ? defaultLabelPath : 'value';
 
-    const formattedOptions = options.map(opt => {
+    const formattedOptions = options?.map(opt => {
         return {
             label: opt[labelField],
             value: opt[valueField],
         };
     });
-    return sortOptions(formattedOptions);
+    return formattedOptions ? sortOptions(formattedOptions) : sortOptions([]);
 };
 
 export const sortOptions = options => {
