@@ -53,6 +53,13 @@ exports[`AddRowDataItem should match snapshot 1`] = `
                   "stackLabel": true,
                   "type": "select",
                 },
+                "licensorTitleId": Object {
+                  "isRequired": true,
+                  "name": "Licensor Title ID",
+                  "path": "licensorTitleId",
+                  "stackLabel": true,
+                  "type": "string",
+                },
               },
             },
           ],
