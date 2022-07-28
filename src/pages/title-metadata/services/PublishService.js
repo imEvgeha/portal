@@ -6,6 +6,7 @@ export default class PublishService extends HttpService {
 
     externalIds = [];
     syncedTitle = {};
+    registeredTitle = {};
 
     /**
      * Initialize new TitleService, if not exist
@@ -46,15 +47,15 @@ export default class PublishService extends HttpService {
     };
 
     registerTitle = async payload => {
-        const {id: titleId, externalSystem} = payload;
-        const params = {externalSystem, titleId};
+        const {id: titleId, externalSystem: externalSystems} = payload;
+        const params = {externalSystems, titleId};
 
         const response = await this.callApi('v1', '/registerTitle', {
             method: 'post',
             params,
         });
 
-        this.setSyncTitle(response);
+        this.setRegisterTitle(response);
         return response;
     };
 
@@ -73,5 +74,9 @@ export default class PublishService extends HttpService {
 
     setSyncTitle(syncedTitle) {
         this.syncedTitle = syncedTitle;
+    }
+
+    setRegisterTitle(registeredTitle) {
+        this.registeredTitle = registeredTitle;
     }
 }

@@ -203,7 +203,6 @@ export const titleService = {
             method: 'get',
         });
     },
-
     addEditorialMetadataV1: (editorialMetadata, tenantCode) => {
         const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/editorialmetadata`;
         const updatedEditorialMetadata = editorialMetadata.map(item => ({
@@ -223,7 +222,6 @@ export const titleService = {
             params: encodedSerialize(params),
         });
     },
-
     addEditorialMetadata: editorialMetadata => {
         const body = Object.assign({}, editorialMetadata?.body.editorialMetadata);
 
@@ -253,7 +251,6 @@ export const titleService = {
             body: JSON.stringify(body),
         });
     },
-
     updateEditorialMetadata: (editedEditorialMetadata, tenantCode) => {
         const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.titleV2')}/editorialmetadata`;
         const params = tenantCode ? {tenantCode} : {};

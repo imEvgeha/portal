@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-constructor */
+import {get} from 'lodash';
 import HttpService from '../../../util/http/HttpService';
 import TitleSystems from '../../metadata/constants/systems';
+import {CONTENT_TYPE} from '../constants';
 
 export default class TitleService extends HttpService {
     static instance = null;
@@ -8,6 +10,7 @@ export default class TitleService extends HttpService {
     titles = [];
     titlesAll = [];
     titlesSearch = [];
+    advancedTitlesSearch = [];
     titleById = {};
     updatedTitle = {};
     createdTitle = {};
@@ -42,10 +45,11 @@ export default class TitleService extends HttpService {
         return response[0];
     };
 
-    create = async (queryParams, payload) => {
-        const response = await this.callApi('v1', '', {
+    create = async (body, params, apiVersion = 'v2') => {
+        const queryParams = params || {};
+        const response = await this.callApi(apiVersion, '', {
             method: 'post',
-            body: payload,
+            body,
             params: queryParams,
             isWithErrorHandling: false,
         });
@@ -120,6 +124,72 @@ export default class TitleService extends HttpService {
         await this.callApi('v1', '/search', options).then(response => {
             this.setAllTitles(response.data);
         });
+    };
+
+    advancedSearchTitles = async (searchCriteria, page, size, sortedParams, body, selectedTenant) => {
+        const queryParams = {};
+        const filterIsActive =
+            !!Object.keys(searchCriteria).length &&
+            !(Object.keys(searchCriteria).length === 1 && get(searchCriteria, 'tenantCode'));
+        const partialContentTypeSearch = searchCriteria.contentType
+            ? CONTENT_TYPE.find(el => el.toLowerCase().includes(searchCriteria.contentType.toLowerCase()))
+            : 'init';
+
+        // api only supports searching by single contentType value, and it has to be exact match otherwise it throws error
+        if (!partialContentTypeSearch) {
+            delete searchCriteria.contentType;
+        }
+
+        for (const key in searchCriteria) {
+            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+                if (key === 'contentType') {
+                    queryParams[key] = partialContentTypeSearch;
+                } else if (key === 'title') {
+                    const title = searchCriteria[key];
+                    if (title.startsWith('"') && title.endsWith('"')) {
+                        queryParams[key] = title.slice(1, title.length - 1);
+                        queryParams['exactMatch'] = true;
+                    } else {
+                        queryParams[key] = title;
+                    }
+                } else {
+                    queryParams[key] = searchCriteria[key];
+                }
+            }
+        }
+
+        const response = await this.callApi('v1', `${filterIsActive ? '/search' : ''}`, {
+            pathParams: sortedParams ? this.prepareSortMatrixParamTitles(sortedParams) : '',
+            params: {...queryParams, page, size, tenantCode: selectedTenant.id},
+        });
+
+        this.setAdvancedSearchTitles(response);
+        return response;
+    };
+
+    propagateSeasonsPersonsToEpisodes = async body => {
+        const response = await this.callApi('v1', `/seasonsPersonsToEpisodes`, {
+            method: 'put',
+            body,
+        });
+
+        return response;
+    };
+
+    freeTextSearch = async (searchCriteria, page, size, sortedParams, apiVersion = 'v2') => {
+        const queryParams = {};
+        for (const key in searchCriteria) {
+            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+                queryParams[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
+            }
+        }
+
+        const response = await this.callApi(apiVersion, ``, {
+            params: {...queryParams, page, size},
+            pathParams: this.prepareSortMatrixParamTitles(sortedParams),
+        });
+
+        return response;
     };
 
     /** ***************** Utils *************** */
@@ -198,5 +268,9 @@ export default class TitleService extends HttpService {
 
     setSearchedTitles(searchTitles) {
         this.titlesSearch = searchTitles;
+    }
+
+    setAdvancedSearchTitles(advancedTitlesSearch) {
+        this.advancedTitlesSearch = advancedTitlesSearch;
     }
 }

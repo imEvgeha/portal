@@ -1,6 +1,5 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {ERROR_ICON, SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {uploadService} from '@vubiquity-nexus/portal-utils/lib/services/UploadService';
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
 import PublishService from './services/PublishService';
@@ -287,7 +286,7 @@ function* uploadMetadata({payload}) {
             payload: {},
         });
 
-        const response = yield uploadService.uploadMetadata({file, params: rest});
+        const response = yield editorialServiceInstance.uploadMetadata({file, params: rest});
         yield put({
             type: ADD_TOAST,
             payload: {
