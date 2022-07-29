@@ -307,7 +307,11 @@ const toShow = (field, initialData, prefix) => {
                 retValue = areAllTrue ? true : retValue;
             } else {
                 const value = getFieldCurrentValue(initialData, `${preString}${conditionObj.field}`);
-                if (value === conditionObj.hasValue) retValue = true;
+                if (value === conditionObj.hasValue) {
+                    // if we have value === conditionObj.hasValue and conditionObj.operation = 'notEqual'
+                    // then we will return false which will not allow to display this element in this case
+                    retValue = conditionObj.operation !== 'notEqual';
+                }
             }
         });
         return retValue;
@@ -523,9 +527,9 @@ export const renderError = validationError => {
 };
 
 export const createUrl = (linkConfig, initialData) => {
-    const {baseUrl, contentType} = linkConfig;
+    const {baseUrl, contentType, contentSubType} = linkConfig;
     const parentIds = get(initialData, 'parentIds', []);
-    const id = parentIds.filter(parent => parent.contentType === contentType);
+    const id = parentIds.filter(parent => parent.contentType === contentType || parent.contentType === contentSubType);
     if (id.length) {
         return baseUrl + id[0].id;
     }

@@ -164,7 +164,8 @@
                             "type": "link",
                             "linkConfig": {
                                 "baseUrl": "",
-                                "contentType": "series"
+                                "contentType": "series",
+                                "contentSubType": "mini-series"
                             },
                             "showWhen": [
                                 {
@@ -176,10 +177,6 @@
                                     "hasValue": "episode"
                                 },
                                 [
-                                    {
-                                        "field": "contentType",
-                                        "hasValue": "event"
-                                    },
                                     {
                                         "field": "seriesTitleName",
                                         "hasValue": "any"
@@ -206,6 +203,11 @@
                                 {
                                     "field": "contentType",
                                     "hasValue": "episode"
+                                },
+                                {
+                                    "field": "contentSubType",
+                                    "hasValue": "mini-series",
+                                    "operation": "notEqual"
                                 }
                             ]
                         },
@@ -257,6 +259,11 @@
                                 {
                                     "field": "contentType",
                                     "hasValue": "episode"
+                                },
+                                {
+                                    "field": "contentSubType",
+                                    "hasValue": "mini-series",
+                                    "operation": "notEqual"
                                 },
                                 [
                                     {
