@@ -389,6 +389,7 @@ export const handleDirtyValues = (initialValues, values) => {
         'movidaUkExternalIds',
         'territorial',
         'editorialMetadata',
+        'territorialMetadata',
     ];
     const isTitleChanged = Object.keys(cleanValues).some(item => {
         const initialItem = initialValues?.[item] === undefined ? null : initialValues?.[item];
@@ -396,11 +397,9 @@ export const handleDirtyValues = (initialValues, values) => {
         if (unnecessaryValues.includes(item)) {
             return false;
         }
-
         if (Array.isArray(initialItem) && Array.isArray(cleanItem)) {
             return !isEqual(initialItem.length, cleanItem.length);
         }
-
         return !isEqual(initialItem, cleanItem);
     });
 

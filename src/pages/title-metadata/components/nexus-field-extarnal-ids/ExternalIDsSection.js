@@ -44,7 +44,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions}) => {
                             className="nexus-c-title-create_input without-margin-bottom"
                             options={
                                 !isEmpty(externalDropdownOptions)
-                                    ? externalDropdownOptions?.values.map(e => e.displayName)
+                                    ? externalDropdownOptions?.values?.map(e => e.displayName)
                                     : []
                             }
                             formControlOptions={{

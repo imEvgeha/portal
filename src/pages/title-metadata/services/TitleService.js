@@ -57,22 +57,9 @@ export default class TitleService extends HttpService {
         return response;
     };
 
-    update = async (payload, syncToVZ, syncToMovida) => {
+    update = async (payload, syncToVZ, syncToMovida, errorOptions) => {
         const legacySystemNames = this.getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
-        const errorOptions = {
-            errorMessage:
-                'Unable to save changes, title has recently been updated. Click below for latest version and resubmit.',
-            shouldAppendMsgs: false,
-            actionType: 'link',
-            toastAction: {
-                label: 'View Title',
-                icon: 'pi pi-external-link',
-                iconPos: 'right',
-                className: 'p-button-link p-toast-button-link',
-                onClick: () => window.open(window.location.href, '_blank'),
-            },
-        };
 
         const options = {
             method: 'put',

@@ -193,21 +193,8 @@ const TitleDetails = ({
         prepareCategoryField(updatedValues);
         const updatePayload = {...updatedValues, id: title?.id};
 
-        let promises = [];
-
-        canUpdateTitle && promises.push(TitleService.getInstance().update(updatePayload));
-        promises = [...promises, ...getTerritoryMetadataPromises(values?.territorialMetadata, id, selectedTenant)];
-
-        Promise.all(promises).then(
-            res => {
-                canUpdateTitle && updateTitle({updatePayload, updateResponse: res});
-
-                isTmetUpdated && onUpdateTerritorySuccess(id);
-            },
-            error => {
-                isTmetUpdated && onUpdateTerritoryError();
-            }
-        );
+        canUpdateTitle && updateTitleAPI(updatePayload);
+        isTmetUpdated && updateTerritoryMetadata(values?.territorialMetadata, id, selectedTenant);
 
         Promise.all([
             // isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
@@ -229,38 +216,61 @@ const TitleDetails = ({
         });
     };
 
-    const getTerritoryMetadataPromises = (territorialMetadata = [], titleId, selectedTenant) => {
+    const errorOptions = () => ({
+        customErrors: [
+            {
+                errorCodes: [412],
+                message:
+                    'Unable to save changes, title has recently been updated. Click below for latest version and resubmit.',
+                toastAction: {
+                    label: 'View Title',
+                    icon: 'pi pi-external-link',
+                    iconPos: 'right',
+                    className: 'p-button-link p-toast-button-link',
+                    onClick: () => window.open(window.location.href, '_blank'),
+                },
+            },
+        ],
+    });
+
+    const updateTitleAPI = payload => {
+        TitleService.getInstance()
+            .update(payload, false, false, errorOptions())
+            .then(res => updateTitle({updatePayload: payload, updateResponse: res}));
+    };
+
+    const updateTerritoryMetadata = (territorialMetadata = [], titleId, selectedTenant) => {
         const titleTerritorialService = TitleTerittorialService.getInstance();
 
         const promises = [];
         territorialMetadata.forEach(tmet => {
             if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
                 const {id, ...body} = formatTerritoryBody(tmet);
-                promises.push(titleTerritorialService.update(body, titleId, id));
+                promises.push(titleTerritorialService.update(body, titleId, id, errorOptions()));
             } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
                 const body = formatTerritoryBody(tmet);
                 // POST is on V2
-                promises.push(titleTerritorialService.create(body, titleId));
+                promises.push(titleTerritorialService.create(body, titleId, errorOptions()));
             }
         });
-        return promises;
-    };
 
-    const onUpdateTerritorySuccess = titleId => {
-        getTerritoryMetadata({id: titleId, selectedTenant});
-        const successToast = {
-            severity: 'success',
-            detail: UPDATE_TERRITORY_METADATA_SUCCESS,
-        };
-        store.dispatch(addToast(successToast));
-    };
-
-    const onUpdateTerritoryError = () => {
-        const errorToast = {
-            severity: 'error',
-            detail: UPDATE_TERRITORY_METADATA_ERROR,
-        };
-        store.dispatch(addToast(errorToast));
+        Promise.all(promises).then(
+            () => {
+                getTerritoryMetadata({id: titleId, selectedTenant});
+                const successToast = {
+                    severity: 'success',
+                    detail: UPDATE_TERRITORY_METADATA_SUCCESS,
+                };
+                store.dispatch(addToast(successToast));
+            },
+            () => {
+                // const errorToast = {
+                //     severity: 'error',
+                //     detail: UPDATE_TERRITORY_METADATA_ERROR,
+                // };
+                // store.dispatch(addToast(errorToast));
+            }
+        );
     };
 
     const getExternaIds = repo => {

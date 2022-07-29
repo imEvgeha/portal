@@ -29,32 +29,33 @@ export const getCombinedRight = (rightIds, right) => {
 
 export const putCombinedRight = (rightIds, combinedRight) => {
     const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
-    const errorToast = {
-        description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
-    };
+
+    const customErrors = [
+        {
+            errorCodes: 'all',
+            message: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
+        },
+    ];
 
     return nexusFetch(url, {
         method: 'put',
         body: JSON.stringify(combinedRight),
-        errorToast,
+        customErrors,
     });
 };
 
 export const createRightById = id => {
     const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights/${id}/match`;
-    const errorCodesToast = [
+    const customErrors = [
         {
-            status: 400,
+            errorCodes: [400],
+            message: CREATE_NEW_RIGHT_ERROR_MESSAGE,
         },
     ];
-    const errorToast = {
-        description: CREATE_NEW_RIGHT_ERROR_MESSAGE,
-    };
 
     return nexusFetch(url, {
         method: 'put',
-        errorCodesToast,
-        errorToast,
+        customErrors,
     });
 };
 

@@ -31,7 +31,7 @@ export default class TitleTerittorialService extends HttpService {
         return response[0];
     };
 
-    create = async (body, titleId) => {
+    create = async (body, titleId, errorOptions) => {
         // delete payload.parentId;
         delete body.territoryType;
 
@@ -42,15 +42,17 @@ export default class TitleTerittorialService extends HttpService {
             headers: {
                 'If-Unmodified-Since': this.lastModified,
             },
+            ...errorOptions,
         });
         this.setCreatedTerritorial(response);
         return response;
     };
 
-    update = async (body, titleId, tmetId) => {
+    update = async (body, titleId, tmetId, errorOptions) => {
         const response = await this.callApi('v2', `/${titleId}/territories/${tmetId}`, {
             method: 'put',
             body,
+            ...errorOptions,
         });
         this.setUpdatedTerritorial(response);
         return response;
