@@ -32,6 +32,13 @@ describe('AddRowDataItem', () => {
                                     },
                                     isRequired: true,
                                 },
+                                licensorTitleId: {
+                                    stackLabel: true,
+                                    name: 'Licensor Title ID',
+                                    path: 'licensorTitleId',
+                                    type: 'string',
+                                    isRequired: true,
+                                },
                             },
                         },
                     ],
