@@ -51,7 +51,7 @@ const RowDataItem = ({
      */
     const showCreateButton = () => {
         let canShowElement = true;
-        props.addNewModalOptions.fields.forEach(f => {
+        props.addNewModalOptions.fields?.forEach(f => {
             f.sections.forEach(s => {
                 Object.entries(s.fields).forEach(entry => {
                     // if this is a Select element and if it's path exists in selectValues
