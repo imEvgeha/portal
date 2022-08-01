@@ -52,6 +52,9 @@ export default class TitleTerittorialService extends HttpService {
         const response = await this.callApi('v2', `/${titleId}/territories/${tmetId}`, {
             method: 'put',
             body,
+            headers: {
+                'If-Unmodified-Since': this.lastModified,
+            },
             ...errorOptions,
         });
         this.setUpdatedTerritorial(response);
