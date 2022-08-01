@@ -377,10 +377,10 @@ const TitleCreate = ({
     const areThereAnyExternalSystemDuplicates = title => {
         const externalIdArray = title?.externalSystemIds?.map(item => item.titleId);
         const externalIdTypesArray = title?.externalSystemIds?.map(item => item.externalSystem);
-        const findDuplicates = arr => arr?.filter((item, index) => arr.indexOf(item) !== index);
+        const findDuplicates = arr => arr && arr?.filter((item, index) => arr.indexOf(item) !== index);
 
-        const indexOfDuplicateID = findDuplicates(externalIdArray).length;
-        const indexOfDuplicateType = findDuplicates(externalIdTypesArray).length;
+        const indexOfDuplicateID = findDuplicates(externalIdArray)?.length;
+        const indexOfDuplicateType = findDuplicates(externalIdTypesArray)?.length;
 
         return !!(indexOfDuplicateID && indexOfDuplicateType);
     };
@@ -393,7 +393,7 @@ const TitleCreate = ({
             return {};
         };
 
-        const updatedExternalSystemIds = titleForm.externalSystemIds.length ? titleForm.externalSystemIds : null;
+        const updatedExternalSystemIds = titleForm.externalSystemIds?.length ? titleForm.externalSystemIds : null;
         const seasonNumber = isObject(titleForm.season) ? titleForm.season.number : titleForm.season;
         const currentContentTypeDetails = contentTypes?.find(item => item.displayName === titleForm.contentType);
         const currentContentSubType = currentContentTypeDetails?.values?.find(
