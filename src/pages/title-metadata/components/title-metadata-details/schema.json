@@ -177,6 +177,11 @@
                                     "field": "contentType",
                                     "hasValue": "episode"
                                 },
+                                {
+                                    "field": "contentSubType",
+                                    "hasValue": "mini-series",
+                                    "operation": "notEqual"
+                                },
                                 [
                                     {
                                         "field": "seriesTitleName",
@@ -193,6 +198,23 @@
                                         "hasValue": "any"
                                     }
                                 ]
+                            ]
+                        },
+                        "miniSeriesTitleName": {
+                            "name": "Mini Series",
+                            "path": "seriesTitleName",
+                            "isReadOnlyInEdit": true,
+                            "type": "link",
+                            "linkConfig": {
+                                "baseUrl": "",
+                                "contentType": "series",
+                                "contentSubType": "mini-series"
+                            },
+                            "showWhen": [
+                                {
+                                    "field": "contentSubType",
+                                    "hasValue": "mini-series"
+                                }
                             ]
                         },
                         "seasonTitleName": {
