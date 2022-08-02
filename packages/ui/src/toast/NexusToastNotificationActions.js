@@ -5,7 +5,7 @@ export const addToast = payload => ({
     payload,
 });
 
-export const removeToast = index => ({
+export const removeToast = toastId => ({
     type: REMOVE_TOAST,
-    payload: index,
+    payload: toastId,
 });

@@ -1,4 +1,4 @@
-import {getConfig} from '../config';
+import {getApiURI, getConfig} from '../config';
 import {nexusFetch} from '../http-client';
 
 // currently FETCH API doesn't support upload progress calculation
@@ -14,9 +14,9 @@ export const uploadService = {
         }
         // do not remove options cuz we need it for request
         const queryParams = new URLSearchParams({...params}).toString();
-        const url = `${getConfig('gateway.titleUrl') + getConfig('gateway.service.title')}/editorialmetadata/upload${
-            queryParams && `?${queryParams}`
-        }`;
+        const uri = `/editorialmetadata/upload${queryParams ? `?${queryParams}` : ''}`;
+        const url = getApiURI('title', uri);
+
         const abortAfter = getConfig('title.upload.http.timeout');
         return nexusFetch(
             url,

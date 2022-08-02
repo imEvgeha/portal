@@ -1,5 +1,5 @@
 import {getUsername} from '@portal/portal-auth/authSelectors';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {store} from '../../index';
 import {
@@ -19,7 +19,8 @@ const DEFAULT_TIMEOUT = 60000;
 
 const DopTasksService = {
     getTasks: (externalFilter, offset = 1, limit = PAGE_LIMIT) => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPTaskManagementSearch')}`;
+        const uri = `/taskManagement/task/search`;
+        const url = getApiURI('dop', uri, 0);
         const payload = prepareFilterPayload(INITIAL_SEARCH_PARAMS, externalFilter);
         const body = {...payload, offset, limit};
         return nexusFetch(
@@ -30,13 +31,15 @@ const DopTasksService = {
         );
     },
     getOwners: taskIds => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPTasksPotentialOwners')}${
-            taskIds ? `?taskId=${taskIds}` : ''
-        }`;
+        const uri = `/taskManagement/taskPotentialOwner${taskIds ? `?taskId=${taskIds}` : ''}`;
+        const url = getApiURI('dop', uri, 0);
+
         return nexusFetch(url, {credentials: 'include'});
     },
     assignTask: (taskIds, userId) => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPTasksAssign')}`;
+        const uri = `/taskManagement/task/assign`;
+        const url = getApiURI('dop', uri, 0);
+
         const dataToSend = {
             assignmentDetail: {
                 action: 'DELEGATE',
@@ -57,7 +60,9 @@ const DopTasksService = {
         );
     },
     unAssignTask: taskIds => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPTasksAssign')}`;
+        const uri = `/taskManagement/task/assign`;
+        const url = getApiURI('dop', uri, 0);
+
         const dataToSend = {
             assignmentDetail: {
                 isoverrideExistingAssignment: true,
@@ -77,7 +82,9 @@ const DopTasksService = {
         );
     },
     forwardTask: (taskIds, userId) => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPTasksForward')}`;
+        const uri = `/taskManagement/task/forward`;
+        const url = getApiURI('dop', uri, 0);
+
         const dataToSend = {
             forwardDetail: {
                 targetWorkQueue: userId,
@@ -97,13 +104,15 @@ const DopTasksService = {
         );
     },
     getBatchJobStatus: jobId => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPTasksBatchJob')}/${jobId}`;
+        const uri = `/taskManagement/taskBatchJob/${jobId}`;
+        const url = getApiURI('dop', uri, 0);
+
         return nexusFetch(url, {credentials: 'include'});
     },
     changePriority: (taskIds, priority) => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig(
-            'gateway.service.DOPProjectManagementBase'
-        )}/projectAttribute`;
+        const uri = `/projectManagement//projectAttribute`;
+        const url = getApiURI('dop', uri, 0);
+
         const dataToSend = [...new Set(taskIds)].map(id => ({
             projectId: id,
             code: 'customPriority',

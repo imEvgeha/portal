@@ -253,6 +253,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
             cache,
             dataApi,
             index,
+            values,
         });
 
     const renderElement = fieldsIn => {

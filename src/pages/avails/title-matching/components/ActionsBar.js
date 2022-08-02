@@ -1,12 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     TITLE_MATCH_SUCCESS_MESSAGE,
-    WARNING_TITLE,
-    SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
@@ -56,14 +53,13 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
 
         addToast({
             severity: 'success',
-            content: (
-                <ToastBody summary={SUCCESS_TITLE} detail={TITLE_MATCH_SUCCESS_MESSAGE} severity="success">
-                    <PrimeReactButton
-                        label="View Title"
-                        className="p-button-link p-toast-button-link"
-                        onClick={handleLinkClick}
-                    />
-                </ToastBody>
+            detail: TITLE_MATCH_SUCCESS_MESSAGE,
+            content: () => (
+                <PrimeReactButton
+                    label="View Title"
+                    className="p-button-link p-toast-button-link"
+                    onClick={handleLinkClick}
+                />
             ),
         });
     };
@@ -78,22 +74,20 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
         if (Object.keys(matchList).length === 1) {
             addToast({
                 severity: 'warn',
-                closable: false,
-                content: (
-                    <ToastBody summary={WARNING_TITLE} detail={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} severity="warn">
-                        <div className="d-flex align-items-center">
-                            <PrimeReactButton
-                                label="Cancel"
-                                className="p-button-link p-toast-left-button"
-                                onClick={() => removeToast()}
-                            />
-                            <PrimeReactButton
-                                label="Continue"
-                                className="p-button-link p-toast-right-button"
-                                onClick={mergeSingle}
-                            />
-                        </div>
-                    </ToastBody>
+                detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+                content: () => (
+                    <div className="no-padding d-flex align-items-center">
+                        <PrimeReactButton
+                            label="Cancel"
+                            className="p-button-link p-toast-left-button"
+                            onClick={() => removeToast()}
+                        />
+                        <PrimeReactButton
+                            label="Continue"
+                            className="p-button-link p-toast-right-button"
+                            onClick={mergeSingle}
+                        />
+                    </div>
                 ),
                 sticky: true,
             });

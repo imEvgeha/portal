@@ -4,8 +4,7 @@ export const SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE = 'You have successfully saved 
 export const SAVE_COMBINED_RIGHT_ERROR_MESSAGE = 'There is an error in saving combined right! Please, try again later.';
 export const TITLE_MATCH_SUCCESS_MESSAGE = `You have successfully matched the right to a Nexus title.
     Click 'Complete' below to continue.`;
-export const TITLE_MATCH_AND_CREATE_WARNING_MESSAGE =
-    'You have only chosen matching titles from 1 repository. Are you sure?';
+export const TITLE_MATCH_AND_CREATE_WARNING_MESSAGE = 'You have chosen matching titles from 1 repository. Continue?';
 export const TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE = `You have successfully matched 1 title to the incoming right.
     Click 'Complete' below to continue.`;
 export const TITLE_MATCH_AND_CREATE_ERROR_MESSAGE =

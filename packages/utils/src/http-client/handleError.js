@@ -1,8 +1,6 @@
 /* eslint-disable no-magic-numbers */
 import React from 'react';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {isEmpty} from 'lodash';
 import {Button} from 'primereact/button';
 import {store} from '../../../../src';
@@ -50,12 +48,9 @@ export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast
         toast = {
             severity: 'error',
             ...(errorToast || {
-                content: (
-                    <ToastBody
-                        summary={ERROR_TITLE}
-                        detail={appendCustomMsg(errorDetail, errorMessage)}
-                        severity="error"
-                    >
+                detail: errorDetail,
+                content: () => (
+                    <>
                         {TOAST_ACTIONS.codes.includes(error?.status) ? (
                             <Button
                                 label="Ok"
@@ -63,7 +58,7 @@ export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast
                                 onClick={() => store.dispatch(removeToast())}
                             />
                         ) : null}
-                    </ToastBody>
+                    </>
                 ),
             }),
         };

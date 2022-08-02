@@ -14,6 +14,7 @@ const NexusSelect = ({
     defaultValue,
     fieldProps,
     type,
+    id,
     optionsConfig,
     selectValues,
     path,
@@ -129,6 +130,7 @@ const NexusSelect = ({
     return isMultiselect ? (
         <SelectWithOptional
             {...fieldProps}
+            id={id}
             options={options}
             isMulti
             defaultValue={defaultValue}
@@ -139,6 +141,7 @@ const NexusSelect = ({
     ) : (
         <SelectWithOptional
             {...fieldProps}
+            id={id}
             options={options}
             defaultValue={defaultValue}
             {...addedProps}
@@ -163,6 +166,7 @@ NexusSelect.propTypes = {
     isCreateMode: PropTypes.bool,
     showLocalized: PropTypes.bool,
     language: PropTypes.string,
+    id: PropTypes.string,
 };
 
 NexusSelect.defaultProps = {
@@ -176,6 +180,7 @@ NexusSelect.defaultProps = {
     isCreateMode: false,
     showLocalized: false,
     language: 'en',
+    id: '',
 };
 
 export default NexusSelect;

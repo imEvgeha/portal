@@ -41,6 +41,7 @@ const NexusArray = ({
     config,
     isEditable,
     generateMsvIds,
+    sectionID,
 }) => {
     const dispatch = useDispatch();
     const {openModal, closeModal} = useContext(NexusModalContext);
@@ -131,6 +132,7 @@ const NexusArray = ({
                                 {renderNexusField(`${path}[${index}].${key}`, view, getValues, generateMsvIds, {
                                     initialData,
                                     field: fields[key],
+                                    sectionID: `${sectionID}.${index}`,
                                     selectValues,
                                     setFieldValue,
                                     config,
@@ -187,6 +189,7 @@ const NexusArray = ({
                                 {buildSection(fields, getValues, VIEWS.CREATE, null, null, null, {
                                     selectValues,
                                     setFieldValue,
+                                    sectionID,
                                 })}
                             </div>
                             {buildButtons(dirty, submitting, reset)}
@@ -257,6 +260,7 @@ NexusArray.propTypes = {
     config: PropTypes.array,
     isEditable: PropTypes.bool,
     generateMsvIds: PropTypes.func,
+    sectionID: PropTypes.string,
 };
 
 NexusArray.defaultProps = {
@@ -278,6 +282,7 @@ NexusArray.defaultProps = {
     config: [],
     isEditable: false,
     generateMsvIds: undefined,
+    sectionID: '',
 };
 
 export default NexusArray;

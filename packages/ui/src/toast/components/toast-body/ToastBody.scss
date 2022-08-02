@@ -9,25 +9,32 @@
     word-break: break-word;
     text-overflow: ellipsis;
 
+    .nexus-c-toast__row-without-padding {
+        padding-left: 16px;
+    }
+
     .nexus-c-toast__summary-title {
-        font-size: 13px;
+        font-size: 16px;
         font-weight: bold;
         color: palette(black, 100);
+        padding: 0px;
     }
 
     .nexus-c-toast__detail-title {
-        font-size: 10px;
+        font-size: 12px;
         font-weight: bold;
         color: palette(black, 100);
+        padding: 0px;
     }
 }
 
 .nexus-c-toast__icon-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 5px;
 
     .nexus-c-toast__icon {
-        font-size: 2rem;
+        font-size: 1.7rem;
     }
 }

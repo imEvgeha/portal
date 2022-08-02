@@ -17,7 +17,6 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {BLOCK_UI} from '../../constants/action-types';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {STORE_PENDING_RIGHT} from '../../../avails/right-matching/rightMatchingActionTypes';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {Button} from 'primereact/button';
 import {isAllowed} from '@portal/portal-auth/permissions';
 
@@ -238,8 +237,8 @@ export function* handleMatchingRights({payload}) {
             type: ADD_TOAST,
             payload: {
                 ...toastProps,
-                content: (
-                    <ToastBody summary={ERROR_TITLE} detail={message} severity={'error'}>
+                content: () => (
+                    <>
                         {rightIDs.map(right => (
                             <Button
                                 label={right}
@@ -247,7 +246,7 @@ export function* handleMatchingRights({payload}) {
                                 onClick={() => window.open(RightsURL.getRightUrl(right), '_blank')}
                             />
                         ))}
-                    </ToastBody>
+                    </>
                 ),
             },
         });
@@ -259,22 +258,17 @@ export function* handleMatchingRights({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                ...toastProps,
-                content: (
-                    <ToastBody
-                        summary={SUCCESS_TITLE}
-                        detail={TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE}
-                        severity="success"
-                    >
-                        <Button
-                            label={RIGHT_ERROR_MSG_MERGED}
-                            className="p-button-link p-toast-button-link"
-                            onClick={() => {
-                                removeToast();
-                                push(URL.keepEmbedded('/avails/right-matching'));
-                            }}
-                        />
-                    </ToastBody>
+                severity: 'success',
+                detail: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+                content: () => (
+                    <Button
+                        label={RIGHT_ERROR_MSG_MERGED}
+                        className="p-button-link p-toast-button-link"
+                        onClick={() => {
+                            removeToast();
+                            push(URL.keepEmbedded('/avails/right-matching'));
+                        }}
+                    />
                 ),
             },
         });

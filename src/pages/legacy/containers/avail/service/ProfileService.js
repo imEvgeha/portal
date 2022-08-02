@@ -2,7 +2,7 @@ import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {store} from '../../../../../index';
 import {loadAvailsMapping, loadSelectLists} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {storeConfigValues} from './endpointConfigActions';
 import {isEmpty} from 'lodash';
 
@@ -11,9 +11,8 @@ const getAvailsMapping = () => {
 };
 
 const getSelectValues = (field, alternateSelector, isInitAvailsMappingFlow = false, javaVariableName) => {
-    const url = `${getConfig('gateway.configuration')}${getConfig(
-        'gateway.service.configuration'
-    )}${field}?page=0&size=10000`;
+    const uri = `${field}?page=0&size=10000`;
+    const url = getApiURI('configuration', uri);
 
     const key = field.replace('/', '');
     const availsStoredEndpoints = store.getState().avails?.rightDetailsOptions?.selectValues?.[alternateSelector];

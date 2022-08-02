@@ -1,4 +1,4 @@
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {get, isEmpty, isObject, merge} from 'lodash';
 import moment from 'moment';
@@ -76,7 +76,8 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
             }, paramString);
     }
 
-    const url = `${getConfig('gateway.eventApiUrl')}${getConfig('gateway.service.eventApiV2')}/search/fts`;
+    const uri = `/search/fts`;
+    const url = getApiURI('event', uri, 2);
 
     return nexusFetch(`${url}${paramString}`).then(response => {
         const {data = []} = response || {};
@@ -106,16 +107,18 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
 };
 
 export const replayEvent = ({docId}) => {
-    const url = `${getConfig('gateway.eventApiUrl')}${getConfig('gateway.service.eventApiV2')}/admin/replay/${docId}`;
+    const uri = `/admin/replay/${docId}`;
+    const url = getApiURI('event', uri, 2);
+
     return nexusFetch(url, {
         method: 'post',
     });
 };
 
 export const replicateEvent = ({docId}) => {
-    const url = `${getConfig('gateway.eventApiUrl')}${getConfig(
-        'gateway.service.eventApiV2'
-    )}/admin/replicate/${docId}`;
+    const uri = `/admin/replicate/${docId}`;
+    const url = getApiURI('event', uri, 2);
+
     return nexusFetch(url, {
         method: 'post',
     });
@@ -126,7 +129,9 @@ export const replicateEvent = ({docId}) => {
  * @param {Event} docId
  */
 export const getEventById = docId => {
-    const url = `${getConfig('gateway.eventApiUrl')}${getConfig('gateway.service.eventApiV2')}/event/${docId}`;
+    const uri = `/event/${docId}`;
+    const url = getApiURI('event', uri, 2);
+
     return nexusFetch(url, {
         method: 'get',
     });

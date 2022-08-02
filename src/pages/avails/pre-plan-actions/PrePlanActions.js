@@ -97,7 +97,6 @@ export const PrePlanActions = ({
             addToast({
                 detail: NO_TERRITORIES_SELECTED,
                 severity: 'warn',
-                sticky: true,
             });
             return;
         }

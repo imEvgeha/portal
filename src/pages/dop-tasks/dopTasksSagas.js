@@ -1,10 +1,6 @@
 import {TOGGLE_REFRESH_GRID_DATA} from '@vubiquity-nexus/portal-ui/lib/grid/gridActionTypes';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
-import {
-    SUCCESS_ICON,
-    ERROR_ICON,
-    WARNING_ICON,
-} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {SUCCESS_ICON, ERROR_ICON, WARNING_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {uniqBy} from 'lodash';
 import {call, put, all, takeLatest} from 'redux-saga/effects';
 import DopTasksService from './dopTasks-services';
@@ -90,7 +86,6 @@ function* assignTasks({payload}) {
                 );
                 toastParams = {
                     severity: WARNING_ICON,
-                    sticky: true,
                     detail: `${jobDetails.success} tasks ${action.toLowerCase()}ed successfully to ${userId}.
                     Error in ${action.toLowerCase()}ing ${jobDetails.error} tasks.`,
                 };

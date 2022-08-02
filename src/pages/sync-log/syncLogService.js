@@ -1,6 +1,6 @@
 import querystring from 'querystring';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 
 const PAGESIZE = 100;
@@ -16,18 +16,20 @@ export const getSyncLog = (params, page = 0, size = PAGESIZE) => {
 
     const qs = querystring.stringify(queryParams);
 
-    const url = `${getConfig('gateway.publisher')}${getConfig('gateway.service.publisher')}/publishInfo/search`;
-
-    return nexusFetch(`${url}?${qs}`);
+    const uri = `/publishInfo/search?${qs}`;
+    const url = getApiURI('movida', uri);
+    return nexusFetch(url);
 };
 
 const fetchSyncLog = (startDate, endDate) => {
-    const url = `${getConfig('gateway.publisher')}${getConfig('gateway.service.publisher')}/publishInfo/export`;
     const qs = querystring.stringify({
         startDate,
         endDate,
     });
-    return nexusFetch(`${url}?${qs}`);
+
+    const uri = `/publishInfo/export?${qs}`;
+    const url = getApiURI('movida', uri);
+    return nexusFetch(url);
 };
 
 export const exportSyncLog = (startDate, endDate) => {

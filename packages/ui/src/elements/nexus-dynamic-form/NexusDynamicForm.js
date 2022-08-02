@@ -167,6 +167,7 @@ const NexusDynamicForm = ({
                                         (
                                             {
                                                 title: sectionTitle = '',
+                                                sectionID,
                                                 titleActions = [],
                                                 fields = {},
                                                 isGridLayout = false,
@@ -216,6 +217,7 @@ const NexusDynamicForm = ({
                                                             prefix,
                                                             isTitlePage,
                                                             setUpdate,
+                                                            sectionID,
                                                         }
                                                     )}
                                                 </Fragment>

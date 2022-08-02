@@ -38,15 +38,12 @@ const ReloadConfigBtn = ({addToast}) => {
 
         res[0].status === 'fulfilled' && res[1].status === 'fulfilled'
             ? addToast({
-                  summary: 'Reload Configuration Status',
                   detail: statusDesc(),
                   severity: 'success',
               })
             : addToast({
-                  summary: 'Reload Configuration Status',
                   detail: statusDesc(),
                   severity: 'warn',
-                  sticky: true,
               });
     };
 

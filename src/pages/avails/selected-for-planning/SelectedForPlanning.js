@@ -8,14 +8,14 @@ import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {commonDragStoppedHandler} from '../rights-repository/util/utils';
 import {prepareSelectForPlanningData} from './utils';
-import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
+import {COLUMN_MAPPINGS, SELECTED_FOR_PLANNING_TAB} from './constants';
 import './SelectedForPlanning.scss';
 
 const SelectedForPlanningTable = compose(
@@ -33,16 +33,17 @@ export const SelectedForPlanning = ({username}) => {
     const [columnApiState, setColumnApiState] = useState(undefined);
     const [allRights, setAllRights] = useState([]);
 
-    const mappings = COLUMN_MAPPINGS.map(col =>
-        col.colId === 'projectId'
+    const mappings = COLUMN_MAPPINGS.map(col => {
+        const uri = `/index.html?launchApp=Projects&projectId=`;
+        const link = getApiURI('dopPortal', uri, 0, 'dopExternal');
+
+        return col.colId === 'projectId'
             ? {
                   ...col,
-                  cellRendererParams: {
-                      link: `${getConfig('DOP_base')}${DOP_PROJECT_URL}`,
-                  },
+                  cellRendererParams: {link},
               }
-            : col
-    );
+            : col;
+    });
 
     const onGridReady = ({type, columnApi, api}) => {
         switch (type) {

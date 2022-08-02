@@ -3519,10 +3519,10 @@
     pacote "^13.1.1"
     semver "^7.3.7"
 
-"@portal/portal-components@^1.0.0-66":
-  version "1.0.0-66"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-components/-/portal-components-1.0.0-66.tgz#9900826855493f2f145046c0b21daf63e7bdbbde"
-  integrity sha512-ZacAx89WIgAYzKupkBE7Wy0/FB58sD3BNQ3SiZWYYuNpe1kGyVgT4o8bZSKqRxSRMvVPMqtLDQnmg1T366ckww==
+"@portal/portal-components@^1.0.0-69":
+  version "1.0.0-69"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-components/-/portal-components-1.0.0-69.tgz#d65ea85ec885d26b95fe3bfa5befea230a669785"
+  integrity sha512-ezS/GHMHk3XmDp1cUAbHTjRN+3ZkAzBh027K10Kj577k2DVtlp+Ng1az47N64ADlgGPYVb9sqtllVZcLHBqypA==
   dependencies:
     "@portal/portal-build-scripts" "1.0.0-18"
     "@testing-library/jest-dom" "^5.16.4"
@@ -6869,6 +6869,11 @@ dedent@^0.7.0:
   version "0.7.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
   integrity sha1-JJXduvbrh0q7Dhvp3yLS5aVEMmw=
+
+dedupe@^3.0.2:
+  version "3.0.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/dedupe/-/dedupe-3.0.3.tgz#7ae7b55ca01028bc7d5714cd57a5bdf5e4aeea6e"
+  integrity sha512-ZSCmu4uLkBWTAPSz9LXtrTNusY2P6BoghZhokPBLzpQpLiBtU0B4QXNxVnwpy7yaqFc1jN30V5BkKMr/uXqf/w==
 
 deep-diff@^0.3.5:
   version "0.3.8"
@@ -10685,6 +10690,14 @@ json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
 
+json-templates@^4.2.0:
+  version "4.2.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/json-templates/-/json-templates-4.2.0.tgz#34fdd6fedbe6955e934d86812a89d30d1df87415"
+  integrity sha512-NX0r9SEI2bsz17DJpKhZPymvlw/vcMcRqjqRC0jl7pofLwcpaSsfjweatMFt9QXaUv+dR5EBzInBp8y5lzluIQ==
+  dependencies:
+    dedupe "^3.0.2"
+    object-path "^0.11.8"
+
 json5@^1.0.1:
   version "1.0.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
@@ -12251,6 +12264,11 @@ object-keys@^1.1.1:
   version "1.1.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/object-keys/-/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
   integrity sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==
+
+object-path@^0.11.8:
+  version "0.11.8"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/object-path/-/object-path-0.11.8.tgz#ed002c02bbdd0070b78a27455e8ae01fc14d4742"
+  integrity sha512-YJjNZrlXJFM42wTBn6zgOJVar9KFJvzx6sTWDte8sWZF//cnjl0BxHNpfZx+ZffXX63A9q0b1zsFiBX4g4X5KA==
 
 object-visit@^1.0.0:
   version "1.0.1"

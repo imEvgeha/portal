@@ -1,0 +1,85 @@
+{
+    "integrationPoints": {
+        "kong": {
+            "baseURL": "https://vuapi{{subdomain}}.vubiquity.com/vubiquity"
+        },
+        "mediaImage": {
+            "baseURL": "https://mediaimage{{subdomain}}.vubiquity.com"
+        },
+        "dopExternal": {
+            "baseURL": "https://dop{{subdomain}}.vubiquity.com:8045"
+        },
+        "dopInternal": {
+            "baseURL": "https://vuapi{{subdomain}}.vubiquity.com/vubiquity/dops"
+        }
+    },
+    "sso": {
+        "url": "https://identity{{subdomain}}.vubiquity.com/auth",
+        "clientId": "portalapp-public"
+    },
+    "defaultVersion": 1,
+    "defaultIntegrationPoint": "kong",
+    "services": {
+        "avails": {
+            "baseURI": "/avails/avails-api"
+        },
+        "availsParser": {
+            "baseURI": "/avails-parser"
+        },
+        "availsIngest": {
+            "baseURI": "/avails-ingest/avails-ingest"
+        },
+        "title": {
+            "baseURI": "/titles/titles-api",
+            "versions": [1, 2]
+        },
+        "titlePlanning": {
+            "baseURI": "/title-planning/title-planning-api"
+        },
+        "configuration": {
+            "baseURI": "/configuration/configuration-api"
+        },
+        "dete": {
+            "baseURI": "/dete/rest"
+        },
+        "event": {
+            "baseURI": "/events/api/event-api",
+            "versions": [1, 2]
+        },
+        "mediaImageServices": {
+            "baseURI": "/image-services"
+        },
+        "mediaCatalog": {
+            "baseURI": "/mediacatalog/catalog"
+        },
+        "mediaStorage": {
+            "baseURI": "/mediastorage/media-storage"
+        },
+        "mediaingest": {
+            "baseURI": "/mediaingest/media-ingest"
+        },
+        "dop": {
+            "baseURI": "/dop/be-services",
+            "integrationPoint": "dopInternal"
+        },
+        "dopPortal": {
+            "baseURI": "/AmdocsOSS/Portal",
+            "integrationPoint": "dopInternal"
+        },
+        "movida": {
+            "baseURI": "/titlespublishermovida/publisher"
+        },
+        "vidispine": {
+            "baseURI": "/vidispine-api/API"
+        },
+        "assetManagement": {
+            "baseURI": "/api/asset-management"
+        },
+        "servicingOrder": {
+            "baseURI": "/servicing-orders"
+        }
+    },
+    "googleAnalytics": {
+        "propertyId": "UA-165264495-3"
+    }
+}

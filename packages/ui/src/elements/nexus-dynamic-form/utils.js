@@ -341,6 +341,7 @@ export const buildSection = (
         prefix,
         isTitlePage,
         setUpdate,
+        sectionID,
     }
 ) => {
     return (
@@ -361,6 +362,7 @@ export const buildSection = (
                             isUpdate={update}
                             config={config}
                             generateMsvIds={generateMsvIds}
+                            sectionID={sectionID}
                             {...fields[key]}
                         />
                     ) : get(fields[key], 'type') === 'arrayWithTabs' ? (
@@ -379,16 +381,18 @@ export const buildSection = (
                             regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                             searchPerson={searchPerson}
                             castCrewConfig={castCrewConfig}
-                            {...fields[key]}
                             setRefresh={setRefresh}
                             initialData={initialData}
                             prefix={prefix}
+                            sectionID={sectionID}
+                            {...fields[key]}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
                             {renderNexusField(key, view, getValues, generateMsvIds, {
                                 initialData,
                                 field: fields[key],
+                                sectionID,
                                 selectValues,
                                 setFieldValue,
                                 config,
@@ -421,6 +425,7 @@ export const renderNexusField = (
     {
         initialData = {},
         field,
+        sectionID,
         selectValues,
         setFieldValue,
         config,
@@ -447,6 +452,7 @@ export const renderNexusField = (
                 name={key}
                 label={field.name}
                 view={view}
+                sectionID={sectionID}
                 getValues={getValues}
                 formData={inTabs ? {[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]: initialData} : getValues()}
                 validationError={getValidationError(initialData.validationErrors, field)}

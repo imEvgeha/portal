@@ -6,6 +6,7 @@
             "sections": [
                 {
                     "title": "Core Title",
+                    "sectionID": "coreTitle",
                     "titleActions": ["showAllEpisodes"],
                     "isGridLayout": true,
                     "fields": {
@@ -371,6 +372,7 @@
             "sections": [
                 {
                     "title": "Cast & Crew",
+                    "sectionID": "сastCrew",
                     "titleActions": ["propagate"],
                     "fields": {
                         "castCrew": {
@@ -387,6 +389,7 @@
             "sections": [
                 {
                     "title": "Ratings",
+                    "sectionID": "ratings",
                     "fields": {
                         "ratings": {
                             "name": "Ratings",
@@ -473,6 +476,7 @@
             "sections": [
                 {
                     "title": "Tenant Defined External IDs",
+                    "sectionID": "tenantDefinedExternalIDs",
                     "fields": {
                         "tenantDefExtIds": {
                             "name": "tenantDefExtIds",
@@ -525,6 +529,7 @@
                 },
                 {
                     "title": "MetaVU Originated External IDs",
+                    "sectionID": "metavuOriginatedExternalIDs",
                     "isGridLayout": true,
                     "fields": {
                         "alid": {
@@ -616,6 +621,7 @@
                 },
                 {
                     "title": "Licensors",
+                    "sectionID": "licensors",
                     "fields": {
                         "licensors": {
                             "name": "Licensors",
@@ -672,6 +678,7 @@
                 },
                 {
                     "title": "MSV Association IDs",
+                    "sectionID": "msvAssociationIds",
                     "fields": {
                         "msvAssociationId": {
                             "name": "MSV Association ID",
@@ -688,6 +695,7 @@
             "sections": [
                 {
                     "title": "Editorial Metadata",
+                    "sectionID": "editorialMetadata",
                     "prefix": "editorial",
                     "fields": {
                         "editorialMetadata": {
@@ -1107,6 +1115,7 @@
             "sections": [
                 {
                     "title": "Territory Metadata",
+                    "sectionID": "territoryMetadata",
                     "fields": {
                         "territorialMetadata": {
                             "name": "Territorial Metadata",

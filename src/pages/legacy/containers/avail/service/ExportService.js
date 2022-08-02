@@ -2,12 +2,14 @@ import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {parseAdvancedFilter} from './RightsService';
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {keycloak} from '@portal/portal-auth';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 
 export const exportService = {
     exportAvails: (rightsIDs, columns) => {
         const abortAfter = getConfig('avails.export.http.timeout');
-        const url = getConfig('gateway.url') + getConfig('gateway.service.avails') + '/avails/export';
+        const uri = `/avails/export`;
+        const url = getApiURI('avails', uri);
+
         const data = {columnNames: columns, rightIds: rightsIDs};
 
         return nexusFetch(
@@ -22,11 +24,9 @@ export const exportService = {
 
     bulkExportAvails: (searchCriteria, columns, sortedParams) => {
         const params = parseAdvancedFilter(searchCriteria);
-        const url =
-            getConfig('gateway.url') +
-            getConfig('gateway.service.avails') +
-            '/avails/export/bulk' +
-            prepareSortMatrixParam(sortedParams);
+        const uri = '/avails/export/bulk' + prepareSortMatrixParam(sortedParams);
+        const url = getApiURI('avails', uri);
+
         const abortAfter = getConfig('avails.export.http.timeout');
         const data = {columnNames: columns};
 
@@ -42,7 +42,9 @@ export const exportService = {
     },
 
     getReleaseReport: searchCriteria => {
-        const url = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}/rights/report-new-release`;
+        const uri = `/rights/report-new-release`;
+        const url = getApiURI('avails', uri);
+
         const abortAfter = getConfig('avails.export.http.timeout');
         return nexusFetch(
             url,
@@ -64,11 +66,11 @@ export const exportService = {
 
         const {locale, language, status} = params;
         const statusUrl = status !== 'openDopTasks' ? `&emetStatus=${status}` : ``;
-        const url = `${
-            getConfig('gateway.titleUrl') + getConfig('gateway.service.title')
-        }/editorialmetadata/download?locale=${locale}&language=${language}&byDopEmtTasks=${
+
+        const uri = `/editorialmetadata/download?locale=${locale}&language=${language}&byDopEmtTasks=${
             status === 'openDopTasks'
         }${statusUrl}`;
+        const url = getApiURI('title', uri);
 
         const abortAfter = getConfig('avails.export.http.timeout');
 

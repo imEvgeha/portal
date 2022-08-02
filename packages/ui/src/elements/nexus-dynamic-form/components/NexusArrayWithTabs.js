@@ -15,6 +15,7 @@ import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
     fields,
+    sectionID,
     getValues,
     view,
     selectValues,
@@ -393,12 +394,17 @@ const NexusArrayWithTabs = ({
                 ? {...currentData, contentType: initialData.contentType}
                 : {...data[0], contentType: initialData.contentType};
             const tabId = initData.id ? initData.id : initData.ratingSystem;
+            const tabIndex = data.findIndex(item => {
+                const isItRating = initData.ratingSystem && initData.rating;
+                return isItRating ? item.ratingSystem === tabId && item.rating === initData.rating : item.id === tabId;
+            });
 
             return (
                 <div key={`nexus-c-array__field_${tabId}_${key}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
                         initialData: initData,
                         field: fields[key],
+                        sectionID: tabIndex >= 0 ? `${sectionID}.${tabIndex}` : sectionID,
                         selectValues,
                         setFieldValue,
                         config,
@@ -468,6 +474,7 @@ const NexusArrayWithTabs = ({
 
 NexusArrayWithTabs.propTypes = {
     fields: PropTypes.object,
+    sectionID: PropTypes.string,
     view: PropTypes.string,
     data: PropTypes.array,
     getValues: PropTypes.func,
@@ -490,6 +497,7 @@ NexusArrayWithTabs.propTypes = {
 
 NexusArrayWithTabs.defaultProps = {
     fields: {},
+    sectionID: '',
     view: VIEWS.VIEW,
     data: [],
     getValues: undefined,

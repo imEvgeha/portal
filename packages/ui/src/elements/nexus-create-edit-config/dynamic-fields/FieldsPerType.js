@@ -12,22 +12,26 @@ import DynamicDropdown from './dynamic-dropdown/DynamicDropdown';
 import DynamicElement from './dynamic-element/DynamicElement';
 
 export const constructFieldPerType = args => {
-    const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi, index} = args;
-    setWatchedControlsForVisibleWhen(elementSchema, form);
-
+    const {elementSchema, form, value, className, customOnChange, cb, cache, dataApi, index, values} = args;
+    watchFormControls(elementSchema, form);
     const isControllerVisible = elementSchema.visible !== false;
     if (isControllerVisible === false) {
         return null;
     }
+    const elementIsHidden =
+        elementSchema.visibleWhen &&
+        !getWhenConditionValue(elementSchema.visibleWhen, getParentPathName(elementSchema), form, values);
 
-    const elementIsHidden = elementSchema.visibleWhen && !getVisibleWhenConditionValue(elementSchema, form);
     if (elementIsHidden) {
-        value !== '' && form.setValue(elementSchema.name, null, {shouldValidate: true});
-        form.getFieldState(elementSchema.name).error &&
-            form.clearErrors(elementSchema.name) &&
-            form.unregister(elementSchema.name);
-
+        resetVisibleWhenField(value, form, elementSchema);
         return null;
+    }
+
+    const isRequiredWhen =
+        elementSchema.requiredWhen &&
+        getWhenConditionValue(elementSchema.requiredWhen, getParentPathName(elementSchema), form, values);
+    if (elementSchema.requiredWhen && !isRequiredWhen) {
+        resetRequiredWhenField(form, elementSchema);
     }
 
     return (
@@ -40,21 +44,19 @@ export const constructFieldPerType = args => {
                 key={`${elementSchema.id}_controller`}
                 control={form.control}
                 defaultValue={value || elementSchema.defaultValue}
-                rules={{...createRules(elementSchema)}}
+                rules={{...createRules(elementSchema, isRequiredWhen)}}
                 render={({field, fieldState}) => {
                     const onFormElementChanged = e => {
                         field && field.onChange(e);
                         customOnChange && customOnChange(field);
                     };
-
                     const argsField = {elementSchema, form, value, cb, cache, dataApi};
-                    return createDynamicFormField(field, fieldState, argsField, onFormElementChanged);
+                    return createDynamicFormField(field, fieldState, argsField, onFormElementChanged, isRequiredWhen);
                 }}
             />
         </div>
     );
 };
-
 const getElement = args => {
     const {elementSchema, field, value, form, onChange, cb, cache, dataApi} = args;
     switch (elementSchema.type) {
@@ -79,12 +81,10 @@ const getElement = args => {
         case 'timestamp': {
             let tmpDate;
             let val;
-
             if (field.value) {
                 tmpDate = new Date(field.value);
                 val = new Date(tmpDate.toLocaleString('en-US', {timeZone: 'UTC'}));
             }
-
             return (
                 <Calendar
                     id={elementSchema.id}
@@ -168,10 +168,8 @@ const getElement = args => {
             break;
     }
 };
-
-export const createRules = elementSchema => {
+export const createRules = (elementSchema, isRequiredWhen) => {
     let rulesObj = {};
-
     elementSchema.validWhen &&
         Object.entries(elementSchema.validWhen).forEach(rule => {
             let newRule = {};
@@ -198,19 +196,16 @@ export const createRules = elementSchema => {
                     break;
             }
         });
-
-    if (elementSchema.required) {
+    if (elementSchema.required || !!isRequiredWhen) {
         const minLength = rulesObj?.minLength;
         rulesObj = {
             ...rulesObj,
             required: minLength?.value === 0 ? minLength.message : 'Value is required',
         };
     }
-
     return rulesObj;
 };
-
-const createDynamicFormField = (field, fieldState, argsField, onFormElementChanged) => {
+const createDynamicFormField = (field, fieldState, argsField, onFormElementChanged, isRequiredWhen) => {
     const {elementSchema, form, value, cb, cache, dataApi} = argsField;
     const shouldShowLabel = !['checkbox', 'array'].includes(elementSchema.type) && !!elementSchema.label;
     return (
@@ -221,7 +216,7 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
                         htmlFor={elementSchema.id}
                         label={elementSchema.label}
                         additionalLabel={elementSchema.type === 'timestamp' ? ' (UTC)' : ''}
-                        isRequired={!!elementSchema.required}
+                        isRequired={!!elementSchema.required || isRequiredWhen}
                     />
                 </div>
             )}
@@ -243,42 +238,58 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
         </div>
     );
 };
-
 /**
  * useWatch hook is used for reRendering react form when "watched" controls change state
  * @param {*} elementSchema
- * @param {*} control
+ * @param form
  */
-const setWatchedControlsForVisibleWhen = (elementSchema, form) => {
+const watchFormControls = (elementSchema, form) => {
     const arrWatchedControls = [];
     const parentPathName = getParentPathName(elementSchema);
-
     elementSchema?.visibleWhen?.forEach(element => {
         const fieldNamePath = getVisibleWhenField(parentPathName, element);
         if (fieldNamePath && !arrWatchedControls.includes(fieldNamePath)) {
             // watching controls
+            arrWatchedControls.push(fieldNamePath);
+            form.watch(fieldNamePath);
+        }
+    });
+    elementSchema?.requiredWhen?.forEach(element => {
+        const fieldNamePath = getVisibleWhenField(parentPathName, element);
+        if (fieldNamePath && !arrWatchedControls.includes(fieldNamePath)) {
+            // watching controls
+            arrWatchedControls.push(fieldNamePath);
             form.watch(fieldNamePath);
         }
     });
 };
 
-const getVisibleWhenConditionValue = (elementSchema, form) => {
-    let isVisibleWhen = true;
-    const parentPathName = getParentPathName(elementSchema);
-
-    elementSchema?.visibleWhen?.forEach(element => {
-        const fieldNamePath = getVisibleWhenField(parentPathName, element);
-        if ('is' in element) {
-            isVisibleWhen = isVisibleWhen && !!element.is.includes(form.getValues(fieldNamePath));
-        }
-    });
-
-    return isVisibleWhen;
-};
 const getVisibleWhenField = (parentPathName, element) => {
     return parentPathName ? `${parentPathName}.${element.field}` : element.field;
 };
 
 const getParentPathName = elementSchema => {
     return elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
+};
+
+const getWhenConditionValue = (elementSchemaCondition, parentPathName, form, formValues) => {
+    let whenCondition = true;
+    elementSchemaCondition.forEach(element => {
+        const fieldNamePath = getVisibleWhenField(parentPathName, element);
+        const fieldValue =
+            form.getValues(fieldNamePath) !== undefined ? form.getValues(fieldNamePath) : formValues?.[fieldNamePath];
+        if ('is' in element) {
+            whenCondition = whenCondition && !!element.is.includes(fieldValue);
+        }
+    });
+    return whenCondition;
+};
+const resetVisibleWhenField = (value, form, elementSchema) => {
+    value !== '' && form.setValue(elementSchema.name, null, {shouldValidate: true});
+    form.getFieldState(elementSchema.name).error &&
+        form.clearErrors(elementSchema.name) &&
+        form.unregister(elementSchema.name);
+};
+const resetRequiredWhenField = (form, elementSchema) => {
+    form.getFieldState(elementSchema.name).error && form.clearErrors(elementSchema.name);
 };
