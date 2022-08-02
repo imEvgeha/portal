@@ -1,4 +1,4 @@
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {cloneDeep, sortBy, uniqBy} from 'lodash';
 import {all, call, put, select, takeEvery} from 'redux-saga/effects';
@@ -41,9 +41,9 @@ export function* getSelectValuesSaga() {
 }
 
 const fetchSelectValues = endpoint => {
-    const url = `${getConfig('gateway.configuration')}${getConfig(
-        'gateway.service.configuration'
-    )}${endpoint}?page=0&size=10000`;
+    const uri = `${endpoint}?page=0&size=10000`;
+    const url = getApiURI('configuration', uri);
+
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 

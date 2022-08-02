@@ -24,11 +24,13 @@ const UPLOAD_DELAY_2 = 2000;
 
 function* fetchIngests({payload}) {
     try {
+        const page = parseInt(URL.getParamIfExists('page') || 0);
+
         const filters = {};
         Object.keys(URLFilterKeys).forEach(key => {
             filters[URLFilterKeys[key]] = payload[key];
         });
-        filters.page = '';
+        filters.page = page;
         if (filters[URLFilterKeys.ingestType] !== EMAIL.toUpperCase()) {
             delete filters[URLFilterKeys.emailSubject];
         }
@@ -39,12 +41,14 @@ function* fetchIngests({payload}) {
             payload: true,
         });
         payload[FILE_NAME] = payload[FILE_NAME].replaceAll(' ', '_');
-        const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE, sortParams);
+
+        const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE * (page + 1), sortParams);
         const {data, total} = response || {};
         yield put({
             type: actionTypes.FETCH_INGESTS_SUCCESS,
             payload: {data: normalizeDataForStore(data), total},
         });
+
         yield put({
             type: actionTypes.FILTER_LOADING,
             payload: false,

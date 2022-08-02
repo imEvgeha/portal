@@ -1,23 +1,23 @@
 import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 
-const baseServicingOrdersURL = () => {
-    return `${getConfig('gateway.servicingOrdersUrl')}${getConfig('gateway.service.servicingOrder')}`;
+const baseServicingOrdersURL = (uri = '') => {
+    return getApiURI('servicingOrder', uri, 0);
 };
 
-const deteAssetURL = () => {
-    return `${getConfig('gateway.deteBaseUrl')}${getConfig('gateway.service.deteAsset')}`;
+const deteAssetURL = (uri = '') => {
+    return getApiURI('dete', `/dete-asset-metadata-service/assets${uri}`, 0);
 };
 
-const deteTitleURL = () => {
-    return `${getConfig('gateway.deteBaseUrl')}${getConfig('gateway.service.deteTitle')}`;
+const deteTitleURL = (uri = '') => {
+    return getApiURI('dete', `/dete-asset-metadata-service/titles${uri}`, 0);
 };
 
 export const getSpecOptions = (recipientId, tenant) => {
-    const url = `${getConfig(
-        'gateway.deteBaseUrl'
-    )}/outputFormats?recipientId=${recipientId}&tenant=${tenant}&sort=OUTPUTTEMPLATEID`;
+    const uri = `/outputFormats?recipientId=${recipientId}&tenant=${tenant}&sort=OUTPUTTEMPLATEID`;
+    const url = getApiURI('dete', uri, 0);
+
     return nexusFetch(url);
 };
 
@@ -36,53 +36,59 @@ export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams
             queryParams[key] = value;
         }
     });
-    const url = `${baseServicingOrdersURL()}/search/so${prepareSortMatrixParam(defaultSort)}`;
+    const uri = `/search/so${prepareSortMatrixParam(defaultSort)}`;
+    const url = baseServicingOrdersURL(uri);
     const params = encodedSerialize({...queryParams, page, size});
     return nexusFetch(url, {params});
 };
 
 export const getServicingOrderById = id => {
-    const url = `${baseServicingOrdersURL()}/so/${id}`;
+    const uri = `/so/${id}`;
+    const url = baseServicingOrdersURL(uri);
     return nexusFetch(url);
 };
 
 export const getFulfilmentOrdersForServiceOrder = id => {
-    const url = `${baseServicingOrdersURL()}/so/${id}/fo`;
+    const uri = `/so/${id}/fo`;
+    const url = baseServicingOrdersURL(uri);
     return nexusFetch(url);
 };
 
 export const getFilteredByTitleOrders = (id, type, status, page) => {
     const newType = type === 'TITLE_ASCENDING' ? 'ASC' : 'DESC';
+    const uri = `/so/${id}/soi;product_description=${newType}/fo?soiStatus=${status}&page=${page - 1}&size=100`;
+    const url = baseServicingOrdersURL(uri);
 
-    const url = `${baseServicingOrdersURL()}/so/${id}/soi;product_description=${newType}/fo?soiStatus=${status}&page=${
-        page - 1
-    }&size=100`;
     return nexusFetch(url);
 };
 
 export const getFilteredByIdOrders = (id, type, status, page) => {
     const newType = type === 'ID_ASCENDING' ? 'ASC' : 'DESC';
+    const uri = `/so/${id}/soi;external_id=${newType}/fo?soiStatus=${status}&page=${page - 1}&size=100`;
+    const url = baseServicingOrdersURL(uri);
 
-    const url = `${baseServicingOrdersURL()}/so/${id}/soi;external_id=${newType}/fo?soiStatus=${status}&page=${
-        page - 1
-    }&size=100`;
     return nexusFetch(url);
 };
 
 export const getAdvancedFulfilmentOrdersForServiceOrder = (id, page, size) => {
-    const url = `${baseServicingOrdersURL()}/so/${id}/soi;external_id=ASC/fo?soiStatus=All&page=${page}&size=${size}`;
+    const uri = `/so/${id}/soi;external_id=ASC/fo?soiStatus=All&page=${page}&size=${size}`;
+    const url = baseServicingOrdersURL(uri);
     return nexusFetch(url);
 };
 
 export const getServiceRequest = externalId => {
-    const url = `${baseServicingOrdersURL()}/so/${externalId}/pr`;
+    const uri = `/so/${externalId}/pr`;
+    const url = baseServicingOrdersURL(uri);
+
     return nexusFetch(url, {
         method: 'get',
     });
 };
 
 export const saveFulfillmentOrder = ({data}) => {
-    const url = `${baseServicingOrdersURL()}/fo`;
+    const uri = `/fo`;
+    const url = baseServicingOrdersURL(uri);
+
     return nexusFetch(url, {
         method: 'put',
         body: JSON.stringify(data),
@@ -95,7 +101,9 @@ export const saveFulfillmentOrder = ({data}) => {
  * @param servicingOrders - Array of servicing order ids
  */
 export const exportServicingOrders = servicingOrders => {
-    const url = `${baseServicingOrdersURL()}/so/export`;
+    const uri = `/so/export`;
+    const url = baseServicingOrdersURL(uri);
+
     return nexusFetch(url, {
         method: 'post',
         body: JSON.stringify(servicingOrders),
@@ -103,12 +111,14 @@ export const exportServicingOrders = servicingOrders => {
 };
 
 export const getDeteTitleByBarcode = barcode => {
-    const url = `${deteTitleURL()}/assetId/${barcode}`;
+    const uri = `/assetId/${barcode}`;
+    const url = deteTitleURL(uri);
     return nexusFetch(url);
 };
 
 export const getDeteAssetByBarcode = barcode => {
-    const url = `${deteAssetURL()}/${barcode}`;
+    const uri = `/${barcode}`;
+    const url = deteAssetURL(uri);
     return nexusFetch(url);
 };
 
@@ -121,15 +131,10 @@ export const servicingOrdersService = {
     exportServicingOrders,
 };
 
-const lateFaultsURL = () => {
-    return `${getConfig('gateway.configuration')}${getConfig('gateway.service.configuration')}${getConfig(
-        'gateway.service.lateFaults'
-    )}`;
-};
-
 export const getLateReasons = tenant => {
-    // https://configapi.dev.vubiquity.com/configuration-api/v1/late-faults?tenant="MGM"
-    const url = `${lateFaultsURL()}?tenant=${tenant}`;
+    const uri = `/late-faults?tenant=${tenant}`;
+    const url = getApiURI('configuration', uri);
+
     return nexusFetch(url, {
         method: 'get',
     });

@@ -11,10 +11,10 @@ const ToastBody = ({severity, summary, detail, children}) => {
                     <i className={`pi ${icons[severity]} pi-fluid nexus-c-toast__icon`} />
                 </div>
                 <div className="col-10">
-                    <div className="row">
+                    <div className="row g-0 nexus-c-toast__row-without-padding">
                         <span className="nexus-c-toast__summary-title">{summary}</span>
                     </div>
-                    <div className="row">
+                    <div className="row g-0 nexus-c-toast__row-without-padding">
                         <span className="nexus-c-toast__detail-title">{detail}</span>
                         {children}
                     </div>

@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get, toLower} from 'lodash';
 import {Button} from 'primereact/button';
@@ -238,28 +237,27 @@ export const BulkMatching = ({
         };
 
         const onCancelButtonClick = e => {
-            e.preventDefault();
+            e?.preventDefault();
             removeToast();
             disableLoadingState();
         };
         addToast({
             severity: 'warn',
-            closable: false,
-            content: (
-                <ToastBody summary={WARNING_TITLE} detail={TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} severity="warn">
-                    <div className="d-flex align-items-center">
-                        <Button
-                            label="Cancel"
-                            className="p-button-link p-toast-left-button"
-                            onClick={onCancelButtonClick}
-                        />
-                        <Button
-                            label="Continue"
-                            className="p-button-link p-toast-right-button"
-                            onClick={onOkayButtonClick}
-                        />
-                    </div>
-                </ToastBody>
+            detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+            onRemoveFn: onCancelButtonClick,
+            content: () => (
+                <div className="no-padding d-flex align-items-center">
+                    <Button
+                        label="Cancel"
+                        className="p-button-link p-toast-left-button"
+                        onClick={onCancelButtonClick}
+                    />
+                    <Button
+                        label="Continue"
+                        className="p-button-link p-toast-right-button"
+                        onClick={onOkayButtonClick}
+                    />
+                </div>
             ),
             sticky: true,
         });

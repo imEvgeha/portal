@@ -60,10 +60,6 @@ describe('TitleCreateModal', () => {
                 expect(defaultWrapper.find(Checkbox)).toHaveLength(0);
             }
         });
-
-        it('should render external IDs section', () => {
-            expect(defaultWrapper.find(ExternalIDsSection)).toHaveLength(1);
-        });
     });
 
     describe('Matching TitleCreateModal', () => {
@@ -96,10 +92,6 @@ describe('TitleCreateModal', () => {
         it('should not render checkboxes for create title dialog window', () => {
             expect(matchingWrapper.find('.nexus-c-title-create_checkbox-container')).toHaveLength(0);
             expect(matchingWrapper.find(Checkbox)).toHaveLength(0);
-        });
-
-        it('should render external IDs section', () => {
-            expect(defaultWrapper.find(ExternalIDsSection)).toHaveLength(1);
         });
     });
 });

@@ -4,8 +4,6 @@ import {Restricted} from '@portal/portal-auth/permissions';
 import {AutoComplete, Checkbox, Dropdown, InputText} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/src/elements/nexus-entity/constants';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
@@ -95,7 +93,6 @@ const TitleCreate = ({
             addToast({
                 severity: 'error',
                 detail: error,
-                sticky: true,
             });
         }
     }, [error]);
@@ -144,8 +141,7 @@ const TitleCreate = ({
         setIsCreatingTitle(false);
         addToast({
             severity: 'error',
-            detail: err.message.description,
-            sticky: true,
+            detail: err?.message?.description,
         });
     };
 
@@ -186,43 +182,28 @@ const TitleCreate = ({
                         .then(response => {
                             addToast({
                                 severity: 'success',
-                                content: () => {
-                                    return (
-                                        <ToastBody
-                                            summary={SUCCESS_TITLE}
-                                            detail={constants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
-                                            severity="success"
-                                        >
-                                            <Button
-                                                label="View Title"
-                                                className="p-button-link p-toast-button-link"
-                                                onClick={() => onViewTitleClick(response, routeParams.realm)}
-                                            />
-                                        </ToastBody>
-                                    );
-                                },
+                                detail: constants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE,
+                                content: () => (
+                                    <Button
+                                        label="View Title"
+                                        className="p-button-link p-toast-button-link"
+                                        onClick={() => onViewTitleClick(response, routeParams.realm)}
+                                    />
+                                ),
                             });
-                        })
-                        .catch(e => handleError(e, true));
+                        });
                 }
                 setIsCreatingTitle(false);
                 addToast({
                     severity: 'success',
-                    content: () => {
-                        return (
-                            <ToastBody
-                                summary={SUCCESS_TITLE}
-                                detail={constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                                severity="success"
-                            >
-                                <Button
-                                    label="View Title"
-                                    className="p-button-link p-toast-button-link"
-                                    onClick={() => onViewTitleClick(response, routeParams.realm)}
-                                />
-                            </ToastBody>
-                        );
-                    },
+                    detail: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
+                    content: () => (
+                        <Button
+                            label="View Title"
+                            className="p-button-link p-toast-button-link"
+                            onClick={() => onViewTitleClick(response, routeParams.realm)}
+                        />
+                    ),
                 });
                 toggle();
             })
@@ -236,18 +217,13 @@ const TitleCreate = ({
                 const titleId = res.meta.id;
                 addToast({
                     severity: 'success',
-                    content: (
-                        <ToastBody
-                            summary={SUCCESS_TITLE}
-                            detail={constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                            severity="success"
-                        >
-                            <Button
-                                label="View Title"
-                                className="p-button-link p-toast-button-link"
-                                onClick={() => onViewTitleClick(res, routeParams.realm)}
-                            />
-                        </ToastBody>
+                    detail: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
+                    content: () => (
+                        <Button
+                            label="View Title"
+                            className="p-button-link p-toast-button-link"
+                            onClick={() => onViewTitleClick(res, routeParams.realm)}
+                        />
                     ),
                 });
                 if (URL.isEmbedded()) {
@@ -281,7 +257,6 @@ const TitleCreate = ({
                 addToast({
                     severity: 'error',
                     detail: EXTERNAL_ID_TYPE_DUPLICATE_ERROR,
-                    sticky: true,
                 });
                 return;
             }
@@ -379,10 +354,10 @@ const TitleCreate = ({
     const areThereAnyExternalSystemDuplicates = title => {
         const externalIdArray = title?.externalSystemIds?.map(item => item.titleId);
         const externalIdTypesArray = title?.externalSystemIds?.map(item => item.externalSystem);
-        const findDuplicates = arr => arr?.filter((item, index) => arr.indexOf(item) !== index);
+        const findDuplicates = arr => arr && arr?.filter((item, index) => arr.indexOf(item) !== index);
 
-        const indexOfDuplicateID = findDuplicates(externalIdArray).length;
-        const indexOfDuplicateType = findDuplicates(externalIdTypesArray).length;
+        const indexOfDuplicateID = findDuplicates(externalIdArray)?.length;
+        const indexOfDuplicateType = findDuplicates(externalIdTypesArray)?.length;
 
         return !!(indexOfDuplicateID && indexOfDuplicateType);
     };
@@ -395,7 +370,7 @@ const TitleCreate = ({
             return {};
         };
 
-        const updatedExternalSystemIds = titleForm.externalSystemIds.length ? titleForm.externalSystemIds : null;
+        const updatedExternalSystemIds = titleForm.externalSystemIds?.length ? titleForm.externalSystemIds : null;
         const seasonNumber = isObject(titleForm.season) ? titleForm.season.number : titleForm.season;
         const currentContentTypeDetails = contentTypes?.find(item => item.displayName === titleForm.contentType);
         const currentContentSubType = currentContentTypeDetails?.values?.find(
@@ -806,12 +781,14 @@ const TitleCreate = ({
                             </div>
                             <div className="row">
                                 <div className="col-12">
-                                    <ExternalIDsSection
-                                        control={control}
-                                        register={register}
-                                        errors={errors}
-                                        externalDropdownOptions={externalDropdownOptions}
-                                    />
+                                    {externalDropdownOptions?.values && (
+                                        <ExternalIDsSection
+                                            control={control}
+                                            register={register}
+                                            errors={errors}
+                                            externalDropdownOptions={externalDropdownOptions}
+                                        />
+                                    )}
                                 </div>
                             </div>
                             {isItMatching ? null : renderSyncCheckBoxes()}

@@ -81,7 +81,7 @@ export const RightsRepositoryHeader = ({
     useEffect(() => {
         if (!isEmpty(gridState) && username) {
             // filter based on the flag to exclude the predefined user views
-            const filteredGridState = gridState[username].filter(obj => {
+            const filteredGridState = gridState[username]?.filter(obj => {
                 return obj.isPredefinedView !== true;
             });
             setUserDefinedGridStates(filteredGridState);

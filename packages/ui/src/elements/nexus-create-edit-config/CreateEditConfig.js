@@ -40,6 +40,7 @@ const CreateEditConfig = ({
                 cache,
                 dataApi,
                 index,
+                values,
             });
         });
     };

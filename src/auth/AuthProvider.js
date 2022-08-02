@@ -45,8 +45,8 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
                 const {token, refreshToken} = store.getState().auth;
                 const isAuthenticated = await keycloak.init({
                     ...options,
-                    token: getValidToken(token, getConfig('keycloak.url')),
-                    refreshToken: getValidToken(refreshToken, getConfig('keycloak.url')),
+                    token: getValidToken(token, getConfig('sso.url')),
+                    refreshToken: getValidToken(refreshToken, getConfig('sso.url')),
                 });
                 if (isAuthenticated) {
                     const {token, refreshToken} = keycloak;

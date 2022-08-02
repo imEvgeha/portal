@@ -1,5 +1,5 @@
-import {getUsername} from "@portal/portal-auth/authSelectors";
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getUsername} from '@portal/portal-auth/authSelectors';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import moment from 'moment';
 import {store} from '../../../index';
@@ -9,7 +9,8 @@ const DEFAULT_TIMEOUT = 60000;
 
 const DOPService = {
     getSecurityTicket: token => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPLoginWithKeycloak')}`;
+        const uri = `/services/LoginWithKeycloak`;
+        const url = getApiURI('dopPortal', uri, 0);
         return nexusFetch(
             url,
             {method: 'post', credentials: 'include', body: JSON.stringify(token)},
@@ -18,7 +19,7 @@ const DOPService = {
         );
     },
     getUsersProjectsList: (externalFilter, offset = 1, limit = PAGE_SIZE) => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPProjectManagementProject')}/search`;
+        const url = getApiURI('dop', '/projectManagement/project/search');
         const payload = getInitialSearchPayload(getUsername(store.getState()), offset, limit);
         const body = prepareFilters(payload, externalFilter);
         return nexusFetch(
@@ -29,9 +30,7 @@ const DOPService = {
         );
     },
     getProjectAttributes: (projectIds = []) => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig(
-            'gateway.service.DOPProjectManagementBase'
-        )}/projectAttribute`;
+        const url = getApiURI('dop', '/projectManagement/projectAttribute');
         const body = {
             filterCriterion: [
                 {
@@ -79,7 +78,7 @@ const DOPService = {
         };
     },
     createProject: data => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPProjectManagementProject')}`;
+        const url = getApiURI('dop', '/projectManagement/project');
         return nexusFetch(url, {
             method: 'POST',
             credentials: 'include',
@@ -87,14 +86,15 @@ const DOPService = {
         });
     },
     startProject: projectId => {
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPProjectManagementProject')}`;
+        const uri = `/projectManagement/project/${projectId}/start`;
+        const url = getApiURI('dop', uri);
         // TODO: Error handling if necessary
-        return nexusFetch(`${url}/${projectId}/start`, {method: 'post', credentials: 'include'});
+        return nexusFetch(url, {method: 'post', credentials: 'include'});
     },
-
     logout: () => {
         const timestamp = moment().utc().unix();
-        const url = `${getConfig('gateway.DOPUrl')}${getConfig('gateway.service.DOPLogout')}`;
+        const uri = `/services/PortalLogout`;
+        const url = getApiURI('dopPortal', uri, 0);
         return nexusFetch(`${url}?_=${timestamp}`, {method: 'get', credentials: 'include'});
     },
 };

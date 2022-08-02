@@ -72,6 +72,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
                 cache,
                 dataApi,
                 index,
+                values,
             })
         );
     };

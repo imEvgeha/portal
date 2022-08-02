@@ -70,8 +70,7 @@ module.exports = envKeys => ({
         new ESLintPlugin(esLintOptions),
         new CopyWebpackPlugin({
             patterns: [
-                'profile/config.json',
-                'profile/configQA.json',
+                'profile/endpoints.json',
                 'profile/availMapping.json',
                 'profile/titleMatchingMappings.json',
                 'profile/titleMatchingRightMappings.json',

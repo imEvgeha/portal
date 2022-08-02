@@ -15,6 +15,7 @@ import '@vubiquity-nexus/portal-styles/scss/index.scss';
 import '@portal/portal-components/index';
 import {HistoryRouter} from 'redux-first-history/rr6';
 import packageJson from '../package.json';
+import endpoints from '../profile/endpoints.json';
 import AppProviders from './AppProviders';
 import Router from './Router';
 import {defaultConfiguration} from './config';
@@ -33,28 +34,17 @@ const AG_GRID_LICENSE_KEY =
     'CompanyName=QBS Software Ltd_on_behalf_of_VUBIQUITY MANAGEMENT LIMITED,LicensedGroup=Multi,LicenseType=MultipleApplications,LicensedConcurrentDeveloperCount=4,LicensedProductionInstancesCount=0,AssetReference=AG-019524,ExpiryDate=11_November_2022_[v2]_MTY2ODEyNDgwMDAwMA==9e3648df22b0693cd75412f61e4125f1';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
-const setEnvConfiguration = async env => {
-    let config = '/config.json';
+const setEnvConfiguration = async () => {
     const {version: portalVersion} = packageJson;
-    switch (env) {
-        case 'qa':
-            config = '/configQA.json';
-            break;
-        default:
-            config = '/config.json';
-    }
-
     setConfig({portalVersion});
     setConfig(defaultConfiguration);
 
-    await loadConfig(config);
+    await loadConfig('/config.json', endpoints);
     return new Promise(resolve => {
         resolve();
     });
 };
 
-// Setup Environment
-// setEnvConfiguration('qa')
 setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {

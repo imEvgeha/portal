@@ -6,6 +6,7 @@
             "sections": [
                 {
                     "title": "Core Title",
+                    "sectionID": "coreTitle",
                     "titleActions": ["showAllEpisodes"],
                     "isGridLayout": true,
                     "fields": {
@@ -164,7 +165,8 @@
                             "type": "link",
                             "linkConfig": {
                                 "baseUrl": "",
-                                "contentType": "series"
+                                "contentType": "series",
+                                "contentSubType": "mini-series"
                             },
                             "showWhen": [
                                 {
@@ -175,11 +177,12 @@
                                     "field": "contentType",
                                     "hasValue": "episode"
                                 },
+                                {
+                                    "field": "contentSubType",
+                                    "hasValue": "mini-series",
+                                    "operation": "notEqual"
+                                },
                                 [
-                                    {
-                                        "field": "contentType",
-                                        "hasValue": "event"
-                                    },
                                     {
                                         "field": "seriesTitleName",
                                         "hasValue": "any"
@@ -197,6 +200,23 @@
                                 ]
                             ]
                         },
+                        "miniSeriesTitleName": {
+                            "name": "Mini Series",
+                            "path": "seriesTitleName",
+                            "isReadOnlyInEdit": true,
+                            "type": "link",
+                            "linkConfig": {
+                                "baseUrl": "",
+                                "contentType": "series",
+                                "contentSubType": "mini-series"
+                            },
+                            "showWhen": [
+                                {
+                                    "field": "contentSubType",
+                                    "hasValue": "mini-series"
+                                }
+                            ]
+                        },
                         "seasonTitleName": {
                             "name": "Season",
                             "path": "seasonTitleName",
@@ -206,6 +226,11 @@
                                 {
                                     "field": "contentType",
                                     "hasValue": "episode"
+                                },
+                                {
+                                    "field": "contentSubType",
+                                    "hasValue": "mini-series",
+                                    "operation": "notEqual"
                                 }
                             ]
                         },
@@ -257,6 +282,11 @@
                                 {
                                     "field": "contentType",
                                     "hasValue": "episode"
+                                },
+                                {
+                                    "field": "contentSubType",
+                                    "hasValue": "mini-series",
+                                    "operation": "notEqual"
                                 },
                                 [
                                     {
@@ -364,6 +394,7 @@
             "sections": [
                 {
                     "title": "Cast & Crew",
+                    "sectionID": "сastCrew",
                     "titleActions": ["propagate"],
                     "fields": {
                         "castCrew": {
@@ -380,6 +411,7 @@
             "sections": [
                 {
                     "title": "Ratings",
+                    "sectionID": "ratings",
                     "fields": {
                         "ratings": {
                             "name": "Ratings",
@@ -466,6 +498,7 @@
             "sections": [
                 {
                     "title": "Tenant Defined External IDs",
+                    "sectionID": "tenantDefinedExternalIDs",
                     "fields": {
                         "tenantDefExtIds": {
                             "name": "tenantDefExtIds",
@@ -518,6 +551,7 @@
                 },
                 {
                     "title": "MetaVU Originated External IDs",
+                    "sectionID": "metavuOriginatedExternalIDs",
                     "isGridLayout": true,
                     "fields": {
                         "alid": {
@@ -609,6 +643,7 @@
                 },
                 {
                     "title": "Licensors",
+                    "sectionID": "licensors",
                     "fields": {
                         "licensors": {
                             "name": "Licensors",
@@ -665,6 +700,7 @@
                 },
                 {
                     "title": "MSV Association IDs",
+                    "sectionID": "msvAssociationIds",
                     "fields": {
                         "msvAssociationId": {
                             "name": "MSV Association ID",
@@ -681,6 +717,7 @@
             "sections": [
                 {
                     "title": "Editorial Metadata",
+                    "sectionID": "editorialMetadata",
                     "prefix": "editorial",
                     "fields": {
                         "editorialMetadata": {
@@ -1100,6 +1137,7 @@
             "sections": [
                 {
                     "title": "Territory Metadata",
+                    "sectionID": "territoryMetadata",
                     "fields": {
                         "territorialMetadata": {
                             "name": "Territorial Metadata",

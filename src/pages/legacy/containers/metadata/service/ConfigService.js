@@ -13,7 +13,7 @@ import {
     WRITER,
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {getConfigApiValues} from '@vubiquity-nexus/portal-ui/lib/settings/CommonConfigService';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 
 export const configFields = {
@@ -61,8 +61,8 @@ export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = fal
                 : `personTypes=${DIRECTOR.toLowerCase()},${WRITER.toLowerCase()},${PRODUCER.toLowerCase()}&`;
     }
     // TODO: Lazy scrolling should be implemented as a feature to make use of 'page=X' parameter, so that PORT-728 is avoided
-    const path = `/persons${sortPath}${displayNamePath}${personTypePath}page=0&size=${size}`;
-    const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + path;
+    const uri = `/persons${sortPath}${displayNamePath}${personTypePath}page=0&size=${size}`;
+    const url = getApiURI('configuration', uri);
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 

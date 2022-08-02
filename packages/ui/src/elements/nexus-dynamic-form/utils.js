@@ -3,7 +3,7 @@ import {ErrorMessage} from '@atlaskit/form';
 import {Restricted} from '@portal/portal-auth/permissions';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
-import {get, isObjectLike, isObject} from 'lodash';
+import {get, isObject, isObjectLike} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
@@ -15,7 +15,7 @@ import {isInteger} from './valdationUtils/isInteger';
 import {isTime} from './valdationUtils/isTime';
 import {isYear} from './valdationUtils/isYear';
 import {lengthEqual} from './valdationUtils/lengthEqual';
-import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, MANDATORY_VZ, ONE_MANDATORY_VZ} from './constants';
+import {FIELD_REQUIRED, MANDATORY_VZ, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, ONE_MANDATORY_VZ, VIEWS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
     const viewConfig =
@@ -198,13 +198,13 @@ export const formatOptions = (options, optionsConfig) => {
     const valueField = defaultValuePath !== undefined ? defaultValuePath : 'value';
     const labelField = defaultLabelPath !== undefined ? defaultLabelPath : 'value';
 
-    const formattedOptions = options.map(opt => {
+    const formattedOptions = options?.map(opt => {
         return {
             label: opt[labelField],
             value: opt[valueField],
         };
     });
-    return sortOptions(formattedOptions);
+    return formattedOptions ? sortOptions(formattedOptions) : sortOptions([]);
 };
 
 export const sortOptions = options => {
@@ -307,7 +307,11 @@ const toShow = (field, initialData, prefix) => {
                 retValue = areAllTrue ? true : retValue;
             } else {
                 const value = getFieldCurrentValue(initialData, `${preString}${conditionObj.field}`);
-                if (value === conditionObj.hasValue) retValue = true;
+                if (value === conditionObj.hasValue) {
+                    // if we have value === conditionObj.hasValue and conditionObj.operation = 'notEqual'
+                    // then we will return false which will not allow to display this element in this case
+                    retValue = conditionObj.operation !== 'notEqual';
+                }
             }
         });
         return retValue;
@@ -337,6 +341,7 @@ export const buildSection = (
         prefix,
         isTitlePage,
         setUpdate,
+        sectionID,
     }
 ) => {
     return (
@@ -357,6 +362,7 @@ export const buildSection = (
                             isUpdate={update}
                             config={config}
                             generateMsvIds={generateMsvIds}
+                            sectionID={sectionID}
                             {...fields[key]}
                         />
                     ) : get(fields[key], 'type') === 'arrayWithTabs' ? (
@@ -375,16 +381,18 @@ export const buildSection = (
                             regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                             searchPerson={searchPerson}
                             castCrewConfig={castCrewConfig}
-                            {...fields[key]}
                             setRefresh={setRefresh}
                             initialData={initialData}
                             prefix={prefix}
+                            sectionID={sectionID}
+                            {...fields[key]}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
                             {renderNexusField(key, view, getValues, generateMsvIds, {
                                 initialData,
                                 field: fields[key],
+                                sectionID,
                                 selectValues,
                                 setFieldValue,
                                 config,
@@ -417,6 +425,7 @@ export const renderNexusField = (
     {
         initialData = {},
         field,
+        sectionID,
         selectValues,
         setFieldValue,
         config,
@@ -443,6 +452,7 @@ export const renderNexusField = (
                 name={key}
                 label={field.name}
                 view={view}
+                sectionID={sectionID}
                 getValues={getValues}
                 formData={inTabs ? {[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]: initialData} : getValues()}
                 validationError={getValidationError(initialData.validationErrors, field)}
@@ -523,9 +533,9 @@ export const renderError = validationError => {
 };
 
 export const createUrl = (linkConfig, initialData) => {
-    const {baseUrl, contentType} = linkConfig;
+    const {baseUrl, contentType, contentSubType} = linkConfig;
     const parentIds = get(initialData, 'parentIds', []);
-    const id = parentIds.filter(parent => parent.contentType === contentType);
+    const id = parentIds.filter(parent => parent.contentType === contentType || parent.contentType === contentSubType);
     if (id.length) {
         return baseUrl + id[0].id;
     }

@@ -11,15 +11,13 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {compose} from 'redux';
 import {mapColumnDefinitions} from '../../../avails/rights-repository/util/utils';
 import {
     CHANGE_PRIORITY_TITLE,
     COLUMN_MAPPINGS,
-    DOP_GUIDED_TASK_URL,
-    DOP_PROJECT_URL,
     INITIAL_SEARCH_PARAMS,
     PROJECT_STATUS_ENUM,
     TASK_ACTIONS_ASSIGN,
@@ -95,11 +93,11 @@ const DopTasksTable = ({
         defs.map(col => {
             col.resizable = true;
             if (col.colId === 'taskName') {
+                const uri = `/index.html?launchApp=Tasks&gtMethod=external&taskId=`;
+                const link = getApiURI('dopPortal', uri, 0, 'dopExternal');
                 return {
                     ...col,
-                    cellRendererParams: {
-                        link: `${getConfig('DOP_base')}${DOP_GUIDED_TASK_URL}`,
-                    },
+                    cellRendererParams: {link},
                 };
             }
             if (col.colId === 'taskStatus') {
@@ -131,10 +129,12 @@ const DopTasksTable = ({
                 };
             }
             if (col.colId === 'projectName') {
+                const uri = `/index.html?launchApp=Projects&projectId=`;
+                const link = getApiURI('dopPortal', uri, 0, 'dopExternal');
                 return {
                     ...col,
                     cellRendererParams: {
-                        link: `${getConfig('DOP_base')}${DOP_PROJECT_URL}`,
+                        link,
                         linkId: 'projectId',
                     },
                 };

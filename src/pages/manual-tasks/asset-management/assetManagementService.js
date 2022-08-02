@@ -1,5 +1,5 @@
 import {keycloak} from '@portal/portal-auth';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 
 export const fetchPosters = url => {
     const {token} = keycloak;
@@ -25,9 +25,8 @@ export const fetchPoster = poster => {
 };
 
 export const loginAssets = () => {
-    const url = `${getConfig('gateway.kongUrl')}${getConfig(
-        'gateway.service.kongVidispine'
-    )}/token?seconds=1800&autoRefresh=true`;
+    const uri = `/token?seconds=1800&autoRefresh=true`;
+    const url = getApiURI('vidispine', uri, 0);
 
     const options = {
         headers: {

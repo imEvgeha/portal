@@ -365,7 +365,9 @@ const RightsRepositoryTable = ({
                 }
 
                 const filters = {column: {...filterModel}, external: {...rightsFilter.external}};
-                setRightsFilter(filters);
+                if (!filters?.external.status) {
+                    setRightsFilter(filters);
+                }
                 updateMapping(api);
                 break;
             }

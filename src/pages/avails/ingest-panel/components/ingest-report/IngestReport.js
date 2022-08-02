@@ -33,6 +33,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
     };
 
     useEffect(() => {
+        onFilterClick('total');
         setLoading(true);
         rightsService.advancedSearch(getCustomSearchCriteria(), 0, 10000).then(response => {
             const updatedCurrentValues = [];
@@ -42,10 +43,6 @@ const IngestReport = ({report, isShowingError = true, filterClick, attachmentId,
             setLoading(false);
         });
     }, [attachmentId]);
-
-    useEffect(() => {
-        onFilterClick('total');
-    }, [report, onFilterClick]);
 
     const FILTERABLE_KEYS = ['total', 'pending', 'errors'];
     const ORIGINAL_VALUES_KEYS = ['pending', 'errors'];

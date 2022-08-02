@@ -8,6 +8,7 @@ import NexusPersonsList from '../../../../../nexus-persons-list/NexusPersonsList
 import {CAST_CONFIG, CREW_CONFIG, CREW_LIST} from '../../../../../nexus-persons-list/constants';
 
 const CastCrew = ({
+    sectionId,
     persons,
     isEdit,
     onChange,
@@ -91,6 +92,7 @@ const CastCrew = ({
 
     return (
         <div
+            id={sectionId}
             className={classnames('nexus-c-cast-crew', {
                 'nexus-c-cast-crew--vertical': isVerticalLayout,
             })}
@@ -148,6 +150,7 @@ const CastCrew = ({
 };
 
 CastCrew.propTypes = {
+    sectionId: PropTypes.string,
     isEdit: PropTypes.bool,
     persons: PropTypes.array,
     onChange: PropTypes.func,
@@ -164,6 +167,7 @@ CastCrew.propTypes = {
 };
 
 CastCrew.defaultProps = {
+    sectionId: '',
     isEdit: false,
     persons: [],
     onChange: () => null,

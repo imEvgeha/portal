@@ -44,6 +44,27 @@ const RowDataItem = ({
         );
     };
 
+    /**
+     * Loop through the entries of the fields, and check if {selectValues} has a property named
+     * with the value of `path` - example: externalSystem path
+     * @returns {boolean} - whether to show button or not
+     */
+    const showCreateButton = () => {
+        let canShowElement = true;
+        props.addNewModalOptions.fields?.forEach(f => {
+            f.sections.forEach(s => {
+                Object.entries(s.fields).forEach(entry => {
+                    // if this is a Select element and if it's path exists in selectValues
+                    if (entry[1].type === 'select' && !selectValues?.[entry[1].path]) {
+                        // flag this as do not show
+                        canShowElement = false;
+                    }
+                });
+            });
+        });
+        return canShowElement;
+    };
+
     const onAddRowDataItem = async values => {
         const uniqueByFields = props.addNewModalOptions.uniqueByFields;
         let entryExists = true;
@@ -136,7 +157,7 @@ const RowDataItem = ({
                 );
             })}
 
-            {canAdd && (
+            {canAdd && showCreateButton() && (
                 <div>
                     <Button onClick={openAddRowDataItemModal}>{props.addNewModalOptions.triggerBtnLabel}</Button>
                 </div>

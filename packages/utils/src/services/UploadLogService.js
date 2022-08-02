@@ -1,5 +1,5 @@
 import {encodedSerialize, prepareSortMatrixParamTitles} from '../Common';
-import {getConfig} from '../config';
+import {getApiURI} from '../config';
 import {nexusFetch} from '../http-client';
 
 export const fetchUploadedEMETsLog = async (data, page, size, sortedParams) => {
@@ -22,9 +22,8 @@ export const downloadUploadedEMETLog = async fileId => {
 };
 
 const getUploadedMetadata = async (dataForUploadedMetadata, tenantCode, page, size, sortedParams) => {
-    const url = `${getConfig('gateway.titleUrl')}${getConfig(
-        'gateway.service.title'
-    )}/importLog${prepareSortMatrixParamTitles(sortedParams)}`;
+    const uri = `/importLog${prepareSortMatrixParamTitles(sortedParams)}`;
+    const url = getApiURI('title', uri);
     const params = tenantCode ? {tenantCode} : {};
 
     return nexusFetch(url, {
@@ -35,7 +34,8 @@ const getUploadedMetadata = async (dataForUploadedMetadata, tenantCode, page, si
 };
 
 const getUploadLogMetadataFile = id => {
-    const url = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/importReport/${id}`;
+    const uri = `/importReport/${id}`;
+    const url = getApiURI('title', uri);
     return nexusFetch(url, {
         method: 'get',
     });

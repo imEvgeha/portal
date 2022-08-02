@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import CrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import DownloadIcon from '@vubiquity-nexus/portal-assets/action-download.svg';
 import Email from '@vubiquity-nexus/portal-assets/email.svg';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {NexusTooltip} from '../../../../../ui/elements';
 import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
 import IngestStatus from '../../../ingest-panel/components/ingest-status/IngestStatus';
 import IngestTitle from '../../../ingest-panel/components/ingest-title/IngestTitle';
 import ReuploadIngestButton from '../../../ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
 import Constants from '../../../ingest-panel/constants';
-import {DOP_PROJECT_URL} from '../../../selected-for-planning/constants';
 import './Ingest.scss';
 
 const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) => {
@@ -23,7 +22,8 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
 
     let renderIngestId = ingest.id;
     if (ingest.dopProjectId) {
-        const url = getConfig('DOP_base') + DOP_PROJECT_URL + ingest.dopProjectId;
+        const uri = `/index.html?launchApp=Projects&projectId=${ingest.dopProjectId}`;
+        const url = getApiURI('dopPortal', uri, 0, 'dopExternal');
         renderIngestId = (
             <a href={url} target="_blank">
                 {ingest.id}

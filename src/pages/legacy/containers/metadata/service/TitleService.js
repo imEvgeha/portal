@@ -2,7 +2,7 @@ import {uniqBy} from 'lodash';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {encodedSerialize, prepareSortMatrixParamTitles} from '@vubiquity-nexus/portal-utils/lib/Common';
 import TitleSystems from '../../../../metadata/constants/systems';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ || syncToMovida) {
@@ -25,11 +25,8 @@ export const titleService = {
                 queryParams[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
             }
         }
-        const url =
-            getConfig('gateway.titleUrl') +
-            getConfig('gateway.service.title') +
-            '/titles/search' +
-            prepareSortMatrixParamTitles(sortedParams);
+        const uri = '/titles/search' + prepareSortMatrixParamTitles(sortedParams);
+        const url = getApiURI('title', uri);
         const params = encodedSerialize({...queryParams, page, size});
         return nexusFetch(url, {params});
     },
@@ -41,11 +38,9 @@ export const titleService = {
                 queryParams[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
             }
         }
-        const url =
-            getConfig('gateway.titleUrl') +
-            getConfig('gateway.service.titleV2') +
-            '/titles' +
-            prepareSortMatrixParamTitles(sortedParams);
+        const uri = '/titles' + prepareSortMatrixParamTitles(sortedParams);
+        const url = getApiURI('title', uri, 2);
+
         const params = encodedSerialize({...queryParams, page, size});
         return nexusFetch(url, {params});
     },
@@ -96,18 +91,17 @@ export const titleService = {
             }
         }
 
-        const url =
-            getConfig('gateway.titleUrl') +
-            getConfig('gateway.service.title') +
-            '/titles' +
-            prepareSortMatrixParamTitles(sortedParams);
+        const uri = '/titles' + prepareSortMatrixParamTitles(sortedParams);
+        const url = getApiURI('title', uri);
+
         const params = encodedSerialize({...queryParams, page, size});
 
         return nexusFetch(url, {params});
     },
 
     createTitleV2: (title, params) => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/titles';
+        const url = getApiURI('title', '/titles', 2);
+
         const queryParams = params ? params : {};
         return nexusFetch(url, {
             method: 'post',
@@ -120,7 +114,9 @@ export const titleService = {
     updateTitle: (title, syncToVZ, syncToMovida) => {
         const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + `/titles/${title.id}`;
+        const uri = `/titles/${title.id}`;
+        const url = getApiURI('title', uri);
+
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(title),
@@ -129,12 +125,14 @@ export const titleService = {
     },
 
     getTitleById: id => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + `/titles/${id}`;
+        const uri = `/titles/${id}`;
+        const url = getApiURI('title', uri);
         return nexusFetch(url);
     },
 
     bulkGetTitles: ids => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/titles?operationType=READ';
+        const uri = '/titles?operationType=READ';
+        const url = getApiURI('title', uri);
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(ids),
@@ -145,7 +143,8 @@ export const titleService = {
         const LANGUAGES = ['English', 'en'];
         const LOCALE = ['US'];
         const GENRE_KEY = 'editorialGenres';
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/titles?operationType=READ';
+        const uri = '/titles?operationType=READ';
+        const url = getApiURI('title', uri);
 
         return nexusFetch(url, {
             method: 'put',
@@ -175,7 +174,8 @@ export const titleService = {
     },
 
     addTerritoryMetadata: territoryMetadata => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/territorymetadata';
+        const uri = '/territorymetadata';
+        const url = getApiURI('title', uri);
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(territoryMetadata),
@@ -183,13 +183,14 @@ export const titleService = {
     },
 
     getTerritoryMetadataById: id => {
-        const api = `${getConfig('gateway.titleUrl')}${getConfig('gateway.service.title')}/territorymetadata`;
-        const url = `${api}?includeDeleted=false&titleId=${id}`;
+        const uri = `/territorymetadata?includeDeleted=false&titleId=${id}`;
+        const url = getApiURI('title', uri);
         return nexusFetch(url);
     },
 
     updateTerritoryMetadata: editedTerritoryMetadata => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.title') + '/territorymetadata';
+        const uri = '/territorymetadata';
+        const url = getApiURI('title', uri);
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(editedTerritoryMetadata),
@@ -197,7 +198,8 @@ export const titleService = {
     },
 
     addEditorialMetadata: editorialMetadata => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/editorialmetadata';
+        const uri = '/editorialmetadata';
+        const url = getApiURI('title', uri, 2);
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(editorialMetadata),
@@ -205,15 +207,15 @@ export const titleService = {
     },
 
     getEditorialMetadataByTitleId: id => {
-        const url =
-            getConfig('gateway.titleUrl') +
-            getConfig('gateway.service.title') +
-            `/editorialmetadata?titleId=${id}&includeDeleted=false`;
+        const uri = `/editorialmetadata?titleId=${id}&includeDeleted=false`;
+        const url = getApiURI('title', uri);
+
         return nexusFetch(url);
     },
 
     updateEditorialMetadata: editedEditorialMetadata => {
-        const url = getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/editorialmetadata';
+        const uri = '/editorialmetadata';
+        const url = getApiURI('title', uri, 2);
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(editedEditorialMetadata),
@@ -221,26 +223,27 @@ export const titleService = {
     },
 
     regenerateAutoDecoratedMetadata: masterEmetId => {
-        const url =
-            getConfig('gateway.titleUrl') + getConfig('gateway.service.titleV2') + '/regenerateEmets/' + masterEmetId;
+        const uri = `/regenerateEmets/${masterEmetId}`;
+        const url = getApiURI('title', uri, 2);
+
         return nexusFetch(url, {
             method: 'put',
         });
     },
 
     mergeTitles: query => {
-        const url = `${getConfig('gateway.titleUrl')}${getConfig(
-            'gateway.service.title'
-        )}/titles/legacyTitleMerge?${query}`;
+        const uri = `/titles/legacyTitleMerge?${query}`;
+        const url = getApiURI('title', uri);
+
         return nexusFetch(url, {
             method: 'post',
         });
     },
 
     bulkMergeTitles: ({idsToMerge, idsToHide}) => {
-        const url = `${getConfig('gateway.titleUrl')}${getConfig(
-            'gateway.service.title'
-        )}/titles/legacyTitleMerge?idsToMerge=${idsToMerge}&idsToHide=${idsToHide}`;
+        const uri = `/titles/legacyTitleMerge?idsToMerge=${idsToMerge}&idsToHide=${idsToHide}`;
+        const url = getApiURI('title', uri);
+
         return nexusFetch(url, {
             method: 'post',
         });

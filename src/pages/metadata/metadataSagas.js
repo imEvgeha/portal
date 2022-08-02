@@ -1,9 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {getDomainName, normalizeDataForStore, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {normalizeDataForStore, URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {get} from 'lodash';
 import {Button} from 'primereact/button';
@@ -16,7 +14,6 @@ import * as selectors from './metadataSelectors';
 export function* fetchTitle(action) {
     const {payload} = action || {};
     const requestMethod = titleService.getTitleById;
-    // const requestMethod = titleServiceSingleton.getTitleById;
     try {
         yield put({
             type: actionTypes.FETCH_TITLE_REQUEST,
@@ -201,27 +198,22 @@ export function* reconcileTitles({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                severity: SUCCESS_ICON,
-                content: (
-                    <ToastBody
-                        summary={SUCCESS_TITLE}
-                        detail={`You have successfully ${mLength ? 'created a new Nexus title' : ''}
-                    ${(mLength && dLength && ' and ') || ''}${
-                            dLength ? `marked ${dLength} titles as duplicates.` : ''
-                        }`}
-                        severity="success"
-                    >
-                        <Button
-                            label="View title"
-                            className="p-button-link p-toast-button-link"
-                            onClick={() =>
-                                window.open(
-                                    `${getDomainName()}/${getAuthConfig().realm}/metadata/detail/${newTitleId}`,
-                                    '_blank'
-                                )
-                            }
-                        />
-                    </ToastBody>
+                severity: 'success',
+                detail: `You have successfully ${mLength ? 'created a new Nexus title' : ''}
+                        ${(mLength && dLength && ' and ') || ''}${
+                    dLength ? `marked ${dLength} titles as duplicates.` : ''
+                }`,
+                content: () => (
+                    <Button
+                        label="View title"
+                        className="p-button-link p-toast-button-link"
+                        onClick={() =>
+                            window.open(
+                                `${getDomainName()}/${getAuthConfig().realm}/metadata/detail/${newTitleId}`,
+                                '_blank'
+                            )
+                        }
+                    />
                 ),
             },
         });

@@ -2,7 +2,7 @@ import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotifica
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL as VuURL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {isEmpty} from 'lodash';
 import {all, call, put, takeEvery} from 'redux-saga/effects';
@@ -23,9 +23,9 @@ const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded Artwork.';
 
 function* resourcePosters({payload}) {
     try {
-        const url = `${getConfig('gateway.mediaImageUrl')}${getConfig(
-            'gateway.service.mediaImageServices'
-        )}/AE/assets/${payload}/posters`;
+        const uri = `/AE/assets/${payload}/posters`;
+        const url = getApiURI('mediaImageServices', uri);
+
         const resource = yield call(fetchPosters, url);
         if (!isEmpty(resource)) {
             yield put({
@@ -40,9 +40,8 @@ function* resourcePosters({payload}) {
 
 function* fetchAsset({payload}) {
     try {
-        const url = `${getConfig('gateway.kongUrl')}${getConfig(
-            'gateway.service.kongMediaCatalog'
-        )}/AE/assets/${payload}?returnMetadataGroups=all`;
+        const uri = `/AE/assets/${payload}?returnMetadataGroups=all`;
+        const url = getApiURI('mediaCatalog', uri);
 
         const resource = yield call(() => nexusFetch(url));
 
@@ -64,7 +63,9 @@ function* uploadArtwork({payload}) {
             payload: {},
         });
 
-        const url = `${getConfig('gateway.mediaStorageUrl')}/${tenantId}/files/upload`;
+        const uri = `/${tenantId}/files/upload`;
+        const url = getApiURI('mediaStorage', uri);
+
         const data = new FormData();
         data.append('file', file, file.name);
 
@@ -90,7 +91,9 @@ function* uploadArtwork({payload}) {
             renditions: [{renditionId: details.renditions[0].id, files: [resource.id]}],
         };
 
-        const mediaIngestUrl = `${getConfig('gateway.mediaIngestUrl')}/${tenantId}/assets/import`;
+        const mediaIngestURI = `/${tenantId}/assets/import`;
+        const mediaIngestUrl = getApiURI('mediaingest', mediaIngestURI);
+
         const mediaIngestResource = yield call(() =>
             nexusFetch(mediaIngestUrl, {
                 method: 'post',

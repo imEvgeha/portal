@@ -223,34 +223,8 @@ $element-color-orange-80: palette(orange, 80);
             font-weight: bold;
             color: #1c90cc;
         }
-    }
 
-    &.p-toast-left-button {
-        @include padding(0, 0, 0, 0);
-        @include margin(2, 8, 0, 0);
-
-        .p-button-label {
-            font-size: 13px;
-            font-weight: bold;
-            color: #1c90cc;
-        }
-
-        &:focus {
-            box-shadow: none;
-        }
-    }
-
-    &.p-toast-right-button {
-        @include padding(0, 0, 0, 0);
-        @include margin(2, 0, 0, 0);
-
-        .p-button-label {
-            font-size: 13px;
-            font-weight: bold;
-            color: #1c90cc;
-        }
-
-        &:focus {
+        &:enabled:focus {
             box-shadow: none;
         }
     }
@@ -270,7 +244,39 @@ $element-color-orange-80: palette(orange, 80);
         text-decoration: underline;
         font-size: 12px;
         padding: 0;
+
+        &.p-toast-left-button,
+        &.p-toast-right-button {
+            @include padding(0, 0, 0, 0);
+            text-decoration: none;
+
+            .p-button-label {
+                font-size: 13px;
+                font-weight: bold;
+                color: #1c90cc;
+            }
+
+            &:focus {
+                box-shadow: none;
+            }
+        }
+
+        &.p-toast-left-button {
+            @include margin(2, 8, 0, 0);
+        }
+
+        &.p-toast-right-button {
+            @include margin(2, 0, 0, 0);
+        }
     }
+}
+
+// Bootstrap
+.no-padding {
+    @include padding(0, 0, 0, 0);
+}
+.no-margin {
+    @include margin(0, 0, 0, 0);
 }
 
 // Toggle Buttons
@@ -372,56 +378,6 @@ $element-color-orange-80: palette(orange, 80);
         letter-spacing: 0.4px;
         padding-left: 5px;
         padding-right: 5px;
-    }
-}
-
-// Toasts
-.p-toast {
-    opacity: 1;
-
-    .p-toast-message .p-toast-message-content {
-        display: flex;
-        align-items: center;
-
-        .p-toast-message-text {
-            @include margin(0, 0, 0, 10);
-
-            width: 242px;
-            display: inline-block;
-            overflow-wrap: break-word;
-        }
-
-        .p-toast-icon-close {
-            color: palette(black, 80);
-        }
-    }
-
-    .p-toast-message.p-toast-message-warn,
-    .p-toast-message.p-toast-message-success,
-    .p-toast-message.p-toast-message-error {
-        background: palette(white, 100);
-
-        .p-toast-summary {
-            font-size: 13px;
-            font-weight: bold;
-            color: palette(black, 100);
-        }
-
-        .p-toast-detail {
-            font-size: 10px;
-            font-weight: bold;
-            color: palette(black, 100);
-        }
-    }
-
-    .p-toast-message.p-toast-message-error {
-        color: #aa214b;
-        border: solid #aa214b;
-        border-width: 0 0 0 6px;
-
-        .p-toast-message-icon {
-            color: #aa214b;
-        }
     }
 }
 
