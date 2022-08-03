@@ -38,7 +38,7 @@ const TitleMatchingRightsTable = ({data}) => {
     };
 
     useEffect(() => {
-        if (data.length && !tableData.length) {
+        if (data.length) {
             setTableData(flattenData(data));
         }
     }, [data]);
