@@ -1,9 +1,10 @@
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
+import {pick} from 'lodash/object';
+import HttpHeaders from './HttpHeaders';
 
-export default class HttpService {
+export default class HttpService extends HttpHeaders {
     loading = true;
-    lastModified = undefined;
 
     /**
      * Initialize new TitleService, if not exist
@@ -16,18 +17,21 @@ export default class HttpService {
         return this.instance;
     }
 
-    callApi = async (apiVersion = 'v1', apiSignature = '', options = {}, fetchHeaders = false, abortAfter = 60000) => {
+    callApi = async (apiVersion = 'v1', apiSignature = '', options = {}, headersToAttach = [], abortAfter = 60000) => {
         this.setLoading(true);
 
         let {pathParams} = options;
         pathParams = pathParams ? `/${pathParams}` : '';
         delete options.pathParams;
 
-        const tempOptions = this.constructParams(options);
+        const tempOptions = this.constructParams(options, headersToAttach);
 
         const signatureWithPathParams = `${apiSignature}${pathParams}`;
         const url = this.constructEndpoint(signatureWithPathParams, apiVersion);
-        return nexusFetch(url, tempOptions, abortAfter, fetchHeaders);
+        return nexusFetch(url, tempOptions, abortAfter, true).then(res => {
+            this.headers = res[1];
+            return res[0];
+        });
     };
 
     // constructHeaders() {}
@@ -84,12 +88,14 @@ export default class HttpService {
 
     // TODO: MOVE this to a HttpUtilsService
     /** utils * */
-    constructParams = options => {
+    constructParams = (options, headersToAttach = []) => {
+        const headers = pick(this.headers, headersToAttach);
         return {
             ...options,
             params: options.params ? this.encodedSerialize(options.params) : options.params,
             body: options.body ? JSON.stringify(options.body) : options.body,
             method: options.method ? `${options.method}` : 'get',
+            headers,
         };
     };
 

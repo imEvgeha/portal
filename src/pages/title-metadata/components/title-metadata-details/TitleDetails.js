@@ -27,7 +27,6 @@ import {
     MOVIDA_INTL,
     SEASON,
     SYNC,
-    UPDATE_TERRITORY_METADATA_ERROR,
     UPDATE_TERRITORY_METADATA_SUCCESS,
     VZ,
 } from '../../constants';

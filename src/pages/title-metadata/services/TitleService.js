@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-constructor */
 import {get} from 'lodash';
+import {HeadersEnum} from '../../../util/http/HttpHeaders';
 import HttpService from '../../../util/http/HttpService';
 import TitleSystems from '../../metadata/constants/systems';
 import {CONTENT_TYPE} from '../constants';
@@ -31,18 +32,13 @@ export default class TitleService extends HttpService {
 
     /** CRUD APIs * */
     getById = async (id, tenantCode, version = 'v2') => {
-        const response = await this.callApi(
-            version,
-            '',
-            {
-                pathParams: id,
-                params: tenantCode,
-            },
-            true
-        );
-        this.lastModified = response[1].get('last-modified');
-        this.setTitleById(response[0]);
-        return response[0];
+        const response = await this.callApi(version, '', {
+            pathParams: id,
+            params: tenantCode,
+        });
+        // this.lastModified = response[1].get('last-modified');
+        this.setTitleById(response);
+        return response;
     };
 
     create = async (body, params, apiVersion = 'v2') => {
@@ -67,13 +63,10 @@ export default class TitleService extends HttpService {
             params,
             pathParams: payload.id,
             isWithErrorHandling: true,
-            headers: {
-                'If-Unmodified-Since': this.lastModified,
-            },
             ...errorOptions,
         };
-
-        const response = await this.callApi('v2', '', options);
+        const headersToAttach = [HeadersEnum.IF_UNMODIFIED_SINCE];
+        const response = await this.callApi('v2', '', options, headersToAttach);
         this.setUpdatedTitle(response);
         return response;
     };
