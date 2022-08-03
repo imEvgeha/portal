@@ -37,7 +37,7 @@ export const getApiURI = (service, uri = '', version = undefined, integrationPoi
                 // Disable warning as it is needed for development
                 // eslint-disable-next-line no-console
                 console.error(
-                    `Version provided "${version}" was not found in available versions of service. Please update configuration`
+                    `Version provided "${version}" for "${service}" was not found in available versions of service. Please update configuration`
                 );
             }
 
