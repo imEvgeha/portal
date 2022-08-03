@@ -1,5 +1,5 @@
 import querystring from 'querystring';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import moment from 'moment';
 import {store} from '../../../index';
@@ -34,13 +34,16 @@ export const getStatusLog = (params, page = 0, size = PAGESIZE) => {
         });
 
     const qs = querystring.stringify({...queryParams, ...updatedAtParams, ...params});
-    const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/publishInfo/search`;
-    const response = nexusFetch(`${url}?${qs}&publisherName=RightPublisherMovidaUK`);
+
+    const uri = `/publishInfo/search?${qs}&publisherName=RightPublisherMovidaUK`;
+    const url = getApiURI('titlePlanning', uri);
+    const response = nexusFetch(url);
     response.then(data => store.dispatch(saveStatusDataAction(data)));
     return response;
 };
 
 export const postReSync = data => {
-    const url = `${getConfig('gateway.titlePlanning')}${getConfig('gateway.service.titlePlanning')}/rights/sync`;
+    const uri = `/rights/sync`;
+    const url = getApiURI('titlePlanning', uri);
     return nexusFetch(url, {method: 'post', body: JSON.stringify(data)});
 };

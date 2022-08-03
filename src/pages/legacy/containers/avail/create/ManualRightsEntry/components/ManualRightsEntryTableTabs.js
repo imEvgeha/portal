@@ -13,7 +13,7 @@ import {
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 import Constants from '../../../../../../../pages/avails/ingest-panel/constants';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 
 const {
     attachmentTypes: {EXCEL, PDF},
@@ -68,9 +68,7 @@ const ManualRightEntryTableTabs = ({
     };
 
     const viewJSON = () => {
-        const url = `${getConfig('gateway.url')}${getConfig(
-            'gateway.service.avails'
-        )}/avails/ingest/history/${availHistoryId}?appendErrorReports=true`;
+        const url = `${getApiURI('avails')}/avails/ingest/history/${availHistoryId}?appendErrorReports=true`;
         window.open(url, '_blank');
     };
 

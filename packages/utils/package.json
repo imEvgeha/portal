@@ -13,7 +13,8 @@
         "moment": "^2.29.1",
         "prop-types": "15.x",
         "react": "16.14.0",
-        "react-router-dom": "^6.3.0"
+        "react-router-dom": "^6.3.0",
+        "json-templates": "^4.2.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0",

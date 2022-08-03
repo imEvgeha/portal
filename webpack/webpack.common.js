@@ -57,8 +57,8 @@ module.exports = envKeys => ({
         new CopyWebpackPlugin({
             patterns: [
                 'profile/resourceRoleMap.json',
+                'profile/endpoints.json',
                 'profile/config.json',
-                'profile/configQA.json',
                 'profile/availMapping.json',
                 'profile/titleMatchingMappings.json',
                 'profile/titleMatchingRightMappings.json',

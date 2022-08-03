@@ -1,11 +1,10 @@
 import {rightsService} from '../../../../src/pages/legacy/containers/avail/service/RightsService';
-import {getConfig} from '../config';
+import {getApiURI} from '../config';
 import {nexusFetch} from '../http-client';
 
 export const getRightsHistory = rightId => {
-    const url = `${getConfig('gateway.eventApiUrl')}${getConfig(
-        'gateway.service.eventApiV2'
-    )}/search/diff?objectId=${rightId}&eventSource=avails-api`;
+    const uri = `/search/diff?objectId=${rightId}&eventSource=avails-api`;
+    const url = getApiURI('event', uri);
 
     return nexusFetch(url, {
         method: 'get',
@@ -25,12 +24,9 @@ export const getLinkedToOriginalRightsV2 = selectedRightIds => {
 };
 
 export const reloadConfigurationService = () => {
-    const availsClearCache = `${getConfig('gateway.url')}${getConfig('gateway.service.avails')}${getConfig(
-        'gateway.service.clearCache'
-    )}`;
-    const injestClearCache = `${getConfig('gateway.injestUrl')}${getConfig('gateway.service.availsInjest')}${getConfig(
-        'gateway.service.clearCache'
-    )}`;
+    const cacheClearURI = `/cache/clear`;
+    const availsClearCache = getApiURI('avails', cacheClearURI);
+    const injestClearCache = getApiURI('availsIngest', cacheClearURI);
 
     return Promise.allSettled([
         nexusFetch(availsClearCache, {method: 'get'}),

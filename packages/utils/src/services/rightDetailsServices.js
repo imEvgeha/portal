@@ -10,7 +10,7 @@ import {
     VOICE_TALENT,
     WRITER,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
-import {getConfig} from '../config';
+import {getApiURI, getConfig} from '../config';
 import {nexusFetch} from '../http-client';
 
 const createMultiCastPersonTypePath = () => {
@@ -51,13 +51,14 @@ export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = fal
         personTypePath = castOrCrew === CAST ? createCastPersonTypePath() : createCrewPersonTypePath();
     }
 
-    const path = `/persons${sortPath}${displayNamePath}${personTypePath}page=0&size=${size}`;
-    const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + path;
+    const uri = `/persons${sortPath}${displayNamePath}${personTypePath}page=0&size=${size}`;
+    const url = getApiURI('configuration', uri);
+
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 
 export const searchPersonById = personId => {
-    const path = `/persons/${personId}`;
-    const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + path;
+    const uri = `/persons/${personId}`;
+    const url = getApiURI('configuration', uri);
     return nexusFetch(url, {isWithErrorHandling: false});
 };

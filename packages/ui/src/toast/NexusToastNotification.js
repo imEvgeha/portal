@@ -1,51 +1,86 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
-import {Toast} from 'primereact/toast';
+import {Toast} from '@portal/portal-components';
+import {useDispatch} from 'react-redux';
+import {removeToast} from './NexusToastNotificationActions';
+import ToastBody from './components/toast-body/ToastBody';
 import withToasts from './hoc/withToasts';
 
-const NexusToastNotification = ({toast}) => {
+const NexusToastNotification = ({toasts}) => {
     const toastRef = useRef(null);
+    const dispatch = useDispatch();
 
-    const getUpdatedToast = () => {
-        if (toast && toast.severity === 'error') {
+    const getContentForToast = elem => {
+        if (elem) {
+            const {summary, detail, severity} = getUpdatedToast(elem);
+            return (
+                <ToastBody summary={summary} detail={detail} severity={severity}>
+                    {elem.content?.()}
+                </ToastBody>
+            );
+        }
+        return null;
+    };
+
+    const getUpdatedToast = elem => {
+        if (elem && elem.severity === 'error') {
             return {
-                ...toast,
+                ...elem,
+                summary: 'Error',
+                sticky: true,
+            };
+        } else if (elem && elem.severity === 'success') {
+            return {
+                ...elem,
+                summary: 'Success',
+                life: 6000,
+            };
+        } else if (elem && elem.severity === 'warn') {
+            return {
+                ...elem,
                 summary: 'Warning',
                 sticky: true,
             };
-        } else if (toast && toast.severity === 'success') {
-            return {
-                ...toast,
-                summary: 'Success',
-                life: 3000,
-            };
-        } else if (toast && toast.severity === 'warn') {
-            return {
-                ...toast,
-                summary: 'Alert',
-            };
         }
 
-        return toast;
+        return elem;
+    };
+
+    const showToast = async (toasts, toastRef) => {
+        await toastRef.current.clear();
+        if (toastRef?.current && toasts?.length) {
+            const toastsToShow = toasts.map(e => ({
+                ...getUpdatedToast(e),
+                content: e?.content ? getContentForToast(e) : undefined,
+            }));
+            toastRef.current.show(toastsToShow);
+        }
     };
 
     useEffect(() => {
-        if (toastRef.current && toast) {
-            toastRef.current.show(getUpdatedToast());
-        } else if (toastRef.current && !toast) {
-            toastRef.current.clear();
-        }
-    }, [toast]);
+        showToast(toasts, toastRef);
+    }, [toasts]);
 
-    return <Toast ref={toastRef} position="bottom-left" className="p-toast" />;
+    return (
+        <Toast
+            ref={toastRef}
+            onRemove={e => {
+                const toastIndex = toasts?.findIndex(t => t?.detail === e?.detail);
+                if (toasts?.[toastIndex]) {
+                    toasts[toastIndex]?.onRemoveFn?.();
+                    dispatch(removeToast(toasts?.findIndex(t => t?.detail === e?.detail)));
+                }
+            }}
+        />
+    );
 };
 
 NexusToastNotification.propTypes = {
-    toast: PropTypes.any,
+    toasts: PropTypes.array,
 };
 
 NexusToastNotification.defaultProps = {
-    toast: null,
+    toasts: [],
 };
 
 export default withToasts(NexusToastNotification);

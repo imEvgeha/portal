@@ -30,7 +30,7 @@ exports[`Ingest should match snapshot 1`] = `
     >
       Avail History ID: 
       <a
-        href="undefined/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=Project408"
+        href=""
         target="_blank"
       >
         avih_Tergd

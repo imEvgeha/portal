@@ -18,14 +18,14 @@ exports[`WarningToastWithConfirmation should match snapshot 1`] = `
       className="col-10"
     >
       <div
-        className="row"
+        className="row g-0 nexus-c-toast__row-without-padding"
       >
         <span
           className="nexus-c-toast__summary-title"
         />
       </div>
       <div
-        className="row"
+        className="row g-0 nexus-c-toast__row-without-padding"
       >
         <span
           className="nexus-c-toast__detail-title"

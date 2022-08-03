@@ -13,7 +13,7 @@ const EntityActions = ({tag, flag1, flag2, actions, totalEnabled}) => {
 
         while (counter < maxActions) {
             tmpActionItems.push(
-                new Action({icon: undefined, action: undefined, position: counter + 1, disabled: true, buttonId: ''})
+                new Action({icon: undefined, action: undefined, position: counter + 1, disabled: false, buttonId: ''})
             );
             counter++;
         }
@@ -23,6 +23,7 @@ const EntityActions = ({tag, flag1, flag2, actions, totalEnabled}) => {
 
         const actionCols = [];
         while (counter < maxActions) {
+            const isDisabled = !totalEnabled || tmpActionItems[counter].disabled;
             const col = (
                 <div className="col text-center" key={`action-icon_${counter}`}>
                     {!!tmpActionItems[counter]?.icon && (
@@ -31,7 +32,7 @@ const EntityActions = ({tag, flag1, flag2, actions, totalEnabled}) => {
                             id={tmpActionItems[counter].buttonId}
                             icon={tmpActionItems[counter].icon}
                             onClick={tmpActionItems[counter].action}
-                            disabled={!totalEnabled || tmpActionItems[counter].disabled}
+                            disabled={isDisabled}
                             className="p-button-text nexus-c-entity-button"
                         />
                     )}

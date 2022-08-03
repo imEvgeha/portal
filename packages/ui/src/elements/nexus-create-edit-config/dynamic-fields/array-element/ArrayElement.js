@@ -17,13 +17,12 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
         isGroup.current = elementsSchema?.misc?.fields?.length > 1;
 
         if (isGroup.current && values?.length) {
-            const group = values.map((val, index) =>
+            return values.map((val, index) =>
                 elementsSchema?.misc?.fields.map(f => ({
                     ...f,
                     name: `${elementsSchema.name}.${index}.${f.id}`,
                 }))
             );
-            return group;
         }
 
         if (!isGroup.current && Array.isArray(values) && values.length) {
@@ -95,16 +94,16 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
     }, [elementsSchema]);
 
     const addField = () => {
+        const schema = elementsSchema?.misc?.fields.map(f => f)?.[0];
         const newFields = [...formFields];
         const fieldName = `${elementsSchema.name}.${newFields.length}`;
         const fieldType = elementsSchema?.misc?.fields[0].type;
         newFields.push({
-            ...(newFields?.[0] || {}),
+            ...schema,
             id: new Date().getTime(),
             type: newFields?.[0]?.type ? newFields?.[0]?.type : fieldType,
             name: fieldName,
         });
-
         fieldsRef.current = newFields.map(f => f.name);
         setFormFields(newFields);
     };
@@ -254,6 +253,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
             cache,
             dataApi,
             index,
+            values,
         });
 
     const renderElement = fieldsIn => {

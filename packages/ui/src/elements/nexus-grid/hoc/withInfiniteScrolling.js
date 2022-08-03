@@ -182,7 +182,6 @@ const withInfiniteScrolling =
             const updateData = (fetchData, gridApi) => {
                 hasBeenCalledRef.current = true;
                 const dataSource = {
-                    rowCount: null,
                     getRows: params => getRows(params, fetchData, gridApi),
                 };
                 gridApi.setDatasource(dataSource);

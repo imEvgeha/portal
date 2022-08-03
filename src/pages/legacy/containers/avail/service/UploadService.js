@@ -1,7 +1,7 @@
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {isString} from 'lodash';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
-import {keycloak} from "@portal/portal-auth";
+import {getApiURI, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {keycloak} from '@portal/portal-auth';
 
 // currently FETCH API doesn't support upload progress calculation
 // for upload progress we should switch upload to XHR (XMLHttpRequest) or
@@ -27,11 +27,9 @@ export const uploadService = {
         }
 
         const queryParams = new URLSearchParams({...params}).toString();
-        const url =
-            getConfig('gateway.url') +
-            getConfig('gateway.service.avails') +
-            '/avails/upload' +
-            (queryParams && `?${queryParams}`);
+        const uri = '/avails/upload' + (queryParams && `?${queryParams}`);
+        const url = getApiURI('avails', uri);
+
         const abortAfter = getConfig('avails.upload.http.timeout');
 
         return nexusFetch(

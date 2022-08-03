@@ -4,7 +4,7 @@ import {loadReports, setReportName} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {resultPageSort, resultPageUpdateColumnsOrder} from '../../../stores/actions/avail/dashboard';
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 
 const loadReportToStore = report => {
     store.dispatch(setReportName(report.name));
@@ -13,7 +13,7 @@ const loadReportToStore = report => {
     const sortedBy = [];
     if (report.sortedBy) {
         report.sortedBy.forEach(entry => {
-            sortedBy.push({id: entry.column, desc: entry.order === 'DESC' ? true : false});
+            sortedBy.push({id: entry.column, desc: entry.order === 'DESC'});
         });
     }
 
@@ -40,28 +40,29 @@ const readReportFromStore = () => {
         });
     }
 
-    const report = {
+    return {
         name: store.getState().dashboard.session.reportName,
         orderedFilter: store.getState().dashboard.session.advancedSearchCriteria,
         columns: store.getState().dashboard.session.columns,
         sortedBy: sortedBy,
     };
-    return report;
 };
 
 const getConfiguration = () => {
-    const url = getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + '/configuration';
+    const uri = `/configuration`;
+    const url = getApiURI('configuration', uri);
+
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 
 const putConfiguration = configuration => {
-    return nexusFetch(
-        getConfig('gateway.configuration') + getConfig('gateway.service.configuration') + '/configuration',
-        {
-            method: 'put',
-            body: JSON.stringify(configuration),
-        }
-    );
+    const uri = `/configuration`;
+    const url = getApiURI('configuration', uri);
+
+    return nexusFetch(url, {
+        method: 'put',
+        body: JSON.stringify(configuration),
+    });
 };
 
 const loadConfiguration = configuration => {

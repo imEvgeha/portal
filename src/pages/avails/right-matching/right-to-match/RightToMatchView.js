@@ -8,8 +8,7 @@ import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/n
 import {defineActionButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {NEW_RIGHT_BUTTON_CLICK_MESSAGE, WARNING_TITLE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
@@ -119,22 +118,20 @@ const RightToMatchView = ({
     const onUpdateRightClick = () => {
         addToast({
             severity: 'warn',
-            closable: false,
-            content: (
-                <ToastBody summary={WARNING_TITLE} detail={NEW_RIGHT_BUTTON_CLICK_MESSAGE} severity="warn">
-                    <div className="d-flex align-items-center">
-                        <PrimeReactButton
-                            label="Cancel"
-                            className="p-button-link p-toast-left-button"
-                            onClick={() => removeToast()}
-                        />
-                        <PrimeReactButton
-                            label="Continue"
-                            className="p-button-link p-toast-right-button"
-                            onClick={onUpdateRight}
-                        />
-                    </div>
-                </ToastBody>
+            detail: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
+            content: () => (
+                <div className="no-padding d-flex align-items-center">
+                    <PrimeReactButton
+                        label="Cancel"
+                        className="p-button-link p-toast-left-button"
+                        onClick={() => removeToast()}
+                    />
+                    <PrimeReactButton
+                        label="Continue"
+                        className="p-button-link p-toast-right-button"
+                        onClick={onUpdateRight}
+                    />
+                </div>
             ),
             sticky: true,
         });

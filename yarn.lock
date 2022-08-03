@@ -6870,6 +6870,11 @@ dedent@^0.7.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/dedent/-/dedent-0.7.0.tgz#2495ddbaf6eb874abb0e1be9df22d2e5a544326c"
   integrity sha1-JJXduvbrh0q7Dhvp3yLS5aVEMmw=
 
+dedupe@^3.0.2:
+  version "3.0.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/dedupe/-/dedupe-3.0.3.tgz#7ae7b55ca01028bc7d5714cd57a5bdf5e4aeea6e"
+  integrity sha512-ZSCmu4uLkBWTAPSz9LXtrTNusY2P6BoghZhokPBLzpQpLiBtU0B4QXNxVnwpy7yaqFc1jN30V5BkKMr/uXqf/w==
+
 deep-diff@^0.3.5:
   version "0.3.8"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/deep-diff/-/deep-diff-0.3.8.tgz#c01de63efb0eec9798801d40c7e0dae25b582c84"
@@ -10685,6 +10690,14 @@ json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
 
+json-templates@^4.2.0:
+  version "4.2.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/json-templates/-/json-templates-4.2.0.tgz#34fdd6fedbe6955e934d86812a89d30d1df87415"
+  integrity sha512-NX0r9SEI2bsz17DJpKhZPymvlw/vcMcRqjqRC0jl7pofLwcpaSsfjweatMFt9QXaUv+dR5EBzInBp8y5lzluIQ==
+  dependencies:
+    dedupe "^3.0.2"
+    object-path "^0.11.8"
+
 json5@^1.0.1:
   version "1.0.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/json5/-/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
@@ -12251,6 +12264,11 @@ object-keys@^1.1.1:
   version "1.1.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/object-keys/-/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
   integrity sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==
+
+object-path@^0.11.8:
+  version "0.11.8"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/object-path/-/object-path-0.11.8.tgz#ed002c02bbdd0070b78a27455e8ae01fc14d4742"
+  integrity sha512-YJjNZrlXJFM42wTBn6zgOJVar9KFJvzx6sTWDte8sWZF//cnjl0BxHNpfZx+ZffXX63A9q0b1zsFiBX4g4X5KA==
 
 object-visit@^1.0.0:
   version "1.0.1"

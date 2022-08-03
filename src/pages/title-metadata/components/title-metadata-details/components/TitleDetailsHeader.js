@@ -69,7 +69,7 @@ const TitleDetailsHeader = ({title, containerRef, canEdit, selectedTenant}) => {
                     'nexus-c-shrinked-header--visible': isShrinked,
                 })}
             >
-                <div>{title.title}</div>
+                <div>{title.name}</div>
             </div>
         </div>
     );

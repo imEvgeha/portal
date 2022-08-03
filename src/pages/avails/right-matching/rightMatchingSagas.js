@@ -1,12 +1,6 @@
 import React from 'react';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
-import {
-    SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
-    SUCCESS_ICON,
-    SUCCESS_TITLE,
-    WARNING_TITLE,
-} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {Button} from 'primereact/button';
@@ -188,9 +182,10 @@ export function* saveCombinedRight(requestMethod, {payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                severity: SUCCESS_ICON,
-                content: (
-                    <ToastBody summary={SUCCESS_TITLE} detail={SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} severity="success">
+                severity: 'success',
+                detail: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
+                content: () => (
+                    <>
                         {URL.isEmbedded() ? (
                             <Button
                                 label="View Title"
@@ -198,7 +193,7 @@ export function* saveCombinedRight(requestMethod, {payload}) {
                                 onClick={handleToastButtonClick}
                             />
                         ) : null}
-                    </ToastBody>
+                    </>
                 ),
             },
         });
@@ -269,9 +264,7 @@ export function* validateConflictingRights({payload}) {
                 type: ADD_TOAST,
                 payload: {
                     severity: 'warn',
-                    summary: WARNING_TITLE,
                     detail: WARNING_CONFLICTING_RIGHTS,
-                    sticky: true,
                 },
             });
         }
@@ -280,9 +273,7 @@ export function* validateConflictingRights({payload}) {
             type: ADD_TOAST,
             payload: {
                 severity: 'warn',
-                summary: WARNING_TITLE,
                 detail: WARNING_CONFLICTING_RIGHTS,
-                sticky: true,
             },
         });
     }

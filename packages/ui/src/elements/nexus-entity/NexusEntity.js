@@ -65,6 +65,14 @@ const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, i
 
     const newActions = getActions();
     const hasActions = (Array.isArray(newActions) && newActions.length > 0) || !!tag || !!flag1 || !!flag2;
+
+    const setIsMouseOverBtn = isMouseOverBtn => {
+        return setIsMouseOver(prevState => ({
+            ...prevState,
+            isMouseOver: isMouseOverBtn,
+        }));
+    };
+
     return (
         <div className="nexus-c-entity row">
             <div className="col-12">
@@ -73,8 +81,8 @@ const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, i
                     className={`nexus-c-entity-panel row ${isActive ? 'nexus-c-entity-active' : ''} ${
                         type === NEXUS_ENTITY_TYPES.default ? 'nexus-c-row-entity' : ''
                     }`}
-                    onMouseEnter={() => setIsMouseOver(true)}
-                    onMouseLeave={() => setIsMouseOver(false)}
+                    onMouseEnter={() => setIsMouseOverBtn(true)}
+                    onMouseLeave={() => setIsMouseOverBtn(false)}
                 >
                     <div className="col-12">
                         <div className={`row nexus-c-section align-items-center nexus-c-section-${type}`}>

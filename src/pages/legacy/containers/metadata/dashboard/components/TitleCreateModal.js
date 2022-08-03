@@ -24,7 +24,6 @@ import constants from '../../MetadataConstants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import withRouter from '@vubiquity-nexus/portal-ui/lib/hocs/withRouter';
 
 const onViewTitleClick = (response, realm) => {
@@ -148,23 +147,14 @@ class TitleCreate extends React.Component {
                         .then(response => {
                             this.props.addToast({
                                 severity: 'success',
-                                content: () => {
-                                    return (
-                                        <ToastBody
-                                            summary={SUCCESS_TITLE}
-                                            detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE}
-                                            severity="success"
-                                        >
-                                            <PrimeReactButton
-                                                label="View Title"
-                                                className="p-button-link p-toast-button-link"
-                                                onClick={() =>
-                                                    onViewTitleClick(response, this.props.router.params.realm)
-                                                }
-                                            />
-                                        </ToastBody>
-                                    );
-                                },
+                                detail: titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE,
+                                content: (
+                                    <PrimeReactButton
+                                        label="View Title"
+                                        className="p-button-link p-toast-button-link"
+                                        onClick={() => onViewTitleClick(response, this.props.router.params.realm)}
+                                    />
+                                ),
                             });
                         })
                         .catch(() => {
@@ -184,21 +174,14 @@ class TitleCreate extends React.Component {
                 this.toggle();
                 this.props.addToast({
                     severity: 'success',
-                    content: () => {
-                        return (
-                            <ToastBody
-                                summary={SUCCESS_TITLE}
-                                detail={titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE}
-                                severity="success"
-                            >
-                                <PrimeReactButton
-                                    label="View Title"
-                                    className="p-button-link p-toast-button-link"
-                                    onClick={() => onViewTitleClick(response, this.props.router.params.realm)}
-                                />
-                            </ToastBody>
-                        );
-                    },
+                    detail: titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
+                    content: () => (
+                        <PrimeReactButton
+                            label="View Title"
+                            className="p-button-link p-toast-button-link"
+                            onClick={() => onViewTitleClick(response, this.props.router.params.realm)}
+                        />
+                    ),
                 });
             })
             .catch(e => {

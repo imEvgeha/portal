@@ -15,6 +15,7 @@ import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
     fields,
+    sectionID,
     getValues,
     view,
     selectValues,
@@ -42,7 +43,7 @@ const NexusArrayWithTabs = ({
 
     useEffect(() => {
         const groupedObj = data ? groupBy(data) : {};
-        setGroupedData(groupedObj);
+        setGroupedData(sortObjectsByKey(groupedObj));
     }, [data, isUpdate]);
 
     const clearIsRemoved = () => {
@@ -224,7 +225,7 @@ const NexusArrayWithTabs = ({
         if (updatedGroupedData[key].length === 0) {
             delete updatedGroupedData[key];
         }
-        setGroupedData(updatedGroupedData);
+        setGroupedData(sortObjectsByKey(updatedGroupedData));
         const keys = Object.keys(updatedGroupedData);
         const newCurrentData = keys.length ? updatedGroupedData[keys[0]][0] : null;
         setCurrentData(newCurrentData);
@@ -299,14 +300,7 @@ const NexusArrayWithTabs = ({
         const updatedGroupedData = {...groupedData};
         updatedGroupedData[key] = updatedGroupedData[key] ? updatedGroupedData[key] : [];
         updatedGroupedData[key].push(properValues);
-        const sortObjectsByKey = Object.keys(updatedGroupedData)
-            .sort()
-            .reduce((accumulator, key) => {
-                accumulator[key] = updatedGroupedData[key];
-
-                return accumulator;
-            }, {});
-        setGroupedData(sortObjectsByKey);
+        setGroupedData(sortObjectsByKey(updatedGroupedData));
 
         if (!currentData && !Object.keys(groupedData).length) {
             setCurrentData(properValues);
@@ -384,18 +378,33 @@ const NexusArrayWithTabs = ({
         }
     };
 
+    const sortObjectsByKey = object => {
+        return Object.keys(object)
+            .sort()
+            .reduce((accumulator, key) => {
+                accumulator[key] = object[key];
+
+                return accumulator;
+            }, {});
+    };
+
     const renderFields = () => {
         return Object.keys(fields).map(key => {
             const initData = currentData
                 ? {...currentData, contentType: initialData.contentType}
                 : {...data[0], contentType: initialData.contentType};
             const tabId = initData.id ? initData.id : initData.ratingSystem;
+            const tabIndex = data.findIndex(item => {
+                const isItRating = initData.ratingSystem && initData.rating;
+                return isItRating ? item.ratingSystem === tabId && item.rating === initData.rating : item.id === tabId;
+            });
 
             return (
                 <div key={`nexus-c-array__field_${tabId}_${key}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
                         initialData: initData,
                         field: fields[key],
+                        sectionID: tabIndex >= 0 ? `${sectionID}.${tabIndex}` : sectionID,
                         selectValues,
                         setFieldValue,
                         config,
@@ -465,6 +474,7 @@ const NexusArrayWithTabs = ({
 
 NexusArrayWithTabs.propTypes = {
     fields: PropTypes.object,
+    sectionID: PropTypes.string,
     view: PropTypes.string,
     data: PropTypes.array,
     getValues: PropTypes.func,
@@ -487,6 +497,7 @@ NexusArrayWithTabs.propTypes = {
 
 NexusArrayWithTabs.defaultProps = {
     fields: {},
+    sectionID: '',
     view: VIEWS.VIEW,
     data: [],
     getValues: undefined,

@@ -5,7 +5,7 @@ import {CheckboxField, Field as AKField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import {InputNumber} from '@portal/portal-components';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {get} from 'lodash';
+import {get, toLower} from 'lodash';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
@@ -89,6 +89,7 @@ const NexusField = ({
     allData,
     forMetadata,
     shouldUpperCase,
+    sectionID,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -136,6 +137,15 @@ const NexusField = ({
         return fieldProps.value ? fieldProps.value : allData?.castCrew?.length ? [...allData?.castCrew] : [];
     };
 
+    const generateElementIds = (fieldProps, addedProps) => {
+        if (fieldProps) {
+            const elementView = toLower(addedProps.view);
+            const constructionArray = [sectionID, elementView, fieldProps.id];
+            return constructionArray.join('.');
+        }
+        return '';
+    };
+
     const renderFieldEditMode = fieldProps => {
         const selectFieldProps = {...fieldProps};
         const multiselectFieldProps = {...fieldProps};
@@ -150,6 +160,7 @@ const NexusField = ({
                     <TextFieldWithOptional
                         {...fieldProps}
                         {...addedProps}
+                        id={generateElementIds(fieldProps, addedProps)}
                         placeholder={`Enter ${label}`}
                         dir={getDir(fieldProps.value)}
                     />
@@ -159,6 +170,7 @@ const NexusField = ({
                     <NexusTextAreaWithOptional
                         {...fieldProps}
                         {...addedProps}
+                        id={generateElementIds(fieldProps, addedProps)}
                         placeholder={`Enter ${label}`}
                         dir={getDir(fieldProps.value)}
                     />
@@ -168,6 +180,7 @@ const NexusField = ({
                     <InputNumber
                         {...props}
                         {...fieldProps}
+                        id={generateElementIds(fieldProps, addedProps)}
                         columnClass="col-12"
                         showButtons={true}
                         value={fieldProps?.value?.value || fieldProps?.value}
@@ -186,10 +199,11 @@ const NexusField = ({
                     >
                         {({fieldProps}) => (
                             <CheckboxWithOptional
-                                onChange={onChange(getCurrentValues())}
-                                isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                                 {...addedProps}
                                 {...fieldProps}
+                                id={generateElementIds(fieldProps, addedProps)}
+                                onChange={onChange(getCurrentValues())}
+                                isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                                 onFocus={disableSaveButton}
                             />
                         )}
@@ -227,6 +241,7 @@ const NexusField = ({
                     <NexusSelect
                         onChange={onChange(getCurrentValues())}
                         fieldProps={selectFieldProps}
+                        id={generateElementIds(fieldProps, addedProps)}
                         type={type}
                         optionsConfig={optionsConfig}
                         selectValues={selectValues}
@@ -279,6 +294,7 @@ const NexusField = ({
 
                 return (
                     <NexusSelect
+                        id={generateElementIds(fieldProps, addedProps)}
                         onChange={onChange(getCurrentValues())}
                         fieldProps={multiselectFieldProps}
                         type={type}
@@ -305,7 +321,14 @@ const NexusField = ({
                     />
                 );
             case 'dateRange':
-                return <DateTimeWithOptional onChange={onChange(getCurrentValues())} {...fieldProps} {...dateProps} />;
+                return (
+                    <DateTimeWithOptional
+                        {...fieldProps}
+                        {...dateProps}
+                        onChange={onChange(getCurrentValues())}
+                        id={generateElementIds(fieldProps, addedProps)}
+                    />
+                );
             case 'datetime': {
                 // withdrawn date is readOnly when populated (when empty, user can populate it using checkbox)
                 const hasWithDrawnDate = fieldProps?.name.includes('dateWithdrawn');
@@ -313,9 +336,10 @@ const NexusField = ({
 
                 return fieldProps.value || !dateProps.isReadOnly ? (
                     <DateTimeWithOptional
-                        onChange={onChange(getCurrentValues())}
                         {...fieldProps}
                         {...dateProps}
+                        id={generateElementIds(fieldProps, addedProps)}
+                        onChange={onChange(getCurrentValues())}
                         isReadOnly={isWithDrawnReadOnly}
                         territoryLenght={hasWithDrawnDate && formData?.territory?.length}
                     />
@@ -326,6 +350,7 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
+                        sectionId={generateElementIds(fieldProps, addedProps)}
                         isEditable={isEditable}
                         onChange={onChange(getCurrentValues())}
                         {...fieldProps}
@@ -348,12 +373,19 @@ const NexusField = ({
                 );
             case 'rowDataItem':
                 return (
-                    <RowDataItem {...props} {...fieldProps} selectValues={selectValues} data={fieldProps.value || []} />
+                    <RowDataItem
+                        {...props}
+                        {...fieldProps}
+                        id={generateElementIds(fieldProps, addedProps)}
+                        selectValues={selectValues}
+                        data={fieldProps.value || []}
+                    />
                 );
             case 'msvIds':
                 return (
                     <MsvIds
                         {...fieldProps}
+                        id={generateElementIds(fieldProps, addedProps)}
                         selectValues={selectValues}
                         data={fieldProps.value ? fieldProps.value : []}
                         isEdit={true}
@@ -609,6 +641,7 @@ NexusField.propTypes = {
     shouldUpperCase: PropTypes.bool,
     stackLabel: PropTypes.bool,
     inModal: PropTypes.bool,
+    sectionID: PropTypes.string,
 };
 
 NexusField.defaultProps = {
@@ -658,6 +691,7 @@ NexusField.defaultProps = {
     shouldUpperCase: false,
     stackLabel: false,
     inModal: false,
+    sectionID: '',
 };
 
 export default NexusField;
