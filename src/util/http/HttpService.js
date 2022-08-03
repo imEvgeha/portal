@@ -1,4 +1,4 @@
-import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
+import {getApiURI, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 
 export default class HttpService {
@@ -38,29 +38,15 @@ export default class HttpService {
         // construct base url for the needed service
         switch (serviceReference) {
             case 'TitleService':
-                baseUrl += `/titles${
-                    apiVersion === 'v1' ? getConfig('gateway.service.title') : getConfig('gateway.service.titleV2')
-                }/titles`;
+            case 'TitleTerittorialService':
+                baseUrl = getApiURI('title', '/titles', apiVersion === 'v1' ? 1 : 2);
                 break;
             case 'TitleEditorialService':
-                baseUrl += `/titles${
-                    apiVersion === 'v1' ? getConfig('gateway.service.title') : getConfig('gateway.service.titleV2')
-                }`;
-                break;
-            case 'TitleTerittorialService':
-                baseUrl += `/titles${
-                    apiVersion === 'v1' ? getConfig('gateway.service.title') : getConfig('gateway.service.titleV2')
-                }/titles`;
-                break;
             case 'TitleConfigurationService':
-                baseUrl += `/titles${
-                    apiVersion === 'v1' ? getConfig('gateway.service.title') : getConfig('gateway.service.titleV2')
-                }`;
+                baseUrl = getApiURI('title', '', apiVersion === 'v1' ? 1 : 2);
                 break;
             case 'PublishService':
-                baseUrl += `/titlespublishermovida${
-                    apiVersion === 'v1' ? getConfig('gateway.service.publisher') : 'v2'
-                }`;
+                baseUrl = getApiURI('movida');
                 break;
             default:
                 baseUrl = '';

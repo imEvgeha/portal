@@ -547,7 +547,7 @@ const TitleCreate = ({
                                                 required: {value: true, message: 'Field cannot be empty!'},
                                             },
                                         }}
-                                        options={contentTypes?.map(e => e.displayName)}
+                                        options={contentTypes?.length ? contentTypes?.map(e => e.displayName) : []}
                                         disabled={isItMatching}
                                         id="contentType"
                                         className="nexus-c-title-create_input-dropdown"
