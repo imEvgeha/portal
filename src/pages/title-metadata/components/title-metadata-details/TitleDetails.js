@@ -306,12 +306,14 @@ const TitleDetails = ({
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
         // v2 consists of object.data and object.meta, merging meta.id to obj
-        const updatedTerritorialMetadata = territoryMetadata.map(metadata => {
-            return {
-                id: metadata.meta.id,
-                ...metadata.data,
-            };
-        });
+        const updatedTerritorialMetadata = territoryMetadata?.length
+            ? territoryMetadata?.map(metadata => {
+                  return {
+                      id: metadata.meta.id,
+                      ...metadata.data,
+                  };
+              })
+            : [];
 
         return {
             ...updatedTitle,
