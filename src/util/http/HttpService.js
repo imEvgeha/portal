@@ -38,16 +38,12 @@ export default class HttpService {
         // construct base url for the needed service
         switch (serviceReference) {
             case 'TitleService':
-                baseUrl = `${getApiURI('title', '', apiVersion === 'v1' ? 1 : 2)}/titles`;
+            case 'TitleTerittorialService':
+                baseUrl = getApiURI('title', '/titles', apiVersion === 'v1' ? 1 : 2);
                 break;
             case 'TitleEditorialService':
-                baseUrl = getApiURI('title', '', apiVersion === 'v1' ? 1 : 2);
-                break;
-            case 'TitleTerittorialService':
-                baseUrl = `${getApiURI('title', '', apiVersion === 'v1' ? 1 : 2)}/titles`;
-                break;
             case 'TitleConfigurationService':
-                baseUrl = `${getApiURI('title', '', apiVersion === 'v1' ? 1 : 2)}`;
+                baseUrl = getApiURI('title', '', apiVersion === 'v1' ? 1 : 2);
                 break;
             case 'PublishService':
                 baseUrl = getApiURI('movida');
