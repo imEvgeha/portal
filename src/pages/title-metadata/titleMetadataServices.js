@@ -29,17 +29,6 @@ export const getTerritoryMetadataById = payload => {
     return nexusFetch(url, {});
 };
 
-export const getEditorialMetadataByTitleId = payload => {
-    const {id, tenantCode} = payload;
-    const uri = `/editorialmetadata?titleId=${id}&includeDeleted=false`;
-    const url = getApiURI('title', uri);
-
-    const params = tenantCode ? {tenantCode} : {};
-    return nexusFetch(url, {
-        params: encodedSerialize(params),
-    });
-};
-
 export const updateTitle = (title, syncToVZ, syncToMovida) => {
     const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
     const params = legacySystemNames ? {legacySystemNames} : {};
@@ -210,6 +199,7 @@ export const titleService = {
             method: 'get',
         });
     },
+
     addEditorialMetadataV1: (editorialMetadata, tenantCode) => {
         const uri = `/editorialmetadata`;
         const url = getApiURI('title', uri, 2);
@@ -231,6 +221,7 @@ export const titleService = {
             params: encodedSerialize(params),
         });
     },
+
     addEditorialMetadata: editorialMetadata => {
         const body = Object.assign({}, editorialMetadata?.body.editorialMetadata);
 
@@ -259,6 +250,7 @@ export const titleService = {
             body: JSON.stringify(body),
         });
     },
+
     updateEditorialMetadata: (editedEditorialMetadata, tenantCode) => {
         const uri = `/editorialmetadata`;
         const url = getApiURI('title', uri, 2);

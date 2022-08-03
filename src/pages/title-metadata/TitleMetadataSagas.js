@@ -63,8 +63,6 @@ export function* loadTitle({payload}) {
             payload: false,
         });
     } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
         yield put({
             type: actionTypes.GET_TITLE_ERROR,
             payload: error,
@@ -130,9 +128,10 @@ export function* loadEditorialMetadata({payload}) {
 
     try {
         const response = yield call(editorialServiceInstance.getEditorialsByTitleId, payload);
+        const mergedResponse = response.map(e => ({...e.data, ...e.meta}));
         yield put({
             type: actionTypes.GET_EDITORIAL_METADATA_SUCCESS,
-            payload: response,
+            payload: mergedResponse,
         });
         yield put({
             type: actionTypes.GET_EDITORIAL_METADATA_LOADING,
