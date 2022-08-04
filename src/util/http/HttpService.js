@@ -39,9 +39,9 @@ export default class HttpService {
         switch (serviceReference) {
             case 'TitleService':
             case 'TitleTerittorialService':
+            case 'TitleEditorialService':
                 baseUrl = getApiURI('title', '/titles', apiVersion === 'v1' ? 1 : 2);
                 break;
-            case 'TitleEditorialService':
             case 'TitleConfigurationService':
                 baseUrl = getApiURI('title', '', apiVersion === 'v1' ? 1 : 2);
                 break;
