@@ -9,6 +9,7 @@ export const Option = styled.li`
 
     &:hover {
         cursor: pointer;
+        background-color: lightgray;
         opacity: 0.7;
     }
 

@@ -195,6 +195,10 @@
         "operation": "AND",
         "values": ["metadata_create"]
     },
+    "createTitleCopyButton": {
+        "operation": "AND",
+        "values": ["metadata_create"]
+    },
     "uploadAttachmentButton": {
         "operation": "AND",
         "values": ["metadata_create"]

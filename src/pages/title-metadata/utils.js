@@ -1,4 +1,5 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
@@ -13,6 +14,11 @@ import {
     UPDATE_TERRITORY_METADATA_SUCCESS,
     VZ,
 } from './constants';
+
+export const onViewTitleClick = (titleId, realm) => {
+    const url = `${getDomainName()}/${realm}/metadata/detail/${titleId}`;
+    window.open(url, '_blank');
+};
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
