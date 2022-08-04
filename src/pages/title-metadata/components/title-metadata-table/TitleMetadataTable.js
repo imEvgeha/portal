@@ -139,14 +139,15 @@ const TitleMetadataTable = ({
     useLayoutEffect(() => {
         return () => {
             if (gridApi && columnApi?.columnModel) {
-                const filterModel = gridApi.getFilterModel();
+                const filterModel = gridApi?.getFilterModel();
                 const sortModel = getSortModel(columnApi);
                 const columnState = columnApi?.getColumnState();
 
-                const firstFilterModel = Object.keys(filterModel).shift();
-                const id = filterModel && filterModel[`${firstFilterModel}`]?.filter;
-
-                setTitleMetadataFilter({...titleMetadataFilter, id, filterModel, sortModel, columnState});
+                if (filterModel) {
+                    const firstFilterModel = Object.keys(filterModel)?.shift();
+                    const id = filterModel && filterModel[`${firstFilterModel}`]?.filter;
+                    setTitleMetadataFilter({...titleMetadataFilter, id, filterModel, sortModel, columnState});
+                }
             }
         };
     }, [columnApi]);

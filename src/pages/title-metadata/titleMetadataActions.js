@@ -76,7 +76,7 @@ export const setTitleMetadataFilter = payload => ({
 });
 
 export const clearTitleMetadataFilter = () => ({
-    type: actionTypes.SET_TITLE_FILTER,
+    type: actionTypes.CLEAR_TITLE_FILTER,
 });
 
 export const setCurrentUserViewAction = payload => ({
