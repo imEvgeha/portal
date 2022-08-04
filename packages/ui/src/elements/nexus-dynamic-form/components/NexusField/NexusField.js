@@ -89,6 +89,7 @@ const NexusField = ({
     allData,
     forMetadata,
     shouldUpperCase,
+    pathName,
     sectionID,
     ...props
 }) => {
@@ -102,6 +103,7 @@ const NexusField = ({
         path,
         view,
         maxLength,
+        pathName,
     };
 
     const emetLanguage = get(formData, 'editorial.language');
@@ -146,6 +148,21 @@ const NexusField = ({
         return '';
     };
 
+    /**
+     * looks for pathName flag in schema.json and if its present, will find the value from an array.
+     * @param fieldProps props from schema.json
+     * @param addedProps extra props added statically from the schema.json; the flags
+     * @returns {string} return value of type string
+     */
+    const findValue = (fieldProps, addedProps) => {
+        if (addedProps?.pathName && Array.isArray(fieldProps?.value)) {
+            return fieldProps?.value.find(x => x.name === addedProps.pathName)?.value || '';
+        } else if (addedProps?.pathName && typeof fieldProps?.value === 'object' && fieldProps?.value !== null) {
+            return fieldProps?.value[addedProps.pathName];
+        }
+        return fieldProps?.value;
+    };
+
     const renderFieldEditMode = fieldProps => {
         const selectFieldProps = {...fieldProps};
         const multiselectFieldProps = {...fieldProps};
@@ -163,6 +180,7 @@ const NexusField = ({
                         id={generateElementIds(fieldProps, addedProps)}
                         placeholder={`Enter ${label}`}
                         dir={getDir(fieldProps.value)}
+                        value={findValue(fieldProps, addedProps)}
                     />
                 );
             case 'textarea':
@@ -642,6 +660,7 @@ NexusField.propTypes = {
     stackLabel: PropTypes.bool,
     inModal: PropTypes.bool,
     sectionID: PropTypes.string,
+    pathName: PropTypes.string,
 };
 
 NexusField.defaultProps = {
@@ -692,6 +711,7 @@ NexusField.defaultProps = {
     stackLabel: false,
     inModal: false,
     sectionID: '',
+    pathName: '',
 };
 
 export default NexusField;

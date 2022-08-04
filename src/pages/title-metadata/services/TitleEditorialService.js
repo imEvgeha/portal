@@ -26,45 +26,27 @@ export default class TitleEditorialService extends HttpService {
 
     /** CRUD APIs * */
     getEditorialsByTitleId = async payload => {
-        const {id, selectedTenant} = payload;
-        const response = await this.callApi('v1', '/editorialmetadata', {
-            params: {
-                titleId: `${id}`,
-                includeDeleted: false,
-                tenantCode: selectedTenant ? selectedTenant.id : '',
-            },
-        });
+        const {id} = payload;
+        const response = await this.callApi('v2', `/${id}/editorials`, {});
         this.setEditorialsByTitleId(response);
         return response;
     };
 
-    create = async (payload, apiVersion = 'v2') => {
-        const updatedEditorialMetadata = payload.map(item => ({
-            ...item,
-            body: {
-                ...item?.body,
-                editorialMetadata: {
-                    ...item?.body?.editorialMetadata,
-                    type: 'editorialMetadata',
-                },
-            },
-        }));
-
-        await this.callApi(apiVersion, `/editorialmetadata`, {
+    create = async (body, apiVersion = 'v2') => {
+        await this.callApi(apiVersion, `/${body?.parentId}/editorials`, {
             method: 'post',
-            body: updatedEditorialMetadata,
+            body,
         }).then(response => {
             this.setCreatedEditorial(response);
         });
     };
 
-    update = async (payload, tenantCode) => {
-        const params = tenantCode ? {tenantCode} : {};
+    update = async payload => {
+        const body = payload?.body;
 
-        await this.callApi('v2', `/editorialmetadata`, {
+        await this.callApi('v2', `/${body?.titleId}/editorials/${body?.id}`, {
             method: 'put',
-            body: payload,
-            params,
+            body,
         }).then(response => {
             this.setUpdatedEditorial(response);
         });
@@ -91,6 +73,7 @@ export default class TitleEditorialService extends HttpService {
     };
 
     /** ***************** Utils *************** */
+
     setEditorialsByTitleId(editorialsByTitleId) {
         this.editorialsByTitleId = editorialsByTitleId;
     }

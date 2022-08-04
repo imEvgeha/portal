@@ -304,7 +304,7 @@ const TitleDetails = ({
         const [movidaUkExternalIds] = getExternaIds('movida-uk');
 
         const updatedTitle = handleTitleCategory(title);
-        const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
+        const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'categories', 'name');
         // v2 consists of object.data and object.meta, merging meta.id to obj
         const updatedTerritorialMetadata = territoryMetadata?.length
             ? territoryMetadata?.map(metadata => {

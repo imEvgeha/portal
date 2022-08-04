@@ -255,19 +255,33 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                         order: i,
                     };
                 });
-        } else if (key === 'category') {
+        } else if (key === 'categories') {
             body[key] =
                 data[key] &&
-                data[key].map((category, index) => {
-                    let categoryValue = category;
-                    if (isObjectLike(category) && get(category, 'value')) {
-                        categoryValue = get(category, 'value');
+                data[key].map((categories, index) => {
+                    let categoryValue = categories;
+                    if (isObjectLike(categories) && get(categories, 'value')) {
+                        categoryValue = get(categories, 'value');
                     }
                     return {
                         name: categoryValue,
                         order: index,
                     };
                 });
+        } else if (key === 'tenantData') {
+            body[key] = {
+                simpleProperties: [
+                    {
+                        name: 'sasktelInventoryId',
+                        value: data?.tenantData.simpleProperties['sasktelInventoryId']?.sasktelInventoryId || '',
+                    },
+                    {
+                        name: 'sasktelLineupId',
+                        value: data?.tenantData.simpleProperties['sasktelLineupId']?.sasktelLineupId || '',
+                    },
+                ],
+            };
+            return body[key];
         } else if (key === 'title' || key === 'synopsis') {
             const obj = data[key];
             if (obj) {
@@ -303,10 +317,8 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
     return isCreate
         ? {
               itemIndex: '1',
-              body: {
-                  decorateEditorialMetadata: hasGeneratedChildren,
-                  editorialMetadata: body,
-              },
+              decorateEditorialMetadata: hasGeneratedChildren,
+              ...body,
           }
         : {
               itemIndex: null,
@@ -321,7 +333,6 @@ export const updateEditorialMetadata = async (values, titleId, selectedTenant) =
         detail: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
-    const {tenantCode} = values;
     const updatedEmets = [];
     const newEmets = [];
     data.forEach(emet => {
@@ -333,14 +344,15 @@ export const updateEditorialMetadata = async (values, titleId, selectedTenant) =
     });
 
     try {
-        if (updatedEmets.length > 0) response = await titleEditorialService.update(updatedEmets, tenantCode);
-        if (newEmets.length > 0) response = await titleEditorialService.create(newEmets);
+        if (updatedEmets.length > 0) {
+            response = updatedEmets.map(async updatedEmet => titleEditorialService.update(updatedEmet));
+            await Promise.all(response);
+        }
 
-        // Temporarily block new version
-        // if (newEmets.length > 0) {
-        //     response = newEmets.map(async emet => titleService.addEditorialMetadata(emet));
-        //     await Promise.all(response);
-        // }
+        if (newEmets.length > 0) {
+            response = newEmets.map(async emet => titleEditorialService.create(emet));
+            await Promise.all(response);
+        }
         if (response && response.length > 0) {
             let toast = errorToast;
             if (!get(response[0], 'response.failed') || get(response[0], 'response.failed').length === 0) {
