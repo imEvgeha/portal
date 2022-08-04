@@ -2,7 +2,6 @@
 import React from 'react';
 import {Button} from '@portal/portal-components';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
-import ToastBody from '@vubiquity-nexus/portal-ui/lib/toast/components/toast-body/ToastBody';
 import {isEmpty} from 'lodash';
 import {store} from '../../../../src';
 
@@ -41,11 +40,8 @@ const apiErrorToast = (error, {errorMessage: customErrorMessage, customErrors}) 
 
     const toast = {
         severity: 'error',
-        content: (
-            <ToastBody summary="Warning" detail={description} severity="error">
-                {!!toastAction && <Button {...toastAction} />}
-            </ToastBody>
-        ),
+        detail: description,
+        content: () => !!toastAction && <Button {...toastAction} />,
     };
 
     store.dispatch(addToast(toast));

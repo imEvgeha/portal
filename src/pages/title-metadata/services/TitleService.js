@@ -36,7 +36,6 @@ export default class TitleService extends HttpService {
             pathParams: id,
             params: tenantCode,
         });
-        // this.lastModified = response[1].get('last-modified');
         this.setTitleById(response);
         return response;
     };

@@ -1,16 +1,13 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
-import TitleEditorialService from './services/TitleEditorialService';
 import TitleService from './services/TitleService';
 import TitleTerittorialService from './services/TitleTerittorialService';
-import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
+import {getTerritoryMetadata} from './titleMetadataActions';
 import {
     MOVIDA,
     NEXUS,
     PROPAGATE_SEASON_PERSONS_SUCCESS,
-    UPDATE_EDITORIAL_METADATA_ERROR,
-    UPDATE_EDITORIAL_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_ERROR,
     UPDATE_TERRITORY_METADATA_SUCCESS,
     VZ,
@@ -18,7 +15,6 @@ import {
 
 const titleServiceSingleton = TitleService.getInstance();
 const titleTerritorialService = TitleTerittorialService.getInstance();
-const titleEditorialService = TitleEditorialService.getInstance();
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
@@ -326,70 +322,25 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
           };
 };
 
-export const updateEditorialMetadata = async (values, titleId, selectedTenant) => {
-    let response = [];
-    const errorToast = {
-        severity: 'error',
-        detail: UPDATE_EDITORIAL_METADATA_ERROR,
-    };
-    const data = values.editorialMetadata || [];
-    const updatedEmets = [];
-    const newEmets = [];
-    data.forEach(emet => {
-        if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-            updatedEmets.push(formatEditorialBody(emet, titleId, false));
-        } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-            newEmets.push(formatEditorialBody(emet, titleId, true));
-        }
-    });
-
-    try {
-        if (updatedEmets.length > 0) {
-            response = updatedEmets.map(async updatedEmet => titleEditorialService.update(updatedEmet));
-            await Promise.all(response);
-        }
-
-        if (newEmets.length > 0) {
-            response = newEmets.map(async emet => titleEditorialService.create(emet));
-            await Promise.all(response);
-        }
-        if (response && response.length > 0) {
-            let toast = errorToast;
-            if (!get(response[0], 'response.failed') || get(response[0], 'response.failed').length === 0) {
-                store.dispatch(getEditorialMetadata({id: titleId, selectedTenant}));
-                toast = {
-                    severity: 'success',
-                    detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
-                };
-            }
-            store.dispatch(addToast(toast));
-        }
-    } catch (error) {
-        store.dispatch(addToast(errorToast));
-    }
-};
-
-export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
-    const response = await titleServiceSingleton.propagateSeasonsPersonsToEpisodes({
-        ...data,
-        seasonId: id,
-    });
-
-    if (response.error) {
-        store.dispatch(
-            addToast({
-                severity: 'error',
-                detail: response.error,
-            })
-        );
-    } else {
-        store.dispatch(
-            addToast({
+export const propagateSeasonsPersonsToEpisodes = (data, id) => {
+    return titleServiceSingleton
+        .propagateSeasonsPersonsToEpisodes({
+            ...data,
+            seasonId: id,
+        })
+        .then(response => {
+            let toast = {
                 severity: 'success',
                 detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
-            })
-        );
-    }
+            };
+            if (response.error) {
+                toast = {
+                    severity: 'error',
+                    detail: response.error,
+                };
+            }
+            store.dispatch(addToast(...toast));
+        });
 };
 
 export const handleDirtyValues = (initialValues, values) => {

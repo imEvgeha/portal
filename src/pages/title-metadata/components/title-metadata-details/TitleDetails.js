@@ -27,10 +27,13 @@ import {
     MOVIDA_INTL,
     SEASON,
     SYNC,
+    UPDATE_EDITORIAL_METADATA_ERROR,
+    UPDATE_EDITORIAL_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_SUCCESS,
     VZ,
 } from '../../constants';
 import TitleConfigurationService from '../../services/TitleConfigurationService';
+import TitleEditorialService from '../../services/TitleEditorialService';
 import TitleService from '../../services/TitleService';
 import TitleTerittorialService from '../../services/TitleTerittorialService';
 import {
@@ -48,6 +51,7 @@ import {
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
 import {
+    formatEditorialBody,
     formatTerritoryBody,
     handleDirtyValues,
     handleEditorialGenresAndCategory,
@@ -56,7 +60,6 @@ import {
     isStateEditable,
     prepareCategoryField,
     propagateSeasonsPersonsToEpisodes,
-    updateEditorialMetadata,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
@@ -193,22 +196,17 @@ const TitleDetails = ({
         const updatePayload = {...updatedValues, id: title?.id};
 
         canUpdateTitle && updateTitleAPI(updatePayload);
-        isTmetUpdated && updateTerritoryMetadata(values?.territorialMetadata, id, selectedTenant);
+        isTmetUpdated && updateTerritoryMetadata(values?.territorialMetadata, id);
+        isEmetUpdated && updateEditorialMetadata(values.editorialMetadata, id);
 
-        Promise.all([
-            // isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
-            // isTmetUpdated && updateTerritoryMetadata(values, id, selectedTenant),
-            isEmetUpdated && updateEditorialMetadata(values, id, selectedTenant),
-            (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
-                propagateSeasonsPersonsToEpisodes(
-                    {
-                        addPersons: propagateAddPersons,
-                        deletePersons: propagateRemovePersons,
-                    },
-                    id
-                ),
-            clearSeasonPersons(),
-        ]).then(res => {
+        const promises = [clearSeasonPersons()];
+
+        if (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) {
+            const data = {addPersons: propagateAddPersons, deletePersons: propagateRemovePersons};
+            promises.push(propagateSeasonsPersonsToEpisodes(data, id));
+        }
+
+        Promise.all(promises).then(res => {
             setVZDisabled(true);
             setMOVDisabled(true);
             setMovIntDisabled(true);
@@ -238,7 +236,7 @@ const TitleDetails = ({
             .then(res => updateTitle({updatePayload: payload, updateResponse: res}));
     };
 
-    const updateTerritoryMetadata = (territorialMetadata = [], titleId, selectedTenant) => {
+    const updateTerritoryMetadata = (territorialMetadata = [], titleId) => {
         const titleTerritorialService = TitleTerittorialService.getInstance();
 
         const promises = [];
@@ -253,23 +251,46 @@ const TitleDetails = ({
             }
         });
 
-        Promise.all(promises).then(
-            () => {
-                getTerritoryMetadata({id: titleId, selectedTenant});
-                const successToast = {
-                    severity: 'success',
-                    detail: UPDATE_TERRITORY_METADATA_SUCCESS,
-                };
-                store.dispatch(addToast(successToast));
-            },
-            () => {
-                // const errorToast = {
-                //     severity: 'error',
-                //     detail: UPDATE_TERRITORY_METADATA_ERROR,
-                // };
-                // store.dispatch(addToast(errorToast));
+        Promise.all(promises).then(() => {
+            getTerritoryMetadata({id: titleId, selectedTenant});
+            const successToast = {
+                severity: 'success',
+                detail: UPDATE_TERRITORY_METADATA_SUCCESS,
+            };
+            store.dispatch(addToast(successToast));
+        });
+    };
+
+    const updateEditorialMetadata = async (editorialMetadata = [], titleId) => {
+        const titleEditorialService = TitleEditorialService.getInstance();
+
+        let toast = {
+            severity: 'error',
+            detail: UPDATE_EDITORIAL_METADATA_ERROR,
+        };
+
+        const data = editorialMetadata || [];
+        const promises = [];
+        data.forEach(emet => {
+            if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
+                const updatedEmet = formatEditorialBody(emet, titleId, false);
+                promises.push(titleEditorialService.update(updatedEmet, errorOptions()));
+            } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
+                const newEmet = formatEditorialBody(emet, titleId, true);
+                promises.push(titleEditorialService.create(newEmet, errorOptions()));
             }
-        );
+        });
+
+        Promise.all(promises).then(res => {
+            if (!get(res[0], 'response.failed') || get(res[0], 'response.failed').length === 0) {
+                getEditorialMetadata({id: titleId, selectedTenant});
+                toast = {
+                    severity: 'success',
+                    detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
+                };
+            }
+            store.dispatch(addToast(toast));
+        });
     };
 
     const getExternaIds = repo => {
