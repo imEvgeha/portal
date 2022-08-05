@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
-import {get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {renderNexusField} from '../utils';
 import {VIEWS} from '../constants';
 
@@ -39,17 +39,32 @@ const NexusArrayCreateModal = ({
         return updateFields;
     };
 
+    const onSubmit = values => {
+        const newTenantDataValues = [];
+        if (!isEmpty(values?.editorial)) {
+            for (const [key, value] of Object.entries(values?.editorial.tenantData)) {
+                if (typeof value === 'string') {
+                    newTenantDataValues.push({
+                        name: key,
+                        value,
+                    });
+                }
+            }
+            values.editorial.tenantData = {
+                simpleProperties: newTenantDataValues,
+            };
+        }
+
+        handleModalSubmit(
+            values?.editorial?.castCrew
+                ? values
+                : {...values, editorial: {...values.editorial, castCrew: initialData?.castCrew || []}}
+        );
+    };
+
     return (
         <div>
-            <AKForm
-                onSubmit={values => {
-                    handleModalSubmit(
-                        values?.editorial?.castCrew
-                            ? values
-                            : {...values, editorial: {...values.editorial, castCrew: initialData?.castCrew || []}}
-                    );
-                }}
-            >
+            <AKForm onSubmit={values => onSubmit(values)}>
                 {({formProps, reset, getValues}) => (
                     <form {...formProps}>
                         <div>
