@@ -156,8 +156,6 @@ export function* updateTitle({payload}) {
             payload: true,
         });
 
-        // const response = yield call(titleServiceInstance.update, payload);
-
         const updatedResponse = yield call(loadParentTitle, payload.updateResponse);
         yield put({
             type: ADD_TOAST,
