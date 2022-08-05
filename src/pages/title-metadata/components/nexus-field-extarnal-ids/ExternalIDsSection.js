@@ -13,7 +13,7 @@ import {isEmpty} from 'lodash';
 import {useFieldArray} from 'react-hook-form';
 import './ExternalIDsSection.scss';
 
-const ExternalIDsSection = ({control, externalDropdownOptions}) => {
+const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
     const {fields, append, remove} = useFieldArray({
         control,
         name: 'externalSystemIds',
@@ -98,7 +98,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions}) => {
         <div className="external-ids-section">
             <div className="row">
                 <div className="col-12">
-                    <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} actions={groupActions()} heading="EXTERNAL IDs" />
+                    <NexusEntity type={NEXUS_ENTITY_TYPES.subsection} actions={groupActions()} heading={header} />
                     {renderGroups()}
                 </div>
             </div>
@@ -109,10 +109,12 @@ const ExternalIDsSection = ({control, externalDropdownOptions}) => {
 ExternalIDsSection.propTypes = {
     control: PropTypes.any.isRequired,
     externalDropdownOptions: PropTypes.object,
+    header: PropTypes.string,
 };
 
 ExternalIDsSection.defaultProps = {
     externalDropdownOptions: {},
+    header: 'EXTERNAL IDs',
 };
 
 export default ExternalIDsSection;

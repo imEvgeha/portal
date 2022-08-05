@@ -11,7 +11,7 @@ import {createTitleMetadataFilterSelector} from './pages/title-metadata/titleMet
 
 const Router = ({routes, titleMetadataFilter, clearTitleMetadataFilter}) => {
     const location = useLocation();
-    if (`/${location.pathname.split('/', 2)[1]}` !== BASE_PATH && !isEmpty(titleMetadataFilter)) {
+    if (`/${location.pathname.split('/', 3)[2]}` !== BASE_PATH && !isEmpty(titleMetadataFilter)) {
         clearTitleMetadataFilter();
     }
     return <Routes>{routes.map(route => buildRoute(route))}</Routes>;
