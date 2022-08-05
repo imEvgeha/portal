@@ -155,7 +155,7 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
                       return (
                           <Button
                               label="View Title"
-                              className="p-button-link p-toast-button-link bg-transparent"
+                              className="p-button-link p-toast-button-link bg-transparent border-0"
                               onClick={() => onViewTitleClick(titleId, routeParams.realm)}
                           />
                       );
