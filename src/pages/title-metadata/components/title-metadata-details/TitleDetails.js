@@ -9,7 +9,7 @@ import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
-import {get, isEmpty} from 'lodash';
+import {get, isEmpty, isEqual, toString, toUpper} from 'lodash';
 import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
 import {useLocation, useParams} from 'react-router-dom';
@@ -81,6 +81,7 @@ const TitleDetails = ({
     clearSeasonPersons,
     externalIdsLoading,
     setExternalIdValues,
+    externalIdOptions,
 }) => {
     const containerRef = useRef();
     const isFetchingExternalIdTypes = useRef(false);
@@ -391,19 +392,19 @@ const TitleDetails = ({
                                 </NexusTooltip>
                             </Restricted>
 
-                            <Restricted resource="titleDetailsActionMenu">
-                                {title.id && (
-                                    <ActionMenu
-                                        titleId={title.id}
-                                        selectedTenant={selectedTenant}
-                                        containerClassName={
-                                            isAllowed('publishTitleMetadata')
-                                                ? 'nexus-c-actions-menu-container-without-buttons'
-                                                : 'nexus-c-actions-menu-container'
-                                        }
-                                    />
-                                )}
-                            </Restricted>
+                            {title.id && (
+                                <ActionMenu
+                                    title={title}
+                                    selectedTenant={selectedTenant}
+                                    containerClassName={
+                                        isAllowed('publishTitleMetadata') ? 'nexus-c-actions-menu-container' : ''
+                                    }
+                                    externalIdOptions={externalIdOptions.find(e =>
+                                        isEqual(toUpper(toString(e.tenantCode)), toUpper(toString(selectedTenant.id)))
+                                    )}
+                                    editorialMetadata={editorialMetadata}
+                                />
+                            )}
                         </NexusStickyFooter.LeftActions>
                     </NexusStickyFooter>
                 </>
@@ -441,6 +442,7 @@ TitleDetails.propTypes = {
     emetLoading: PropTypes.bool,
     externalIdsLoading: PropTypes.bool,
     setExternalIdValues: PropTypes.func.isRequired,
+    externalIdOptions: PropTypes.array,
 };
 
 TitleDetails.defaultProps = {
@@ -471,6 +473,7 @@ TitleDetails.defaultProps = {
     emetLoading: true,
     externalIdsLoading: true,
     configApiEndpoints: [],
+    externalIdOptions: [],
 };
 
 const mapStateToProps = () => {
@@ -489,6 +492,7 @@ const mapStateToProps = () => {
     const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
     const isMovIntTitlePublishingSelector = selectors.createMovIntTitleIsPublishingSelector();
     const settingsConfigEndpointsSelector = settingsSelectors.createSettingsEndpointsSelector();
+    const externalIdSelector = selectors.externalIDTypesSelector();
 
     return (state, props) => ({
         title: titleSelector(state, props),
@@ -508,6 +512,7 @@ const mapStateToProps = () => {
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
         isMovIntTitlePublishing: isMovIntTitlePublishingSelector(state, props),
         configApiEndpoints: settingsConfigEndpointsSelector(state, props),
+        externalIdOptions: externalIdSelector(state),
     });
 };
 

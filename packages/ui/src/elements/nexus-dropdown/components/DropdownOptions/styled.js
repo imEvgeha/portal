@@ -33,7 +33,8 @@ export const Options = styled.ul`
     ${props =>
         props.align === 'top' &&
         css`
-            top: -50px;
+            bottom: 2.2vh;
+            top: auto;
             left: 0;
         `}
 `;

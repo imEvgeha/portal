@@ -1,4 +1,5 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
 import TitleEditorialService from './services/TitleEditorialService';
@@ -19,6 +20,11 @@ import {
 const titleServiceSingleton = TitleService.getInstance();
 const titleTerritorialService = TitleTerittorialService.getInstance();
 const titleEditorialService = TitleEditorialService.getInstance();
+
+export const onViewTitleClick = (titleId, realm) => {
+    const url = `${getDomainName()}/${realm}/metadata/detail/${titleId}`;
+    window.open(url, '_blank');
+};
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');

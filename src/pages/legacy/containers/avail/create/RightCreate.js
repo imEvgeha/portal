@@ -31,6 +31,7 @@ import {PLATFORM_INFORM_MSG} from './RightConstants';
 import {handleMatchingRightsAction} from '../availActions';
 import {createAliasValue, processOptions} from '../util/ProcessSelectOptions';
 import withRouter from '@vubiquity-nexus/portal-ui/lib/hocs/withRouter';
+import {isArray} from 'lodash';
 
 const mapStateToProps = state => {
     return {
@@ -110,7 +111,14 @@ class RightCreate extends React.Component {
             return defaultOptions.map(opt => ({id: opt, type: field, value: opt}));
         }
 
-        const tmpOptions = selectValues?.[key] || availsSelectValues?.[key];
+        const getTmpOptions = () => {
+            if (isArray(selectValues) || isArray(availsSelectValues)) {
+                return selectValues.length ? selectValues : availsSelectValues;
+            }
+            return selectValues?.[key] || availsSelectValues?.[key];
+        };
+
+        const tmpOptions = getTmpOptions();
         return !!endpoint && !!tmpOptions ? processOptions(tmpOptions, endpoint) : tmpOptions;
     };
 
@@ -833,7 +841,7 @@ class RightCreate extends React.Component {
 
         const renderPriceField = (name, displayName, required, value) => {
             let priceTypeOptions = this.getConfigValues(name, 'priceType', '/price-types') || [];
-            let priceCurrencyOptions = this.getConfigValues(name, 'currencies', '/currencies') || [];
+            let priceCurrencyOptions = this.getConfigValues(name, 'priceCurrency', '/priceCurrency') || [];
             let val;
 
             priceTypeOptions = createAliasValue(priceTypeOptions);
