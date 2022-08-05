@@ -1,68 +1,49 @@
 /* eslint-disable no-magic-numbers */
 import React from 'react';
+import {Button} from '@portal/portal-components';
 import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {isEmpty} from 'lodash';
-import {Button} from 'primereact/button';
 import {store} from '../../../../src';
 
-/*
-    Passing errorToasts in param:
-    errorToast for all status codes:
-    errorToast: {title: '', description: ''}
-
-    can pass errorToast for specific error code as follows:
-    errorCodesToast: [{status: 404, title: '', description: ''}, {status: 500, title: '', description: ''}]
-    default error title, icon and autoDismiss are already added
-
-    can pass successToast if needed to show toast on success of a API call
-    default success title, icon and autoDismiss are already added
-    (if successToast is passed then only these are displayed)
-
-    remove toast after 4 seconds
-*/
+const defaultErrors = [
+    {
+        errorCodes: [503],
+        message: 'Unexpected error occurred. Please try again later',
+        toastAction: {
+            label: 'Ok',
+            className: 'p-button-link p-toast-button-link',
+            onClick: () => store.dispatch(removeToast()),
+        },
+    },
+];
 
 const appendCustomMsg = (errorMessage, customMessage) =>
     customMessage ? `${customMessage} Details: ${errorMessage}` : errorMessage;
 
-export const showToastForErrors = (errorObj, {errorToast = null, errorCodesToast = [], errorMessage}) => {
-    const {error, description, message} = errorObj;
+const apiErrorToast = (error, {errorMessage: customErrorMessage, customErrors}) => {
+    const {errorMessage, status} = error;
+    let {description = '', message = ''} = errorMessage || {};
 
-    const fallbackErrorMessage = 'Unexpected error occurred. Please try again later';
+    description ||= message;
+    let toastAction;
 
-    const TOAST_ACTIONS = {
-        codes: [503],
-        title: fallbackErrorMessage,
+    const customError =
+        defaultErrors?.find(entry => entry.errorCodes.includes(status)) ||
+        customErrors?.find(entry => entry.errorCodes === 'all' || entry.errorCodes.includes(status));
+
+    if (customError) {
+        description = customError.message;
+        toastAction = customError.toastAction;
+    } else if (customErrorMessage) {
+        description = appendCustomMsg(description, customErrorMessage);
+    }
+
+    const toast = {
+        severity: 'error',
+        detail: description,
+        content: () => !!toastAction && <Button {...toastAction} />,
     };
 
-    let toast = null;
-    const [err] = errorCodesToast.filter(error => error?.status === error?.code);
-    const errorDetail = description || err?.description || error?.message || message;
-
-    if (err) {
-        toast = {
-            severity: 'error',
-            ...err,
-            description: appendCustomMsg(err.description || error.message, errorMessage),
-        };
-    } else {
-        toast = {
-            severity: 'error',
-            ...(errorToast || {
-                detail: errorDetail,
-                content: () => (
-                    <>
-                        {TOAST_ACTIONS.codes.includes(error?.status) ? (
-                            <Button
-                                label="Ok"
-                                className="p-button-link p-toast-button-link"
-                                onClick={() => store.dispatch(removeToast())}
-                            />
-                        ) : null}
-                    </>
-                ),
-            }),
-        };
-    }
     store.dispatch(addToast(toast));
 };
 
@@ -86,7 +67,7 @@ const handleError = (error, options = {isWithErrorHandling: true}) => {
         };
 
         if (errorOptions.isWithErrorHandling) {
-            showToastForErrors(errorMessage, errorOptions);
+            apiErrorToast(isErrorValid ? error : defaultError, errorOptions);
         }
     }
 

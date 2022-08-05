@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-constructor */
 import {get} from 'lodash';
+import {HeadersEnum} from '../../../util/http/HttpHeaders';
 import HttpService from '../../../util/http/HttpService';
 import TitleSystems from '../../metadata/constants/systems';
 import {CONTENT_TYPE} from '../constants';
@@ -14,7 +15,6 @@ export default class TitleService extends HttpService {
     titleById = {};
     updatedTitle = {};
     createdTitle = {};
-
     /**
      * Initialize new TitleService, if not exist
      * @returns {null} Instance of Singleton Class
@@ -52,17 +52,20 @@ export default class TitleService extends HttpService {
         return response;
     };
 
-    update = async (payload, syncToVZ, syncToMovida) => {
+    update = async (payload, syncToVZ, syncToMovida, errorOptions) => {
         const legacySystemNames = this.getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
 
-        const response = await this.callApi('v2', '', {
+        const options = {
             method: 'put',
             body: payload,
             params,
             pathParams: payload.id,
-        });
-
+            isWithErrorHandling: true,
+            ...errorOptions,
+        };
+        const headersToAttach = [HeadersEnum.IF_UNMODIFIED_SINCE];
+        const response = await this.callApi('v2', '', options, headersToAttach);
         this.setUpdatedTitle(response);
         return response;
     };

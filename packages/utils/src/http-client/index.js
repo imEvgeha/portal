@@ -10,13 +10,14 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT, fetchHe
     const {token} = keycloak;
 
     const allOptions = {
-        headers: {
-            ...(!options.file ? {'Content-type': 'application/json'} : {}),
-            ...(token ? {Authorization: `Bearer ${token}`} : {}),
-        },
         signal,
         method: 'get',
         ...options,
+        headers: {
+            ...(!options.file ? {'Content-type': 'application/json'} : {}),
+            ...(token ? {Authorization: `Bearer ${token}`} : {}),
+            ...options.headers,
+        },
     };
 
     // abort request

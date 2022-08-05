@@ -2,16 +2,13 @@ import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificat
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
-import TitleEditorialService from './services/TitleEditorialService';
 import TitleService from './services/TitleService';
 import TitleTerittorialService from './services/TitleTerittorialService';
-import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
+import {getTerritoryMetadata} from './titleMetadataActions';
 import {
     MOVIDA,
     NEXUS,
     PROPAGATE_SEASON_PERSONS_SUCCESS,
-    UPDATE_EDITORIAL_METADATA_ERROR,
-    UPDATE_EDITORIAL_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_ERROR,
     UPDATE_TERRITORY_METADATA_SUCCESS,
     VZ,
@@ -19,7 +16,6 @@ import {
 
 const titleServiceSingleton = TitleService.getInstance();
 const titleTerritorialService = TitleTerittorialService.getInstance();
-const titleEditorialService = TitleEditorialService.getInstance();
 
 export const onViewTitleClick = (titleId, realm) => {
     const url = `${getDomainName()}/${realm}/metadata/detail/${titleId}`;
@@ -188,7 +184,7 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     );
 };
 
-const formatTerritoryBody = data => {
+export const formatTerritoryBody = data => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined) body[key] = null;
@@ -332,83 +328,47 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
           };
 };
 
-export const updateEditorialMetadata = async (values, titleId, selectedTenant) => {
-    let response = [];
-    const errorToast = {
-        severity: 'error',
-        detail: UPDATE_EDITORIAL_METADATA_ERROR,
-    };
-    const data = values.editorialMetadata || [];
-    const updatedEmets = [];
-    const newEmets = [];
-    data.forEach(emet => {
-        if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-            updatedEmets.push(formatEditorialBody(emet, titleId, false));
-        } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-            newEmets.push(formatEditorialBody(emet, titleId, true));
-        }
-    });
-
-    try {
-        if (updatedEmets.length > 0) {
-            response = updatedEmets.map(async updatedEmet => titleEditorialService.update(updatedEmet));
-            await Promise.all(response);
-        }
-
-        if (newEmets.length > 0) {
-            response = newEmets.map(async emet => titleEditorialService.create(emet));
-            await Promise.all(response);
-        }
-        if (response && response.length > 0) {
-            let toast = errorToast;
-            if (!get(response[0], 'response.failed') || get(response[0], 'response.failed').length === 0) {
-                store.dispatch(getEditorialMetadata({id: titleId, selectedTenant}));
-                toast = {
-                    severity: 'success',
-                    detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
-                };
-            }
-            store.dispatch(addToast(toast));
-        }
-    } catch (error) {
-        store.dispatch(addToast(errorToast));
-    }
-};
-
-export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
-    const response = await titleServiceSingleton.propagateSeasonsPersonsToEpisodes({
-        ...data,
-        seasonId: id,
-    });
-
-    if (response.error) {
-        store.dispatch(
-            addToast({
-                severity: 'error',
-                detail: response.error,
-            })
-        );
-    } else {
-        store.dispatch(
-            addToast({
+export const propagateSeasonsPersonsToEpisodes = (data, id) => {
+    return titleServiceSingleton
+        .propagateSeasonsPersonsToEpisodes({
+            ...data,
+            seasonId: id,
+        })
+        .then(response => {
+            let toast = {
                 severity: 'success',
                 detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
-            })
-        );
-    }
+            };
+            if (response.error) {
+                toast = {
+                    severity: 'error',
+                    detail: response.error,
+                };
+            }
+            store.dispatch(addToast(...toast));
+        });
 };
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
-    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'editorial', 'movidaUkExternalIds', 'territorial'];
+    const unnecessaryValues = [
+        'vzExternalIds',
+        'movidaExternalIds',
+        'editorial',
+        'movidaUkExternalIds',
+        'territorial',
+        'editorialMetadata',
+        'territorialMetadata',
+    ];
     const isTitleChanged = Object.keys(cleanValues).some(item => {
         const initialItem = initialValues?.[item] === undefined ? null : initialValues?.[item];
         const cleanItem = cleanValues?.[item];
-        if (unnecessaryValues.includes(item)) return false;
+        if (unnecessaryValues.includes(item)) {
+            return false;
+        }
         if (Array.isArray(initialItem) && Array.isArray(cleanItem)) {
             return !isEqual(initialItem.length, cleanItem.length);
         }
-
         return !isEqual(initialItem, cleanItem);
     });
 
@@ -429,7 +389,7 @@ const handleDirtyRatingsValues = values => {
         advisoriesCode,
         advisoriesFreeText,
     };
-    const index = values?.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
+    const index = values?.ratings?.findIndex(elem => elem.ratingSystem === ratingSystem);
     if (index !== null && index >= 0) {
         values.ratings[index] = updatedRatingRecord;
     }

@@ -1,4 +1,5 @@
 /* eslint-disable no-useless-constructor */
+import {HeadersEnum} from '../../../util/http/HttpHeaders';
 import HttpService from '../../../util/http/HttpService';
 
 export default class TitleEditorialService extends HttpService {
@@ -7,6 +8,7 @@ export default class TitleEditorialService extends HttpService {
     editorialsByTitleId = [];
     createdEditorial = {};
     updatedEditorial = {};
+    lastModified = undefined;
 
     /**
      * Initialize new TitleService, if not exist
@@ -31,24 +33,40 @@ export default class TitleEditorialService extends HttpService {
         return response;
     };
 
-    create = async (body, apiVersion = 'v2') => {
-        await this.callApi(apiVersion, `/${body?.parentId}/editorials`, {
-            method: 'post',
-            body,
-        }).then(response => {
-            this.setCreatedEditorial(response);
-        });
+    create = async (body, errorOptions = {}, apiVersion = 'v2') => {
+        const headersToAttach = [HeadersEnum.IF_UNMODIFIED_SINCE];
+
+        const response = await this.callApi(
+            apiVersion,
+            `/${body?.parentId}/editorials`,
+            {
+                method: 'post',
+                body,
+                ...errorOptions,
+            },
+            headersToAttach
+        );
+
+        this.setCreatedEditorial(response);
+        return response;
     };
 
-    update = async payload => {
+    update = async (payload, errorOptions) => {
+        const headersToAttach = [HeadersEnum.IF_UNMODIFIED_SINCE];
         const body = payload?.body;
 
-        await this.callApi('v2', `/${body?.titleId}/editorials/${body?.id}`, {
-            method: 'put',
-            body,
-        }).then(response => {
-            this.setUpdatedEditorial(response);
-        });
+        const response = await this.callApi(
+            'v2',
+            `/${body?.titleId}/editorials/${body?.id}`,
+            {
+                method: 'put',
+                body,
+                ...errorOptions,
+            },
+            headersToAttach
+        );
+        this.setUpdatedEditorial(response);
+        return response;
     };
 
     /** ***************** Other APIS *************** */

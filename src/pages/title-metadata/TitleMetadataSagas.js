@@ -150,18 +150,13 @@ export function* loadEditorialMetadata({payload}) {
 }
 
 export function* updateTitle({payload}) {
-    if (!payload.id) {
-        return;
-    }
-
     try {
         yield put({
             type: rightActionTypes.SAVING,
             payload: true,
         });
 
-        const response = yield call(titleServiceInstance.update, payload);
-        const updatedResponse = yield call(loadParentTitle, response);
+        const updatedResponse = yield call(loadParentTitle, payload.updateResponse);
         yield put({
             type: ADD_TOAST,
             payload: {
@@ -191,10 +186,12 @@ export function* updateTitle({payload}) {
             type: rightActionTypes.SAVING,
             payload: false,
         });
+
+        return error;
     } finally {
         yield put({
             type: actionTypes.GET_TITLE,
-            payload: {...payload},
+            payload: {...payload.updatePayload},
         });
     }
 }

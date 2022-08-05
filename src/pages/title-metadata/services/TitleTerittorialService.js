@@ -1,4 +1,5 @@
 /* eslint-disable no-useless-constructor */
+import {HeadersEnum} from '../../../util/http/HttpHeaders';
 import HttpService from '../../../util/http/HttpService';
 
 export default class TitleTerittorialService extends HttpService {
@@ -25,31 +26,45 @@ export default class TitleTerittorialService extends HttpService {
 
     /** CRUD APIs * */
     getByTitleId = async id => {
-        const response = await this.callApi('v2', `/${id}/territories`);
+        const response = await this.callApi('v2', `/${id}/territories`, {});
         this.setTerritorialsByTitleId(response);
         return response;
     };
 
-    create = async (body, titleId) => {
+    create = async (body, titleId, errorOptions) => {
         // delete payload.parentId;
         delete body.territoryType;
+        const headersToAttach = [HeadersEnum.IF_UNMODIFIED_SINCE];
 
-        await this.callApi('v2', ``, {
-            method: 'post',
-            pathParams: `${titleId}/territories`,
-            body,
-        }).then(response => {
-            this.setCreatedTerritorial(response);
-        });
+        const response = await this.callApi(
+            'v2',
+            ``,
+            {
+                method: 'post',
+                pathParams: `${titleId}/territories`,
+                body,
+                ...errorOptions,
+            },
+            headersToAttach
+        );
+
+        this.setCreatedTerritorial(response);
+        return response;
     };
 
-    update = async (body, titleId, tmetId) => {
-        const response = await this.callApi('v2', `/${titleId}/territories/${tmetId}`, {
-            method: 'put',
-            body,
-        }).then(response => {
-            this.setUpdatedTerritorial(response);
-        });
+    update = async (body, titleId, tmetId, errorOptions) => {
+        const headersToAttach = [HeadersEnum.IF_UNMODIFIED_SINCE];
+
+        const response = await this.callApi(
+            'v2',
+            `/${titleId}/territories/${tmetId}`,
+            {
+                method: 'put',
+                body,
+                ...errorOptions,
+            },
+            headersToAttach
+        );
         this.setUpdatedTerritorial(response);
         return response;
     };
