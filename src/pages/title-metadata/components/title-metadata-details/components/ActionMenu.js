@@ -10,12 +10,13 @@ import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-m
 import './ActionMenu.scss';
 import {unmergeTitle} from '../../../titleMetadataServices';
 import TitleCreateCopyModal from '../../titleCreateCopyModal/TitleCreateCopyModal';
+import {CONTENT_TYPES} from '../../titleCreateModal/TitleCreateModalConstants';
 
 const UNMERGE_TITLE = 'Unmerge';
 const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
 const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMetadata, selectedTenant}) => {
-    const contentTypesCrateCopyArray = ['movie', 'documentary'];
+    const contentTypesCrateCopyArray = [CONTENT_TYPES.MOVIE.toLowerCase(), CONTENT_TYPES.DOCUMENTARY.toLowerCase()];
     const {roles} = selectedTenant;
     const {openModal, closeModal} = useContext(NexusModalContext);
     const isAbleSeeUnmergeBtn = roles.includes('metadata_legacy_unmerge');
