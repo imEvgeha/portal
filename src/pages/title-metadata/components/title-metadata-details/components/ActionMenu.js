@@ -17,10 +17,11 @@ const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
 const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMetadata}) => {
     const contentTypesCrateCopyArray = ['movie', 'documentary'];
+    const dropdownOption = {copyDesc: 'Copy...', unmergeDesc: 'Unmerge'};
+
     const {openModal, closeModal} = useContext(NexusModalContext);
     const isAbleCreateCopy = contentTypesCrateCopyArray.includes(toLower(toString(title.contentType)));
     const isDropDownActionVisible = isAllowed('unmergeTitleAction') || isAbleCreateCopy;
-
     const [displayModal, setDisplayModal] = React.useState(false);
 
     const openUnmergeDialog = useCallback(() => {
@@ -57,13 +58,13 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
                     {isAbleCreateCopy && (
                         <Restricted resource="createTitleCopyButton">
                             <DropdownOption value="copy" onSelect={() => setDisplayModal(true)}>
-                                <i className="pi pi-copy" /> Copy...
+                                <i className="pi pi-copy" /> {dropdownOption.copyDesc}
                             </DropdownOption>
                         </Restricted>
                     )}
                     <Restricted resource="unmergeTitleAction">
                         <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
-                            Unmerge
+                            {dropdownOption.unmergeDesc}
                         </DropdownOption>
                     </Restricted>
                 </DropdownOptions>
