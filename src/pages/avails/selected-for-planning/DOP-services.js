@@ -11,12 +11,15 @@ const DOPService = {
     getSecurityTicket: token => {
         const uri = `/services/LoginWithKeycloak`;
         const url = getApiURI('dopPortal', uri, 0);
-        return nexusFetch(
-            url,
-            {method: 'post', credentials: 'include', body: JSON.stringify(token)},
-            DEFAULT_TIMEOUT,
-            true
-        );
+        const realm = window.location.pathname.split('/')[1];
+        if (realm === 'Vubiquity') {
+            return nexusFetch(
+                url,
+                {method: 'post', credentials: 'include', body: JSON.stringify(token)},
+                DEFAULT_TIMEOUT,
+                true
+            );
+        }
     },
     getUsersProjectsList: (externalFilter, offset = 1, limit = PAGE_SIZE) => {
         const url = getApiURI('dop', '/projectManagement/project/search', 0);
