@@ -10,7 +10,7 @@
             "baseURL": "https://dop{{subdomain}}.vubiquity.com:8045"
         },
         "dopInternal": {
-            "baseURL": "https://vuapi{{subdomain}}.vubiquity.com/vubiquity/dops"
+            "baseURL": "https://vuapi{{subdomain}}.vubiquity.com/vubiquity/dop"
         }
     },
     "sso": {
