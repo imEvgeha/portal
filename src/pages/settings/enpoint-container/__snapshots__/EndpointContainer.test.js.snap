@@ -56,6 +56,7 @@ exports[`EndpointContainer should match snapshot 1`] = `
                   tooltip={null}
                   tooltipOptions={null}
                   validateOnly={false}
+                  value=""
                 />
               </span>
             </div>
