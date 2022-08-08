@@ -271,18 +271,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                     };
                 });
         } else if (key === 'tenantData') {
-            body[key] = {
-                simpleProperties: [
-                    {
-                        name: 'sasktelInventoryId',
-                        value: data?.tenantData.simpleProperties['sasktelInventoryId']?.sasktelInventoryId || '',
-                    },
-                    {
-                        name: 'sasktelLineupId',
-                        value: data?.tenantData.simpleProperties['sasktelLineupId']?.sasktelLineupId || '',
-                    },
-                ],
-            };
+            body[key] = data?.tenantData;
             return body[key];
         } else if (key === 'title' || key === 'synopsis') {
             const obj = data[key];
@@ -423,10 +412,12 @@ const handleDirtyEMETValues = (initialValues, values) => {
             });
 
         if (index !== null && index >= 0) {
+            delete editorial?.tenantData;
             const cleanEditorial = cleanObject(editorial);
             const isUpdated = Object.keys(cleanEditorial).some(
                 item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
             );
+
             values.editorialMetadata[index] = {
                 ...values.editorialMetadata[index],
                 ...editorial,

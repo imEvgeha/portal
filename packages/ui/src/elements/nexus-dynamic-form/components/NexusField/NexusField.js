@@ -155,10 +155,9 @@ const NexusField = ({
      * @returns {string} return value of type string
      */
     const findValue = (fieldProps, addedProps) => {
-        if (addedProps?.pathName && Array.isArray(fieldProps?.value)) {
-            return fieldProps?.value.find(x => x.name === addedProps.pathName)?.value || '';
-        } else if (addedProps?.pathName && typeof fieldProps?.value === 'object' && fieldProps?.value !== null) {
-            return fieldProps?.value[addedProps.pathName];
+        if (addedProps?.pathName && typeof fieldProps?.value === 'object' && fieldProps?.value !== null) {
+            const newValue = fieldProps?.value.find(x => x.name === addedProps.pathName);
+            return newValue?.value;
         }
         return fieldProps?.value;
     };
