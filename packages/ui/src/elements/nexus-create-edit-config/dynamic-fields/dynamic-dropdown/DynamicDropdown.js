@@ -51,7 +51,7 @@ const DynamicDropdown = ({elementSchema, formField, change, form, cache, dataApi
     };
 
     const processOptions = (rawOptions, field) => {
-        const items = sortBy(rawOptions?.map(rec => convertDataToOption(rec, field.source)) || [], ['label']);
+        const items = sortBy(rawOptions?.map(rec => convertDataToOption(rec, field?.source)) || [], ['label']);
         setOptions(items);
     };
 
