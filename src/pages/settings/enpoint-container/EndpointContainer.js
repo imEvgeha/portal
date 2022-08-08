@@ -29,7 +29,7 @@ const EndpointContainer = ({endpoint}) => {
     const [endpointsLoading, setEndpointsLoading] = useState(false);
     const [totalRecords, setTotalRecords] = useState(undefined);
     const [page, setPage] = useState(0);
-    const [searchTerm, setSearchTerm] = useState();
+    const [searchTerm, setSearchTerm] = useState('');
     const [showEditConfigModal, setShowEditConfigModal] = useState(false);
     const [selectedConfig, setSelectedConfig] = useState(undefined);
     const [submitLoading, setSubmitLoading] = useState(false);
@@ -91,7 +91,7 @@ const EndpointContainer = ({endpoint}) => {
 
     const searchTermDebounce = useDebounce(() => loadEndpointData(page, getSearchField(), searchTerm), 500);
 
-    useEffect(() => (searchTerm ? searchTermDebounce : initValues()), [searchTerm]);
+    useEffect(() => (searchTerm ? searchTermDebounce() : initValues()), [searchTerm]);
 
     const onSearchTermChanged = e => {
         initValues();
