@@ -91,7 +91,7 @@ const EndpointContainer = ({endpoint}) => {
 
     const searchTermDebounce = useDebounce(() => loadEndpointData(page, getSearchField(), searchTerm), 500);
 
-    useEffect(() => (searchTerm ? searchTermDebounce() : initValues()), [searchTerm]);
+    useEffect(() => (searchTerm?.length ? searchTermDebounce() : initValues()), [searchTerm]);
 
     const onSearchTermChanged = e => {
         initValues();
