@@ -19,7 +19,7 @@ const DOPService = {
         );
     },
     getUsersProjectsList: (externalFilter, offset = 1, limit = PAGE_SIZE) => {
-        const url = getApiURI('dop', '/projectManagement/project/search');
+        const url = getApiURI('dop', '/projectManagement/project/search', 0);
         const payload = getInitialSearchPayload(getUsername(store.getState()), offset, limit);
         const body = prepareFilters(payload, externalFilter);
         return nexusFetch(
@@ -30,7 +30,7 @@ const DOPService = {
         );
     },
     getProjectAttributes: (projectIds = []) => {
-        const url = getApiURI('dop', '/projectManagement/projectAttribute');
+        const url = getApiURI('dop', '/projectManagement/projectAttribute', 0);
         const body = {
             filterCriterion: [
                 {
@@ -78,7 +78,7 @@ const DOPService = {
         };
     },
     createProject: data => {
-        const url = getApiURI('dop', '/projectManagement/project');
+        const url = getApiURI('dop', '/projectManagement/project', 0);
         return nexusFetch(url, {
             method: 'POST',
             credentials: 'include',
@@ -87,7 +87,7 @@ const DOPService = {
     },
     startProject: projectId => {
         const uri = `/projectManagement/project/${projectId}/start`;
-        const url = getApiURI('dop', uri);
+        const url = getApiURI('dop', uri, 0);
         // TODO: Error handling if necessary
         return nexusFetch(url, {method: 'post', credentials: 'include'});
     },
