@@ -489,7 +489,6 @@ const TitleDetails = ({
                             {title.id && (
                                 <ActionMenu
                                     title={title}
-                                    selectedTenant={selectedTenant}
                                     containerClassName={
                                         isAllowed('publishTitleMetadata') ? 'nexus-c-actions-menu-container' : ''
                                     }
