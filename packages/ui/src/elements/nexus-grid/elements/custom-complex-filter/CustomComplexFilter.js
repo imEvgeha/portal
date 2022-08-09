@@ -33,20 +33,27 @@ const CustomComplexFilter = forwardRef((props, ref) => {
 
     // expose AG Grid Filter Lifecycle callbacks
     useImperativeHandle(ref, () => {
+        const updatedValues = {};
+        Object.keys(currentValues).forEach(key => {
+            if (currentValues[key]) {
+                updatedValues[key] = key.toLowerCase().includes('list') ? [currentValues[key]] : currentValues[key];
+            }
+        });
+
         return {
             doesFilterPass() {
                 return true;
             },
 
             isFilterActive() {
-                return !!currentValues;
+                return !!updatedValues;
             },
 
             getModel() {
-                if (currentValues) {
+                if (updatedValues) {
                     return {
                         type: 'equals',
-                        filter: currentValues?.filter || currentValues,
+                        filter: updatedValues?.filter || updatedValues,
                     };
                 }
             },
