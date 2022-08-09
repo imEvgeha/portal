@@ -55,7 +55,7 @@ const NexusUploadButton = ({
     };
 
     return (
-        <Restricted resource="createNewTitleButton">
+        <Restricted resource="availsIngestUploadButton">
             <div
                 className={
                     modalCallback(modalCallbackData) === undefined ? 'ingest-upload-with-border' : 'ingest-upload'
