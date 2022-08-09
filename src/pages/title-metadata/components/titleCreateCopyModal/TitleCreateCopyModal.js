@@ -1,19 +1,21 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {InputText, Dialog, Button} from '@portal/portal-components';
+import {Button, Dialog, InputText} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {FormProvider, useForm, useWatch} from 'react-hook-form';
 import {useNavigate, useParams} from 'react-router-dom';
-import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
-import {titleService as titleMetadataServices} from '../../titleMetadataServices';
-import {onViewTitleClick, formatEditorialBody} from '../../utils';
+import TitleEditorialService from '../../services/TitleEditorialService';
+import TitleService from '../../services/TitleService';
+import {formatEditorialBody, onViewTitleClick} from '../../utils';
 import ExternalIDsSection from '../nexus-field-extarnal-ids/ExternalIDsSection';
 import constants from '../titleCreateModal/TitleCreateModalConstants';
 import './TitleCreateCopyModal.scss';
 
 const arrayDeletedEmetKeys = ['createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'hasGeneratedChildren', 'type', 'id'];
+const titleServiceSingleton = TitleService.getInstance();
+const titleEditorialService = TitleEditorialService.getInstance();
 
 const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptions, addToast, editorialMetadata}) => {
     const initialValues = {
@@ -98,8 +100,8 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
     };
 
     const saveTitle = titleForm => {
-        titleService
-            .createTitleV2(titleForm)
+        titleServiceSingleton
+            .create(titleForm)
             .then(response => {
                 const titleId = response.meta.id;
                 if (editorialMetadata?.length > 0) {
@@ -225,7 +227,7 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
 
     /**
      * Create editorial metadata
-     * @param {*} values
+     * @param {*} editorialMetadata
      * @param {*} titleId
      */
     const createEditorialMetadata = async (editorialMetadata, titleId) => {
@@ -234,7 +236,18 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
             : [];
 
         if (newEmets.length > 0) {
-            titleMetadataServices.addEditorialMetadataV1(newEmets, title.tenantCode).then(() => {
+            const updatedEditorialMetadata = newEmets.map(item => ({
+                ...item,
+                body: {
+                    ...item?.body,
+                    editorialMetadata: {
+                        ...item?.body?.editorialMetadata,
+                        type: 'editorialMetadata',
+                    },
+                },
+            }));
+            // call create api
+            titleEditorialService.create(updatedEditorialMetadata).then(() => {
                 successCreateCopyTitle(titleId);
             });
         }

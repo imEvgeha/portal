@@ -7,16 +7,17 @@ import NexusDropdown, {
     DropdownToggle,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import {toString, toLower} from 'lodash';
+import {toLower, toString} from 'lodash';
 import './ActionMenu.scss';
 import {unmergeTitle} from '../../../titleMetadataServices';
 import TitleCreateCopyModal from '../../titleCreateCopyModal/TitleCreateCopyModal';
+import {CONTENT_TYPES} from '../../titleCreateModal/TitleCreateModalConstants';
 
 const UNMERGE_TITLE = 'Unmerge';
 const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
 const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMetadata}) => {
-    const contentTypesCrateCopyArray = ['movie', 'documentary'];
+    const contentTypesCrateCopyArray = [CONTENT_TYPES.MOVIE.toLowerCase(), CONTENT_TYPES.DOCUMENTARY.toLowerCase()];
     const dropdownOption = {copyDesc: 'Copy...', unmergeDesc: 'Unmerge'};
 
     const {openModal, closeModal} = useContext(NexusModalContext);
