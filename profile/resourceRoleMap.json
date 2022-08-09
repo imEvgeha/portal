@@ -143,6 +143,10 @@
         "operation": "OR",
         "values": ["avails_user", "avails_admin"]
     },
+    "availsIngestUploadButton": {
+        "operation": "OR",
+        "values": ["avails_user", "avails_admin"]
+    },
     "titleMetadataMenuIcon": {
         "operation": "OR",
         "values": ["metadata_view"]
