@@ -353,10 +353,10 @@ const NexusField = ({
 
                 return fieldProps.value || !dateProps.isReadOnly ? (
                     <DateTimeWithOptional
+                        onChange={onChange(getCurrentValues())}
                         {...fieldProps}
                         {...dateProps}
                         id={generateElementIds(fieldProps, addedProps)}
-                        onChange={onChange(getCurrentValues())}
                         isReadOnly={isWithDrawnReadOnly}
                         territoryLenght={hasWithDrawnDate && formData?.territory?.length}
                     />
