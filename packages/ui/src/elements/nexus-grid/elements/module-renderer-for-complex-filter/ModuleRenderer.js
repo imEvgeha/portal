@@ -66,12 +66,6 @@ const ModuleRenderer = ({item, formDetails}) => {
                         required={item.required}
                         control={control}
                         register={register}
-                        additionalValidation={{
-                            pattern: {
-                                value: /^\d{0,6}(\.\d{1,2})?$/,
-                                message: 'Please enter a valid number!',
-                            },
-                        }}
                     >
                         <InputText id={item.id} placeholder={`Enter a ${labelName}`} autoFocus />
                     </ControllerWrapper>

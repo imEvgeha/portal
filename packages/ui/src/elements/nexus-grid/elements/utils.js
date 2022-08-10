@@ -32,12 +32,11 @@ export const AudioLanguageTypeFormSchema = ({languages, audioTypes}) => {
 export const PriceTypeFormSchema = ({priceTypes, currencies}) => {
     return [
         {
-            id: 'priceType',
+            id: 'priceTypeList',
             label: 'Price Type',
-            name: 'priceType',
+            name: 'priceTypeList',
             type: 'select',
             shouldFitContainer: true,
-            required: true,
             options: [
                 {
                     items: priceTypes,
@@ -45,17 +44,16 @@ export const PriceTypeFormSchema = ({priceTypes, currencies}) => {
             ],
         },
         {
-            id: 'priceValue',
+            id: 'priceValueMatch',
             label: 'Price Value',
-            name: 'priceValue',
+            name: 'priceValueMatch',
             type: 'text',
             shouldFitContainer: true,
-            required: true,
         },
         {
-            id: 'priceCurrency',
+            id: 'priceCurrencyList',
             label: 'Price Currency',
-            name: 'priceCurrency',
+            name: 'priceCurrencyList',
             type: 'select',
             shouldFitContainer: true,
             options: [
