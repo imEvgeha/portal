@@ -1,6 +1,6 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
+import {cloneDeep, get, isEmpty, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
 import TitleService from './services/TitleService';
 import TitleTerittorialService from './services/TitleTerittorialService';
@@ -364,6 +364,7 @@ export const handleDirtyValues = (initialValues, values) => {
     handleDirtyRatingsValues(values);
     handleDirtyEMETValues(initialValues, values);
     handleDirtyTMETValues(initialValues, values);
+    handleDirtySasktelValues(initialValues, values);
     values.isUpdated = isTitleChanged;
 };
 
@@ -412,7 +413,8 @@ const handleDirtyEMETValues = (initialValues, values) => {
             });
 
         if (index !== null && index >= 0) {
-            delete editorial?.tenantData;
+            editorial.tenantData = handleDirtySasktelValues(initialValues, values);
+
             const cleanEditorial = cleanObject(editorial);
             const isUpdated = Object.keys(cleanEditorial).some(
                 item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
@@ -434,6 +436,47 @@ const handleDirtyEMETValues = (initialValues, values) => {
             }
         });
     }
+};
+
+const handleDirtySasktelValues = (initialValues, values) => {
+    let editorialTenantData = values?.editorial.tenantData;
+    let newTenantDataValues = [];
+    const newUpdatedData = [];
+    if (!isEmpty(editorialTenantData)) {
+        for (const [key, value] of Object.entries(editorialTenantData)) {
+            if (typeof value === 'string') {
+                newUpdatedData.push({
+                    name: key,
+                    value,
+                });
+            }
+
+            if (Array.isArray(value) && value.length) {
+                newTenantDataValues = newUpdatedData.concat(value);
+            }
+        }
+
+        if (newTenantDataValues.length && newUpdatedData.length) {
+            newTenantDataValues = newUpdatedData.concat(newTenantDataValues);
+        }
+
+        const valuesToFilter = newTenantDataValues.length ? newTenantDataValues : newUpdatedData;
+        const uniqueNames = new Set();
+
+        const uniqueSasktels = valuesToFilter.filter(element => {
+            const isDuplicate = uniqueNames.has(element.name);
+
+            uniqueNames.add(element.name);
+
+            return !isDuplicate;
+        });
+
+        editorialTenantData = {
+            simpleProperties: uniqueSasktels,
+        };
+    }
+
+    return editorialTenantData;
 };
 
 const handleDirtyTMETValues = (initialValues, values) => {
