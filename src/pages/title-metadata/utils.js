@@ -1,6 +1,6 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {cloneDeep, get, isEmpty, isEqual, isObjectLike} from 'lodash';
+import {cloneDeep, get, isArray, isEmpty, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
 import TitleService from './services/TitleService';
 import TitleTerittorialService from './services/TitleTerittorialService';
@@ -340,6 +340,12 @@ export const propagateSeasonsPersonsToEpisodes = (data, id) => {
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
+    const updatedInitialValues = {
+        ...initialValues,
+        rating: values?.ratings?.[0]?.rating,
+        ratingSystem: values?.ratings?.[0]?.ratingSystem,
+        advisoriesFreeText: values?.ratings?.[0]?.advisoriesFreeText,
+    };
     const unnecessaryValues = [
         'vzExternalIds',
         'movidaExternalIds',
@@ -348,14 +354,16 @@ export const handleDirtyValues = (initialValues, values) => {
         'territorial',
         'editorialMetadata',
         'territorialMetadata',
+        'boxOfficeOpen',
     ];
-    const isTitleChanged = Object.keys(cleanValues).some(item => {
-        const initialItem = initialValues?.[item] === undefined ? null : initialValues?.[item];
+
+    const isTitleChanged = [...Object.keys(cleanValues), 'ratings'].some(item => {
+        const initialItem = updatedInitialValues?.[item] === undefined ? null : updatedInitialValues?.[item];
         const cleanItem = cleanValues?.[item];
         if (unnecessaryValues.includes(item)) {
             return false;
         }
-        if (Array.isArray(initialItem) && Array.isArray(cleanItem)) {
+        if (isArray(initialItem) && isArray(cleanItem)) {
             return !isEqual(initialItem.length, cleanItem.length);
         }
         return !isEqual(initialItem, cleanItem);
@@ -416,9 +424,12 @@ const handleDirtyEMETValues = (initialValues, values) => {
             editorial.tenantData = handleDirtySasktelValues(initialValues, values);
 
             const cleanEditorial = cleanObject(editorial);
-            const isUpdated = Object.keys(cleanEditorial).some(
-                item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
-            );
+            const isUpdated = Object.keys(cleanEditorial).some(item => {
+                if (item === 'tenantData') {
+                    return false;
+                }
+                return !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item]);
+            });
 
             values.editorialMetadata[index] = {
                 ...values.editorialMetadata[index],
