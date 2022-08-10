@@ -979,9 +979,9 @@
                                         "localized": "genre"
                                     }
                                 },
-                                "editorial.category": {
+                                "editorial.categories": {
                                     "name": "Category",
-                                    "path": "category",
+                                    "path": "categories",
                                     "type": "multiselect"
                                 },
                                 "editorial.title.title": {
@@ -1040,11 +1040,11 @@
                                     "path": "title.sortTitle",
                                     "type": "string"
                                 },
-                                "editorial.synopsis.shortDescription": {
+                                "editorial.synopsis.shortSynopsis": {
                                     "name": "Short Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.shortDescription",
+                                    "path": "synopsis.shortSynopsis",
                                     "type": "textarea",
                                     "dependencies": [
                                         {
@@ -1069,11 +1069,11 @@
                                         }
                                     ]
                                 },
-                                "editorial.synopsis.description": {
+                                "editorial.synopsis.mediumSynopsis": {
                                     "name": "Medium Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.description",
+                                    "path": "synopsis.mediumSynopsis",
                                     "type": "textarea",
                                     "dependencies": [
                                         {
@@ -1098,11 +1098,11 @@
                                         }
                                     ]
                                 },
-                                "editorial.synopsis.longDescription": {
+                                "editorial.synopsis.longSynopsis": {
                                     "name": "Long Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.longDescription",
+                                    "path": "synopsis.longSynopsis",
                                     "type": "textarea"
                                 },
                                 "editorial.copyright": {
@@ -1110,14 +1110,16 @@
                                     "path": "copyright",
                                     "type": "string"
                                 },
-                                "editorial.sasktelInventoryId": {
+                                "editorial.tenantData.sasktelInventoryId": {
                                     "name": "Sasktel Inventory ID",
-                                    "path": "sasktelInventoryId",
+                                    "path": "tenantData.simpleProperties",
+                                    "pathName": "sasktelInventoryId",
                                     "type": "string"
                                 },
-                                "editorial.sasktelLineupId": {
+                                "editorial.tenantData.sasktelLineupId": {
                                     "name": "Sasktel Lineup ID",
-                                    "path": "sasktelLineupId",
+                                    "path": "tenantData.simpleProperties",
+                                    "pathName": "sasktelLineupId",
                                     "type": "string"
                                 },
                                 "editorial.castCrew": {

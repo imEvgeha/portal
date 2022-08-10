@@ -1,19 +1,21 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
+import {cloneDeep, get, isEmpty, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
-import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
-import {titleService} from './titleMetadataServices';
+import TitleService from './services/TitleService';
+import TitleTerittorialService from './services/TitleTerittorialService';
+import {getTerritoryMetadata} from './titleMetadataActions';
 import {
     MOVIDA,
     NEXUS,
     PROPAGATE_SEASON_PERSONS_SUCCESS,
-    UPDATE_EDITORIAL_METADATA_ERROR,
-    UPDATE_EDITORIAL_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_ERROR,
     UPDATE_TERRITORY_METADATA_SUCCESS,
     VZ,
 } from './constants';
+
+const titleServiceSingleton = TitleService.getInstance();
+const titleTerritorialService = TitleTerittorialService.getInstance();
 
 export const onViewTitleClick = (titleId, realm) => {
     const url = `${getDomainName()}/${realm}/metadata/detail/${titleId}`;
@@ -41,7 +43,7 @@ export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
 
 export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedParams, body, selectedTenant) => {
     try {
-        const response = await titleService.advancedSearch(
+        const response = await titleServiceSingleton.advancedSearchTitles(
             searchCriteria,
             offset,
             limit,
@@ -182,7 +184,7 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     );
 };
 
-const formatTerritoryBody = data => {
+export const formatTerritoryBody = data => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined) body[key] = null;
@@ -217,11 +219,11 @@ export const updateTerritoryMetadata = async (values, titleId, selectedTenant) =
                     const body = formatTerritoryBody(tmet);
                     const {id: tmetId} = body;
                     delete body.id;
-                    response = await titleService.updateTerritoryMetadata(body, titleId, tmetId);
+                    response = await titleTerritorialService.update(body, titleId, tmetId);
                 } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
                     const body = formatTerritoryBody(tmet);
                     // POST is on V2
-                    response = await titleService.addTerritoryMetadata(body, titleId);
+                    response = await titleTerritorialService.create(body, titleId);
                 }
             })
         );
@@ -255,19 +257,22 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                         order: i,
                     };
                 });
-        } else if (key === 'category') {
+        } else if (key === 'categories') {
             body[key] =
                 data[key] &&
-                data[key].map((category, index) => {
-                    let categoryValue = category;
-                    if (isObjectLike(category) && get(category, 'value')) {
-                        categoryValue = get(category, 'value');
+                data[key].map((categories, index) => {
+                    let categoryValue = categories;
+                    if (isObjectLike(categories) && get(categories, 'value')) {
+                        categoryValue = get(categories, 'value');
                     }
                     return {
                         name: categoryValue,
                         order: index,
                     };
                 });
+        } else if (key === 'tenantData') {
+            body[key] = data?.tenantData;
+            return body[key];
         } else if (key === 'title' || key === 'synopsis') {
             const obj = data[key];
             if (obj) {
@@ -303,10 +308,8 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
     return isCreate
         ? {
               itemIndex: '1',
-              body: {
-                  decorateEditorialMetadata: hasGeneratedChildren,
-                  editorialMetadata: body,
-              },
+              decorateEditorialMetadata: hasGeneratedChildren,
+              ...body,
           }
         : {
               itemIndex: null,
@@ -314,89 +317,54 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
           };
 };
 
-export const updateEditorialMetadata = async (values, titleId, selectedTenant) => {
-    let response = [];
-    const errorToast = {
-        severity: 'error',
-        detail: UPDATE_EDITORIAL_METADATA_ERROR,
-    };
-    const data = values.editorialMetadata || [];
-    const {tenantCode} = values;
-    const updatedEmets = [];
-    const newEmets = [];
-    data.forEach(emet => {
-        if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-            updatedEmets.push(formatEditorialBody(emet, titleId, false));
-        } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-            newEmets.push(formatEditorialBody(emet, titleId, true));
-        }
-    });
-
-    try {
-        if (updatedEmets.length > 0) response = await titleService.updateEditorialMetadata(updatedEmets, tenantCode);
-        if (newEmets.length > 0) response = await titleService.addEditorialMetadataV1(newEmets, tenantCode);
-
-        // Temporarily block new version
-        // if (newEmets.length > 0) {
-        //     response = newEmets.map(async emet => titleService.addEditorialMetadata(emet));
-        //     await Promise.all(response);
-        // }
-        if (response && response.length > 0) {
-            let toast = errorToast;
-            if (!get(response[0], 'response.failed') || get(response[0], 'response.failed').length === 0) {
-                store.dispatch(getEditorialMetadata({id: titleId, selectedTenant}));
-                toast = {
-                    severity: 'success',
-                    detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
-                };
-            }
-            store.dispatch(addToast(toast));
-        }
-    } catch (error) {
-        store.dispatch(addToast(errorToast));
-    }
-};
-
-export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
-    const response = await titleService.propagateSeasonsPersonsToEpisodes({
-        ...data,
-        seasonId: id,
-    });
-
-    if (response.error) {
-        store.dispatch(
-            addToast({
-                severity: 'error',
-                detail: response.error,
-            })
-        );
-    } else {
-        store.dispatch(
-            addToast({
+export const propagateSeasonsPersonsToEpisodes = (data, id) => {
+    return titleServiceSingleton
+        .propagateSeasonsPersonsToEpisodes({
+            ...data,
+            seasonId: id,
+        })
+        .then(response => {
+            let toast = {
                 severity: 'success',
                 detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
-            })
-        );
-    }
+            };
+            if (response.error) {
+                toast = {
+                    severity: 'error',
+                    detail: response.error,
+                };
+            }
+            store.dispatch(addToast(...toast));
+        });
 };
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
-    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'editorial', 'movidaUkExternalIds', 'territorial'];
+    const unnecessaryValues = [
+        'vzExternalIds',
+        'movidaExternalIds',
+        'editorial',
+        'movidaUkExternalIds',
+        'territorial',
+        'editorialMetadata',
+        'territorialMetadata',
+    ];
     const isTitleChanged = Object.keys(cleanValues).some(item => {
         const initialItem = initialValues?.[item] === undefined ? null : initialValues?.[item];
         const cleanItem = cleanValues?.[item];
-        if (unnecessaryValues.includes(item)) return false;
+        if (unnecessaryValues.includes(item)) {
+            return false;
+        }
         if (Array.isArray(initialItem) && Array.isArray(cleanItem)) {
             return !isEqual(initialItem.length, cleanItem.length);
         }
-
         return !isEqual(initialItem, cleanItem);
     });
 
     handleDirtyRatingsValues(values);
     handleDirtyEMETValues(initialValues, values);
     handleDirtyTMETValues(initialValues, values);
+    handleDirtySasktelValues(initialValues, values);
     values.isUpdated = isTitleChanged;
 };
 
@@ -411,7 +379,7 @@ const handleDirtyRatingsValues = values => {
         advisoriesCode,
         advisoriesFreeText,
     };
-    const index = values?.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
+    const index = values?.ratings?.findIndex(elem => elem.ratingSystem === ratingSystem);
     if (index !== null && index >= 0) {
         values.ratings[index] = updatedRatingRecord;
     }
@@ -445,10 +413,13 @@ const handleDirtyEMETValues = (initialValues, values) => {
             });
 
         if (index !== null && index >= 0) {
+            editorial.tenantData = handleDirtySasktelValues(initialValues, values);
+
             const cleanEditorial = cleanObject(editorial);
             const isUpdated = Object.keys(cleanEditorial).some(
                 item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
             );
+
             values.editorialMetadata[index] = {
                 ...values.editorialMetadata[index],
                 ...editorial,
@@ -465,6 +436,47 @@ const handleDirtyEMETValues = (initialValues, values) => {
             }
         });
     }
+};
+
+const handleDirtySasktelValues = (initialValues, values) => {
+    let editorialTenantData = values?.editorial.tenantData;
+    let newTenantDataValues = [];
+    const newUpdatedData = [];
+    if (!isEmpty(editorialTenantData)) {
+        for (const [key, value] of Object.entries(editorialTenantData)) {
+            if (typeof value === 'string') {
+                newUpdatedData.push({
+                    name: key,
+                    value,
+                });
+            }
+
+            if (Array.isArray(value) && value.length) {
+                newTenantDataValues = newUpdatedData.concat(value);
+            }
+        }
+
+        if (newTenantDataValues.length && newUpdatedData.length) {
+            newTenantDataValues = newUpdatedData.concat(newTenantDataValues);
+        }
+
+        const valuesToFilter = newTenantDataValues.length ? newTenantDataValues : newUpdatedData;
+        const uniqueNames = new Set();
+
+        const uniqueSasktels = valuesToFilter.filter(element => {
+            const isDuplicate = uniqueNames.has(element.name);
+
+            uniqueNames.add(element.name);
+
+            return !isDuplicate;
+        });
+
+        editorialTenantData = {
+            simpleProperties: uniqueSasktels,
+        };
+    }
+
+    return editorialTenantData;
 };
 
 const handleDirtyTMETValues = (initialValues, values) => {
