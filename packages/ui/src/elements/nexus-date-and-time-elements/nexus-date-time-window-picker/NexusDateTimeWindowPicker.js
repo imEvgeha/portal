@@ -16,7 +16,6 @@ import {
     SIMULCAST_TIME_LABEL,
     FILL_DATE,
     FILL_DATE_TIME,
-    SIMULCAST_DATE_FORMAT,
     RELATIVE_DATE_FORMAT_WITHOUT_TIME,
     RELATIVE_DATE_FORMAT,
 } from '../constants';
@@ -113,7 +112,7 @@ const NexusDateTimeWindowPicker = ({
 
     // If both dates are filled, send a formatted time-window string
     const handleChange = simulcast => {
-        if ((startDate && endDate) || (isClearable && !startDate && !endDate)) {
+        if (onChange && ((startDate && endDate) || (isClearable && !startDate && !endDate))) {
             if (isTimestamp) {
                 // YYYY-MM-DD[T]HH:mm:ss.SSS[Z]
                 onChange({
