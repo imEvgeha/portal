@@ -107,7 +107,7 @@ const NexusField = ({
     };
 
     const emetLanguage = get(formData, 'editorial.language');
-    const sasktelValue = formData.editorial?.tenantData?.simpleProperties || [];
+    const sasktelArray = formData.editorial?.tenantData?.simpleProperties || [];
     const newShowLocalized = emetLanguage?.value === 'en' ? false : showLocalized;
 
     const getLanguage = () => {
@@ -166,10 +166,10 @@ const NexusField = ({
 
         if (addedProps?.pathName && typeof fieldProps?.value === 'string') {
             // eslint-disable-next-line array-callback-return
-            sasktelValue.map(e => {
+            sasktelArray.map(e => {
                 if (e.name === addedProps.pathName) {
                     e.value = fieldProps.value;
-                    formData.editorial.tenantData.simpleProperties = sasktelValue;
+                    formData.editorial.tenantData.simpleProperties = sasktelArray;
                 }
             });
         }
