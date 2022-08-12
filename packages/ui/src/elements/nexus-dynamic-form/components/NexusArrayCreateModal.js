@@ -42,8 +42,8 @@ const NexusArrayCreateModal = ({
     const onSubmit = values => {
         const newTenantDataValues = [];
         if (!isEmpty(values?.editorial)) {
-            for (const [key, value] of Object.entries(values?.editorial.tenantData)) {
-                if (typeof value === 'string') {
+            for (const [key, value] of Object.entries(values?.editorial)) {
+                if (key === 'sasktelInventoryId' || key === 'sasktelLineupId') {
                     newTenantDataValues.push({
                         name: key,
                         value,
