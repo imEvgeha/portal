@@ -441,8 +441,8 @@ const handleDirtyEMETValues = (initialValues, values) => {
 const handleDirtySasktelValues = (initialValues, values) => {
     let mergedArray = [];
     const newTenantDataValues = [];
-    const sasktelInventoryId = values?.editorial.sasktelInventoryId || [];
-    const sasktelLineupId = values?.editorial.sasktelLineupId || [];
+    const sasktelInventoryId = values?.editorial?.sasktelInventoryId || [];
+    const sasktelLineupId = values?.editorial?.sasktelLineupId || [];
 
     if (Array.isArray(sasktelInventoryId) && Array.isArray(sasktelLineupId)) {
         mergedArray = sasktelInventoryId.concat(sasktelLineupId.filter(item => sasktelInventoryId.indexOf(item) < 0));
