@@ -18,24 +18,22 @@ export const constructFieldPerType = args => {
     if (isControllerVisible === false) {
         return null;
     }
-
-    // simplify required when logic
+    // merging required when logic by using .required instead
+    // the following logic fixes https://deljira/browse/VBQT-4780
     if (elementSchema.requiredWhen) {
-        const isRequired = getWhenConditionValue(
+        form.getFieldState(elementSchema.name).error && form.clearErrors(elementSchema.name);
+        elementSchema.required = getWhenConditionValue(
             elementSchema.requiredWhen,
             getParentPathName(elementSchema),
             form,
             values
         );
-        form.getFieldState(elementSchema.name).error && form.clearErrors(elementSchema.name);
-        elementSchema.required = isRequired;
     }
-
-    const elementIsHidden =
+    // check if element is visible by implementing visibleWhen logic
+    if (
         elementSchema.visibleWhen &&
-        !getWhenConditionValue(elementSchema.visibleWhen, getParentPathName(elementSchema), form, values);
-
-    if (elementIsHidden) {
+        !getWhenConditionValue(elementSchema.visibleWhen, getParentPathName(elementSchema), form, values)
+    ) {
         resetVisibleWhenField(value, form, elementSchema);
         return null;
     }
@@ -250,12 +248,13 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
  * @param form
  */
 const watchFormControls = (elementSchema, form) => {
+    // the following array is used for avoiding adding duplicates on form.watch()
+    // for example we have fields on main schema which use visibleWhen and requiredWhen logic without the array we add them twice to form.watch()
     const arrWatchedControls = [];
     const parentPathName = getParentPathName(elementSchema);
     elementSchema?.visibleWhen?.forEach(element => {
         const fieldNamePath = getVisibleWhenField(parentPathName, element);
         if (fieldNamePath && !arrWatchedControls.includes(fieldNamePath)) {
-            // watching controls
             arrWatchedControls.push(fieldNamePath);
             form.watch(fieldNamePath);
         }
@@ -263,21 +262,17 @@ const watchFormControls = (elementSchema, form) => {
     elementSchema?.requiredWhen?.forEach(element => {
         const fieldNamePath = getVisibleWhenField(parentPathName, element);
         if (fieldNamePath && !arrWatchedControls.includes(fieldNamePath)) {
-            // watching controls
             arrWatchedControls.push(fieldNamePath);
             form.watch(fieldNamePath);
         }
     });
 };
-
 const getVisibleWhenField = (parentPathName, element) => {
     return parentPathName ? `${parentPathName}.${element.field}` : element.field;
 };
-
 const getParentPathName = elementSchema => {
     return elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
 };
-
 const getWhenConditionValue = (elementSchemaCondition, parentPathName, form, formValues) => {
     let whenCondition = true;
     elementSchemaCondition.forEach(element => {
@@ -290,9 +285,8 @@ const getWhenConditionValue = (elementSchemaCondition, parentPathName, form, for
     });
     return whenCondition;
 };
-
 const resetVisibleWhenField = (value, form, elementSchema) => {
-    value !== '' && form.setValue(elementSchema.name, null, {shouldValidate: !elementSchema.requiredWhen});
+    value !== '' && form.setValue(elementSchema.name, null, {shouldValidate: !!elementSchema.required}); // shouldValidate: !!elementSchema.required is fixing https://deljira/browse/VBQT-4780
     form.getFieldState(elementSchema.name).error &&
         form.clearErrors(elementSchema.name) &&
         form.unregister(elementSchema.name);
