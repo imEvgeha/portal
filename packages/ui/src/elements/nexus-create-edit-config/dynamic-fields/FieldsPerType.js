@@ -29,7 +29,7 @@ export const constructFieldPerType = args => {
             values
         );
     }
-    // check if element is visible by implementing visibleWhen logic
+    // check if elementSchema is visible
     if (
         elementSchema.visibleWhen &&
         !getWhenConditionValue(elementSchema.visibleWhen, getParentPathName(elementSchema), form, values)
@@ -248,8 +248,8 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
  * @param form
  */
 const watchFormControls = (elementSchema, form) => {
-    // the following array is used for avoiding adding duplicates on form.watch()
-    // for example we have fields on main schema which use visibleWhen and requiredWhen logic without the array we add them twice to form.watch()
+    // the following array is used for avoiding adding duplicates on form.watch() is part of fixing https://deljira/browse/VBQT-4780
+    // for example we have fields on main schema which use visibleWhen and requiredWhen logic without the array we add them twice to form.watch() and this might cause infinite rerender
     const arrWatchedControls = [];
     const parentPathName = getParentPathName(elementSchema);
     elementSchema?.visibleWhen?.forEach(element => {
