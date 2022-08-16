@@ -1,6 +1,6 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {cloneDeep, get, isArray, isEmpty, isEqual, isObjectLike} from 'lodash';
+import {cloneDeep, get, isArray, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
 import TitleService from './services/TitleService';
 import TitleTerittorialService from './services/TitleTerittorialService';
@@ -450,44 +450,39 @@ const handleDirtyEMETValues = (initialValues, values) => {
 };
 
 const handleDirtySasktelValues = (initialValues, values) => {
-    let editorialTenantData = values?.editorial.tenantData;
-    let newTenantDataValues = [];
-    const newUpdatedData = [];
-    if (!isEmpty(editorialTenantData)) {
-        for (const [key, value] of Object.entries(editorialTenantData)) {
-            if (typeof value === 'string') {
-                newUpdatedData.push({
-                    name: key,
-                    value,
-                });
-            }
+    let mergedArray = [];
+    const newTenantDataValues = [];
+    const sasktelInventoryId = values?.editorial?.sasktelInventoryId || [];
+    const sasktelLineupId = values?.editorial?.sasktelLineupId || [];
 
-            if (Array.isArray(value) && value.length) {
-                newTenantDataValues = newUpdatedData.concat(value);
-            }
-        }
-
-        if (newTenantDataValues.length && newUpdatedData.length) {
-            newTenantDataValues = newUpdatedData.concat(newTenantDataValues);
-        }
-
-        const valuesToFilter = newTenantDataValues.length ? newTenantDataValues : newUpdatedData;
-        const uniqueNames = new Set();
-
-        const uniqueSasktels = valuesToFilter.filter(element => {
-            const isDuplicate = uniqueNames.has(element.name);
-
-            uniqueNames.add(element.name);
-
-            return !isDuplicate;
-        });
-
-        editorialTenantData = {
-            simpleProperties: uniqueSasktels,
-        };
+    if (Array.isArray(sasktelInventoryId) && Array.isArray(sasktelLineupId)) {
+        mergedArray = sasktelInventoryId.concat(sasktelLineupId.filter(item => sasktelInventoryId.indexOf(item) < 0));
     }
+    if (typeof sasktelInventoryId === 'string') {
+        newTenantDataValues.push({
+            name: 'sasktelInventoryId',
+            value: sasktelInventoryId,
+        });
+    }
+    if (typeof sasktelLineupId === 'string') {
+        newTenantDataValues.push({
+            name: 'sasktelLineupId',
+            value: sasktelLineupId,
+        });
+    }
+    if (Array.isArray(sasktelInventoryId) && !Array.isArray(sasktelLineupId)) {
+        mergedArray = newTenantDataValues.concat(
+            sasktelInventoryId.filter(item => newTenantDataValues.indexOf(item) < 0)
+        );
+    }
+    if (Array.isArray(sasktelLineupId) && !Array.isArray(sasktelInventoryId)) {
+        mergedArray = newTenantDataValues.concat(sasktelLineupId.filter(item => newTenantDataValues.indexOf(item) < 0));
+    }
+    const finalArray = mergedArray.length ? mergedArray : newTenantDataValues;
 
-    return editorialTenantData;
+    return {
+        simpleProperties: finalArray,
+    };
 };
 
 const handleDirtyTMETValues = (initialValues, values) => {
