@@ -214,22 +214,28 @@ const TitleDetails = ({
         });
     };
 
-    const errorOptions = () => ({
-        customErrors: [
-            {
-                errorCodes: [412],
-                message:
-                    'Unable to save changes, title has recently been updated. Click below for latest version and resubmit.',
-                toastAction: {
-                    label: 'View Title',
-                    icon: 'pi pi-external-link',
-                    iconPos: 'right',
-                    className: 'p-button-link p-toast-button-link',
-                    onClick: () => window.open(window.location.href, '_blank'),
+    const errorOptions = (type = 'core', details = '') => {
+        const messagesVersions = {
+            core: 'Unable to save changes, title has recently been updated. Click below for latest version and resubmit.',
+            emet: `Unable to save changes, Editorial Metadata ${details} for this Title has recently been updated. Click below for latest version and resubmit.`,
+            tmet: `Unable to save changes, Territory Metadata ${details} for this Title has recently been updated. Click below for latest version and resubmit.`,
+        };
+        return {
+            customErrors: [
+                {
+                    errorCodes: [412],
+                    message: messagesVersions[type],
+                    toastAction: {
+                        label: 'View Title',
+                        icon: 'pi pi-external-link',
+                        iconPos: 'right',
+                        className: 'p-button-link p-toast-button-link',
+                        onClick: () => window.open(window.location.href, '_blank'),
+                    },
                 },
-            },
-        ],
-    });
+            ],
+        };
+    };
 
     const updateTitleAPI = payload => {
         TitleService.getInstance()
@@ -244,11 +250,13 @@ const TitleDetails = ({
         territorialMetadata.forEach(tmet => {
             if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
                 const {id, ...body} = formatTerritoryBody(tmet);
-                promises.push(titleTerritorialService.update(body, titleId, id, errorOptions()));
+                const errorMsgDetails = `(${body.locale})`;
+                promises.push(titleTerritorialService.update(body, titleId, id, errorOptions('tmet', errorMsgDetails)));
             } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
                 const body = formatTerritoryBody(tmet);
+                const errorMsgDetails = `(${body.locale})`;
                 // POST is on V2
-                promises.push(titleTerritorialService.create(body, titleId, errorOptions()));
+                promises.push(titleTerritorialService.create(body, titleId, errorOptions('tmet', errorMsgDetails)));
             }
         });
 
@@ -275,10 +283,14 @@ const TitleDetails = ({
         data.forEach(emet => {
             if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
                 const updatedEmet = formatEditorialBody(emet, titleId, false);
-                promises.push(titleEditorialService.update(updatedEmet, errorOptions()));
+                const {locale, language, format} = updatedEmet.body;
+                const errorMsgDetails = `(${locale} ${language}, ${format})`;
+                promises.push(titleEditorialService.update(updatedEmet, errorOptions('emet', errorMsgDetails)));
             } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
                 const newEmet = formatEditorialBody(emet, titleId, true);
-                promises.push(titleEditorialService.create(newEmet, errorOptions()));
+                const {locale, language, format} = newEmet.body;
+                const errorMsgDetails = `(${locale} ${language}, ${format})`;
+                promises.push(titleEditorialService.create(newEmet, errorOptions('emet', errorMsgDetails)));
             }
         });
 
