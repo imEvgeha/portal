@@ -430,10 +430,6 @@ const handleDirtyEMETValues = (initialValues, values) => {
                 return !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item]);
             });
 
-            values.editorialMetadata.forEach(e => {
-                delete e.tenantData;
-            });
-
             values.editorialMetadata[index] = {
                 ...values.editorialMetadata[index],
                 ...editorial,
