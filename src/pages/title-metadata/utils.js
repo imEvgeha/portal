@@ -372,7 +372,6 @@ export const handleDirtyValues = (initialValues, values) => {
     handleDirtyRatingsValues(values);
     handleDirtyEMETValues(initialValues, values);
     handleDirtyTMETValues(initialValues, values);
-    handleDirtySasktelValues(initialValues, values);
     values.isUpdated = isTitleChanged;
 };
 
@@ -431,6 +430,10 @@ const handleDirtyEMETValues = (initialValues, values) => {
                 return !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item]);
             });
 
+            values.editorialMetadata.forEach(e => {
+                delete e.tenantData;
+            });
+
             values.editorialMetadata[index] = {
                 ...values.editorialMetadata[index],
                 ...editorial,
@@ -479,10 +482,14 @@ const handleDirtySasktelValues = (initialValues, values) => {
         mergedArray = newTenantDataValues.concat(sasktelLineupId.filter(item => newTenantDataValues.indexOf(item) < 0));
     }
     const finalArray = mergedArray.length ? mergedArray : newTenantDataValues;
+    const filteredValues = finalArray.filter(e => {
+        return e.value;
+    });
 
-    return {
+    const editorialMetadata = {
         simpleProperties: finalArray,
     };
+    return filteredValues.length ? editorialMetadata : null;
 };
 
 const handleDirtyTMETValues = (initialValues, values) => {
