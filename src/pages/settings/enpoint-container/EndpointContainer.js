@@ -35,6 +35,7 @@ const EndpointContainer = ({endpoint}) => {
     const [submitLoading, setSubmitLoading] = useState(false);
     const [entryToDelete, setEntryToDelete] = useState(undefined);
     const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+    const [deletingConfig, setDeletingConfig] = useState(undefined);
 
     const loadEndpointData = (pageNo, searchField, searchValue, pageSize = 20) => {
         if (endpoint?.urls) {
@@ -44,17 +45,23 @@ const EndpointContainer = ({endpoint}) => {
                     setEndpointList([...endpointList, ...res.data]);
                     setTotalRecords(res.total);
                     setEndpointsLoading(false);
-                    setPage(pageNo + 1);
+                    (res.page + 1) * res.size < res.total && setPage(pageNo + 1);
                 }
             );
         }
     };
 
-    const initValues = () => {
+    const initValues = (deleteState = undefined) => {
         setPage(0);
         setTotalRecords(0);
         !!endpointList.length && setEndpointList([]);
+        deleteState && setDeletingConfig(deleteState);
     };
+
+    useEffect(() => {
+        const size = deletingConfig?.size;
+        searchTermDebounce(0, size);
+    }, [deletingConfig]);
 
     useEffect(() => {
         setSearchTerm('');
@@ -89,7 +96,10 @@ const EndpointContainer = ({endpoint}) => {
         );
     };
 
-    const searchTermDebounce = useDebounce(() => loadEndpointData(page, getSearchField(), searchTerm), 500);
+    const searchTermDebounce = useDebounce(
+        (pageNo, pageSize) => loadEndpointData(pageNo || page, getSearchField(), searchTerm, pageSize),
+        500
+    );
 
     useEffect(() => (searchTerm?.length ? searchTermDebounce() : initValues()), [searchTerm]);
 
@@ -154,11 +164,14 @@ const EndpointContainer = ({endpoint}) => {
 
         const successToast = {
             severity: SUCCESS_ICON,
-            detail: `${capitalize(entry.name)} config for ${endpoint.displayName} has been successfully deleted!`,
+            detail: `${capitalize(getLabel(entryToDelete))} config for ${
+                endpoint.displayName
+            } has been successfully deleted!`,
         };
 
         configService.delete(endpoint?.urls?.['CRUD'], entry.id).then(() => {
-            searchTerm ? searchTermDebounce() : initValues();
+            const deleteState = searchTerm ? {size: endpointList.length} : undefined;
+            initValues(deleteState);
             dispatch(addToast(successToast));
         });
     };

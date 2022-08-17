@@ -227,11 +227,11 @@ const NexusField = ({
                     >
                         {({fieldProps}) => (
                             <CheckboxWithOptional
-                                {...addedProps}
-                                {...fieldProps}
                                 id={generateElementIds(fieldProps, addedProps)}
                                 onChange={onChange(getCurrentValues())}
                                 isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
+                                {...addedProps}
+                                {...fieldProps}
                                 onFocus={disableSaveButton}
                             />
                         )}
@@ -351,9 +351,9 @@ const NexusField = ({
             case 'dateRange':
                 return (
                     <DateTimeWithOptional
+                        onChange={onChange(getCurrentValues())}
                         {...fieldProps}
                         {...dateProps}
-                        onChange={onChange(getCurrentValues())}
                         id={generateElementIds(fieldProps, addedProps)}
                     />
                 );

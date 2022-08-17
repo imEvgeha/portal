@@ -18,20 +18,24 @@ export const constructFieldPerType = args => {
     if (isControllerVisible === false) {
         return null;
     }
-    const elementIsHidden =
+    // merging required when logic by using .required instead
+    // the following logic fixes https://deljira/browse/VBQT-4780
+    if (elementSchema.requiredWhen) {
+        form.getFieldState(elementSchema.name).error && form.clearErrors(elementSchema.name);
+        elementSchema.required = getWhenConditionValue(
+            elementSchema.requiredWhen,
+            getParentPathName(elementSchema),
+            form,
+            values
+        );
+    }
+    // check if elementSchema is visible
+    if (
         elementSchema.visibleWhen &&
-        !getWhenConditionValue(elementSchema.visibleWhen, getParentPathName(elementSchema), form, values);
-
-    if (elementIsHidden) {
+        !getWhenConditionValue(elementSchema.visibleWhen, getParentPathName(elementSchema), form, values)
+    ) {
         resetVisibleWhenField(value, form, elementSchema);
         return null;
-    }
-
-    const isRequiredWhen =
-        elementSchema.requiredWhen &&
-        getWhenConditionValue(elementSchema.requiredWhen, getParentPathName(elementSchema), form, values);
-    if (elementSchema.requiredWhen && !isRequiredWhen) {
-        resetRequiredWhenField(form, elementSchema);
     }
 
     return (
@@ -44,14 +48,14 @@ export const constructFieldPerType = args => {
                 key={`${elementSchema.id}_controller`}
                 control={form.control}
                 defaultValue={value || elementSchema.defaultValue}
-                rules={{...createRules(elementSchema, isRequiredWhen)}}
+                rules={{...createRules(elementSchema)}}
                 render={({field, fieldState}) => {
                     const onFormElementChanged = e => {
                         field && field.onChange(e);
                         customOnChange && customOnChange(field);
                     };
                     const argsField = {elementSchema, form, value, cb, cache, dataApi};
-                    return createDynamicFormField(field, fieldState, argsField, onFormElementChanged, isRequiredWhen);
+                    return createDynamicFormField(field, fieldState, argsField, onFormElementChanged);
                 }}
             />
         </div>
@@ -168,7 +172,7 @@ const getElement = args => {
             break;
     }
 };
-export const createRules = (elementSchema, isRequiredWhen) => {
+export const createRules = elementSchema => {
     let rulesObj = {};
     elementSchema.validWhen &&
         Object.entries(elementSchema.validWhen).forEach(rule => {
@@ -196,7 +200,7 @@ export const createRules = (elementSchema, isRequiredWhen) => {
                     break;
             }
         });
-    if (elementSchema.required || !!isRequiredWhen) {
+    if (elementSchema.required) {
         const minLength = rulesObj?.minLength;
         rulesObj = {
             ...rulesObj,
@@ -205,7 +209,7 @@ export const createRules = (elementSchema, isRequiredWhen) => {
     }
     return rulesObj;
 };
-const createDynamicFormField = (field, fieldState, argsField, onFormElementChanged, isRequiredWhen) => {
+const createDynamicFormField = (field, fieldState, argsField, onFormElementChanged) => {
     const {elementSchema, form, value, cb, cache, dataApi} = argsField;
     const shouldShowLabel = !['checkbox', 'array'].includes(elementSchema.type) && !!elementSchema.label;
     return (
@@ -216,7 +220,7 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
                         htmlFor={elementSchema.id}
                         label={elementSchema.label}
                         additionalLabel={elementSchema.type === 'timestamp' ? ' (UTC)' : ''}
-                        isRequired={!!elementSchema.required || isRequiredWhen}
+                        isRequired={!!elementSchema.required}
                     />
                 </div>
             )}
@@ -244,12 +248,13 @@ const createDynamicFormField = (field, fieldState, argsField, onFormElementChang
  * @param form
  */
 const watchFormControls = (elementSchema, form) => {
+    // the following array is used for avoiding adding duplicates on form.watch() is part of fixing https://deljira/browse/VBQT-4780
+    // for example we have fields on main schema which use visibleWhen and requiredWhen logic without the array we add them twice to form.watch() and this might cause infinite rerender
     const arrWatchedControls = [];
     const parentPathName = getParentPathName(elementSchema);
     elementSchema?.visibleWhen?.forEach(element => {
         const fieldNamePath = getVisibleWhenField(parentPathName, element);
         if (fieldNamePath && !arrWatchedControls.includes(fieldNamePath)) {
-            // watching controls
             arrWatchedControls.push(fieldNamePath);
             form.watch(fieldNamePath);
         }
@@ -257,21 +262,17 @@ const watchFormControls = (elementSchema, form) => {
     elementSchema?.requiredWhen?.forEach(element => {
         const fieldNamePath = getVisibleWhenField(parentPathName, element);
         if (fieldNamePath && !arrWatchedControls.includes(fieldNamePath)) {
-            // watching controls
             arrWatchedControls.push(fieldNamePath);
             form.watch(fieldNamePath);
         }
     });
 };
-
 const getVisibleWhenField = (parentPathName, element) => {
     return parentPathName ? `${parentPathName}.${element.field}` : element.field;
 };
-
 const getParentPathName = elementSchema => {
     return elementSchema?.name.substr(0, elementSchema.name.lastIndexOf('.'));
 };
-
 const getWhenConditionValue = (elementSchemaCondition, parentPathName, form, formValues) => {
     let whenCondition = true;
     elementSchemaCondition.forEach(element => {
@@ -285,11 +286,8 @@ const getWhenConditionValue = (elementSchemaCondition, parentPathName, form, for
     return whenCondition;
 };
 const resetVisibleWhenField = (value, form, elementSchema) => {
-    value !== '' && form.setValue(elementSchema.name, null, {shouldValidate: true});
+    value !== '' && form.setValue(elementSchema.name, null, {shouldValidate: !!elementSchema.required}); // shouldValidate: !!elementSchema.required is fixing https://deljira/browse/VBQT-4780
     form.getFieldState(elementSchema.name).error &&
         form.clearErrors(elementSchema.name) &&
         form.unregister(elementSchema.name);
-};
-const resetRequiredWhenField = (form, elementSchema) => {
-    form.getFieldState(elementSchema.name).error && form.clearErrors(elementSchema.name);
 };
