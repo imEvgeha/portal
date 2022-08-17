@@ -288,7 +288,7 @@ const TitleDetails = ({
                 promises.push(titleEditorialService.update(updatedEmet, errorOptions('emet', errorMsgDetails)));
             } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
                 const newEmet = formatEditorialBody(emet, titleId, true);
-                const {locale, language, format} = newEmet.body;
+                const {locale, language, format} = newEmet;
                 const errorMsgDetails = `(${locale} ${language}, ${format})`;
                 promises.push(titleEditorialService.create(newEmet, errorOptions('emet', errorMsgDetails)));
             }
