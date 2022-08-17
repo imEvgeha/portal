@@ -216,7 +216,7 @@ const TitleDetails = ({
 
     const errorOptions = (type = 'core', details = '') => {
         const messagesVersions = {
-            core: 'Unable to save changes, title has recently been updated. Click below for latest version and resubmit.',
+            core: 'Unable to save changes, Core Title for this Title has recently been updated. Click below for latest version and resubmit.',
             emet: `Unable to save changes, Editorial Metadata ${details} for this Title has recently been updated. Click below for latest version and resubmit.`,
             tmet: `Unable to save changes, Territory Metadata ${details} for this Title has recently been updated. Click below for latest version and resubmit.`,
         };
