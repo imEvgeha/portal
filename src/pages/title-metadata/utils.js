@@ -358,7 +358,7 @@ export const handleDirtyValues = (initialValues, values) => {
         'boxOfficeOpen',
     ];
 
-    const isTitleChanged = [...Object.keys(cleanValues), 'ratings'].some(item => {
+    const isTitleChanged = [...Object.keys(cleanValues), 'ratings']?.some(item => {
         const initialItem = updatedInitialValues?.[item] === undefined ? null : updatedInitialValues?.[item];
         const cleanItem = cleanValues?.[item];
         if (unnecessaryValues.includes(item)) {
@@ -424,7 +424,7 @@ const handleDirtyEMETValues = (initialValues, values) => {
             editorial.tenantData = handleDirtySasktelValues(initialValues, values);
 
             const cleanEditorial = cleanObject(editorial);
-            const isUpdated = Object.keys(cleanEditorial).some(item => {
+            const isUpdated = Object.keys(cleanEditorial)?.some(item => {
                 if (item === 'tenantData') {
                     return false;
                 }
@@ -478,7 +478,7 @@ const handleDirtySasktelValues = (initialValues, values) => {
     if (Array.isArray(sasktelLineupId) && !Array.isArray(sasktelInventoryId)) {
         mergedArray = newTenantDataValues.concat(sasktelLineupId.filter(item => newTenantDataValues.indexOf(item) < 0));
     }
-    const finalArray = mergedArray.length ? mergedArray : newTenantDataValues;
+    const finalArray = mergedArray?.length ? mergedArray : newTenantDataValues;
     const filteredValues = finalArray.filter(e => {
         return e.value;
     });
@@ -486,17 +486,17 @@ const handleDirtySasktelValues = (initialValues, values) => {
     const editorialMetadata = {
         simpleProperties: finalArray,
     };
-    return filteredValues.length ? editorialMetadata : null;
+    return filteredValues?.length ? editorialMetadata : null;
 };
 
 const handleDirtyTMETValues = (initialValues, values) => {
     const territorial = get(values, 'territorial');
     const territorialMetadata = get(values, 'territorialMetadata');
 
-    if (territorialMetadata.length) {
+    if (territorialMetadata?.length) {
         values.territorialMetadata = territorialMetadata.map((elem, i) => {
             const cleanTerritorial = cleanObject(elem);
-            const isUpdated = Object.keys(cleanTerritorial).some(
+            const isUpdated = Object.keys(cleanTerritorial)?.some(
                 item => !isEqual(initialValues.territorialMetadata[i]?.[item], cleanTerritorial?.[item])
             );
             return {
@@ -517,7 +517,7 @@ const handleDirtyTMETValues = (initialValues, values) => {
 
             delete updatedTmetRecord.isUpdated;
             const cleanTerritorial = cleanObject(updatedTmetRecord);
-            updatedTmetRecord.isUpdated = Object.keys(cleanTerritorial).some(
+            updatedTmetRecord.isUpdated = Object.keys(cleanTerritorial)?.some(
                 item => !isEqual(initialValues.territorialMetadata[index]?.[item], cleanTerritorial?.[item])
             );
             values.territorialMetadata[index] = updatedTmetRecord;

@@ -169,8 +169,8 @@ const TitleDetails = ({
         isFetchingExternalIdTypes.current = false;
         handleDirtyValues(initialValues, values);
 
-        const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
-        const isTmetUpdated = values.territorialMetadata.some(item => item.isUpdated);
+        const isEmetUpdated = values.editorialMetadata?.some(item => item.isUpdated);
+        const isTmetUpdated = values.territorialMetadata?.some(item => item.isUpdated);
         const {id} = routeParams;
         // remove fields under arrayWithTabs
         const innerFields = getAllFields(fields, true);
@@ -295,7 +295,7 @@ const TitleDetails = ({
         });
 
         Promise.all(promises).then(res => {
-            if (!get(res[0], 'response.failed') || get(res[0], 'response.failed').length === 0) {
+            if (!get(res[0], 'response.failed') || get(res[0], 'response.failed')?.length === 0) {
                 getEditorialMetadata({id: titleId, selectedTenant});
                 toast = {
                     severity: 'success',
