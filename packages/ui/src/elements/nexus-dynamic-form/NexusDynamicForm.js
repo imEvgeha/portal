@@ -115,7 +115,7 @@ const NexusDynamicForm = ({
 
             Object.keys(correctValues).forEach(k => {
                 correctValues[k] =
-                    Array.isArray(correctValues[k]) && !correctValues[k].length ? undefined : correctValues[k];
+                    Array.isArray(correctValues[k]) && !correctValues[k].length ? null : correctValues[k];
             });
 
             const valuesData = mergeWith({}, initialData, correctValues, (obj, src) => {

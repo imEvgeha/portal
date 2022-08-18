@@ -344,6 +344,7 @@ export const handleDirtyValues = (initialValues, values) => {
         ...initialValues,
         rating: values?.ratings?.[0]?.rating,
         ratingSystem: values?.ratings?.[0]?.ratingSystem,
+        advisoriesCode: values?.ratings?.[0]?.advisoriesCode,
         advisoriesFreeText: values?.ratings?.[0]?.advisoriesFreeText,
     };
     const unnecessaryValues = [
