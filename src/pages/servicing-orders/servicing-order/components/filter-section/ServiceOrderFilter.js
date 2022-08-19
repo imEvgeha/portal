@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import NexusDatePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
@@ -69,20 +69,32 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, sortDirection, set
             </div>
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
                 <div className="so-panel-filter-detail__dropdown">
-                    <label>Status Filter</label>
-                    <Select
+                    <Dropdown
+                        labelProps={{
+                            label: 'Status Filter',
+                            shouldUpper: false,
+                            stacked: true,
+                        }}
+                        id="ddlStatusFilter"
                         options={mappedFilterList}
-                        onChange={setFilter}
                         value={filter}
-                        placeholder="Select Status"
+                        onChange={e => setFilter(e.value)}
                     />
                 </div>
                 <div className="so-panel-filter-detail__dropdown">
-                    <label>Sort by</label>
-                    <Select
+                    <Dropdown
+                        labelProps={{
+                            label: 'Sort by',
+                            shouldUpper: false,
+                            stacked: true,
+                        }}
+                        id="ddlSortBy"
                         options={SORT_DIRECTION}
-                        onChange={setSortDirection}
+                        optionLabel="label"
                         value={sortDirection}
+                        onChange={e => {
+                            setSortDirection(e.value);
+                        }}
                         placeholder="Select type"
                     />
                 </div>

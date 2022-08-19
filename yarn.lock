@@ -3519,10 +3519,10 @@
     pacote "^13.1.1"
     semver "^7.3.7"
 
-"@portal/portal-components@^1.0.0-69":
-  version "1.0.0-69"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-components/-/portal-components-1.0.0-69.tgz#d65ea85ec885d26b95fe3bfa5befea230a669785"
-  integrity sha512-ezS/GHMHk3XmDp1cUAbHTjRN+3ZkAzBh027K10Kj577k2DVtlp+Ng1az47N64ADlgGPYVb9sqtllVZcLHBqypA==
+"@portal/portal-components@^1.0.0-71":
+  version "1.0.0-71"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-components/-/portal-components-1.0.0-71.tgz#bcf332efe09c8971cf2087e766ca69fe67e43a61"
+  integrity sha512-H6KrU/pidPwt30ah/UkajSkybwditx3er+RtqFdpyhTa2Xlry+/H6co0nHexLWceoRtMtHo+CEE45e4Q/4jhOw==
   dependencies:
     "@portal/portal-build-scripts" "1.0.0-18"
     "@testing-library/jest-dom" "^5.16.4"
@@ -13374,10 +13374,10 @@ primeicons@^5.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/primeicons/-/primeicons-5.0.0.tgz#73a0b6028a77c58a9eeb331ad13aaf085e8451ee"
   integrity sha512-heygWF0X5HFI1otlZE62pp6ye7sZ8om78J9au2BRkg8O7Y8AHTZ9qKMRzchZUHLe8zUAvdi6hZzzm9XxgwIExw==
 
-primereact@^8.1.1:
-  version "8.1.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/primereact/-/primereact-8.1.1.tgz#0a8ad53d4cfd4d50e879617dc9a878cfc0b1efdf"
-  integrity sha512-D2zzpoRHyv/3jw3TmqNWh55/geInebULYNmT+DD1k4i1tVHFZE1DG1EQqC/Wl7AJmcNOS1mgHgYJWsO3/YXzLw==
+primereact@^8.3.0:
+  version "8.3.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/primereact/-/primereact-8.3.0.tgz#78c00a043a4629e135f66f975021414ea3913c46"
+  integrity sha512-Y/8hlTnKsmgbTLlw6LWwMoA78rDMdA2PUcrJqm7wHgBUVxSPQ8l4f3JkbpVKVqESb5nuay9l+0BE4dx1zSBTAg==
   dependencies:
     "@types/react-transition-group" "^4.4.1"
     react-transition-group "^4.4.1"
