@@ -6,7 +6,7 @@ import CheckIcon from '@atlaskit/icon/glyph/check';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Tooltip from '@atlaskit/tooltip';
 import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {isEmpty} from 'lodash';
+import {isEmpty, uniqBy} from 'lodash';
 import {useDispatch} from 'react-redux';
 import './NexusSavedTableDropdown.scss';
 import IconButton from '../../atlaskit/icon-button/IconButton';
@@ -88,7 +88,7 @@ const NexusSavedTableDropdown = ({
 
             if (previousGridState) {
                 // merge the existing views of the user with new views for avails section
-                dispatch(updateColumnsAction({[username]: [...newUserData, ...previousGridState]}));
+                dispatch(updateColumnsAction({[username]: uniqBy([...newUserData, ...previousGridState], 'id')}));
             }
         }
     };
