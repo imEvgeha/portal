@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
-import {get, isEmpty} from 'lodash';
+import {get, isEmpty, uniqBy} from 'lodash';
 import {renderNexusField} from '../utils';
 import {VIEWS} from '../constants';
 
@@ -25,7 +25,7 @@ const NexusArrayCreateModal = ({
 
     const getVisibleFields = allFields => {
         const updateFields = {...allFields};
-        Object.keys(allFields).filter(key => {
+        Object.keys(allFields).forEach(key => {
             const hide = get(allFields[key], 'hideInCreate');
             if (hide && updateFields[key]) {
                 delete updateFields[key];
@@ -48,11 +48,12 @@ const NexusArrayCreateModal = ({
                         name: key,
                         value,
                     });
-                    values.editorial.tenantData = {
-                        simpleProperties: newTenantDataValues,
-                    };
                 }
             }
+            values.editorial.tenantData = {
+                simpleProperties:
+                    newTenantDataValues && newTenantDataValues?.length ? uniqBy(newTenantDataValues, 'name') : [],
+            };
         }
 
         handleModalSubmit(
