@@ -284,12 +284,12 @@ const TitleDetails = ({
             if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
                 const updatedEmet = formatEditorialBody(emet, titleId, false);
                 const {locale, language, format} = updatedEmet.body;
-                const errorMsgDetails = `(${locale} ${language}, ${format})`;
+                const errorMsgDetails = format ? `(${locale} ${language}, ${format})` : `(${locale} ${language})`;
                 promises.push(titleEditorialService.update(updatedEmet, errorOptions('emet', errorMsgDetails)));
             } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
                 const newEmet = formatEditorialBody(emet, titleId, true);
                 const {locale, language, format} = newEmet;
-                const errorMsgDetails = `(${locale} ${language}, ${format})`;
+                const errorMsgDetails = format ? `(${locale} ${language}, ${format})` : `(${locale} ${language})`;
                 promises.push(titleEditorialService.create(newEmet, errorOptions('emet', errorMsgDetails)));
             }
         });
