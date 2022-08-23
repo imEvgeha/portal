@@ -22,15 +22,6 @@ class SelectCellEditor extends Component {
     // eslint-disable-next-line react/destructuring-assignment
     getValue = () => this.state.value.value;
 
-    handleChange = event => {
-        const {options} = this.props;
-        const value = options.find(x => x.value === event.value);
-        console.log(value);
-        this.setState({
-            value,
-        });
-    };
-
     render() {
         const {options} = this.props;
         const {value} = this.state;
@@ -41,11 +32,15 @@ class SelectCellEditor extends Component {
                     options={options}
                     placeholder="Select"
                     columnClass="col-12"
-                    appendTo={document.body}
-                    onChange={e => {
-                        console.log(e);
+                    appendTo="self"
+                    onChange={event => {
+                        const {options} = this.props;
+                        const value = options.find(x => x.value === event.value);
+                        this.setState({
+                            value,
+                        });
                     }}
-                    value={value}
+                    value={value.value}
                 />
             </div>
         );
