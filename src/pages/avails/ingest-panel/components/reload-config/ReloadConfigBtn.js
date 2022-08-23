@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {reloadConfigurationService} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import './ReloadConfigBtn.scss';
 
-const ReloadConfigBtn = ({addToast}) => {
+const ReloadConfigBtn = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const reloadConfig = async () => {
@@ -54,12 +53,4 @@ const ReloadConfigBtn = ({addToast}) => {
     );
 };
 
-ReloadConfigBtn.propTypes = {
-    addToast: PropTypes.func,
-};
-
-ReloadConfigBtn.defaultProps = {
-    addToast: () => null,
-};
-
-export default withToasts(ReloadConfigBtn);
+export default ReloadConfigBtn;

@@ -11,7 +11,7 @@ const toastReducer = (state = initialState, action) => {
         case ADD_TOAST:
             return {
                 ...state,
-                toast: [...state.toast, payload],
+                toast: [payload],
             };
         case REMOVE_TOAST: {
             const updatedToastsArray = [...state.toast];

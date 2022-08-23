@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     TITLE_MATCH_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {Button as PrimeReactButton} from 'primereact/button';
@@ -14,7 +14,7 @@ import TitleSystems from '../../../metadata/constants/systems';
 
 const {NEXUS, MOVIDA, VZ} = TitleSystems;
 
-const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isMerging}) => {
+const ActionsBar = ({matchList, mergeTitles, rightId, removeToast, isMerging}) => {
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
         matchAndCreate: false,
@@ -126,7 +126,6 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
 ActionsBar.propTypes = {
     matchList: PropTypes.object,
     mergeTitles: PropTypes.func,
-    addToast: PropTypes.func,
     removeToast: PropTypes.func,
     rightId: PropTypes.string.isRequired,
     isMerging: PropTypes.bool,
@@ -134,10 +133,9 @@ ActionsBar.propTypes = {
 
 ActionsBar.defaultProps = {
     matchList: {},
-    addToast: () => null,
     removeToast: () => null,
     mergeTitles: () => null,
     isMerging: false,
 };
 
-export default withToasts(ActionsBar);
+export default ActionsBar;

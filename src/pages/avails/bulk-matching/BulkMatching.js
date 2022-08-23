@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get, toLower} from 'lodash';
 import {Button} from 'primereact/button';
 import {connect, useSelector} from 'react-redux';
@@ -42,7 +42,6 @@ import './BulkMatching.scss';
 export const BulkMatching = ({
     data,
     closeDrawer,
-    addToast,
     removeToast,
     toggleRefreshGridData,
     isBonusRight,
@@ -366,7 +365,6 @@ export const BulkMatching = ({
 
 BulkMatching.propTypes = {
     data: PropTypes.array.isRequired,
-    addToast: PropTypes.func,
     removeToast: PropTypes.func,
     closeDrawer: PropTypes.func,
     toggleRefreshGridData: PropTypes.func,
@@ -386,7 +384,6 @@ BulkMatching.propTypes = {
 };
 
 BulkMatching.defaultProps = {
-    addToast: () => null,
     removeToast: () => null,
     closeDrawer: () => null,
     toggleRefreshGridData: () => null,
@@ -416,7 +413,4 @@ const mapDispatchToProps = dispatch => ({
     setExternalIdValues: payload => dispatch(setExternalIdValues(payload)),
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withToasts(compose(withMatchAndDuplicateList())(BulkMatching)));
+export default connect(mapStateToProps, mapDispatchToProps)(compose(withMatchAndDuplicateList())(BulkMatching));

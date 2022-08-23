@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import TextArea from '@atlaskit/textarea';
-import withToasts from '../../toast/hoc/withToasts';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {options, THANKYOU_NOTE} from './constants';
 import './NexusFeedback.scss';
 
-const NexusFeedback = ({addToast, currentPage, closeModal}) => {
+const NexusFeedback = ({currentPage, closeModal}) => {
     const [feedback, setFeedback] = useState('');
     const [selected, setSelected] = useState('');
 
@@ -69,15 +69,13 @@ const NexusFeedback = ({addToast, currentPage, closeModal}) => {
 };
 
 NexusFeedback.propTypes = {
-    addToast: PropTypes.func,
     closeModal: PropTypes.func,
     currentPage: PropTypes.string,
 };
 
 NexusFeedback.defaultProps = {
-    addToast: () => null,
     closeModal: () => null,
     currentPage: '',
 };
 
-export default withToasts(NexusFeedback);
+export default NexusFeedback;

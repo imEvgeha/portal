@@ -8,8 +8,8 @@ import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/n
 import {defineActionButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
 import {get, isEmpty} from 'lodash';
@@ -54,7 +54,6 @@ const RightToMatchView = ({
     createRightMatchingColumnDefs,
     fetchFocusedRight,
     focusedRight,
-    addToast,
     removeToast,
     pendingRight,
     mergeRights,
@@ -346,7 +345,6 @@ RightToMatchView.propTypes = {
     focusedRight: PropTypes.object,
     createRightMatchingColumnDefs: PropTypes.func.isRequired,
     fetchFocusedRight: PropTypes.func,
-    addToast: PropTypes.func,
     removeToast: PropTypes.func,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
@@ -360,7 +358,6 @@ RightToMatchView.propTypes = {
 RightToMatchView.defaultProps = {
     focusedRight: null,
     fetchFocusedRight: null,
-    addToast: () => null,
     removeToast: () => null,
     columnDefs: [],
     mapping: [],
@@ -393,7 +390,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
-    withToasts,
     // eslint-disable-next-line
     connect(createMapStateToProps, mapDispatchToProps)
 )(RightToMatchView);

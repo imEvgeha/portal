@@ -2,7 +2,7 @@ import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
@@ -23,7 +23,6 @@ import {
 
 export const PrePlanActions = ({
     selectedPrePlanRights,
-    addToast,
     setSelectedPrePlanRights,
     setPreplanRights,
     prePlanRepoRights = [],
@@ -288,7 +287,6 @@ export const PrePlanActions = ({
 
 PrePlanActions.propTypes = {
     selectedPrePlanRights: PropTypes.array,
-    addToast: PropTypes.func,
     setSelectedPrePlanRights: PropTypes.func,
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func,
@@ -299,7 +297,6 @@ PrePlanActions.propTypes = {
 
 PrePlanActions.defaultProps = {
     selectedPrePlanRights: [],
-    addToast: () => null,
     setSelectedPrePlanRights: () => null,
     prePlanRepoRights: [],
     setPreplanRights: () => null,
@@ -308,4 +305,4 @@ PrePlanActions.defaultProps = {
     setSingleRightMatch: () => null,
 };
 
-export default withToasts(PrePlanActions);
+export default PrePlanActions;
