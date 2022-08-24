@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Popup from '@atlaskit/popup';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import AtlaskitMoreIcon from '@vubiquity-nexus/portal-assets/atlaskit-more-icon.svg';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
@@ -17,7 +17,7 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, total
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(moment().format('MMMM'));
-    const [selectedYear, setSelectedYear] = useState(moment().format('YYYY'));
+    const [selectedYear, setSelectedYear] = useState(+moment().format('YYYY'));
 
     const onCreateReport = () => {
         const monthNumber = moment().month(selectedMonth).format('MM');
@@ -57,22 +57,29 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, total
     const getContent = () => {
         return (
             <div className="nexus-c-right-repository-release-report-content">
-                <Select
-                    value={{value: selectedYear, label: selectedYear}}
+                <Dropdown
+                    id="ddlYears"
+                    value={selectedYear}
+                    filter={true}
                     className="nexus-c-right-repository-release-report__year-dropdown"
-                    onChange={val => setSelectedYear(val.value)}
+                    columnClass="col-12"
                     options={getYears()}
-                    classNamePrefix="nexus-c-nexus-select"
-                    isSearchable
+                    placeholder="Select one option"
+                    appendTo="self"
+                    onChange={e => setSelectedYear(e.value)}
                 />
-                <Select
-                    value={{value: selectedMonth, label: selectedMonth}}
+                <Dropdown
+                    id="ddlMonths"
+                    value={selectedMonth}
+                    filter={true}
                     className="nexus-c-right-repository-release-report__month-dropdown"
-                    onChange={val => setSelectedMonth(val.value)}
+                    columnClass="col-12"
                     options={MONTHS.map(m => ({value: m, label: m}))}
-                    classNamePrefix="nexus-c-nexus-select"
-                    isSearchable
+                    placeholder="Select one option"
+                    appendTo="self"
+                    onChange={e => setSelectedMonth(e.value)}
                 />
+
                 <PrimereactButton
                     label={isLoading ? '' : CREATE_REPORT}
                     loading={isLoading}
