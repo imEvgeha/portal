@@ -289,6 +289,14 @@ const getFieldCurrentValue = (initialData, fieldName) => {
 const toShow = (field, initialData, prefix) => {
     const showWhen = get(field, 'showWhen', []);
     const preString = prefix ? `${prefix}.` : '';
+
+    if (showWhen.length && field?.path === 'tenantData.complexProperties' && initialData?.tenantData) {
+        const hasGeneratedValue = initialData.tenantData?.complexProperties
+            ?.find(e => e.simpleProperties)
+            ?.simpleProperties.find(e => e.name === 'hasGeneratedChildren')?.value;
+        return hasGeneratedValue || false;
+    }
+
     if (showWhen.length) {
         let retValue = false;
         field.showWhen.forEach(conditionObj => {
@@ -325,7 +333,6 @@ export const buildSection = (
     view,
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
-    setRefresh,
     {
         selectValues,
         initialData,
@@ -342,6 +349,7 @@ export const buildSection = (
         isTitlePage,
         setUpdate,
         sectionID,
+        actions,
     }
 ) => {
     return (
@@ -381,7 +389,7 @@ export const buildSection = (
                             regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                             searchPerson={searchPerson}
                             castCrewConfig={castCrewConfig}
-                            setRefresh={setRefresh}
+                            actions={actions}
                             initialData={initialData}
                             prefix={prefix}
                             sectionID={sectionID}

@@ -891,72 +891,12 @@
                                         ]
                                     }
                                 },
-                                "editorial.hasGeneratedChildren": {
-                                    "name": "Auto - Decorate",
-                                    "path": "hasGeneratedChildren",
-                                    "type": "boolean",
-                                    "isReadOnlyInEdit": true,
-                                    "viewConfig": [
-                                        {
-                                            "view": "CREATE",
-                                            "defaultValue": false
-                                        }
-                                    ],
-                                    "showWhen": [
-                                        [
-                                            {
-                                                "field": "locale",
-                                                "hasValue": "US"
-                                            },
-                                            {
-                                                "field": "language",
-                                                "hasValue": "en"
-                                            },
-                                            {
-                                                "field": "hasGeneratedChildren",
-                                                "hasValue": true
-                                            }
-                                        ]
-                                    ],
-                                    "resource": "autoDecorateTitleMetadata"
-                                },
                                 "editorial.shortTitleTemplate": {
                                     "name": "Auto - Decorate Title",
-                                    "path": "shortTitleTemplate",
+                                    "path": "tenantData.complexProperties",
                                     "type": "string",
                                     "maxLength": 2000,
-                                    "dependencies": [
-                                        {
-                                            "view": "EDIT",
-                                            "type": "readOnly",
-                                            "fields": [
-                                                {
-                                                    "name": "editorial.hasGeneratedChildren",
-                                                    "value": false
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "view": "CREATE",
-                                            "type": "required",
-                                            "fields": [
-                                                {
-                                                    "name": "editorial.hasGeneratedChildren",
-                                                    "value": true
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "view": "EDIT",
-                                            "type": "required",
-                                            "fields": [
-                                                {
-                                                    "name": "editorial.hasGeneratedChildren",
-                                                    "value": true
-                                                }
-                                            ]
-                                        }
-                                    ],
+                                    "isRequired": true,
                                     "showWhen": [
                                         {
                                             "field": "hasGeneratedChildren",

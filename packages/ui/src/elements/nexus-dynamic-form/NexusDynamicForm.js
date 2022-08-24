@@ -23,12 +23,12 @@ const NexusDynamicForm = ({
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
     hasButtons,
-    setRefresh,
     castCrewConfig,
     seasonPersons,
     titleActionComponents,
     isFullScreen,
     formFooter,
+    actions,
 }) => {
     const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
@@ -48,7 +48,7 @@ const NexusDynamicForm = ({
     }, [validationErrorCount]);
 
     const onCancel = () => {
-        setRefresh(prev => !prev);
+        actions.setRefresh(prev => !prev);
         setUpdate(true);
         setValidationErrorCount(0);
     };
@@ -209,7 +209,6 @@ const NexusDynamicForm = ({
                                                         view,
                                                         generateMsvIds,
                                                         regenerateAutoDecoratedMetadata,
-                                                        setRefresh,
                                                         {
                                                             selectValues,
                                                             initialData,
@@ -226,6 +225,7 @@ const NexusDynamicForm = ({
                                                             isTitlePage,
                                                             setUpdate,
                                                             sectionID,
+                                                            actions,
                                                         }
                                                     )}
                                                 </Fragment>
@@ -256,13 +256,13 @@ NexusDynamicForm.propTypes = {
     isSaving: PropTypes.bool,
     regenerateAutoDecoratedMetadata: PropTypes.func,
     hasButtons: PropTypes.bool,
-    setRefresh: PropTypes.func,
     castCrewConfig: PropTypes.object,
     storedInitialData: PropTypes.object,
     seasonPersons: PropTypes.array,
     titleActionComponents: PropTypes.object,
     isFullScreen: PropTypes.bool,
     formFooter: PropTypes.element,
+    actions: PropTypes.object,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -278,13 +278,13 @@ NexusDynamicForm.defaultProps = {
     isSaving: false,
     regenerateAutoDecoratedMetadata: undefined,
     hasButtons: true,
-    setRefresh: () => null,
     castCrewConfig: {},
     storedInitialData: null,
     seasonPersons: [],
     titleActionComponents: {},
     isFullScreen: false,
     formFooter: undefined,
+    actions: {},
 };
 
 export default NexusDynamicForm;

@@ -108,6 +108,8 @@ const NexusField = ({
 
     const emetLanguage = get(formData, 'editorial.language');
     const sasktelArray = formData.editorial?.tenantData?.simpleProperties || [];
+    const shortTitleTemplate =
+        formData.editorial?.tenantData?.complexProperties?.find(e => e.simpleProperties)?.simpleProperties || [];
     const newShowLocalized = emetLanguage?.value === 'en' ? false : showLocalized;
 
     const getLanguage = () => {
@@ -156,14 +158,29 @@ const NexusField = ({
      * @returns {string} return value of type string
      */
     const findValue = (fieldProps, addedProps) => {
-        if (addedProps?.pathName && typeof fieldProps?.value === 'object' && fieldProps?.value !== null) {
-            const newValue = fieldProps?.value.find(x => x.name === addedProps.pathName);
-            return newValue?.value;
+        if (
+            addedProps?.path === 'tenantData.simpleProperties' &&
+            typeof fieldProps?.value === 'object' &&
+            fieldProps?.value !== null
+        ) {
+            const newFieldValue = fieldProps?.value.find(x => x.name === addedProps.pathName);
+            return newFieldValue?.value;
+        }
+
+        if (addedProps.path === 'tenantData.complexProperties') {
+            if (Array.isArray(fieldProps?.value)) {
+                return fieldProps?.value
+                    .find(e => e.simpleProperties)
+                    ?.simpleProperties.find(e => e.name === 'shortTitleTemplate')?.value;
+            } else if (typeof fieldProps?.value === 'string') {
+                shortTitleTemplate?.map(e =>
+                    e.name === 'shortTitleTemplate' ? (e.value = fieldProps.value) : e.value
+                );
+            }
         }
 
         if (addedProps?.pathName && typeof fieldProps?.value === 'string') {
-            // eslint-disable-next-line array-callback-return
-            sasktelArray.map(e => {
+            sasktelArray.forEach(e => {
                 if (e.name === addedProps.pathName) {
                     e.value = fieldProps.value;
                     formData.editorial.tenantData.simpleProperties = sasktelArray;

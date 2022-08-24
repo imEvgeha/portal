@@ -454,6 +454,13 @@ const handleDirtySasktelValues = (initialValues, values) => {
     const newTenantDataValues = [];
     const sasktelInventoryId = values?.editorial?.sasktelInventoryId || [];
     const sasktelLineupId = values?.editorial?.sasktelLineupId || [];
+    const masterEmet = values.editorialMetadata.find(e =>
+        e?.tenantData?.complexProperties?.find(e => e?.simpleProperties.find(e => e.name === 'hasGeneratedChildren'))
+    );
+
+    if (masterEmet) {
+        return masterEmet?.tenantData;
+    }
 
     if (Array.isArray(sasktelInventoryId) && Array.isArray(sasktelLineupId)) {
         mergedArray = sasktelInventoryId.concat(sasktelLineupId.filter(item => sasktelInventoryId.indexOf(item) < 0));

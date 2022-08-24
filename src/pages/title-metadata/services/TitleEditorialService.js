@@ -89,6 +89,16 @@ export default class TitleEditorialService extends HttpService {
         return response;
     };
 
+    addAutoDecorate = async (payload, apiVersion = 'v2') => {
+        const {id, titleId, decorateBody} = payload;
+        const response = await this.callApi(apiVersion, `/${titleId}/editorials/${id}/decorate`, {
+            method: 'post',
+            body: decorateBody,
+        });
+        this.setAutoDecorate(response);
+        return response;
+    };
+
     /** ***************** Utils *************** */
 
     setEditorialsByTitleId(editorialsByTitleId) {
@@ -101,5 +111,9 @@ export default class TitleEditorialService extends HttpService {
 
     setCreatedEditorial(createdEditorial) {
         this.createdEditorial = createdEditorial;
+    }
+
+    setAutoDecorate(createdAutoDecorate) {
+        this.createdAutoDecorate = createdAutoDecorate;
     }
 }

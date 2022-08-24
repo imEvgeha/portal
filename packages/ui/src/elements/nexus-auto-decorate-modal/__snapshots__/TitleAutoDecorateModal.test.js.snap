@@ -1,0 +1,285 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleAutoDecorateModal should match snapshot 1`] = `
+<Dialog
+  closable={false}
+  closeOnEscape={false}
+  footer={
+    <div
+      className="row"
+    >
+      <div
+        className="col-12 text-end"
+      >
+        <Button
+          className="p-button-outlined p-button-secondary"
+          id="titleCancelBtn"
+          label="Cancel"
+          onClick={[Function]}
+        />
+        <Button
+          className="p-button-outlined"
+          iconPos="left"
+          id="titleAutoDecorateBtn"
+          label="Auto-Decorate"
+          loading={false}
+          loadingIcon="pi pi-spin pi-spinner"
+          onClick={[Function]}
+        />
+      </div>
+    </div>
+  }
+  header="Auto-Decorate Editorial Metadata"
+  onHide={[Function]}
+  style={
+    Object {
+      "width": "40vw",
+    }
+  }
+  visible={true}
+>
+  <Component
+    clearErrors={[Function]}
+    control={
+      Object {
+        "_defaultValues": Object {
+          "autoDecorateTitle": "",
+          "displayTitle": "",
+          "mediumSynopsis": "",
+          "shortSynopsis": "",
+          "shortTitle": "",
+        },
+        "_executeSchema": [Function],
+        "_fields": Object {},
+        "_formState": Object {
+          "dirtyFields": Object {},
+          "errors": Object {},
+          "isDirty": false,
+          "isSubmitSuccessful": false,
+          "isSubmitted": false,
+          "isSubmitting": false,
+          "isValid": false,
+          "isValidating": false,
+          "submitCount": 0,
+          "touchedFields": Object {},
+        },
+        "_formValues": Object {
+          "autoDecorateTitle": "",
+          "displayTitle": "",
+          "mediumSynopsis": "",
+          "shortSynopsis": "",
+          "shortTitle": "",
+        },
+        "_getDirty": [Function],
+        "_getFieldArray": [Function],
+        "_getWatch": [Function],
+        "_names": Object {
+          "array": Set {},
+          "mount": Set {},
+          "unMount": Set {},
+          "watch": Set {},
+        },
+        "_options": Object {
+          "defaultValues": Object {
+            "autoDecorateTitle": "",
+            "displayTitle": "",
+            "mediumSynopsis": "",
+            "shortSynopsis": "",
+            "shortTitle": "",
+          },
+          "mode": "all",
+          "reValidateMode": "onChange",
+          "shouldFocusError": true,
+        },
+        "_proxyFormState": Object {
+          "dirtyFields": false,
+          "errors": false,
+          "isDirty": false,
+          "isValid": "all",
+          "isValidating": false,
+          "touchedFields": false,
+        },
+        "_removeUnmounted": [Function],
+        "_stateFlags": Object {
+          "action": false,
+          "mount": false,
+          "watch": false,
+        },
+        "_subjects": Object {
+          "array": Object {
+            "next": [Function],
+            "observers": Array [],
+            "subscribe": [Function],
+            "unsubscribe": [Function],
+          },
+          "state": Object {
+            "next": [Function],
+            "observers": Array [],
+            "subscribe": [Function],
+            "unsubscribe": [Function],
+          },
+          "watch": Object {
+            "next": [Function],
+            "observers": Array [],
+            "subscribe": [Function],
+            "unsubscribe": [Function],
+          },
+        },
+        "_updateFieldArray": [Function],
+        "_updateValid": [Function],
+        "getFieldState": [Function],
+        "register": [Function],
+        "unregister": [Function],
+      }
+    }
+    formState={Object {}}
+    getFieldState={[Function]}
+    getValues={[Function]}
+    handleSubmit={[Function]}
+    register={[Function]}
+    reset={[Function]}
+    resetField={[Function]}
+    setError={[Function]}
+    setFocus={[Function]}
+    setValue={[Function]}
+    trigger={[Function]}
+    unregister={[Function]}
+    watch={[Function]}
+  >
+    <form
+      onSubmit={[Function]}
+    >
+      <div
+        className="row pt-1"
+      >
+        <InputText
+          formControlOptions={
+            Object {
+              "formControlName": "autoDecorateTitle",
+              "rules": Object {
+                "maxLength": Object {
+                  "message": "Max title length is 250!",
+                  "value": 250,
+                },
+                "required": Object {
+                  "message": "Field cannot be empty!",
+                  "value": true,
+                },
+              },
+            }
+          }
+          id="autoDecorateTitle"
+          labelProps={
+            Object {
+              "isRequired": true,
+              "label": "Auto-Decorate Title",
+              "stacked": true,
+            }
+          }
+          placeholder="Enter Auto-Decorate Title"
+        />
+        <InputText
+          formControlOptions={
+            Object {
+              "formControlName": "displayTitle",
+              "rules": Object {
+                "maxLength": Object {
+                  "message": "Max title length is 500!",
+                  "value": 500,
+                },
+                "required": Object {
+                  "message": "Field cannot be empty!",
+                  "value": true,
+                },
+              },
+            }
+          }
+          id="displayTitle"
+          labelProps={
+            Object {
+              "isRequired": true,
+              "label": "Display Title",
+              "stacked": true,
+            }
+          }
+          placeholder="Enter Display Title"
+        />
+        <InputText
+          formControlOptions={
+            Object {
+              "formControlName": "shortTitle",
+              "rules": Object {
+                "maxLength": Object {
+                  "message": "Max title length is 500!",
+                  "value": 500,
+                },
+              },
+            }
+          }
+          id="shortTitle"
+          labelProps={
+            Object {
+              "isRequired": false,
+              "label": "Short Title",
+              "stacked": true,
+            }
+          }
+          placeholder="Enter Short Title"
+        />
+        <InputTextarea
+          formControlOptions={
+            Object {
+              "formControlName": "shortSynopsis",
+              "rules": Object {
+                "maxLength": Object {
+                  "message": "Max title length is 4000!",
+                  "value": 4000,
+                },
+                "required": Object {
+                  "message": "Field cannot be empty!",
+                  "value": true,
+                },
+              },
+            }
+          }
+          id="shortSynopsis"
+          labelProps={
+            Object {
+              "isRequired": true,
+              "label": "Short Synopsis",
+              "stacked": true,
+            }
+          }
+          placeholder="Enter Short Synopsis"
+        />
+        <InputTextarea
+          formControlOptions={
+            Object {
+              "formControlName": "mediumSynopsis",
+              "rules": Object {
+                "maxLength": Object {
+                  "message": "Max title length is 4000!",
+                  "value": 4000,
+                },
+                "required": Object {
+                  "message": "Field cannot be empty!",
+                  "value": true,
+                },
+              },
+            }
+          }
+          id="mediumSynopsis"
+          labelProps={
+            Object {
+              "isRequired": true,
+              "label": "Medium Synopsis",
+              "stacked": true,
+            }
+          }
+          placeholder="Enter Medium Synopsis"
+        />
+      </div>
+    </form>
+  </Component>
+</Dialog>
+`;

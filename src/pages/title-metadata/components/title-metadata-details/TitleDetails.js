@@ -394,6 +394,18 @@ const TitleDetails = ({
 
     const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
 
+    const getActions = () => {
+        return {
+            saveAutoDecorate: decorateForm => {
+                const titleEditorialService = TitleEditorialService.getInstance();
+                return titleEditorialService.addAutoDecorate(decorateForm);
+            },
+            setRefresh: value => {
+                setRefresh(value);
+            },
+        };
+    };
+
     const getSelectValues = () => {
         let res = {...selectValues};
 
@@ -436,6 +448,7 @@ const TitleDetails = ({
                         hasButtons={isNexusTitle(title.id)}
                         isSaving={isSaving}
                         setRefresh={setRefresh}
+                        actions={getActions()}
                         isTitlePage
                         titleActionComponents={{
                             propagate: (onClose, getValues, setFieldValue, key) => (

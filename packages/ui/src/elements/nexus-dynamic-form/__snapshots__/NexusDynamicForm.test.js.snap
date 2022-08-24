@@ -25,6 +25,7 @@ exports[`NexusDynamicForm should match snapshot 1`] = `
   }
 >
   <NexusDynamicForm
+    actions={Object {}}
     canEdit={false}
     castCrewConfig={Object {}}
     containerRef={null}
@@ -57,7 +58,6 @@ exports[`NexusDynamicForm should match snapshot 1`] = `
     }
     seasonPersons={Array []}
     selectValues={Object {}}
-    setRefresh={[Function]}
     storedInitialData={null}
     titleActionComponents={Object {}}
   />

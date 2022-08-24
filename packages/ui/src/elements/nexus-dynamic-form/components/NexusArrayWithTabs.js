@@ -1,11 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {LoadingButton} from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
 import {Restricted} from '@portal/portal-auth/permissions';
+import {Button as PortalButton} from '@portal/portal-components';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep, get, isEqual} from 'lodash';
+import TitleAutoDecorateModal from '../../nexus-auto-decorate-modal/TitleAutoDecorateModal';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import NexusArrayCreateModal from './NexusArrayCreateModal';
@@ -30,16 +32,17 @@ const NexusArrayWithTabs = ({
     generateMsvIds,
     searchPerson,
     regenerateAutoDecoratedMetadata,
-    setRefresh,
     castCrewConfig,
     initialData,
     prefix,
+    actions,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
     const [currentData, setCurrentData] = useState(null);
     const [isRemoved, setIsRemoved] = useState(false);
     const [regenerateLoading, setRegenerateLoading] = useState(false);
+    const [toggleAutoDecorate, setToggleAutoDecorate] = useState(false);
 
     useEffect(() => {
         const groupedObj = data ? groupBy(data) : {};
@@ -264,6 +267,10 @@ const NexusArrayWithTabs = ({
         setCurrentData(updatedCurrentData);
     };
 
+    const toggleAutoDecorateModal = () => {
+        setToggleAutoDecorate(prev => !prev);
+    };
+
     const handleValuesFormat = values => {
         Object.keys(values).forEach(key => {
             const obj = values[key];
@@ -321,10 +328,7 @@ const NexusArrayWithTabs = ({
         closeModal();
     };
 
-    // Cancels Auto-Decorate condition from schema.js when in creating modal
     const fieldsForModal = fields && cloneDeep(fields);
-    fieldsForModal['editorial.hasGeneratedChildren']?.showWhen[0] &&
-        fieldsForModal['editorial.hasGeneratedChildren'].showWhen[0].splice(2, 1);
 
     const modalContent = () => {
         return (
@@ -349,7 +353,12 @@ const NexusArrayWithTabs = ({
     const isMasterEditorialRecord = () => {
         if (path === 'editorialMetadata' && view === VIEWS.EDIT) {
             const current = currentData || data[0];
-            return current && get(current, 'hasGeneratedChildren');
+            const complexProp = current?.tenantData?.complexProperties || [];
+            const tenantDataAttributes = complexProp?.find(e => e.name === 'auto-decorate');
+            const isGeneratedValue = tenantDataAttributes?.simpleProperties?.find(
+                e => e.name === 'hasGeneratedChildren'
+            )?.value;
+            return current && isGeneratedValue;
         }
         return false;
     };
@@ -365,14 +374,32 @@ const NexusArrayWithTabs = ({
         return false;
     };
 
+    const showAutoDecorate = () => {
+        if (path === 'editorialMetadata' && view === VIEWS.EDIT) {
+            const current = currentData || data[0];
+            return (
+                current?.id &&
+                !current?.format &&
+                !current?.service &&
+                get(current, 'locale') === 'US' &&
+                get(current, 'language') === 'en'
+            );
+        }
+        return false;
+    };
+
     const handleRegenerateAutoDecoratedMetadata = async () => {
         const usEnData = get(groupedData, 'US en');
         if (usEnData) {
-            const masterEmet = usEnData.find(data => data.hasGeneratedChildren);
+            const masterEmet = usEnData.find(e =>
+                e?.tenantData?.complexProperties?.find(e =>
+                    e?.simpleProperties.find(e => e.name === 'hasGeneratedChildren')
+                )
+            );
             if (masterEmet) {
                 setRegenerateLoading(true);
                 await regenerateAutoDecoratedMetadata({...masterEmet});
-                setRefresh(prev => !prev);
+                actions.setRefresh(prev => !prev);
                 setRegenerateLoading(false);
             }
         }
@@ -443,18 +470,30 @@ const NexusArrayWithTabs = ({
                             </Button>
                         )}
                     </div>
-                    {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
-                    {(showRegenerateAutoDecoratedMetadata() || isMasterEditorialRecord()) && (
-                        <Restricted resource="regenerateAutoDecoratedMetadata">
-                            <LoadingButton
-                                appearance="primary"
-                                onClick={handleRegenerateAutoDecoratedMetadata}
-                                isLoading={regenerateLoading}
-                            >
-                                Regenerate Auto-Decorated Metadata
-                            </LoadingButton>
-                        </Restricted>
-                    )}
+                    <div className="d-flex justify-content-end align-items-center">
+                        {view === VIEWS.EDIT && (
+                            <Button className="mx-4" onClick={openEditModal}>{`+ Add ${name} Data`}</Button>
+                        )}
+                        {showAutoDecorate() && !isMasterEditorialRecord() && (
+                            <Restricted resource="metadataAutoDecorate">
+                                <PortalButton
+                                    className="p-button-outlined"
+                                    onClick={toggleAutoDecorateModal}
+                                    label="Auto-Decorate"
+                                />
+                            </Restricted>
+                        )}
+                        {(showRegenerateAutoDecoratedMetadata() || isMasterEditorialRecord()) && (
+                            <Restricted resource="regenerateAutoDecoratedMetadata">
+                                <PortalButton
+                                    className="p-button-outlined"
+                                    onClick={handleRegenerateAutoDecoratedMetadata}
+                                    loading={regenerateLoading}
+                                    label="Regenerate Auto-Decorated Metadata"
+                                />
+                            </Restricted>
+                        )}
+                    </div>
                 </div>
                 {isMasterEditorialRecord() && (
                     <div className="nexus-c-nexus-array-with-tabs__master-emet">
@@ -463,6 +502,12 @@ const NexusArrayWithTabs = ({
                         </SectionMessage>
                     </div>
                 )}
+                <TitleAutoDecorateModal
+                    display={toggleAutoDecorate}
+                    handleCloseModal={toggleAutoDecorateModal}
+                    currentData={currentData || data.find(e => e.locale === 'US')}
+                    actions={actions}
+                />
                 <AKField name={path} defaultValue={data}>
                     {({fieldProps, error}) => <></>}
                 </AKField>
@@ -490,8 +535,8 @@ NexusArrayWithTabs.propTypes = {
     searchPerson: PropTypes.func,
     regenerateAutoDecoratedMetadata: PropTypes.func,
     castCrewConfig: PropTypes.object,
-    setRefresh: PropTypes.func,
     initialData: PropTypes.object,
+    actions: PropTypes.object,
     prefix: PropTypes.string,
 };
 
@@ -511,8 +556,8 @@ NexusArrayWithTabs.defaultProps = {
     searchPerson: undefined,
     regenerateAutoDecoratedMetadata: undefined,
     castCrewConfig: {},
-    setRefresh: undefined,
     initialData: {},
+    actions: {},
     prefix: undefined,
 };
 

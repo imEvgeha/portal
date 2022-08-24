@@ -32,10 +32,6 @@ const NexusArrayCreateModal = ({
             }
         });
 
-        // Cancels Auto-Decorate condition from schema.js when in creating modal
-        updateFields['editorial.hasGeneratedChildren']?.showWhen &&
-            updateFields['editorial.hasGeneratedChildren'].showWhen[0].splice(2, 1);
-
         return updateFields;
     };
 
