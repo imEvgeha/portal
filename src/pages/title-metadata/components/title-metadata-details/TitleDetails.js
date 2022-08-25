@@ -207,7 +207,7 @@ const TitleDetails = ({
             promises.push(propagateSeasonsPersonsToEpisodes(data, id));
         }
 
-        Promise.all(promises).then(res => {
+        Promise.all(promises).then(() => {
             setVZDisabled(true);
             setMOVDisabled(true);
             setMovIntDisabled(true);
@@ -294,15 +294,17 @@ const TitleDetails = ({
             }
         });
 
-        Promise.all(promises).then(res => {
-            if (!get(res[0], 'response.failed') || get(res[0], 'response.failed')?.length === 0) {
-                getEditorialMetadata({id: titleId, selectedTenant});
-                toast = {
-                    severity: 'success',
-                    detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
-                };
-            }
+        let fulfilledPromises = [];
+        await Promise.allSettled(promises).then(res => {
+            fulfilledPromises = res.filter(e => e.status === 'fulfilled');
+        });
+        fulfilledPromises.map(() => {
+            toast = {
+                severity: 'success',
+                detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
+            };
             store.dispatch(addToast(toast));
+            return getEditorialMetadata({id: titleId, selectedTenant});
         });
     };
 
