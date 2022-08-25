@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {isEmpty, omitBy, pickBy, without} from 'lodash';
+import {isBoolean, isEmpty, omitBy, pickBy, without} from 'lodash';
 import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
@@ -58,7 +58,9 @@ const CreateEditConfig = ({
 
     const submit = () => {
         if (isEmpty(form.formState.errors)) {
-            const tmp = pickBy(form.getValues());
+            // VBQT-4769: pickBy only cannot handle boolean so we need ...pickBy(form.getValues(), isBoolean)
+            // If objects have a property with the same name, then the right-most object property overwrites the previous one
+            const tmp = {...pickBy(form.getValues()), ...pickBy(form.getValues(), isBoolean)};
             let formValues = {};
             Object.keys(tmp).forEach(key => {
                 if (Array.isArray(tmp[key])) {
