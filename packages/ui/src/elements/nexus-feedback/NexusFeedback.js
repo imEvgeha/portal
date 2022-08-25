@@ -4,10 +4,12 @@ import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import TextArea from '@atlaskit/textarea';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {useDispatch} from 'react-redux';
 import {options, THANKYOU_NOTE} from './constants';
 import './NexusFeedback.scss';
 
 const NexusFeedback = ({currentPage, closeModal}) => {
+    const dispatch = useDispatch();
     const [feedback, setFeedback] = useState('');
     const [selected, setSelected] = useState('');
 
@@ -20,10 +22,12 @@ const NexusFeedback = ({currentPage, closeModal}) => {
         // console.log(selected, feedBack, currentPage);
         // call API and then close modal
         closeModal();
-        addToast({
-            detail: THANKYOU_NOTE,
-            severity: 'success',
-        });
+        dispatch(
+            addToast({
+                detail: THANKYOU_NOTE,
+                severity: 'success',
+            })
+        );
     };
 
     return (

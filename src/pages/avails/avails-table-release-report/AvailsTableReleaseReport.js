@@ -8,12 +8,14 @@ import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificat
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import {Button as PrimereactButton} from 'primereact/button';
+import {useDispatch} from 'react-redux';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import {RIGHTS_TAB, STATUS_TAB} from '../rights-repository/constants';
 import {CREATE_REPORT, END_YEAR, MOCK_YEAR, MONTHS, NEW_RELEASE_REPORT, START_YEAR} from './constants';
 import './AvailsTableReleaseReport.scss';
 
 const AvailsTableReleaseReport = ({activeTab, selectedRowsCount, totalRecordsCount}) => {
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(moment().format('MMMM'));
@@ -36,12 +38,14 @@ const AvailsTableReleaseReport = ({activeTab, selectedRowsCount, totalRecordsCou
             .catch(error => {
                 setIsLoading(false);
                 setIsOpen(false);
-                addToast({
-                    detail: `${error?.type}: failed to create report. ${
-                        error.message ? `Details: ${error.message}` : ''
-                    }`,
-                    severity: 'error',
-                });
+                dispatch(
+                    addToast({
+                        detail: `${error?.type}: failed to create report. ${
+                            error.message ? `Details: ${error.message}` : ''
+                        }`,
+                        severity: 'error',
+                    })
+                );
             });
     };
 

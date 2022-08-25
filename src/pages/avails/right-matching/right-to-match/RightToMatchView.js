@@ -14,7 +14,7 @@ import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import sortTableHeaders from '@vubiquity-nexus/portal-utils/lib/sortTableHeaders';
 import {get, isEmpty} from 'lodash';
 import {Button as PrimeReactButton} from 'primereact/button';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {Link, useNavigate, useLocation, useParams} from 'react-router-dom';
 import {compose} from 'redux';
 import {backArrowColor} from '../../../../../packages/styles/constants';
@@ -66,6 +66,7 @@ const RightToMatchView = ({
     const navigate = useNavigate();
     const location = useLocation();
     const routeParams = useParams();
+    const dispatch = useDispatch();
 
     const previousPageRoute = URL.isEmbedded()
         ? `/${routeParams.realm}/avails/history/${availHistoryIds}/right-matching?embedded=true`
@@ -115,25 +116,27 @@ const RightToMatchView = ({
     };
 
     const onUpdateRightClick = () => {
-        addToast({
-            severity: 'warn',
-            detail: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
-            content: () => (
-                <div className="no-padding d-flex align-items-center">
-                    <PrimeReactButton
-                        label="Cancel"
-                        className="p-button-link p-toast-left-button"
-                        onClick={() => removeToast()}
-                    />
-                    <PrimeReactButton
-                        label="Continue"
-                        className="p-button-link p-toast-right-button"
-                        onClick={onUpdateRight}
-                    />
-                </div>
-            ),
-            sticky: true,
-        });
+        dispatch(
+            addToast({
+                severity: 'warn',
+                detail: NEW_RIGHT_BUTTON_CLICK_MESSAGE,
+                content: () => (
+                    <div className="no-padding d-flex align-items-center">
+                        <PrimeReactButton
+                            label="Cancel"
+                            className="p-button-link p-toast-left-button"
+                            onClick={() => removeToast()}
+                        />
+                        <PrimeReactButton
+                            label="Continue"
+                            className="p-button-link p-toast-right-button"
+                            onClick={onUpdateRight}
+                        />
+                    </div>
+                ),
+                sticky: true,
+            })
+        );
     };
 
     // eslint-disable-next-line react/prop-types

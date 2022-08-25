@@ -5,6 +5,7 @@ import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/Ne
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {FormProvider, useForm, useWatch} from 'react-hook-form';
+import {useDispatch} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
 import TitleEditorialService from '../../services/TitleEditorialService';
 import TitleService from '../../services/TitleService';
@@ -40,6 +41,7 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
 
     const navigate = useNavigate();
     const routeParams = useParams();
+    const dispatch = useDispatch();
     const currentValues = useWatch({control});
     const [isCreatingTitle, setIsCreatingTitle] = useState(false);
 
@@ -150,21 +152,23 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
     const toastMessage = (severityType, detailDescription, titleId = null) => {
         const isToastWithButton = !!titleId;
 
-        addToast({
-            severity: severityType,
-            content: isToastWithButton
-                ? () => {
-                      return (
-                          <Button
-                              label="View Title"
-                              className="p-button-link p-toast-button-link bg-transparent border-0"
-                              onClick={() => onViewTitleClick(titleId, routeParams.realm)}
-                          />
-                      );
-                  }
-                : undefined,
-            detail: detailDescription,
-        });
+        dispatch(
+            addToast({
+                severity: severityType,
+                content: isToastWithButton
+                    ? () => {
+                          return (
+                              <Button
+                                  label="View Title"
+                                  className="p-button-link p-toast-button-link bg-transparent border-0"
+                                  onClick={() => onViewTitleClick(titleId, routeParams.realm)}
+                              />
+                          );
+                      }
+                    : undefined,
+                detail: detailDescription,
+            })
+        );
     };
 
     /**

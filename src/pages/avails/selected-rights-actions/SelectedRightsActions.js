@@ -10,7 +10,7 @@ import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificat
 import {bulkDeleteRights} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import classNames from 'classnames';
 import {get, isEmpty, uniqBy} from 'lodash';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import AuditHistory from '../audit-history/AuditHistory';
 import NexusBulkDelete from '../bulk-delete/NexusBulkDelete';
 import BulkDeleteConfirmation from '../bulk-delete/components/bulk-delete-confirmation/BulkDeleteConfirmation';
@@ -75,6 +75,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState('');
     const [isSelectedForPlanning, setIsSelectedForPlanning] = useState(false);
     const node = useRef();
+    const dispatch = useDispatch();
 
     const {openModal, closeModal} = useContext(NexusModalContext);
 
@@ -172,11 +173,13 @@ export const SelectedRightsActions = ({
                 closeModal();
 
                 // Show success toast
-                addToast({
-                    detail: `You have successfully unmatched ${unmatchedRights.length} right(s).
+                dispatch(
+                    addToast({
+                        detail: `You have successfully unmatched ${unmatchedRights.length} right(s).
                          Please validate title fields.`,
-                    severity: 'success',
-                });
+                        severity: 'success',
+                    })
+                );
             });
         },
         [addToast, selectedRightGridApi, selectedRights, toggleRefreshGridData]
@@ -278,10 +281,12 @@ export const SelectedRightsActions = ({
             setSelectedRights([]);
             toggleRefreshGridData(true);
 
-            addToast({
-                detail: `You have successfully added ${selectedRights.length} Right(s) to Pre-Plan`,
-                severity: 'success',
-            });
+            dispatch(
+                addToast({
+                    detail: `You have successfully added ${selectedRights.length} Right(s) to Pre-Plan`,
+                    severity: 'success',
+                })
+            );
 
             return;
         }

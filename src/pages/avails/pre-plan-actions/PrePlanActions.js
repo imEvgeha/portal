@@ -5,6 +5,7 @@ import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-m
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
+import {useDispatch} from 'react-redux';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import {getEligibleRights} from '../menu-actions/actions';
@@ -30,6 +31,7 @@ export const PrePlanActions = ({
     singleRightMatch,
     setSingleRightMatch,
 }) => {
+    const dispatch = useDispatch();
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
@@ -93,10 +95,12 @@ export const PrePlanActions = ({
             return right['territory'].some(t => t.selected);
         });
         if (!selectedList) {
-            addToast({
-                detail: NO_TERRITORIES_SELECTED,
-                severity: 'warn',
-            });
+            dispatch(
+                addToast({
+                    detail: NO_TERRITORIES_SELECTED,
+                    severity: 'warn',
+                })
+            );
             return;
         }
         setIsFetchDOP(true);
@@ -207,10 +211,12 @@ export const PrePlanActions = ({
     };
 
     const dispatchSuccessToast = noOfItems => {
-        addToast({
-            detail: getSuccessToastMsg(noOfItems),
-            severity: 'success',
-        });
+        dispatch(
+            addToast({
+                detail: getSuccessToastMsg(noOfItems),
+                severity: 'success',
+            })
+        );
     };
 
     const actions = [

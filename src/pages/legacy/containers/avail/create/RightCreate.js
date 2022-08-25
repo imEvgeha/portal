@@ -320,10 +320,12 @@ class RightCreate extends React.Component {
             .then(response => {
                 this.right = {};
                 this.setState({});
-                addToast({
-                    detail: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-                    severity: 'success',
-                });
+                store.dispatch(
+                    addToast({
+                        detail: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+                        severity: 'success',
+                    })
+                );
                 if (response && response.id) {
                     if (this.props.match.params.availHistoryId) {
                         this.setState({
