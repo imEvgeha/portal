@@ -298,14 +298,17 @@ const TitleDetails = ({
         await Promise.allSettled(promises).then(res => {
             fulfilledPromises = res.filter(e => e.status === 'fulfilled');
         });
-        fulfilledPromises.map(() => {
+        fulfilledPromises.forEach(() => {
             toast = {
                 severity: 'success',
                 detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
             };
             store.dispatch(addToast(toast));
-            return getEditorialMetadata({id: titleId, selectedTenant});
         });
+
+        if (fulfilledPromises.length) {
+            return getEditorialMetadata({id: titleId, selectedTenant});
+        }
     };
 
     const getExternaIds = repo => {
