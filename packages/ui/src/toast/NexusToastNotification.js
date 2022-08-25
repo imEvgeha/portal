@@ -1,14 +1,11 @@
 import React, {useEffect, useRef} from 'react';
-import PropTypes from 'prop-types';
 import {Toast} from '@portal/portal-components';
-import {useDispatch} from 'react-redux';
-import {removeToast} from './NexusToastNotificationActions';
+import {useSelector} from 'react-redux';
 import ToastBody from './components/toast-body/ToastBody';
-import withToasts from './hoc/withToasts';
 
-const NexusToastNotification = ({toasts}) => {
+const NexusToastNotification = () => {
     const toastRef = useRef(null);
-    const dispatch = useDispatch();
+    const toasts = useSelector(state => state.ui.toast.toast);
 
     const getContentForToast = elem => {
         if (elem) {
@@ -47,7 +44,6 @@ const NexusToastNotification = ({toasts}) => {
     };
 
     const showToast = async (toasts, toastRef) => {
-        await toastRef.current.clear();
         if (toastRef?.current && toasts?.length) {
             const toastsToShow = toasts.map(e => ({
                 ...getUpdatedToast(e),
@@ -61,26 +57,7 @@ const NexusToastNotification = ({toasts}) => {
         showToast(toasts, toastRef);
     }, [toasts]);
 
-    return (
-        <Toast
-            ref={toastRef}
-            onRemove={e => {
-                const toastIndex = toasts?.findIndex(t => t?.detail === e?.detail);
-                if (toasts?.[toastIndex]) {
-                    toasts[toastIndex]?.onRemoveFn?.();
-                    dispatch(removeToast(toasts?.findIndex(t => t?.detail === e?.detail)));
-                }
-            }}
-        />
-    );
+    return <Toast ref={toastRef} />;
 };
 
-NexusToastNotification.propTypes = {
-    toasts: PropTypes.array,
-};
-
-NexusToastNotification.defaultProps = {
-    toasts: [],
-};
-
-export default withToasts(NexusToastNotification);
+export default NexusToastNotification;

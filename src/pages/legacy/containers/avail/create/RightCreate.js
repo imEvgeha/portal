@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {CREATE_NEW_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {connect} from 'react-redux';
@@ -14,7 +15,6 @@ import {blockUI} from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rightsService} from '../service/RightsService';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import RightsURL from '../util/RightsURL';
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import RightPriceForm from '../../../components/form/RightPriceForm';
@@ -320,10 +320,12 @@ class RightCreate extends React.Component {
             .then(response => {
                 this.right = {};
                 this.setState({});
-                this.props.addToast({
-                    detail: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-                    severity: 'success',
-                });
+                store.dispatch(
+                    addToast({
+                        detail: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+                        severity: 'success',
+                    })
+                );
                 if (response && response.id) {
                     if (this.props.match.params.availHistoryId) {
                         this.setState({
@@ -351,7 +353,6 @@ class RightCreate extends React.Component {
                     right: this.right,
                     isEdit: false,
                     push: this.props.router.history.push,
-                    removeToast: this.props.removeToast,
                 });
                 this.setState({
                     isSubmitting: false,
@@ -1277,14 +1278,10 @@ RightCreate.propTypes = {
     availsMapping: PropTypes.any,
     blocking: PropTypes.bool,
     match: PropTypes.object,
-    addToast: PropTypes.func,
-    removeToast: PropTypes.func,
     handleMatchingRights: PropTypes.func,
 };
 
 RightCreate.defaultProps = {
-    addToast: () => null,
-    removeToast: () => null,
     handleMatchingRights: () => null,
 };
 
@@ -1292,4 +1289,4 @@ RightCreate.contextTypes = {
     router: PropTypes.object,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withToasts(RightCreate)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RightCreate));

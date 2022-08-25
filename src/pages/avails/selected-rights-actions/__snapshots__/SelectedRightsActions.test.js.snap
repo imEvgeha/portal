@@ -118,7 +118,7 @@ Alternatively you may withdraw a right which can be re-instantiated later."
     title=""
     width="wider"
   >
-    <Connect(Connect(ComposedComponent))
+    <Connect(ComposedComponent)
       closeDrawer={[Function]}
       data={Array []}
       headerText=""
