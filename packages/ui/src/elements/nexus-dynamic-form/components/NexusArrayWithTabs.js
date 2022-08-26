@@ -120,6 +120,10 @@ const NexusArrayWithTabs = ({
         return groupBy(updatedData[path]);
     };
 
+    const groupedInitialData = () => {
+        return groupBy(initialData[path]);
+    };
+
     const replaceRecordInGroupedData = (currentFormData, current, subTabIndex, indexTo, keyTo) => {
         if (subTabs.length) {
             let key = '';
@@ -133,11 +137,16 @@ const NexusArrayWithTabs = ({
             };
 
             const updatedGroupedData = {...groupedDataWithUpdatedValues()};
+            const initialGroupedData = {...groupedInitialData()};
             updatedGroupedData[key][subTabIndex] = {
                 ...updatedGroupedData[key][subTabIndex],
                 ...currentFormData,
             };
-            const newCurrentData = updatedGroupedData[keyTo][indexTo];
+            const newCurrentData =
+                indexTo || !initialGroupedData[keyTo]
+                    ? updatedGroupedData[keyTo][indexTo]
+                    : initialGroupedData[keyTo][indexTo];
+
             setCurrentData(newCurrentData);
 
             setGroupedData(prevState => {
