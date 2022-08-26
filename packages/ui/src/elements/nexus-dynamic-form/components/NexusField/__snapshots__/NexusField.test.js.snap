@@ -10,6 +10,7 @@ exports[`NexusField should match snapshot 1`] = `
       inModal={false}
       isDisabled={true}
       isRequired={false}
+      isRequiredWhen={Array []}
       name="rightId"
       stackLabel={false}
       validate={[Function]}
