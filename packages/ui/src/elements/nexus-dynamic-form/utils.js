@@ -318,9 +318,8 @@ const toShow = (field, initialData, prefix) => {
     return true;
 };
 
-export const isRequiredWhenCondition = (isRequiredWhen, initialData) => {
+const isRequiredWhenCondition = (isRequiredWhen, initialData) => {
     const operation = {logical_not: 'notEqual'};
-
     let required = true;
     Array.isArray(isRequiredWhen) &&
         isRequiredWhen.forEach(element => {
