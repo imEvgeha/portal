@@ -478,7 +478,10 @@ const NexusArrayWithTabs = ({
                             <Restricted resource="metadataAutoDecorate">
                                 <PortalButton
                                     className="p-button-outlined"
-                                    onClick={toggleAutoDecorateModal}
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        toggleAutoDecorateModal();
+                                    }}
                                     label="Auto-Decorate"
                                 />
                             </Restricted>
