@@ -644,7 +644,6 @@ NexusField.propTypes = {
     stackLabel: PropTypes.bool,
     inModal: PropTypes.bool,
     sectionID: PropTypes.string,
-    isRequiredWhen: PropTypes.array,
 };
 
 NexusField.defaultProps = {
@@ -695,7 +694,6 @@ NexusField.defaultProps = {
     stackLabel: false,
     inModal: false,
     sectionID: '',
-    isRequiredWhen: [],
 };
 
 export default NexusField;
