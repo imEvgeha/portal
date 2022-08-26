@@ -5,7 +5,7 @@ import {CheckboxField, Field as AKField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import {InputNumber} from '@portal/portal-components';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {get, toLower} from 'lodash';
+import {get, toLower, toString} from 'lodash';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
@@ -28,7 +28,6 @@ import {
     hebrew,
     renderError,
     renderLabel,
-    isRequiredWhenCondition,
 } from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
@@ -581,7 +580,9 @@ const NexusField = ({
                                     </div>
                                     {error && validationName('areAllWithdrawn')
                                         ? renderError(RIGHT_STATUS_CANCELED)
-                                        : error && renderError(FIELD_REQUIRED)}
+                                        : error && isRequired
+                                        ? renderError(FIELD_REQUIRED)
+                                        : renderError(toString(error))}
                                 </div>
                             </div>
                         );
