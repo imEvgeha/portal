@@ -580,7 +580,7 @@ const NexusField = ({
                                     </div>
                                     {error && validationName('areAllWithdrawn')
                                         ? renderError(RIGHT_STATUS_CANCELED)
-                                        : error && isRequired && isRequired
+                                        : error && isRequired
                                         ? renderError(FIELD_REQUIRED)
                                         : error && renderError(toString(error))}
                                 </div>
