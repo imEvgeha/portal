@@ -63,6 +63,13 @@
                             "type": "string",
                             "path": "releaseYear",
                             "isRequired": true,
+                            "isRequiredWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": ["season"],
+                                    "operation": "notEqual"
+                                }
+                            ],
                             "validation": [
                                 {
                                     "name": "isYear"

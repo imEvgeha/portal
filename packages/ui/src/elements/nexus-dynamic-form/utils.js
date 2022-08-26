@@ -136,7 +136,6 @@ const checkDependencyValues = (dependencies, getCurrentValues) => {
     return allValues;
 };
 
-// eslint-disable-next-line max-params
 export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable, getCurrentValues}) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
@@ -319,6 +318,22 @@ const toShow = (field, initialData, prefix) => {
     return true;
 };
 
+export const isRequiredWhenCondition = (isRequiredWhen, initialData) => {
+    const operation = {logical_not: 'notEqual'};
+
+    let required = true;
+    Array.isArray(isRequiredWhen) &&
+        isRequiredWhen.forEach(element => {
+            const fieldValue = element?.field && initialData && getFieldCurrentValue(initialData, element?.field);
+            if (fieldValue && element && Array.isArray(element.hasValue) && element.hasValue.length > 0) {
+                const isLogicalNot = element?.operation ? element.operation === operation.logical_not : false;
+                const isRequired = !!element.hasValue.includes(fieldValue);
+                required = required && (isLogicalNot ? !isRequired : isRequired);
+            }
+        });
+    return required;
+};
+
 export const buildSection = (
     fields = {},
     getValues,
@@ -471,6 +486,7 @@ export const renderNexusField = (
                 isTitlePage={isTitlePage}
                 setUpdate={setUpdate}
                 allData={allData}
+                isRequired={field.isRequired && isRequiredWhenCondition(field.isRequiredWhen, initialData)}
             />
         </Restricted>
     ) : null;

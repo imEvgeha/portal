@@ -28,6 +28,7 @@ import {
     hebrew,
     renderError,
     renderLabel,
+    isRequiredWhenCondition,
 } from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
@@ -642,6 +643,7 @@ NexusField.propTypes = {
     stackLabel: PropTypes.bool,
     inModal: PropTypes.bool,
     sectionID: PropTypes.string,
+    isRequiredWhen: PropTypes.array,
 };
 
 NexusField.defaultProps = {
@@ -692,6 +694,7 @@ NexusField.defaultProps = {
     stackLabel: false,
     inModal: false,
     sectionID: '',
+    isRequiredWhen: [],
 };
 
 export default NexusField;
