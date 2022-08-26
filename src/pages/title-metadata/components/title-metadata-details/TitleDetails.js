@@ -295,8 +295,10 @@ const TitleDetails = ({
         });
 
         let fulfilledPromises = [];
+        let rejectedPromises = [];
         await Promise.allSettled(promises).then(res => {
             fulfilledPromises = res.filter(e => e.status === 'fulfilled');
+            rejectedPromises = res.filter(e => e.status === 'rejected');
         });
         fulfilledPromises.forEach(() => {
             toast = {
@@ -306,7 +308,7 @@ const TitleDetails = ({
             store.dispatch(addToast(toast));
         });
 
-        if (fulfilledPromises.length) {
+        if (fulfilledPromises.length && !rejectedPromises.length) {
             return getEditorialMetadata({id: titleId, selectedTenant});
         }
     };
