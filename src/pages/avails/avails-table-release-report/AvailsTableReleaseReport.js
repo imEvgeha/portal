@@ -1,23 +1,19 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
-import Popup from '@atlaskit/popup';
-import {Dropdown} from '@portal/portal-components';
-import AtlaskitMoreIcon from '@vubiquity-nexus/portal-assets/atlaskit-more-icon.svg';
+import {Button, Dropdown, OverlayPanel} from '@portal/portal-components';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
-import {Button as PrimereactButton} from 'primereact/button';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import {RIGHTS_TAB, STATUS_TAB} from '../rights-repository/constants';
 import {CREATE_REPORT, END_YEAR, MOCK_YEAR, MONTHS, NEW_RELEASE_REPORT, START_YEAR} from './constants';
 import './AvailsTableReleaseReport.scss';
 
-const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, totalRecordsCount}) => {
+const AvailsTableReleaseReport = ({addToast, activeTab}) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(moment().format('MMMM'));
     const [selectedYear, setSelectedYear] = useState(+moment().format('YYYY'));
+    const op = useRef(null);
 
     const onCreateReport = () => {
         const monthNumber = moment().month(selectedMonth).format('MM');
@@ -31,11 +27,13 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, total
             .then(response => {
                 downloadFile(response, `${selectedMonth}-${selectedYear}-New_Release_Report_US_`);
                 setIsLoading(false);
-                setIsOpen(false);
+                // Close overlay panel
+                op?.current?.hide?.();
             })
             .catch(error => {
                 setIsLoading(false);
-                setIsOpen(false);
+                // Close overlay panel
+                op?.current?.hide?.();
                 addToast({
                     detail: `${error?.type}: failed to create report. ${
                         error.message ? `Details: ${error.message}` : ''
@@ -57,62 +55,66 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, total
     const getContent = () => {
         return (
             <div className="nexus-c-right-repository-release-report-content">
-                <Dropdown
-                    id="ddlYears"
-                    value={selectedYear}
-                    filter={true}
-                    className="nexus-c-right-repository-release-report__year-dropdown"
-                    columnClass="col-12"
-                    options={getYears()}
-                    placeholder="Select one option"
-                    appendTo="self"
-                    onChange={e => setSelectedYear(e.value)}
-                />
-                <Dropdown
-                    id="ddlMonths"
-                    value={selectedMonth}
-                    filter={true}
-                    className="nexus-c-right-repository-release-report__month-dropdown"
-                    columnClass="col-12"
-                    options={MONTHS.map(m => ({value: m, label: m}))}
-                    placeholder="Select one option"
-                    appendTo="self"
-                    onChange={e => setSelectedMonth(e.value)}
-                />
-
-                <PrimereactButton
-                    label={isLoading ? '' : CREATE_REPORT}
-                    loading={isLoading}
-                    className="w-100 p-button-outlined"
-                    onClick={onCreateReport}
-                />
+                <div className="row mb-1">
+                    <div className="col-12">
+                        <Dropdown
+                            id="ddlYears"
+                            value={selectedYear}
+                            filter={true}
+                            className="nexus-c-right-repository-release-report__year-dropdown"
+                            columnClass="col-12"
+                            options={getYears()}
+                            placeholder="Select one option"
+                            appendTo="self"
+                            onChange={e => setSelectedYear(e.value)}
+                        />
+                    </div>
+                </div>
+                <div className="row mb-1">
+                    <div className="col-12">
+                        <Dropdown
+                            id="ddlMonths"
+                            value={selectedMonth}
+                            filter={true}
+                            className="nexus-c-right-repository-release-report__month-dropdown"
+                            columnClass="col-12"
+                            options={MONTHS.map(m => ({value: m, label: m}))}
+                            placeholder="Select one option"
+                            appendTo="self"
+                            onChange={e => setSelectedMonth(e.value)}
+                        />
+                    </div>
+                </div>
+                <div className="row mb-1">
+                    <div className="col-12">
+                        <Button
+                            label={CREATE_REPORT}
+                            loading={isLoading}
+                            className="p-button-outlined"
+                            onClick={onCreateReport}
+                        />
+                    </div>
+                </div>
             </div>
         );
     };
     return (
         <div className="nexus-c-right-repository-release-report">
-            <Popup
+            <Button
                 id="nexus-c-right-repository-release-report__popup"
-                boundariesElement="scrollParent"
-                placement="bottom-start"
-                isOpen={isOpen}
-                onClose={() => setIsOpen(false)}
-                content={() => getContent()}
-                trigger={triggerProps => (
-                    <Button
-                        {...triggerProps}
-                        isSelected={isOpen}
-                        onClick={() => setIsOpen(!isOpen)}
-                        isDisabled={[STATUS_TAB].includes(activeTab)}
-                        shouldFitContainer
-                    >
-                        <span className="nexus-c-right-repository-release-report-button__title">
-                            {NEW_RELEASE_REPORT}
-                        </span>
-                        <AtlaskitMoreIcon />
-                    </Button>
-                )}
+                icon="pi pi-chevron-down"
+                iconPos="right"
+                disabled={[STATUS_TAB].includes(activeTab)}
+                className="p-button-outlined p-button-secondary"
+                label={NEW_RELEASE_REPORT}
+                onClick={e => op?.current?.toggle?.(e)}
             />
+
+            <OverlayPanel ref={op} id="opReport" style={{width: 'auto'}} className="report-overlay-panel">
+                <div className="row">
+                    <div className="col-12 text-center">{getContent()}</div>
+                </div>
+            </OverlayPanel>
         </div>
     );
 };
@@ -120,8 +122,6 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, total
 AvailsTableReleaseReport.propTypes = {
     addToast: PropTypes.func,
     activeTab: PropTypes.string,
-    selectedRowsCount: PropTypes.number.isRequired,
-    totalRecordsCount: PropTypes.number.isRequired,
 };
 
 AvailsTableReleaseReport.defaultProps = {
