@@ -421,9 +421,10 @@ const handleDirtyEMETValues = (initialValues, values) => {
             });
 
         if (index !== null && index >= 0) {
-            editorial.tenantData = handleDirtySasktelValues(initialValues, values);
+            const addedTenantData = handleDirtySasktelValues(initialValues, values);
 
             const cleanEditorial = cleanObject(editorial);
+
             const isUpdated = Object.keys(cleanEditorial)?.some(item => {
                 if (item === 'tenantData') {
                     return false;
@@ -434,12 +435,22 @@ const handleDirtyEMETValues = (initialValues, values) => {
             values.editorialMetadata[index] = {
                 ...values.editorialMetadata[index],
                 ...editorial,
+                ...addedTenantData,
                 isUpdated,
             };
         }
 
         values.editorialMetadata.forEach((emet, i) => {
-            if (!emet.isDeleted && i !== index && !isEqual(emet, initialValues.editorialMetadata[i])) {
+            const checkMasterEmet = emet?.tenantData?.complexProperties
+                ?.find(e => e.simpleProperties)
+                ?.simpleProperties?.find(e => e.name === 'hasGeneratedChildren')?.value;
+
+            if (
+                !emet.isDeleted &&
+                i !== index &&
+                !isEqual(emet, initialValues.editorialMetadata[i]) &&
+                !checkMasterEmet
+            ) {
                 values.editorialMetadata[i] = {...emet, isUpdated: true};
             }
             if (emet.isDeleted) {
@@ -450,50 +461,45 @@ const handleDirtyEMETValues = (initialValues, values) => {
 };
 
 const handleDirtySasktelValues = (initialValues, values) => {
-    let mergedArray = [];
-    const newTenantDataValues = [];
-    const sasktelInventoryId = values?.editorial?.sasktelInventoryId || [];
-    const sasktelLineupId = values?.editorial?.sasktelLineupId || [];
+    const simpleProperties = [];
+    const sasktelKeys = ['sasktelInventoryId', 'sasktelLineupId'];
+
+    for (const [key, value] of Object.entries(values?.editorial)) {
+        let newValue;
+        if (sasktelKeys.includes(key) && typeof value === 'string') {
+            newValue = value;
+        }
+        if (sasktelKeys.includes(key) && Array.isArray(value)) {
+            const temValue = value?.find(e => e.name === key)?.value;
+            newValue = temValue || undefined;
+        }
+
+        newValue &&
+            simpleProperties.push({
+                name: key,
+                value: newValue,
+            });
+    }
+
+    const tenantDataBody = {
+        simpleProperties,
+    };
+
     const masterEmet = values.editorialMetadata.find(e =>
         e?.tenantData?.complexProperties?.find(e => e?.simpleProperties.find(e => e.name === 'hasGeneratedChildren'))
     );
 
-    if (masterEmet) {
-        return masterEmet?.tenantData;
+    // for the autoDecorate title
+    if (masterEmet && values?.editorial?.shortTitleTemplate) {
+        return {...values.editorial, tenantData: masterEmet.tenantData};
     }
 
-    if (Array.isArray(sasktelInventoryId) && Array.isArray(sasktelLineupId)) {
-        mergedArray = sasktelInventoryId.concat(sasktelLineupId.filter(item => sasktelInventoryId.indexOf(item) < 0));
+    // don't create tenantData if the condition is not met
+    if (simpleProperties.length) {
+        return {...values.editorial, tenantData: tenantDataBody};
     }
-    if (typeof sasktelInventoryId === 'string') {
-        newTenantDataValues.push({
-            name: 'sasktelInventoryId',
-            value: sasktelInventoryId,
-        });
-    }
-    if (typeof sasktelLineupId === 'string') {
-        newTenantDataValues.push({
-            name: 'sasktelLineupId',
-            value: sasktelLineupId,
-        });
-    }
-    if (Array.isArray(sasktelInventoryId) && !Array.isArray(sasktelLineupId)) {
-        mergedArray = newTenantDataValues.concat(
-            sasktelInventoryId.filter(item => newTenantDataValues.indexOf(item) < 0)
-        );
-    }
-    if (Array.isArray(sasktelLineupId) && !Array.isArray(sasktelInventoryId)) {
-        mergedArray = newTenantDataValues.concat(sasktelLineupId.filter(item => newTenantDataValues.indexOf(item) < 0));
-    }
-    const finalArray = mergedArray?.length ? mergedArray : newTenantDataValues;
-    const filteredValues = finalArray.filter(e => {
-        return e.value;
-    });
 
-    const editorialMetadata = {
-        simpleProperties: finalArray,
-    };
-    return filteredValues?.length ? editorialMetadata : null;
+    return {...values.editorial};
 };
 
 const handleDirtyTMETValues = (initialValues, values) => {
