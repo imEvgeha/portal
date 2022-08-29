@@ -243,7 +243,7 @@ const TitleDetails = ({
             .then(res => updateTitle({updatePayload: payload, updateResponse: res}));
     };
 
-    const updateTerritoryMetadata = (territorialMetadata = [], titleId) => {
+    const updateTerritoryMetadata = async (territorialMetadata = [], titleId) => {
         const titleTerritorialService = TitleTerittorialService.getInstance();
 
         const promises = [];
@@ -260,8 +260,13 @@ const TitleDetails = ({
             }
         });
 
-        Promise.all(promises).then(() => {
+        let fulfilledPromises = [];
+        await Promise.allSettled(promises).then(res => {
+            fulfilledPromises = res.filter(e => e.status === 'fulfilled');
             getTerritoryMetadata({id: titleId, selectedTenant});
+        });
+
+        fulfilledPromises.forEach(() => {
             const successToast = {
                 severity: 'success',
                 detail: UPDATE_TERRITORY_METADATA_SUCCESS,

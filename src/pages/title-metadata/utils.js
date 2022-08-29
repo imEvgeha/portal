@@ -407,7 +407,7 @@ const handleDirtyEMETValues = (initialValues, values) => {
     if (editorial) {
         const index =
             values.editorialMetadata &&
-            values.editorialMetadata.findIndex(elem => {
+            values.editorialMetadata?.findIndex(elem => {
                 if (elem.locale === editorial.locale && elem.language === editorial.language) {
                     const isFormatOk =
                         (elem.format && editorial.format && elem.format === editorial.format) ||
@@ -515,7 +515,7 @@ const handleDirtyTMETValues = (initialValues, values) => {
     if (territorial) {
         const index =
             values.territorialMetadata &&
-            values.territorialMetadata.findIndex(elem => elem.locale === territorial.locale);
+            values.territorialMetadata?.findIndex(elem => elem.locale === territorial.locale);
         if (index !== null && index >= 0) {
             const updatedTmetRecord = {
                 ...values.territorialMetadata[index],
