@@ -421,9 +421,10 @@ const handleDirtyEMETValues = (initialValues, values) => {
             });
 
         if (index !== null && index >= 0) {
-            handleDirtySasktelValues(initialValues, values);
+            const addedTenantData = handleDirtySasktelValues(initialValues, values);
 
             const cleanEditorial = cleanObject(editorial);
+
             const isUpdated = Object.keys(cleanEditorial)?.some(item => {
                 if (item === 'tenantData') {
                     return false;
@@ -434,6 +435,7 @@ const handleDirtyEMETValues = (initialValues, values) => {
             values.editorialMetadata[index] = {
                 ...values.editorialMetadata[index],
                 ...editorial,
+                ...addedTenantData,
                 isUpdated,
             };
         }
@@ -463,22 +465,20 @@ const handleDirtySasktelValues = (initialValues, values) => {
     const sasktelKeys = ['sasktelInventoryId', 'sasktelLineupId'];
 
     for (const [key, value] of Object.entries(values?.editorial)) {
+        let newValue;
         if (sasktelKeys.includes(key) && typeof value === 'string') {
-            simpleProperties.push({
-                name: key,
-                value,
-            });
+            newValue = value;
         }
-
         if (sasktelKeys.includes(key) && Array.isArray(value)) {
             const temValue = value?.find(e => e.name === key)?.value;
-
-            temValue &&
-                simpleProperties.push({
-                    name: key,
-                    value: temValue,
-                });
+            newValue = temValue || undefined;
         }
+
+        newValue &&
+            simpleProperties.push({
+                name: key,
+                value: newValue,
+            });
     }
 
     const tenantDataBody = {
@@ -491,13 +491,15 @@ const handleDirtySasktelValues = (initialValues, values) => {
 
     // for the autoDecorate title
     if (masterEmet && values?.editorial?.shortTitleTemplate) {
-        return (values.editorial.tenantData = masterEmet?.tenantData);
+        return {...values.editorial, tenantData: masterEmet.tenantData};
     }
 
     // don't create tenantData if the condition is not met
     if (simpleProperties.length) {
-        return (values.editorial.tenantData = tenantDataBody);
+        return {...values.editorial, tenantData: tenantDataBody};
     }
+
+    return {...values.editorial};
 };
 
 const handleDirtyTMETValues = (initialValues, values) => {
