@@ -4,10 +4,15 @@ exports[`AssignModal should match snapshot 1`] = `
 <div
   className="dop-tasks-assign-tasks"
 >
-  <label>
-    Assign to: 
-  </label>
-  <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+  <Dropdown
+    id="ddlAssignTo"
+    labelProps={
+      Object {
+        "label": "Assign to: ",
+        "shouldUpper": false,
+        "stacked": true,
+      }
+    }
     onChange={[Function]}
     options={
       Array [
@@ -19,6 +24,7 @@ exports[`AssignModal should match snapshot 1`] = `
       ]
     }
     placeholder="Select Task Owner"
+    value=""
   />
 </div>
 `;

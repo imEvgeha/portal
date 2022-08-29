@@ -136,15 +136,15 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div
               className="fulfillment-order__input"
             >
-              <label
-                htmlFor="readiness-status"
-              >
-                Market Type
-              </label>
-              <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+              <Dropdown
                 id="market-type"
-                isDisabled={true}
-                name="market-type"
+                labelProps={
+                  Object {
+                    "label": "Market Type",
+                    "shouldUpper": false,
+                    "stacked": true,
+                  }
+                }
                 onChange={[Function]}
                 options={
                   Array [
@@ -162,26 +162,22 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                     },
                   ]
                 }
-                value={
-                  Object {
-                    "label": undefined,
-                    "value": "Major",
-                  }
-                }
+                value="Major"
               />
             </div>
             <div
               className="fulfillment-order__input"
             >
-              <label
-                htmlFor="late-fault"
-              >
-                Late At Fault
-              </label>
-              <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+              <Dropdown
+                disabled={true}
                 id="late-fault"
-                isDisabled={true}
-                name="late-fault"
+                labelProps={
+                  Object {
+                    "label": "Late At Fault",
+                    "shouldUpper": false,
+                    "stacked": true,
+                  }
+                }
                 onChange={[Function]}
                 options={
                   Array [
@@ -191,12 +187,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                     },
                   ]
                 }
-                value={
-                  Object {
-                    "label": "Everyone is at fault",
-                    "value": "Everyone is at fault",
-                  }
-                }
+                value="Everyone is at fault"
               />
             </div>
           </GridColumn>
@@ -206,53 +197,52 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div
               className="fulfillment-order__input"
             >
-              <label
-                htmlFor="car"
-              >
-                CAR
-              </label>
-              <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+              <Tooltip
                 content="Not sure what is this field"
-              >
-                <Memo(Textfield)
-                  css={
-                    Object {
-                      "height": "auto",
-                    }
+                position="bottom"
+                target=".lbl-car"
+              />
+              <InputText
+                className="lbl-car"
+                disabled={true}
+                id="car"
+                labelProps={
+                  Object {
+                    "htmlFor": "car",
+                    "label": "Car",
+                    "shouldUpper": true,
+                    "stacked": true,
                   }
-                  id="car"
-                  isDisabled={true}
-                  name="CAR"
-                  onChange={[Function]}
-                  value="Not sure what is this field"
-                />
-              </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+                }
+                name="CAR"
+                onChange={[Function]}
+                value="Not sure what is this field"
+              />
             </div>
             <div
               className="fulfillment-order__input"
             >
-              <label
-                htmlFor="late-reason"
-              >
-                Late Reason
-              </label>
-              <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
-                content="The dog ate my homework"
-              >
-                <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-                  id="late-reason"
-                  isDisabled={true}
-                  name="late-reason"
-                  onChange={[Function]}
-                  options={Array []}
-                  value={
-                    Object {
-                      "label": "The dog ate my homework",
-                      "value": "The dog ate my homework",
-                    }
+              <Dropdown
+                className="late-reason-ddl"
+                disabled={true}
+                id="late-reason"
+                labelProps={
+                  Object {
+                    "label": "Late Reason",
+                    "shouldUpper": false,
+                    "stacked": true,
                   }
-                />
-              </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+                }
+                onChange={[Function]}
+                options={Array []}
+                tooltip="The dog ate my homework"
+                tooltipOptions={
+                  Object {
+                    "position": "bottom",
+                  }
+                }
+                value="The dog ate my homework"
+              />
             </div>
           </GridColumn>
           <GridColumn
@@ -261,25 +251,26 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div
               className="fulfillment-order__input"
             >
-              <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+              <Tooltip
                 content="0 errors"
-              >
-                <div
-                  onClick={[Function]}
-                >
-                  <label
-                    htmlFor="late-reason"
-                  >
-                    Fulfillment Status
-                  </label>
-                  <ErrorIcon
-                    primaryColor="grey"
-                    size="small"
-                  />
-                </div>
-              </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
-              <Memo(Textfield)
-                isDisabled={true}
+                target=".late-reason-lbl"
+              />
+              <InputText
+                disabled={true}
+                id="fulfillmentStatus"
+                labelProps={
+                  Object {
+                    "additionalLabel": <i
+                      className="pi pi-exclamation-circle mx-2 error-icon grey"
+                      onClick={[Function]}
+                    />,
+                    "className": "late-reason-lbl",
+                    "htmlFor": "fulfillmentStatus",
+                    "label": "Fulfillment Status",
+                    "shouldUpper": false,
+                    "stacked": true,
+                  }
+                }
                 name="fulfillment-status"
                 value=""
               />
@@ -287,16 +278,17 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div
               className="fulfillment-order__input"
             >
-              <label
-                htmlFor="readiness-status"
-              >
-                Readiness Status
-              </label>
-              <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+              <Dropdown
                 className="fulfillment-order__readiness-status"
+                disabled={false}
                 id="readiness-status"
-                isDisabled={false}
-                name="readiness-status"
+                labelProps={
+                  Object {
+                    "label": "Readiness Status",
+                    "shouldUpper": false,
+                    "stacked": true,
+                  }
+                }
                 onChange={[Function]}
                 options={
                   Array [
@@ -314,27 +306,22 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                     },
                   ]
                 }
-                value={
-                  Object {
-                    "label": undefined,
-                    "value": "",
-                  }
-                }
+                value=""
               />
             </div>
-            <label
-              htmlFor="notes"
-            >
-              Notes:
-            </label>
-            <NexusTextArea
-              disabled={false}
-              isCompact={true}
-              isDisabled={true}
+            <InputTextarea
+              disabled={true}
+              id="txtAreaNotes"
+              labelProps={
+                Object {
+                  "label": "Notes",
+                  "shouldUpper": false,
+                  "stacked": true,
+                }
+              }
               name="notes"
-              notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-              onTextChange={[Function]}
-              resize="smart"
+              onChange={[Function]}
+              value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             />
           </GridColumn>
         </GridWrapper>

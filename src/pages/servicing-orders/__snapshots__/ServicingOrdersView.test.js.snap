@@ -13,14 +13,15 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
     <div
       className="nexus-c-servicing-orders__customer-filter"
     >
-      <label
-        htmlFor="customer"
-      >
-        Customer
-      </label>
-      <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-        className="nexus-c-servicing-orders__customer-filter--select"
-        name="customer"
+      <Dropdown
+        id="ddlCustomer"
+        labelProps={
+          Object {
+            "label": "Customer",
+            "shouldUpper": false,
+            "stacked": true,
+          }
+        }
         onChange={[Function]}
         options={
           Array [
@@ -38,13 +39,7 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
             },
           ]
         }
-        placeholder="Select..."
-        value={
-          Object {
-            "label": "Select...",
-            "value": "",
-          }
-        }
+        value=""
       />
     </div>
     <Button
