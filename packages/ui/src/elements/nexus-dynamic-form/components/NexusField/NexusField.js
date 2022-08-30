@@ -90,6 +90,7 @@ const NexusField = ({
     forMetadata,
     shouldUpperCase,
     sectionID,
+    shouldStackLabel,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -563,24 +564,45 @@ const NexusField = ({
                     {({fieldProps, error}) => {
                         return (
                             <div className={props.stackLabel ? 'stack-label w-100' : 'display-contents'}>
-                                {!FIELDS_WITHOUT_LABEL.includes(type) &&
-                                    renderLabel(
-                                        label,
-                                        checkDependencies('required') || isRequired,
-                                        tooltip,
-                                        isGridLayout,
-                                        isRequiredVZ,
-                                        oneIsRequiredVZ
+                                <div className="row w-100 align-items-center">
+                                    {!FIELDS_WITHOUT_LABEL.includes(type) && (
+                                        <div
+                                            className={`${
+                                                shouldStackLabel ? 'col-12' : isGridLayout ? 'col-4' : 'col-2'
+                                            }`}
+                                        >
+                                            {renderLabel(
+                                                label,
+                                                checkDependencies('required') || isRequired,
+                                                tooltip,
+                                                isGridLayout,
+                                                isRequiredVZ,
+                                                oneIsRequiredVZ
+                                            )}
+                                        </div>
                                     )}
-                                <div className="nexus-c-field__value-section">
-                                    <div className={`nexus-c-field__value ${shouldUpperCase ? 'text-uppercase' : ''}`}>
-                                        {!getIsReadOnly() && (view === VIEWS.EDIT || view === VIEWS.CREATE)
-                                            ? renderFieldEditMode(fieldProps)
-                                            : renderFieldViewMode(fieldProps)}
+                                    <div
+                                        className={
+                                            FIELDS_WITHOUT_LABEL.includes(type)
+                                                ? 'col-12'
+                                                : `${shouldStackLabel ? 'col-12' : isGridLayout ? 'col-8' : 'col-10'}`
+                                        }
+                                    >
+                                        <div className="nexus-c-field__value-section">
+                                            <div
+                                                className={`nexus-c-field__value ${
+                                                    shouldUpperCase ? 'text-uppercase' : ''
+                                                }`}
+                                            >
+                                                {!getIsReadOnly() && (view === VIEWS.EDIT || view === VIEWS.CREATE)
+                                                    ? renderFieldEditMode(fieldProps)
+                                                    : renderFieldViewMode(fieldProps)}
+                                            </div>
+                                            {error && validationName('areAllWithdrawn')
+                                                ? renderError(RIGHT_STATUS_CANCELED)
+                                                : error && renderError(FIELD_REQUIRED)}
+                                        </div>
                                     </div>
-                                    {error && validationName('areAllWithdrawn')
-                                        ? renderError(RIGHT_STATUS_CANCELED)
-                                        : error && renderError(FIELD_REQUIRED)}
                                 </div>
                             </div>
                         );
@@ -642,6 +664,7 @@ NexusField.propTypes = {
     stackLabel: PropTypes.bool,
     inModal: PropTypes.bool,
     sectionID: PropTypes.string,
+    shouldStackLabel: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -692,6 +715,7 @@ NexusField.defaultProps = {
     stackLabel: false,
     inModal: false,
     sectionID: '',
+    shouldStackLabel: false,
 };
 
 export default NexusField;

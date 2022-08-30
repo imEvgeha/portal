@@ -15,7 +15,14 @@ import {isInteger} from './valdationUtils/isInteger';
 import {isTime} from './valdationUtils/isTime';
 import {isYear} from './valdationUtils/isYear';
 import {lengthEqual} from './valdationUtils/lengthEqual';
-import {FIELD_REQUIRED, MANDATORY_VZ, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, ONE_MANDATORY_VZ, VIEWS} from './constants';
+import {
+    FIELD_REQUIRED,
+    FIELDS_WITHOUT_LABEL,
+    MANDATORY_VZ,
+    NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS,
+    ONE_MANDATORY_VZ,
+    VIEWS,
+} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
     const viewConfig =
@@ -344,8 +351,13 @@ export const buildSection = (
         sectionID,
     }
 ) => {
+    const getClass = type => {
+        const isFullWidth = FIELDS_WITHOUT_LABEL.includes(type);
+        return isGridLayout ? (isFullWidth ? 'col-12' : 'col-lg-6 col-12') : 'col-12';
+    };
+
     return (
-        <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
+        <div className="row">
             {Object.keys(fields).map(key => {
                 return (
                     !getFieldConfig(fields[key], 'hidden', view) &&
@@ -388,7 +400,7 @@ export const buildSection = (
                             {...fields[key]}
                         />
                     ) : (
-                        <div key={key} className="nexus-c-dynamic-form__field">
+                        <div key={key} className={`nexus-c-dynamic-form__field ${getClass(fields?.[key].type)} `}>
                             {renderNexusField(key, view, getValues, generateMsvIds, {
                                 initialData,
                                 field: fields[key],
@@ -402,6 +414,7 @@ export const buildSection = (
                                 setDisableSubmit,
                                 isTitlePage,
                                 setUpdate,
+                                shouldStackLabel: !!fields?.[key]?.stackLabel,
                             })}
                         </div>
                     ))
@@ -441,6 +454,7 @@ export const renderNexusField = (
         isTitlePage,
         setUpdate,
         allData,
+        shouldStackLabel = false,
     }
 ) => {
     return toShow(field, updatedValues || initialData, prefix) ? (
@@ -471,6 +485,7 @@ export const renderNexusField = (
                 isTitlePage={isTitlePage}
                 setUpdate={setUpdate}
                 allData={allData}
+                shouldStackLabel={!!shouldStackLabel}
             />
         </Restricted>
     ) : null;
@@ -506,7 +521,7 @@ export const renderLabel = (label, isRequired, tooltip, isGridLayout, isRequired
     const tooltipText = isRequiredVZ ? MANDATORY_VZ : oneIsRequiredVZ ? ONE_MANDATORY_VZ : undefined;
     return (
         <div
-            className={classnames('nexus-c-field__label', {
+            className={classnames('nexus-c-field__label w-100', {
                 'nexus-c-field__label--grid': isGridLayout,
             })}
         >
