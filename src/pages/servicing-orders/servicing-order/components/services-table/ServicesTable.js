@@ -366,9 +366,13 @@ const ServicesTable = ({
         blankService.externalServices.externalId = newExternalId;
         blankService.externalServices.externalSystem = updatedService[0].externalServices.externalSystem;
         blankService.overrideDueDate = blankService.deteTasks.dueDate;
+
+        blankService.deteTasks.deteDeliveries[0].externalDelivery = {};
+
         blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.externalId = newExternalId;
         blankService.deteTasks.deteDeliveries[0].deliveryMethod = SELECT_VALUES.deliveryMethod[0];
+
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);
