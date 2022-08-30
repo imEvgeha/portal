@@ -2,9 +2,10 @@ import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
+import {useDispatch} from 'react-redux';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import {getEligibleRights} from '../menu-actions/actions';
@@ -23,7 +24,6 @@ import {
 
 export const PrePlanActions = ({
     selectedPrePlanRights,
-    addToast,
     setSelectedPrePlanRights,
     setPreplanRights,
     prePlanRepoRights = [],
@@ -31,6 +31,7 @@ export const PrePlanActions = ({
     singleRightMatch,
     setSingleRightMatch,
 }) => {
+    const dispatch = useDispatch();
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
@@ -94,10 +95,12 @@ export const PrePlanActions = ({
             return right['territory'].some(t => t.selected);
         });
         if (!selectedList) {
-            addToast({
-                detail: NO_TERRITORIES_SELECTED,
-                severity: 'warn',
-            });
+            dispatch(
+                addToast({
+                    detail: NO_TERRITORIES_SELECTED,
+                    severity: 'warn',
+                })
+            );
             return;
         }
         setIsFetchDOP(true);
@@ -208,10 +211,12 @@ export const PrePlanActions = ({
     };
 
     const dispatchSuccessToast = noOfItems => {
-        addToast({
-            detail: getSuccessToastMsg(noOfItems),
-            severity: 'success',
-        });
+        dispatch(
+            addToast({
+                detail: getSuccessToastMsg(noOfItems),
+                severity: 'success',
+            })
+        );
     };
 
     const actions = [
@@ -288,7 +293,6 @@ export const PrePlanActions = ({
 
 PrePlanActions.propTypes = {
     selectedPrePlanRights: PropTypes.array,
-    addToast: PropTypes.func,
     setSelectedPrePlanRights: PropTypes.func,
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func,
@@ -299,7 +303,6 @@ PrePlanActions.propTypes = {
 
 PrePlanActions.defaultProps = {
     selectedPrePlanRights: [],
-    addToast: () => null,
     setSelectedPrePlanRights: () => null,
     prePlanRepoRights: [],
     setPreplanRights: () => null,
@@ -308,4 +311,4 @@ PrePlanActions.defaultProps = {
     setSingleRightMatch: () => null,
 };
 
-export default withToasts(PrePlanActions);
+export default PrePlanActions;

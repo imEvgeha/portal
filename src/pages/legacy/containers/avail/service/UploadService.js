@@ -1,7 +1,6 @@
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {isString} from 'lodash';
-import {getApiURI, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
-import {keycloak} from '@portal/portal-auth';
+import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 
 // currently FETCH API doesn't support upload progress calculation
 // for upload progress we should switch upload to XHR (XMLHttpRequest) or
@@ -9,18 +8,12 @@ import {keycloak} from '@portal/portal-auth';
 
 export const uploadService = {
     uploadAvail: ({file, externalId, params = {}, ...rest}) => {
-        const {token} = keycloak || {};
         const formData = new FormData();
         if (isString(file)) {
             formData.append('s3Link', file);
         } else {
             formData.append('avail', file);
         }
-        const options = {
-            headers: {
-                ...(token ? {Authorization: `Bearer ${token}`} : {}),
-            },
-        };
 
         if (externalId) {
             params.externalId = externalId;
@@ -30,16 +23,10 @@ export const uploadService = {
         const uri = '/avails/upload' + (queryParams && `?${queryParams}`);
         const url = getApiURI('avails', uri);
 
-        const abortAfter = getConfig('avails.upload.http.timeout');
-
-        return nexusFetch(
-            url,
-            {
-                method: 'post',
-                body: formData,
-                ...options,
-            },
-            abortAfter
-        );
+        return nexusFetch(url, {
+            method: 'post',
+            body: formData,
+            file: {},
+        });
     },
 };

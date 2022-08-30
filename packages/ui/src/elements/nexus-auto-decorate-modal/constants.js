@@ -1,0 +1,11 @@
+export const AUTO_DECORATE_RESTRICTIONS = {
+    MAX_TITLE_LENGTH: 250,
+    DISPLAY_TITLE_LENGTH: 500,
+    MAX_MEDIUM_TITLE_LENGTH: 500,
+    MAX_SHORT_TITLE_LENGTH: 500,
+    MAX_SYNOPSIS_LENGTH: 4000,
+    MAX_COPYRIGHT_LENGTH: 1000,
+};
+
+export const SUCCESS_TOAST_MESSAGE = 'Auto-Decorate was successful.';
+export const ERROR_TOAST_MESSAGE = 'Something went wrong.';

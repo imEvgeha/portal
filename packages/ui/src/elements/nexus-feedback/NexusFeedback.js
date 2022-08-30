@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import TextArea from '@atlaskit/textarea';
-import withToasts from '../../toast/hoc/withToasts';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {useDispatch} from 'react-redux';
 import {options, THANKYOU_NOTE} from './constants';
 import './NexusFeedback.scss';
 
-const NexusFeedback = ({addToast, currentPage, closeModal}) => {
+const NexusFeedback = ({currentPage, closeModal}) => {
+    const dispatch = useDispatch();
     const [feedback, setFeedback] = useState('');
     const [selected, setSelected] = useState('');
 
@@ -20,10 +22,12 @@ const NexusFeedback = ({addToast, currentPage, closeModal}) => {
         // console.log(selected, feedBack, currentPage);
         // call API and then close modal
         closeModal();
-        addToast({
-            detail: THANKYOU_NOTE,
-            severity: 'success',
-        });
+        dispatch(
+            addToast({
+                detail: THANKYOU_NOTE,
+                severity: 'success',
+            })
+        );
     };
 
     return (
@@ -69,15 +73,13 @@ const NexusFeedback = ({addToast, currentPage, closeModal}) => {
 };
 
 NexusFeedback.propTypes = {
-    addToast: PropTypes.func,
     closeModal: PropTypes.func,
     currentPage: PropTypes.string,
 };
 
 NexusFeedback.defaultProps = {
-    addToast: () => null,
     closeModal: () => null,
     currentPage: '',
 };
 
-export default withToasts(NexusFeedback);
+export default NexusFeedback;

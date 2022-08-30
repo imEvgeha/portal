@@ -6,11 +6,11 @@ import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/Ne
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {bulkDeleteRights} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import classNames from 'classnames';
 import {get, isEmpty, uniqBy} from 'lodash';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import AuditHistory from '../audit-history/AuditHistory';
 import NexusBulkDelete from '../bulk-delete/NexusBulkDelete';
 import BulkDeleteConfirmation from '../bulk-delete/components/bulk-delete-confirmation/BulkDeleteConfirmation';
@@ -49,7 +49,6 @@ import './SelectedRightsActions.scss';
 
 export const SelectedRightsActions = ({
     selectedRights,
-    addToast,
     removeToast,
     toggleRefreshGridData,
     selectedRightGridApi,
@@ -76,6 +75,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState('');
     const [isSelectedForPlanning, setIsSelectedForPlanning] = useState(false);
     const node = useRef();
+    const dispatch = useDispatch();
 
     const {openModal, closeModal} = useContext(NexusModalContext);
 
@@ -173,11 +173,13 @@ export const SelectedRightsActions = ({
                 closeModal();
 
                 // Show success toast
-                addToast({
-                    detail: `You have successfully unmatched ${unmatchedRights.length} right(s).
+                dispatch(
+                    addToast({
+                        detail: `You have successfully unmatched ${unmatchedRights.length} right(s).
                          Please validate title fields.`,
-                    severity: 'success',
-                });
+                        severity: 'success',
+                    })
+                );
             });
         },
         [addToast, selectedRightGridApi, selectedRights, toggleRefreshGridData]
@@ -279,10 +281,12 @@ export const SelectedRightsActions = ({
             setSelectedRights([]);
             toggleRefreshGridData(true);
 
-            addToast({
-                detail: `You have successfully added ${selectedRights.length} Right(s) to Pre-Plan`,
-                severity: 'success',
-            });
+            dispatch(
+                addToast({
+                    detail: `You have successfully added ${selectedRights.length} Right(s) to Pre-Plan`,
+                    severity: 'success',
+                })
+            );
 
             return;
         }
@@ -455,7 +459,6 @@ export const SelectedRightsActions = ({
 
 SelectedRightsActions.propTypes = {
     selectedRights: PropTypes.array,
-    addToast: PropTypes.func,
     removeToast: PropTypes.func,
     selectedRightGridApi: PropTypes.object,
     toggleRefreshGridData: PropTypes.func,
@@ -474,7 +477,6 @@ SelectedRightsActions.propTypes = {
 
 SelectedRightsActions.defaultProps = {
     selectedRights: [],
-    addToast: () => null,
     removeToast: () => null,
     selectedRightGridApi: {},
     setSelectedRights: () => null,
@@ -509,4 +511,4 @@ const mapDispatchToProps = dispatch => ({
     bulkDeleteRights: payload => dispatch(bulkDeleteRights(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withToasts(SelectedRightsActions));
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedRightsActions);

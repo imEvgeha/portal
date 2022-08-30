@@ -1,48 +1,47 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get, toLower} from 'lodash';
 import {Button} from 'primereact/button';
-import {connect, useSelector} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import TitleSystems from '../../metadata/constants/systems';
 import TitleCreate from '../../title-metadata/components/titleCreateModal/TitleCreateModal';
+import TitleConfigurationService from '../../title-metadata/services/TitleConfigurationService';
 import {setExternalIdValues} from '../../title-metadata/titleMetadataActions';
 import {externalIDTypesSelector} from '../../title-metadata/titleMetadataSelectors';
-import {getEnums} from '../../title-metadata/titleMetadataServices';
 import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import {
+    createBonusRights,
     getAffectedRights,
+    getExistingBonusRights,
     getRestrictedTitles,
     setCoreTitleId,
-    getExistingBonusRights,
-    createBonusRights,
 } from './bulkMatchingService';
 import BonusRightsReview from './components/bonus-rights-review/BonusRightsReview';
 import BulkMatchingReview from './components/bulk-match-review/BulkMatchingReview';
 import HeaderSection from './components/header-section/HeaderSection';
 import TitlesSection from './components/titles-section/TitlesSection';
 import {
+    BONUS_RIGHTS_REVIEW_HEADER,
+    EXISTING_CORE_TITLE_ID_WARNING,
+    RIGHT_TABS,
+    TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE,
+    TITLE_BULK_MATCH_SUCCESS_MESSAGE,
     TITLE_MATCHING_MSG,
     TITLE_MATCHING_REVIEW_HEADER,
-    RIGHT_TABS,
-    EXISTING_CORE_TITLE_ID_WARNING,
-    BONUS_RIGHTS_REVIEW_HEADER,
-    TITLE_BULK_MATCH_SUCCESS_MESSAGE,
-    TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE,
 } from './constants';
 import './BulkMatching.scss';
 
 export const BulkMatching = ({
     data,
     closeDrawer,
-    addToast,
     removeToast,
     toggleRefreshGridData,
     isBonusRight,
@@ -59,8 +58,9 @@ export const BulkMatching = ({
     setExternalIdValues,
     externalIdOptions,
 }) => {
+    const dispatch = useDispatch();
     const selectedTenant = useSelector(state => get(state, 'auth.selectedTenant'));
-
+    const titleConfigurationService = TitleConfigurationService.getInstance();
     const isMounted = useRef(true);
     const [showModal, setShowModal] = useState(false);
     const [selectedTableData, setSelectedTableData] = useState([]);
@@ -79,7 +79,7 @@ export const BulkMatching = ({
     const changeActiveTab = tab => tab !== activeTab && setActiveTab(tab);
 
     const updateExternalIdDropdown = async () => {
-        return getEnums('external-id-type');
+        return titleConfigurationService.getEnums('external-id-type');
     };
 
     const getExternalIdDropdownValues = () => {
@@ -216,12 +216,14 @@ export const BulkMatching = ({
     };
 
     const dispatchSuccessToast = count => {
-        addToast({
-            detail: isBonusRight
-                ? TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE(count, selectedTableData.length - count)
-                : TITLE_BULK_MATCH_SUCCESS_MESSAGE(affectedTableData.length),
-            severity: 'success',
-        });
+        dispatch(
+            addToast({
+                detail: isBonusRight
+                    ? TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE(count, selectedTableData.length - count)
+                    : TITLE_BULK_MATCH_SUCCESS_MESSAGE(affectedTableData.length),
+                severity: 'success',
+            })
+        );
     };
 
     const closeModalAndRefreshTable = () => {
@@ -241,26 +243,28 @@ export const BulkMatching = ({
             removeToast();
             disableLoadingState();
         };
-        addToast({
-            severity: 'warn',
-            detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-            onRemoveFn: onCancelButtonClick,
-            content: () => (
-                <div className="no-padding d-flex align-items-center">
-                    <Button
-                        label="Cancel"
-                        className="p-button-link p-toast-left-button"
-                        onClick={onCancelButtonClick}
-                    />
-                    <Button
-                        label="Continue"
-                        className="p-button-link p-toast-right-button"
-                        onClick={onOkayButtonClick}
-                    />
-                </div>
-            ),
-            sticky: true,
-        });
+        dispatch(
+            addToast({
+                severity: 'warn',
+                detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+                onRemoveFn: onCancelButtonClick,
+                content: () => (
+                    <div className="no-padding d-flex align-items-center">
+                        <Button
+                            label="Cancel"
+                            className="p-button-link p-toast-left-button"
+                            onClick={onCancelButtonClick}
+                        />
+                        <Button
+                            label="Continue"
+                            className="p-button-link p-toast-right-button"
+                            onClick={onOkayButtonClick}
+                        />
+                    </div>
+                ),
+                sticky: true,
+            })
+        );
     };
 
     const onMatchAndCreateDone = () => {
@@ -366,7 +370,6 @@ export const BulkMatching = ({
 
 BulkMatching.propTypes = {
     data: PropTypes.array.isRequired,
-    addToast: PropTypes.func,
     removeToast: PropTypes.func,
     closeDrawer: PropTypes.func,
     toggleRefreshGridData: PropTypes.func,
@@ -386,7 +389,6 @@ BulkMatching.propTypes = {
 };
 
 BulkMatching.defaultProps = {
-    addToast: () => null,
     removeToast: () => null,
     closeDrawer: () => null,
     toggleRefreshGridData: () => null,
@@ -416,7 +418,4 @@ const mapDispatchToProps = dispatch => ({
     setExternalIdValues: payload => dispatch(setExternalIdValues(payload)),
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withToasts(compose(withMatchAndDuplicateList())(BulkMatching)));
+export default connect(mapStateToProps, mapDispatchToProps)(compose(withMatchAndDuplicateList())(BulkMatching));

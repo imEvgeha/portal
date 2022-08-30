@@ -89,6 +89,7 @@ const NexusField = ({
     allData,
     forMetadata,
     shouldUpperCase,
+    pathName,
     sectionID,
     ...props
 }) => {
@@ -102,9 +103,13 @@ const NexusField = ({
         path,
         view,
         maxLength,
+        pathName,
     };
 
     const emetLanguage = get(formData, 'editorial.language');
+    const sasktelArray = formData.editorial?.tenantData?.simpleProperties || [];
+    const shortTitleTemplate =
+        formData.editorial?.tenantData?.complexProperties?.find(e => e.simpleProperties)?.simpleProperties || [];
     const newShowLocalized = emetLanguage?.value === 'en' ? false : showLocalized;
 
     const getLanguage = () => {
@@ -146,6 +151,45 @@ const NexusField = ({
         return '';
     };
 
+    /**
+     * looks for pathName flag in schema.json and if its present, will find the value from an array.
+     * @param fieldProps props from schema.json
+     * @param addedProps extra props added statically from the schema.json; the flags
+     * @returns {string} return value of type string
+     */
+    const findValue = (fieldProps, addedProps) => {
+        if (
+            addedProps?.path === 'tenantData.simpleProperties' &&
+            typeof fieldProps?.value === 'object' &&
+            fieldProps?.value !== null
+        ) {
+            const newFieldValue = fieldProps?.value.find(x => x.name === addedProps.pathName);
+            return newFieldValue?.value;
+        }
+
+        if (addedProps.path === 'tenantData.complexProperties') {
+            if (Array.isArray(fieldProps?.value)) {
+                return fieldProps?.value
+                    .find(e => e.simpleProperties)
+                    ?.simpleProperties.find(e => e.name === 'shortTitleTemplate')?.value;
+            } else if (typeof fieldProps?.value === 'string') {
+                shortTitleTemplate?.map(e =>
+                    e.name === 'shortTitleTemplate' ? (e.value = fieldProps.value) : e.value
+                );
+            }
+        }
+
+        if (addedProps?.pathName && typeof fieldProps?.value === 'string') {
+            sasktelArray.forEach(e => {
+                if (e.name === addedProps.pathName) {
+                    e.value = fieldProps.value;
+                    formData.editorial.tenantData.simpleProperties = sasktelArray;
+                }
+            });
+        }
+        return fieldProps?.value;
+    };
+
     const renderFieldEditMode = fieldProps => {
         const selectFieldProps = {...fieldProps};
         const multiselectFieldProps = {...fieldProps};
@@ -163,6 +207,7 @@ const NexusField = ({
                         id={generateElementIds(fieldProps, addedProps)}
                         placeholder={`Enter ${label}`}
                         dir={getDir(fieldProps.value)}
+                        value={findValue(fieldProps, addedProps)}
                     />
                 );
             case 'textarea':
@@ -644,6 +689,7 @@ NexusField.propTypes = {
     stackLabel: PropTypes.bool,
     inModal: PropTypes.bool,
     sectionID: PropTypes.string,
+    pathName: PropTypes.string,
 };
 
 NexusField.defaultProps = {
@@ -694,6 +740,7 @@ NexusField.defaultProps = {
     stackLabel: false,
     inModal: false,
     sectionID: '',
+    pathName: '',
 };
 
 export default NexusField;

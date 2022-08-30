@@ -1,20 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     TITLE_MATCH_SUCCESS_MESSAGE,
 } from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {Button as PrimeReactButton} from 'primereact/button';
+import {useDispatch} from 'react-redux';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import TitleSystems from '../../../metadata/constants/systems';
 
 const {NEXUS, MOVIDA, VZ} = TitleSystems;
 
-const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isMerging}) => {
+const ActionsBar = ({matchList, mergeTitles, rightId, removeToast, isMerging}) => {
+    const dispatch = useDispatch();
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
         matchAndCreate: false,
@@ -51,17 +53,19 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
             rightsService.update(updatedRight, rightId);
         }
 
-        addToast({
-            severity: 'success',
-            detail: TITLE_MATCH_SUCCESS_MESSAGE,
-            content: () => (
-                <PrimeReactButton
-                    label="View Title"
-                    className="p-button-link p-toast-button-link"
-                    onClick={handleLinkClick}
-                />
-            ),
-        });
+        dispatch(
+            addToast({
+                severity: 'success',
+                detail: TITLE_MATCH_SUCCESS_MESSAGE,
+                content: () => (
+                    <PrimeReactButton
+                        label="View Title"
+                        className="p-button-link p-toast-button-link"
+                        onClick={handleLinkClick}
+                    />
+                ),
+            })
+        );
     };
 
     const mergeSingle = e => {
@@ -72,25 +76,27 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
 
     const onMatchAndCreate = () => {
         if (Object.keys(matchList).length === 1) {
-            addToast({
-                severity: 'warn',
-                detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-                content: () => (
-                    <div className="no-padding d-flex align-items-center">
-                        <PrimeReactButton
-                            label="Cancel"
-                            className="p-button-link p-toast-left-button"
-                            onClick={() => removeToast()}
-                        />
-                        <PrimeReactButton
-                            label="Continue"
-                            className="p-button-link p-toast-right-button"
-                            onClick={mergeSingle}
-                        />
-                    </div>
-                ),
-                sticky: true,
-            });
+            dispatch(
+                addToast({
+                    severity: 'warn',
+                    detail: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+                    content: () => (
+                        <div className="no-padding d-flex align-items-center">
+                            <PrimeReactButton
+                                label="Cancel"
+                                className="p-button-link p-toast-left-button"
+                                onClick={() => removeToast()}
+                            />
+                            <PrimeReactButton
+                                label="Continue"
+                                className="p-button-link p-toast-right-button"
+                                onClick={mergeSingle}
+                            />
+                        </div>
+                    ),
+                    sticky: true,
+                })
+            );
         } else {
             mergeTitles();
         }
@@ -126,7 +132,6 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isM
 ActionsBar.propTypes = {
     matchList: PropTypes.object,
     mergeTitles: PropTypes.func,
-    addToast: PropTypes.func,
     removeToast: PropTypes.func,
     rightId: PropTypes.string.isRequired,
     isMerging: PropTypes.bool,
@@ -134,10 +139,9 @@ ActionsBar.propTypes = {
 
 ActionsBar.defaultProps = {
     matchList: {},
-    addToast: () => null,
     removeToast: () => null,
     mergeTitles: () => null,
     isMerging: false,
 };
 
-export default withToasts(ActionsBar);
+export default ActionsBar;

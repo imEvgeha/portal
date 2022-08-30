@@ -15,10 +15,10 @@ import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import {publisherService} from '../../../legacy/containers/metadata/service/PublisherService';
-import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
+import TitleConfigurationService from '../../services/TitleConfigurationService';
+import TitleService from '../../services/TitleService';
 import {storeTitleContentTypes} from '../../titleMetadataActions';
 import {createContentTypesSelector} from '../../titleMetadataSelectors';
-import {getEnums} from '../../titleMetadataServices';
 import ExternalIDsSection from '../nexus-field-extarnal-ids/ExternalIDsSection';
 import constants, {CONTENT_TYPES, DEFAULT_VALUES_FOR_TITLE_CREATE_MODAL} from './TitleCreateModalConstants';
 import './Title.scss';
@@ -45,6 +45,8 @@ const TitleCreate = ({
     storeTitleContentTypes,
     externalDropdownOptions,
 }) => {
+    const titleConfigurationService = TitleConfigurationService.getInstance();
+    const titleServiceSingleton = TitleService.getInstance();
     const {CREATE_TITLE_RESTRICTIONS, EXTERNAL_ID_TYPE_DUPLICATE_ERROR} = constants;
     const {MAX_TITLE_LENGTH, MAX_SEASON_LENGTH, MAX_EPISODE_LENGTH, MAX_RELEASE_YEAR_LENGTH} =
         CREATE_TITLE_RESTRICTIONS;
@@ -81,7 +83,7 @@ const TitleCreate = ({
     const [isFieldRequired, setIsFieldRequired] = useState(false);
 
     useEffect(() => {
-        getEnums('content-type').then(resp => {
+        titleConfigurationService.getEnums('content-type').then(resp => {
             resp.length ? storeTitleContentTypes(resp?.[0].values) : storeTitleContentTypes([]);
         });
     }, [selectedTenant.id]);
@@ -170,8 +172,8 @@ const TitleCreate = ({
     };
 
     const defaultCreateTitle = (title, params) => {
-        titleService
-            .createTitleV2(title, params)
+        titleServiceSingleton
+            .create(title, params)
             .then(response => {
                 if (currentValues.syncVZ || currentValues.syncMovida) {
                     // call registerTitle API
@@ -209,8 +211,8 @@ const TitleCreate = ({
     };
 
     const matchCreateTitle = (title, params) => {
-        titleService
-            .createTitleV2(title, params)
+        titleServiceSingleton
+            .create(title, params)
             .then(res => {
                 const titleId = res.meta.id;
                 addToast({
@@ -293,7 +295,7 @@ const TitleCreate = ({
 
             // only invoke the API when the search query string is not empty
             if (event.query.trim().length) {
-                const response = await titleService.freeTextSearchV2({...params}, 0, 100);
+                const response = await titleServiceSingleton.freeTextSearch({...params}, 0, 100);
                 if (response?.titles?.length) {
                     filteredSeries = response?.titles;
                 } else {
@@ -317,8 +319,8 @@ const TitleCreate = ({
             setFetchingSeasons(true);
             setSeasons([]);
 
-            titleService
-                .freeTextSearchV2({parentId: series.titleId, contentType: CONTENT_TYPES.SEASON}, 0, 100)
+            titleServiceSingleton
+                .freeTextSearch({parentId: series.titleId, contentType: CONTENT_TYPES.SEASON}, 0, 100)
                 .then(response => {
                     setSeasons(response.titles);
                     setFetchingSeasons(false);
@@ -545,7 +547,7 @@ const TitleCreate = ({
                                                 required: {value: true, message: 'Field cannot be empty!'},
                                             },
                                         }}
-                                        options={contentTypes?.map(e => e.displayName)}
+                                        options={contentTypes?.length ? contentTypes?.map(e => e.displayName) : []}
                                         disabled={isItMatching}
                                         id="contentType"
                                         className="nexus-c-title-create_input-dropdown"

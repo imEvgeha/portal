@@ -1,27 +1,26 @@
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {ERROR_ICON, SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
-import {uploadService} from '@vubiquity-nexus/portal-utils/lib/services/UploadService';
 import {all, call, put, takeEvery} from 'redux-saga/effects';
 import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
+import PublishService from './services/PublishService';
+import TitleEditorialService from './services/TitleEditorialService';
+import TitleService from './services/TitleService';
+import TitleTerittorialService from './services/TitleTerittorialService';
 import * as actionTypes from './titleMetadataActionTypes';
-import {
-    getEditorialMetadataByTitleId,
-    getExternalIds,
-    getTerritoryMetadataById,
-    getTitleById,
-    registerTitle,
-    syncTitle as syncTitleService,
-    updateTitle as updateTitleService,
-} from './titleMetadataServices';
 import {SERIES, UPDATE_TITLE_SUCCESS, UPLOAD_SUCCESS_MESSAGE} from './constants';
 
+const titleServiceInstance = TitleService.getInstance();
+const publishServiceInstance = PublishService.getInstance();
+const territoryServiceInstance = TitleTerittorialService.getInstance();
+const editorialServiceInstance = TitleEditorialService.getInstance();
+
 export function* loadParentTitle(title) {
-    const {parentIds} = title.meta;
+    const {parentIds} = title?.meta;
     if (parentIds) {
         const parent = parentIds.find(e => e.contentType === SERIES);
         if (parent) {
             try {
-                const response = yield call(getTitleById, {id: parent.id});
+                const response = yield call(titleServiceInstance.getById, parent.id);
                 const newEpisodic = Object.assign(title.episodic, {
                     seriesTitleName: response.title,
                 });
@@ -49,7 +48,7 @@ export function* loadTitle({payload}) {
     });
 
     try {
-        const response = yield call(getTitleById, {id: payload.id});
+        const response = yield call(titleServiceInstance.getById, payload.id);
         const updatedResponse = yield call(loadParentTitle, response);
         const mergedResponse = {
             ...updatedResponse.data,
@@ -86,7 +85,7 @@ export function* loadExternalIds({payload}) {
     });
 
     try {
-        const response = yield call(getExternalIds, payload.id);
+        const response = yield call(publishServiceInstance.getExternalIdsById, payload.id);
         yield put({
             type: actionTypes.GET_EXTERNAL_IDS_SUCCESS,
             payload: response,
@@ -105,7 +104,7 @@ export function* loadTerritoryMetadata({payload}) {
     }
 
     try {
-        const response = yield call(getTerritoryMetadataById, {id: payload.id});
+        const response = yield call(territoryServiceInstance.getByTitleId, payload.id);
         yield put({
             type: actionTypes.GET_TERRITORY_METADATA_SUCCESS,
             payload: response,
@@ -128,13 +127,11 @@ export function* loadEditorialMetadata({payload}) {
     });
 
     try {
-        const response = yield call(getEditorialMetadataByTitleId, {
-            id: payload.id,
-            tenantCode: payload.selectedTenant.id,
-        });
+        const response = yield call(editorialServiceInstance.getEditorialsByTitleId, payload);
+        const mergedResponse = response.map(e => ({...e.data, ...e.meta}));
         yield put({
             type: actionTypes.GET_EDITORIAL_METADATA_SUCCESS,
-            payload: response,
+            payload: mergedResponse,
         });
         yield put({
             type: actionTypes.GET_EDITORIAL_METADATA_LOADING,
@@ -153,18 +150,13 @@ export function* loadEditorialMetadata({payload}) {
 }
 
 export function* updateTitle({payload}) {
-    if (!payload.id) {
-        return;
-    }
-
     try {
         yield put({
             type: rightActionTypes.SAVING,
             payload: true,
         });
 
-        const response = yield call(updateTitleService, payload);
-        const updatedResponse = yield call(loadParentTitle, response);
+        const updatedResponse = yield call(loadParentTitle, payload.updateResponse);
         yield put({
             type: ADD_TOAST,
             payload: {
@@ -194,10 +186,12 @@ export function* updateTitle({payload}) {
             type: rightActionTypes.SAVING,
             payload: false,
         });
+
+        return error;
     } finally {
         yield put({
             type: actionTypes.GET_TITLE,
-            payload: {...payload},
+            payload: {...payload.updatePayload},
         });
     }
 }
@@ -212,7 +206,7 @@ export function* syncTitle({payload}) {
         payload: payload.externalSystem,
     });
 
-    const [response] = yield call(syncTitleService, payload);
+    const [response] = yield call(publishServiceInstance.syncTitle, payload);
 
     try {
         const newPayload = {id: response.titleId};
@@ -254,7 +248,7 @@ export function* publishTitle({payload}) {
     });
 
     try {
-        const [response] = yield call(registerTitle, payload);
+        const [response] = yield call(publishServiceInstance.registerTitle, payload);
         const newPayload = {id: response.titleId};
 
         yield call(loadExternalIds, {payload: newPayload});
@@ -291,7 +285,7 @@ function* uploadMetadata({payload}) {
             payload: {},
         });
 
-        const response = yield uploadService.uploadMetadata({file, params: rest});
+        const response = yield editorialServiceInstance.uploadMetadata({file, params: rest});
         yield put({
             type: ADD_TOAST,
             payload: {

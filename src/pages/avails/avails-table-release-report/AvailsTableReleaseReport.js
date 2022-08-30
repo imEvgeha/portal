@@ -4,16 +4,18 @@ import Button from '@atlaskit/button';
 import Popup from '@atlaskit/popup';
 import Select from '@atlaskit/select';
 import AtlaskitMoreIcon from '@vubiquity-nexus/portal-assets/atlaskit-more-icon.svg';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import {Button as PrimereactButton} from 'primereact/button';
+import {useDispatch} from 'react-redux';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import {RIGHTS_TAB, STATUS_TAB} from '../rights-repository/constants';
 import {CREATE_REPORT, END_YEAR, MOCK_YEAR, MONTHS, NEW_RELEASE_REPORT, START_YEAR} from './constants';
 import './AvailsTableReleaseReport.scss';
 
-const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, totalRecordsCount}) => {
+const AvailsTableReleaseReport = ({activeTab, selectedRowsCount, totalRecordsCount}) => {
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(moment().format('MMMM'));
@@ -36,12 +38,14 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, total
             .catch(error => {
                 setIsLoading(false);
                 setIsOpen(false);
-                addToast({
-                    detail: `${error?.type}: failed to create report. ${
-                        error.message ? `Details: ${error.message}` : ''
-                    }`,
-                    severity: 'error',
-                });
+                dispatch(
+                    addToast({
+                        detail: `${error?.type}: failed to create report. ${
+                            error.message ? `Details: ${error.message}` : ''
+                        }`,
+                        severity: 'error',
+                    })
+                );
             });
     };
 
@@ -111,15 +115,13 @@ const AvailsTableReleaseReport = ({addToast, activeTab, selectedRowsCount, total
 };
 
 AvailsTableReleaseReport.propTypes = {
-    addToast: PropTypes.func,
     activeTab: PropTypes.string,
     selectedRowsCount: PropTypes.number.isRequired,
     totalRecordsCount: PropTypes.number.isRequired,
 };
 
 AvailsTableReleaseReport.defaultProps = {
-    addToast: () => null,
     activeTab: RIGHTS_TAB,
 };
 
-export default withToasts(AvailsTableReleaseReport);
+export default AvailsTableReleaseReport;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
-import {get} from 'lodash';
+import {get, isEmpty, uniqBy} from 'lodash';
 import {renderNexusField} from '../utils';
 import {VIEWS} from '../constants';
 
@@ -25,31 +25,43 @@ const NexusArrayCreateModal = ({
 
     const getVisibleFields = allFields => {
         const updateFields = {...allFields};
-        Object.keys(allFields).filter(key => {
+        Object.keys(allFields).forEach(key => {
             const hide = get(allFields[key], 'hideInCreate');
             if (hide && updateFields[key]) {
                 delete updateFields[key];
             }
         });
 
-        // Cancels Auto-Decorate condition from schema.js when in creating modal
-        updateFields['editorial.hasGeneratedChildren']?.showWhen &&
-            updateFields['editorial.hasGeneratedChildren'].showWhen[0].splice(2, 1);
-
         return updateFields;
+    };
+
+    const onSubmit = values => {
+        const newTenantDataValues = [];
+        if (!isEmpty(values?.editorial)) {
+            for (const [key, value] of Object.entries(values?.editorial)) {
+                if ((key === 'sasktelInventoryId' || key === 'sasktelLineupId') && value) {
+                    newTenantDataValues.push({
+                        name: key,
+                        value,
+                    });
+                }
+            }
+            values.editorial.tenantData = {
+                simpleProperties:
+                    newTenantDataValues && newTenantDataValues?.length ? uniqBy(newTenantDataValues, 'name') : [],
+            };
+        }
+
+        handleModalSubmit(
+            values?.editorial?.castCrew
+                ? values
+                : {...values, editorial: {...values.editorial, castCrew: initialData?.castCrew || []}}
+        );
     };
 
     return (
         <div>
-            <AKForm
-                onSubmit={values => {
-                    handleModalSubmit(
-                        values?.editorial?.castCrew
-                            ? values
-                            : {...values, editorial: {...values.editorial, castCrew: initialData?.castCrew || []}}
-                    );
-                }}
-            >
+            <AKForm onSubmit={values => onSubmit(values)}>
                 {({formProps, reset, getValues}) => (
                     <form {...formProps}>
                         <div>

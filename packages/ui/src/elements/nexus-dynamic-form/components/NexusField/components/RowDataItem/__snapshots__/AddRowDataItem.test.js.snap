@@ -2,6 +2,7 @@
 
 exports[`AddRowDataItem should match snapshot 1`] = `
 <NexusDynamicForm
+  actions={Object {}}
   canEdit={true}
   castCrewConfig={Object {}}
   containerRef={null}
@@ -73,7 +74,6 @@ exports[`AddRowDataItem should match snapshot 1`] = `
   }
   seasonPersons={Array []}
   selectValues={Array []}
-  setRefresh={[Function]}
   storedInitialData={null}
   titleActionComponents={Object {}}
 />

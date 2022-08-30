@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
-import PropTypes from 'prop-types';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {reloadConfigurationService} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
+import {useDispatch} from 'react-redux';
 import './ReloadConfigBtn.scss';
 
-const ReloadConfigBtn = ({addToast}) => {
+const ReloadConfigBtn = () => {
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
 
     const reloadConfig = async () => {
@@ -37,14 +38,18 @@ const ReloadConfigBtn = ({addToast}) => {
         );
 
         res[0].status === 'fulfilled' && res[1].status === 'fulfilled'
-            ? addToast({
-                  detail: statusDesc(),
-                  severity: 'success',
-              })
-            : addToast({
-                  detail: statusDesc(),
-                  severity: 'warn',
-              });
+            ? dispatch(
+                  addToast({
+                      detail: statusDesc(),
+                      severity: 'success',
+                  })
+              )
+            : dispatch(
+                  addToast({
+                      detail: statusDesc(),
+                      severity: 'warn',
+                  })
+              );
     };
 
     return (
@@ -54,12 +59,4 @@ const ReloadConfigBtn = ({addToast}) => {
     );
 };
 
-ReloadConfigBtn.propTypes = {
-    addToast: PropTypes.func,
-};
-
-ReloadConfigBtn.defaultProps = {
-    addToast: () => null,
-};
-
-export default withToasts(ReloadConfigBtn);
+export default ReloadConfigBtn;

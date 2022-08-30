@@ -7,6 +7,7 @@ import PropagateButtonWrapper from '@vubiquity-nexus/portal-ui/lib/elements/nexu
 import NexusStickyFooter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-sticky-footer/NexusStickyFooter';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
+import {addToast} from '@vubiquity-nexus/portal-ui/src/toast/NexusToastNotificationActions';
 import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
 import {get, isEmpty, isEqual, toString, toUpper} from 'lodash';
@@ -14,11 +15,27 @@ import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
 import {useLocation, useParams} from 'react-router-dom';
 import ShowAllEpisodes from '../../../../common/components/showAllEpisodes/ShowAllEpisodes';
+import {store} from '../../../../index';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {fetchConfigApiEndpoints} from '../../../settings/settingsActions';
 import * as settingsSelectors from '../../../settings/settingsSelectors';
 import Loading from '../../../static/Loading';
-import {EPISODE, FIELDS_TO_REMOVE, MOVIDA, MOVIDA_INTL, SEASON, SYNC, VZ} from '../../constants';
+import {
+    EPISODE,
+    FIELDS_TO_REMOVE,
+    MOVIDA,
+    MOVIDA_INTL,
+    SEASON,
+    SYNC,
+    UPDATE_EDITORIAL_METADATA_ERROR,
+    UPDATE_EDITORIAL_METADATA_SUCCESS,
+    UPDATE_TERRITORY_METADATA_SUCCESS,
+    VZ,
+} from '../../constants';
+import TitleConfigurationService from '../../services/TitleConfigurationService';
+import TitleEditorialService from '../../services/TitleEditorialService';
+import TitleService from '../../services/TitleService';
+import TitleTerittorialService from '../../services/TitleTerittorialService';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -32,8 +49,10 @@ import {
     updateTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
-import {generateMsvIds, getEnums, regenerateAutoDecoratedMetadata, titleService} from '../../titleMetadataServices';
+import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
 import {
+    formatEditorialBody,
+    formatTerritoryBody,
     handleDirtyValues,
     handleEditorialGenresAndCategory,
     handleTitleCategory,
@@ -41,8 +60,6 @@ import {
     isStateEditable,
     prepareCategoryField,
     propagateSeasonsPersonsToEpisodes,
-    updateEditorialMetadata,
-    updateTerritoryMetadata,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
@@ -92,6 +109,9 @@ const TitleDetails = ({
     const routeParams = useParams();
     const location = useLocation();
 
+    const titleConfigurationService = TitleConfigurationService.getInstance();
+    const titleServiceSingleton = TitleService.getInstance();
+
     const propagateAddPersons = useSelector(selectors.propagateAddPersonsSelector);
     const propagateRemovePersons = useSelector(selectors.propagateRemovePersonsSelector);
     const selectedTenant = useSelector(state => state?.auth?.selectedTenant || {});
@@ -128,15 +148,15 @@ const TitleDetails = ({
                     parentId: id,
                     contentType: EPISODE,
                 };
-                titleService
-                    .advancedSearch(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
+                titleServiceSingleton
+                    .advancedSearchTitles(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
                     .then(res => {
                         setEpisodesCount(res);
                         setRefresh(false);
                     });
                 searchCriteria = {...searchCriteria, contentType: SEASON};
-                titleService
-                    .advancedSearch(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
+                titleServiceSingleton
+                    .advancedSearchTitles(searchCriteria, undefined, undefined, undefined, undefined, selectedTenant)
                     .then(res => {
                         setSeasonsCount(res);
                         setRefresh(false);
@@ -149,9 +169,8 @@ const TitleDetails = ({
         isFetchingExternalIdTypes.current = false;
         handleDirtyValues(initialValues, values);
 
-        const isTitleUpdated = values.isUpdated;
-        const isEmetUpdated = values.editorialMetadata.some(item => item.isUpdated);
-        const isTmetUpdated = values.territorialMetadata.some(item => item.isUpdated);
+        const isEmetUpdated = values.editorialMetadata?.some(item => item.isUpdated);
+        const isTmetUpdated = values.territorialMetadata?.some(item => item.isUpdated);
         const {id} = routeParams;
         // remove fields under arrayWithTabs
         const innerFields = getAllFields(fields, true);
@@ -173,26 +192,135 @@ const TitleDetails = ({
             }
         });
 
+        const canUpdateTitle = !!(values.isUpdated && title?.id);
         prepareCategoryField(updatedValues);
-        Promise.all([
-            isTitleUpdated && updateTitle({...updatedValues, id: title.id}),
-            isTmetUpdated && updateTerritoryMetadata(values, id, selectedTenant),
-            isEmetUpdated && updateEditorialMetadata(values, id, selectedTenant),
-            (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) &&
-                propagateSeasonsPersonsToEpisodes(
-                    {
-                        addPersons: propagateAddPersons,
-                        deletePersons: propagateRemovePersons,
-                    },
-                    id
-                ),
-            clearSeasonPersons(),
-        ]).then(() => {
-            setRefresh(true);
+        const updatePayload = {...updatedValues, id: title?.id};
+
+        canUpdateTitle && updateTitleAPI(updatePayload);
+        isTmetUpdated && updateTerritoryMetadata(values?.territorialMetadata, id);
+        isEmetUpdated && updateEditorialMetadata(values.editorialMetadata, id);
+
+        const promises = [clearSeasonPersons()];
+
+        if (!isEmpty(propagateAddPersons) || !isEmpty(propagateRemovePersons)) {
+            const data = {addPersons: propagateAddPersons, deletePersons: propagateRemovePersons};
+            promises.push(propagateSeasonsPersonsToEpisodes(data, id));
+        }
+
+        Promise.all(promises).then(() => {
             setVZDisabled(true);
             setMOVDisabled(true);
             setMovIntDisabled(true);
         });
+    };
+
+    const errorOptions = (type = 'core', details = '') => {
+        const messagesVersions = {
+            core: 'Unable to save changes, Core Title for this Title has recently been updated. Click below for latest version and resubmit.',
+            emet: `Unable to save changes, Editorial Metadata ${details} for this Title has recently been updated. Click below for latest version and resubmit.`,
+            tmet: `Unable to save changes, Territory Metadata ${details} for this Title has recently been updated. Click below for latest version and resubmit.`,
+        };
+        return {
+            customErrors: [
+                {
+                    errorCodes: [412],
+                    message: messagesVersions[type],
+                    toastAction: {
+                        label: 'View Title',
+                        icon: 'pi pi-external-link',
+                        iconPos: 'right',
+                        className: 'p-button-link p-toast-button-link',
+                        onClick: () => window.open(window.location.href, '_blank'),
+                    },
+                },
+            ],
+        };
+    };
+
+    const updateTitleAPI = payload => {
+        TitleService.getInstance()
+            .update(payload, false, false, errorOptions())
+            .then(res => updateTitle({updatePayload: payload, updateResponse: res}));
+    };
+
+    const updateTerritoryMetadata = async (territorialMetadata = [], titleId) => {
+        const titleTerritorialService = TitleTerittorialService.getInstance();
+
+        const promises = [];
+        territorialMetadata.forEach(tmet => {
+            if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
+                const {id, ...body} = formatTerritoryBody(tmet);
+                const errorMsgDetails = `(${body.locale})`;
+                promises.push(titleTerritorialService.update(body, titleId, id, errorOptions('tmet', errorMsgDetails)));
+            } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
+                const body = formatTerritoryBody(tmet);
+                const errorMsgDetails = `(${body.locale})`;
+                // POST is on V2
+                promises.push(titleTerritorialService.create(body, titleId, errorOptions('tmet', errorMsgDetails)));
+            }
+        });
+
+        let fulfilledPromises = [];
+        let rejectedPromises = [];
+        await Promise.allSettled(promises).then(res => {
+            fulfilledPromises = res.filter(e => e.status === 'fulfilled');
+            rejectedPromises = res.filter(e => e.status === 'rejected');
+        });
+
+        fulfilledPromises.forEach(() => {
+            const successToast = {
+                severity: 'success',
+                detail: UPDATE_TERRITORY_METADATA_SUCCESS,
+            };
+            store.dispatch(addToast(successToast));
+        });
+
+        if (fulfilledPromises.length && !rejectedPromises.length) {
+            return getTerritoryMetadata({id: titleId, selectedTenant});
+        }
+    };
+
+    const updateEditorialMetadata = async (editorialMetadata = [], titleId) => {
+        const titleEditorialService = TitleEditorialService.getInstance();
+
+        let toast = {
+            severity: 'error',
+            detail: UPDATE_EDITORIAL_METADATA_ERROR,
+        };
+
+        const data = editorialMetadata || [];
+        const promises = [];
+        data.forEach(emet => {
+            if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
+                const updatedEmet = formatEditorialBody(emet, titleId, false);
+                const {locale, language, format} = updatedEmet.body;
+                const errorMsgDetails = format ? `(${locale} ${language}, ${format})` : `(${locale} ${language})`;
+                promises.push(titleEditorialService.update(updatedEmet, errorOptions('emet', errorMsgDetails)));
+            } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
+                const newEmet = formatEditorialBody(emet, titleId, true);
+                const {locale, language, format} = newEmet;
+                const errorMsgDetails = format ? `(${locale} ${language}, ${format})` : `(${locale} ${language})`;
+                promises.push(titleEditorialService.create(newEmet, errorOptions('emet', errorMsgDetails)));
+            }
+        });
+
+        let fulfilledPromises = [];
+        let rejectedPromises = [];
+        await Promise.allSettled(promises).then(res => {
+            fulfilledPromises = res.filter(e => e.status === 'fulfilled');
+            rejectedPromises = res.filter(e => e.status === 'rejected');
+        });
+        fulfilledPromises.forEach(() => {
+            toast = {
+                severity: 'success',
+                detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
+            };
+            store.dispatch(addToast(toast));
+        });
+
+        if (fulfilledPromises.length && !rejectedPromises.length) {
+            return getEditorialMetadata({id: titleId, selectedTenant});
+        }
     };
 
     const getExternaIds = repo => {
@@ -227,14 +355,16 @@ const TitleDetails = ({
         const [movidaUkExternalIds] = getExternaIds('movida-uk');
 
         const updatedTitle = handleTitleCategory(title);
-        const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
+        const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'categories', 'name');
         // v2 consists of object.data and object.meta, merging meta.id to obj
-        const updatedTerritorialMetadata = territoryMetadata.map(metadata => {
-            return {
-                id: metadata.meta.id,
-                ...metadata.data,
-            };
-        });
+        const updatedTerritorialMetadata = territoryMetadata?.length
+            ? territoryMetadata?.map(metadata => {
+                  return {
+                      id: metadata.meta.id,
+                      ...metadata.data,
+                  };
+              })
+            : [];
 
         return {
             ...updatedTitle,
@@ -281,6 +411,18 @@ const TitleDetails = ({
 
     const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
 
+    const getActions = () => {
+        return {
+            saveAutoDecorate: decorateForm => {
+                const titleEditorialService = TitleEditorialService.getInstance();
+                return titleEditorialService.addAutoDecorate(decorateForm);
+            },
+            setRefresh: value => {
+                setRefresh(value);
+            },
+        };
+    };
+
     const getSelectValues = () => {
         let res = {...selectValues};
 
@@ -288,7 +430,9 @@ const TitleDetails = ({
             res = {...selectValues, externalSystem: externalIdTypes};
         } else if (!isFetchingExternalIdTypes.current) {
             isFetchingExternalIdTypes.current = true;
-            getEnums('external-id-type').then(responseOptions => setExternalIdValues({responseOptions}));
+            titleConfigurationService
+                .getEnums('external-id-type')
+                .then(responseOptions => setExternalIdValues({responseOptions}));
         }
 
         return res;
@@ -321,6 +465,7 @@ const TitleDetails = ({
                         hasButtons={isNexusTitle(title.id)}
                         isSaving={isSaving}
                         setRefresh={setRefresh}
+                        actions={getActions()}
                         isTitlePage
                         titleActionComponents={{
                             propagate: (onClose, getValues, setFieldValue, key) => (

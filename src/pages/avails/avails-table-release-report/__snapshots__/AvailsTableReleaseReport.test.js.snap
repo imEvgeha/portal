@@ -1,24 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AvailsTableReleaseReport should match snapshot 1`] = `
-<ContextProvider
-  value={null}
+<div
+  className="nexus-c-right-repository-release-report"
 >
-  <ComposedComponent
-    activeTab="Rights"
-    addToast={[Function]}
-    removeToast={[Function]}
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
-    toasts={Array []}
+  <Memo()
+    boundariesElement="scrollParent"
+    content={[Function]}
+    id="nexus-c-right-repository-release-report__popup"
+    isOpen={false}
+    onClose={[Function]}
+    placement="bottom-start"
+    trigger={[Function]}
   />
-</ContextProvider>
+</div>
 `;

@@ -1,26 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NexusFeedback should match snapshot 1`] = `
-<ContextProvider
-  value={null}
->
-  <ComposedComponent
-    addToast={[Function]}
-    close={[Function]}
-    closeModal={[Function]}
-    currentPage="test"
-    removeToast={[Function]}
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
+<div>
+  <div
+    className="nexus-c-feedback__select"
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+      defaultValue=""
+      onChange={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "Ask a Question",
+            "value": "Question",
+          },
+          Object {
+            "label": "Leave a comment",
+            "value": "Comment",
+          },
+          Object {
+            "label": "Report a bug",
+            "value": "Bug",
+          },
+          Object {
+            "label": "Suggest improvement",
+            "value": "Suggestion",
+          },
+        ]
       }
-    }
-    toasts={Array []}
-  />
-</ContextProvider>
+      placeholder="Select one option"
+      value=""
+    />
+  </div>
+  <div
+    className="nexus-c-feedback__textarea"
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+      appearance="standard"
+      isDisabled={true}
+      minimumRows={5}
+      onChange={[Function]}
+      value=""
+    />
+  </div>
+  <div
+    className="nexus-c-feedback__btn-wrapper"
+  >
+    <Button
+      appearance="primary"
+      className="nexus-c-feedback__button"
+      isDisabled={true}
+      onClick={[Function]}
+    >
+      Send Feedback
+    </Button>
+    <Button
+      appearance="subtle"
+      className="nexus-c-feedback__button"
+      isDisabled={false}
+      onClick={[Function]}
+    >
+      Cancel
+    </Button>
+  </div>
+</div>
 `;
