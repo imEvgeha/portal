@@ -261,9 +261,10 @@ const TitleDetails = ({
         });
 
         let fulfilledPromises = [];
+        let rejectedPromises = [];
         await Promise.allSettled(promises).then(res => {
             fulfilledPromises = res.filter(e => e.status === 'fulfilled');
-            getTerritoryMetadata({id: titleId, selectedTenant});
+            rejectedPromises = res.filter(e => e.status === 'rejected');
         });
 
         fulfilledPromises.forEach(() => {
@@ -273,6 +274,10 @@ const TitleDetails = ({
             };
             store.dispatch(addToast(successToast));
         });
+
+        if (fulfilledPromises.length && !rejectedPromises.length) {
+            return getTerritoryMetadata({id: titleId, selectedTenant});
+        }
     };
 
     const updateEditorialMetadata = async (editorialMetadata = [], titleId) => {
