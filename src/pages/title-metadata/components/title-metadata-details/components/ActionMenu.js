@@ -62,14 +62,14 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
                 <DropdownToggle label="Actions" isMobile />
 
                 <DropdownOptions isMobile align="top">
-                    {isAbleCreateCopy && (
+                    {isAbleCreateCopy && isAllowed('createTitleCopyButton') && (
                         <Restricted resource="createTitleCopyButton">
                             <DropdownOption value="copy" onSelect={() => setDisplayModal(true)}>
                                 <i className="pi pi-copy" /> {dropdownOption.copyDesc}
                             </DropdownOption>
                         </Restricted>
                     )}
-                    {tenantDataLegacyIds && (
+                    {tenantDataLegacyIds && isAllowed('unmergeTitleAction') && (
                         <Restricted resource="unmergeTitleAction">
                             <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
                                 {dropdownOption.unmergeDesc}
