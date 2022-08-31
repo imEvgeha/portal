@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
-import Select from '@atlaskit/select';
 import Textfield from '@atlaskit/textfield';
+import {Dropdown} from '@portal/portal-components';
 import NexusUpload from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload/NexusUpload';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import {uploadArtwork, UPLOAD_ARTWORK} from '../assetManagementReducer';
-import { assetDetailsSelector } from '../assetManagementSelectors';
+import {UPLOAD_ARTWORK, uploadArtwork} from '../assetManagementReducer';
+import {assetDetailsSelector} from '../assetManagementSelectors';
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -40,6 +40,12 @@ const UploadArtworkForm = ({asset, closeModal, uploadArtwork, isUploading, tenan
     const {providerAssetId, tenantId: assetTenantId, metadataGroups, type, renditions} = asset;
     const {value: titleName} = metadataGroups[0].metadata.find(met => met.name === 'title');
     const {type: renditionType, name: renditionName} = renditions[0];
+
+    const assetTypes = () => [
+        {label: 'Source', value: 'source'},
+        {label: 'Master', value: 'master'},
+        {label: 'Egress', value: 'egress'},
+    ];
 
     return (
         <>
@@ -77,15 +83,17 @@ const UploadArtworkForm = ({asset, closeModal, uploadArtwork, isUploading, tenan
                             isDisabled
                         >
                             {({fieldProps}) => (
-                                <Select
+                                <Dropdown
                                     {...fieldProps}
-                                    name="type"
-                                    options={[
-                                        {label: 'Source', value: 'source'},
-                                        {label: 'Master', value: 'master'},
-                                        {label: 'Egress', value: 'egress'},
-                                    ]}
+                                    id="ddlArtworkType"
+                                    value={fieldProps.value?.value}
                                     placeholder="Choose type..."
+                                    options={assetTypes()}
+                                    columnClass="col-12"
+                                    onChange={e => {
+                                        const value = assetTypes().find(x => x.value === e.value);
+                                        fieldProps.onChange(value);
+                                    }}
                                 />
                             )}
                         </Field>
