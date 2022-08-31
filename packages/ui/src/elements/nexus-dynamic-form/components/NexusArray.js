@@ -125,7 +125,7 @@ const NexusArray = ({
                 {Object.keys(fields).map(key => {
                     return (
                         !getFieldConfig(fields[key], 'hidden', view) && (
-                            <div key={`nexus-c-array__field ${key}`} className="col-6">
+                            <div key={`nexus-c-array__field ${key}`} className="col-6 array-field-wrapper">
                                 {renderNexusField(`${path}[${index}].${key}`, view, getValues, generateMsvIds, {
                                     initialData,
                                     field: fields[key],
