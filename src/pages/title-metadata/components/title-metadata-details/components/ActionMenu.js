@@ -20,9 +20,15 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
     const contentTypesCrateCopyArray = [CONTENT_TYPES.MOVIE.toLowerCase(), CONTENT_TYPES.DOCUMENTARY.toLowerCase()];
     const dropdownOption = {copyDesc: 'Copy...', unmergeDesc: 'Unmerge'};
 
+    const complexProperties = title?.tenantData?.complexProperties;
+    const tenantDataLegacyIds = complexProperties?.find(item => item.name === 'legacyIds');
+
     const {openModal, closeModal} = useContext(NexusModalContext);
     const isAbleCreateCopy = contentTypesCrateCopyArray.includes(toLower(toString(title.contentType)));
-    const isDropDownActionVisible = isAllowed('unmergeTitleAction') || isAbleCreateCopy;
+    const isDropDownActionVisible =
+        (tenantDataLegacyIds && isAllowed('unmergeTitleAction')) ||
+        isAllowed('deleteTitleAction') ||
+        (isAbleCreateCopy && isAllowed('createTitleCopyButton'));
     const [displayModal, setDisplayModal] = React.useState(false);
 
     const openUnmergeDialog = useCallback(() => {
@@ -63,11 +69,13 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
                             </DropdownOption>
                         </Restricted>
                     )}
-                    <Restricted resource="unmergeTitleAction">
-                        <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
-                            {dropdownOption.unmergeDesc}
-                        </DropdownOption>
-                    </Restricted>
+                    {tenantDataLegacyIds && (
+                        <Restricted resource="unmergeTitleAction">
+                            <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
+                                {dropdownOption.unmergeDesc}
+                            </DropdownOption>
+                        </Restricted>
+                    )}
                 </DropdownOptions>
             </NexusDropdown>
 
