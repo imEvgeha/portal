@@ -51,12 +51,18 @@ const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) =>
 
     const renderSideSubTabs = (data, key, index) => {
         const toReturn = [];
-        const masterTitle = data[key].find(emet => emet && emet['hasGeneratedChildren']);
+        const masterTitle = data[key].find(e =>
+            e?.tenantData?.complexProperties?.find(e =>
+                e?.simpleProperties.find(e => e.name === 'hasGeneratedChildren')
+            )
+        );
         data[key].forEach((obj, subIndex) => {
             const duration = moment.duration(moment.utc(masterTitle?.updatedAt).diff(moment.utc(obj?.updatedAt)));
             const secs = Math.abs(duration.asSeconds());
             const isDecorated = secs < 5;
             const isRatings = path === 'ratings';
+            const tenantDataAttributes = obj?.tenantData?.complexProperties?.find(e => e.name === 'auto-decorate');
+            const isGeneratedValue = tenantDataAttributes?.simpleProperties?.find(e => e.name === 'isGenerated')?.value;
 
             if (checkSubTabValues(obj) && !obj.isDeleted) {
                 toReturn.push(
@@ -68,7 +74,7 @@ const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) =>
                             'nexus-c-side-tabs__subtab-container--open': currentTab.tabIndex === index,
                         })}
                     >
-                        {isDecorated && !isRatings && obj.parentEmetId && (
+                        {isDecorated && isGeneratedValue && !isRatings && (
                             <StatusLink className="tablinks__status-link" />
                         )}
                         <Button onClick={() => handleTabChanged(key, index, subIndex)}>{getSubTabLabel(obj)}</Button>

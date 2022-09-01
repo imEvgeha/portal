@@ -1,19 +1,21 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {cloneDeep, get, isEqual, isObjectLike} from 'lodash';
+import {cloneDeep, get, isArray, isEqual, isObjectLike} from 'lodash';
 import {store} from '../../index';
-import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
-import {titleService} from './titleMetadataServices';
+import TitleService from './services/TitleService';
+import TitleTerittorialService from './services/TitleTerittorialService';
+import {getTerritoryMetadata} from './titleMetadataActions';
 import {
     MOVIDA,
     NEXUS,
     PROPAGATE_SEASON_PERSONS_SUCCESS,
-    UPDATE_EDITORIAL_METADATA_ERROR,
-    UPDATE_EDITORIAL_METADATA_SUCCESS,
     UPDATE_TERRITORY_METADATA_ERROR,
     UPDATE_TERRITORY_METADATA_SUCCESS,
     VZ,
 } from './constants';
+
+const titleServiceSingleton = TitleService.getInstance();
+const titleTerritorialService = TitleTerittorialService.getInstance();
 
 export const onViewTitleClick = (titleId, realm) => {
     const url = `${getDomainName()}/${realm}/metadata/detail/${titleId}`;
@@ -41,7 +43,7 @@ export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
 
 export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedParams, body, selectedTenant) => {
     try {
-        const response = await titleService.advancedSearch(
+        const response = await titleServiceSingleton.advancedSearchTitles(
             searchCriteria,
             offset,
             limit,
@@ -182,7 +184,7 @@ export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     );
 };
 
-const formatTerritoryBody = data => {
+export const formatTerritoryBody = data => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined) body[key] = null;
@@ -217,11 +219,11 @@ export const updateTerritoryMetadata = async (values, titleId, selectedTenant) =
                     const body = formatTerritoryBody(tmet);
                     const {id: tmetId} = body;
                     delete body.id;
-                    response = await titleService.updateTerritoryMetadata(body, titleId, tmetId);
+                    response = await titleTerritorialService.update(body, titleId, tmetId);
                 } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
                     const body = formatTerritoryBody(tmet);
                     // POST is on V2
-                    response = await titleService.addTerritoryMetadata(body, titleId);
+                    response = await titleTerritorialService.create(body, titleId);
                 }
             })
         );
@@ -255,19 +257,22 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                         order: i,
                     };
                 });
-        } else if (key === 'category') {
+        } else if (key === 'categories') {
             body[key] =
                 data[key] &&
-                data[key].map((category, index) => {
-                    let categoryValue = category;
-                    if (isObjectLike(category) && get(category, 'value')) {
-                        categoryValue = get(category, 'value');
+                data[key].map((categories, index) => {
+                    let categoryValue = categories;
+                    if (isObjectLike(categories) && get(categories, 'value')) {
+                        categoryValue = get(categories, 'value');
                     }
                     return {
                         name: categoryValue,
                         order: index,
                     };
                 });
+        } else if (key === 'tenantData') {
+            body[key] = data?.tenantData;
+            return body[key];
         } else if (key === 'title' || key === 'synopsis') {
             const obj = data[key];
             if (obj) {
@@ -303,10 +308,8 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
     return isCreate
         ? {
               itemIndex: '1',
-              body: {
-                  decorateEditorialMetadata: hasGeneratedChildren,
-                  editorialMetadata: body,
-              },
+              decorateEditorialMetadata: hasGeneratedChildren,
+              ...body,
           }
         : {
               itemIndex: null,
@@ -314,83 +317,56 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
           };
 };
 
-export const updateEditorialMetadata = async (values, titleId, selectedTenant) => {
-    let response = [];
-    const errorToast = {
-        severity: 'error',
-        detail: UPDATE_EDITORIAL_METADATA_ERROR,
-    };
-    const data = values.editorialMetadata || [];
-    const {tenantCode} = values;
-    const updatedEmets = [];
-    const newEmets = [];
-    data.forEach(emet => {
-        if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-            updatedEmets.push(formatEditorialBody(emet, titleId, false));
-        } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-            newEmets.push(formatEditorialBody(emet, titleId, true));
-        }
-    });
-
-    try {
-        if (updatedEmets.length > 0) response = await titleService.updateEditorialMetadata(updatedEmets, tenantCode);
-        if (newEmets.length > 0) response = await titleService.addEditorialMetadataV1(newEmets, tenantCode);
-
-        // Temporarily block new version
-        // if (newEmets.length > 0) {
-        //     response = newEmets.map(async emet => titleService.addEditorialMetadata(emet));
-        //     await Promise.all(response);
-        // }
-        if (response && response.length > 0) {
-            let toast = errorToast;
-            if (!get(response[0], 'response.failed') || get(response[0], 'response.failed').length === 0) {
-                store.dispatch(getEditorialMetadata({id: titleId, selectedTenant}));
-                toast = {
-                    severity: 'success',
-                    detail: UPDATE_EDITORIAL_METADATA_SUCCESS,
-                };
-            }
-            store.dispatch(addToast(toast));
-        }
-    } catch (error) {
-        store.dispatch(addToast(errorToast));
-    }
-};
-
-export const propagateSeasonsPersonsToEpisodes = async (data, id) => {
-    const response = await titleService.propagateSeasonsPersonsToEpisodes({
-        ...data,
-        seasonId: id,
-    });
-
-    if (response.error) {
-        store.dispatch(
-            addToast({
-                severity: 'error',
-                detail: response.error,
-            })
-        );
-    } else {
-        store.dispatch(
-            addToast({
+export const propagateSeasonsPersonsToEpisodes = (data, id) => {
+    return titleServiceSingleton
+        .propagateSeasonsPersonsToEpisodes({
+            ...data,
+            seasonId: id,
+        })
+        .then(response => {
+            let toast = {
                 severity: 'success',
                 detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
-            })
-        );
-    }
+            };
+            if (response.error) {
+                toast = {
+                    severity: 'error',
+                    detail: response.error,
+                };
+            }
+            store.dispatch(addToast(...toast));
+        });
 };
 
 export const handleDirtyValues = (initialValues, values) => {
     const cleanValues = cleanObject(values);
-    const unnecessaryValues = ['vzExternalIds', 'movidaExternalIds', 'editorial', 'movidaUkExternalIds', 'territorial'];
-    const isTitleChanged = Object.keys(cleanValues).some(item => {
-        const initialItem = initialValues?.[item] === undefined ? null : initialValues?.[item];
+    const updatedInitialValues = {
+        ...initialValues,
+        rating: values?.ratings?.[0]?.rating,
+        ratingSystem: values?.ratings?.[0]?.ratingSystem,
+        advisoriesCode: values?.ratings?.[0]?.advisoriesCode,
+        advisoriesFreeText: values?.ratings?.[0]?.advisoriesFreeText,
+    };
+    const unnecessaryValues = [
+        'vzExternalIds',
+        'movidaExternalIds',
+        'editorial',
+        'movidaUkExternalIds',
+        'territorial',
+        'editorialMetadata',
+        'territorialMetadata',
+        'boxOfficeOpen',
+    ];
+
+    const isTitleChanged = [...Object.keys(cleanValues), 'ratings']?.some(item => {
+        const initialItem = updatedInitialValues?.[item] === undefined ? null : updatedInitialValues?.[item];
         const cleanItem = cleanValues?.[item];
-        if (unnecessaryValues.includes(item)) return false;
-        if (Array.isArray(initialItem) && Array.isArray(cleanItem)) {
+        if (unnecessaryValues.includes(item)) {
+            return false;
+        }
+        if (isArray(initialItem) && isArray(cleanItem)) {
             return !isEqual(initialItem.length, cleanItem.length);
         }
-
         return !isEqual(initialItem, cleanItem);
     });
 
@@ -411,7 +387,7 @@ const handleDirtyRatingsValues = values => {
         advisoriesCode,
         advisoriesFreeText,
     };
-    const index = values?.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
+    const index = values?.ratings?.findIndex(elem => elem.ratingSystem === ratingSystem);
     if (index !== null && index >= 0) {
         values.ratings[index] = updatedRatingRecord;
     }
@@ -431,7 +407,7 @@ const handleDirtyEMETValues = (initialValues, values) => {
     if (editorial) {
         const index =
             values.editorialMetadata &&
-            values.editorialMetadata.findIndex(elem => {
+            values.editorialMetadata?.findIndex(elem => {
                 if (elem.locale === editorial.locale && elem.language === editorial.language) {
                     const isFormatOk =
                         (elem.format && editorial.format && elem.format === editorial.format) ||
@@ -445,19 +421,36 @@ const handleDirtyEMETValues = (initialValues, values) => {
             });
 
         if (index !== null && index >= 0) {
+            const addedTenantData = handleDirtySasktelValues(initialValues, values);
+
             const cleanEditorial = cleanObject(editorial);
-            const isUpdated = Object.keys(cleanEditorial).some(
-                item => !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item])
-            );
+
+            const isUpdated = Object.keys(cleanEditorial)?.some(item => {
+                if (item === 'tenantData') {
+                    return false;
+                }
+                return !isEqual(initialValues.editorialMetadata[index]?.[item], cleanEditorial?.[item]);
+            });
+
             values.editorialMetadata[index] = {
                 ...values.editorialMetadata[index],
                 ...editorial,
+                ...addedTenantData,
                 isUpdated,
             };
         }
 
         values.editorialMetadata.forEach((emet, i) => {
-            if (!emet.isDeleted && i !== index && !isEqual(emet, initialValues.editorialMetadata[i])) {
+            const checkMasterEmet = emet?.tenantData?.complexProperties
+                ?.find(e => e.simpleProperties)
+                ?.simpleProperties?.find(e => e.name === 'hasGeneratedChildren')?.value;
+
+            if (
+                !emet.isDeleted &&
+                i !== index &&
+                !isEqual(emet, initialValues.editorialMetadata[i]) &&
+                !checkMasterEmet
+            ) {
                 values.editorialMetadata[i] = {...emet, isUpdated: true};
             }
             if (emet.isDeleted) {
@@ -467,14 +460,56 @@ const handleDirtyEMETValues = (initialValues, values) => {
     }
 };
 
+const handleDirtySasktelValues = (initialValues, values) => {
+    const simpleProperties = [];
+    const sasktelKeys = ['sasktelInventoryId', 'sasktelLineupId'];
+
+    for (const [key, value] of Object.entries(values?.editorial)) {
+        let newValue;
+        if (sasktelKeys.includes(key) && typeof value === 'string') {
+            newValue = value;
+        }
+        if (sasktelKeys.includes(key) && Array.isArray(value)) {
+            const temValue = value?.find(e => e.name === key)?.value;
+            newValue = temValue || undefined;
+        }
+
+        newValue &&
+            simpleProperties.push({
+                name: key,
+                value: newValue,
+            });
+    }
+
+    const tenantDataBody = {
+        simpleProperties,
+    };
+
+    const masterEmet = values.editorialMetadata.find(e =>
+        e?.tenantData?.complexProperties?.find(e => e?.simpleProperties.find(e => e.name === 'hasGeneratedChildren'))
+    );
+
+    // for the autoDecorate title
+    if (masterEmet && values?.editorial?.shortTitleTemplate) {
+        return {...values.editorial, tenantData: masterEmet.tenantData};
+    }
+
+    // don't create tenantData if the condition is not met
+    if (simpleProperties.length) {
+        return {...values.editorial, tenantData: tenantDataBody};
+    }
+
+    return {...values.editorial};
+};
+
 const handleDirtyTMETValues = (initialValues, values) => {
     const territorial = get(values, 'territorial');
     const territorialMetadata = get(values, 'territorialMetadata');
 
-    if (territorialMetadata.length) {
+    if (territorialMetadata?.length) {
         values.territorialMetadata = territorialMetadata.map((elem, i) => {
             const cleanTerritorial = cleanObject(elem);
-            const isUpdated = Object.keys(cleanTerritorial).some(
+            const isUpdated = Object.keys(cleanTerritorial)?.some(
                 item => !isEqual(initialValues.territorialMetadata[i]?.[item], cleanTerritorial?.[item])
             );
             return {
@@ -486,7 +521,7 @@ const handleDirtyTMETValues = (initialValues, values) => {
     if (territorial) {
         const index =
             values.territorialMetadata &&
-            values.territorialMetadata.findIndex(elem => elem.locale === territorial.locale);
+            values.territorialMetadata?.findIndex(elem => elem.locale === territorial.locale);
         if (index !== null && index >= 0) {
             const updatedTmetRecord = {
                 ...values.territorialMetadata[index],
@@ -495,7 +530,7 @@ const handleDirtyTMETValues = (initialValues, values) => {
 
             delete updatedTmetRecord.isUpdated;
             const cleanTerritorial = cleanObject(updatedTmetRecord);
-            updatedTmetRecord.isUpdated = Object.keys(cleanTerritorial).some(
+            updatedTmetRecord.isUpdated = Object.keys(cleanTerritorial)?.some(
                 item => !isEqual(initialValues.territorialMetadata[index]?.[item], cleanTerritorial?.[item])
             );
             values.territorialMetadata[index] = updatedTmetRecord;

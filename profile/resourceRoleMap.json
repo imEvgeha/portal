@@ -252,5 +252,9 @@
     "msvIDsForTitleMetadata": {
         "operation": "AND",
         "values": ["metadata_msv_ids"]
+    },
+    "metadataAutoDecorate": {
+        "operation": "AND",
+        "values": ["metadata_auto_decorate"]
     }
 }

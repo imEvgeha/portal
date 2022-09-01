@@ -63,6 +63,13 @@
                             "type": "string",
                             "path": "releaseYear",
                             "isRequired": true,
+                            "isRequiredWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": ["season"],
+                                    "operation": "notEqual"
+                                }
+                            ],
                             "validation": [
                                 {
                                     "name": "isYear"
@@ -891,72 +898,12 @@
                                         ]
                                     }
                                 },
-                                "editorial.hasGeneratedChildren": {
-                                    "name": "Auto - Decorate",
-                                    "path": "hasGeneratedChildren",
-                                    "type": "boolean",
-                                    "isReadOnlyInEdit": true,
-                                    "viewConfig": [
-                                        {
-                                            "view": "CREATE",
-                                            "defaultValue": false
-                                        }
-                                    ],
-                                    "showWhen": [
-                                        [
-                                            {
-                                                "field": "locale",
-                                                "hasValue": "US"
-                                            },
-                                            {
-                                                "field": "language",
-                                                "hasValue": "en"
-                                            },
-                                            {
-                                                "field": "hasGeneratedChildren",
-                                                "hasValue": true
-                                            }
-                                        ]
-                                    ],
-                                    "resource": "autoDecorateTitleMetadata"
-                                },
                                 "editorial.shortTitleTemplate": {
                                     "name": "Auto - Decorate Title",
-                                    "path": "shortTitleTemplate",
+                                    "path": "tenantData.complexProperties",
                                     "type": "string",
                                     "maxLength": 2000,
-                                    "dependencies": [
-                                        {
-                                            "view": "EDIT",
-                                            "type": "readOnly",
-                                            "fields": [
-                                                {
-                                                    "name": "editorial.hasGeneratedChildren",
-                                                    "value": false
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "view": "CREATE",
-                                            "type": "required",
-                                            "fields": [
-                                                {
-                                                    "name": "editorial.hasGeneratedChildren",
-                                                    "value": true
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "view": "EDIT",
-                                            "type": "required",
-                                            "fields": [
-                                                {
-                                                    "name": "editorial.hasGeneratedChildren",
-                                                    "value": true
-                                                }
-                                            ]
-                                        }
-                                    ],
+                                    "isRequired": true,
                                     "showWhen": [
                                         {
                                             "field": "hasGeneratedChildren",
@@ -979,9 +926,9 @@
                                         "localized": "genre"
                                     }
                                 },
-                                "editorial.category": {
+                                "editorial.categories": {
                                     "name": "Category",
-                                    "path": "category",
+                                    "path": "categories",
                                     "type": "multiselect"
                                 },
                                 "editorial.title.title": {
@@ -1040,11 +987,11 @@
                                     "path": "title.sortTitle",
                                     "type": "string"
                                 },
-                                "editorial.synopsis.shortDescription": {
+                                "editorial.synopsis.shortSynopsis": {
                                     "name": "Short Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.shortDescription",
+                                    "path": "synopsis.shortSynopsis",
                                     "type": "textarea",
                                     "dependencies": [
                                         {
@@ -1069,11 +1016,11 @@
                                         }
                                     ]
                                 },
-                                "editorial.synopsis.description": {
+                                "editorial.synopsis.mediumSynopsis": {
                                     "name": "Medium Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.description",
+                                    "path": "synopsis.mediumSynopsis",
                                     "type": "textarea",
                                     "dependencies": [
                                         {
@@ -1098,11 +1045,11 @@
                                         }
                                     ]
                                 },
-                                "editorial.synopsis.longDescription": {
+                                "editorial.synopsis.longSynopsis": {
                                     "name": "Long Synopsis",
                                     "oneIsRequiredVZ": true,
                                     "maxLength": 4000,
-                                    "path": "synopsis.longDescription",
+                                    "path": "synopsis.longSynopsis",
                                     "type": "textarea"
                                 },
                                 "editorial.copyright": {
@@ -1112,12 +1059,14 @@
                                 },
                                 "editorial.sasktelInventoryId": {
                                     "name": "Sasktel Inventory ID",
-                                    "path": "sasktelInventoryId",
+                                    "path": "tenantData.simpleProperties",
+                                    "pathName": "sasktelInventoryId",
                                     "type": "string"
                                 },
                                 "editorial.sasktelLineupId": {
                                     "name": "Sasktel Lineup ID",
-                                    "path": "sasktelLineupId",
+                                    "path": "tenantData.simpleProperties",
+                                    "pathName": "sasktelLineupId",
                                     "type": "string"
                                 },
                                 "editorial.castCrew": {

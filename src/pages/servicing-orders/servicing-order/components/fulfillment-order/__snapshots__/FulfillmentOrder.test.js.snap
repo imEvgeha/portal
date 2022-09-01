@@ -81,7 +81,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div>
               <div>
                 <input
-                  checked={false}
+                  defaultChecked={false}
                   disabled={true}
                   id="inp-premiering"
                   onClick={[Function]}
@@ -98,7 +98,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div>
               <div>
                 <input
-                  checked={true}
+                  defaultChecked={true}
                   disabled={true}
                   id="inp-watermark"
                   onClick={[Function]}
@@ -115,7 +115,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div>
               <div>
                 <input
-                  checked={true}
+                  defaultChecked={true}
                   disabled={true}
                   id="inp-late"
                   onClick={[Function]}

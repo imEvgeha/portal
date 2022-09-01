@@ -14,7 +14,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {ThemeProvider} from 'styled-components';
 import AppLoadProvider from './appLoad/AppLoadProvider';
 import AuthProvider from './auth/AuthProvider';
-import {registerFetchInterceptor} from './util/httpInterceptor';
+import {registerFetchInterceptor} from './util/http/httpInterceptor';
 
 const AppProviders = ({children, persistor}) => {
     const rolesResourceMap = require('../profile/resourceRoleMap.json');

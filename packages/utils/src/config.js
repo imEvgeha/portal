@@ -21,6 +21,15 @@ export async function loadConfig(configFile = '/config.json', endpointFile) {
     }
 }
 
+/**
+ *
+ * @param service Service name to be used (should exist in endpoints.json file)
+ * @param uri Uri to append to service /service/uri
+ * @param version Version of the api to be called. if undefined it will use the defaultVersion from endpoints.json. If 0 it won't append any version (integrationPoint/service//uri)
+ * @param integrationPoint Integration point to be used.. e.g.: Kong.. If not provided, the defaultIntegration point in endpoints.json will be used
+ * @returns {string}
+ * `${integrateWith}${serviceURI}${apiVersion ? `/v${apiVersion}` : ''}${uri}`
+ */
 export const getApiURI = (service, uri = '', version = undefined, integrationPoint = undefined) => {
     const {integrationPoints, defaultVersion, defaultIntegrationPoint, services} = configuration;
 
@@ -37,7 +46,7 @@ export const getApiURI = (service, uri = '', version = undefined, integrationPoi
                 // Disable warning as it is needed for development
                 // eslint-disable-next-line no-console
                 console.error(
-                    `Version provided "${version}" was not found in available versions of service. Please update configuration`
+                    `Version provided "${version}" for "${service}" was not found in available versions of service. Please update configuration`
                 );
             }
 

@@ -204,7 +204,10 @@ export const FulfillmentOrder = ({
                 param => param.name === SOURCE_STANDARD
             )?.value;
 
-            if (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') {
+            if (
+                (sourceStandardAsParameter === undefined || sourceStandardAsParameter === ' ') &&
+                updatedData?.definition?.deteServices
+            ) {
                 const parametersWithoutSourceStandard = firstExternalServices?.parameters?.filter(
                     elem => elem.name !== SOURCE_STANDARD
                 );
@@ -365,7 +368,7 @@ export const FulfillmentOrder = ({
                                             <input
                                                 type="checkbox"
                                                 id="inp-premiering"
-                                                checked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
+                                                defaultChecked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
                                                 onClick={() =>
                                                     onFieldChange(
                                                         fieldKeys.PREMIERING,
@@ -386,7 +389,7 @@ export const FulfillmentOrder = ({
                                             <input
                                                 type="checkbox"
                                                 id="inp-watermark"
-                                                checked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
+                                                defaultChecked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
                                                 onClick={() =>
                                                     onFieldChange(
                                                         fieldKeys.WATERMARK,
@@ -407,7 +410,7 @@ export const FulfillmentOrder = ({
                                             <input
                                                 type="checkbox"
                                                 id="inp-late"
-                                                checked={get(fulfillmentOrder, fieldKeys.LATE, false)}
+                                                defaultChecked={get(fulfillmentOrder, fieldKeys.LATE, false)}
                                                 onClick={() =>
                                                     onFieldChange(
                                                         fieldKeys.LATE,
@@ -575,7 +578,7 @@ FulfillmentOrder.propTypes = {
     setSelectedFulfillmentOrderID: PropTypes.func,
     fetchFulfillmentOrders: PropTypes.func,
     serviceOrder: PropTypes.object,
-    updatedServices: PropTypes.func,
+    updatedServices: PropTypes.object,
     children: PropTypes.any,
     cancelEditing: PropTypes.func,
     lastOrder: PropTypes.object,
@@ -589,7 +592,7 @@ FulfillmentOrder.defaultProps = {
     setSelectedFulfillmentOrderID: () => null,
     fetchFulfillmentOrders: () => null,
     serviceOrder: null,
-    updatedServices: () => null,
+    updatedServices: {},
     children: null,
     cancelEditing: () => null,
     lastOrder: {},

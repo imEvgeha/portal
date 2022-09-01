@@ -143,7 +143,6 @@ const checkDependencyValues = (dependencies, getCurrentValues) => {
     return allValues;
 };
 
-// eslint-disable-next-line max-params
 export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable, getCurrentValues}) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
@@ -296,6 +295,14 @@ const getFieldCurrentValue = (initialData, fieldName) => {
 const toShow = (field, initialData, prefix) => {
     const showWhen = get(field, 'showWhen', []);
     const preString = prefix ? `${prefix}.` : '';
+
+    if (showWhen.length && field?.path === 'tenantData.complexProperties' && initialData?.tenantData) {
+        const hasGeneratedValue = initialData.tenantData?.complexProperties
+            ?.find(e => e.simpleProperties)
+            ?.simpleProperties.find(e => e.name === 'hasGeneratedChildren')?.value;
+        return hasGeneratedValue || false;
+    }
+
     if (showWhen.length) {
         let retValue = false;
         field.showWhen.forEach(conditionObj => {
@@ -326,13 +333,27 @@ const toShow = (field, initialData, prefix) => {
     return true;
 };
 
+const isRequiredWhenCondition = (isRequiredWhen, initialData) => {
+    const operation = {logical_not: 'notEqual'};
+    let required = true;
+    Array.isArray(isRequiredWhen) &&
+        isRequiredWhen.forEach(element => {
+            const fieldValue = element?.field && initialData && getFieldCurrentValue(initialData, element?.field);
+            if (fieldValue && element && Array.isArray(element.hasValue) && element.hasValue.length > 0) {
+                const isLogicalNot = element?.operation ? element.operation === operation.logical_not : false;
+                const isRequired = !!element.hasValue.includes(fieldValue);
+                required = required && (isLogicalNot ? !isRequired : isRequired);
+            }
+        });
+    return required;
+};
+
 export const buildSection = (
     fields = {},
     getValues,
     view,
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
-    setRefresh,
     {
         selectValues,
         initialData,
@@ -349,6 +370,7 @@ export const buildSection = (
         isTitlePage,
         setUpdate,
         sectionID,
+        actions,
     }
 ) => {
     const getClass = type => {
@@ -393,7 +415,7 @@ export const buildSection = (
                             regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                             searchPerson={searchPerson}
                             castCrewConfig={castCrewConfig}
-                            setRefresh={setRefresh}
+                            actions={actions}
                             initialData={initialData}
                             prefix={prefix}
                             sectionID={sectionID}
@@ -486,6 +508,7 @@ export const renderNexusField = (
                 setUpdate={setUpdate}
                 allData={allData}
                 shouldStackLabel={!!shouldStackLabel}
+                isRequired={field.isRequired && isRequiredWhenCondition(field.isRequiredWhen, initialData)}
             />
         </Restricted>
     ) : null;

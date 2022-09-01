@@ -1,15 +1,17 @@
 import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Dropdown, OverlayPanel} from '@portal/portal-components';
-import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
+import {useDispatch} from 'react-redux';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import {RIGHTS_TAB, STATUS_TAB} from '../rights-repository/constants';
 import {CREATE_REPORT, END_YEAR, MOCK_YEAR, MONTHS, NEW_RELEASE_REPORT, START_YEAR} from './constants';
 import './AvailsTableReleaseReport.scss';
 
-const AvailsTableReleaseReport = ({addToast, activeTab}) => {
+const AvailsTableReleaseReport = ({activeTab}) => {
+    const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(moment().format('MMMM'));
     const [selectedYear, setSelectedYear] = useState(+moment().format('YYYY'));
@@ -34,12 +36,14 @@ const AvailsTableReleaseReport = ({addToast, activeTab}) => {
                 setIsLoading(false);
                 // Close overlay panel
                 op?.current?.hide?.();
-                addToast({
-                    detail: `${error?.type}: failed to create report. ${
-                        error.message ? `Details: ${error.message}` : ''
-                    }`,
-                    severity: 'error',
-                });
+                dispatch(
+                    addToast({
+                        detail: `${error?.type}: failed to create report. ${
+                            error.message ? `Details: ${error.message}` : ''
+                        }`,
+                        severity: 'error',
+                    })
+                );
             });
     };
 
@@ -120,13 +124,11 @@ const AvailsTableReleaseReport = ({addToast, activeTab}) => {
 };
 
 AvailsTableReleaseReport.propTypes = {
-    addToast: PropTypes.func,
     activeTab: PropTypes.string,
 };
 
 AvailsTableReleaseReport.defaultProps = {
-    addToast: () => null,
     activeTab: RIGHTS_TAB,
 };
 
-export default withToasts(AvailsTableReleaseReport);
+export default AvailsTableReleaseReport;

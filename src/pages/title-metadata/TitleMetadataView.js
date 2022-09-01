@@ -6,7 +6,7 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_METADATA} from '@vubiquity-nexus/portal-utils/lib/constants';
 import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {isEmpty, get, toLower} from 'lodash';
+import {get, isEmpty, toLower} from 'lodash';
 import {TabMenu} from 'primereact/tabmenu';
 import {connect, useSelector} from 'react-redux';
 import {store} from '../../index';
@@ -18,6 +18,7 @@ import RepositorySelectsAndButtons from './components/title-metadata-repo-select
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import TitleCreate from './components/titleCreateModal/TitleCreateModal';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
+import TitleConfigurationService from './services/TitleConfigurationService';
 import './TitleMetadataView.scss';
 import {
     setCurrentUserViewAction,
@@ -26,11 +27,10 @@ import {
     uploadMetadata,
 } from './titleMetadataActions';
 import {
-    externalIDTypesSelector,
     createGridStateSelector,
     createTitleMetadataFilterSelector,
+    externalIDTypesSelector,
 } from './titleMetadataSelectors';
-import {getEnums} from './titleMetadataServices';
 import {TITLE_METADATA_SYNC_LOG_TAB, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 
 export const TitleMetadataView = ({
@@ -56,6 +56,8 @@ export const TitleMetadataView = ({
     const [activeIndex, setActiveIndex] = useState(0);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
 
+    const titleConfigurationService = TitleConfigurationService.getInstance();
+
     useEffect(() => {
         setCatalogueOwner({
             tenantCode: selectedTenant.id,
@@ -73,7 +75,7 @@ export const TitleMetadataView = ({
     }, [selectedTenant]);
 
     const updateExternalIdDropdown = async () => {
-        return getEnums('external-id-type');
+        return titleConfigurationService.getEnums('external-id-type');
     };
 
     const showSuccess = detail => {
