@@ -20,9 +20,15 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
     const contentTypesCrateCopyArray = [CONTENT_TYPES.MOVIE.toLowerCase(), CONTENT_TYPES.DOCUMENTARY.toLowerCase()];
     const dropdownOption = {copyDesc: 'Copy...', unmergeDesc: 'Unmerge'};
 
+    const complexProperties = title?.tenantData?.complexProperties;
+    const tenantDataLegacyIds = complexProperties?.find(item => item.name === 'legacyIds');
+
     const {openModal, closeModal} = useContext(NexusModalContext);
     const isAbleCreateCopy = contentTypesCrateCopyArray.includes(toLower(toString(title.contentType)));
-    const isDropDownActionVisible = isAllowed('unmergeTitleAction') || isAbleCreateCopy;
+    const isDropDownActionVisible =
+        (tenantDataLegacyIds && isAllowed('unmergeTitleAction')) ||
+        isAllowed('deleteTitleAction') ||
+        (isAbleCreateCopy && isAllowed('createTitleCopyButton'));
     const [displayModal, setDisplayModal] = React.useState(false);
 
     const openUnmergeDialog = useCallback(() => {
@@ -56,18 +62,20 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
                 <DropdownToggle label="Actions" isMobile />
 
                 <DropdownOptions isMobile align="top">
-                    {isAbleCreateCopy && (
+                    {isAbleCreateCopy && isAllowed('createTitleCopyButton') ? (
                         <Restricted resource="createTitleCopyButton">
                             <DropdownOption value="copy" onSelect={() => setDisplayModal(true)}>
                                 <i className="pi pi-copy" /> {dropdownOption.copyDesc}
                             </DropdownOption>
                         </Restricted>
-                    )}
-                    <Restricted resource="unmergeTitleAction">
-                        <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
-                            {dropdownOption.unmergeDesc}
-                        </DropdownOption>
-                    </Restricted>
+                    ) : null}
+                    {tenantDataLegacyIds && isAllowed('unmergeTitleAction') ? (
+                        <Restricted resource="unmergeTitleAction">
+                            <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
+                                {dropdownOption.unmergeDesc}
+                            </DropdownOption>
+                        </Restricted>
+                    ) : null}
                 </DropdownOptions>
             </NexusDropdown>
 
