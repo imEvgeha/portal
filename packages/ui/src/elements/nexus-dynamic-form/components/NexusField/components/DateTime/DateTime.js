@@ -17,6 +17,7 @@ const DateTime = ({
     value,
     onChange,
     id,
+    elementId,
     isReturningTime,
     isClearable,
 }) => {
@@ -39,7 +40,7 @@ const DateTime = ({
             isReturningTime,
             isClearable,
         };
-        return <NexusDateTimeWindowPicker isReadOnly={isReadOnly || isDisabled} {...dateProps} />;
+        return <NexusDateTimeWindowPicker id={elementId} isReadOnly={isReadOnly || isDisabled} {...dateProps} />;
     }
     const props = {
         id: `${id}-date`,
@@ -50,9 +51,9 @@ const DateTime = ({
         isClearable,
     };
     return isUsingTime ? (
-        <NexusDateTimePicker {...props} value={value.toString()} />
+        <NexusDateTimePicker {...props} id={elementId} value={value.toString()} />
     ) : (
-        <NexusDatePicker {...props} value={value.toString()} />
+        <NexusDatePicker {...props} id={elementId} value={value.toString()} />
     );
 };
 
@@ -60,6 +61,7 @@ DateTime.propTypes = {
     dateType: PropTypes.string,
     type: PropTypes.string,
     id: PropTypes.string,
+    elementId: PropTypes.string,
     labels: PropTypes.array,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     isReadOnly: PropTypes.bool,
@@ -73,6 +75,7 @@ DateTime.defaultProps = {
     dateType: '',
     type: '',
     id: '',
+    elementId: '',
     labels: ['', ''],
     value: '',
     isReadOnly: false,
