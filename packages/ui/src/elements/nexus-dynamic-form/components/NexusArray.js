@@ -186,7 +186,7 @@ const NexusArray = ({
                     {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
                         <form {...formProps}>
                             <div className="nexus-c-array__modal-fields">
-                                {buildSection(fields, getValues, VIEWS.CREATE, null, null, null, {
+                                {buildSection(fields, getValues, VIEWS.CREATE, null, null, {
                                     selectValues,
                                     setFieldValue,
                                     sectionID,
