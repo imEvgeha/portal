@@ -3,7 +3,7 @@
 exports[`DateTime should match snapshot 1`] = `
 <NexusDatePicker
   error=""
-  id="-date"
+  id=""
   isClearable={false}
   isLabelHidden={false}
   isReadOnly={false}
