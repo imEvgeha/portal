@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import {cloneDeep} from 'lodash';
 import {useParams} from 'react-router-dom';
 import './MsvIds.scss';
@@ -75,21 +75,35 @@ const MsvIds = ({selectValues, data, isEdit, onChange, generateMsvIds}) => {
                         <form {...formProps}>
                             <Field name="licensor" label="Licensor" isRequired>
                                 {({fieldProps}) => (
-                                    <Select
-                                        options={licensorOptions}
+                                    <Dropdown
                                         {...fieldProps}
+                                        value={fieldProps.value?.value}
+                                        placeholder="Select"
                                         className="nexus-c-modal__select-container"
-                                        classNamePrefix="nexus-c-modal__select"
+                                        options={licensorOptions}
+                                        columnClass="col-12"
+                                        filter={true}
+                                        onChange={e => {
+                                            const value = licensorOptions.find(x => x.value === e.value);
+                                            fieldProps.onChange(value);
+                                        }}
                                     />
                                 )}
                             </Field>
                             <Field name="licensee" label="Licensee" isRequired>
                                 {({fieldProps}) => (
-                                    <Select
-                                        options={licenseeOptions}
+                                    <Dropdown
                                         {...fieldProps}
+                                        value={fieldProps.value?.value}
+                                        placeholder="Select"
                                         className="nexus-c-modal__select-container-bottom"
-                                        classNamePrefix="nexus-c-modal__select-bottom"
+                                        options={licenseeOptions}
+                                        columnClass="col-12"
+                                        filter={true}
+                                        onChange={e => {
+                                            const value = licenseeOptions.find(x => x.value === e.value);
+                                            fieldProps.onChange(value);
+                                        }}
                                     />
                                 )}
                             </Field>

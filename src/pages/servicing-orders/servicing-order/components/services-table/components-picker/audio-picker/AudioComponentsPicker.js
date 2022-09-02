@@ -1,13 +1,12 @@
 /* eslint react/prop-types: 0 */
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import DynamicTable from '@atlaskit/dynamic-table';
-import {HelperMessage} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import {differenceBy, flattenDeep, get, groupBy, pickBy, uniqBy} from 'lodash';
-import {Header, Footer, AddToService} from '../ComponentsPicker';
+import {AddToService, Footer, Header} from '../ComponentsPicker';
 import {createDynamicTableRows, getAudioChannelsForLangTrack, getToolTipText} from '../pickerUtils';
 import AudioSummaryPanel from './AudioSummaryPanel';
 import {AUDIO_CHANNEL_EXISTS, header} from '../constants';
@@ -53,25 +52,39 @@ const SelectionPanel = ({data}) => {
             <b>Step 1: Filter Language and Track configuration</b>
             <div className="audio-picker__selection-panel">
                 <div>
-                    <HelperMessage>Language / MFX</HelperMessage>
-                    <Select
+                    <Dropdown
+                        labelProps={{
+                            label: 'Language / MFX',
+                            shouldUpper: false,
+                            stacked: true,
+                        }}
                         id="language-select"
                         name="language-select"
                         className="audio-picker__select"
                         options={languageOptions}
-                        value={language}
-                        onChange={val => setLanguage(val)}
+                        value={language.value}
+                        onChange={e => {
+                            const value = languageOptions.find(x => x.value === e.value);
+                            setLanguage(value);
+                        }}
                     />
                 </div>
                 <div>
-                    <HelperMessage>Track configuration</HelperMessage>
-                    <Select
+                    <Dropdown
+                        labelProps={{
+                            label: 'Track configuration',
+                            shouldUpper: false,
+                            stacked: true,
+                        }}
                         id="track-select"
                         name="track-select"
                         className="audio-picker__select"
                         options={trackConfiguration}
-                        value={track}
-                        onChange={val => setTrack(val)}
+                        value={track.value}
+                        onChange={e => {
+                            const value = trackConfiguration.find(x => x.value === e.value);
+                            setTrack(value);
+                        }}
                     />
                 </div>
             </div>

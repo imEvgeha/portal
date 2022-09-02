@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import {ErrorMessage, Field} from '@atlaskit/form';
-import Select from '@atlaskit/select/Select';
 import Textfield from '@atlaskit/textfield';
+import {Dropdown} from '@portal/portal-components';
 
 const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptions, priceCurrencyOptions}) => {
     const currentPrice = Array.isArray(existingPriceList) && existingPriceList[priceIndex];
@@ -71,35 +71,25 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
         return undefined;
     };
 
-    const onPriceTypeChange = selectedPriceType => {
-        setIsCurrencyDisabled(shouldCurrencyBeDisabled(selectedPriceType.value));
-
-        setPriceTypeValue(selectedPriceType);
-    };
-
     return (
         <>
             <Field label="Price Type" isRequired name="priceType" validate={validate} defaultValue={priceTypeValue}>
                 {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
-                        <Select
+                        <Dropdown
                             id={`select-${id}`}
                             {...rest}
-                            validationState={getValidationState(error, valid)}
-                            styles={{
-                                control: base => {
-                                    return getError('priceType', rest.value)
-                                        ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'}
-                                        : {...base, borderColor: '#F4F5F7'};
-                                },
-                                singleValue: base =>
-                                    getError('priceType', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
-                            }}
-                            value={priceTypeValue}
-                            onChange={onPriceTypeChange}
-                            isSearchable={true}
+                            value={rest.value.value}
+                            columnClass="col-12"
+                            filter={true}
                             placeholder="Choose Type"
                             options={removeExistingOptions()}
+                            onChange={e => {
+                                const value = removeExistingOptions().find(x => x.value === e.value);
+                                setIsCurrencyDisabled(shouldCurrencyBeDisabled(value.value));
+                                setPriceTypeValue(value);
+                                rest.onChange(value);
+                            }}
                         />
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
                     </>
@@ -137,23 +127,20 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
             >
                 {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
-                        <Select
+                        <Dropdown
                             id={`select-${id}`}
                             {...rest}
-                            validationState={getValidationState(error, valid)}
-                            styles={{
-                                control: base => {
-                                    return getError('priceCurrency', rest.value)
-                                        ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'}
-                                        : {...base, borderColor: '#F4F5F7'};
-                                },
-                                singleValue: base =>
-                                    getError('priceCurrency', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
-                            }}
-                            isSearchable={true}
+                            value={rest.value.value}
+                            columnClass="col-12"
+                            filter={true}
                             placeholder="Choose Currency"
                             options={priceCurrencyOptions}
+                            onChange={e => {
+                                const value = priceCurrencyOptions.find(x => x.value === e.value);
+                                rest.onChange(value);
+                            }}
                         />
+
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
                     </>
                 )}

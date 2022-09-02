@@ -32,7 +32,7 @@ describe('HeaderSection', () => {
         });
 
         it('correctly filters by status', () => {
-            wrapper.find('ServiceOrderFilter').prop('setFilter')({label: 'Not Started', value: 'NOT_STARTED'});
+            wrapper.find('ServiceOrderFilter').prop('setFilter')('NOT_STARTED');
             const orders = wrapper.find('FulfillmentOrderPanels').prop('fulfillmentOrders');
             expect(orders.length).toEqual(2);
         });
