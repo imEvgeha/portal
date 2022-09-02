@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Chevron from '@vubiquity-nexus/portal-assets/chevron-right.svg';
 import classnames from 'classnames';
 import constants from '../../constants';
 import IngestReport from '../ingest-report/IngestReport';
@@ -38,7 +37,7 @@ const Ingest = ({received, attachment, isSelected, ingestClick, isInBundle, inge
                         }`}
                         onClick={onChevronClick}
                     >
-                        <Chevron />
+                        <i className="po po-chevron-right" />
                     </span>
                 )}
                 <div

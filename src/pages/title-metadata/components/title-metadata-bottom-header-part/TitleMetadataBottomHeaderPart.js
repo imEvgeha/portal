@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import CloudDownloadIcon from '@vubiquity-nexus/portal-assets/action-cloud-download.svg';
-import CloudUploadIcon from '@vubiquity-nexus/portal-assets/action-cloud-upload.svg';
 import NexusUploadButton from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload-button/NexusUploadButton';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import moment from 'moment';
@@ -32,7 +30,7 @@ export const TitleMetadataBottomHeaderPart = ({
                 <div className="col d-flex justify-content-end">
                     <NexusUploadButton
                         title={METADATA_UPLOAD_TITLE}
-                        icon={CloudUploadIcon}
+                        icon="po po-upload"
                         uploadCallback={uploadHandler}
                         extensionsAccepted={getConfig('avails.upload.extensions')}
                     />
@@ -74,7 +72,7 @@ export const TitleMetadataBottomHeaderPart = ({
                 </div>
                 <div className="col-4 d-flex justify-content-end align-items-center">
                     <Button
-                        icon={CloudDownloadIcon}
+                        icon="po po-download"
                         className="p-button-text"
                         onClick={() => exportSyncLog(dateFrom, dateTo)}
                         tooltip="Download"

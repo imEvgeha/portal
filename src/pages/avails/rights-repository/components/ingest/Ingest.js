@@ -1,8 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
-import DownloadIcon from '@vubiquity-nexus/portal-assets/action-download.svg';
-import Email from '@vubiquity-nexus/portal-assets/email.svg';
 import {getApiURI} from '@vubiquity-nexus/portal-utils/lib/config';
 import {NexusTooltip} from '../../../../../ui/elements';
 import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
@@ -35,7 +32,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
         ingest && (
             <div className="nexus-c-avails-ingest">
                 <div className="nexus-c-avails-ingest__cross-icon">
-                    <CrossCircle className="nexus-c-avails-ingest__cross-circle" onClick={deselectIngest} />
+                    <i className="po po-remove nexus-c-avails-ingest__cross-circle" onClick={deselectIngest} />
                 </div>
                 <div className="nexus-c-avails-ingest__details">
                     <IngestTitle ingestType={ingestType} link={link} isHeader />
@@ -53,9 +50,9 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                     {emails.map(email => (
                         <div key={email.id} className="nexus-c-avails-ingest__email">
                             <NexusTooltip content="Download Email">
-                                <Email
+                                <i
                                     key={email.id}
-                                    className="nexus-c-avails-ingest__email-icon"
+                                    className="po po-email nexus-c-avails-ingest__email-icon"
                                     onClick={() => downloadIngestEmail(email)}
                                 />
                             </NexusTooltip>
@@ -64,8 +61,8 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                     <div className="nexus-c-avails-ingest__download">
                         {status === 'FAILED' && <ReuploadIngestButton ingestData={ingest} attachment={attachment} />}
                         <NexusTooltip content="Download Attachment">
-                            <DownloadIcon
-                                className="nexus-c-avails-ingest__download-icon"
+                            <i
+                                className="po po-download nexus-c-avails-ingest__download-icon"
                                 onClick={() => downloadIngestFile(attachment)}
                             />
                         </NexusTooltip>

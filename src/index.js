@@ -1,6 +1,7 @@
 import React from 'react';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import '@portal/portal-icons/portalicons.css';
 import {createKeycloakInstance} from '@portal/portal-auth';
 import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
 import Toast from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotification';

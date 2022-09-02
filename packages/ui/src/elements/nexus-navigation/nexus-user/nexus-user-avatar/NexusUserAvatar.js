@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 import {keycloak} from '@portal/portal-auth';
 import {logout, setSelectedTenantInfo} from '@portal/portal-auth/authActions';
 import {transformSelectTenant, updateLocalStorageWithSelectedTenant} from '@portal/portal-auth/utils';
-import ExpandRightIcon from '@vubiquity-nexus/portal-assets/expand_right.svg';
-import LogoutIcon from '@vubiquity-nexus/portal-assets/logout.svg';
-import TenantIcon from '@vubiquity-nexus/portal-assets/tenant.svg';
 import {getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {Divider} from 'primereact/divider';
 import {TieredMenu} from 'primereact/tieredmenu';
@@ -43,12 +40,14 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
                 onClick={options.onClick}
             >
                 <div className="tenantDescription">
-                    <TenantIcon className="tenantIcon" />
+                    <i className="po po-logout tenantIcon" />
                     <span className="tenantName">{item.label}</span>
                 </div>
                 <div className="actionIcon">
                     {/* Do not render an icon if there are not more than one tenant */}
-                    {Object.entries(filteredResourceAccess).length > 1 && <ExpandRightIcon className="expandIcon" />}
+                    {Object.entries(filteredResourceAccess).length > 1 && (
+                        <i className="po po-chevron-right expandIcon" />
+                    )}
                 </div>
             </div>
         );
@@ -147,7 +146,7 @@ const NexusUserAvatar = ({selectedTenant, profileInfo, logout, menu}) => {
         return (
             <div className="UserAvatarActions">
                 <div className="tenant-logout-action" onClick={logout}>
-                    <LogoutIcon className="logoutIcon" />
+                    <i className="po po-logout logoutIcon" />
                     <span className="logoutButtonText">Log Out</span>
                 </div>
             </div>

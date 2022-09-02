@@ -5,7 +5,7 @@ import EditorBulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import EditorMediaWrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
 import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
-import NexusNavIcon from '@vubiquity-nexus/portal-assets/nexus-nav-icon.svg';
+import NexusNavIcon from '@portal/portal-icons/svg/VU-logo.svg';
 import {AVAILS, DOP_TASKS, EVENT_MANAGEMENT, METADATA, SERVICING_ORDERS, TITLE_METADATA} from '../constants';
 import './NavigationItems.scss';
 
