@@ -28,4 +28,5 @@ export const ERROR_ICON = 'error';
 
 export const UPDATE_RIGHT_SUCCESS_MESSAGE = 'Right is successfully updated.';
 export const UPDATE_RIGHT_FAILED = 'Right update failed.';
+export const MAX_ERROR_DETAILS_CHARS = 150;
 export const MAX_CHARS = 330;
