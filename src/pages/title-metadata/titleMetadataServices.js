@@ -5,42 +5,7 @@ import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {get} from 'lodash';
 import {store} from '../../index';
 import {BASE_PATH} from './titleMetadataRoutes';
-import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';
-
-export const getTitleById = payload => {
-    const uri = `/titles/${payload?.id}`;
-    const url = getApiURI('title', uri, 2);
-
-    return nexusFetch(url);
-};
-
-export const getExternalIds = id => {
-    const uri = `/getPublishInfo/${id}`;
-    const url = getApiURI('movida', uri);
-
-    return nexusFetch(url);
-};
-
-export const getTerritoryMetadataById = payload => {
-    const uri = `/titles/${payload.id}/territories`;
-    const url = getApiURI('title', uri, 2);
-
-    return nexusFetch(url, {});
-};
-
-export const updateTitle = (title, syncToVZ, syncToMovida) => {
-    const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
-    const params = legacySystemNames ? {legacySystemNames} : {};
-    const uri = `/titles/${title.id}`;
-    const url = getApiURI('title', uri, 2);
-
-    return nexusFetch(url, {
-        method: 'put',
-        body: JSON.stringify(title),
-        params: encodedSerialize(params),
-    });
-};
 
 export const generateMsvIds = (id, licensor, licensee, existingMsvAssociations) => {
     return titleService
@@ -98,41 +63,6 @@ export const unmergeTitle = async id => {
     } catch (err) {}
 };
 
-export const syncTitle = payload => {
-    const {id: titleId, externalSystem} = payload;
-    const params = {externalSystem, titleId};
-    const uri = `/syncTitle`;
-    const url = getApiURI('movida', uri);
-
-    return nexusFetch(url, {
-        method: 'post',
-        params: encodedSerialize(params),
-    });
-};
-
-export const registerTitle = payload => {
-    const {id: titleId, externalSystem: externalSystems} = payload;
-    const params = {externalSystems, titleId};
-    const uri = `/registerTitle`;
-    const url = getApiURI('movida', uri);
-
-    return nexusFetch(url, {
-        method: 'post',
-        params: encodedSerialize(params),
-    });
-};
-
-export const getEnums = enumItem => {
-    const uri = `/configuration/titles/enums`;
-    const url = getApiURI('title', uri);
-    const params = {item: enumItem};
-
-    return nexusFetch(url, {
-        method: 'get',
-        params: encodedSerialize(params),
-    });
-};
-
 export const titleService = {
     advancedSearch: (searchCriteria, page, size, sortedParams, body, selectedTenant) => {
         const queryParams = {};
@@ -181,76 +111,6 @@ export const titleService = {
             body: JSON.stringify(existingMsvAssociations),
         });
     },
-    getUploadedMetadata: async (dataForUploadedMetadata, tenantCode, page, size, sortedParams) => {
-        const uri = `/importLog${prepareSortMatrixParamTitles(sortedParams)}`;
-        const url = getApiURI('title', uri);
-        const params = tenantCode ? {tenantCode} : {};
-
-        return nexusFetch(url, {
-            method: 'post',
-            body: JSON.stringify(dataForUploadedMetadata),
-            params: encodedSerialize({...params, page, size}),
-        });
-    },
-    getUploadLogMetadataFile: id => {
-        const uri = `/importReport/${id}`;
-        const url = getApiURI('title', uri);
-        return nexusFetch(url, {
-            method: 'get',
-        });
-    },
-
-    addEditorialMetadataV1: (editorialMetadata, tenantCode) => {
-        const uri = `/editorialmetadata`;
-        const url = getApiURI('title', uri, 2);
-
-        const updatedEditorialMetadata = editorialMetadata.map(item => ({
-            ...item,
-            body: {
-                ...item?.body,
-                editorialMetadata: {
-                    ...item?.body?.editorialMetadata,
-                    type: 'editorialMetadata',
-                },
-            },
-        }));
-        const params = tenantCode ? {tenantCode} : {};
-        return nexusFetch(url, {
-            method: 'post',
-            body: JSON.stringify(updatedEditorialMetadata),
-            params: encodedSerialize(params),
-        });
-    },
-
-    addEditorialMetadata: editorialMetadata => {
-        const body = Object.assign({}, editorialMetadata?.body.editorialMetadata);
-
-        // change the body to the new create API requirements
-        body['synopsis']['shortSynopsis'] = body['synopsis']['shortDescription'];
-        body['synopsis']['mediumSynopsis'] = body['synopsis']['description'];
-        body['synopsis']['longSynopsis'] = body['synopsis']['longDescription'];
-        body['categories'] = body['category'];
-        delete body['synopsis']['longDescription'];
-        delete body['synopsis']['description'];
-        delete body['synopsis']['shortDescription'];
-        delete body['category'];
-
-        body['castCrew'] = body.castCrew.map(({order, ...rest}) => ({
-            order,
-            ...rest,
-        }));
-
-        const uri = `/titles/${body.parentId}/editorials`;
-        const url = getApiURI('title', uri, 2);
-
-        delete body.parentId;
-
-        return nexusFetch(url, {
-            method: 'post',
-            body: JSON.stringify(body),
-        });
-    },
-
     updateEditorialMetadata: (editedEditorialMetadata, tenantCode) => {
         const uri = `/editorialmetadata`;
         const url = getApiURI('title', uri, 2);
@@ -297,7 +157,6 @@ export const titleService = {
             method: 'put',
         });
     },
-
     unmerge: id => {
         const uri = `/titles/unmerge?titleId=${id}`;
         const url = getApiURI('title', uri);
