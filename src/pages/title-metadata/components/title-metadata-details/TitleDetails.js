@@ -104,6 +104,8 @@ const TitleDetails = ({
     const [VZDisabled, setVZDisabled] = useState(true);
     const [MOVDisabled, setMOVDisabled] = useState(true);
     const [MovIntDisabled, setMovIntDisabled] = useState(true);
+    const [editorialMetadataUpdatedAt, setEditorialMetadataUpdatedAt] = useState(null);
+    const [territoryMetadataUpdatedAt, setTerritoryMetadataUpdatedAt] = useState(null);
     const [episodesCount, setEpisodesCount] = useState('0');
     const [seasonsCount, setSeasonsCount] = useState('0');
     const routeParams = useParams();
@@ -164,6 +166,22 @@ const TitleDetails = ({
             }
         }
     }, [refresh]);
+
+    useEffect(() => {
+        if (editorialMetadata.length) {
+            const editorialUpdatedAtArray = editorialMetadata.map(item => item.updatedAt);
+            const sortedData = editorialUpdatedAtArray.sort((a, b) => (moment(b).isBefore(moment(a)) ? -1 : 1));
+            setEditorialMetadataUpdatedAt(sortedData[0]);
+        }
+    }, [editorialMetadata]);
+
+    useEffect(() => {
+        if (territoryMetadata.length) {
+            const territoryUpdatedAtArray = territoryMetadata.map(item => item.meta.updatedAt);
+            const sortedData = territoryUpdatedAtArray.sort((a, b) => (moment(b).isBefore(moment(a)) ? -1 : 1));
+            setTerritoryMetadataUpdatedAt(sortedData[0]);
+        }
+    }, [territoryMetadata]);
 
     const onSubmit = (values, initialValues) => {
         isFetchingExternalIdTypes.current = false;
@@ -498,6 +516,8 @@ const TitleDetails = ({
                                         isPublishing={isVZTitlePublishing}
                                         isDisabled={VZDisabled}
                                         titleUpdatedAt={title.updatedAt}
+                                        editorialMetadataUpdatedAt={editorialMetadataUpdatedAt}
+                                        territoryMetadataUpdatedAt={territoryMetadataUpdatedAt}
                                         hasButtons={isNexusTitle(title.id)}
                                     />
                                 </NexusTooltip>
@@ -510,6 +530,8 @@ const TitleDetails = ({
                                         isPublishing={isMovIntTitlePublishing}
                                         isDisabled={MovIntDisabled}
                                         titleUpdatedAt={title.updatedAt}
+                                        editorialMetadataUpdatedAt={editorialMetadataUpdatedAt}
+                                        territoryMetadataUpdatedAt={territoryMetadataUpdatedAt}
                                         hasButtons={isNexusTitle(title.id)}
                                     />
                                 </NexusTooltip>
@@ -523,6 +545,8 @@ const TitleDetails = ({
                                         isPublishing={isMOVTitlePublishing}
                                         isDisabled={MOVDisabled}
                                         titleUpdatedAt={title.updatedAt}
+                                        editorialMetadataUpdatedAt={editorialMetadataUpdatedAt}
+                                        territoryMetadataUpdatedAt={territoryMetadataUpdatedAt}
                                         hasButtons={isNexusTitle(title.id)}
                                     />
                                 </NexusTooltip>

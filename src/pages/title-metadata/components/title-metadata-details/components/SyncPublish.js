@@ -13,13 +13,23 @@ const SyncPublish = ({
     isPublishing,
     isDisabled,
     titleUpdatedAt,
+    editorialMetadataUpdatedAt,
+    territoryMetadataUpdatedAt,
     hasButtons,
 }) => {
     const [externalData] = externalIds.filter(id => id.externalSystem === externalSystem?.value);
     const buttonType = externalData ? SYNC : PUBLISH;
     let publishedDate = externalData?.publishedAt || null;
     publishedDate = moment(publishedDate).isValid() ? moment(publishedDate) : null;
-    const needsSyncing = moment(publishedDate).isBefore(moment(titleUpdatedAt));
+
+    /**
+     * Used to understand whether we should display a yellow StatusDot (In case the publishedDate is before the last Core update, EMETs or TMETs)
+     * @returns {boolean} whether to display a yellow StatusDot
+     */
+    const needsSyncing =
+        moment(publishedDate).isBefore(moment(titleUpdatedAt)) ||
+        moment(publishedDate).isBefore(moment(editorialMetadataUpdatedAt)) ||
+        moment(publishedDate).isBefore(moment(territoryMetadataUpdatedAt));
 
     const getStatus = () => {
         if (needsSyncing && externalData?.status !== 'failure') return 'warning';
@@ -50,6 +60,8 @@ SyncPublish.propTypes = {
     isDisabled: PropTypes.bool,
     hasButtons: PropTypes.bool,
     titleUpdatedAt: PropTypes.string,
+    editorialMetadataUpdatedAt: PropTypes.string,
+    territoryMetadataUpdatedAt: PropTypes.string,
 };
 
 SyncPublish.defaultProps = {
@@ -60,6 +72,8 @@ SyncPublish.defaultProps = {
     isDisabled: false,
     hasButtons: false,
     titleUpdatedAt: null,
+    editorialMetadataUpdatedAt: null,
+    territoryMetadataUpdatedAt: null,
 };
 
 export default SyncPublish;
