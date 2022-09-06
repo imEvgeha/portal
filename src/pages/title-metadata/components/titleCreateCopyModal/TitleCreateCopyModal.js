@@ -238,7 +238,7 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
             : [];
 
         if (newEmets.length > 0) {
-            newEmets.forEach(item => {
+            newEmets?.forEach(item => {
                 const updatedItem = {
                     ...item,
                     body: {
@@ -250,7 +250,7 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
                     },
                 };
                 // call create api for each of EMETs
-                titleEditorialService.create(updatedItem);
+                updatedItem && titleEditorialService.create(updatedItem);
             });
         }
     };
