@@ -256,5 +256,9 @@
     "metadataAutoDecorate": {
         "operation": "AND",
         "values": ["metadata_auto_decorate"]
+    },
+    "metadataDelete": {
+        "operation": "AND",
+        "values": ["metadata_delete"]
     }
 }

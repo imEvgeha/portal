@@ -1,4 +1,27 @@
+@import '~@portal/portal-components/styles/color-palette';
+
 .nexus-c-title-date-picker-container {
     min-height: 52px;
     margin-top: 8px;
+}
+
+.nexus-c-title-dividing-line {
+    background-color: palette(black, 20);
+    width: 1px;
+    height: 34px;
+    margin: 10px;
+}
+
+.nexus-c-title-selected-button-container {
+    .nexus-c-button__avails-selected,
+    .nexus-c-button__avails-disabled {
+        padding-right: 25px;
+        min-width: 132px;
+        display: flex;
+        justify-content: flex-end;
+
+        .p-button-label {
+            flex: unset;
+        }
+    }
 }

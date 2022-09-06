@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleDeleteModal Default TitleDeleteModal should match snapshot 1`] = `
+<Dialog
+  __TYPE="Dialog"
+  appendTo={null}
+  ariaCloseIconLabel="Close"
+  baseZIndex={0}
+  blockScroll={false}
+  breakpoints={null}
+  className="nexus-c-title-delete_dialog"
+  closable={false}
+  closeOnEscape={false}
+  contentClassName={null}
+  contentStyle={null}
+  dismissableMask={false}
+  draggable={true}
+  focusOnShow={true}
+  footer={
+    <div
+      className="col d-flex justify-content-end align-items-center"
+    >
+      <div
+        className="d-flex"
+      >
+        <Memo(Button)
+          __TYPE="Button"
+          badge={null}
+          badgeClassName={null}
+          className="p-button-outlined p-button-secondary"
+          disabled={false}
+          icon={null}
+          iconPos="right"
+          id="titleDeleteBtn"
+          label="Delete"
+          loading={false}
+          loadingIcon="pi pi-spin pi-spinner"
+          onClick={[Function]}
+          tooltip={null}
+          tooltipOptions={null}
+        />
+        <Memo(Button)
+          __TYPE="Button"
+          badge={null}
+          badgeClassName={null}
+          className="p-button-outlined"
+          disabled={false}
+          icon={null}
+          iconPos="left"
+          id="titleCancelBtn"
+          label="Cancel"
+          loading={false}
+          loadingIcon="pi pi-spinner pi-spin"
+          onClick={[Function]}
+          tooltip={null}
+          tooltipOptions={null}
+        />
+      </div>
+    </div>
+  }
+  header="Delete Title(s)"
+  headerClassName={null}
+  headerStyle={null}
+  icons={null}
+  id={null}
+  keepInViewport={true}
+  maskClassName={null}
+  maskStyle={null}
+  maximizable={false}
+  maximized={false}
+  minX={0}
+  minY={0}
+  modal={true}
+  onClick={null}
+  onDrag={null}
+  onDragEnd={null}
+  onDragStart={null}
+  onHide={null}
+  onMaskClick={null}
+  onMaximize={null}
+  onResize={null}
+  onResizeEnd={null}
+  onResizeStart={null}
+  onShow={null}
+  position="center"
+  resizable={true}
+  rtl={false}
+  showHeader={true}
+  style={
+    Object {
+      "width": "45vw",
+    }
+  }
+  transitionOptions={null}
+  visible={true}
+/>
+`;

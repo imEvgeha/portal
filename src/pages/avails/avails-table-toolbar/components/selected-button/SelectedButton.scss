@@ -4,7 +4,6 @@
 @import '~@portal/portal-components/styles/color-palette';
 
 .nexus-c-button__avails-selected {
-    @include margin(0, 0, 0, 9);
     background: none;
     font-weight: bold;
     font-size: 13px;

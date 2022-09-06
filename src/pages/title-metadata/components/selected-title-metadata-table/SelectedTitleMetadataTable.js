@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
@@ -8,11 +9,8 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
-import {NexusGrid} from '../../../ui/elements';
-import {setSelectedRights, setSelectedRightsColDef} from '../rights-repository/rightsActions';
-import {commonDragStoppedHandler} from '../rights-repository/util/utils';
 
-const SelectedRightsGrid = compose(
+const SelectedTitlesGrid = compose(
     withColumnsResizing(),
     withFilterableColumns(),
     withSideBar(),
@@ -20,50 +18,48 @@ const SelectedRightsGrid = compose(
     withSelectableRows()
 )(NexusGrid);
 
-const SelectedRightsTable = ({
+const SelectedTitlesTable = ({
     columnDefs,
     mapping,
     selectedFilter,
     setSelectedFilter,
-    selectedRights,
+    selectedTitles,
+    setSelectedTitles,
     username,
-    selectedIngest,
-    storeGridApi,
 }) => {
-    const [selectedRightsState, setSelectedRightsState] = useState([...selectedRights]);
+    const [selectedTitlesState, setSelectedTitlesState] = useState([...selectedTitles]);
     const [gridApi, setGridApi] = useState(undefined);
     const [columnApiState, setColumnApiState] = useState(undefined);
     const dispatch = useDispatch();
 
     useEffect(() => {
         // Reselect rows that were already selected by user
-        if (selectedRightsState.length && gridApi) {
-            const selectedRightsIds = selectedRights.map(x => x.id);
+        if (selectedTitlesState.length && gridApi) {
+            const selectedTitlesIds = selectedTitles.map(x => x.id);
             gridApi.forEachNode(node => {
-                node.setSelected(selectedRightsIds.includes(node.data.id), false, true);
+                node.setSelected(selectedTitlesIds.includes(node.data.id), false, true);
             });
         }
-    }, [selectedRightsState]);
+    }, [selectedTitlesState, gridApi]);
 
     useEffect(() => {
-        // Merge displayed selected rights (api with already existing data) to refresh state of data
-        setSelectedRightsState(prev =>
+        // Merge displayed selected Titles (api with already existing data) to refresh state of data
+        setSelectedTitlesState(prev =>
             prev.map(right => {
-                if (selectedRights.find(selR => selR.id === right.id)) {
-                    return selectedRights.find(selR => selR.id === right.id);
+                if (selectedTitles.find(selR => selR.id === right.id)) {
+                    return selectedTitles.find(selR => selR.id === right.id);
                 }
                 return right;
             })
         );
-    }, [selectedRights]);
+    }, [selectedTitles]);
 
     const setGridApis = (api, columnApi) => {
         !gridApi && setGridApi(api);
         !columnApiState && setColumnApiState(columnApi);
-        storeGridApi(api, columnApi);
     };
 
-    const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
+    const onSelectedTitlesRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
 
         switch (type) {
@@ -72,10 +68,7 @@ const SelectedRightsTable = ({
                 columnApi?.applyColumnState({state: columnDefs, applyOrder: true});
                 break;
             case SELECTION_CHANGED: {
-                const rightsNonSelectedIngest = selectedIngest?.id
-                    ? selectedRights.filter(x => x.availHistoryId !== selectedIngest?.id)
-                    : [];
-                dispatch(setSelectedRights({[username]: [...api.getSelectedRows(), ...rightsNonSelectedIngest]}));
+                dispatch(setSelectedTitles({[username]: [...api.getSelectedRows()]}));
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -89,47 +82,39 @@ const SelectedRightsTable = ({
         }
     };
 
-    const dragStoppedHandler = event => {
-        const currentColumnDefs = gridApi.getColumnDefs();
-        const updatedMappings = commonDragStoppedHandler(event, currentColumnDefs, mapping);
-        dispatch(setSelectedRightsColDef(updatedMappings));
-    };
-
     return (
-        <SelectedRightsGrid
-            id="selectedRightsRepo"
+        <SelectedTitlesGrid
+            id="selectedTitlesRepo"
             singleClickEdit
             suppressRowClickSelection={true}
             notFilterableColumns={['action', 'buttons']}
             columnDefs={columnDefs}
-            onGridEvent={onSelectedRightsRepositoryGridEvent}
+            onGridEvent={onSelectedTitlesRepositoryGridEvent}
             rowSelection="multiple"
             mapping={mapping}
-            rowData={selectedRightsState}
-            dragStopped={dragStoppedHandler}
+            rowData={selectedTitlesState}
         />
     );
 };
 
-SelectedRightsTable.propTypes = {
+SelectedTitlesTable.propTypes = {
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
     selectedFilter: PropTypes.object,
     setSelectedFilter: PropTypes.func,
-    selectedRights: PropTypes.array,
+    selectedTitles: PropTypes.array,
+    setSelectedTitles: PropTypes.func,
     username: PropTypes.string,
-    selectedIngest: PropTypes.object,
-    storeGridApi: PropTypes.func.isRequired,
 };
 
-SelectedRightsTable.defaultProps = {
+SelectedTitlesTable.defaultProps = {
     columnDefs: [],
     mapping: null,
     selectedFilter: {},
     setSelectedFilter: () => null,
-    selectedRights: [],
+    selectedTitles: [],
+    setSelectedTitles: () => null,
     username: {},
-    selectedIngest: {},
 };
 
-export default SelectedRightsTable;
+export default SelectedTitlesTable;
