@@ -120,9 +120,8 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
                     };
                     const newEmets = editorialMetadata.map(x => constructEmets(x));
                     createEditorialMetadata(newEmets, titleId);
-                } else {
-                    successCreateCopyTitle(titleId);
                 }
+                successCreateCopyTitle(titleId);
             })
             .catch(handleError);
     };
@@ -239,19 +238,19 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
             : [];
 
         if (newEmets.length > 0) {
-            const updatedEditorialMetadata = newEmets.map(item => ({
-                ...item,
-                body: {
-                    ...item?.body,
-                    editorialMetadata: {
-                        ...item?.body?.editorialMetadata,
-                        type: 'editorialMetadata',
+            newEmets.forEach(item => {
+                const updatedItem = {
+                    ...item,
+                    body: {
+                        ...item?.body,
+                        editorialMetadata: {
+                            ...item?.body?.editorialMetadata,
+                            type: 'editorialMetadata',
+                        },
                     },
-                },
-            }));
-            // call create api
-            titleEditorialService.create(updatedEditorialMetadata).then(() => {
-                successCreateCopyTitle(titleId);
+                };
+                // call create api for each of EMETs
+                titleEditorialService.create(updatedItem);
             });
         }
     };
