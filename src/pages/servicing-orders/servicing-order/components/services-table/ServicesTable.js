@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {SimpleTag as Tag} from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
-import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
@@ -12,17 +11,17 @@ import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
 import {showToastForErrors} from '@vubiquity-nexus/portal-utils/lib/http-client/handleError';
-import {cloneDeep, flattenDeep, get, isEmpty, groupBy, set} from 'lodash';
+import {cloneDeep, flattenDeep, get, groupBy, isEmpty, set} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
 import constants from '../fulfillment-order/constants';
 import {
+    CLICK_FOR_SELECTION,
+    DETE_SERVICE_TYPE,
+    NO_SELECTION,
     SELECT_VALUES,
     SERVICE_SCHEMA,
-    CLICK_FOR_SELECTION,
-    NO_SELECTION,
-    DETE_SERVICE_TYPE,
     SOURCE_STANDARD,
 } from './Constants';
 import CheckBoxRenderer from './cell-renderers/CheckBoxRenderer';
@@ -412,7 +411,7 @@ const ServicesTable = ({
                     {constants.SERVICES_BARCODE}: {barcode}
                 </div>
                 <div className="nexus-c-services-table__add-icon">
-                    {!isDisabled && <Add onClick={addEmptyServicesRow} />}
+                    {!isDisabled && <i className="po po-add" onClick={addEmptyServicesRow} />}
                 </div>
             </div>
 

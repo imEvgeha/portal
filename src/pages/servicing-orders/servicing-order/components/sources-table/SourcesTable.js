@@ -1,8 +1,7 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -12,12 +11,12 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import {showToastForErrors} from '@vubiquity-nexus/portal-utils/lib/http-client/handleError';
-import {isEqual, cloneDeep, get} from 'lodash';
+import {cloneDeep, get, isEqual} from 'lodash';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../../ui/elements';
 import usePrevious from '../../../../../util/hooks/usePrevious';
 import constants from '../fulfillment-order/constants';
-import {NON_EDITABLE_COLS, SELECT_VALUES, INIT_SOURCE_ROW, TEMP_SOURCE_ROW} from './Constants';
+import {INIT_SOURCE_ROW, NON_EDITABLE_COLS, SELECT_VALUES, TEMP_SOURCE_ROW} from './Constants';
 import columnDefinitions from './columnDefinitions';
 import './SourcesTable.scss';
 import {fetchAssetFields} from './util';
@@ -237,7 +236,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 <div>{SOURCE_SUBTITLE}</div>
                 {sources.length > 0 && (
                     <div className="nexus-c-source-table__add-icon">
-                        {!isDisabled && !isRestrictedTenant && <Add onClick={addEmptySourceRow} />}
+                        {!isDisabled && !isRestrictedTenant && <i className="po po-add" onClick={addEmptySourceRow} />}
                     </div>
                 )}
             </div>
