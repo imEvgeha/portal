@@ -199,7 +199,11 @@
         "operation": "AND",
         "values": ["metadata_create"]
     },
-    "createTitleCopyButton": {
+    "deleteTitleAction": {
+        "operation": "AND",
+        "values": ["metadata_delete"]
+    },
+    "createTitleCopyAction": {
         "operation": "AND",
         "values": ["metadata_create"]
     },
@@ -253,12 +257,16 @@
         "operation": "AND",
         "values": ["metadata_msv_ids"]
     },
-    "metadataAutoDecorate": {
-        "operation": "AND",
-        "values": ["metadata_auto_decorate"]
-    },
     "metadataDelete": {
         "operation": "AND",
         "values": ["metadata_delete"]
+    },
+    "isActionMenuVisible": {
+        "operation": "OR",
+        "values": ["metadata_delete", "metadata_legacy_unmerge"]
+    },
+    "metadataAutoDecorate": {
+        "operation": "AND",
+        "values": ["metadata_auto_decorate"]
     }
 }

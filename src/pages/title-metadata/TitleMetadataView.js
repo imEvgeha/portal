@@ -30,8 +30,8 @@ import {
 import {
     createGridStateSelector,
     createTitleMetadataFilterSelector,
-    externalIDTypesSelector,
     createSelectedTitlesSelector,
+    externalIDTypesSelector,
 } from './titleMetadataSelectors';
 import {TITLE_METADATA_SYNC_LOG_TAB, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
 

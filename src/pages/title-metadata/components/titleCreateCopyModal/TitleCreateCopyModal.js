@@ -143,11 +143,10 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
     };
 
     /**
-     * Universal toast message
-     * @param {*} severityType
-     * @param {*} detailDescription
-     * @param {*} summaryDescription
-     * @param {*} titleId
+     * Adding toast to redux to show toast msg
+     * @param {string} severityType
+     * @param {string} detailDescription
+     * @param {string} titleId
      */
     const toastMessage = (severityType, detailDescription, titleId = null) => {
         const isToastWithButton = !!titleId;

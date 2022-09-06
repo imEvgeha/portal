@@ -1,7 +1,8 @@
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {cloneDeep, get, isArray, isEqual, isObjectLike} from 'lodash';
+import {cloneDeep, get, isArray, isEqual, isObjectLike, toString, toUpper} from 'lodash';
 import {store} from '../../index';
+import {CONTENT_TYPES} from './components/titleCreateModal/TitleCreateModalConstants';
 import TitleService from './services/TitleService';
 import TitleTerittorialService from './services/TitleTerittorialService';
 import {getTerritoryMetadata} from './titleMetadataActions';
@@ -21,6 +22,12 @@ export const onViewTitleClick = (titleId, realm) => {
     const url = `${getDomainName()}/${realm}/metadata/detail/${titleId}`;
     window.open(url, '_blank');
 };
+
+export const isValidContentTypeToCreateCopy = contentType => {
+    return [toUpper(CONTENT_TYPES.MOVIE), toUpper(CONTENT_TYPES.DOCUMENTARY)].includes(toUpper(toString(contentType)));
+};
+
+export const getContentTypeNames = contentTypes => contentTypes.map(item => item.name);
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');

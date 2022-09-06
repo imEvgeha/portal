@@ -70,6 +70,19 @@ export default class TitleService extends HttpService {
         return response;
     };
 
+    deleteTitle = async payload => {
+        const {titleId, forceDeleteChildren} = payload;
+        const uri = `/${titleId}`;
+
+        const params = forceDeleteChildren ? {forceDeleteChildren} : {};
+        const options = {
+            method: 'delete',
+            params,
+        };
+        const response = await this.callApi('v2', uri, options);
+        return response;
+    };
+
     /** ***************** Other APIS *************** */
     getExternalIds = async id => {
         const response = await this.callApi('v2', '', {
