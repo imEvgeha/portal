@@ -10,7 +10,7 @@ import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/load
 import {addToast} from '@vubiquity-nexus/portal-ui/src/toast/NexusToastNotificationActions';
 import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
-import {get, isEmpty, isEqual, toString, toUpper} from 'lodash';
+import {get, isEmpty, isEqual, isNull, isUndefined, toString, toUpper} from 'lodash';
 import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
 import {useLocation, useParams} from 'react-router-dom';
@@ -341,14 +341,25 @@ const TitleDetails = ({
         }
     };
 
+    /**
+     * Calculate the external ids for a given title
+     * @param repo The target repository (Nexus, VZ, Movida etc.)
+     * @returns External Ids
+     */
     const getExternaIds = repo => {
+        // for Nexus titles, external ids are fetched from getPublishInfo API
         if (isNexusTitle(title.id)) {
             return externalIds.filter(ids => ids.externalSystem === repo);
         }
+        // in other titles(VZ, Movida etc.) the external ids are part of title.tenantData
         return [
             {
-                externalTitleId: get(title.legacyIds, `${repo}.${repo}TitleId`, ''),
-                externalId: get(title.legacyIds, `${repo}.${repo}Id`, ''),
+                externalTitleId: title?.tenantData?.complexProperties[0]?.simpleProperties?.find(
+                    property => property.name === `${repo}TitleId`
+                )?.value,
+                externalId: title?.tenantData?.complexProperties[0]?.simpleProperties?.find(
+                    property => property.name === `${repo}Id`
+                )?.value,
             },
         ];
     };
@@ -427,7 +438,15 @@ const TitleDetails = ({
 
     const canEdit = isNexusTitle(title?.id) && isStateEditable(title?.metadataStatus) && isEditPermitted();
 
-    const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
+    const loading =
+        isLoadingSelectValues ||
+        isEmpty(selectValues) ||
+        emetLoading ||
+        titleLoading ||
+        externalIdsLoading ||
+        isEmpty(title) ||
+        isNull(title) ||
+        isUndefined(title);
 
     const getActions = () => {
         return {
