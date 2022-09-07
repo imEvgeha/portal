@@ -341,7 +341,7 @@ export const propagateSeasonsPersonsToEpisodes = (data, id) => {
                     detail: response.error,
                 };
             }
-            store.dispatch(addToast(...toast));
+            store.dispatch(addToast(toast));
         });
 };
 
