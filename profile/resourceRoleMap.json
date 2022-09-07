@@ -199,6 +199,10 @@
         "operation": "AND",
         "values": ["metadata_create"]
     },
+    "deleteTitleAction": {
+        "operation": "AND",
+        "values": ["metadata_delete"]
+    },
     "createTitleCopyButton": {
         "operation": "AND",
         "values": ["metadata_create"]
