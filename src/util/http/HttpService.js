@@ -60,8 +60,8 @@ export default class HttpService extends HttpHeaders {
     }
 
     constructEndpoint(apiSignature, apiVersion) {
-        const isItOldApi = apiSignature === '/seasonsPersonsToEpisodes';
-        return `${this.constructBaseUrl(apiVersion, isItOldApi)}${apiSignature}`;
+        const oldApiList = ['/seasonsPersonsToEpisodes'];
+        return `${this.constructBaseUrl(apiVersion, oldApiList.includes(apiSignature))}${apiSignature}`;
     }
 
     // Getters & Setters
