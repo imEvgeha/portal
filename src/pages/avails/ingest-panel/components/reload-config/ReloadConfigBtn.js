@@ -52,14 +52,12 @@ const ReloadConfigBtn = () => {
     };
 
     return (
-        <div className={isLoading ? 'ingest-reload-btn rotate' : 'ingest-reload-btn'}>
-            <Button
-                className="p-button-text"
-                icon="po po-reload"
-                tooltip="Reload Configuration"
-                onClick={reloadConfig}
-            />
-        </div>
+        <Button
+            className="p-button-text"
+            icon={`po po-reload ${isLoading ? 'po-spin' : ''}`}
+            tooltip="Reload Configuration"
+            onClick={reloadConfig}
+        />
     );
 };
 

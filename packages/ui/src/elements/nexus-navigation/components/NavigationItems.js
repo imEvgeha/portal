@@ -5,7 +5,7 @@ import EditorBulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import EditorMediaWrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
 import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
-import NexusNavIcon from '@portal/portal-icons/svg/VU-logo.svg';
+import VuLogo from '@portal/portal-icons/placeholders/VU-logo.svg';
 import {AVAILS, DOP_TASKS, EVENT_MANAGEMENT, METADATA, SERVICING_ORDERS, TITLE_METADATA} from '../constants';
 import './NavigationItems.scss';
 
@@ -37,7 +37,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
 
     return [
         {
-            component: () => <NexusNavIcon />,
+            component: () => <img src={VuLogo} alt="VU_Logo" />,
             id: 'logo',
         },
         {
