@@ -36,7 +36,7 @@ export default class HttpService extends HttpHeaders {
 
     // constructHeaders() {}
 
-    constructBaseUrl(apiVersion, isOldApi) {
+    constructBaseUrl(apiVersion) {
         let baseUrl = getConfig('gateway.kongUrl');
         const serviceReference = this.constructor.name;
 
@@ -45,7 +45,7 @@ export default class HttpService extends HttpHeaders {
             case 'TitleService':
             case 'TitleTerittorialService':
             case 'TitleEditorialService':
-                baseUrl = getApiURI('title', isOldApi ? '' : '/titles', apiVersion === 'v1' ? 1 : 2);
+                baseUrl = getApiURI('title', '/titles', apiVersion === 'v1' ? 1 : 2);
                 break;
             case 'TitleConfigurationService':
                 baseUrl = getApiURI('title', '', apiVersion === 'v1' ? 1 : 2);
@@ -60,8 +60,7 @@ export default class HttpService extends HttpHeaders {
     }
 
     constructEndpoint(apiSignature, apiVersion) {
-        const oldApiList = ['/seasonsPersonsToEpisodes'];
-        return `${this.constructBaseUrl(apiVersion, oldApiList.includes(apiSignature))}${apiSignature}`;
+        return `${this.constructBaseUrl(apiVersion)}${apiSignature}`;
     }
 
     // Getters & Setters
