@@ -437,6 +437,17 @@ const NexusField = ({
                         generateMsvIds={generateMsvIds}
                     />
                 );
+            case 'tenantData': {
+                return (
+                    <TextFieldWithOptional
+                        {...fieldProps}
+                        {...addedProps}
+                        id={generateElementIds(fieldProps, addedProps)}
+                        placeholder={`Enter ${label}`}
+                        value={get(props, 'value')}
+                    />
+                );
+            }
             default:
                 return;
         }
@@ -590,6 +601,15 @@ const NexusField = ({
                 );
 
                 return url.includes('http') ? <a href={url}>{body}</a> : <Link to={`./../${url}`}>{body}</Link>;
+            }
+            case 'tenantData': {
+                return get(props, 'value') ? (
+                    <div>{get(props, 'value')}</div>
+                ) : (
+                    <div className="nexus-c-field__placeholder" id={generateElementIds(fieldProps, addedProps)}>
+                        {`Enter ${label}...`}
+                    </div>
+                );
             }
             default:
                 return fieldProps.value ? (

@@ -611,40 +611,20 @@
                             "type": "string",
                             "path": "externalIds.maId"
                         },
-                        "vzTitleId": {
-                            "name": "VZ Title ID",
-                            "type": "string",
-                            "path": "vzExternalIds.externalTitleId",
-                            "isReadOnly": true
-                        },
-                        "vzId": {
-                            "name": "VZ Vendor ID",
-                            "type": "string",
-                            "path": "vzExternalIds.externalId",
-                            "isReadOnly": true
-                        },
-                        "movidaTitleId": {
-                            "name": "Movida Title ID",
-                            "type": "string",
-                            "path": "movidaExternalIds.externalTitleId",
-                            "isReadOnly": true
-                        },
-                        "movidaId": {
-                            "name": "Movida ID",
-                            "type": "string",
-                            "path": "movidaExternalIds.externalId",
-                            "isReadOnly": true
-                        },
-                        "movidaIntTitleId": {
-                            "name": "Movida Int Title ID",
-                            "type": "string",
-                            "path": "movidaUkExternalIds.externalTitleId",
-                            "isReadOnly": true
-                        },
                         "assetName": {
                             "name": "Asset Name",
                             "type": "string",
                             "path": "externalIds.assetName"
+                        }
+                    }
+                },
+                {
+                    "sectionID": "tenantData",
+                    "isGridLayout": true,
+                    "fields": {
+                        "tenantData": {
+                            "name": "Tenant Data",
+                            "type": "tenantData"
                         }
                     }
                 },
