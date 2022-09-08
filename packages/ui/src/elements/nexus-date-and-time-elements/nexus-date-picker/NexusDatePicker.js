@@ -19,6 +19,7 @@ import './NexusDatePicker.scss';
 
 const NexusDatePicker = ({
     id,
+    elementId,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
     isTimestamp, // If set, value includes milliseconds and return value is in ISO format
@@ -93,7 +94,7 @@ const NexusDatePicker = ({
                 {isReadOnly ? (
                     parseSimulcast(value, dateFormat, false)
                 ) : (
-                    <div className="nexus-c-date-picker__date-clear-wrapper">
+                    <div className="nexus-c-date-picker__date-clear-wrapper" id={elementId}>
                         <DatePicker
                             name={id}
                             id={id}
@@ -160,6 +161,7 @@ NexusDatePicker.propTypes = {
     onChange: PropTypes.func,
     isClearable: PropTypes.bool,
     isRequired: PropTypes.bool,
+    elementId: PropTypes.string,
 };
 
 NexusDatePicker.defaultProps = {
@@ -175,6 +177,7 @@ NexusDatePicker.defaultProps = {
     onChange: () => null,
     isClearable: false,
     isRequired: false,
+    elementId: '',
 };
 
 export default NexusDatePicker;

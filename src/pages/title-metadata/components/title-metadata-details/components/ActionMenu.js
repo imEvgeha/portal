@@ -7,6 +7,7 @@ import NexusDropdown, {
     DropdownToggle,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {toLower, toString} from 'lodash';
 import './ActionMenu.scss';
 import {unmergeTitle} from '../../../titleMetadataServices';
@@ -22,6 +23,7 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
 
     const complexProperties = title?.tenantData?.complexProperties;
     const tenantDataLegacyIds = complexProperties?.find(item => item.name === 'legacyIds');
+    const displayUnmergeBtn = tenantDataLegacyIds && isAllowed('unmergeTitleAction') && isNexusTitle(title.id);
 
     const {openModal, closeModal} = useContext(NexusModalContext);
     const isAbleCreateCopy = contentTypesCrateCopyArray.includes(toLower(toString(title.contentType)));
@@ -69,7 +71,7 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
                             </DropdownOption>
                         </Restricted>
                     ) : null}
-                    {tenantDataLegacyIds && isAllowed('unmergeTitleAction') ? (
+                    {displayUnmergeBtn ? (
                         <Restricted resource="unmergeTitleAction">
                             <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
                                 {dropdownOption.unmergeDesc}
