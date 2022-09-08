@@ -11,9 +11,7 @@ exports[`DynamicElement should match snapshot 1`] = `
           "action": [Function],
           "buttonId": "btnEditConfig",
           "disabled": false,
-          "icon": Object {
-            "process": [Function],
-          },
+          "icon": "po po-add",
           "position": 4,
         },
       ]
