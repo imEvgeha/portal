@@ -2,8 +2,9 @@
 
 exports[`DateTime should match snapshot 1`] = `
 <NexusDatePicker
+  elementId=""
   error=""
-  id=""
+  id="-date"
   isClearable={false}
   isLabelHidden={false}
   isReadOnly={false}

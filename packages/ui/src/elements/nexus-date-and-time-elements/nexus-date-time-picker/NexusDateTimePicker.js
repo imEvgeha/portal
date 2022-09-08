@@ -18,6 +18,7 @@ import {
 
 const NexusDateTimePicker = ({
     id,
+    elementId,
     isWithInlineEdit, // If set, allows for switching between read and edit modes
     isReadOnly,
     isViewModeDisabled, // show atlaskit component instead of view mode
@@ -112,7 +113,7 @@ const NexusDateTimePicker = ({
     };
 
     return (
-        <>
+        <div id={elementId}>
             {' '}
             {isWithInlineEdit && !isReadOnly && !isViewModeDisabled ? (
                 <InlineEdit
@@ -145,7 +146,7 @@ const NexusDateTimePicker = ({
             ) : (
                 DatePicker(isReadOnly)
             )}
-        </>
+        </div>
     );
 };
 
@@ -161,6 +162,7 @@ NexusDateTimePicker.propTypes = {
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    elementId: PropTypes.string,
 };
 
 NexusDateTimePicker.defaultProps = {
@@ -173,6 +175,7 @@ NexusDateTimePicker.defaultProps = {
     isTimestamp: false,
     isLabelHidden: false,
     onConfirm: () => null,
+    elementId: '',
 };
 
 export default NexusDateTimePicker;
