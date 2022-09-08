@@ -325,24 +325,19 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
 };
 
 export const propagateSeasonsPersonsToEpisodes = (data, id) => {
-    return titleServiceSingleton
-        .propagateSeasonsPersonsToEpisodes({
-            ...data,
-            seasonId: id,
-        })
-        .then(response => {
-            let toast = {
-                severity: 'success',
-                detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
+    return titleServiceSingleton.propagateSeasonsPersonsToEpisodes(data, id).then(response => {
+        let toast = {
+            severity: 'success',
+            detail: PROPAGATE_SEASON_PERSONS_SUCCESS,
+        };
+        if (response.error) {
+            toast = {
+                severity: 'error',
+                detail: response.error,
             };
-            if (response.error) {
-                toast = {
-                    severity: 'error',
-                    detail: response.error,
-                };
-            }
-            store.dispatch(addToast(toast));
-        });
+        }
+        store.dispatch(addToast(toast));
+    });
 };
 
 export const handleDirtyValues = (initialValues, values) => {
