@@ -39,7 +39,6 @@ const NexusEditableTag = ({text, remove, save, index, inputWidth, isEdit}) => {
                 {value}
                 {isEdit && (
                     <span className="nexus-edit-tag__remove-button" onClick={remove}>
-                        {' '}
                         <EditorCloseIcon size="small" />
                     </span>
                 )}
