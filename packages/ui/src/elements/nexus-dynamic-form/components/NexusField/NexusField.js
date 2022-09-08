@@ -384,7 +384,7 @@ const NexusField = ({
                         onChange={onChange(getCurrentValues())}
                         {...fieldProps}
                         {...dateProps}
-                        id={generateElementIds(fieldProps, addedProps)}
+                        elementId={generateElementIds(fieldProps, addedProps)}
                         isReadOnly={isWithDrawnReadOnly}
                         territoryLenght={hasWithDrawnDate && formData?.territory?.length}
                     />
