@@ -14,13 +14,3 @@ export const SAVED_TABLE_SELECT_OPTIONS = [
     {label: 'Withdrawn', value: WITHDRAWN_VIEW},
     {label: 'Removed from Catalog', value: REMOVED_FROM_CATALOG_VIEW},
 ];
-export const GROUPED_OPTIONS = [
-    {
-        label: MY_PREDEFINED_VIEWS_LABEL,
-        options: SAVED_TABLE_SELECT_OPTIONS,
-    },
-    {
-        label: MY_SAVED_VIEWS_LABEL,
-        options: [],
-    },
-];

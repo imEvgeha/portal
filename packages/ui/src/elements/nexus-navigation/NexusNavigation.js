@@ -1,14 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import {GlobalItem, GlobalNav, modeGenerator, ThemeProvider} from '@atlaskit/navigation-next';
 import {Restricted} from '@portal/portal-auth/permissions';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {useLocation, useNavigate} from 'react-router-dom';
-import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import {ComponentWrapper, navigationPrimaryItems} from './components/NavigationItems';
 import NexusUser from './nexus-user/NexusUser';
-import {backgroundColor, FEEDBACK_HEADER, USER_AVATAR} from './constants';
+import {backgroundColor, USER_AVATAR} from './constants';
 
 const WHITE_COLOR = '#FFFFFF';
 

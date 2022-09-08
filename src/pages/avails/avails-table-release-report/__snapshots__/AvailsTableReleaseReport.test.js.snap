@@ -4,14 +4,390 @@ exports[`AvailsTableReleaseReport should match snapshot 1`] = `
 <div
   className="nexus-c-right-repository-release-report"
 >
-  <Memo()
-    boundariesElement="scrollParent"
-    content={[Function]}
+  <Button
+    className="p-button-outlined p-button-secondary"
+    disabled={false}
+    icon="pi pi-chevron-down"
+    iconPos="right"
     id="nexus-c-right-repository-release-report__popup"
-    isOpen={false}
-    onClose={[Function]}
-    placement="bottom-start"
-    trigger={[Function]}
+    label="Report"
+    onClick={[Function]}
   />
+  <ForwardRef
+    className="report-overlay-panel"
+    id="opReport"
+    style={
+      Object {
+        "width": "auto",
+      }
+    }
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col-12 text-center"
+      >
+        <div
+          className="nexus-c-right-repository-release-report-content"
+        >
+          <div
+            className="row mb-1"
+          >
+            <div
+              className="col-12"
+            >
+              <Dropdown
+                appendTo="self"
+                className="nexus-c-right-repository-release-report__year-dropdown"
+                columnClass="col-12"
+                filter={true}
+                id="ddlYears"
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": 1970,
+                      "value": 1970,
+                    },
+                    Object {
+                      "label": 1971,
+                      "value": 1971,
+                    },
+                    Object {
+                      "label": 1972,
+                      "value": 1972,
+                    },
+                    Object {
+                      "label": 1973,
+                      "value": 1973,
+                    },
+                    Object {
+                      "label": 1974,
+                      "value": 1974,
+                    },
+                    Object {
+                      "label": 1975,
+                      "value": 1975,
+                    },
+                    Object {
+                      "label": 1976,
+                      "value": 1976,
+                    },
+                    Object {
+                      "label": 1977,
+                      "value": 1977,
+                    },
+                    Object {
+                      "label": 1978,
+                      "value": 1978,
+                    },
+                    Object {
+                      "label": 1979,
+                      "value": 1979,
+                    },
+                    Object {
+                      "label": 1980,
+                      "value": 1980,
+                    },
+                    Object {
+                      "label": 1981,
+                      "value": 1981,
+                    },
+                    Object {
+                      "label": 1982,
+                      "value": 1982,
+                    },
+                    Object {
+                      "label": 1983,
+                      "value": 1983,
+                    },
+                    Object {
+                      "label": 1984,
+                      "value": 1984,
+                    },
+                    Object {
+                      "label": 1985,
+                      "value": 1985,
+                    },
+                    Object {
+                      "label": 1986,
+                      "value": 1986,
+                    },
+                    Object {
+                      "label": 1987,
+                      "value": 1987,
+                    },
+                    Object {
+                      "label": 1988,
+                      "value": 1988,
+                    },
+                    Object {
+                      "label": 1989,
+                      "value": 1989,
+                    },
+                    Object {
+                      "label": 1990,
+                      "value": 1990,
+                    },
+                    Object {
+                      "label": 1991,
+                      "value": 1991,
+                    },
+                    Object {
+                      "label": 1992,
+                      "value": 1992,
+                    },
+                    Object {
+                      "label": 1993,
+                      "value": 1993,
+                    },
+                    Object {
+                      "label": 1994,
+                      "value": 1994,
+                    },
+                    Object {
+                      "label": 1995,
+                      "value": 1995,
+                    },
+                    Object {
+                      "label": 1996,
+                      "value": 1996,
+                    },
+                    Object {
+                      "label": 1997,
+                      "value": 1997,
+                    },
+                    Object {
+                      "label": 1998,
+                      "value": 1998,
+                    },
+                    Object {
+                      "label": 1999,
+                      "value": 1999,
+                    },
+                    Object {
+                      "label": 2000,
+                      "value": 2000,
+                    },
+                    Object {
+                      "label": 2001,
+                      "value": 2001,
+                    },
+                    Object {
+                      "label": 2002,
+                      "value": 2002,
+                    },
+                    Object {
+                      "label": 2003,
+                      "value": 2003,
+                    },
+                    Object {
+                      "label": 2004,
+                      "value": 2004,
+                    },
+                    Object {
+                      "label": 2005,
+                      "value": 2005,
+                    },
+                    Object {
+                      "label": 2006,
+                      "value": 2006,
+                    },
+                    Object {
+                      "label": 2007,
+                      "value": 2007,
+                    },
+                    Object {
+                      "label": 2008,
+                      "value": 2008,
+                    },
+                    Object {
+                      "label": 2009,
+                      "value": 2009,
+                    },
+                    Object {
+                      "label": 2010,
+                      "value": 2010,
+                    },
+                    Object {
+                      "label": 2011,
+                      "value": 2011,
+                    },
+                    Object {
+                      "label": 2012,
+                      "value": 2012,
+                    },
+                    Object {
+                      "label": 2013,
+                      "value": 2013,
+                    },
+                    Object {
+                      "label": 2014,
+                      "value": 2014,
+                    },
+                    Object {
+                      "label": 2015,
+                      "value": 2015,
+                    },
+                    Object {
+                      "label": 2016,
+                      "value": 2016,
+                    },
+                    Object {
+                      "label": 2017,
+                      "value": 2017,
+                    },
+                    Object {
+                      "label": 2018,
+                      "value": 2018,
+                    },
+                    Object {
+                      "label": 2019,
+                      "value": 2019,
+                    },
+                    Object {
+                      "label": 2020,
+                      "value": 2020,
+                    },
+                    Object {
+                      "label": 2021,
+                      "value": 2021,
+                    },
+                    Object {
+                      "label": 2022,
+                      "value": 2022,
+                    },
+                    Object {
+                      "label": 2023,
+                      "value": 2023,
+                    },
+                    Object {
+                      "label": 2024,
+                      "value": 2024,
+                    },
+                    Object {
+                      "label": 2025,
+                      "value": 2025,
+                    },
+                    Object {
+                      "label": 2026,
+                      "value": 2026,
+                    },
+                    Object {
+                      "label": 2027,
+                      "value": 2027,
+                    },
+                    Object {
+                      "label": 2028,
+                      "value": 2028,
+                    },
+                    Object {
+                      "label": 2029,
+                      "value": 2029,
+                    },
+                    Object {
+                      "label": 2030,
+                      "value": 2030,
+                    },
+                    Object {
+                      "label": 2099,
+                      "value": 2099,
+                    },
+                  ]
+                }
+                placeholder="Select one option"
+                value={2022}
+              />
+            </div>
+          </div>
+          <div
+            className="row mb-1"
+          >
+            <div
+              className="col-12"
+            >
+              <Dropdown
+                appendTo="self"
+                className="nexus-c-right-repository-release-report__month-dropdown"
+                columnClass="col-12"
+                filter={true}
+                id="ddlMonths"
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": "January",
+                      "value": "January",
+                    },
+                    Object {
+                      "label": "February",
+                      "value": "February",
+                    },
+                    Object {
+                      "label": "March",
+                      "value": "March",
+                    },
+                    Object {
+                      "label": "April",
+                      "value": "April",
+                    },
+                    Object {
+                      "label": "May",
+                      "value": "May",
+                    },
+                    Object {
+                      "label": "June",
+                      "value": "June",
+                    },
+                    Object {
+                      "label": "July",
+                      "value": "July",
+                    },
+                    Object {
+                      "label": "August",
+                      "value": "August",
+                    },
+                    Object {
+                      "label": "September",
+                      "value": "September",
+                    },
+                    Object {
+                      "label": "October",
+                      "value": "October",
+                    },
+                    Object {
+                      "label": "November",
+                      "value": "November",
+                    },
+                    Object {
+                      "label": "December",
+                      "value": "December",
+                    },
+                  ]
+                }
+                placeholder="Select one option"
+                value="September"
+              />
+            </div>
+          </div>
+          <div
+            className="row mb-1"
+          >
+            <div
+              className="col-12"
+            >
+              <Button
+                className="p-button-outlined"
+                label="Create Report"
+                loading={false}
+                onClick={[Function]}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ForwardRef>
 </div>
 `;

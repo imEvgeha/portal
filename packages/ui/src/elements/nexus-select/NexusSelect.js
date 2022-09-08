@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import {cloneDeep} from 'lodash';
+import {MultiSelect} from 'primereact/multiselect';
 import {compose} from 'redux';
 import {LOCALIZED_VALUE_NOT_DEFINED} from '../nexus-dynamic-form/constants';
 import withOptionalCheckbox from '../nexus-dynamic-form/hoc/withOptionalCheckbox';
 import {formatOptions} from '../nexus-dynamic-form/utils';
 import './NexusSelect.scss';
 
-const SelectWithOptional = compose(withOptionalCheckbox())(Select);
+const DropdownWithOptional = compose(withOptionalCheckbox())(Dropdown);
+const MultiselectWithOptional = compose(withOptionalCheckbox())(MultiSelect);
 
 const NexusSelect = ({
     defaultValue,
@@ -28,6 +30,11 @@ const NexusSelect = ({
 }) => {
     const fieldValues = fieldProps?.value;
     const [fetchedOptions, setFetchedOptions] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(
+        Array.isArray(defaultValue)
+            ? defaultValue.map(o => (o.value?.value ? o.value.value : o.value))
+            : defaultValue?.value
+    );
 
     useEffect(() => {
         if (optionsConfig.options === undefined) {
@@ -115,39 +122,44 @@ const NexusSelect = ({
         });
     }
 
-    const extraProps = {
-        ...(addedProps.inModal && {menuPortalTarget: document.body}),
-        ...(addedProps.inModal && {
-            styles: {
-                menuPortal: base => ({
-                    ...base,
-                    zIndex: 9999,
-                }),
-            },
-        }),
-    };
-
     return isMultiselect ? (
-        <SelectWithOptional
-            {...fieldProps}
-            id={id}
-            options={options}
-            isMulti
-            defaultValue={defaultValue}
-            {...addedProps}
-            formatOptionLabel={showLocalized ? formatOptionLabel : null}
-            {...extraProps}
-        />
+        options?.length ? (
+            <MultiselectWithOptional
+                {...fieldProps}
+                id={id}
+                value={selectedItem}
+                options={options}
+                columnClass="col-12"
+                placeholder="Select"
+                display="chip"
+                optionValue="value"
+                filter={options.length >= 10}
+                appendTo={document.body}
+                onChange={e => {
+                    const values = options.filter(l => e.value.includes(l.value));
+                    fieldProps?.onChange?.(values);
+                    setSelectedItem(e.value);
+                }}
+            />
+        ) : null
     ) : (
-        <SelectWithOptional
+        <DropdownWithOptional
             {...fieldProps}
-            id={id}
-            options={options}
-            defaultValue={defaultValue}
             {...addedProps}
             className="nexus-c-nexus-select-container"
-            classNamePrefix="nexus-c-nexus-select"
-            {...extraProps}
+            id={id}
+            options={options}
+            value={selectedItem}
+            appendTo={document.body}
+            columnClass="col-12"
+            placeholder="Select"
+            optionValue="value"
+            filter={options.length >= 10}
+            onChange={e => {
+                const value = options.find(x => x.value === e.value);
+                fieldProps?.onChange?.(value);
+                setSelectedItem(e.value);
+            }}
         />
     );
 };

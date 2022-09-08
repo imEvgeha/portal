@@ -7,44 +7,26 @@ exports[`NexusSavedTableDropdown should match snapshot 1`] = `
   <div
     className="nexus-c-dop-tasks-dropdown__elements"
   >
-    <DropdownMenu
-      appearance="tall"
-      boundariesElement="viewport"
-      defaultOpen={false}
-      isLoading={false}
-      isMenuFixed={false}
-      isOpen={false}
-      items={Array []}
-      onItemActivated={[Function]}
-      onOpenChange={[Function]}
-      onPositioned={[Function]}
-      position="bottom left"
-      shouldAllowMultilineItems={false}
-      shouldFitContainer={true}
-      shouldFlip={true}
-      triggerButtonProps={
-        Object {
-          "isDisabled": false,
-        }
+    <DynamicDropdown
+      columnClass="col-12"
+      disabled={false}
+      onAddValue={[Function]}
+      onChange={[Function]}
+      onDeleteItem={[Function]}
+      options={
+        Array [
+          Object {
+            "label": "User Defined Views",
+            "options": Array [],
+          },
+          Object {
+            "label": "Predifined Views",
+            "options": Array [],
+          },
+        ]
       }
-      triggerType="button"
-    >
-      <DropdownItemGroup>
-        <div
-          className="nexus-c-dop-tasks-dropdown__textfield"
-        >
-          <WithAnalyticsContext(WithAnalyticsEvents(FieldTextStateless))
-            onBlur={[Function]}
-            onChange={[Function]}
-            onFocus={[Function]}
-            placeholder="New View..."
-            shouldFitContainer={true}
-            value=""
-          />
-        </div>
-      </DropdownItemGroup>
-      <DropdownItemGroup />
-    </DropdownMenu>
+      placeholder="Select"
+    />
   </div>
 </div>
 `;

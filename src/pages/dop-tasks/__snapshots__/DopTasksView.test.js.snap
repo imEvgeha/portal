@@ -8,13 +8,8 @@ exports[`DopTasksView should match snapshot 1`] = `
     label="DOP Tasks"
   >
     <QueuedTasks
-      selectedValue={
-        Object {
-          "label": "My Tasks",
-          "value": "user",
-        }
-      }
-      setUser={[Function]}
+      onChange={[Function]}
+      value="user"
     />
     <NexusSavedTableDropdown
       applyPredefinedTableView={[Function]}

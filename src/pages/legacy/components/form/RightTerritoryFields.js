@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import EditorErrorIcon from '@atlaskit/icon/glyph/editor/error';
@@ -6,11 +6,11 @@ import Button from '@atlaskit/button';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {useIntl} from 'react-intl';
-import Select from '@atlaskit/select/Select';
 import {getDateFormatBasedOnLocale, ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import Textfield from '@atlaskit/textfield';
 import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
 import './RightTerritoryFields.scss';
+import {Dropdown} from '@portal/portal-components';
 
 const RightTerritoryFields = ({
     isEdit,
@@ -22,8 +22,11 @@ const RightTerritoryFields = ({
 }) => {
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
-    const {dateSelected = '', selected = false, dateWithdrawn = ''} =
-        typeof territoryIndex === 'number' && territoryIndex >= 0 ? existingTerritoryList[territoryIndex] : {};
+    const {
+        dateSelected = '',
+        selected = false,
+        dateWithdrawn = '',
+    } = typeof territoryIndex === 'number' && territoryIndex >= 0 ? existingTerritoryList[territoryIndex] : {};
     const [showErrorDateWithdrawn, setShowErrorDateWithdrawn] = useState(false);
 
     const [showClearButton, setShowClearButton] = useState(false);
@@ -98,6 +101,12 @@ const RightTerritoryFields = ({
         }
     };
 
+    const statusOptions = [
+        {label: 'Pending', value: 'Pending'},
+        {label: 'Pending Manual', value: 'PendingManual'},
+        {label: 'Matched Once', value: 'MatchedOnce'},
+    ];
+
     return (
         <>
             <Field
@@ -119,22 +128,18 @@ const RightTerritoryFields = ({
             >
                 {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
-                        <Select
+                        <Dropdown
                             id={`select-${id}`}
                             {...rest}
-                            validationState={getValidationState(error, valid)}
-                            styles={{
-                                control: base => {
-                                    return getError('country', rest.value)
-                                        ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'}
-                                        : {...base, borderColor: '#F4F5F7'};
-                                },
-                                singleValue: base =>
-                                    getError('country', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
-                            }}
-                            isSearchable={true}
+                            value={rest.value.value}
+                            columnClass="col-12"
+                            filter={true}
                             placeholder="Choose Country"
                             options={removeExistingOptions()}
+                            onChange={e => {
+                                const value = removeExistingOptions().find(x => x.value === e.value);
+                                rest.onChange(value);
+                            }}
                         />
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
                     </>
@@ -180,37 +185,19 @@ const RightTerritoryFields = ({
             >
                 {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
-                        <Select
+                        <Dropdown
                             id={`select-${id}`}
                             {...rest}
-                            isSearchable={false}
-                            styles={{
-                                control: base => {
-                                    const defaultStyle = {
-                                        ...base,
-                                        borderColor: '#F4F5F6',
-                                        fontSize: '15px',
-                                    };
-                                    const controlStyle = getError('rightContractStatus', rest.value)
-                                        ? {...defaultStyle, backgroundColor: 'rgb(242, 222, 222)'}
-                                        : defaultStyle;
-                                    return controlStyle;
-                                },
-                                singleValue: base => {
-                                    const style = getError('rightContractStatus', rest.value)
-                                        ? {...base, color: 'rgb(169, 68, 66)'}
-                                        : base;
-                                    return style;
-                                },
-                            }}
-                            validationState={getValidationState(error, valid)}
+                            value={rest.value.value}
+                            columnClass="col-12"
                             placeholder="Choose Status"
-                            options={[
-                                {label: 'Pending', value: 'Pending'},
-                                {label: 'Pending Manual', value: 'PendingManual'},
-                                {label: 'Matched Once', value: 'MatchedOnce'},
-                            ]}
+                            options={statusOptions}
+                            onChange={e => {
+                                const value = statusOptions.find(x => x.value === e.value);
+                                rest.onChange(value);
+                            }}
                         />
+
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
                     </>
                 )}
