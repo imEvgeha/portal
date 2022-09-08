@@ -121,9 +121,9 @@ const NexusDynamicForm = ({
             const valuesData = mergeWith({}, initialData, correctValues, (obj, src, key) => {
                 // some keys should not return undefined value for arrays and instead have empty array,
                 // for example when deleting all MSV association IDs, we want to return empty Array
-                const excludedValued = ['msvAssociationId'];
+                const excludedValues = ['msvAssociationId'];
                 if (Array.isArray(src)) {
-                    if (src.length || excludedValued.includes(key)) {
+                    if (src.length || excludedValues.includes(key)) {
                         return src;
                     }
                     return undefined;
