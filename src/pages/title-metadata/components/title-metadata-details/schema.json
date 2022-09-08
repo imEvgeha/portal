@@ -557,7 +557,7 @@
                     }
                 },
                 {
-                    "title": "MetaVU Originated External IDs",
+                    "title": "Industry Originated External IDs",
                     "sectionID": "metavuOriginatedExternalIDs",
                     "isGridLayout": true,
                     "fields": {
