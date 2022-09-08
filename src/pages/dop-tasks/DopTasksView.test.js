@@ -7,7 +7,6 @@ describe('DopTasksView', () => {
     let dopTasksHeader = null;
     let dopTasksTable = null;
     let queuedTasks = null;
-    let refreshButton = null;
     const refreshGridDataMock = jest.fn();
 
     const props = {
@@ -19,7 +18,6 @@ describe('DopTasksView', () => {
         dopTasksTable = wrapper.find('DopTasksTable');
         dopTasksHeader = wrapper.find('DopTasksHeader');
         queuedTasks = wrapper.find('QueuedTasks');
-        refreshButton = wrapper.find('IconButton');
     });
 
     afterEach(() => {
@@ -40,14 +38,5 @@ describe('DopTasksView', () => {
 
     it('should render QueuedTasks', () => {
         expect(queuedTasks.length).toEqual(1);
-    });
-
-    it('should render Refresh button', () => {
-        expect(refreshButton.length).toEqual(1);
-    });
-
-    it('should dispatch refresh grid action', () => {
-        refreshButton.simulate('click');
-        expect(refreshGridDataMock).toHaveBeenCalled();
     });
 });

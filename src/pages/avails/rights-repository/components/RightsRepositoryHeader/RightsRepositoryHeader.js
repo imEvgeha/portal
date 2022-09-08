@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
@@ -158,7 +157,7 @@ export const RightsRepositoryHeader = ({
                     <Button
                         tooltip={CREATE_NEW_RIGHT}
                         tooltipOptions={{position: 'left'}}
-                        icon={IconActionAdd}
+                        icon="po po-add"
                         onClick={() => navigate(URL.keepEmbedded('rights/create'))}
                         className="p-button-text"
                     />

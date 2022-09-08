@@ -119,18 +119,23 @@ const IngestPanel = ({
                     );
                 })}
             </div>
-            <div className="ingest-panel__btns">
-                <RefreshConfigBtn />
-                <Restricted resource="availsIngestButton">
-                    <NexusUploadButton
-                        modalContext={NexusModalContext}
-                        modalCallback={buildForm}
-                        title={UPLOAD_TITLE}
-                        icon={AddIcon}
-                        withModal
-                        extensionsAccepted={getConfig('avails.upload.extensions')}
-                    />
-                </Restricted>
+            <div className="row w-100 align-items-center">
+                <div className="col-6">
+                    <Restricted resource="availsIngestButton">
+                        <NexusUploadButton
+                            modalContext={NexusModalContext}
+                            modalCallback={buildForm}
+                            title={UPLOAD_TITLE}
+                            icon={AddIcon}
+                            withModal
+                            extensionsAccepted={getConfig('avails.upload.extensions')}
+                        />
+                    </Restricted>
+                </div>
+
+                <div className="col-6 text-end">
+                    <RefreshConfigBtn />
+                </div>
             </div>
         </div>
     );

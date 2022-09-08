@@ -72,11 +72,7 @@ exports[`EndpointContainer should match snapshot 1`] = `
                   badgeClassName={null}
                   className="p-button-text"
                   disabled={false}
-                  icon={
-                    Object {
-                      "process": [Function],
-                    }
-                  }
+                  icon="po po-add"
                   iconPos="left"
                   id="add_new_config__btn"
                   label={null}

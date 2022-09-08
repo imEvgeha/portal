@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import FilterSolidIcon from '@vubiquity-nexus/portal-assets/filter-solid.svg';
-import FilterIcon from '@vubiquity-nexus/portal-assets/filter.svg';
+import {Button} from '@portal/portal-components';
 import {backArrowColor} from '@vubiquity-nexus/portal-styles/constants';
-import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
@@ -60,10 +58,11 @@ const HeaderSection = ({
                     <span className="panel-header__title--text">Servicing Order</span>
                 </div>
                 <div className="panel-header__filter">
-                    <IconButton
-                        label={showFilter ? 'Hide Filter Section' : 'Show Filter Section'}
+                    <Button
+                        className="p-button-text"
+                        icon="po po-filter"
+                        tooltip={showFilter ? 'Hide Filter Section' : 'Show Filter Section'}
                         onClick={toggleFilters}
-                        icon={showFilter ? FilterSolidIcon : FilterIcon}
                     />
                 </div>
             </div>

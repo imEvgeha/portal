@@ -17,9 +17,7 @@ exports[`External Ids Section should match snapshot 1`] = `
               "action": [Function],
               "buttonId": "btnAddSection",
               "disabled": false,
-              "icon": Object {
-                "process": [Function],
-              },
+              "icon": "po po-add",
               "position": 4,
             },
           ]

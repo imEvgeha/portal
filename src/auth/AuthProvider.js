@@ -6,17 +6,16 @@ import {
     checkIfClientExistsInKeycloak,
     getTokenDuration,
     getValidToken,
-    wait,
-    updateLocalStorageWithSelectedTenant,
     transformSelectTenant,
+    updateLocalStorageWithSelectedTenant,
+    wait,
 } from '@portal/portal-auth/utils';
 import {getAuthConfig, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import jwtDecode from 'jwt-decode';
-import {isEmpty, get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {store} from '../index';
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
-import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
 import Loading from '../pages/static/Loading';
 
@@ -198,7 +197,6 @@ const mapStateToProps = state => {
     };
 };
 const mapDispatchToProps = dispatch => ({
-    getAppOptions: () => dispatch(fetchAvailMapping()),
     addUser: payload => dispatch(injectUser(payload)),
     logoutUser: () => dispatch(logout()),
 });
@@ -207,7 +205,6 @@ AuthProvider.defaultProps = {
     options: undefined,
     appOptions: undefined,
     addUser: undefined,
-    getAppOptions: undefined,
     logoutUser: undefined,
 };
 
@@ -215,7 +212,6 @@ AuthProvider.propTypes = {
     options: PropTypes.any,
     appOptions: PropTypes.any,
     addUser: PropTypes.any,
-    getAppOptions: PropTypes.any,
     logoutUser: PropTypes.any,
 };
 

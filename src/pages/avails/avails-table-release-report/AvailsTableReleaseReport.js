@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Popup from '@atlaskit/popup';
 import Select from '@atlaskit/select';
-import AtlaskitMoreIcon from '@vubiquity-nexus/portal-assets/atlaskit-more-icon.svg';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
@@ -106,7 +105,7 @@ const AvailsTableReleaseReport = ({activeTab, selectedRowsCount, totalRecordsCou
                         <span className="nexus-c-right-repository-release-report-button__title">
                             {NEW_RELEASE_REPORT}
                         </span>
-                        <AtlaskitMoreIcon />
+                        <i className="po po-expand-section" />
                     </Button>
                 )}
             />

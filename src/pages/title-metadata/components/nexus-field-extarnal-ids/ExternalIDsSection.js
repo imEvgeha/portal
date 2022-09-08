@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {InputText, Dropdown, Button} from '@portal/portal-components';
-import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
-import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
+import {Button, Dropdown, InputText} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {
     EXTERNAL_SYSTEM_ID_EXAMPLE,
@@ -73,11 +71,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
                     </div>
 
                     <div className="col-1  px-2 text-md-start text-lg-start text-xl-center">
-                        <Button
-                            className="p-button-text"
-                            icon={ActionCrossCircle}
-                            onClick={e => onRemoveField(e, index)}
-                        />
+                        <Button className="p-button-text" icon="po po-remove" onClick={e => onRemoveField(e, index)} />
                     </div>
                 </div>
             );
@@ -86,7 +80,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
 
     const groupActions = () => [
         new Action({
-            icon: IconActionAdd,
+            icon: 'po po-add',
             action: e => onAddField(e),
             position: 4,
             disabled: false,

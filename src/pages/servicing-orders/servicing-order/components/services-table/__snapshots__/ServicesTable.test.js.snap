@@ -21,7 +21,8 @@ exports[`ServicesTable should match snapshot 1`] = `
     <div
       className="nexus-c-services-table__add-icon"
     >
-      <[object Object]
+      <i
+        className="po po-add"
         onClick={[Function]}
       />
     </div>

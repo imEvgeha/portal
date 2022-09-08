@@ -1,10 +1,6 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 
-.ingest-reload-btn {
-    @include padding(2.5, 5);
-}
-
 .status-success {
     color: map-get($greens, G400);
 }

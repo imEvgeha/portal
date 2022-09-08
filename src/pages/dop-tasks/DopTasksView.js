@@ -1,25 +1,24 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import RefreshIcon from '@atlaskit/icon/glyph/refresh';
-import {getUsername} from "@portal/portal-auth/authSelectors";
-import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
+import {getUsername} from '@portal/portal-auth/authSelectors';
+import {Button} from '@portal/portal-components';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import {isEmpty, get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
-import {setDopTasksUserDefinedGridState, assignDopTasks, unAssignDopTasks, changeDOPPriority} from './dopTasksActions';
+import {assignDopTasks, changeDOPPriority, setDopTasksUserDefinedGridState, unAssignDopTasks} from './dopTasksActions';
 import {createGridStateSelector} from './dopTasksSelectors';
 import {applyPredefinedTableView} from './utils';
 import {
-    USER,
-    MY_SAVED_VIEWS_LABEL,
     MY_PREDEFINED_VIEWS_LABEL,
+    MY_SAVED_VIEWS_LABEL,
+    QUEUED_TASKS_OPTIONS,
     SAVED_TABLE_DROPDOWN_LABEL,
     SAVED_TABLE_SELECT_OPTIONS,
-    QUEUED_TASKS_OPTIONS,
+    USER,
 } from './constants';
 import './DopTasksView.scss';
 
@@ -98,10 +97,11 @@ export const DopTasksView = ({
                     tableOptions={tableOptions}
                 />
                 <div className="nexus-c-dop-tasks-view__refresh-btn">
-                    <IconButton
-                        icon={() => <RefreshIcon size="large" />}
+                    <Button
+                        className="p-button-text"
+                        icon="po po-reload"
+                        tooltip="Refresh"
                         onClick={() => toggleRefreshGridData(true)}
-                        label="Refresh"
                     />
                 </div>
             </DopTasksHeader>

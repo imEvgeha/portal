@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Blanket from '@atlaskit/blanket';
-import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Spinner from '@atlaskit/spinner';
+import {Button} from '@portal/portal-components';
 import classnames from 'classnames';
-import IconButton from '../../atlaskit/icon-button/IconButton';
 import './NexusDrawer.scss';
 
 const NexusDrawer = ({
@@ -58,7 +57,12 @@ const NexusDrawer = ({
                                                 </>
                                             )}
                                         </div>
-                                        <IconButton icon={CrossIcon} label="Close Drawer" onClick={onClose} />
+                                        <Button
+                                            className="p-button-text"
+                                            icon="po po-remove"
+                                            tooltip="Close Drawer"
+                                            onClick={onClose}
+                                        />
                                     </div>
                                 </GridColumn>
                             </Grid>
