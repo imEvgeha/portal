@@ -133,8 +133,9 @@ const NexusSelect = ({
                 placeholder="Select"
                 display="chip"
                 optionValue="value"
+                filterBy="label,value"
                 filter={options.length >= 10}
-                appendTo={document.body}
+                appendTo="self"
                 onChange={e => {
                     const values = options.filter(l => e.value.includes(l.value));
                     fieldProps?.onChange?.(values);
@@ -150,10 +151,11 @@ const NexusSelect = ({
             id={id}
             options={options}
             value={selectedItem}
-            appendTo={document.body}
+            appendTo="self"
             columnClass="col-12"
             placeholder="Select"
             optionValue="value"
+            filterBy="label,value"
             filter={options.length >= 10}
             onChange={e => {
                 const value = options.find(x => x.value === e.value);

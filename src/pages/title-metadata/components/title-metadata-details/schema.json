@@ -90,11 +90,11 @@
                                 "options": [
                                     {
                                         "label": "Pending",
-                                        "value": "Pending"
+                                        "value": "pending"
                                     },
                                     {
                                         "label": "Complete",
-                                        "value": "Complete"
+                                        "value": "complete"
                                     }
                                 ]
                             }
@@ -1115,11 +1115,11 @@
                                         "options": [
                                             {
                                                 "label": "Pending",
-                                                "value": "Pending"
+                                                "value": "pending"
                                             },
                                             {
                                                 "label": "Complete",
-                                                "value": "Complete"
+                                                "value": "complete"
                                             }
                                         ]
                                     }
