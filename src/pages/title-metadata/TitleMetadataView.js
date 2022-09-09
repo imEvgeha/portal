@@ -17,6 +17,7 @@ import TitleMetadataHeader from './components/title-metadata-header/TitleMetadat
 import RepositorySelectsAndButtons from './components/title-metadata-repo-select-and-buttons/TitleMetadataRepoSelectsAndButtons';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import TitleCreate from './components/titleCreateModal/TitleCreateModal';
+import TitleDeleteModal from './components/titleDeleteModal/TitleDeleteModal';
 import UploadMetadataTable from './components/upload-metadata-table/UploadMetadataTable';
 import TitleConfigurationService from './services/TitleConfigurationService';
 import './TitleMetadataView.scss';
@@ -29,6 +30,7 @@ import {
 import {
     createGridStateSelector,
     createTitleMetadataFilterSelector,
+    createSelectedTitlesSelector,
     externalIDTypesSelector,
 } from './titleMetadataSelectors';
 import {TITLE_METADATA_SYNC_LOG_TAB, TITLE_METADATA_TABS, UNMERGE_TITLE_SUCCESS} from './constants';
@@ -44,9 +46,11 @@ export const TitleMetadataView = ({
     setCurrentUserView,
     setExternalIdValues,
     externalIdOptions,
+    selectedTitles,
 }) => {
     const selectedTenant = useSelector(state => get(state, 'auth.selectedTenant'));
-    const [showModal, setShowModal] = useState(false);
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
         tenantCode: selectedTenant.id,
     });
@@ -55,6 +59,9 @@ export const TitleMetadataView = ({
     const [columnApi, setColumnApi] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
+    const [showSelected, setShowSelected] = useState(false);
+
+    const selectedTitlesLength = selectedTitles?.[username]?.length || 0;
 
     const titleConfigurationService = TitleConfigurationService.getInstance();
 
@@ -127,12 +134,12 @@ export const TitleMetadataView = ({
 
     const isItTheSameTab = tabName => getNameOfCurrentTab() === tabName;
 
-    const onCloseModal = () => {
-        setShowModal(false);
+    const onCloseCreateModal = () => {
+        setShowCreateModal(false);
     };
 
-    const closeModalAndRefreshTable = () => {
-        onCloseModal();
+    const closeCreateModalAndRefreshTable = () => {
+        onCloseCreateModal();
         toggleRefreshGridData(true);
     };
 
@@ -218,7 +225,7 @@ export const TitleMetadataView = ({
                             lastStoredFilter={lastStoredFilter}
                             setBlockLastFilter={setBlockLastFilter}
                             changeCatalogueOwner={changeCatalogueOwner}
-                            setShowModal={setShowModal}
+                            setShowModal={setShowCreateModal}
                         />
                     </div>
                 </div>
@@ -229,6 +236,11 @@ export const TitleMetadataView = ({
                             showSuccess={showSuccess}
                             uploadHandler={uploadHandler}
                             isItTheSameTab={isItTheSameTab}
+                            showSelected={showSelected}
+                            setShowSelected={setShowSelected}
+                            showDeleteModal={showDeleteModal}
+                            setShowDeleteModal={setShowDeleteModal}
+                            selectedTitlesLength={selectedTitlesLength}
                         />
                     </div>
                 </div>
@@ -236,6 +248,7 @@ export const TitleMetadataView = ({
             {isItTheSameTab('repository') ? (
                 <TitleMetadataTable
                     catalogueOwner={catalogueOwner}
+                    showSelected={showSelected}
                     setGridApi={setGridApi}
                     setColumnApi={setColumnApi}
                     columnApi={columnApi}
@@ -255,14 +268,26 @@ export const TitleMetadataView = ({
                 />
             ) : null}
             <TitleCreate
-                display={showModal}
-                onSave={closeModalAndRefreshTable}
-                onCloseModal={onCloseModal}
+                display={showCreateModal}
+                onSave={closeCreateModalAndRefreshTable}
+                onCloseModal={onCloseCreateModal}
                 tenantCode={catalogueOwner.tenantCode}
                 externalDropdownOptions={externalIdOptions.find(
                     e => toLower(e.tenantCode) === toLower(selectedTenant.id)
                 )}
             />
+            <TitleDeleteModal
+                header="Delete Title(s)"
+                // Here should be logic to delete titles in future
+                onDelete={() => null}
+                display={showDeleteModal}
+                onCloseModal={() => setShowDeleteModal(false)}
+            >
+                <div className="d-flex flex-column nexus-c-title-delete_titles">
+                    <span className="mb-3">Would you like to delete {`${selectedTitlesLength || ''}`} Title(s)?</span>
+                    <span className="mb-3">You will not be able to recover the Title(s) once deleted.</span>
+                </div>
+            </TitleDeleteModal>
         </div>
     );
 };
@@ -271,11 +296,13 @@ const mapStateToProps = () => {
     const gridStateSelector = createGridStateSelector();
     const titleMetadataFilterSelector = createTitleMetadataFilterSelector();
     const externalIdSelector = externalIDTypesSelector();
+    const selectedTitlesSelector = createSelectedTitlesSelector();
     return state => ({
         username: getUsername(state),
         gridState: gridStateSelector(state),
         titleMetadataFilter: titleMetadataFilterSelector(state),
         externalIdOptions: externalIdSelector(state),
+        selectedTitles: selectedTitlesSelector(state),
     });
 };
 
@@ -299,6 +326,7 @@ TitleMetadataView.propTypes = {
     uploadMetadata: PropTypes.func,
     setCurrentUserView: PropTypes.func.isRequired,
     setExternalIdValues: PropTypes.func.isRequired,
+    selectedTitles: PropTypes.object.isRequired,
 };
 
 TitleMetadataView.defaultProps = {

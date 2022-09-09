@@ -44,6 +44,10 @@
         //     border-color: #d9dcde;;
         // }
 
+        .ag-ltr .ag-selection-checkbox {
+            margin-right: 0px;
+        }
+
         .nexus-c-nexus-grid__unselected {
             .ag-cell {
                 text-decoration: line-through;

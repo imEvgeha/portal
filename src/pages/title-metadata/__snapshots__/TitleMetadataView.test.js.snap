@@ -78,6 +78,11 @@ exports[`TitleMetadataView should match snapshot 1`] = `
         <Connect(TitleMetadataBottomHeaderPart)
           className="nexus-c-title-metadata-header__bottom"
           isItTheSameTab={[Function]}
+          selectedTitlesLength={0}
+          setShowDeleteModal={[Function]}
+          setShowSelected={[Function]}
+          showDeleteModal={false}
+          showSelected={false}
           showSuccess={[Function]}
           uploadHandler={[Function]}
         />
@@ -95,11 +100,34 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     gridApi={null}
     setColumnApi={[Function]}
     setGridApi={[Function]}
+    showSelected={false}
   />
   <Connect(TitleCreate)
     display={false}
     onCloseModal={[Function]}
     onSave={[Function]}
   />
+  <TitleDeleteModal
+    display={false}
+    header="Delete Title(s)"
+    onCloseModal={[Function]}
+    onDelete={[Function]}
+  >
+    <div
+      className="d-flex flex-column nexus-c-title-delete_titles"
+    >
+      <span
+        className="mb-3"
+      >
+        Would you like to delete 
+         Title(s)?
+      </span>
+      <span
+        className="mb-3"
+      >
+        You will not be able to recover the Title(s) once deleted.
+      </span>
+    </div>
+  </TitleDeleteModal>
 </div>
 `;

@@ -190,6 +190,12 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 ...state,
                 externalDropdownIDs: [...state.externalDropdownIDs, ...payload.responseOptions],
             };
+        case actionTypes.SET_SELECTED_TITLES: {
+            return {
+                ...state,
+                selected: {...payload},
+            };
+        }
         default:
             return state;
     }
