@@ -137,14 +137,14 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
                     {displayCopyBtn ? (
                         <Restricted resource="createTitleCopyAction">
                             <DropdownOption value="copy" onSelect={() => setDisplayCreateCopyModal(true)}>
-                                <i className="pi pi-copy" /> {dropdownOption.copyDesc}
+                                <i className="pi pi-copy pe-3" /> {dropdownOption.copyDesc}
                             </DropdownOption>
                         </Restricted>
                     ) : null}
                     {displayUnmergeBtn ? (
                         <Restricted resource="unmergeTitleAction">
                             <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
-                                {dropdownOption.unmergeDesc}
+                                <i className="pi pi-window-maximize pe-3" /> {dropdownOption.unmergeDesc}
                             </DropdownOption>
                         </Restricted>
                     ) : null}
