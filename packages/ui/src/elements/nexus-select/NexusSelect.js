@@ -122,47 +122,51 @@ const NexusSelect = ({
         });
     }
 
-    return isMultiselect ? (
-        options?.length ? (
-            <MultiselectWithOptional
-                {...fieldProps}
-                id={id}
-                value={selectedItem}
-                options={options}
-                columnClass="col-12"
-                placeholder="Select"
-                display="chip"
-                optionValue="value"
-                filterBy="label,value"
-                filter={options.length >= 10}
-                appendTo="self"
-                onChange={e => {
-                    const values = options.filter(l => e.value.includes(l.value));
-                    fieldProps?.onChange?.(values);
-                    setSelectedItem(e.value);
-                }}
-            />
-        ) : null
-    ) : (
-        <DropdownWithOptional
-            {...fieldProps}
-            {...addedProps}
-            className="nexus-c-nexus-select-container"
-            id={id}
-            options={options}
-            value={selectedItem}
-            appendTo="self"
-            columnClass="col-12"
-            placeholder="Select"
-            optionValue="value"
-            filterBy="label,value"
-            filter={options.length >= 10}
-            onChange={e => {
-                const value = options.find(x => x.value === e.value);
-                fieldProps?.onChange?.(value);
-                setSelectedItem(e.value);
-            }}
-        />
+    return (
+        <div className="nexus-select">
+            {isMultiselect ? (
+                options?.length ? (
+                    <MultiselectWithOptional
+                        {...fieldProps}
+                        id={id}
+                        value={selectedItem}
+                        options={options}
+                        columnClass="col-12"
+                        placeholder="Select"
+                        display="chip"
+                        optionValue="value"
+                        filterBy="label,value"
+                        filter={options.length >= 10}
+                        appendTo="self"
+                        onChange={e => {
+                            const values = options.filter(l => e.value.includes(l.value));
+                            fieldProps?.onChange?.(values);
+                            setSelectedItem(e.value);
+                        }}
+                    />
+                ) : null
+            ) : (
+                <DropdownWithOptional
+                    {...fieldProps}
+                    {...addedProps}
+                    className="nexus-c-nexus-select-container"
+                    id={id}
+                    options={options}
+                    value={selectedItem}
+                    appendTo="self"
+                    columnClass="col-12"
+                    placeholder="Select"
+                    optionValue="value"
+                    filterBy="label,value"
+                    filter={options.length >= 10}
+                    onChange={e => {
+                        const value = options.find(x => x.value === e.value);
+                        fieldProps?.onChange?.(value);
+                        setSelectedItem(e.value);
+                    }}
+                />
+            )}
+        </div>
     );
 };
 

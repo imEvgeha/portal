@@ -10,3 +10,13 @@
     font-style: italic;
     color: gray;
 }
+
+.nexus-select {
+    .portal-component {
+        &.dropdown-wrapper {
+            .p-dropdown-panel {
+                z-index: 1001 !important;
+            }
+        }
+    }
+}
