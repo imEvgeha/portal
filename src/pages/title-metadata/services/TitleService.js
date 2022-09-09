@@ -159,8 +159,8 @@ export default class TitleService extends HttpService {
         return response;
     };
 
-    propagateSeasonsPersonsToEpisodes = async body => {
-        const response = await this.callApi('v1', `/seasonsPersonsToEpisodes`, {
+    propagateSeasonsPersonsToEpisodes = async (body, seasonId) => {
+        const response = await this.callApi('v1', `/${seasonId}/personsToEpisodes`, {
             method: 'put',
             body,
         });
