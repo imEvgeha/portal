@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import InlineEdit from '@atlaskit/inline-edit';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import {isUtc} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
@@ -11,13 +11,13 @@ import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSim
 import {getDisplayDate} from '../utils';
 import {
     END_DATE_ERROR,
-    START_DATE_ERROR,
-    RELATIVE_TIME_LABEL,
-    SIMULCAST_TIME_LABEL,
     FILL_DATE,
     FILL_DATE_TIME,
-    RELATIVE_DATE_FORMAT_WITHOUT_TIME,
     RELATIVE_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT_WITHOUT_TIME,
+    RELATIVE_TIME_LABEL,
+    SIMULCAST_TIME_LABEL,
+    START_DATE_ERROR,
 } from '../constants';
 
 const NexusDateTimeWindowPicker = ({
@@ -191,17 +191,20 @@ const NexusDateTimeWindowPicker = ({
             </div>
             {!isTimestamp && isUsingTime && (
                 <div className="nexus-c-date-time-picker__type-select">
-                    <label className="nexus-c-date-time-picker__label">Select Type</label>
-                    <Select
-                        defaultValue={{
-                            label: isSimulcast ? SIMULCAST_TIME_LABEL : RELATIVE_TIME_LABEL,
-                            value: isSimulcast,
+                    <Dropdown
+                        id="ddlDateTimeTypeSelect"
+                        labelProps={{
+                            label: 'Select Type',
+                            stacked: true,
+                            shouldUpper: false,
                         }}
+                        value={!!isSimulcast}
+                        columnClass="col-12"
                         options={[
                             {label: RELATIVE_TIME_LABEL, value: false},
                             {label: SIMULCAST_TIME_LABEL, value: true},
                         ]}
-                        onChange={type => onFormatChange(type.value)}
+                        onChange={e => onFormatChange(e.value)}
                     />
                 </div>
             )}

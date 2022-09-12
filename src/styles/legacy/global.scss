@@ -148,3 +148,9 @@ input[disabled] {
 .audio-language-form > div {
     overflow: visible;
 }
+
+.atlaskit-portal-container {
+    .atlaskit-portal {
+        z-index: 1003 !important;
+    }
+}

@@ -1,15 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`QueuedTasks should match snapshot 1`] = `
-<WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+<Dropdown
   className="nexus-c-dop-tasks-queued-select"
-  classNamePrefix="nexus-select"
-  defaultValue={
-    Object {
-      "label": "My Tasks",
-      "value": "user",
-    }
-  }
+  columnClass="col-10"
+  id="ddlTaskType"
   onChange={[Function]}
   options={
     Array [
@@ -24,11 +19,6 @@ exports[`QueuedTasks should match snapshot 1`] = `
     ]
   }
   placeholder="Queued Tasks"
-  value={
-    Object {
-      "label": "My Tasks",
-      "value": "user",
-    }
-  }
+  value="user"
 />
 `;

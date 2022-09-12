@@ -35,8 +35,8 @@ export const COLUMN_KEYS = [
 ];
 
 export const SORT_DIRECTION = [
-    {value: 'ID_ASCENDING', type: 'ID', label: 'ID Ascending'},
-    {value: 'ID_DESCENDING', type: 'ID', label: 'ID Descending '},
-    {value: 'TITLE_ASCENDING', type: 'TITLE', label: 'Title Ascending'},
-    {value: 'TITLE_DESCENDING', type: 'TITLE', label: 'Title Descending'},
+    {code: 'ID_ASCENDING', type: 'ID', label: 'ID Ascending'},
+    {code: 'ID_DESCENDING', type: 'ID', label: 'ID Descending '},
+    {code: 'TITLE_ASCENDING', type: 'TITLE', label: 'Title Ascending'},
+    {code: 'TITLE_DESCENDING', type: 'TITLE', label: 'Title Descending'},
 ];

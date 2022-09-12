@@ -1,11 +1,11 @@
 /* eslint react/prop-types: 0 */
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import PropTypes from 'prop-types';
 import {HelperMessage} from '@atlaskit/form';
-import Select from '@atlaskit/select';
 import Textfield from '@atlaskit/textfield';
+import {Dropdown} from '@portal/portal-components';
 import {differenceBy, get, uniqBy} from 'lodash';
-import {Header, Footer, AddToService} from '../ComponentsPicker';
+import {AddToService, Footer, Header} from '../ComponentsPicker';
 import TextSummaryPanel from './TextSummaryPanel';
 import {TEXT_COMP_EXISTS, TEXT_COMP_NOTFOUND} from '../constants';
 import './TextComponentPicker.scss';
@@ -19,24 +19,24 @@ const SelectionPanel = ({data}) => {
             <div className="text-picker__selection-panel">
                 <div>
                     <HelperMessage>Language / MFX</HelperMessage>
-                    <Select
+                    <Dropdown
                         id="language-select"
                         name="language-select"
                         className="text-picker__select"
                         options={languageOptions}
                         value={language}
-                        onChange={val => setLanguage(val)}
+                        onChange={e => setLanguage(e.value)}
                     />
                 </div>
                 <div>
                     <HelperMessage>Format</HelperMessage>
-                    <Select
+                    <Dropdown
                         id="track-select"
                         name="track-select"
                         className="text-picker__select"
                         options={typeOptions}
                         value={type}
-                        onChange={val => setType(val)}
+                        onChange={e => setType(e.value)}
                     />
                 </div>
             </div>
@@ -84,7 +84,7 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
 
     useEffect(() => {
         const componentID = get(
-            componentArray.find(item => item.language === language.value && item.type === type.value),
+            componentArray.find(item => item.language === language && item.type === type),
             'amsComponentId',
             ''
         );
@@ -102,7 +102,7 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
         components.length !== data.compSummary.length;
 
     const saveComponentsLocally = () => {
-        setComponents([...components, {language: language.value, type: type.value, amsComponentId: componentId}]);
+        setComponents([...components, {language, type, amsComponentId: componentId}]);
     };
 
     const removeComponent = compId => {

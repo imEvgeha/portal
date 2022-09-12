@@ -29,8 +29,6 @@ describe('AssignModal', () => {
     });
 
     it('should render Select with one option', () => {
-        expect(
-            wrapper.find('WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))').props().options.length
-        ).toEqual(1);
+        expect(wrapper.find('Dropdown').props().options.length).toEqual(1);
     });
 });

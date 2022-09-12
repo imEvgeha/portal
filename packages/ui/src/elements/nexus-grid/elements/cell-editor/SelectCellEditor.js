@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import './SelectCellEditor.scss';
 
 class SelectCellEditor extends Component {
@@ -22,24 +22,25 @@ class SelectCellEditor extends Component {
     // eslint-disable-next-line react/destructuring-assignment
     getValue = () => this.state.value.value;
 
-    handleChange = value => {
-        this.setState({
-            value,
-        });
-    };
-
     render() {
         const {options} = this.props;
         const {value} = this.state;
 
         return (
             <div className="nexus-c-select-cell-editor">
-                <Select
+                <Dropdown
                     options={options}
                     placeholder="Select"
-                    onChange={this.handleChange}
-                    value={value}
-                    defaultValue={value}
+                    columnClass="col-12"
+                    appendTo="self"
+                    onChange={event => {
+                        const {options} = this.props;
+                        const value = options.find(x => x.value === event.value);
+                        this.setState({
+                            value,
+                        });
+                    }}
+                    value={value.value}
                 />
             </div>
         );
