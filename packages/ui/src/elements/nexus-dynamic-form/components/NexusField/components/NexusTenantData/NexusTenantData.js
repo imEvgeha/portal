@@ -1,57 +1,97 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import classnames from 'classnames';
-import {get, isUndefined} from 'lodash';
 import './NexusTenantData.scss';
 import NexusField from '../../NexusField';
 
 const NexusTenantData = ({title, sectionID}) => {
-    // // eslint-disable-next-line no-console
-    // console.log(title);
-
-    const externalIdProperties = ['vzExternalIds', 'movidaExternalIds', 'movidaUkExternalIds'];
-
+    /**
+     * Process the properties and come up with a user-friendly label
+     * @param externalId - the current external ID processing
+     * @returns {string} - user-friendly label for display purposes
+     */
     const calculateLabel = externalId => {
         switch (externalId) {
-            case 'movidaExternalIds':
-                return 'Movida External ID';
-            case 'movidaUkExternalIds':
-                return 'Movida UK External ID';
-            case 'vzExternalIds':
-                return 'VZ External IDs';
+            case 'movida':
+                return 'Movida Title ID';
+            case 'movida-uk':
+                return 'Movida Int Title ID';
+            case 'vz':
+            case 'vzTitleId':
+                return 'VZ Title ID';
+            case 'vzId':
+                return 'VZ ID';
             default:
                 return '';
         }
     };
 
-    const calculateValue = externalId => {
-        return title[externalId].externalTitleId;
+    /**
+     * Schema varies between Nexus and non-Nexus titles
+     * Calculates if it's Nexus title and calls the appropriate Render method
+     * @returns {*[]} Returns a JSX.Element for the given schema
+     */
+    const calculateExternalIds = () => {
+        if (title && title.externalIds) {
+            // Nexus titles
+            if (isNexusTitle(title.id)) {
+                return title.externalIds.map(externalId => RenderNexusTitleExternalIds(externalId));
+            }
+            // non-Nexus titles have different schema
+            return title.externalIds.map(externalId => RenderExternalTitleIds(externalId));
+        }
     };
 
-    return (
-        <>
-            {externalIdProperties.map(externalId => {
-                // check if external id is added as a property to the title object
-                if (get(title, externalId) && !isUndefined(get(title, externalId))) {
-                    return (
-                        <div className={classnames('nexus-c-dynamic-form__field')}>
-                            <NexusField
-                                id={title.id}
-                                key={`${title.id}_key`}
-                                name={externalId}
-                                sectionID={sectionID}
-                                isGridLayout={true}
-                                isTitlePage={true}
-                                label={calculateLabel(externalId)}
-                                type="tenantData"
-                                value={calculateValue(externalId)}
-                            />
-                        </div>
-                    );
-                }
-            })}
-        </>
-    );
+    /**
+     * Render method for Nexus Titles External IDs
+     * @param externalId
+     * @returns {JSX.Element}
+     * @constructor
+     */
+    const RenderNexusTitleExternalIds = externalId => {
+        return (
+            <div className={classnames('nexus-c-dynamic-form__field')}>
+                <NexusField
+                    id={externalId.externalId}
+                    key={`${externalId.externalId}_key`}
+                    name={externalId.externalSystem}
+                    sectionID={sectionID}
+                    isGridLayout={true}
+                    isTitlePage={true}
+                    label={calculateLabel(externalId.externalSystem)}
+                    type="tenantData"
+                    value={externalId.externalTitleId}
+                />
+            </div>
+        );
+    };
+
+    /**
+     * Render method for non-Nexus External IDs
+     * @param externalId
+     * @returns {JSX.Element}
+     * @constructor
+     */
+    const RenderExternalTitleIds = externalId => {
+        return (
+            <div className={classnames('nexus-c-dynamic-form__field')}>
+                <NexusField
+                    id={externalId.name}
+                    key={`${externalId.name}_key`}
+                    name={externalId.name}
+                    sectionID={sectionID}
+                    isGridLayout={true}
+                    isTitlePage={true}
+                    label={calculateLabel(externalId.name)}
+                    type="tenantData"
+                    value={externalId.value}
+                />
+            </div>
+        );
+    };
+
+    return <>{calculateExternalIds()}</>;
 };
 
 NexusTenantData.propTypes = {

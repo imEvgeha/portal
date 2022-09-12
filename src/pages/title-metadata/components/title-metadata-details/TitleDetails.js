@@ -341,29 +341,6 @@ const TitleDetails = ({
         }
     };
 
-    /**
-     * Calculate the external ids for a given title
-     * @param repo The target repository (Nexus, VZ, Movida etc.)
-     * @returns External Ids
-     */
-    const getExternaIds = repo => {
-        // for Nexus titles, external ids are fetched from getPublishInfo API
-        if (isNexusTitle(title.id)) {
-            return externalIds.filter(ids => ids.externalSystem === repo);
-        }
-        // in other titles(VZ, Movida etc.) the external ids are part of title.tenantData
-        return [
-            {
-                externalTitleId: title?.tenantData?.complexProperties[0]?.simpleProperties?.find(
-                    property => property.name === `${repo}TitleId`
-                )?.value,
-                externalId: title?.tenantData?.complexProperties[0]?.simpleProperties?.find(
-                    property => property.name === `${repo}Id`
-                )?.value,
-            },
-        ];
-    };
-
     const getPublishedAt = repo => {
         if (isNexusTitle(title.id)) {
             return externalIds.find(ids => ids.externalSystem === repo);
@@ -378,10 +355,24 @@ const TitleDetails = ({
         return dateTime ? `Updated At: ${moment(dateTime?.publishedAt).utc().format('YYYY/MM/DD, h:mm:ss a')}` : '';
     };
 
+    /**
+     * Calculate the external ids for a given title
+     * Nexus Titles get this info from a different API
+     * whereas non-nexus titles have it in {title.tenantData} property
+     * @returns Flat External Ids list
+     */
+    const calculateExternalIds = () => {
+        const repositories = ['vz', 'movida', 'movida-uk'];
+        // for Nexus titles, external ids are fetched from getPublishInfo API
+        if (isNexusTitle(title.id)) {
+            return externalIds.filter(ids => repositories.includes(ids.externalSystem));
+        }
+        // else if the title is not a Nexus title
+        return title?.tenantData?.complexProperties.find(property => property.name === 'legacyIds').simpleProperties;
+    };
+
     const extendTitleWithExternalIds = () => {
-        const [vzExternalIds] = getExternaIds('vz');
-        const [movidaExternalIds] = getExternaIds('movida');
-        const [movidaUkExternalIds] = getExternaIds('movida-uk');
+        const externalIds = calculateExternalIds();
 
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'categories', 'name');
@@ -399,9 +390,7 @@ const TitleDetails = ({
             ...updatedTitle,
             episodesCount: episodesCount.total ? episodesCount.total : '0',
             seasonsCount: seasonsCount.total ? seasonsCount.total : '0',
-            vzExternalIds,
-            movidaExternalIds,
-            movidaUkExternalIds,
+            externalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
             territorialMetadata: updatedTerritorialMetadata,
         };
