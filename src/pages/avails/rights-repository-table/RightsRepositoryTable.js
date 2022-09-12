@@ -4,13 +4,11 @@ import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
 import {getUsername} from '@portal/portal-auth/authSelectors';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {
-    defineButtonColumn,
-    defineCheckboxSelectionColumn,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import {defineButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withSelectableRows from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSelectableRows';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
@@ -211,16 +209,7 @@ const RightsRepositoryTable = ({
                     columnDefs.sort((a, b) => columnIds?.indexOf(a.colId) - columnIds?.indexOf(b.colId))
                 )
             );
-            const updatedColumnDefs = colDefs.length
-                ? [
-                      defineCheckboxSelectionColumn({
-                          headerCheckboxSelection: true,
-                          headerCheckboxSelectionFilteredOnly: true,
-                      }),
-                      actionMatchingButtonColumnDef,
-                      ...colDefs,
-                  ]
-                : colDefs;
+            const updatedColumnDefs = colDefs.length ? [actionMatchingButtonColumnDef, ...colDefs] : colDefs;
 
             setTableColumnDefinitions(updatedColumnDefs);
         }
@@ -602,6 +591,7 @@ const mapDispatchToProps = dispatch => ({
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepositoryTable);
 
 const RightsRepoComposedTable = compose(
+    withSelectableRows(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2, filtersMapping: processOptions}),
     withColumnsResizing(),

@@ -93,3 +93,8 @@ export const setExternalIdValues = payload => ({
     type: actionTypes.SET_EXTERNAL_ID_DROPDOWN,
     payload,
 });
+
+export const setSelectedTitles = payload => ({
+    type: actionTypes.SET_SELECTED_TITLES,
+    payload,
+});

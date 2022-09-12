@@ -1,18 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Lozenge from '@atlaskit/lozenge';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
-import Select from '@atlaskit/select';
-import Textfield from '@atlaskit/textfield';
-import Tooltip from '@atlaskit/tooltip';
+import {Dropdown, InputText, InputTextarea, Tooltip as PortalTooltip} from '@portal/portal-components';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
-import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {createSuccessMessageSelector} from '@vubiquity-nexus/portal-ui/lib/success/successSelector';
 import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
+import {cloneDeep, get, isEmpty, isEqual, set} from 'lodash';
 import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import {readinessStatus} from '../../../constants';
@@ -20,7 +16,7 @@ import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../serv
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
 import {SOURCE_STANDARD} from '../services-table/Constants';
 import ErrorsList from './ErrorsList';
-import Constants, {READINESS_CHANGE_WARNING, ORDER_REVISION_WARNING} from './constants';
+import Constants, {ORDER_REVISION_WARNING, READINESS_CHANGE_WARNING} from './constants';
 import './FulfillmentOrder.scss';
 
 const modalHeading = 'Warning';
@@ -158,14 +154,6 @@ export const FulfillmentOrder = ({
         ];
         openModal(ModalContent, {title: modalHeading, width: 'small', actions});
     };
-
-    const readinessOption = fulfillmentOrder
-        ? Constants.READINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.READINESS])
-        : {};
-
-    const marketTypeOption = fulfillmentOrder
-        ? Constants.MARKET_TYPES.find(l => l.value === fulfillmentOrder[fieldKeys.MARKET_TYPE])
-        : {};
 
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
@@ -441,33 +429,32 @@ export const FulfillmentOrder = ({
                             <GridColumn medium={3}>
                                 {fulfillmentOrder.hasOwnProperty(fieldKeys.MARKET_TYPE) && (
                                     <div className="fulfillment-order__input">
-                                        <label htmlFor="readiness-status">Market Type</label>
-                                        <Select
-                                            id="market-type"
-                                            name="market-type"
-                                            options={Constants.MARKET_TYPES}
-                                            value={{
-                                                value: get(fulfillmentOrder, fieldKeys.MARKET_TYPE, ''),
-                                                label: marketTypeOption && marketTypeOption.label,
+                                        <Dropdown
+                                            labelProps={{
+                                                label: 'Market Type',
+                                                shouldUpper: false,
+                                                stacked: true,
                                             }}
+                                            id="market-type"
+                                            options={Constants.MARKET_TYPES}
+                                            value={get(fulfillmentOrder, fieldKeys.MARKET_TYPE, '')}
                                             onChange={val => onFieldChange(fieldKeys.MARKET_TYPE, val.value)}
-                                            isDisabled={!userHasPermissions}
                                         />
                                     </div>
                                 )}
                                 {fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_FAULT) && (
                                     <div className="fulfillment-order__input">
-                                        <label htmlFor="late-fault">Late At Fault</label>
-                                        <Select
-                                            id="late-fault"
-                                            name="late-fault"
-                                            options={lateFaultOptions}
-                                            value={{
-                                                value: get(fulfillmentOrder, fieldKeys.LATE_FAULT),
-                                                label: get(fulfillmentOrder, fieldKeys.LATE_FAULT) || 'NONE',
+                                        <Dropdown
+                                            labelProps={{
+                                                label: 'Late At Fault',
+                                                shouldUpper: false,
+                                                stacked: true,
                                             }}
+                                            id="late-fault"
+                                            options={lateFaultOptions}
+                                            value={get(fulfillmentOrder, fieldKeys.LATE_FAULT)}
                                             onChange={val => onFieldChange(fieldKeys.LATE_FAULT, val.value)}
-                                            isDisabled={!userHasPermissions}
+                                            disabled={!userHasPermissions}
                                         />
                                     </div>
                                 )}
@@ -475,78 +462,104 @@ export const FulfillmentOrder = ({
                             <GridColumn medium={3}>
                                 {fulfillmentOrder.hasOwnProperty(fieldKeys.CAR) && (
                                     <div className="fulfillment-order__input">
-                                        <label htmlFor="car">CAR</label>
-                                        <Tooltip content={get(fulfillmentOrder, fieldKeys.CAR, '')}>
-                                            <Textfield
-                                                name="CAR"
-                                                id="car"
-                                                value={get(fulfillmentOrder, fieldKeys.CAR, '') || ''}
-                                                onChange={e => onFieldChange(fieldKeys.CAR, e.target.value)}
-                                                isDisabled={!userHasPermissions}
-                                                css={{height: 'auto'}}
-                                            />
-                                        </Tooltip>
+                                        <PortalTooltip
+                                            content={get(fulfillmentOrder, fieldKeys.CAR, '')}
+                                            target=".lbl-car"
+                                            position="bottom"
+                                        />
+
+                                        <InputText
+                                            labelProps={{
+                                                htmlFor: 'car',
+                                                label: 'Car',
+                                                shouldUpper: true,
+                                                stacked: true,
+                                            }}
+                                            id="car"
+                                            className="lbl-car"
+                                            name="CAR"
+                                            value={get(fulfillmentOrder, fieldKeys.CAR, '') || ''}
+                                            disabled={!userHasPermissions}
+                                            onChange={e => onFieldChange(fieldKeys.CAR, e.target.value)}
+                                        />
                                     </div>
                                 )}
                                 {fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_REASON) && (
                                     <div className="fulfillment-order__input">
-                                        <label htmlFor="late-reason">Late Reason</label>
-                                        <Tooltip content={get(fulfillmentOrder, fieldKeys.LATE_REASON, '')}>
-                                            <Select
-                                                id="late-reason"
-                                                name="late-reason"
-                                                options={lateReasonOptions}
-                                                value={{
-                                                    value: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
-                                                    label: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
-                                                }}
-                                                onChange={val => onFieldChange(fieldKeys.LATE_REASON, val.value)}
-                                                isDisabled={!userHasPermissions}
-                                            />
-                                        </Tooltip>
+                                        <Dropdown
+                                            labelProps={{
+                                                label: 'Late Reason',
+                                                shouldUpper: false,
+                                                stacked: true,
+                                            }}
+                                            id="late-reason"
+                                            className="late-reason-ddl"
+                                            options={lateReasonOptions}
+                                            value={get(fulfillmentOrder, fieldKeys.LATE_REASON, '')}
+                                            onChange={val => onFieldChange(fieldKeys.LATE_REASON, val.value)}
+                                            disabled={!userHasPermissions}
+                                            tooltip={fulfillmentOrder[fieldKeys.LATE_REASON]}
+                                            tooltipOptions={{position: 'bottom'}}
+                                        />
                                     </div>
                                 )}
                             </GridColumn>
                             <GridColumn medium={3}>
                                 <div className="fulfillment-order__input">
-                                    <Tooltip
+                                    <PortalTooltip
                                         content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}
-                                    >
-                                        <div onClick={onTooltipOptionClick}>
-                                            <label htmlFor="late-reason">Fulfillment Status</label>
-                                            <ErrorIcon size="small" primaryColor={deteErrors.length ? 'red' : 'grey'} />
-                                        </div>
-                                    </Tooltip>
-                                    <Textfield
+                                        target=".late-reason-lbl"
+                                    />
+
+                                    <InputText
+                                        labelProps={{
+                                            htmlFor: 'fulfillmentStatus',
+                                            label: 'Fulfillment Status',
+                                            shouldUpper: false,
+                                            stacked: true,
+                                            className: 'late-reason-lbl',
+                                            additionalLabel: (
+                                                <i
+                                                    onClick={onTooltipOptionClick}
+                                                    className={`pi pi-exclamation-circle mx-2 error-icon ${
+                                                        deteErrors.length ? 'red' : 'grey'
+                                                    }`}
+                                                />
+                                            ),
+                                        }}
+                                        id="fulfillmentStatus"
                                         name="fulfillment-status"
                                         value={Constants.STATUS[get(fulfillmentOrder, fieldKeys.STATUS, '')] || ''}
-                                        isDisabled={true}
+                                        disabled={true}
                                     />
                                 </div>
                                 <div className="fulfillment-order__input">
-                                    <label htmlFor="readiness-status">Readiness Status</label>
-                                    <Select
+                                    <Dropdown
+                                        labelProps={{
+                                            label: 'Readiness Status',
+                                            shouldUpper: false,
+                                            stacked: true,
+                                        }}
                                         id="readiness-status"
-                                        name="readiness-status"
                                         className="fulfillment-order__readiness-status"
                                         options={Constants.READINESS_STATUS}
-                                        value={{
-                                            value: get(fulfillmentOrder, fieldKeys.READINESS, ''),
-                                            label: readinessOption && readinessOption.label,
-                                        }}
+                                        value={get(fulfillmentOrder, fieldKeys.READINESS, '')}
                                         onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
-                                        isDisabled={isFormDisabled}
+                                        disabled={isFormDisabled}
                                     />
                                 </div>
-                                <label htmlFor="notes">Notes:</label>
-                                <NexusTextArea
+
+                                <InputTextarea
+                                    labelProps={{
+                                        label: 'Notes',
+                                        shouldUpper: false,
+                                        stacked: true,
+                                    }}
+                                    id="txtAreaNotes"
                                     name="notes"
-                                    onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
-                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
-                                    disabled={false}
-                                    resize="smart"
-                                    isCompact
-                                    isDisabled={!userHasPermissions}
+                                    onChange={e => onFieldChange(fieldKeys.NOTES, e.target.value)}
+                                    value={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
+                                    disabled={!userHasPermissions}
                                 />
                             </GridColumn>
                         </Grid>

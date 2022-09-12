@@ -61,138 +61,144 @@ exports[`NexusArray should match snapshot 1`] = `
         />
       </div>
       <div
-        className="nexus-c-array__field "
-        key="nexus-c-array__field selected"
+        className="row"
       >
-        <Restricted>
-          <NexusField
-            allData={Object {}}
-            castCrewConfig={Object {}}
-            config={Array []}
-            dateType=""
-            dependencies={Array []}
-            forMetadata={false}
-            formData={Object {}}
-            getCurrentValues={[Function]}
-            getValues={[Function]}
-            id="[0].selected"
-            inModal={false}
-            initialData={
-              Object {
-                "comment": "yyyyy",
-                "country": "IL",
-                "dateSelected": null,
-                "dateWithdrawn": null,
-                "hide": null,
-                "rightContractStatus": "Pending",
-                "selected": false,
-                "vuContractId": Array [],
+        <div
+          className="col-6 array-field-wrapper"
+          key="nexus-c-array__field selected"
+        >
+          <Restricted>
+            <NexusField
+              allData={Object {}}
+              castCrewConfig={Object {}}
+              config={Array []}
+              dateType=""
+              dependencies={Array []}
+              forMetadata={false}
+              formData={Object {}}
+              getCurrentValues={[Function]}
+              getValues={[Function]}
+              id="[0].selected"
+              inModal={false}
+              initialData={
+                Object {
+                  "comment": "yyyyy",
+                  "country": "IL",
+                  "dateSelected": null,
+                  "dateWithdrawn": null,
+                  "hide": null,
+                  "rightContractStatus": "Pending",
+                  "selected": false,
+                  "vuContractId": Array [],
+                }
               }
-            }
-            isClearable={false}
-            isEditable={true}
-            isGridLayout={false}
-            isHighlighted={false}
-            isOptional={false}
-            isReadOnly={true}
-            isReadOnlyInEdit={false}
-            isRequired={false}
-            isRequiredVZ={false}
-            isReturningTime={true}
-            isTitlePage={false}
-            isVerticalLayout={false}
-            key="[0].selected"
-            label="Selected"
-            labels={Array []}
-            linkConfig={Object {}}
-            name="[0].selected"
-            oneIsRequiredVZ={false}
-            optionsConfig={Object {}}
-            path="territory.selected"
-            pathName=""
-            sectionID=""
-            selectValues={Object {}}
-            setFieldValue={[MockFunction]}
-            setUpdate={[Function]}
-            setUpdatedValues={[Function]}
-            shouldUpperCase={false}
-            showLocalized={false}
-            stackLabel={false}
-            tooltip={null}
-            type="boolean"
-            useCurrentDate={false}
-            validation={Array []}
-            validationError={null}
-            view="EDIT"
-          />
-        </Restricted>
-      </div>
-      <div
-        className="nexus-c-array__field "
-        key="nexus-c-array__field country"
-      >
-        <Restricted>
-          <NexusField
-            allData={Object {}}
-            castCrewConfig={Object {}}
-            config={Array []}
-            dateType=""
-            dependencies={Array []}
-            forMetadata={false}
-            formData={Object {}}
-            getCurrentValues={[Function]}
-            getValues={[Function]}
-            id="[0].country"
-            inModal={false}
-            initialData={
-              Object {
-                "comment": "yyyyy",
-                "country": "IL",
-                "dateSelected": null,
-                "dateWithdrawn": null,
-                "hide": null,
-                "rightContractStatus": "Pending",
-                "selected": false,
-                "vuContractId": Array [],
+              isClearable={false}
+              isEditable={true}
+              isGridLayout={false}
+              isHighlighted={false}
+              isOptional={false}
+              isReadOnly={true}
+              isReadOnlyInEdit={false}
+              isRequired={false}
+              isRequiredVZ={false}
+              isReturningTime={true}
+              isTitlePage={false}
+              isVerticalLayout={false}
+              key="[0].selected"
+              label="Selected"
+              labels={Array []}
+              linkConfig={Object {}}
+              name="[0].selected"
+              oneIsRequiredVZ={false}
+              optionsConfig={Object {}}
+              path="territory.selected"
+              pathName=""
+              sectionID=""
+              selectValues={Object {}}
+              setFieldValue={[MockFunction]}
+              setUpdate={[Function]}
+              setUpdatedValues={[Function]}
+              shouldStackLabel={true}
+              shouldUpperCase={false}
+              showLocalized={false}
+              stackLabel={false}
+              tooltip={null}
+              type="boolean"
+              useCurrentDate={false}
+              validation={Array []}
+              validationError={null}
+              view="EDIT"
+            />
+          </Restricted>
+        </div>
+        <div
+          className="col-6 array-field-wrapper"
+          key="nexus-c-array__field country"
+        >
+          <Restricted>
+            <NexusField
+              allData={Object {}}
+              castCrewConfig={Object {}}
+              config={Array []}
+              dateType=""
+              dependencies={Array []}
+              forMetadata={false}
+              formData={Object {}}
+              getCurrentValues={[Function]}
+              getValues={[Function]}
+              id="[0].country"
+              inModal={false}
+              initialData={
+                Object {
+                  "comment": "yyyyy",
+                  "country": "IL",
+                  "dateSelected": null,
+                  "dateWithdrawn": null,
+                  "hide": null,
+                  "rightContractStatus": "Pending",
+                  "selected": false,
+                  "vuContractId": Array [],
+                }
               }
-            }
-            isClearable={false}
-            isEditable={true}
-            isGridLayout={false}
-            isHighlighted={false}
-            isOptional={false}
-            isReadOnly={false}
-            isReadOnlyInEdit={false}
-            isRequired={false}
-            isRequiredVZ={false}
-            isReturningTime={true}
-            isTitlePage={false}
-            isVerticalLayout={false}
-            key="[0].country"
-            label="Country"
-            labels={Array []}
-            linkConfig={Object {}}
-            name="[0].country"
-            oneIsRequiredVZ={false}
-            optionsConfig={Object {}}
-            path="territory.country"
-            pathName=""
-            sectionID=""
-            selectValues={Object {}}
-            setFieldValue={[MockFunction]}
-            setUpdate={[Function]}
-            setUpdatedValues={[Function]}
-            shouldUpperCase={false}
-            showLocalized={false}
-            stackLabel={false}
-            tooltip={null}
-            type="string"
-            useCurrentDate={false}
-            validation={Array []}
-            validationError={null}
-            view="EDIT"
-          />
-        </Restricted>
+              isClearable={false}
+              isEditable={true}
+              isGridLayout={false}
+              isHighlighted={false}
+              isOptional={false}
+              isReadOnly={false}
+              isReadOnlyInEdit={false}
+              isRequired={false}
+              isRequiredVZ={false}
+              isReturningTime={true}
+              isTitlePage={false}
+              isVerticalLayout={false}
+              key="[0].country"
+              label="Country"
+              labels={Array []}
+              linkConfig={Object {}}
+              name="[0].country"
+              oneIsRequiredVZ={false}
+              optionsConfig={Object {}}
+              path="territory.country"
+              pathName=""
+              sectionID=""
+              selectValues={Object {}}
+              setFieldValue={[MockFunction]}
+              setUpdate={[Function]}
+              setUpdatedValues={[Function]}
+              shouldStackLabel={true}
+              shouldUpperCase={false}
+              showLocalized={false}
+              stackLabel={false}
+              tooltip={null}
+              type="string"
+              useCurrentDate={false}
+              validation={Array []}
+              validationError={null}
+              view="EDIT"
+            />
+          </Restricted>
+        </div>
       </div>
     </div>
     <div
@@ -208,138 +214,144 @@ exports[`NexusArray should match snapshot 1`] = `
         />
       </div>
       <div
-        className="nexus-c-array__field "
-        key="nexus-c-array__field selected"
+        className="row"
       >
-        <Restricted>
-          <NexusField
-            allData={Object {}}
-            castCrewConfig={Object {}}
-            config={Array []}
-            dateType=""
-            dependencies={Array []}
-            forMetadata={false}
-            formData={Object {}}
-            getCurrentValues={[Function]}
-            getValues={[Function]}
-            id="[1].selected"
-            inModal={false}
-            initialData={
-              Object {
-                "comment": "",
-                "country": "US",
-                "dateSelected": null,
-                "dateWithdrawn": null,
-                "hide": null,
-                "rightContractStatus": "MatchedOnce",
-                "selected": false,
-                "vuContractId": Array [],
+        <div
+          className="col-6 array-field-wrapper"
+          key="nexus-c-array__field selected"
+        >
+          <Restricted>
+            <NexusField
+              allData={Object {}}
+              castCrewConfig={Object {}}
+              config={Array []}
+              dateType=""
+              dependencies={Array []}
+              forMetadata={false}
+              formData={Object {}}
+              getCurrentValues={[Function]}
+              getValues={[Function]}
+              id="[1].selected"
+              inModal={false}
+              initialData={
+                Object {
+                  "comment": "",
+                  "country": "US",
+                  "dateSelected": null,
+                  "dateWithdrawn": null,
+                  "hide": null,
+                  "rightContractStatus": "MatchedOnce",
+                  "selected": false,
+                  "vuContractId": Array [],
+                }
               }
-            }
-            isClearable={false}
-            isEditable={true}
-            isGridLayout={false}
-            isHighlighted={false}
-            isOptional={false}
-            isReadOnly={true}
-            isReadOnlyInEdit={false}
-            isRequired={false}
-            isRequiredVZ={false}
-            isReturningTime={true}
-            isTitlePage={false}
-            isVerticalLayout={false}
-            key="[1].selected"
-            label="Selected"
-            labels={Array []}
-            linkConfig={Object {}}
-            name="[1].selected"
-            oneIsRequiredVZ={false}
-            optionsConfig={Object {}}
-            path="territory.selected"
-            pathName=""
-            sectionID=""
-            selectValues={Object {}}
-            setFieldValue={[MockFunction]}
-            setUpdate={[Function]}
-            setUpdatedValues={[Function]}
-            shouldUpperCase={false}
-            showLocalized={false}
-            stackLabel={false}
-            tooltip={null}
-            type="boolean"
-            useCurrentDate={false}
-            validation={Array []}
-            validationError={null}
-            view="EDIT"
-          />
-        </Restricted>
-      </div>
-      <div
-        className="nexus-c-array__field "
-        key="nexus-c-array__field country"
-      >
-        <Restricted>
-          <NexusField
-            allData={Object {}}
-            castCrewConfig={Object {}}
-            config={Array []}
-            dateType=""
-            dependencies={Array []}
-            forMetadata={false}
-            formData={Object {}}
-            getCurrentValues={[Function]}
-            getValues={[Function]}
-            id="[1].country"
-            inModal={false}
-            initialData={
-              Object {
-                "comment": "",
-                "country": "US",
-                "dateSelected": null,
-                "dateWithdrawn": null,
-                "hide": null,
-                "rightContractStatus": "MatchedOnce",
-                "selected": false,
-                "vuContractId": Array [],
+              isClearable={false}
+              isEditable={true}
+              isGridLayout={false}
+              isHighlighted={false}
+              isOptional={false}
+              isReadOnly={true}
+              isReadOnlyInEdit={false}
+              isRequired={false}
+              isRequiredVZ={false}
+              isReturningTime={true}
+              isTitlePage={false}
+              isVerticalLayout={false}
+              key="[1].selected"
+              label="Selected"
+              labels={Array []}
+              linkConfig={Object {}}
+              name="[1].selected"
+              oneIsRequiredVZ={false}
+              optionsConfig={Object {}}
+              path="territory.selected"
+              pathName=""
+              sectionID=""
+              selectValues={Object {}}
+              setFieldValue={[MockFunction]}
+              setUpdate={[Function]}
+              setUpdatedValues={[Function]}
+              shouldStackLabel={true}
+              shouldUpperCase={false}
+              showLocalized={false}
+              stackLabel={false}
+              tooltip={null}
+              type="boolean"
+              useCurrentDate={false}
+              validation={Array []}
+              validationError={null}
+              view="EDIT"
+            />
+          </Restricted>
+        </div>
+        <div
+          className="col-6 array-field-wrapper"
+          key="nexus-c-array__field country"
+        >
+          <Restricted>
+            <NexusField
+              allData={Object {}}
+              castCrewConfig={Object {}}
+              config={Array []}
+              dateType=""
+              dependencies={Array []}
+              forMetadata={false}
+              formData={Object {}}
+              getCurrentValues={[Function]}
+              getValues={[Function]}
+              id="[1].country"
+              inModal={false}
+              initialData={
+                Object {
+                  "comment": "",
+                  "country": "US",
+                  "dateSelected": null,
+                  "dateWithdrawn": null,
+                  "hide": null,
+                  "rightContractStatus": "MatchedOnce",
+                  "selected": false,
+                  "vuContractId": Array [],
+                }
               }
-            }
-            isClearable={false}
-            isEditable={true}
-            isGridLayout={false}
-            isHighlighted={false}
-            isOptional={false}
-            isReadOnly={false}
-            isReadOnlyInEdit={false}
-            isRequired={false}
-            isRequiredVZ={false}
-            isReturningTime={true}
-            isTitlePage={false}
-            isVerticalLayout={false}
-            key="[1].country"
-            label="Country"
-            labels={Array []}
-            linkConfig={Object {}}
-            name="[1].country"
-            oneIsRequiredVZ={false}
-            optionsConfig={Object {}}
-            path="territory.country"
-            pathName=""
-            sectionID=""
-            selectValues={Object {}}
-            setFieldValue={[MockFunction]}
-            setUpdate={[Function]}
-            setUpdatedValues={[Function]}
-            shouldUpperCase={false}
-            showLocalized={false}
-            stackLabel={false}
-            tooltip={null}
-            type="string"
-            useCurrentDate={false}
-            validation={Array []}
-            validationError={null}
-            view="EDIT"
-          />
-        </Restricted>
+              isClearable={false}
+              isEditable={true}
+              isGridLayout={false}
+              isHighlighted={false}
+              isOptional={false}
+              isReadOnly={false}
+              isReadOnlyInEdit={false}
+              isRequired={false}
+              isRequiredVZ={false}
+              isReturningTime={true}
+              isTitlePage={false}
+              isVerticalLayout={false}
+              key="[1].country"
+              label="Country"
+              labels={Array []}
+              linkConfig={Object {}}
+              name="[1].country"
+              oneIsRequiredVZ={false}
+              optionsConfig={Object {}}
+              path="territory.country"
+              pathName=""
+              sectionID=""
+              selectValues={Object {}}
+              setFieldValue={[MockFunction]}
+              setUpdate={[Function]}
+              setUpdatedValues={[Function]}
+              shouldStackLabel={true}
+              shouldUpperCase={false}
+              showLocalized={false}
+              stackLabel={false}
+              tooltip={null}
+              type="string"
+              useCurrentDate={false}
+              validation={Array []}
+              validationError={null}
+              view="EDIT"
+            />
+          </Restricted>
+        </div>
       </div>
     </div>
   </div>

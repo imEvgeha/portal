@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import {getUsername} from '@portal/portal-auth/authSelectors';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {
-    defineButtonColumn,
-    defineCheckboxSelectionColumn,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import {defineButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
@@ -72,15 +69,10 @@ const PreplanRightsTable = ({
                 cellStyle: {overflow: 'visible'},
             });
 
-            const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
-                headerCheckboxSelection: true,
-                headerCheckboxSelectionFilteredOnly: true,
-            });
-
             const columnDefsClone = mapColumnDefinitions(columnDefs);
 
             const updatedColumnDefsCheckBoxHeader = columnDefsClone.length
-                ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
+                ? [actionMatchingButtonColumnDef, ...columnDefsClone]
                 : columnDefsClone;
 
             const selectedAtCol = updatedColumnDefsCheckBoxHeader.find(item => item.headerName === 'Selected At');
@@ -267,6 +259,7 @@ const PreplanRightsTable = ({
                     id="prePlanRightsRepo"
                     columnDefs={prePlanColumnDef.length ? prePlanColumnDef : tableColumnDefinitions}
                     singleClickEdit
+                    context={{selectedRows: selectedPPRights}}
                     rowSelection="multiple"
                     suppressRowClickSelection={true}
                     mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}

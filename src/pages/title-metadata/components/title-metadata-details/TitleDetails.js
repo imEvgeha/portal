@@ -60,6 +60,7 @@ import {
     isStateEditable,
     prepareCategoryField,
     propagateSeasonsPersonsToEpisodes,
+    isValidContentTypeToCreateCopy,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
@@ -456,6 +457,11 @@ const TitleDetails = ({
         return res;
     };
 
+    const isActionMenuBtnVisible =
+        title.id &&
+        (isAllowed('isActionMenuVisible') ||
+            (isValidContentTypeToCreateCopy(title.contentType) && isAllowed('createTitleCopyAction')));
+
     return (
         <div className={classnames(loading ? 'nexus-c-title-details__loading' : 'nexus-c-title-details')}>
             <TitleDetailsHeader
@@ -552,7 +558,7 @@ const TitleDetails = ({
                                 </NexusTooltip>
                             </Restricted>
 
-                            {title.id && (
+                            {isActionMenuBtnVisible && (
                                 <ActionMenu
                                     title={title}
                                     containerClassName={

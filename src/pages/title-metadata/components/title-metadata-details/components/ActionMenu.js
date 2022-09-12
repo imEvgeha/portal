@@ -1,25 +1,31 @@
 import React, {useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {isAllowed, Restricted} from '@portal/portal-auth/permissions';
+import {Restricted, isAllowed} from '@portal/portal-auth/permissions';
 import NexusDropdown, {
     DropdownOption,
     DropdownOptions,
     DropdownToggle,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {toLower, toString} from 'lodash';
+import {toString, toLower, startCase, toUpper} from 'lodash';
+import {useDispatch} from 'react-redux';
+import {useNavigate, useParams} from 'react-router-dom';
 import './ActionMenu.scss';
+import TitleService from '../../../services/TitleService';
 import {unmergeTitle} from '../../../titleMetadataServices';
+import {isValidContentTypeToCreateCopy} from '../../../utils';
 import TitleCreateCopyModal from '../../titleCreateCopyModal/TitleCreateCopyModal';
 import {CONTENT_TYPES} from '../../titleCreateModal/TitleCreateModalConstants';
+import TitleDeleteModal from '../../titleDeleteModal/TitleDeleteModal';
 
 const UNMERGE_TITLE = 'Unmerge';
 const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
 const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMetadata}) => {
     const contentTypesCrateCopyArray = [CONTENT_TYPES.MOVIE.toLowerCase(), CONTENT_TYPES.DOCUMENTARY.toLowerCase()];
-    const dropdownOption = {copyDesc: 'Copy...', unmergeDesc: 'Unmerge'};
+    const dropdownOption = {copyDesc: 'Copy...', unmergeDesc: 'Unmerge', deleteDesc: 'Delete'};
 
     const complexProperties = title?.tenantData?.complexProperties;
     const tenantDataLegacyIds = complexProperties?.find(item => item.name === 'legacyIds');
@@ -27,18 +33,24 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
 
     const {openModal, closeModal} = useContext(NexusModalContext);
     const isAbleCreateCopy = contentTypesCrateCopyArray.includes(toLower(toString(title.contentType)));
-    const isDropDownActionVisible =
-        (tenantDataLegacyIds && isAllowed('unmergeTitleAction')) ||
-        isAllowed('deleteTitleAction') ||
-        (isAbleCreateCopy && isAllowed('createTitleCopyButton'));
-    const [displayModal, setDisplayModal] = React.useState(false);
 
+    const contentTypeLowerCase = toLower(toString(title.contentType));
+    const contentTypeUpperCase = toUpper(toString(title.contentType));
+    const isContentTypeWithAssociatedContent =
+        contentTypeUpperCase === 'SEASON' ||
+        contentTypeUpperCase === 'SERIES' ||
+        contentTypeUpperCase === 'MINI-SERIES';
+
+    const [displayCreateCopyModal, setDisplayCreateCopyModal] = React.useState(false);
+    const [displayDeleteTitleModal, setDisplayDeleteTitleModal] = React.useState(false);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const routeParams = useParams();
     const openUnmergeDialog = useCallback(() => {
         const confirmUnmerge = () => {
             unmergeTitle(title.id);
             closeModal();
         };
-
         const actions = [
             {
                 text: 'Cancel',
@@ -54,27 +66,84 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
         openModal(UNMERGE_MESSAGE, {title: UNMERGE_TITLE, width: 'medium', actions});
     }, [title.id]);
 
-    const handleCloseModal = () => {
-        setDisplayModal(false);
+    const deleteTitleModalMessage = () => {
+        const question = `Would you like to delete this ${startCase(contentTypeLowerCase)}?`;
+        if (isContentTypeWithAssociatedContent) {
+            return {
+                question,
+                description: `This ${startCase(
+                    contentTypeLowerCase
+                )} may have ${isSeasonOrMiniContentType()} associated to it that will also be deleted.`,
+            };
+        }
+        return {
+            question,
+            description: `You will not be able to recover the ${startCase(contentTypeLowerCase)} once deleted.`,
+        };
     };
 
-    return isDropDownActionVisible ? (
+    const showSuccessTitleDeleteToast = () => {
+        let detailDescription = `The ${startCase(contentTypeLowerCase)} ${toString(title.id)} was deleted.`;
+        if (isContentTypeWithAssociatedContent) {
+            detailDescription = `This ${startCase(contentTypeLowerCase)} ${toString(
+                title.id
+            )} and associated ${isSeasonOrMiniContentType()} were deleted.`;
+        }
+        dispatch(
+            addToast({
+                severity: 'success',
+                detail: detailDescription,
+            })
+        );
+    };
+
+    /**
+     * Thanks to this function, we understand what level of children this title has.
+     * Season and Mini-Series types has episodes and series type has seasons and/or episodes
+     * @returns Episodes if content type is SEASON or
+     */
+    const isSeasonOrMiniContentType = () => {
+        return contentTypeUpperCase === 'SEASON' || contentTypeUpperCase === 'MINI-SERIES'
+            ? 'Episodes'
+            : 'Seasons and/or Episodes';
+    };
+
+    const onDeleteTitle = () => {
+        TitleService.getInstance()
+            .deleteTitle({
+                titleId: title.id,
+                forceDeleteChildren: isContentTypeWithAssociatedContent,
+            })
+            .then(() => {
+                const url = `/${routeParams.realm}/metadata`;
+                navigate(url);
+                showSuccessTitleDeleteToast();
+            });
+    };
+
+    return (
         <div className={containerClassName}>
             <NexusDropdown>
                 <DropdownToggle label="Actions" isMobile />
-
                 <DropdownOptions isMobile align="top">
-                    {isAbleCreateCopy && isAllowed('createTitleCopyButton') ? (
-                        <Restricted resource="createTitleCopyButton">
-                            <DropdownOption value="copy" onSelect={() => setDisplayModal(true)}>
-                                <i className="pi pi-copy" /> {dropdownOption.copyDesc}
+                    <Restricted resource="deleteTitleAction">
+                        <DropdownOption value="delete" onSelect={() => setDisplayDeleteTitleModal(true)}>
+                            <i className="pi pi-trash pe-3" /> {dropdownOption.deleteDesc}
+                        </DropdownOption>
+                    </Restricted>
+                    {isAbleCreateCopy &&
+                    isAllowed('createTitleCopyAction') &&
+                    isValidContentTypeToCreateCopy(contentTypeLowerCase) ? (
+                        <Restricted resource="createTitleCopyAction">
+                            <DropdownOption value="copy" onSelect={() => setDisplayCreateCopyModal(true)}>
+                                <i className="pi pi-copy pe-3" /> {dropdownOption.copyDesc}
                             </DropdownOption>
                         </Restricted>
                     ) : null}
                     {displayUnmergeBtn ? (
                         <Restricted resource="unmergeTitleAction">
                             <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
-                                {dropdownOption.unmergeDesc}
+                                <i className="pi pi-window-maximize pe-3" /> {dropdownOption.unmergeDesc}
                             </DropdownOption>
                         </Restricted>
                     ) : null}
@@ -82,14 +151,25 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
             </NexusDropdown>
 
             <TitleCreateCopyModal
-                display={displayModal}
+                display={displayCreateCopyModal}
                 title={title}
                 externalIdOptions={externalIdOptions}
-                handleCloseModal={handleCloseModal}
+                handleCloseModal={() => setDisplayCreateCopyModal(false)}
                 editorialMetadata={editorialMetadata}
             />
+            <TitleDeleteModal
+                header="Delete Title"
+                onDelete={() => onDeleteTitle()}
+                display={displayDeleteTitleModal}
+                onCloseModal={() => setDisplayDeleteTitleModal(false)}
+            >
+                <div className="d-flex flex-column">
+                    <span className="mb-3">{deleteTitleModalMessage().question}</span>
+                    <span className="mb-4">{deleteTitleModalMessage().description}</span>
+                </div>
+            </TitleDeleteModal>
         </div>
-    ) : null;
+    );
 };
 
 ActionMenu.propTypes = {

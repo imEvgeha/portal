@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import Select from '@atlaskit/select';
 import TextArea from '@atlaskit/textarea';
+import {Dropdown} from '@portal/portal-components';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {useDispatch} from 'react-redux';
 import {options, THANKYOU_NOTE} from './constants';
@@ -13,8 +13,8 @@ const NexusFeedback = ({currentPage, closeModal}) => {
     const [feedback, setFeedback] = useState('');
     const [selected, setSelected] = useState('');
 
-    const handleSelectChange = value => {
-        setSelected(value);
+    const handleSelectChange = e => {
+        setSelected(e.value);
     };
 
     const handleSubmit = () => {
@@ -33,12 +33,18 @@ const NexusFeedback = ({currentPage, closeModal}) => {
     return (
         <div>
             <div className="nexus-c-feedback__select">
-                <Select
+                <Dropdown
+                    id="ddlFeedbackOptions"
+                    labelProps={{
+                        label: 'Option',
+                        stacked: true,
+                        shouldUpper: false,
+                    }}
+                    value={selected}
+                    columnClass="col-12"
                     options={options}
                     placeholder="Select one option"
                     onChange={handleSelectChange}
-                    value={selected}
-                    defaultValue={selected}
                 />
             </div>
             <div className="nexus-c-feedback__textarea">

@@ -203,7 +203,7 @@
         "operation": "AND",
         "values": ["metadata_delete"]
     },
-    "createTitleCopyButton": {
+    "createTitleCopyAction": {
         "operation": "AND",
         "values": ["metadata_create"]
     },
@@ -256,6 +256,14 @@
     "msvIDsForTitleMetadata": {
         "operation": "AND",
         "values": ["metadata_msv_ids"]
+    },
+    "metadataDelete": {
+        "operation": "AND",
+        "values": ["metadata_delete"]
+    },
+    "isActionMenuVisible": {
+        "operation": "OR",
+        "values": ["metadata_delete", "metadata_legacy_unmerge"]
     },
     "metadataAutoDecorate": {
         "operation": "AND",
