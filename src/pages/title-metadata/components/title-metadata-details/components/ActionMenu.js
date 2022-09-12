@@ -17,29 +17,28 @@ import TitleService from '../../../services/TitleService';
 import {unmergeTitle} from '../../../titleMetadataServices';
 import {isValidContentTypeToCreateCopy} from '../../../utils';
 import TitleCreateCopyModal from '../../titleCreateCopyModal/TitleCreateCopyModal';
-import {CONTENT_TYPES} from '../../titleCreateModal/TitleCreateModalConstants';
 import TitleDeleteModal from '../../titleDeleteModal/TitleDeleteModal';
 
 const UNMERGE_TITLE = 'Unmerge';
 const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
 const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMetadata}) => {
-    const contentTypesCrateCopyArray = [CONTENT_TYPES.MOVIE.toLowerCase(), CONTENT_TYPES.DOCUMENTARY.toLowerCase()];
-    const dropdownOption = {copyDesc: 'Copy...', unmergeDesc: 'Unmerge', deleteDesc: 'Delete'};
-
     const complexProperties = title?.tenantData?.complexProperties;
     const tenantDataLegacyIds = complexProperties?.find(item => item.name === 'legacyIds');
-    const displayUnmergeBtn = tenantDataLegacyIds && isAllowed('unmergeTitleAction') && isNexusTitle(title.id);
 
-    const {openModal, closeModal} = useContext(NexusModalContext);
-    const isAbleCreateCopy = contentTypesCrateCopyArray.includes(toLower(toString(title.contentType)));
-
+    const dropdownOption = {copyDesc: 'Copy...', unmergeDesc: 'Unmerge', deleteDesc: 'Delete'};
     const contentTypeLowerCase = toLower(toString(title.contentType));
     const contentTypeUpperCase = toUpper(toString(title.contentType));
+    const {openModal, closeModal} = useContext(NexusModalContext);
     const isContentTypeWithAssociatedContent =
         contentTypeUpperCase === 'SEASON' ||
         contentTypeUpperCase === 'SERIES' ||
         contentTypeUpperCase === 'MINI-SERIES';
+
+    const displayUnmergeBtn = tenantDataLegacyIds && isAllowed('unmergeTitleAction') && isNexusTitle(title.id);
+    const displayCopyBtn = isAllowed('createTitleCopyAction') & isValidContentTypeToCreateCopy(contentTypeLowerCase);
+    const displayDeleteBtn = isAllowed('deleteTitleAction');
+    const displayThreeDots = displayUnmergeBtn || displayCopyBtn || displayDeleteBtn;
 
     const [displayCreateCopyModal, setDisplayCreateCopyModal] = React.useState(false);
     const [displayDeleteTitleModal, setDisplayDeleteTitleModal] = React.useState(false);
@@ -124,16 +123,15 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
     return (
         <div className={containerClassName}>
             <NexusDropdown>
-                <DropdownToggle label="Actions" isMobile />
+                {displayThreeDots ? <DropdownToggle label="Actions" isMobile /> : null}
                 <DropdownOptions isMobile align="top">
                     <Restricted resource="deleteTitleAction">
                         <DropdownOption value="delete" onSelect={() => setDisplayDeleteTitleModal(true)}>
                             <i className="pi pi-trash pe-3" /> {dropdownOption.deleteDesc}
                         </DropdownOption>
+                        <hr />
                     </Restricted>
-                    {isAbleCreateCopy &&
-                    isAllowed('createTitleCopyAction') &&
-                    isValidContentTypeToCreateCopy(contentTypeLowerCase) ? (
+                    {displayCopyBtn ? (
                         <Restricted resource="createTitleCopyAction">
                             <DropdownOption value="copy" onSelect={() => setDisplayCreateCopyModal(true)}>
                                 <i className="pi pi-copy pe-3" /> {dropdownOption.copyDesc}
