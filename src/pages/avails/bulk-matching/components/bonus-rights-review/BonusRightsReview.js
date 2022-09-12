@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {get} from 'lodash';
 import TitleMatchingRightsTable from '../../../title-matching-rights-table/TitleMatchingRightsTable';
 import './BonusRightsReview.scss';
@@ -32,9 +32,7 @@ const BonusRightsReview = props => {
             </div>
             <TitleMatchingRightsTable data={get(props, activeTab, [])} />
             {closeDrawer && (
-                <Button onClick={closeDrawer} appearance="primary">
-                    Done
-                </Button>
+                <Button label="Done" onClick={closeDrawer} className="p-button-outlined p-button-secondary" />
             )}
         </div>
     );

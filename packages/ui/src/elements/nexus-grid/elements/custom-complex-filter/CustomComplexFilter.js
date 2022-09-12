@@ -1,7 +1,7 @@
 import React, {forwardRef, useImperativeHandle} from 'react';
 import PropTypes from 'prop-types';
+import {Button} from '@portal/portal-components';
 import {isEmpty} from 'lodash';
-import {Button} from 'primereact/button';
 import {useForm, useWatch} from 'react-hook-form';
 import './CustomComplexFilter.scss';
 import ModuleRenderer from '../module-renderer-for-complex-filter/ModuleRenderer';

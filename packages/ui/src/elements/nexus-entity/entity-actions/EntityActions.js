@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Button} from 'primereact/button';
+import {Button} from '@portal/portal-components';
 import {Tag} from 'primereact/tag';
 import {Action} from './Actions.class';
 import './EntityActions.scss';

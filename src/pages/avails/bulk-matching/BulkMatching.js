@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
+import {Button} from '@portal/portal-components';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {get, toLower} from 'lodash';
-import {Button} from 'primereact/button';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {compose} from 'redux';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';

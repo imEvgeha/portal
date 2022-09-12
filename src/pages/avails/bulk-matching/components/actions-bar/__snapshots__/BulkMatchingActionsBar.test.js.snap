@@ -4,32 +4,25 @@ exports[`BulkMatchingActionsBar should match snapshot 1`] = `
 <div
   className="nexus-c-bulk-actions-bar"
 >
-  <ButtonGroup>
-    <Button
-      className="nexus-c-bulk-actions-bar__btn"
-      isDisabled={false}
-      onClick={[Function]}
-    >
-      Cancel
-    </Button>
-    <LoadingButton
-      appearance="primary"
-      className="nexus-c-bulk-actions-bar__btn"
-      isDisabled={true}
-      isLoading={false}
-      onClick={[Function]}
-    >
-      Match
-    </LoadingButton>
-    <LoadingButton
-      appearance="primary"
-      className="nexus-c-bulk-actions-bar__btn"
-      isDisabled={true}
-      isLoading={false}
-      onClick={[Function]}
-    >
-      Match & Create
-    </LoadingButton>
-  </ButtonGroup>
+  <Button
+    className="p-button-outlined p-button-secondary nexus-c-bulk-actions-bar__btn mx-1"
+    disabled={false}
+    label="Cancel"
+    onClick={[Function]}
+  />
+  <Button
+    className="p-button-outlined p-button-secondary nexus-c-bulk-actions-bar__btn mx-1"
+    disabled={true}
+    label="Match"
+    loading={false}
+    onClick={[Function]}
+  />
+  <Button
+    className="p-button-outlined p-button-secondary nexus-c-bulk-actions-bar__btn mx-1"
+    disabled={true}
+    label="Match & Create"
+    loading={false}
+    onClick={[Function]}
+  />
 </div>
 `;

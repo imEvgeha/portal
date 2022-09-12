@@ -29,7 +29,7 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
     </Button>
   </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
   <NexusDownload
-    className="nexus-c-event-drawer-header__download-button"
+    className="p-button-outlined p-button-secondary nexus-c-event-drawer-header__download-button"
     data={
       Object {
         "headers": Object {

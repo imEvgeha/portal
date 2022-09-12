@@ -4,10 +4,10 @@ exports[`RowDataItem should match snapshot 1`] = `
 <div>
   <div>
     <Button
+      className="p-button-outlined p-button-secondary"
+      label="Add new"
       onClick={[Function]}
-    >
-      Add new
-    </Button>
+    />
   </div>
 </div>
 `;

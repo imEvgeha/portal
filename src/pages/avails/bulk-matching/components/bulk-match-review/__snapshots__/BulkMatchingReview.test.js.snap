@@ -23,11 +23,9 @@ exports[`BulkMatchingReview should match snapshot 1`] = `
     isFullHeight={false}
   />
   <Button
-    appearance="primary"
-    className="nexus-c-bulk-matching-review__btn"
+    className="p-button-outlined p-button-secondary nexus-c-bulk-matching-review__btn"
+    label="Done"
     onClick={[Function]}
-  >
-    Done
-  </Button>
+  />
 </div>
 `;

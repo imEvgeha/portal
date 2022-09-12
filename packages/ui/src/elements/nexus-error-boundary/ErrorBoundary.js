@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '@atlaskit/button';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
+import {Button} from '@portal/portal-components';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
 import './ErrorBoundary.scss';
@@ -36,12 +36,18 @@ export default class ErrorBoundary extends React.Component {
                     </h4>
                     <div>
                         <Link to={URL.keepEmbedded(window.location)}>
-                            <Button appearance="primary" onClick={this.setErrorNull}>
-                                Reload this Page
-                            </Button>
+                            <Button
+                                label="Reload this Page"
+                                className="p-button-outlined"
+                                onClick={this.setErrorNull}
+                            />
                         </Link>
                         <Link to={URL.keepEmbedded('/')} style={{marginLeft: '20px'}}>
-                            <Button onClick={this.setErrorNull}>Go to Homepage</Button>
+                            <Button
+                                label="Go to Homepage"
+                                className="p-button-outlined p-button-secondary"
+                                onClick={this.setErrorNull}
+                            />
                         </Link>
                     </div>
 

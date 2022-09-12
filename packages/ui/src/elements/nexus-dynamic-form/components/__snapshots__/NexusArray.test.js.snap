@@ -39,11 +39,10 @@ exports[`NexusArray should match snapshot 1`] = `
     className="nexus-c-array__add"
   >
     <Button
-      className="nexus-c-dynamic-form__add-button"
+      className="p-button-outlined p-button-secondary nexus-c-dynamic-form__add-button"
+      label="+ Add territory"
       onClick={[Function]}
-    >
-      + Add territory
-    </Button>
+    />
   </div>
   <div
     className="nexus-c-array__objects"

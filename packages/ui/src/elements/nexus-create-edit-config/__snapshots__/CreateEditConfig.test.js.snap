@@ -28,35 +28,17 @@ exports[`CreateEditConfig should match snapshot 1`] = `
       <div
         className="col-sm-12 text-end"
       >
-        <Memo(Button)
-          __TYPE="Button"
-          badge={null}
-          badgeClassName={null}
+        <Button
           className="p-button-outlined p-button-secondary"
-          disabled={false}
-          icon={null}
-          iconPos="left"
           label="Cancel"
-          loading={false}
-          loadingIcon="pi pi-spinner pi-spin"
           onClick={[Function]}
-          tooltip={null}
-          tooltipOptions={null}
         />
-        <Memo(Button)
-          __TYPE="Button"
-          badge={null}
-          badgeClassName={null}
+        <Button
           className="p-button-outlined"
           disabled={true}
-          icon={null}
-          iconPos="left"
           label="OK"
           loading={false}
-          loadingIcon="pi pi-spinner pi-spin"
           onClick={[Function]}
-          tooltip={null}
-          tooltipOptions={null}
         />
       </div>
     </div>

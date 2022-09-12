@@ -2,9 +2,8 @@
 
 exports[`NexusDownload should match snapshot 1`] = `
 <Button
-  className="nexus-c-download"
+  className="p-button-outlined p-button-secondary nexus-c-download"
+  label="Download"
   onClick={[Function]}
->
-  Download
-</Button>
+/>
 `;

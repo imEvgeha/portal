@@ -47,21 +47,17 @@ exports[`NexusFeedback should match snapshot 1`] = `
     className="nexus-c-feedback__btn-wrapper"
   >
     <Button
-      appearance="primary"
-      className="nexus-c-feedback__button"
-      isDisabled={true}
+      className="p-button-outlined nexus-c-feedback__button"
+      disabled={true}
+      label="Send Feedback"
       onClick={[Function]}
-    >
-      Send Feedback
-    </Button>
+    />
     <Button
-      appearance="subtle"
-      className="nexus-c-feedback__button"
-      isDisabled={false}
+      className="p-button-outlined p-button-secondary nexus-c-feedback__button"
+      disabled={false}
+      label="Cancel"
       onClick={[Function]}
-    >
-      Cancel
-    </Button>
+    />
   </div>
 </div>
 `;

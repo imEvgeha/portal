@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Button, {LoadingButton} from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import NexusStatusDot from '../../../nexus-status-dot/NexusStatusDot';
 import {DOT_TYPES} from '../constants';
 
@@ -32,27 +32,25 @@ const ButtonsBuilder = ({
         <>
             <div className="nexus-c-dynamic-form__actions-container">
                 <Button
-                    className="nexus-c-dynamic-form__discard-button"
+                    className="p-button-outlined nexus-c-dynamic-form__discard-button"
                     onClick={() => onCancel()}
-                    isDisabled={((!dirty && disableSubmit) || isSaving || !canEdit) && isEmpty(seasonPersons)}
-                >
-                    Discard
-                </Button>
+                    disabled={((!dirty && disableSubmit) || isSaving || !canEdit) && isEmpty(seasonPersons)}
+                    label="Discard"
+                />
 
                 <div className="nexus-c-dynamic-form__status">
                     <NexusStatusDot severity={formStatus(dirty || !disableSubmit, errors)} />
                 </div>
 
-                <LoadingButton
+                <Button
                     type="submit"
-                    className="nexus-c-dynamic-form__submit-button"
-                    isDisabled={((!dirty && disableSubmit) || !canEdit) && isEmpty(seasonPersons)}
+                    className="p-button-outlined nexus-c-dynamic-form__submit-button"
+                    disabled={((!dirty && disableSubmit) || !canEdit) && isEmpty(seasonPersons)}
                     // this is a form submit button and hence validation check will not work on submit function
                     onClick={showValidationError}
-                    isLoading={isSaving}
-                >
-                    Save
-                </LoadingButton>
+                    loading={isSaving}
+                    label="Save"
+                />
             </div>
         </>
     );

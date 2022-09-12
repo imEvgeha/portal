@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import MatchedCombinedTitlesTable from '../../../matched-combined-titles-table/MatchedCombinedTitlesTable';
 import './BulkMatchingReview.scss';
 import BonusRightsReview from '../bonus-rights-review/BonusRightsReview';
@@ -13,9 +13,11 @@ const BulkMatchingReview = ({combinedTitle, matchedTitles, onDone, bonusRights, 
             <div className="nexus-c-bulk-matching-review__combined">Combined Title</div>
             <MatchedCombinedTitlesTable data={combinedTitle} />
             {bonusRights && <BonusRightsReview bonusRights={bonusRights} existingBonusRights={existingBonusRights} />}
-            <Button className="nexus-c-bulk-matching-review__btn" onClick={onDone} appearance="primary">
-                Done
-            </Button>
+            <Button
+                label="Done"
+                className="p-button-outlined p-button-secondary nexus-c-bulk-matching-review__btn"
+                onClick={onDone}
+            />
         </div>
     );
 };

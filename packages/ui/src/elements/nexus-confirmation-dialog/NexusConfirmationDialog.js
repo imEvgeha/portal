@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Button} from 'primereact/button';
+import {Button} from '@portal/portal-components';
 import {Dialog} from 'primereact/dialog';
 
 const NexusConfirmationDialog = ({visible, message, header, rejectLabel, acceptLabel, accept, reject}) => {

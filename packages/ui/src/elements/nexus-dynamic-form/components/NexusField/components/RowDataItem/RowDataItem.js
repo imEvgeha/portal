@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
+import {Button} from '@portal/portal-components';
 import {useDispatch} from 'react-redux';
 import {addToast} from '../../../../../../toast/NexusToastNotificationActions';
 import {NexusModalContext} from '../../../../../nexus-modal/NexusModal';
@@ -159,7 +159,11 @@ const RowDataItem = ({
 
             {canAdd && showCreateButton() && (
                 <div>
-                    <Button onClick={openAddRowDataItemModal}>{props.addNewModalOptions.triggerBtnLabel}</Button>
+                    <Button
+                        className="p-button-outlined p-button-secondary"
+                        label={props.addNewModalOptions.triggerBtnLabel}
+                        onClick={openAddRowDataItemModal}
+                    />
                 </div>
             )}
         </div>

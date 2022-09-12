@@ -8,20 +8,16 @@ exports[`AddRowDataItem should match snapshot 1`] = `
   containerRef={null}
   formFooter={
     <FormFooter>
-      <Memo(Button)
-        appearance="danger"
-        className="className='mx-2'"
+      <Button
+        className="p-button-outlined p-button-secondary mx-2"
+        label="Cancel"
         onClick={[Function]}
-      >
-        Cancel
-      </Memo(Button)>
-      <Memo(Button)
-        appearance="primary"
-        className="mx-2"
+      />
+      <Button
+        className="p-button-outlined p-button-secondary mx-2"
+        label="Submit"
         type="submit"
-      >
-        Submit
-      </Memo(Button)>
+      />
     </FormFooter>
   }
   hasButtons={false}

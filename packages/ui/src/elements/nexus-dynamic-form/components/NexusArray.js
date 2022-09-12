@@ -1,9 +1,9 @@
 import React, {useContext, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
+import {Button} from '@portal/portal-components';
 import {get} from 'lodash';
 import {useDispatch} from 'react-redux';
 import {addToast} from '../../../toast/NexusToastNotificationActions';
@@ -54,9 +54,11 @@ const NexusArray = ({
 
     const renderAddButton = () => {
         return (
-            <Button onClick={openEditModal} className="nexus-c-dynamic-form__add-button">
-                {`+ Add ${name}`}
-            </Button>
+            <Button
+                label={`+ Add ${name}`}
+                onClick={openEditModal}
+                className="p-button-outlined p-button-secondary nexus-c-dynamic-form__add-button"
+            />
         );
     };
 
@@ -149,22 +151,20 @@ const NexusArray = ({
         return (
             <div className="nexus-c-array__modal-buttons">
                 <Button
+                    label="Confirm"
                     type="submit"
-                    className="nexus-c-array__submit-button"
+                    className="p-button-outlined nexus-c-array__submit-button"
                     appearance="primary"
-                    isDisabled={!dirty || submitting}
-                >
-                    Confirm
-                </Button>
+                    disabled={!dirty || submitting}
+                />
                 <Button
-                    className="nexus-c-array__cancel-button"
+                    label="Cancel"
+                    className="p-button-outlined p-button-secondary nexus-c-array__cancel-button"
                     onClick={() => {
                         reset();
                         closeModal();
                     }}
-                >
-                    Cancel
-                </Button>
+                />
             </div>
         );
     };
@@ -200,7 +200,8 @@ const NexusArray = ({
         );
     };
 
-    const openEditModal = () => {
+    const openEditModal = e => {
+        e.preventDefault();
         openModal(modalContent(), {
             title: <div className="nexus-c-array__modal-title">{`Add ${name} Data`}</div>,
             width: 'medium',

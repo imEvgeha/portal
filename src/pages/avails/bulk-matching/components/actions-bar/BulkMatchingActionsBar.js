@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import TitleSystems from '../../../../metadata/constants/systems';
 import './BulkMatchingActionsBar.scss';
 
@@ -27,33 +27,26 @@ const BulkMatchingActionsBar = ({
 
     return (
         <div className="nexus-c-bulk-actions-bar">
-            <ButtonGroup>
-                <Button
-                    onClick={onCancel}
-                    className="nexus-c-bulk-actions-bar__btn"
-                    isDisabled={isMatchLoading || isMatchAndCreateLoading}
-                >
-                    Cancel
-                </Button>
-                <LoadingButton
-                    onClick={onMatch}
-                    isDisabled={!buttonStatus.match}
-                    isLoading={isMatchLoading}
-                    className="nexus-c-bulk-actions-bar__btn"
-                    appearance="primary"
-                >
-                    Match
-                </LoadingButton>
-                <LoadingButton
-                    onClick={onMatchAndCreate}
-                    isDisabled={!buttonStatus.matchAndCreate}
-                    isLoading={isMatchAndCreateLoading}
-                    className="nexus-c-bulk-actions-bar__btn"
-                    appearance="primary"
-                >
-                    Match & Create
-                </LoadingButton>
-            </ButtonGroup>
+            <Button
+                label="Cancel"
+                onClick={onCancel}
+                className="p-button-outlined p-button-secondary nexus-c-bulk-actions-bar__btn mx-1"
+                disabled={isMatchLoading || isMatchAndCreateLoading}
+            />
+            <Button
+                label="Match"
+                onClick={onMatch}
+                disabled={!buttonStatus.match}
+                loading={isMatchLoading}
+                className="p-button-outlined p-button-secondary nexus-c-bulk-actions-bar__btn mx-1"
+            />
+            <Button
+                label="Match & Create"
+                onClick={onMatchAndCreate}
+                disabled={!buttonStatus.matchAndCreate}
+                loading={isMatchAndCreateLoading}
+                className="p-button-outlined p-button-secondary nexus-c-bulk-actions-bar__btn mx-1"
+            />
         </div>
     );
 };

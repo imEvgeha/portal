@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Restricted} from '@portal/portal-auth/permissions';
-import {Button} from 'primereact/button';
+import {Button} from '@portal/portal-components';
 import './NexusUploadButton.scss';
 
 const NexusUploadButton = ({

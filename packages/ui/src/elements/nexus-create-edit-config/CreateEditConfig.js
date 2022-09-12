@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import {Button} from '@portal/portal-components';
 import {isEmpty, omitBy, pickBy, without} from 'lodash';
-import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {useForm} from 'react-hook-form';
 import './CreateEditConfig.scss';

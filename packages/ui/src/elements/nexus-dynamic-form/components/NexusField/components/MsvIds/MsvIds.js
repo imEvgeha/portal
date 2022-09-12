@@ -1,9 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {Field, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import Select from '@atlaskit/select';
+import {Button} from '@portal/portal-components';
 import {cloneDeep} from 'lodash';
 import {useParams} from 'react-router-dom';
 import './MsvIds.scss';
@@ -47,7 +47,8 @@ const MsvIds = ({selectValues, data, isEdit, onChange, generateMsvIds}) => {
         onChange(ids);
     };
 
-    const openAddMsvIdModal = () => {
+    const openAddMsvIdModal = e => {
+        e.preventDefault();
         openModal(modalContent(), {
             title: <div>Generate MSV Association ID</div>,
             width: 'medium',
@@ -95,19 +96,15 @@ const MsvIds = ({selectValues, data, isEdit, onChange, generateMsvIds}) => {
                             </Field>
                             <FormFooter>
                                 <div className="nexus-c-modal__form-footer">
-                                    <Button type="submit" appearance="primary">
-                                        Generate ID
-                                    </Button>
+                                    <Button label="Generate ID" type="submit" className="p-button-outlined" />
                                     <Button
-                                        className="nexus-c-modal__cancel-button"
-                                        appearance="danger"
+                                        label="Cancel"
+                                        className="p-button-outlined p-button-secondary nexus-c-modal__cancel-button"
                                         onClick={() => {
                                             reset();
                                             closeModal();
                                         }}
-                                    >
-                                        Cancel
-                                    </Button>
+                                    />
                                 </div>
                             </FormFooter>
                         </form>
@@ -122,7 +119,11 @@ const MsvIds = ({selectValues, data, isEdit, onChange, generateMsvIds}) => {
             <NexusTagsContainer data={data} saveData={saveIdsData} isEdit={isEdit} />
             {isEdit && (
                 <div className="nexus-c-msv-ids-add-button">
-                    <Button onClick={openAddMsvIdModal}>+ Add MSV Association ID</Button>
+                    <Button
+                        label="+ Add MSV Association ID"
+                        onClick={openAddMsvIdModal}
+                        className="p-button-outlined p-button-secondary"
+                    />
                 </div>
             )}
         </div>

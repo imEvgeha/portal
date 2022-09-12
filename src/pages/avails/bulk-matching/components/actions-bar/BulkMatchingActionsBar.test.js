@@ -1,5 +1,5 @@
 import React from 'react';
-import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {shallow} from 'enzyme';
 import BulkMatchingActionsBar from './BulkMatchingActionsBar';
 
@@ -18,15 +18,7 @@ describe('BulkMatchingActionsBar', () => {
         expect(wrapper.find('.nexus-c-bulk-actions-bar')).toHaveLength(1);
     });
 
-    it('renders button group element', () => {
-        expect(wrapper.find(ButtonGroup)).toHaveLength(1);
-    });
-
     it('renders 3 buttons, Cancel, Match and Match & Create', () => {
-        expect(wrapper.find(Button)).toHaveLength(1);
-    });
-
-    it('renders LoadingButton', () => {
-        expect(wrapper.find(LoadingButton)).toHaveLength(2);
+        expect(wrapper.find(Button)).toHaveLength(3);
     });
 });

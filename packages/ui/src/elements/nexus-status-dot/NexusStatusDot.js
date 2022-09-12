@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Button} from '@portal/portal-components';
 import {Badge} from 'primereact/badge';
-import {Button} from 'primereact/button';
 
 const NexusStatusDot = ({onAction, label, severity, isDisabled, isLoading}) => {
     return (

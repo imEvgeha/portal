@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {ErrorMessage} from '@atlaskit/form';
 import {RadioGroup} from '@atlaskit/radio';
+import {Button} from '@portal/portal-components';
 import {searchPersonById} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import {isEmpty} from 'lodash';
 import {ProgressSpinner} from 'primereact/progressspinner';
@@ -211,19 +211,22 @@ const PropagateForm = ({getValues, setFieldValue, person, onClose}) => {
                 {isEMetsEmpty && <ErrorMessage>{EMPTY_EMETS}</ErrorMessage>}
             </div>
             <div className="propagate-form__actions">
-                <Button onClick={() => onClose()}>{CANCEL_BUTTON}</Button>
                 <Button
+                    label={CANCEL_BUTTON}
+                    className="p-button-outlined p-button-secondary"
+                    onClick={() => onClose()}
+                />
+                <Button
+                    label={PROPAGATE}
+                    className="p-button-outlined propagate-form__propagate-button"
                     onClick={handleAdd}
-                    isDisabled={
+                    disabled={
                         (radioValue === 'none' && isEMetsEmpty) ||
                         isCastCrewEmpty ||
                         isLoading ||
                         (radioValue === 'none' && !checkedEmet)
                     }
-                    appearance="primary"
-                >
-                    {PROPAGATE}
-                </Button>
+                />
             </div>
         </>
     );

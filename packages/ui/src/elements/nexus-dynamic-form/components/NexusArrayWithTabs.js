@@ -1,10 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
 import {Restricted} from '@portal/portal-auth/permissions';
-import {Button as PortalButton} from '@portal/portal-components';
+import {Button} from '@portal/portal-components';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep, get, isEqual} from 'lodash';
 import TitleAutoDecorateModal from '../../nexus-auto-decorate-modal/TitleAutoDecorateModal';
@@ -228,7 +227,8 @@ const NexusArrayWithTabs = ({
         return [];
     };
 
-    const handleDeleteRecord = () => {
+    const handleDeleteRecord = e => {
+        e.preventDefault();
         const current = currentData || data[0];
         const groupedCurrent = groupBy([current]);
         const [key] = Object.keys(groupedCurrent);
@@ -263,7 +263,8 @@ const NexusArrayWithTabs = ({
         setFieldValue(path, newData);
     };
 
-    const openEditModal = () => {
+    const openEditModal = e => {
+        e.preventDefault();
         openModal(modalContent(), {
             title: <div className="nexus-c-array__modal-title">{`Add ${name} modal Data`}</div>,
             width: 'medium',
@@ -471,21 +472,24 @@ const NexusArrayWithTabs = ({
                     <div>
                         {view === VIEWS.EDIT && (
                             <Button
-                                appearance="danger"
+                                className="p-button-outlined"
                                 onClick={handleDeleteRecord}
-                                isDisabled={!Object.keys(groupedData).length}
-                            >
-                                Delete Record
-                            </Button>
+                                disabled={!Object.keys(groupedData).length}
+                                label="Delete Record"
+                            />
                         )}
                     </div>
                     <div className="d-flex justify-content-end align-items-center">
                         {view === VIEWS.EDIT && (
-                            <Button className="mx-4" onClick={openEditModal}>{`+ Add ${name} Data`}</Button>
+                            <Button
+                                className="p-button-outlined p-button-secondary mx-4"
+                                onClick={openEditModal}
+                                label={`+ Add ${name} Data`}
+                            />
                         )}
                         {showAutoDecorate() && !isMasterEditorialRecord() && (
                             <Restricted resource="metadataAutoDecorate">
-                                <PortalButton
+                                <Button
                                     className="p-button-outlined"
                                     onClick={e => {
                                         e.preventDefault();
@@ -497,7 +501,7 @@ const NexusArrayWithTabs = ({
                         )}
                         {(showRegenerateAutoDecoratedMetadata() || isMasterEditorialRecord()) && (
                             <Restricted resource="regenerateAutoDecoratedMetadata">
-                                <PortalButton
+                                <Button
                                     className="p-button-outlined"
                                     onClick={handleRegenerateAutoDecoratedMetadata}
                                     loading={regenerateLoading}

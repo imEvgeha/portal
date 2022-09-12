@@ -1,30 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button, {LoadingButton} from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {BULK_DELETE_BTN_CANCEL} from '../../constants';
 import './BulkDeleteActions.scss';
 
 const BulkDeleteActions = ({onClose, onSubmit, rightsDeletionCount, isLoading, isDisabled}) => {
     return (
         <div className="nexus-c-bulk-delete-actions__wrapper">
-            <div className="nexus-c-bulk-delete-actions__btn-wrapper">
-                <LoadingButton
-                    appearance="danger"
-                    onClick={onSubmit}
-                    className="nexus-c-bulk-delete-actions__delete-btn"
-                    isLoading={isLoading}
-                    isDisabled={isDisabled}
-                >
-                    {`Delete ${rightsDeletionCount} Rights`}
-                </LoadingButton>
+            <div className="nexus-c-bulk-delete-actions__btn-wrapper d-flex justify-content-end">
                 <Button
+                    label={`Delete ${rightsDeletionCount} Rights`}
+                    onClick={onSubmit}
+                    className="p-button-outlined nexus-c-bulk-delete-actions__delete-btn"
+                    loading={isLoading}
+                    disabled={isDisabled}
+                />
+                <Button
+                    label={BULK_DELETE_BTN_CANCEL}
                     appearance="subtle"
                     onClick={onClose}
-                    className="nexus-c-bulk-delete-actions__cancel-btn"
-                    isDisabled={false}
-                >
-                    {BULK_DELETE_BTN_CANCEL}
-                </Button>
+                    className="p-button-outlined p-button-secondary nexus-c-bulk-delete-actions__cancel-btn"
+                    disabled={false}
+                />
             </div>
         </div>
     );

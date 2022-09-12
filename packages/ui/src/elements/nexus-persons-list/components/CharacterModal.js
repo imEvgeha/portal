@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {Field, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import TextField from '@atlaskit/textfield';
+import {Button} from '@portal/portal-components';
 import './CharacterModal.scss';
 
 const CharacterModal = ({closeModal, onModalSubmit, data, personId}) => {
@@ -20,19 +20,16 @@ const CharacterModal = ({closeModal, onModalSubmit, data, personId}) => {
                             {({fieldProps}) => <TextField {...fieldProps} />}
                         </Field>
                         <FormFooter>
-                            <Button type="submit" appearance="primary">
-                                Submit
-                            </Button>
+                            <Button label="Submit" type="submit" className="p-button-outlined" />
                             <Button
-                                className="nexus-c-character-modal__cancel-button"
-                                appearance="danger"
-                                onClick={() => {
+                                label="Cancel"
+                                className="p-button-outlined p-button-secondary nexus-c-character-modal__cancel-button"
+                                onClick={e => {
+                                    e.stopPropagation();
                                     reset();
                                     closeModal();
                                 }}
-                            >
-                                Cancel
-                            </Button>
+                            />
                         </FormFooter>
                     </form>
                 )}

@@ -48,7 +48,7 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
                 </Button>
             </Tooltip>
             <NexusDownload
-                className="nexus-c-event-drawer-header__download-button"
+                className="p-button-outlined p-button-secondary nexus-c-event-drawer-header__download-button"
                 data={{
                     headers: event.headers,
                     message: event.message,

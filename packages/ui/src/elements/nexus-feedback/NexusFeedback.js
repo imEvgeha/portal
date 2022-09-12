@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import TextArea from '@atlaskit/textarea';
+import {Button} from '@portal/portal-components';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {useDispatch} from 'react-redux';
 import {options, THANKYOU_NOTE} from './constants';
@@ -52,21 +52,17 @@ const NexusFeedback = ({currentPage, closeModal}) => {
             </div>
             <div className="nexus-c-feedback__btn-wrapper">
                 <Button
-                    appearance="primary"
+                    label="Send Feedback"
                     onClick={handleSubmit}
-                    className="nexus-c-feedback__button"
-                    isDisabled={!feedback}
-                >
-                    Send Feedback
-                </Button>
+                    className="p-button-outlined nexus-c-feedback__button"
+                    disabled={!feedback}
+                />
                 <Button
-                    appearance="subtle"
+                    label="Cancel"
                     onClick={closeModal}
-                    className="nexus-c-feedback__button"
-                    isDisabled={false}
-                >
-                    Cancel
-                </Button>
+                    className="p-button-outlined p-button-secondary nexus-c-feedback__button"
+                    disabled={false}
+                />
             </div>
         </div>
     );

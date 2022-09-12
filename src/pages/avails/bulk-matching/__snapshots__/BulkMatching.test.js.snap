@@ -24,21 +24,12 @@ exports[`BulkMatching should match snapshot 1`] = `
       >
         Select titles from the repositories that match the incoming right or declare a 
         <Button
-          __TYPE="Button"
           appearance="link"
-          badge={null}
-          badgeClassName={null}
           className="p-button-link nexus-c-bulk-matching__new-title-button"
           disabled={false}
-          icon={null}
-          iconPos="left"
           label="New Title"
-          loading={false}
-          loadingIcon="pi pi-spinner pi-spin"
           onClick={[Function]}
           spacing="none"
-          tooltip={null}
-          tooltipOptions={null}
         />
       </div>
     </SectionMessage>

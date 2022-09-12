@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Popup from '@atlaskit/popup';
 import Select from '@atlaskit/select';
+import {Button as PortalButton} from '@portal/portal-components';
 import AtlaskitMoreIcon from '@vubiquity-nexus/portal-assets/atlaskit-more-icon.svg';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
-import {Button as PrimereactButton} from 'primereact/button';
 import {useDispatch} from 'react-redux';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import {RIGHTS_TAB, STATUS_TAB} from '../rights-repository/constants';
@@ -77,7 +77,7 @@ const AvailsTableReleaseReport = ({activeTab, selectedRowsCount, totalRecordsCou
                     classNamePrefix="nexus-c-nexus-select"
                     isSearchable
                 />
-                <PrimereactButton
+                <PortalButton
                     label={isLoading ? '' : CREATE_REPORT}
                     loading={isLoading}
                     className="w-100 p-button-outlined"

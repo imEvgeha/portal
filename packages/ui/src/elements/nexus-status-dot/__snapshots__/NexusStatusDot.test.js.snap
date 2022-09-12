@@ -23,19 +23,11 @@ exports[`NexusStatusDot should match snapshot 1`] = `
       className="col-9 px-0"
     >
       <Button
-        __TYPE="Button"
-        badge={null}
-        badgeClassName={null}
         className="p-button-text"
         disabled={false}
-        icon={null}
-        iconPos="left"
         label="VZ"
         loading={false}
-        loadingIcon="pi pi-spinner pi-spin"
         onClick={[Function]}
-        tooltip={null}
-        tooltipOptions={null}
       />
     </div>
   </div>

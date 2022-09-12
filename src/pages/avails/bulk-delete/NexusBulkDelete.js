@@ -1,7 +1,7 @@
 import React, {useState, useEffect, memo} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {SimpleTag as Tag} from '@atlaskit/tag';
+import {Button} from '@portal/portal-components';
 import {isEmpty} from 'lodash';
 import {useParams} from 'react-router-dom';
 import RightsURL from '../../legacy/containers/avail/util/RightsURL';
@@ -25,11 +25,10 @@ export const NexusBulkDelete = ({rightsWithDeps, onClose, onSubmit, deletedRight
     const renderLinkableRightId = id => (
         <Button
             key={id}
-            appearance="link"
+            label={id}
+            className="p-button-link"
             onClick={() => window.open(RightsURL.getRightUrl(id, undefined, routeParams.realm), '_blank')}
-        >
-            {id}
-        </Button>
+        />
     );
 
     const renderCustomTypeTag = text => (

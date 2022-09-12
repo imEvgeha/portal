@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from 'primereact/button';
+import {Button} from '@portal/portal-components';
 
 export const arrayElementButtons = (index, fieldsLength, onAdd, onRemove, shouldAddMargin = false) => {
     return (

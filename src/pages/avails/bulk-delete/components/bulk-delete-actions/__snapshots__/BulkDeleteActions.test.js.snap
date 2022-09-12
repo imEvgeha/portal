@@ -5,25 +5,22 @@ exports[`BulkDeleteActions should match snapshot 1`] = `
   className="nexus-c-bulk-delete-actions__wrapper"
 >
   <div
-    className="nexus-c-bulk-delete-actions__btn-wrapper"
+    className="nexus-c-bulk-delete-actions__btn-wrapper d-flex justify-content-end"
   >
-    <LoadingButton
-      appearance="danger"
-      className="nexus-c-bulk-delete-actions__delete-btn"
-      isDisabled={false}
-      isLoading={false}
+    <Button
+      className="p-button-outlined nexus-c-bulk-delete-actions__delete-btn"
+      disabled={false}
+      label="Delete 0 Rights"
+      loading={false}
       onClick={[MockFunction]}
-    >
-      Delete 0 Rights
-    </LoadingButton>
+    />
     <Button
       appearance="subtle"
-      className="nexus-c-bulk-delete-actions__cancel-btn"
-      isDisabled={false}
+      className="p-button-outlined p-button-secondary nexus-c-bulk-delete-actions__cancel-btn"
+      disabled={false}
+      label="Cancel"
       onClick={[MockFunction]}
-    >
-      Cancel
-    </Button>
+    />
   </div>
 </div>
 `;

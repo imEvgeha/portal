@@ -1,19 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {FormFooter} from '@atlaskit/form';
+import {Button} from '@portal/portal-components';
 import NexusDynamicForm from '../../../../NexusDynamicForm';
 
 const AddRowDataItem = ({schema, selectValues, onAddRowDataItem, closeModal}) => {
     const formFooter = () => (
         <FormFooter>
-            <Button className="className='mx-2'" appearance="danger" onClick={() => closeModal()}>
-                Cancel
-            </Button>
-
-            <Button type="submit" appearance="primary" className="mx-2">
-                Submit
-            </Button>
+            <Button label="Cancel" className="p-button-outlined p-button-secondary mx-2" onClick={() => closeModal()} />
+            <Button label="Submit" className="p-button-outlined p-button-secondary mx-2" type="submit" />
         </FormFooter>
     );
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DOWNLOAD, JSON_INDENT_SPACE, JSON_MIME, XML_MIME} from './constants';
 
@@ -52,9 +52,12 @@ const NexusDownload = ({data, filename, mimeType, label, ...restProps}) => {
     };
 
     return (
-        <Button className="nexus-c-download" onClick={handleDownload} {...restProps}>
-            {label}
-        </Button>
+        <Button
+            className="p-button-outlined p-button-secondary nexus-c-download"
+            label={label}
+            onClick={handleDownload}
+            {...restProps}
+        />
     );
 };
 

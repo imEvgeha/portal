@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {get} from 'lodash';
 import moment from 'moment';
 import NexusDateTimeWindowPicker from '../../../nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
@@ -139,12 +139,11 @@ export class CustomDateFilter extends React.Component {
                 />
                 <div className="nexus-c-date-filter-btn">
                     <Button
-                        appearance="primary"
-                        isDisabled={!this.doesFilterPass()}
+                        label="Filter"
+                        className="p-button-outlined"
+                        disabled={!this.doesFilterPass()}
                         onClick={() => filterChangedCallback()}
-                    >
-                        Filter
-                    </Button>
+                    />
                 </div>
             </div>
         );

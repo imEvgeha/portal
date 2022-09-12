@@ -1,5 +1,5 @@
 import React from 'react';
-import Button, {LoadingButton} from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {shallow} from 'enzyme';
 import BulkDeleteActions from './BulkDeleteActions';
 
@@ -25,11 +25,7 @@ describe('BulkDeleteActions', () => {
     });
 
     it('renders Cancel and Delete buttons', () => {
-        expect(wrapper.find(Button)).toHaveLength(1);
-    });
-
-    it('renders LoadingButton', () => {
-        expect(wrapper.find(LoadingButton)).toHaveLength(1);
+        expect(wrapper.find(Button)).toHaveLength(2);
     });
 
     it('should call onClose', () => {

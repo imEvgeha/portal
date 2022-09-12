@@ -1,7 +1,7 @@
 import React, {useState, useEffect, memo} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {SimpleTag as Tag} from '@atlaskit/tag';
+import {Button} from '@portal/portal-components';
 import {isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {useParams} from 'react-router-dom';
@@ -35,11 +35,10 @@ export const BulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRights, cl
     const renderLinkableRightId = id => (
         <Button
             key={id}
-            appearance="link"
+            label={id}
+            className="p-button-link"
             onClick={() => window.open(RightsURL.getRightUrl(id, undefined, routeParams.realm), '_blank')}
-        >
-            {id}
-        </Button>
+        />
     );
 
     const renderCustomTypeTag = text => (
