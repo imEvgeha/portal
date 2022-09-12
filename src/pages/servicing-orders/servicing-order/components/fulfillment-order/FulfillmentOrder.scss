@@ -27,6 +27,19 @@
         margin: 1.7rem 0;
     }
 
+    .error-icon {
+        font-size: 10px;
+        font-weight: bold;
+
+        &.red {
+            color: red;
+        }
+
+        &.grey {
+            color: grey;
+        }
+    }
+
     /* AtlasKit Bugfix */
     input[disabled] {
         height: auto;

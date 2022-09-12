@@ -1,6 +1,6 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Button, {LoadingButton} from '@atlaskit/button';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import './ServicingOrdersView.scss';
@@ -8,11 +8,11 @@ import ServicingOrdersTable from './components/servicing-orders-table/ServicingO
 import {exportServicingOrders} from './servicingOrdersService';
 import {
     CUSTOMER_LBL,
+    EXPORT_WARNING_MESSAGE,
     HIDE_COMPLETED_BTN,
     HIDE_READY_BTN,
-    SERVICING_ORDERS_TTL,
-    EXPORT_WARNING_MESSAGE,
     readinessStatus,
+    SERVICING_ORDERS_TTL,
 } from './constants';
 
 const ServicingOrdersView = () => {
@@ -20,7 +20,7 @@ const ServicingOrdersView = () => {
     const [isHideReady, setIsHideReady] = useState(false);
     const [isHideCompleted, setIsHideCompleted] = useState(false);
     const NO_CUSTOMER_FILTER = {label: 'Select...', value: ''};
-    const [customerFilter, setCustomerFilter] = useState(NO_CUSTOMER_FILTER);
+    const [customerFilter, setCustomerFilter] = useState('');
     const [fixedFilter, setFixedFilter] = useState({});
     const [externalFilter, setExternalFilter] = useState({});
     const [isExporting, setIsExporting] = useState(false);
@@ -43,7 +43,7 @@ const ServicingOrdersView = () => {
 
     useEffect(() => {
         setExternalFilter({
-            ...(customerFilter && customerFilter.value && {tenant: customerFilter.value}),
+            ...(customerFilter && {tenant: customerFilter}),
         });
     }, [customerFilter]);
 
@@ -106,14 +106,16 @@ const ServicingOrdersView = () => {
 
             <div className="nexus-c-servicing-orders__external-filters">
                 <div className="nexus-c-servicing-orders__customer-filter">
-                    <label htmlFor="customer">{CUSTOMER_LBL}</label>
-                    <Select
-                        name="customer"
+                    <Dropdown
+                        labelProps={{
+                            label: CUSTOMER_LBL,
+                            shouldUpper: false,
+                            stacked: true,
+                        }}
+                        id="ddlCustomer"
                         options={options}
-                        className="nexus-c-servicing-orders__customer-filter--select"
-                        placeholder={NO_CUSTOMER_FILTER.label}
                         value={customerFilter}
-                        onChange={setCustomerFilter}
+                        onChange={e => setCustomerFilter(e.value)}
                     />
                 </div>
                 <Button isSelected={isHideReady} onClick={() => setIsHideReady(!isHideReady)}>

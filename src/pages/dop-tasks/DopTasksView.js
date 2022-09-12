@@ -1,25 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
-import {getUsername} from "@portal/portal-auth/authSelectors";
+import {getUsername} from '@portal/portal-auth/authSelectors';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import {isEmpty, get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
-import {setDopTasksUserDefinedGridState, assignDopTasks, unAssignDopTasks, changeDOPPriority} from './dopTasksActions';
+import {assignDopTasks, changeDOPPriority, setDopTasksUserDefinedGridState, unAssignDopTasks} from './dopTasksActions';
 import {createGridStateSelector} from './dopTasksSelectors';
 import {applyPredefinedTableView} from './utils';
 import {
-    USER,
-    MY_SAVED_VIEWS_LABEL,
     MY_PREDEFINED_VIEWS_LABEL,
+    MY_SAVED_VIEWS_LABEL,
+    QUEUED_TASKS_OPTIONS,
     SAVED_TABLE_DROPDOWN_LABEL,
     SAVED_TABLE_SELECT_OPTIONS,
-    QUEUED_TASKS_OPTIONS,
+    USER,
 } from './constants';
 import './DopTasksView.scss';
 
@@ -35,7 +35,7 @@ export const DopTasksView = ({
     const [externalFilter, setExternalFilter] = useState({
         user: USER,
     });
-    const [selectedTaskType, setSelectedTaskType] = useState(QUEUED_TASKS_OPTIONS[0]);
+    const [selectedTaskType, setSelectedTaskType] = useState(QUEUED_TASKS_OPTIONS[0].value);
     const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
@@ -47,19 +47,14 @@ export const DopTasksView = ({
         }
     }, [gridState, username, get]);
 
-    const changeUser = user => {
-        onSelectTaskType(user);
+    const onSelectedTaskTypeChanged = type => {
+        setSelectedTaskType(type);
         setExternalFilter(prevState => {
             return {
                 ...prevState,
-                user,
+                user: type,
             };
         });
-    };
-
-    const onSelectTaskType = value => {
-        const type = QUEUED_TASKS_OPTIONS.find(option => option.value === value);
-        setSelectedTaskType(type);
     };
 
     const tableLabels = {
@@ -71,18 +66,18 @@ export const DopTasksView = ({
 
     const onUserDefinedViewSelected = view => {
         const user = view?.externalFilter?.user;
-        user && changeUser(user);
+        user && onSelectedTaskTypeChanged(user);
     };
 
     const applyPredefinedTableViewCallBack = () => {
         setSelectedTaskType(QUEUED_TASKS_OPTIONS[0]);
-        changeUser(QUEUED_TASKS_OPTIONS[0].value);
+        onSelectedTaskTypeChanged(QUEUED_TASKS_OPTIONS[0].value);
     };
 
     return (
         <div className="nexus-c-dop-tasks-view">
             <DopTasksHeader>
-                <QueuedTasks setUser={changeUser} selectedValue={selectedTaskType} />
+                <QueuedTasks onChange={onSelectedTaskTypeChanged} value={selectedTaskType} />
                 <NexusSavedTableDropdown
                     gridApi={gridApi}
                     columnApi={columnApi}

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Select from '@atlaskit/select';
+import {MultiSelect} from '@portal/portal-components';
 import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
 import {getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
@@ -11,6 +11,7 @@ import './BulkSet.scss';
 const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
     const [options, setOptions] = useState([]);
     const [keywordsLocal, setKeywordsLocal] = useState('');
+    const [selectedTerritories, setSelectedTerritories] = useState([]);
 
     useEffect(() => {
         if (options.length === 0) {
@@ -31,16 +32,26 @@ const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
 
     return (
         <div className="bulk-set-territories">
-            <div className="bulk-set-territories__label">Territories</div>
-            <Select
-                isMulti
+            <MultiSelect
+                id="ddlTerritories"
+                labelProps={{
+                    label: 'Territories',
+                    stacked: true,
+                    shouldUpper: true,
+                }}
+                filter={true}
+                value={selectedTerritories.map(t => t.value)}
                 options={options}
-                hideSelectedOptions
-                placeholder="Select territories..."
-                onChange={i => setTerritories(i)}
+                columnClass="col-12"
                 className="bulk-set-territories__select-container"
-                classNamePrefix="bulk-set-territories__select"
+                placeholder="Select territories..."
+                onChange={e => {
+                    const values = options.filter(t => e.value.includes(t.value));
+                    setSelectedTerritories(values || []);
+                    setTerritories(values);
+                }}
             />
+
             <div className="bulk-set-territories__label">Keywords</div>
             <NexusTextArea notesValue={keywordsLocal} onTextChange={onChange} />
             <div className="bulk-set-territories__note">{BULK_SET_NOTE}</div>

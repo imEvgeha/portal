@@ -4,19 +4,22 @@ exports[`BulkSet should match snapshot 1`] = `
 <div
   className="bulk-set-territories"
 >
-  <div
-    className="bulk-set-territories__label"
-  >
-    Territories
-  </div>
-  <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+  <MultiSelect
     className="bulk-set-territories__select-container"
-    classNamePrefix="bulk-set-territories__select"
-    hideSelectedOptions={true}
-    isMulti={true}
+    columnClass="col-12"
+    filter={true}
+    id="ddlTerritories"
+    labelProps={
+      Object {
+        "label": "Territories",
+        "shouldUpper": true,
+        "stacked": true,
+      }
+    }
     onChange={[Function]}
     options={Array []}
     placeholder="Select territories..."
+    value={Array []}
   />
   <div
     className="bulk-set-territories__label"

@@ -1,29 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import {DOP_QUEUED_TASKS_LABEL, QUEUED_TASKS_OPTIONS} from '../../constants';
 import './QueuedTasks.scss';
 
-const QueuedTasks = ({setUser, selectedValue}) => (
-    <Select
+const QueuedTasks = ({onChange, value}) => (
+    <Dropdown
         className="nexus-c-dop-tasks-queued-select"
-        classNamePrefix="nexus-select"
-        value={selectedValue}
-        options={QUEUED_TASKS_OPTIONS}
-        defaultValue={QUEUED_TASKS_OPTIONS[0]}
+        id="ddlTaskType"
+        columnClass="col-10"
         placeholder={DOP_QUEUED_TASKS_LABEL}
-        onChange={val => setUser(val.value)}
+        options={QUEUED_TASKS_OPTIONS}
+        value={value}
+        onChange={e => onChange(e.value)}
     />
 );
 
 QueuedTasks.propTypes = {
-    setUser: PropTypes.func,
-    selectedValue: PropTypes.object,
+    onChange: PropTypes.func,
+    value: PropTypes.object,
 };
 
 QueuedTasks.defaultProps = {
-    setUser: () => null,
-    selectedValue: QUEUED_TASKS_OPTIONS[0],
+    onChange: () => null,
+    value: QUEUED_TASKS_OPTIONS[0].value,
 };
 
 export default QueuedTasks;

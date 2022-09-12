@@ -127,6 +127,10 @@
 
 .nexus-c-field__value-section {
     width: 100%;
+
+    .p-multiselect.p-component {
+        margin-bottom: 0;
+    }
 }
 
 .nexus-c-dynamic-form__section-start {
