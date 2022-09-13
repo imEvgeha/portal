@@ -34,7 +34,7 @@ export const DopTasksView = ({
     const [externalFilter, setExternalFilter] = useState({
         user: USER,
     });
-    const [selectedTaskType, setSelectedTaskType] = useState(QUEUED_TASKS_OPTIONS[0]);
+    const [selectedTaskType, setSelectedTaskType] = useState(QUEUED_TASKS_OPTIONS[0].value);
     const [gridApi, setGridApi] = useState(null);
     const [columnApi, setColumnApi] = useState(null);
     const [userDefinedGridStates, setUserDefinedGridStates] = useState([]);
@@ -46,19 +46,14 @@ export const DopTasksView = ({
         }
     }, [gridState, username, get]);
 
-    const changeUser = user => {
-        onSelectTaskType(user);
+    const onSelectedTaskTypeChanged = type => {
+        setSelectedTaskType(type);
         setExternalFilter(prevState => {
             return {
                 ...prevState,
-                user,
+                user: type,
             };
         });
-    };
-
-    const onSelectTaskType = value => {
-        const type = QUEUED_TASKS_OPTIONS.find(option => option.value === value);
-        setSelectedTaskType(type);
     };
 
     const tableLabels = {
@@ -70,18 +65,18 @@ export const DopTasksView = ({
 
     const onUserDefinedViewSelected = view => {
         const user = view?.externalFilter?.user;
-        user && changeUser(user);
+        user && onSelectedTaskTypeChanged(user);
     };
 
     const applyPredefinedTableViewCallBack = () => {
         setSelectedTaskType(QUEUED_TASKS_OPTIONS[0]);
-        changeUser(QUEUED_TASKS_OPTIONS[0].value);
+        onSelectedTaskTypeChanged(QUEUED_TASKS_OPTIONS[0].value);
     };
 
     return (
         <div className="nexus-c-dop-tasks-view">
             <DopTasksHeader>
-                <QueuedTasks setUser={changeUser} selectedValue={selectedTaskType} />
+                <QueuedTasks onChange={onSelectedTaskTypeChanged} value={selectedTaskType} />
                 <NexusSavedTableDropdown
                     gridApi={gridApi}
                     columnApi={columnApi}

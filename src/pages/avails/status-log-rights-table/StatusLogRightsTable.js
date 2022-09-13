@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {getUsername} from "@portal/portal-auth/authSelectors";
+import {getUsername} from '@portal/portal-auth/authSelectors';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {defineCheckboxSelectionColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withSelectableRows from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSelectableRows';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -28,7 +28,8 @@ const StatusLogRightsGrid = compose(
     withColumnsResizing(),
     withFilterableColumns({frameworkComponents: {publishErrors: StatusLogErrors}}),
     withColumnsResizing(),
-    withInfiniteScrolling({fetchData: getStatusLog})
+    withInfiniteScrolling({fetchData: getStatusLog}),
+    withSelectableRows()
 )(NexusGrid);
 
 export const StatusLogRightsTable = ({totalRowCount, username}) => {
@@ -43,13 +44,8 @@ export const StatusLogRightsTable = ({totalRowCount, username}) => {
     const closeDrawer = () => setShowDrawer(false);
 
     useEffect(() => {
-        const checkBoxColDef = defineCheckboxSelectionColumn({
-            headerCheckboxSelection: true,
-            headerCheckboxSelectionFilteredOnly: true,
-        });
-
         const mappings = columnMappings.map(col => ({...col, cellRendererParams: {setErrors}}));
-        setColumnDefs([checkBoxColDef, ...mappings]);
+        setColumnDefs([...mappings]);
     }, []);
 
     const setErrors = data => {

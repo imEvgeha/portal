@@ -90,11 +90,11 @@
                                 "options": [
                                     {
                                         "label": "Pending",
-                                        "value": "Pending"
+                                        "value": "pending"
                                     },
                                     {
                                         "label": "Complete",
-                                        "value": "Complete"
+                                        "value": "complete"
                                     }
                                 ]
                             }
@@ -107,15 +107,15 @@
                                 "options": [
                                     {
                                         "label": "Live",
-                                        "value": "Live"
+                                        "value": "live"
                                     },
                                     {
                                         "label": "Tape Delayed",
-                                        "value": "Tape Delayed"
+                                        "value": "tape delayed"
                                     },
                                     {
                                         "label": "Taped",
-                                        "value": "Taped"
+                                        "value": "taped"
                                     }
                                 ]
                             }
@@ -132,11 +132,11 @@
                                     },
                                     {
                                         "label": "KIDS",
-                                        "value": "KIDS"
+                                        "value": "kids"
                                     },
                                     {
                                         "label": "ADULT",
-                                        "value": "ADULT"
+                                        "value": "adult"
                                     }
                                 ]
                             }
@@ -1115,11 +1115,11 @@
                                         "options": [
                                             {
                                                 "label": "Pending",
-                                                "value": "Pending"
+                                                "value": "pending"
                                             },
                                             {
                                                 "label": "Complete",
-                                                "value": "Complete"
+                                                "value": "complete"
                                             }
                                         ]
                                     }

@@ -76,7 +76,7 @@ describe('NexusArray', () => {
         const nexusArrayObjects = wrapper.find('.nexus-c-array__object');
         expect(nexusArrayObjects.length).toEqual(2);
 
-        const nexusArrayFields = wrapper.find('.nexus-c-array__field');
+        const nexusArrayFields = wrapper.find('.array-field-wrapper');
         expect(nexusArrayFields.length).toEqual(4);
     });
 

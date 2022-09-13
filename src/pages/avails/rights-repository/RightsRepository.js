@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@portal/portal-auth/authSelectors';
 import {connect} from 'react-redux';
@@ -22,8 +22,7 @@ const RightsRepository = ({columnDefs, createRightMatchingColumnDefs, mapping, u
     const [activeTabIndex, setActiveTabIndex] = useState(0);
     const [rightsRepoGridApi, setRightsRepoGridApi] = useState(undefined);
     const [rightsRepoColumnApi, setRightsRepoColumnApi] = useState(undefined);
-
-    const selectedPPRights = useRef([]);
+    const [persistedSelectedPPRights, setPersistedSelectedPPRights] = useState([]);
 
     // update periodically the list of ingests
     useEffect(() => {
@@ -56,10 +55,6 @@ const RightsRepository = ({columnDefs, createRightMatchingColumnDefs, mapping, u
     //     }
     // }, [selectedRepoRights, selectedGridApi]);
 
-    const persistSelectedPPRights = rights => {
-        selectedPPRights.current = [...rights];
-    };
-
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader
@@ -81,8 +76,8 @@ const RightsRepository = ({columnDefs, createRightMatchingColumnDefs, mapping, u
             {activeTab === PRE_PLAN_TAB && (
                 <PreplanRightsTable
                     mapping={mapping}
-                    persistSelectedPPRights={persistSelectedPPRights}
-                    persistedSelectedRights={selectedPPRights.current}
+                    persistSelectedPPRights={setPersistedSelectedPPRights}
+                    persistedSelectedRights={persistedSelectedPPRights}
                 />
             )}
 

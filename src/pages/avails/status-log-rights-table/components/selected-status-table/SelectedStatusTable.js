@@ -3,12 +3,18 @@ import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
+import withSelectableRows from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSelectableRows';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../../ui/elements';
 import columnMappings from '../../columnMappings';
 
-const SelectedStatusGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
+const SelectedStatusGrid = compose(
+    withColumnsResizing(),
+    withSideBar(),
+    withEditableColumns(),
+    withSelectableRows()
+)(NexusGrid);
 
 const SelectedStatusTable = ({columnDefs, selectedStatusRights, setSelectedStatusRights}) => {
     const [selectedRights] = useState([...selectedStatusRights]);

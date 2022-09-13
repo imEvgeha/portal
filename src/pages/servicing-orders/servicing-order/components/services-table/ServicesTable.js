@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {SimpleTag as Tag} from '@atlaskit/tag';
-import Tooltip from '@atlaskit/tooltip';
+import {Tooltip} from '@portal/portal-components';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
@@ -10,8 +10,9 @@ import {
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
-import {showToastForErrors} from '@vubiquity-nexus/portal-utils/lib/http-client/handleError';
+import {addToast} from '@vubiquity-nexus/portal-ui/src/toast/NexusToastNotificationActions';
 import {cloneDeep, flattenDeep, get, groupBy, isEmpty, set} from 'lodash';
+import {useDispatch} from 'react-redux';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -45,6 +46,7 @@ const ServicesTable = ({
     const [providerServices, setProviderServices] = useState('');
     const [specOptions, setSpecOptions] = useState([]);
     const {openModal, closeModal} = useContext(NexusModalContext);
+    const dispatch = useDispatch();
 
     // recipient is fixed for a fullfillment order. should be same for all service rows, take from first row
     const recipient = get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
@@ -165,16 +167,24 @@ const ServicesTable = ({
                   });
         };
 
+        const getDataComponents = () =>
+            Object.keys(groupBy(get(node, 'data.components', []), v => [v.language, v.trackConfig || v.type]));
+
         return (
-            <Tooltip content={toolTipContent}>
-                <div style={{minHeight: '25px'}} onClick={onTooltipOptionClick}>
-                    {Object.keys(
-                        groupBy(get(node, 'data.components', []), v => [v.language, v.trackConfig || v.type])
-                    ).map(item => (
-                        <Tag key={item} text={item} />
-                    ))}
+            <div className="tooltip-cell-renderer-wrapper">
+                <div className="tooltip-cell-renderer" onClick={onTooltipOptionClick}>
+                    {toolTipContent}
                 </div>
-            </Tooltip>
+                {!!getDataComponents().length && (
+                    <Tooltip target=".tooltip-cell-renderer">
+                        <div style={{minHeight: '25px'}}>
+                            {getDataComponents().map(item => (
+                                <Tag key={item} text={item} />
+                            ))}
+                        </div>
+                    </Tooltip>
+                )}
+            </div>
         );
     };
 
@@ -233,11 +243,12 @@ const ServicesTable = ({
             const errorDetails = e.data.recipient
                 ? `Formats Not Found for recipient "${e.data.recipient}"`
                 : `Recipient Not Found for ${e.data.barcode}`;
-            showToastForErrors(null, {
-                errorToast: {
+            dispatch(
+                addToast({
                     detail: errorDetails,
-                },
-            });
+                    severity: 'error',
+                })
+            );
         }
     };
 

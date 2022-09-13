@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
-import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
+import {Button, OverlayPanel, Tooltip} from '@portal/portal-components';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
@@ -34,6 +33,7 @@ const AvailsTableExportDropdown = ({
     const [mappingColumnNames, setMappingColumnNames] = useState();
     const [tooltipContent, setTooltipContent] = useState();
     const [isDisabled, setIsDisabled] = useState(false);
+    const op = useRef(null);
 
     useEffect(() => {
         if (mapping) {
@@ -205,25 +205,43 @@ const AvailsTableExportDropdown = ({
             .filter(col => !['action', 'buttons'].includes(col));
     };
 
-    const renderDropdown = () => {
-        return (
-            <DropdownMenu
-                className="nexus-c-button"
-                trigger="Export"
-                triggerType="button"
-                triggerButtonProps={{isDisabled}}
-            >
-                <DropdownItemGroup>
-                    <DropdownItem onClick={onAllColumnsExportClick}>All Columns</DropdownItem>
-                    <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
-                </DropdownItemGroup>
-            </DropdownMenu>
-        );
-    };
-
     return (
         <div className="nexus-c-right-repository-export">
-            {isDisabled ? <NexusTooltip content={tooltipContent}>{renderDropdown()}</NexusTooltip> : renderDropdown()}
+            {isDisabled && <Tooltip target=".avails-export-ddl-wrapper" content={tooltipContent} position="left" />}
+            <span className="avails-export-ddl-wrapper">
+                <Button
+                    id="btnAvailsExport"
+                    icon="pi pi-chevron-down"
+                    iconPos="right"
+                    disabled={isDisabled}
+                    className="p-button-outlined p-button-secondary"
+                    label="Export"
+                    onClick={e => op?.current?.toggle?.(e)}
+                />
+            </span>
+
+            <OverlayPanel ref={op} id="opReport" style={{width: 'auto'}} className="export-overlay-panel">
+                <div className="row">
+                    <div className="col-12 text-center">
+                        <Button
+                            id="btnAllColumns"
+                            label="All Columns"
+                            className="p-button-text"
+                            onClick={onAllColumnsExportClick}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 text-center">
+                        <Button
+                            id="btnVisibleCols"
+                            label="Visible Columns"
+                            className="p-button-text"
+                            onClick={onVisibleColumnsExportClick}
+                        />
+                    </div>
+                </div>
+            </OverlayPanel>
         </div>
     );
 };

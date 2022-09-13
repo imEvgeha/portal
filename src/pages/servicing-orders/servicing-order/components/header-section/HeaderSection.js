@@ -20,17 +20,17 @@ const HeaderSection = ({
     const {fulfillmentOrders} = orderDetails;
     const [showFilter, setShowFilter] = useState(true);
     const [page, setPage] = useState(1);
-    const [filter, setFilter] = useState({value: 'All', label: 'All'});
+    const [filter, setFilter] = useState('All');
     const [sortDirection, setSortDirection] = useState(SORT_DIRECTION[0]);
 
     const toggleFilters = () => setShowFilter(!showFilter);
     const getFilteredList = () => {
         let filteredList = [];
         if (fulfillmentOrders && Array.isArray(fulfillmentOrders)) {
-            if (!filter || filter.value === 'All') {
+            if (!filter || filter === 'All') {
                 filteredList = fulfillmentOrders;
             } else {
-                filteredList = fulfillmentOrders.filter(item => item.status === filter.value);
+                filteredList = fulfillmentOrders.filter(item => item.status === filter);
             }
         }
         return filteredList;

@@ -9,7 +9,7 @@
     @include padding(6, 0);
     transition: padding linear 0.5s;
     background-color: #f2f2f2; //TODO: This is not atlaskit color
-    z-index: 1;
+    z-index: 1002;
     > span {
         position: absolute;
         top: 24px;
