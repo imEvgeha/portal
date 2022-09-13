@@ -7,8 +7,8 @@ exports[`Ingest should match snapshot 1`] = `
   <div
     className="nexus-c-avails-ingest__cross-icon"
   >
-    <[object Object]
-      className="nexus-c-avails-ingest__cross-circle"
+    <i
+      className="po po-remove nexus-c-avails-ingest__cross-circle"
       onClick={[MockFunction]}
     />
   </div>
@@ -67,8 +67,8 @@ exports[`Ingest should match snapshot 1`] = `
         hasWhiteBackground={false}
         isDisabled={false}
       >
-        <[object Object]
-          className="nexus-c-avails-ingest__email-icon"
+        <i
+          className="po po-email nexus-c-avails-ingest__email-icon"
           key="aath_c7oxd"
           onClick={[Function]}
         />
@@ -83,8 +83,8 @@ exports[`Ingest should match snapshot 1`] = `
         hasWhiteBackground={false}
         isDisabled={false}
       >
-        <[object Object]
-          className="nexus-c-avails-ingest__email-icon"
+        <i
+          className="po po-email nexus-c-avails-ingest__email-icon"
           key="aath_c8cxd"
           onClick={[Function]}
         />
@@ -98,8 +98,8 @@ exports[`Ingest should match snapshot 1`] = `
         hasWhiteBackground={false}
         isDisabled={false}
       >
-        <[object Object]
-          className="nexus-c-avails-ingest__download-icon"
+        <i
+          className="po po-download nexus-c-avails-ingest__download-icon"
           onClick={[Function]}
         />
       </NexusTooltip>

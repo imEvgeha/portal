@@ -106,7 +106,7 @@ const AvailsTableReleaseReport = ({activeTab}) => {
         <div className="nexus-c-right-repository-release-report">
             <Button
                 id="nexus-c-right-repository-release-report__popup"
-                icon="pi pi-chevron-down"
+                icon="po po-expand-section"
                 iconPos="right"
                 disabled={[STATUS_TAB].includes(activeTab)}
                 className="p-button-outlined p-button-secondary"

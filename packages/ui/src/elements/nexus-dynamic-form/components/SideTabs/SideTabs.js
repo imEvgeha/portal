@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
-import StatusLink from '@vubiquity-nexus/portal-assets/status-linked.svg';
 import classnames from 'classnames';
 import moment from 'moment';
 import './SideTabs.scss';
@@ -75,7 +74,8 @@ const SideTabs = ({data, path, onChange, subTabs, isRemoved, clearIsRemoved}) =>
                         })}
                     >
                         {isDecorated && isGeneratedValue && !isRatings && (
-                            <StatusLink className="tablinks__status-link" />
+                            // <StatusLink className="tablinks__status-link" />
+                            <i className="po po-linked" />
                         )}
                         <Button onClick={() => handleTabChanged(key, index, subIndex)}>{getSubTabLabel(obj)}</Button>
                     </div>

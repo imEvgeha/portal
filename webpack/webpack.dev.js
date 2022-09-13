@@ -7,10 +7,10 @@ module.exports = envFile => ({
     devtool: 'eval-cheap-module-source-map',
     module: {
         rules: [
-            {
-                test: /\.(scss|css)/,
-                use: ['style-loader', 'css-loader', 'sass-loader'],
-            },
+            // {
+            //     test: /\.(scss|css)/,
+            //     use: ['style-loader', 'css-loader', 'sass-loader'],
+            // },
         ],
     },
     plugins: [
@@ -46,8 +46,11 @@ module.exports = envFile => ({
                 errors: true,
             },
         },
-        hot: 'only',
-        open: true,
+        hot: false,
+        liveReload: true,
+        open: {
+            target: ['/Vubiquity'],
+        },
         devMiddleware: {
             stats: (envFile && envFile['BUILD_STATS']) || 'normal',
         },

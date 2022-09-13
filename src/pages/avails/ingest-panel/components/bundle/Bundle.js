@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Chevron from '@vubiquity-nexus/portal-assets/chevron-right.svg';
 import moment from 'moment';
 import BundleTitle from '../bundle-title/BundleTitle';
 import IngestStatus from '../ingest-status/IngestStatus';
@@ -31,7 +30,7 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
                         }`}
                         onClick={onBundleClick}
                     >
-                        <Chevron />
+                        <i className="po po-chevron-right" />
                     </span>
                     <IngestStatus date={received} ingestType={ingestType} />
                 </div>

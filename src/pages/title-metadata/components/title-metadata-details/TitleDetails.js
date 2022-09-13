@@ -35,7 +35,7 @@ import {
 import TitleConfigurationService from '../../services/TitleConfigurationService';
 import TitleEditorialService from '../../services/TitleEditorialService';
 import TitleService from '../../services/TitleService';
-import TitleTerittorialService from '../../services/TitleTerittorialService';
+import TitleTerritorialService from '../../services/TitleTerritorialService';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -263,7 +263,7 @@ const TitleDetails = ({
     };
 
     const updateTerritoryMetadata = async (territorialMetadata = [], titleId) => {
-        const titleTerritorialService = TitleTerittorialService.getInstance();
+        const titleTerritorialService = TitleTerritorialService.getInstance();
 
         const promises = [];
         territorialMetadata.forEach(tmet => {
