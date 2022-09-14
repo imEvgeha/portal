@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Select from '@atlaskit/select';
+import {MultiSelect} from '@portal/portal-components';
 import './MultiSelectCellEditor.scss';
 
 class MultiSelectCellEditor extends Component {
@@ -36,26 +36,26 @@ class MultiSelectCellEditor extends Component {
         return value && value.map(el => el.value);
     };
 
-    handleChange = value => {
-        this.setState({
-            value,
-        });
-    };
-
     render() {
         const {options} = this.props;
         const {value} = this.state;
 
         return (
             <div className="nexus-c-multi-select-cell-editor">
-                <Select
+                <MultiSelect
+                    id="ddlMultiSelectCellEditor"
+                    filter={true}
+                    value={value.map(v => v.value)}
                     options={options}
-                    isMulti={true}
-                    isSearchable={true}
+                    appendTo="self"
+                    columnClass="col-12"
                     placeholder="Select"
-                    onChange={this.handleChange}
-                    value={value}
-                    defaultValue={value}
+                    onChange={e => {
+                        const value = options.filter(t => e.value.includes(t.value));
+                        this.setState({
+                            value,
+                        });
+                    }}
                 />
             </div>
         );

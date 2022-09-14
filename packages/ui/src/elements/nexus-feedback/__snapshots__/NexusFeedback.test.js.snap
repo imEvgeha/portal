@@ -5,8 +5,16 @@ exports[`NexusFeedback should match snapshot 1`] = `
   <div
     className="nexus-c-feedback__select"
   >
-    <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-      defaultValue=""
+    <Dropdown
+      columnClass="col-12"
+      id="ddlFeedbackOptions"
+      labelProps={
+        Object {
+          "label": "Option",
+          "shouldUpper": false,
+          "stacked": true,
+        }
+      }
       onChange={[Function]}
       options={
         Array [

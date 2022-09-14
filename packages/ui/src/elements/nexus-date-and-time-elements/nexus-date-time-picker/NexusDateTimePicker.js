@@ -1,19 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import InlineEdit from '@atlaskit/inline-edit';
-import Select from '@atlaskit/select';
+import {Dropdown} from '@portal/portal-components';
 import {isUtc} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
 import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
 import './NexusDateTimePicker.scss';
-import {getDisplayDate, getDateFormat} from '../utils';
+import {getDateFormat, getDisplayDate} from '../utils';
 import {
+    RELATIVE_DATE_FORMAT,
     RELATIVE_TIME_LABEL,
+    SIMULCAST_DATE_FORMAT,
     SIMULCAST_TIME_LABEL,
     TIMESTAMP_DATE_FORMAT,
-    SIMULCAST_DATE_FORMAT,
-    RELATIVE_DATE_FORMAT,
 } from '../constants';
 
 const NexusDateTimePicker = ({
@@ -32,9 +32,7 @@ const NexusDateTimePicker = ({
 }) => {
     const [date, setDate] = useState(value);
     const [firstRun, setFirstRun] = useState(true);
-
-    // set isSimulcast as computed property (fix for 3825)
-    const isSimulcast = isUtc(value || '');
+    const [isSimulcast, setIsSimulcast] = useState(isUtc(value || ''));
 
     // Get locale provided by intl
     const intl = useIntl();
@@ -91,17 +89,17 @@ const NexusDateTimePicker = ({
                         </div>
                         {!isTimestamp && ( // Timestamps are always UTC, no need for this option
                             <div className="nexus-c-date-time-picker__type-select">
-                                <Select
-                                    defaultValue={
-                                        isSimulcast
-                                            ? {label: SIMULCAST_TIME_LABEL, value: true}
-                                            : {label: RELATIVE_TIME_LABEL, value: false}
-                                    }
+                                <Dropdown
+                                    value={!!isSimulcast}
+                                    columnClass="col-12"
                                     options={[
                                         {label: RELATIVE_TIME_LABEL, value: false},
                                         {label: SIMULCAST_TIME_LABEL, value: true},
                                     ]}
-                                    onChange={type => onFormatChange(type.value)}
+                                    onChange={e => {
+                                        setIsSimulcast(e.value);
+                                        onFormatChange(e.value);
+                                    }}
                                 />
                             </div>
                         )}

@@ -119,7 +119,7 @@
     "@babel/runtime" "^7.0.0"
     "@emotion/core" "^10.0.9"
 
-"@atlaskit/button@^13.3.12", "@atlaskit/button@^13.3.7", "@atlaskit/button@^13.4.0":
+"@atlaskit/button@^13.3.12", "@atlaskit/button@^13.4.0":
   version "13.4.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-13.4.2.tgz#c0afe579465d16949432a42d8d73d8f6aa650ad0"
   integrity sha512-qLxbnnuSDr+arM8NIRva9J2H3YU6kvpWYw0lzQiW59iCQIjsRlo5EQqrGPd9l4nDL/shvdNzAuEQTVC+21t/pg==
@@ -229,37 +229,6 @@
     array-find "^1.0.0"
     prop-types "^15.5.10"
 
-"@atlaskit/dropdown-menu@^8.2.4":
-  version "8.2.4"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/dropdown-menu/-/dropdown-menu-8.2.4.tgz#423a723ab8f788edbad25eb0e8a450aca4fa796b"
-  integrity sha512-Ql26bbhdTBybGBgAcK1epch672wm9BwfeJ1VT8npo45HvyTCKFHHfl7j3zVAdT2y9tKFw7aT09ahN7IDaY8QmA==
-  dependencies:
-    "@atlaskit/analytics-next" "^6.3.5"
-    "@atlaskit/button" "^13.3.7"
-    "@atlaskit/droplist" "^10.0.1"
-    "@atlaskit/icon" "^20.0.1"
-    "@atlaskit/item" "^11.0.1"
-    "@atlaskit/theme" "^9.5.1"
-    "@babel/runtime" "^7.0.0"
-    array-find "^1.0.0"
-    prop-types "^15.5.10"
-    react-uid "^2.2.0"
-
-"@atlaskit/droplist@^10.0.1":
-  version "10.0.8"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/droplist/-/droplist-10.0.8.tgz#ba29de9e685b065fd54bff76480a5fa69d68ab98"
-  integrity sha512-Eev0Eu7gja8yuFNn5NLIFyAn8k4jZc5SIAixVMmavIxXnO9JPfLIesl2sYBOwYnjVjhS1t0n8BzbIsvifITIyw==
-  dependencies:
-    "@atlaskit/analytics-next" "^6.3.5"
-    "@atlaskit/icon" "^20.1.1"
-    "@atlaskit/item" "^11.0.2"
-    "@atlaskit/layer" "^8.0.1"
-    "@atlaskit/spinner" "^14.0.0"
-    "@atlaskit/theme" "^9.5.1"
-    "@atlaskit/tooltip" "^15.2.7"
-    "@babel/runtime" "^7.0.0"
-    prop-types "^15.5.10"
-
 "@atlaskit/droplist@^11.0.0":
   version "11.0.9"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/droplist/-/droplist-11.0.9.tgz#3f76165c8d930312276be50ff6aacb6383c0d1dc"
@@ -347,7 +316,7 @@
     react-uid "^2.2.0"
     tiny-invariant "^1.2.0"
 
-"@atlaskit/icon@^20.0.1", "@atlaskit/icon@^20.1.1":
+"@atlaskit/icon@^20.1.1":
   version "20.1.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-20.1.2.tgz#1054196d5442cb818faefe17a47c3e528bc15ae7"
   integrity sha512-cDpE6kfiCxv4VNY4LKtRUPAdXTcx4t2eEU1K5Htm/5i6/rmJMHMITIvpZaRqF2R7XdBH5kE2MLxSfexBHC0DjQ==
@@ -407,17 +376,6 @@
     react-loadable "^5.1.0"
     tslib "^1.9.3"
 
-"@atlaskit/item@^11.0.1", "@atlaskit/item@^11.0.2":
-  version "11.0.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/item/-/item-11.0.3.tgz#f2a3b7a6cf932655b7c3d705f2716114d7474210"
-  integrity sha512-cqfc99r5zEjzZaTL281qysYdCgCaaUyHcf4rw6NDBjktZ8YLy2+d8EHmr0Tke3234a7C/seNHsWC0epkqWL6JA==
-  dependencies:
-    "@atlaskit/theme" "^9.5.1"
-    "@babel/runtime" "^7.0.0"
-    prop-types "^15.5.10"
-    react-addons-text-content "^0.0.4"
-    uuid "^3.1.0"
-
 "@atlaskit/item@^12.0.0":
   version "12.0.8"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/item/-/item-12.0.8.tgz#9cc2a4f25af37f94a8d4ff3b049f20ce8c08a86a"
@@ -428,16 +386,6 @@
     prop-types "^15.5.10"
     react-addons-text-content "^0.0.4"
     uuid "^3.1.0"
-
-"@atlaskit/layer@^8.0.1":
-  version "8.0.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/layer/-/layer-8.0.3.tgz#6f6676b896a316f7b7af6b7b0cd5854474ff3596"
-  integrity sha512-8ReDwi0G9vFw94X/yYkn0pdXuyBfXMY50DNx94J6jvo3pfvFcaoaNhoaQsp8HON5ZGvIuNBbuidi0auvBlXbcg==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    popper.js "^1.14.1"
-    raf-schd "^2.1.0"
-    react-scrolllock "^5.0.1"
 
 "@atlaskit/layer@^9.0.0":
   version "9.0.4"
@@ -690,7 +638,7 @@
     react-select "^3.0.4"
     shallow-equal "^1.0.0"
 
-"@atlaskit/select@^15.0.0", "@atlaskit/select@^15.2.0", "@atlaskit/select@^15.2.8":
+"@atlaskit/select@^15.0.0", "@atlaskit/select@^15.2.0":
   version "15.2.13"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/select/-/select-15.2.13.tgz#cf8d3d67d5ee9af5b019e650e23e5bb65fe67717"
   integrity sha512-iYZd2J6xh1+nhtvKFHiviBOVStVkBFvTDNnokZxxPJcXgyIzlJ1f36U4r78hniPs4Z3gGabwhgpVHXkImn6RlQ==
@@ -848,7 +796,7 @@
   dependencies:
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/tooltip@^15.0.15", "@atlaskit/tooltip@^15.2.7":
+"@atlaskit/tooltip@^15.0.15":
   version "15.2.9"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/tooltip/-/tooltip-15.2.9.tgz#ab6352681c5e826536b2e103782f7da17a10a50c"
   integrity sha512-twwoqV7DX7gXpDxUSb1nhyYVxxKSHqfAbsViPXF+RdnO61lKNy4EpegRYQGvR2+aewEnMu4ICOm7BA4/QzGXKA==
@@ -13374,10 +13322,10 @@ primeicons@^5.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/primeicons/-/primeicons-5.0.0.tgz#73a0b6028a77c58a9eeb331ad13aaf085e8451ee"
   integrity sha512-heygWF0X5HFI1otlZE62pp6ye7sZ8om78J9au2BRkg8O7Y8AHTZ9qKMRzchZUHLe8zUAvdi6hZzzm9XxgwIExw==
 
-primereact@^8.1.1:
-  version "8.1.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/primereact/-/primereact-8.1.1.tgz#0a8ad53d4cfd4d50e879617dc9a878cfc0b1efdf"
-  integrity sha512-D2zzpoRHyv/3jw3TmqNWh55/geInebULYNmT+DD1k4i1tVHFZE1DG1EQqC/Wl7AJmcNOS1mgHgYJWsO3/YXzLw==
+primereact@^8.3.0:
+  version "8.3.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/primereact/-/primereact-8.3.0.tgz#78c00a043a4629e135f66f975021414ea3913c46"
+  integrity sha512-Y/8hlTnKsmgbTLlw6LWwMoA78rDMdA2PUcrJqm7wHgBUVxSPQ8l4f3JkbpVKVqESb5nuay9l+0BE4dx1zSBTAg==
   dependencies:
     "@types/react-transition-group" "^4.4.1"
     react-transition-group "^4.4.1"

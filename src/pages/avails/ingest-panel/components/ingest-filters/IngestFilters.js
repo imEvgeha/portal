@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Select from '@atlaskit/select';
-import {Button} from '@portal/portal-components';
+import {Dropdown, Button} from '@portal/portal-components';
 import {connect} from 'react-redux';
 import {NexusDateTimeWindowPicker} from '../../../../../ui/elements';
 import Constants from '../../constants';
@@ -67,11 +66,20 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                     />
                 </div>
                 <div className="ingest-filters__section">
-                    Avail Status
-                    <Select
+                    <Dropdown
+                        id="ddlAvailStatus"
+                        labelProps={{
+                            label: 'Avail Status',
+                            stacked: true,
+                            shouldUpper: false,
+                        }}
+                        value={filters.status.value}
+                        columnClass="col-12"
                         options={Constants.STATUS_LIST}
-                        value={filters.status}
-                        onChange={value => onFilterChange(STATUS, value)}
+                        onChange={e => {
+                            const value = Constants.STATUS_LIST.find(x => x.value === e.value);
+                            onFilterChange(STATUS, value);
+                        }}
                     />
                 </div>
             </div>
@@ -95,11 +103,20 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
             </div>
             <div className="ingest-filters__row3">
                 <div className="ingest-filters__section">
-                    Ingest Method
-                    <Select
+                    <Dropdown
+                        id="ddlIngestMethod"
+                        labelProps={{
+                            label: 'Ingest Method',
+                            stacked: true,
+                            shouldUpper: false,
+                        }}
+                        value={filters.ingestType.value}
+                        columnClass="col-12"
                         options={Constants.INGEST_LIST}
-                        value={filters.ingestType}
-                        onChange={value => onFilterChange(INGEST_TYPE, value)}
+                        onChange={e => {
+                            const value = Constants.INGEST_LIST.find(x => x.value === e.value);
+                            onFilterChange(INGEST_TYPE, value);
+                        }}
                     />
                 </div>
                 {filters.ingestType?.value === Constants.ingestTypes.EMAIL.toUpperCase() && (

@@ -116,7 +116,7 @@ const NexusArray = ({
                         <EditorCloseIcon size="medium" />
                     </div>
                 )}
-                {buildObject(fields, allData[index] || {}, index)}
+                <div className="row">{buildObject(fields, allData[index] || {}, index)}</div>
             </div>
         );
     };
@@ -127,10 +127,7 @@ const NexusArray = ({
                 {Object.keys(fields).map(key => {
                     return (
                         !getFieldConfig(fields[key], 'hidden', view) && (
-                            <div
-                                key={`nexus-c-array__field ${key}`}
-                                className={`nexus-c-array__field ${fields[key].className ? fields[key].className : ''}`}
-                            >
+                            <div key={`nexus-c-array__field ${key}`} className="col-6 array-field-wrapper">
                                 {renderNexusField(`${path}[${index}].${key}`, view, getValues, generateMsvIds, {
                                     initialData,
                                     field: fields[key],
@@ -138,6 +135,7 @@ const NexusArray = ({
                                     selectValues,
                                     setFieldValue,
                                     config,
+                                    shouldStackLabel: true,
                                 })}
                             </div>
                         )

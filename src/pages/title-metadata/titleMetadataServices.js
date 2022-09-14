@@ -280,15 +280,6 @@ export const titleService = {
             body: JSON.stringify(editedTerritoryMetadata),
         });
     },
-    propagateSeasonsPersonsToEpisodes: seasonPersons => {
-        const uri = `/seasonsPersonsToEpisodes`;
-        const url = getApiURI('title', uri);
-
-        return nexusFetch(url, {
-            method: 'put',
-            body: JSON.stringify(seasonPersons),
-        });
-    },
     regenerateAutoDecoratedMetadata: masterEmetId => {
         const uri = `/regenerateEmets/${masterEmetId}`;
         const url = getApiURI('title', uri, 2);

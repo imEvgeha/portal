@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {RadioGroup} from '@atlaskit/radio';
-import Select from '@atlaskit/select';
-import {Button} from '@portal/portal-components';
+import {Dropdown, MultiSelect, Button} from '@portal/portal-components';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import constants from '../../../constants';
 import {uploadIngest} from '../../../ingestActions';
-import {getLicensees, getLicensors, getLicenseTypes, getTerritories} from '../../../ingestSelectors';
+import {getLicensees, getLicenseTypes, getLicensors, getTerritories} from '../../../ingestSelectors';
 import IngestConfirmation from '../../ingest-confirmation/IngestConfirmation';
 import './InputForm.scss';
 
@@ -67,8 +66,7 @@ const InputForm = ({
     const initialTemplate = templates.find(t => t.testId !== 'disabled');
     const [template, setTemplate] = useState(initialTemplate.value);
 
-    const getLicensor = template === STUDIO &&
-        ingestLicensor && {label: ingestLicensor, value: {value: ingestLicensor}};
+    const getLicensor = template === STUDIO && ingestLicensor;
 
     const [licensor, setLicensor] = useState(getLicensor);
     const [selectedLicenseTypes, setSelectedLicenseTypes] = useState([]);
@@ -85,7 +83,7 @@ const InputForm = ({
 
     useEffect(() => {
         if (template === STUDIO && !ingestData) {
-            const serviceRegions = get(licensor, 'value.servicingRegions', []);
+            const serviceRegions = get(licensor, 'servicingRegions', []);
             if (serviceRegions.length === 1) {
                 const name = serviceRegions[0].servicingRegionName;
                 setServiceRegion({label: name, value: name});
@@ -109,7 +107,7 @@ const InputForm = ({
     const openIngestConfirmationModal = () => {
         openModalCallback(
             <IngestConfirmation
-                licensor={licensor.label}
+                licensor={licensor.name}
                 serviceRegion={serviceRegion.value}
                 licensee={
                     template === STUDIO
@@ -161,7 +159,7 @@ const InputForm = ({
         }
 
         if (template === STUDIO) {
-            params.licensor = get(licensor, 'value.value', '');
+            params.licensor = get(licensor, 'value', '');
             params.licensee = selectedLicensees.map(licensee => licensee.value).join(',');
         }
 
@@ -176,7 +174,7 @@ const InputForm = ({
     };
 
     const serviceRegionOptions = get(licensor, 'value')
-        ? get(licensor, 'value.servicingRegions', []).map(({servicingRegionName}) => ({
+        ? get(licensor, 'servicingRegions', []).map(({servicingRegionName}) => ({
               label: servicingRegionName,
               value: servicingRegionName,
           }))
@@ -242,59 +240,117 @@ const InputForm = ({
                 <div className="manual-ingest-config__fields">
                     {template === STUDIO && (
                         <div className="manual-ingest-config--licensor">
-                            <label className="manual-ingest-config__label">LICENSOR</label>
-                            <Select
-                                id="manual-upload-licensor"
-                                onChange={val => setLicensor(val)}
-                                value={licensor}
-                                options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                                placeholder="Select"
+                            <Dropdown
                                 {...selectProps}
+                                id="manual-upload-licensor"
+                                labelProps={{
+                                    label: 'Licensor',
+                                    stacked: true,
+                                    shouldUpper: true,
+                                }}
+                                value={licensor.value}
+                                columnClass="col-12"
+                                filter={true}
+                                placeholder="Select"
+                                options={licensors}
+                                optionLabel="name"
+                                onChange={e => {
+                                    const value = licensors.find(x => x.value === e.value);
+                                    setLicensor(value);
+                                }}
                             />
                         </div>
                     )}
                     {template !== USMASTER && (
                         <div className="manual-ingest-config--service-region">
-                            <label className="manual-ingest-config__label">REGION</label>
-                            <Select
-                                id="manual-upload-service-region"
-                                onChange={val => setServiceRegion(val)}
-                                value={serviceRegion}
-                                options={serviceRegionOptions}
-                                placeholder="Select"
+                            <Dropdown
                                 {...selectProps}
+                                id="manual-upload-service-region"
+                                labelProps={{
+                                    label: 'Region',
+                                    stacked: true,
+                                    shouldUpper: true,
+                                }}
+                                value={serviceRegion.value}
+                                columnClass="col-12"
+                                placeholder="Select"
+                                options={serviceRegionOptions}
+                                onChange={e => {
+                                    const value = serviceRegionOptions.find(x => x.value === e.value);
+                                    setServiceRegion(value);
+                                }}
                             />
                         </div>
                     )}
 
                     {[STUDIO, LICENSEE].includes(template) && (
                         <div className="manual-ingest-config__licensee">
-                            <label className="manual-ingest-config__label">LICENSEE</label>
-                            <Select
-                                id="manual-upload-licensee"
-                                onChange={val => setSelectedLicensees(val || [])}
-                                value={selectedLicensees}
-                                options={licenseesOptions}
-                                isDisabled={!serviceRegion}
-                                placeholder="Select"
-                                isMulti={template === STUDIO}
-                                {...selectProps}
-                            />
+                            {LICENSEE === template && (
+                                <Dropdown
+                                    {...selectProps}
+                                    id="manual-upload-licensee"
+                                    labelProps={{
+                                        label: 'Licensee',
+                                        stacked: true,
+                                        shouldUpper: true,
+                                    }}
+                                    filter={true}
+                                    value={selectedLicensees.value}
+                                    options={licenseesOptions}
+                                    disabled={!serviceRegion}
+                                    columnClass="col-12"
+                                    placeholder="Select"
+                                    onChange={e => {
+                                        const value = licenseesOptions.find(x => x.value === e.value);
+                                        setSelectedLicensees(value || []);
+                                    }}
+                                />
+                            )}
+
+                            {STUDIO === template && (
+                                <MultiSelect
+                                    {...selectProps}
+                                    id="manual-upload-licensee"
+                                    labelProps={{
+                                        label: 'Licensee',
+                                        stacked: true,
+                                        shouldUpper: true,
+                                    }}
+                                    filter={true}
+                                    value={selectedLicensees.map(l => l.value)}
+                                    options={licenseesOptions}
+                                    disabled={!serviceRegion}
+                                    columnClass="col-12"
+                                    placeholder="Select"
+                                    onChange={e => {
+                                        const values = licenseesOptions.filter(l => e.value.includes(l.value));
+                                        setSelectedLicensees(values || []);
+                                    }}
+                                />
+                            )}
+
                             <div className="manual-ingest-config__sub-text">{LICENSEE_WARNING}</div>
                         </div>
                     )}
                     <div className="manual-ingest-config__catalog">
                         <div className="manual-ingest-config__catalog-options">
                             <div className="manual-ingest-config__catalog-select">
-                                <label className="manual-ingest-config__label">CATALOGUE</label>
-                                <Select
-                                    id="manual-upload-catalog-type"
-                                    onChange={val => onCatalogueChange(val)}
-                                    value={catalogType}
-                                    options={CATALOG_TYPES}
-                                    isDisabled={false}
-                                    placeholder="Select"
+                                <Dropdown
                                     {...selectProps}
+                                    id="manual-upload-catalog-type"
+                                    labelProps={{
+                                        label: 'Catalogue',
+                                        stacked: true,
+                                        shouldUpper: true,
+                                    }}
+                                    value={catalogType.value}
+                                    options={CATALOG_TYPES}
+                                    columnClass="col-12"
+                                    placeholder="Select"
+                                    onChange={e => {
+                                        const value = CATALOG_TYPES.find(x => x.value === e.value);
+                                        onCatalogueChange(value);
+                                    }}
                                 />
                             </div>
                         </div>
@@ -302,27 +358,47 @@ const InputForm = ({
                     {get(catalogType, 'value', '') === 'Title Catalog' && (
                         <>
                             <div className="manual-ingest-config__license-types">
-                                <label className="manual-ingest-config__label">LICENSE TYPES</label>
-                                <Select
-                                    id="manual-upload-license-types"
-                                    onChange={val => setSelectedLicenseTypes(val || [])}
-                                    value={selectedLicenseTypes}
-                                    options={licenseTypes.map(lic => ({value: lic.value, label: lic.value}))}
-                                    placeholder="Select"
-                                    isMulti
+                                <MultiSelect
                                     {...selectProps}
+                                    id="manual-upload-license-types"
+                                    labelProps={{
+                                        label: 'License Types',
+                                        stacked: true,
+                                        shouldUpper: true,
+                                    }}
+                                    filter={true}
+                                    value={selectedLicenseTypes.map(l => l.value)}
+                                    options={licenseTypes.map(lic => ({value: lic.value, label: lic.value}))}
+                                    columnClass="col-12"
+                                    placeholder="Select"
+                                    onChange={e => {
+                                        const values = licenseTypes
+                                            .filter(l => e.value.includes(l.value))
+                                            .map(lic => ({value: lic.value, label: lic.value}));
+                                        setSelectedLicenseTypes(values || []);
+                                    }}
                                 />
                             </div>
                             <div className="manual-ingest-config__territory">
-                                <label className="manual-ingest-config__label">TERRITORY</label>
-                                <Select
-                                    id="manual-upload-territory"
-                                    onChange={val => setSelectedTerritories(val || [])}
-                                    value={selectedTerritories}
-                                    options={countries.map(lic => ({value: lic.countryCode, label: lic.countryName}))}
-                                    placeholder="Select"
-                                    isMulti
+                                <MultiSelect
                                     {...selectProps}
+                                    id="manual-upload-territory"
+                                    labelProps={{
+                                        label: 'Territory',
+                                        stacked: true,
+                                        shouldUpper: true,
+                                    }}
+                                    filter={true}
+                                    value={selectedTerritories.map(l => l.value)}
+                                    options={countries.map(lic => ({value: lic.countryCode, label: lic.countryName}))}
+                                    columnClass="col-12"
+                                    placeholder="Select"
+                                    onChange={e => {
+                                        const values = countries
+                                            .filter(l => e.value.includes(l.countryCode))
+                                            .map(lic => ({value: lic.countryCode, label: lic.countryName}));
+                                        setSelectedTerritories(values || []);
+                                    }}
                                 />
                             </div>
                         </>

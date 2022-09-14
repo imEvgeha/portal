@@ -21,17 +21,15 @@ const FulfillmentOrderPanels = ({
 
     useEffect(() => {
         if (sortDirection.type === 'ID') {
-            getFilteredByIdOrders(orderDetails.so_number, sortDirection.value, statusFilter.value, page).then(data => {
+            getFilteredByIdOrders(orderDetails.so_number, sortDirection.code, statusFilter, page).then(data => {
                 setNewFulfillmentOrders(data?.fulfillmentOrders);
                 setNewServicingOrderItems(data?.servicingOrderItems);
             });
         } else if (sortDirection.type === 'TITLE') {
-            getFilteredByTitleOrders(orderDetails.so_number, sortDirection.value, statusFilter.value, page).then(
-                data => {
-                    setNewFulfillmentOrders(data?.fulfillmentOrders);
-                    setNewServicingOrderItems(data?.servicingOrderItems);
-                }
-            );
+            getFilteredByTitleOrders(orderDetails.so_number, sortDirection.code, statusFilter, page).then(data => {
+                setNewFulfillmentOrders(data?.fulfillmentOrders);
+                setNewServicingOrderItems(data?.servicingOrderItems);
+            });
         }
     }, [statusFilter, sortDirection]);
 

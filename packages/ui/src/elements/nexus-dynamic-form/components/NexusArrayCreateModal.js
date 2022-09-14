@@ -65,7 +65,7 @@ const NexusArrayCreateModal = ({
                 {({formProps, reset, getValues}) => (
                     <form {...formProps}>
                         <div>
-                            {Object.keys(getVisibleFields(fields)).map((key, index) => {
+                            {Object.keys(getVisibleFields(fields)).map(key => {
                                 return (
                                     <div key={`${data.id}_${key}`} className="nexus-c-nexus-array-with-tabs__field">
                                         {renderNexusField(key, VIEWS.CREATE, getValues, generateMsvIds, {
@@ -89,7 +89,7 @@ const NexusArrayCreateModal = ({
                                 Submit
                             </Button>
                             <Button
-                                className="nexus-c-modal__cancel-button"
+                                className="mx-4"
                                 appearance="danger"
                                 onClick={() => {
                                     reset();
