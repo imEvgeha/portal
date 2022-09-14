@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button} from '@portal/portal-components';
 import * as DateTimeContext from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-time-context/NexusDateTimeProvider';
 import {TOGGLE_REFRESH_GRID_DATA} from '@vubiquity-nexus/portal-ui/lib/grid/gridActionTypes';
 import {shallow} from 'enzyme';
@@ -63,25 +64,7 @@ describe('EventManagementTable', () => {
         expect(actions).toEqual([{type: TOGGLE_REFRESH_GRID_DATA, payload: true}]);
     });
 
-    describe('Set Time Format Button ', () => {
-        it('shows `Set To Local Time` when the DateTimeContext is set to UTC Time', () => {
-            // set isLocal to false, which is UTC time
-            mockFnIsLocal(false);
-            // re-init the wrapper
-            init();
-
-            const button = wrapper.find('.nexus-c-event-management-table__toolbar-button').at(0);
-            expect(button.text()).toContain('Local');
-        });
-
-        it('shows `Set To UTC Time` when the DateTimeContext is set to Local Time', () => {
-            // set isLocal to true, which is local time
-            mockFnIsLocal(true);
-            // re-init the wrapper
-            init();
-
-            const button = wrapper.find('.nexus-c-event-management-table__toolbar-button').at(0);
-            expect(button.text()).toContain('UTC');
-        });
+    it('should render Three toolbar buttons for event management', () => {
+        expect(wrapper.find('.nexus-c-event-management-table__toolbar-button')).toHaveLength(3);
     });
 });

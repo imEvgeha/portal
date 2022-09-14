@@ -106,20 +106,12 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
     </div>
     <div>
       <Button
-        __TYPE="Button"
-        badge={null}
-        badgeClassName={null}
         className="p-button-text"
-        disabled={false}
         icon={
           Object {
             "process": [Function],
           }
         }
-        iconPos="left"
-        label={null}
-        loading={false}
-        loadingIcon="pi pi-spinner pi-spin"
         onClick={[Function]}
         tooltip="Create New Right"
         tooltipOptions={

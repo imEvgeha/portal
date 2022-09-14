@@ -472,7 +472,7 @@ const NexusArrayWithTabs = ({
                     <div>
                         {view === VIEWS.EDIT && (
                             <Button
-                                className="p-button-outlined"
+                                className="p-button-outlined p-button-secondary"
                                 onClick={handleDeleteRecord}
                                 disabled={!Object.keys(groupedData).length}
                                 label="Delete Record"

@@ -19,7 +19,6 @@ exports[`DynamicDropdown should match snapshot 1`] = `
   filterInputAutoFocus={true}
   filterMatchMode="contains"
   filterPlaceholder={null}
-  filterTemplate={null}
   id="type"
   inputId={null}
   inputRef={null}

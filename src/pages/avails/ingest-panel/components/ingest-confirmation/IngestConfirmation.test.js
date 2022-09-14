@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {shallow} from 'enzyme';
 import IngestConfirmation from './IngestConfirmation';
 import {INGEST_ASSIGN_MESSAGE, INGEST_UPLOAD_CONTINUE_MSG} from './constants';

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {LoadingButton} from '@atlaskit/button';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
+import {Button} from '@portal/portal-components';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
@@ -218,13 +218,16 @@ const InputForm = ({
 
     return (
         <div className="manual-ingest-config">
-            <div className="manual-ingest-config__grid">
+            <div className="manual-ingest-config__grid d-flex justify-content-between">
                 <div className="manual-ingest-config--file-name">
                     <span>{fileName || file.name}</span>
                 </div>
-                <Button isDisabled={!!fileName} onClick={browseClick} className="manual-ingest-config__grid--browse">
-                    Browse
-                </Button>
+                <Button
+                    label="Browse"
+                    disabled={!!fileName}
+                    onClick={browseClick}
+                    className="p-button-outlined p-button-secondary manual-ingest-config__grid--browse"
+                />
             </div>
             <div className="manual-ingest-config__body">
                 <div className="manual-ingest-config__templates">
@@ -327,18 +330,19 @@ const InputForm = ({
                 </div>
             </div>
             <div className="manual-ingest-config__buttons">
-                <Button shouldFitContainer isDisabled={isUploading} onClick={closeModal}>
-                    Cancel
-                </Button>
-                <LoadingButton
-                    shouldFitContainer
+                <Button
+                    label="Cancel"
+                    className="p-button-outlined p-button-secondary"
+                    disabled={isUploading}
+                    onClick={closeModal}
+                />
+                <Button
+                    label="Upload"
                     onClick={openIngestConfirmationModal}
-                    className={!isUploadEnabled() ? '' : 'btn-primary'}
-                    isLoading={isUploading}
-                    isDisabled={!isUploadEnabled() || isUploading}
-                >
-                    <span>Upload</span>
-                </LoadingButton>
+                    className={`${!isUploadEnabled() ? '' : 'btn-primary'} p-button-outlined`}
+                    disabled={!isUploadEnabled() || isUploading}
+                    loading={isUploading}
+                />
             </div>
         </div>
     );

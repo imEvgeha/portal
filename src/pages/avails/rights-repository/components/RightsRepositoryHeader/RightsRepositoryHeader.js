@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {Button} from '@portal/portal-components';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
-import {Button} from 'primereact/button';
 import {TabMenu} from 'primereact/tabmenu';
 import {connect, useSelector, useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
+import {Button} from '@portal/portal-components';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {useDateTimeContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-time-context/NexusDateTimeProvider';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -32,9 +32,11 @@ const TooltipCellRenderer = ({data = {}, isTooltipEnabled, setSingleRightMatch})
                 return (
                     <span>
                         {NO_MATCHING_TITLE}
-                        <Button appearance="link" onClick={() => setSingleRightMatch([data])}>
-                            {FIND_MATCH}
-                        </Button>
+                        <Button
+                            label={FIND_MATCH}
+                            className="p-button-link mx-2 mr-0 nexus-c-right-to-match-view__button-links"
+                            onClick={() => setSingleRightMatch([data])}
+                        />
                     </span>
                 );
             case INDICATOR_SUCCESS:
@@ -47,16 +49,15 @@ const TooltipCellRenderer = ({data = {}, isTooltipEnabled, setSingleRightMatch})
                             true
                         )}`}
                         <Button
-                            appearance="link"
+                            label={VIEW_TITLE}
+                            className="p-button-link mx-2 mr-0 nexus-c-right-to-match-view__button-links"
                             onClick={() =>
                                 window.open(
                                     `${getDomainName()}/${routeParams.realm}/metadata/detail/${data.coreTitleId}`,
                                     '_blank'
                                 )
                             }
-                        >
-                            {VIEW_TITLE}
-                        </Button>
+                        />
                     </span>
                 );
             default:

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import Form from '@atlaskit/form';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {RIGHTS_CREATE, RIGHTS_EDIT} from '../../constants/constant-variables';
 import {ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import RightAudioLanguageFields from './RightAudioLanguageFields';
@@ -59,12 +59,19 @@ class RightAudioLanguageForm extends React.Component {
                             audioLanguageIndex={this.props.audioLanguageIndex}
                         />
                         <ModalFooter>
-                            <Button appearance="default" onClick={this.props.onClose}>
-                                Cancel
-                            </Button>
-                            <Button appearance="primary" type="submit">
-                                {this.props.isEdit ? 'Update' : 'Create'}
-                            </Button>
+                            <Button
+                                label="Cancel"
+                                className="p-button-outlined p-button-secondary"
+                                onClick={e => {
+                                    e.preventDefault();
+                                    this.props.onClose(e);
+                                }}
+                            />
+                            <Button
+                                label={this.props.isEdit ? 'Update' : 'Create'}
+                                className="p-button-outlined"
+                                type="submit"
+                            />
                         </ModalFooter>
                     </Modal>
                 )}

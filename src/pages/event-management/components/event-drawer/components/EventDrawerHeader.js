@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button, {LoadingButton} from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
 import {isAllowed} from '@portal/portal-auth/permissions';
+import {Button} from '@portal/portal-components';
 import NexusDownload from '@vubiquity-nexus/portal-ui/lib/elements/nexus-download/NexusDownload';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {connect} from 'react-redux';
@@ -27,25 +27,23 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
     return (
         <div className="nexus-c-event-drawer-header">
             <Tooltip content={canReplayAndReplicate ? 'Replay Event' : 'Insufficient permissions'}>
-                <LoadingButton
-                    className="nexus-c-event-drawer-header__replay-button"
+                <Button
+                    label="Replay"
+                    className="p-button-outlined p-button-secondary nexus-c-event-drawer-header__replay-button"
                     onClick={onInnerReplay}
-                    isLoading={isReplaying}
-                    isDisabled={!canReplayAndReplicate || !event || !eventId}
-                >
-                    Replay
-                </LoadingButton>
+                    loading={isReplaying}
+                    disabled={!canReplayAndReplicate || !event || !eventId}
+                />
             </Tooltip>
 
             <Tooltip content={canReplayAndReplicate ? 'Replicate Event' : 'Insufficient permissions'}>
                 <Button
-                    className="nexus-c-event-drawer-header__replicate-button"
+                    label="Replicate"
+                    className="p-button-outlined p-button-secondary nexus-c-event-drawer-header__replicate-button"
                     onClick={onInnerReplicate}
-                    isLoading={isReplicating}
-                    isDisabled={!canReplayAndReplicate || !event || !eventId}
-                >
-                    Replicate
-                </Button>
+                    loading={isReplicating}
+                    disabled={!canReplayAndReplicate || !event || !eventId}
+                />
             </Tooltip>
             <NexusDownload
                 className="p-button-outlined p-button-secondary nexus-c-event-drawer-header__download-button"

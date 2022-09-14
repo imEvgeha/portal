@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
+import {Button} from '@portal/portal-components';
 import {AG_GRID_COLUMN_FILTER} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineActionButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
@@ -144,7 +144,11 @@ const RightToMatchView = ({
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id || '0'}>
-                <Button onClick={onUpdateRightClick}>{NEW_BUTTON}</Button>
+                <Button
+                    label={NEW_BUTTON}
+                    className="p-button-outlined p-button-secondary"
+                    onClick={onUpdateRightClick}
+                />
             </CustomActionsCellRenderer>
         );
     };
@@ -326,17 +330,16 @@ const RightToMatchView = ({
                         )}
                     </div>
                     <div className="nexus-c-right-to-match-view__buttons">
-                        <ButtonGroup>
-                            <Button
-                                className="nexus-c-button"
-                                onClick={() => navigate(URL.keepEmbedded(previousPageRoute))}
-                            >
-                                {CANCEL_BUTTON}
-                            </Button>
-                            <Button className="nexus-c-button" appearance="primary" onClick={handleMatchClick}>
-                                {MATCH_BUTTON}
-                            </Button>
-                        </ButtonGroup>
+                        <Button
+                            label={CANCEL_BUTTON}
+                            className="p-button-outlined p-button-secondary nexus-c-button"
+                            onClick={() => navigate(URL.keepEmbedded(previousPageRoute))}
+                        />
+                        <Button
+                            label={MATCH_BUTTON}
+                            className="p-button-outlined nexus-c-button"
+                            onClick={handleMatchClick}
+                        />
                     </div>
                 </>
             )}

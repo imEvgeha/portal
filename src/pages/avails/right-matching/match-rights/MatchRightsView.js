@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import {Button} from '@portal/portal-components';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     defineColumn,
@@ -248,21 +248,19 @@ const MatchRightView = ({
                     />
                 )}
             </div>
-            <div className="nexus-c-match-right-view__buttons">
-                <ButtonGroup>
-                    <Button onClick={onCancel} className="nexus-c-button">
-                        {CANCEL_BUTTON}
-                    </Button>
-                    <LoadingButton
-                        className="nexus-c-button"
-                        appearance="primary"
-                        onClick={onSaveCombinedRight}
-                        isDisabled={!combinedRight.id}
-                        isLoading={isMatching}
-                    >
-                        {SAVE_BUTTON}
-                    </LoadingButton>
-                </ButtonGroup>
+            <div className="nexus-c-match-right-view__buttons d-flex justify-content-end">
+                <Button
+                    label={CANCEL_BUTTON}
+                    className="p-button-outlined p-button-secondary nexus-c-button"
+                    onClick={onCancel}
+                />
+                <Button
+                    label={SAVE_BUTTON}
+                    className="p-button-outlined nexus-c-button"
+                    onClick={onSaveCombinedRight}
+                    disabled={!combinedRight.id}
+                    loading={isMatching}
+                />
             </div>
         </div>
     );

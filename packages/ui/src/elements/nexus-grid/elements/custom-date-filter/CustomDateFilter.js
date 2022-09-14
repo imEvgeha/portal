@@ -140,7 +140,7 @@ export class CustomDateFilter extends React.Component {
                 <div className="nexus-c-date-filter-btn">
                     <Button
                         label="Filter"
-                        className="p-button-outlined"
+                        className="p-button-outlined p-button-secondary"
                         disabled={!this.doesFilterPass()}
                         onClick={() => filterChangedCallback()}
                     />

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
@@ -59,7 +59,11 @@ const RightMatchingView = ({
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
-                <Button onClick={() => onFocusButtonClick(id)}>{FOCUS_BUTTON}</Button>
+                <Button
+                    className="p-button-outlined p-button-secondary"
+                    label={FOCUS_BUTTON}
+                    onClick={() => onFocusButtonClick(id)}
+                />
             </CustomActionsCellRenderer>
         );
     };

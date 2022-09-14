@@ -11,33 +11,28 @@ exports[`EventManagementTable should match snapshot 1`] = `
       content="Change timestamps to show in Local format"
     >
       <Button
-        className="nexus-c-event-management-table__toolbar-button"
+        className="p-button-outlined p-button-secondary nexus-c-event-management-table__toolbar-button"
+        label="Set to Local Time"
         onClick={[Function]}
-      >
-        Set to 
-        Local
-         Time
-      </Button>
+      />
     </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
     <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
       content="Clear active column filters"
     >
       <Button
-        className="nexus-c-event-management-table__toolbar-button"
+        className="p-button-outlined p-button-secondary nexus-c-event-management-table__toolbar-button"
+        label="Clear Filters"
         onClick={[MockFunction]}
-      >
-        Clear Filters
-      </Button>
+      />
     </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
     <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
       content="Refresh grid data"
     >
       <Button
-        className="nexus-c-event-management-table__toolbar-button"
+        className="p-button-outlined p-button-secondary nexus-c-event-management-table__toolbar-button"
+        label="Refresh"
         onClick={[Function]}
-      >
-        Refresh
-      </Button>
+      />
     </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
   </div>
   <div

@@ -2,32 +2,35 @@
 
 exports[`HeaderSection should match snapshot 1`] = `
 <div
-  className="nexus-c-bulk-matching__header"
+  className="nexus-c-bulk-matching__header d-flex justify-content-between"
 >
   <div
-    className="nexus-c-bulk-matching__rights-tab nexus-c-bulk-matching__rights-tab--active"
-    onClick={[Function]}
+    className="d-flex flex-row"
   >
-    Selected Rights
-     (
-    1
-    )
-  </div>
-  <div
-    className="nexus-c-bulk-matching__rights-tab"
-    onClick={[Function]}
-  >
-    Affected Rights
-     (
-    2
-    )
+    <div
+      className="nexus-c-bulk-matching__rights-tab nexus-c-bulk-matching__rights-tab--active"
+      onClick={[Function]}
+    >
+      Selected Rights
+       (
+      1
+      )
+    </div>
+    <div
+      className="nexus-c-bulk-matching__rights-tab"
+      onClick={[Function]}
+    >
+      Affected Rights
+       (
+      2
+      )
+    </div>
   </div>
   <Button
-    className="nexus-c-bulk-matching__btn"
-    isDisabled={true}
+    className="p-button-outlined p-button-secondary nexus-c-bulk-matching__btn"
+    disabled={true}
+    label="New Title"
     onClick={[Function]}
-  >
-    New Title
-  </Button>
+  />
 </div>
 `;

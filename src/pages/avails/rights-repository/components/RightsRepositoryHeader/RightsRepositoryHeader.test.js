@@ -1,6 +1,6 @@
 import React from 'react';
+import {Button} from '@portal/portal-components';
 import {shallow} from 'enzyme';
-import {Button} from 'primereact/button';
 import {mockNavigate} from '../../../../../setupTestEnv';
 import {RightsRepositoryHeader} from './RightsRepositoryHeader';
 

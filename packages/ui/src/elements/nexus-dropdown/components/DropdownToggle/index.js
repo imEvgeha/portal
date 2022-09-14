@@ -1,6 +1,6 @@
 import React from 'react';
 import PT from 'prop-types';
-import {Button} from '@portal/portal-components';
+import Button from '@atlaskit/button';
 import {useDropdownContext} from '../../NexusDropdown';
 import {Wrapper, Label, DotsIcon, PointDownIcon} from './styled';
 

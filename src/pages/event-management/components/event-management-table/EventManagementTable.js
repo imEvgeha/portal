@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
+import {Button} from '@portal/portal-components';
 import {useDateTimeContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-time-context/NexusDateTimeProvider';
 import DateTimeRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-time-context/NexusDateTimeRenderer';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
@@ -66,24 +66,24 @@ const EventManagementTable = ({toggleRefreshGridData, clearFilters, ...props}) =
             <div className="nexus-c-event-management-table__toolbar">
                 <Tooltip content={`Change timestamps to show in ${isLocal ? 'UTC' : 'Local'} format`}>
                     <Button
-                        className="nexus-c-event-management-table__toolbar-button"
+                        label={`Set to ${isLocal ? 'UTC' : 'Local'} Time`}
+                        className="p-button-outlined p-button-secondary nexus-c-event-management-table__toolbar-button"
                         onClick={() => setIsLocal(prev => !prev)}
-                    >
-                        Set to {isLocal ? 'UTC' : 'Local'} Time
-                    </Button>
+                    />
                 </Tooltip>
                 <Tooltip content="Clear active column filters">
-                    <Button className="nexus-c-event-management-table__toolbar-button" onClick={clearFilters}>
-                        {CLEAR_FILTERS_BTN}
-                    </Button>
+                    <Button
+                        label={CLEAR_FILTERS_BTN}
+                        className="p-button-outlined p-button-secondary nexus-c-event-management-table__toolbar-button"
+                        onClick={clearFilters}
+                    />
                 </Tooltip>
                 <Tooltip content="Refresh grid data">
                     <Button
-                        className="nexus-c-event-management-table__toolbar-button"
+                        label={REFRESH_BTN}
+                        className="p-button-outlined p-button-secondary nexus-c-event-management-table__toolbar-button"
                         onClick={() => toggleRefreshGridData(true)}
-                    >
-                        {REFRESH_BTN}
-                    </Button>
+                    />
                 </Tooltip>
             </div>
             <div className="nexus-c-event-management-table">

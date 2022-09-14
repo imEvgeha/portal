@@ -1,9 +1,9 @@
 import React from 'react';
+import {Button} from '@portal/portal-components';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
-import {Button} from 'primereact/button';
 import {goBack, push} from 'redux-first-history';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {SET_LOCALE} from '../../legacy/constants/action-types';

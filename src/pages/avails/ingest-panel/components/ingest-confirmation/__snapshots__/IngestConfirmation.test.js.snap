@@ -36,22 +36,18 @@ exports[`IngestConfirmation should match snapshot 1`] = `
       Do you wish to continue?
     </p>
     <div
-      className="nexus-c-ingest-confirmation__btn-wrapper"
+      className="nexus-c-ingest-confirmation__btn-wrapper d-flex justify-content-end"
     >
       <Button
-        appearance="subtle"
-        className="nexus-c-ingest-confirmation__cancel-btn"
+        className="p-button-outlined p-button-secondary nexus-c-ingest-confirmation__cancel-btn"
+        label="Cancel"
         onClick={[MockFunction]}
-      >
-        Cancel
-      </Button>
+      />
       <Button
-        appearance="primary"
-        className="nexus-c-ingest-confirmation__continue-btn"
+        className="p-button-outlined nexus-c-ingest-confirmation__continue-btn"
+        label="Continue"
         onClick={[MockFunction]}
-      >
-        Continue
-      </Button>
+      />
     </div>
   </div>
 </div>

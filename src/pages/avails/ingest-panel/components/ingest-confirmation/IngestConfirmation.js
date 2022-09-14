@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import './IngestConfirmation.scss';
 import {
     INGEST_ASSIGN_MESSAGE,
@@ -34,21 +34,17 @@ const IngestConfirmation = ({
             </div>
             <div className="nexus-c-ingest-confirmation__actions">
                 <p>{INGEST_UPLOAD_CONTINUE_MSG}</p>
-                <div className="nexus-c-ingest-confirmation__btn-wrapper">
+                <div className="nexus-c-ingest-confirmation__btn-wrapper d-flex justify-content-end">
                     <Button
-                        appearance="subtle"
+                        label={INGEST_UPLOAD_CANCEL_BTN}
                         onClick={onActionCancel}
-                        className="nexus-c-ingest-confirmation__cancel-btn"
-                    >
-                        {INGEST_UPLOAD_CANCEL_BTN}
-                    </Button>
+                        className="p-button-outlined p-button-secondary nexus-c-ingest-confirmation__cancel-btn"
+                    />
                     <Button
-                        appearance="primary"
+                        label={INGEST_UPLOAD_CONTINUE_BTN}
                         onClick={onActionConfirm}
-                        className="nexus-c-ingest-confirmation__continue-btn"
-                    >
-                        {INGEST_UPLOAD_CONTINUE_BTN}
-                    </Button>
+                        className="p-button-outlined nexus-c-ingest-confirmation__continue-btn"
+                    />
                 </div>
             </div>
         </div>

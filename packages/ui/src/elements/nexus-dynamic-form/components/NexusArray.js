@@ -154,7 +154,6 @@ const NexusArray = ({
                     label="Confirm"
                     type="submit"
                     className="p-button-outlined nexus-c-array__submit-button"
-                    appearance="primary"
                     disabled={!dirty || submitting}
                 />
                 <Button

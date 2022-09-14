@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
@@ -104,28 +104,20 @@ const ActionsBar = ({matchList, mergeTitles, rightId, removeToast, isMerging}) =
 
     return (
         <div className="nexus-c-title-matching-custom-actions">
-            <ButtonGroup>
-                <Button onClick={onCancel} className="nexus-c-button">
-                    Cancel
-                </Button>
-                <Button
-                    onClick={onMatch}
-                    isDisabled={!buttonStatus.match}
-                    className="nexus-c-button"
-                    appearance="primary"
-                >
-                    Match
-                </Button>
-                <LoadingButton
-                    onClick={onMatchAndCreate}
-                    isDisabled={!buttonStatus.matchAndCreate}
-                    className="nexus-c-button"
-                    appearance="primary"
-                    isLoading={isMerging}
-                >
-                    Match & Create
-                </LoadingButton>
-            </ButtonGroup>
+            <Button label="Cancel" onClick={onCancel} className="p-button-outlined p-button-secondary nexus-c-button" />
+            <Button
+                label="Match"
+                onClick={onMatch}
+                disabled={!buttonStatus.match}
+                className="p-button-outlined p-button-secondary nexus-c-button"
+            />
+            <Button
+                label="Match & Create"
+                onClick={onMatchAndCreate}
+                disabled={!buttonStatus.matchAndCreate}
+                className="p-button-outlined p-button-secondary nexus-c-button"
+                loading={isMerging}
+            />
         </div>
     );
 };

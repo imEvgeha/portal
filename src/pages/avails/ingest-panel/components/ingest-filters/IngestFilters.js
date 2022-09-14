@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {LoadingButton} from '@atlaskit/button';
 import Select from '@atlaskit/select';
+import {Button} from '@portal/portal-components';
 import {connect} from 'react-redux';
 import {NexusDateTimeWindowPicker} from '../../../../../ui/elements';
 import Constants from '../../constants';
@@ -29,7 +29,8 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
         setIsApplyActive(true);
     };
 
-    const clearFilters = () => {
+    const clearFilters = e => {
+        e.stopPropagation();
         const filterValues = {
             status: STATUS_LIST[0],
             licensor: '',
@@ -125,15 +126,18 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                 )}
             </div>
             <div className="ingest-filters__actions">
-                <Button onClick={clearFilters}>Clear All</Button>
-                <LoadingButton
+                <Button
+                    className="p-button-outlined p-button-secondary mx-2"
+                    label="Clear All"
+                    onClick={clearFilters}
+                />
+                <Button
+                    label="Apply Filter"
                     onClick={() => applyFilters()}
-                    appearance="primary"
-                    isDisabled={!isApplyActive}
-                    isLoading={isFilterLoading}
-                >
-                    Apply Filter
-                </LoadingButton>
+                    className="p-button-outlined mx-2"
+                    disabled={!isApplyActive}
+                    loading={isFilterLoading}
+                />
             </div>
         </div>
     );
