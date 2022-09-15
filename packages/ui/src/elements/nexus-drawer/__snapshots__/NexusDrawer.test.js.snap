@@ -25,11 +25,11 @@ exports[`NexusDrawer should match snapshot 1`] = `
                 className="nexus-c-drawer__title"
               />
             </div>
-            <IconButton
-              icon={[Function]}
-              isDisabled={false}
-              label="Close Drawer"
+            <Button
+              className="p-button-text"
+              icon="po po-remove"
               onClick={[Function]}
+              tooltip="Close Drawer"
             />
           </div>
         </GridColumn>

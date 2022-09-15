@@ -1,8 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AvailsIcon from '@vubiquity-nexus/portal-assets/avails.svg';
-import FilterSolidIcon from '@vubiquity-nexus/portal-assets/filter-solid.svg';
-import FilterIcon from '@vubiquity-nexus/portal-assets/filter.svg';
 import classnames from 'classnames';
 import IngestFilters from '../ingest-filters/IngestFilters';
 import './PanelHeader.scss';
@@ -15,11 +12,11 @@ const PanelHeader = ({toggleFilters, onFiltersChange, isShowingFilters}) => {
         <>
             <div className={ingestHeaderClassnames}>
                 <div className="ingest-header__title-container">
-                    <AvailsIcon />
+                    <i className="po po-avails" />
                     <h1 className="ingest-header__title">Avails</h1>
                 </div>
                 <div className="ingest-header__actions">
-                    <div onClick={toggleFilters}>{isShowingFilters ? <FilterSolidIcon /> : <FilterIcon />}</div>
+                    <i className="po po-filter" onClick={toggleFilters} />
                 </div>
             </div>
             {isShowingFilters && <IngestFilters onFiltersChange={onFiltersChange} />}

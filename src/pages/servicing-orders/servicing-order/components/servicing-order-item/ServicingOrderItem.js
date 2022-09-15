@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
-import ChevronIcon from '@vubiquity-nexus/portal-assets/chevron-right.svg';
-import FolderIcon from '@vubiquity-nexus/portal-assets/folder.svg';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {ISODateToView, sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
@@ -46,7 +44,7 @@ const ServicingOrderItem = ({
             <div className="nexus-c-servicing-order-item" onClick={() => setOpen(!isOpen)}>
                 <div className="nexus-c-servicing-order-item__row">
                     <div className="nexus-c-servicing-order-item__row-group nexus-c-servicing-order-item__title-row">
-                        <FolderIcon className="nexus-c-servicing-order-item__folder-icon" />
+                        <i className="po po-folder nexus-c-servicing-order-item__folder-icon" />
                         <NexusTooltip content={productDescription}>
                             <h5 className="nexus-c-servicing-order-item__title">{productDescription}</h5>
                         </NexusTooltip>
@@ -105,10 +103,10 @@ const ServicingOrderItem = ({
                 <p className="nexus-c-servicing-order-item__external-id">{externalId}</p>
                 <div className="nexus-c-servicing-order-item__row">
                     <div className="nexus-c-servicing-order-item__row-group">
-                        <ChevronIcon className={chevronClassNames} />
+                        <i className={`po po-chevron-right ${chevronClassNames}`} />
                         <div className="nexus-c-servicing-order-item__due-dates">
                             <div>{renderDueDateRangeOfServicingOrderItem(servicingOrderItem)}</div>
-                            { completedDate && <div>Completed Date: {completedDate}</div> }
+                            {completedDate && <div>Completed Date: {completedDate}</div>}
                         </div>
                     </div>
                     {!!status && <StatusTag status={`FO_${status}`} />}

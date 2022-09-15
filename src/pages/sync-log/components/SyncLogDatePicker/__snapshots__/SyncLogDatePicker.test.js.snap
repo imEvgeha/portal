@@ -8,6 +8,7 @@ exports[`SyncLogDatePicker should match snapshot 1`] = `
     className="nexus-c-sync-log-table__date-field"
   >
     <NexusDatePicker
+      elementId=""
       error=""
       id="nexus-c-sync-log-dateFrom"
       isClearable={false}
@@ -36,6 +37,7 @@ exports[`SyncLogDatePicker should match snapshot 1`] = `
     className="nexus-c-sync-log-table__date-field"
   >
     <NexusDatePicker
+      elementId=""
       error=""
       id="nexus-c-sync-log-dateTo"
       isClearable={false}

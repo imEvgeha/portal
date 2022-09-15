@@ -83,9 +83,11 @@ const TitleCreate = ({
     const [isFieldRequired, setIsFieldRequired] = useState(false);
 
     useEffect(() => {
-        titleConfigurationService.getEnums('content-type').then(resp => {
-            resp.length ? storeTitleContentTypes(resp?.[0].values) : storeTitleContentTypes([]);
-        });
+        if (!contentTypes.length) {
+            titleConfigurationService.getEnums('content-type').then(resp => {
+                resp.length ? storeTitleContentTypes(resp?.[0].values) : storeTitleContentTypes([]);
+            });
+        }
     }, [selectedTenant.id]);
 
     useEffect(() => {

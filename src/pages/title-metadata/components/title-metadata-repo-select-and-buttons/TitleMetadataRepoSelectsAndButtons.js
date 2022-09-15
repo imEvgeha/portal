@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Restricted} from '@portal/portal-auth/permissions';
-import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {Button} from 'primereact/button';
 import {connect} from 'react-redux';
@@ -49,7 +48,7 @@ export const RepositorySelectsAndButtons = ({
                         <Button
                             tooltip="Create New Title"
                             tooltipOptions={{position: 'left'}}
-                            icon={IconActionAdd}
+                            icon="po po-add"
                             onClick={() => setShowModal(true)}
                             className="p-button-text nexus-c-title-metadata__create-btn"
                         />

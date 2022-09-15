@@ -28,6 +28,7 @@ export default class TitleService extends HttpService {
 
     constructor() {
         super();
+        this.serviceReference = 'TitleService';
     }
 
     /** CRUD APIs * */

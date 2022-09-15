@@ -7,7 +7,7 @@ exports[`AvailsTableReleaseReport should match snapshot 1`] = `
   <Button
     className="p-button-outlined p-button-secondary"
     disabled={false}
-    icon="pi pi-chevron-down"
+    icon="po po-expand-section"
     iconPos="right"
     id="nexus-c-right-repository-release-report__popup"
     label="Report"

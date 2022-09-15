@@ -1,7 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
-import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import {debounce, isEmpty, toUpper} from 'lodash';
 import {InputText} from 'primereact/inputtext';
 import NexusEntity from '../../../nexus-entity/NexusEntity';
@@ -101,7 +99,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
 
     const panelActions = index => [
         new Action({
-            icon: ActionCrossCircle,
+            icon: 'po po-remove',
             action: e => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -194,7 +192,7 @@ const DynamicElement = ({elementsSchema, form, values, onKeysChanged, cache, dat
 
     const headerActions = () => [
         new Action({
-            icon: IconActionAdd,
+            icon: 'po po-add',
             action: e => {
                 e.preventDefault();
                 e.stopPropagation();

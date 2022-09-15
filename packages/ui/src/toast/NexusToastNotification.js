@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {Toast} from '@portal/portal-components';
 import {useSelector} from 'react-redux';
 import ToastBody from './components/toast-body/ToastBody';
+import {MAX_ERROR_DETAILS_CHARS} from './constants';
 
 const NexusToastNotification = () => {
     const toastRef = useRef(null);
@@ -23,6 +24,10 @@ const NexusToastNotification = () => {
         if (elem && elem.severity === 'error') {
             return {
                 ...elem,
+                detail:
+                    elem.detail?.length > MAX_ERROR_DETAILS_CHARS
+                        ? `${elem.detail?.substring(0, MAX_ERROR_DETAILS_CHARS)}...`
+                        : elem.detail,
                 summary: 'Error',
                 sticky: true,
             };

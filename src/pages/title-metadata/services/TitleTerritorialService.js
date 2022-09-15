@@ -2,7 +2,7 @@
 import {HeadersEnum} from '../../../util/http/HttpHeaders';
 import HttpService from '../../../util/http/HttpService';
 
-export default class TitleTerittorialService extends HttpService {
+export default class TitleTerritorialService extends HttpService {
     static instance = null;
 
     territorialsByTitleId = [];
@@ -14,14 +14,15 @@ export default class TitleTerittorialService extends HttpService {
      * @returns {null} Instance of Singleton Class
      */
     static getInstance() {
-        if (TitleTerittorialService.instance == null) {
-            TitleTerittorialService.instance = new TitleTerittorialService();
+        if (TitleTerritorialService.instance == null) {
+            TitleTerritorialService.instance = new TitleTerritorialService();
         }
         return this.instance;
     }
 
     constructor() {
         super();
+        this.serviceReference = 'TitleTerritorialService';
     }
 
     /** CRUD APIs * */

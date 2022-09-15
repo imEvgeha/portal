@@ -21,6 +21,7 @@ export default class PublishService extends HttpService {
 
     constructor() {
         super();
+        this.serviceReference = 'PublishService';
     }
 
     /** CRUD APIs * */

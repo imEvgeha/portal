@@ -7,6 +7,7 @@ import {get, isObject, isObjectLike} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
+import NexusTenantData from './components/NexusField/components/NexusTenantData/NexusTenantData';
 import {areAllWithdrawn} from './valdationUtils/areAllWithdrawn';
 import {fieldRequired} from './valdationUtils/fieldRequired';
 import {incorrectValue} from './valdationUtils/incorrectValue';
@@ -421,6 +422,8 @@ export const buildSection = (
                             sectionID={sectionID}
                             {...fields[key]}
                         />
+                    ) : get(fields[key], 'type') === 'tenantData' ? (
+                        <NexusTenantData title={initialData} sectionID />
                     ) : (
                         <div key={key} className={`nexus-c-dynamic-form__field ${getClass(fields?.[key].type)} `}>
                             {renderNexusField(key, view, getValues, generateMsvIds, {

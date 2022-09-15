@@ -111,11 +111,7 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
         badgeClassName={null}
         className="p-button-text"
         disabled={false}
-        icon={
-          Object {
-            "process": [Function],
-          }
-        }
+        icon="po po-add"
         iconPos="left"
         label={null}
         loading={false}
