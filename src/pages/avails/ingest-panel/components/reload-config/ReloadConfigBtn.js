@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import RefreshIcon from '@atlaskit/icon/glyph/refresh';
-import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
+import {Button} from '@portal/portal-components';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {reloadConfigurationService} from '@vubiquity-nexus/portal-utils/lib/services/availsService';
 import {useDispatch} from 'react-redux';
@@ -53,9 +52,12 @@ const ReloadConfigBtn = () => {
     };
 
     return (
-        <div className={isLoading ? 'ingest-reload-btn rotate' : 'ingest-reload-btn'}>
-            <IconButton icon={RefreshIcon} onClick={reloadConfig} label="Reload Configuration" />
-        </div>
+        <Button
+            className="p-button-text"
+            icon={`po po-reload ${isLoading ? 'po-spin' : ''}`}
+            tooltip="Reload Configuration"
+            onClick={reloadConfig}
+        />
     );
 };
 

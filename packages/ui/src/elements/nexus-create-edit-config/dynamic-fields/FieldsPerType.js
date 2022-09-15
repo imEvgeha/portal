@@ -1,5 +1,4 @@
 import React from 'react';
-import IconCalendar from '@vubiquity-nexus/portal-assets/calendar.svg';
 import {isEmpty} from 'lodash';
 import {Calendar} from 'primereact/calendar';
 import {Checkbox} from 'primereact/checkbox';
@@ -103,7 +102,7 @@ const getElement = args => {
                     showTime
                     showSeconds
                     showIcon
-                    icon={IconCalendar}
+                    icon="po po-calendar"
                     appendTo={document.body}
                 />
             );

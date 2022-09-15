@@ -3,7 +3,6 @@
 
 // Variables
 $button-height: 32px;
-$button-font-size: 13px;
 $element-margin-bottom: 18px;
 $element-border-radius: 4px;
 $element-height: 24px;
@@ -50,7 +49,6 @@ $element-color-orange-80: palette(orange, 80);
     background: palette(black, 10);
     border: 1px solid palette(black, 10);
     height: $button-height;
-    font-size: $button-font-size;
 
     &.p-button-outlined {
         &:enabled {
@@ -86,12 +84,6 @@ $element-color-orange-80: palette(orange, 80);
                 color: $element-background-color-20;
                 fill: $element-background-color-20;
             }
-        }
-
-        svg {
-            width: 16px;
-            height: 16px;
-            margin: 0 4px;
         }
 
         &.p-button-secondary {
@@ -164,9 +156,6 @@ $element-color-orange-80: palette(orange, 80);
         }
 
         .p-button-icon {
-            width: 16px;
-            height: 16px;
-            margin: 0 4px;
             fill: palette(black, 55);
             color: palette(black, 55);
         }
@@ -177,9 +166,6 @@ $element-color-orange-80: palette(orange, 80);
         }
 
         svg {
-            width: 16px;
-            height: 16px;
-            margin: 0 4px;
             fill: palette(black, 55);
             color: palette(black, 55);
         }
@@ -232,7 +218,6 @@ $element-color-orange-80: palette(orange, 80);
     // Icons
     &.p-button-icon-only.p-button-rounded {
         height: $button-height;
-        font-size: $button-font-size;
         width: 2.4rem;
         padding: 0.75rem 0;
         border-radius: 50% !important;
@@ -491,8 +476,6 @@ $element-color-orange-80: palette(orange, 80);
     .pi.pi-search {
         font-weight: bold;
         color: palette(black, 100);
-        width: 16px;
-        height: 16px;
     }
 }
 

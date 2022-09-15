@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import {cloneDeep, get} from 'lodash';
 import {compose} from 'redux';
-import withColumnsResizing from '../../../../packages/ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import {NexusGrid} from '../../../ui/elements';
 import {mapColumnDefinitions} from '../rights-repository/util/utils';
 import mappings from './TitleMatchingRightsTable.json';

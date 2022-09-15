@@ -1,13 +1,13 @@
 import React from 'react';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import '@portal/portal-icons/portalicons.css';
 import {createKeycloakInstance} from '@portal/portal-auth';
 import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
 import Toast from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotification';
 import {getAuthConfig, loadConfig, setConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {LicenseManager} from 'ag-grid-enterprise';
 import {render} from 'react-dom';
-import {AppContainer} from 'react-hot-loader';
 import {Provider} from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
@@ -65,16 +65,14 @@ delete window.__PRELOADED_STATE__;
 
 const App = () => (
     <HistoryRouter history={history}>
-        <AppContainer>
-            <Provider store={store}>
-                <AppProviders persistor={persistor}>
-                    <ErrorBoundary>
-                        <Toast />
-                        <Router routes={routesWithTracking()} />
-                    </ErrorBoundary>
-                </AppProviders>
-            </Provider>
-        </AppContainer>
+        <Provider store={store}>
+            <AppProviders persistor={persistor}>
+                <ErrorBoundary>
+                    <Toast />
+                    <Router routes={routesWithTracking()} />
+                </ErrorBoundary>
+            </AppProviders>
+        </Provider>
     </HistoryRouter>
 );
 
@@ -84,19 +82,4 @@ function renderApp() {
     initializeTracker();
     store.runSaga(rootSaga);
     render(kconfig.realm ? <App /> : <NotFound />, document.getElementById('app'));
-}
-
-if (module.hot) {
-    module.hot.accept(
-        [
-            // TODO: we should enable AppProviders too
-            '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout',
-            './Router',
-            './routes',
-            './saga',
-        ],
-        () => {
-            render(<App />, document.getElementById('app'));
-        }
-    );
 }

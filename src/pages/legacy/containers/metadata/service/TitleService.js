@@ -31,20 +31,6 @@ export const titleService = {
         return nexusFetch(url, {params});
     },
 
-    freeTextSearchV2: (searchCriteria, page, size, sortedParams) => {
-        const queryParams = {};
-        for (const key in searchCriteria) {
-            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                queryParams[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
-            }
-        }
-        const uri = '/titles' + prepareSortMatrixParamTitles(sortedParams);
-        const url = getApiURI('title', uri, 2);
-
-        const params = encodedSerialize({...queryParams, page, size});
-        return nexusFetch(url, {params});
-    },
-
     freeTextSearchWithGenres: (searchCriteria, page, pageSize, sortedParams) => {
         const GENRE_KEY = 'editorialGenres';
 
@@ -99,44 +85,10 @@ export const titleService = {
         return nexusFetch(url, {params});
     },
 
-    createTitleV2: (title, params) => {
-        const url = getApiURI('title', '/titles', 2);
-
-        const queryParams = params ? params : {};
-        return nexusFetch(url, {
-            method: 'post',
-            body: JSON.stringify(title),
-            params: encodedSerialize(queryParams),
-            isWithErrorHandling: false,
-        });
-    },
-
-    updateTitle: (title, syncToVZ, syncToMovida) => {
-        const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
-        const params = legacySystemNames ? {legacySystemNames} : {};
-        const uri = `/titles/${title.id}`;
-        const url = getApiURI('title', uri);
-
-        return nexusFetch(url, {
-            method: 'put',
-            body: JSON.stringify(title),
-            params: encodedSerialize(params),
-        });
-    },
-
     getTitleById: id => {
         const uri = `/titles/${id}`;
         const url = getApiURI('title', uri);
         return nexusFetch(url);
-    },
-
-    bulkGetTitles: ids => {
-        const uri = '/titles?operationType=READ';
-        const url = getApiURI('title', uri);
-        return nexusFetch(url, {
-            method: 'put',
-            body: JSON.stringify(ids),
-        });
     },
 
     bulkGetTitlesWithGenres: ids => {
@@ -182,27 +134,12 @@ export const titleService = {
         });
     },
 
-    getTerritoryMetadataById: id => {
-        const uri = `/territorymetadata?includeDeleted=false&titleId=${id}`;
-        const url = getApiURI('title', uri);
-        return nexusFetch(url);
-    },
-
     updateTerritoryMetadata: editedTerritoryMetadata => {
         const uri = '/territorymetadata';
         const url = getApiURI('title', uri);
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(editedTerritoryMetadata),
-        });
-    },
-
-    addEditorialMetadata: editorialMetadata => {
-        const uri = '/editorialmetadata';
-        const url = getApiURI('title', uri, 2);
-        return nexusFetch(url, {
-            method: 'post',
-            body: JSON.stringify(editorialMetadata),
         });
     },
 

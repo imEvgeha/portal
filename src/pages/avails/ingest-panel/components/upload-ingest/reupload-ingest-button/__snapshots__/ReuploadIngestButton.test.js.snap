@@ -6,8 +6,8 @@ exports[`ReuploadIngestButton should match snapshot 1`] = `
   hasWhiteBackground={false}
   isDisabled={false}
 >
-  <[object Object]
-    className="nexus-c-avails-ingest__upload-icon"
+  <i
+    className="po po-upload nexus-c-avails-ingest__upload-icon"
     onClick={[Function]}
   />
 </NexusTooltip>
