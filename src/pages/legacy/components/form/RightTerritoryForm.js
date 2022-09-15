@@ -4,7 +4,6 @@ import {Dialog, Dropdown, InputText, Button, Calendar} from '@portal/portal-comp
 import {RIGHTS_CREATE} from '../../constants/constant-variables';
 import {FormProvider, useForm} from 'react-hook-form';
 import {getDateFormatBasedOnLocale} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
-import IconCalendar from '@vubiquity-nexus/portal-assets/calendar.svg';
 import {useIntl} from 'react-intl';
 
 const RightTerritoryForm = ({
@@ -179,7 +178,7 @@ const RightTerritoryForm = ({
                         disabled={isFromCreatePage || (isEdit && isBonusRight)}
                         dateFormat="mm-dd-yy"
                         showIcon
-                        icon={IconCalendar}
+                        icon="po po-calendar"
                     />
                     <InputText
                         formControlOptions={{
