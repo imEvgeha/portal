@@ -10,7 +10,7 @@ import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/load
 import {addToast} from '@vubiquity-nexus/portal-ui/src/toast/NexusToastNotificationActions';
 import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
-import {get, isEmpty, isEqual, isNull, isUndefined, toString, toUpper} from 'lodash';
+import {get, isEmpty, isEqual, isNull, isUndefined, orderBy, toString, toUpper} from 'lodash';
 import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
 import {useLocation, useParams} from 'react-router-dom';
@@ -366,7 +366,11 @@ const TitleDetails = ({
         const repositories = ['vz', 'movida', 'movida-uk'];
         // for Nexus titles, external ids are fetched from getPublishInfo API
         if (isNexusTitle(title.id)) {
-            return externalIds.filter(ids => repositories.includes(ids.externalSystem));
+            return orderBy(
+                externalIds.filter(ids => repositories.includes(ids.externalSystem)),
+                ['externalSystem'],
+                ['desc']
+            );
         }
         // else if the title is not a Nexus title
         return title?.tenantData?.complexProperties.find(property => property.name === 'legacyIds').simpleProperties;
