@@ -5,4 +5,4 @@ export const NEXUS_ENTITY_TYPES = {
     default: 'default',
 };
 
-export const EXTERNAL_SYSTEM_ID_EXAMPLE = {externalSystem: '', titleId: ''};
+export const EXTERNAL_SYSTEM_ID_EXAMPLE = {externalIdType: '', externalId: ''};

@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import ChevronDown from '@vubiquity-nexus/portal-assets/icon-nav-chevron-down-black.svg';
-import ChevronUp from '@vubiquity-nexus/portal-assets/icon-nav-chevron-up-black.svg';
 import {Divider} from 'primereact/divider';
 import FieldRequired from '../nexus-field-required/FieldRequired';
 import {Action} from './entity-actions/Actions.class';
@@ -29,7 +27,7 @@ const NexusEntity = ({type, heading, tag, flag1, flag2, actions, disableHover, i
     const getActions = () => {
         if (body) {
             const expandAction = new Action({
-                icon: isBodyExpanded ? ChevronDown : ChevronUp,
+                icon: isBodyExpanded ? 'po po-expand-section' : 'po po-collapse-section',
                 action: e => {
                     e.preventDefault();
                     e.stopPropagation();

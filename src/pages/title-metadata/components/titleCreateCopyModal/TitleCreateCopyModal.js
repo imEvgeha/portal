@@ -24,7 +24,7 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
         releaseYearReadOnly: title.releaseYear,
         title: '',
         releaseYear: '',
-        externalSystemIds: [],
+        externalTitleIds: [],
     };
     const form = useForm({
         defaultValues: initialValues,
@@ -50,7 +50,7 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
      */
     const resetFormValues = () => {
         reset(initialValues);
-        setValue('externalSystemIds', []);
+        setValue('externalTitleIds', []);
     };
 
     /**
@@ -195,7 +195,7 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
                 // form values
                 name: submitTitleForm.title,
                 releaseYear: submitTitleForm.releaseYear,
-                externalSystemIds: submitTitleForm?.externalSystemIds?.length ? submitTitleForm.externalSystemIds : [],
+                externalTitleIds: submitTitleForm?.externalTitleIds?.length ? submitTitleForm.externalTitleIds : [],
             };
 
             if (searchForExternalIDsDuplicates(newTitle)) {
@@ -214,12 +214,12 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
 
     /**
      * ExternalID validation for duplicates
-     * @param {*} title
      * @returns
+     * @param newTitle
      */
     const searchForExternalIDsDuplicates = newTitle => {
-        const externalIdArray = newTitle?.externalSystemIds?.map(item => item.titleId);
-        const externalIdTypesArray = newTitle?.externalSystemIds?.map(item => item.externalSystem);
+        const externalIdArray = newTitle?.externalTitleIds?.map(item => item.externalId);
+        const externalIdTypesArray = newTitle?.externalTitleIds?.map(item => item.externalIdType);
         const findDuplicates = arr => arr?.filter((item, index) => arr.indexOf(item) !== index);
         const indexOfDuplicateID = findDuplicates(externalIdArray).length;
         const indexOfDuplicateType = findDuplicates(externalIdTypesArray).length;
@@ -230,11 +230,11 @@ const TitleCreateCopyModal = ({title, display, handleCloseModal, externalIdOptio
     /**
      * Create editorial metadata
      * @param {*} editorialMetadata
-     * @param {*} titleId
+     * @param {*} externalId
      */
-    const createEditorialMetadata = async (editorialMetadata, titleId) => {
+    const createEditorialMetadata = async (editorialMetadata, externalId) => {
         const newEmets = editorialMetadata
-            ? editorialMetadata.map(emet => formatEditorialBody(emet, titleId, true))
+            ? editorialMetadata.map(emet => formatEditorialBody(emet, externalId, true))
             : [];
 
         if (newEmets.length > 0) {

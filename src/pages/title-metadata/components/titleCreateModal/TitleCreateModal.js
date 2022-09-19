@@ -83,9 +83,11 @@ const TitleCreate = ({
     const [isFieldRequired, setIsFieldRequired] = useState(false);
 
     useEffect(() => {
-        titleConfigurationService.getEnums('content-type').then(resp => {
-            resp.length ? storeTitleContentTypes(resp?.[0].values) : storeTitleContentTypes([]);
-        });
+        if (!contentTypes.length) {
+            titleConfigurationService.getEnums('content-type').then(resp => {
+                resp.length ? storeTitleContentTypes(resp?.[0].values) : storeTitleContentTypes([]);
+            });
+        }
     }, [selectedTenant.id]);
 
     useEffect(() => {
@@ -131,7 +133,7 @@ const TitleCreate = ({
     const toggle = (isCancelClicked = false) => {
         !isCancelClicked && onSave();
         reset(initialValues);
-        setValue('externalSystemIds', []);
+        setValue('externalTitleIds', []);
         setFilteredSeries([]);
         setSeasons([]);
         setContentSubTypes([]);
@@ -352,8 +354,8 @@ const TitleCreate = ({
      */
 
     const areThereAnyExternalSystemDuplicates = title => {
-        const externalIdArray = title?.externalSystemIds?.map(item => item.titleId);
-        const externalIdTypesArray = title?.externalSystemIds?.map(item => item.externalSystem);
+        const externalIdArray = title?.externalTitleIds?.map(item => item.externalId);
+        const externalIdTypesArray = title?.externalTitleIds?.map(item => item.externalIdType);
         const findDuplicates = arr => arr && arr?.filter((item, index) => arr.indexOf(item) !== index);
 
         const indexOfDuplicateID = findDuplicates(externalIdArray)?.length;
@@ -370,7 +372,7 @@ const TitleCreate = ({
             return {};
         };
 
-        const updatedExternalSystemIds = titleForm.externalSystemIds?.length ? titleForm.externalSystemIds : null;
+        const updatedExternalTitleIds = titleForm.externalTitleIds?.length ? titleForm.externalTitleIds : null;
         const seasonNumber = isObject(titleForm.season) ? titleForm.season.number : titleForm.season;
         const currentContentTypeDetails = contentTypes?.find(item => item.displayName === titleForm.contentType);
         const currentContentSubType = currentContentTypeDetails?.values?.find(
@@ -381,7 +383,7 @@ const TitleCreate = ({
             ...getValueOrEmptyObject('releaseYear', titleForm.releaseYear),
             ...getValueOrEmptyObject('contentType', currentContentTypeDetails.name),
             ...getValueOrEmptyObject('contentSubType', currentContentSubType.name),
-            ...getValueOrEmptyObject('externalSystemIds', updatedExternalSystemIds),
+            ...getValueOrEmptyObject('externalTitleIds', updatedExternalTitleIds),
             ...getValueOrEmptyObject('miniseries', titleForm.miniseriesTitleName?.title),
             ...getValueOrEmptyObject('seasonNumber', seasonNumber),
             ...getValueOrEmptyObject('episodeNumber', titleForm.episodeNumber),

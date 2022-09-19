@@ -1,9 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {SimpleTag as Tag} from '@atlaskit/tag';
-// import Tooltip from '@atlaskit/tooltip';
 import {Tooltip} from '@portal/portal-components';
-import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
@@ -424,7 +422,7 @@ const ServicesTable = ({
                     {constants.SERVICES_BARCODE}: {barcode}
                 </div>
                 <div className="nexus-c-services-table__add-icon">
-                    {!isDisabled && <Add onClick={addEmptyServicesRow} />}
+                    {!isDisabled && <i className="po po-add" onClick={addEmptyServicesRow} />}
                 </div>
             </div>
 

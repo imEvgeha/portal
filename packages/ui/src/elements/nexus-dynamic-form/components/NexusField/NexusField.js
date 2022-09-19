@@ -385,7 +385,7 @@ const NexusField = ({
                         onChange={onChange(getCurrentValues())}
                         {...fieldProps}
                         {...dateProps}
-                        id={generateElementIds(fieldProps, addedProps)}
+                        elementId={generateElementIds(fieldProps, addedProps)}
                         isReadOnly={isWithDrawnReadOnly}
                         territoryLenght={hasWithDrawnDate && formData?.territory?.length}
                     />
@@ -438,6 +438,17 @@ const NexusField = ({
                         generateMsvIds={generateMsvIds}
                     />
                 );
+            case 'tenantData': {
+                return (
+                    <TextFieldWithOptional
+                        {...fieldProps}
+                        {...addedProps}
+                        id={generateElementIds(fieldProps, addedProps)}
+                        placeholder={`Enter ${label}`}
+                        value={get(props, 'value')}
+                    />
+                );
+            }
             default:
                 return;
         }
@@ -519,13 +530,26 @@ const NexusField = ({
         }
         switch (type) {
             case 'boolean':
-                return <Checkbox isDisabled isChecked={fieldProps.value} />;
+                return (
+                    <Checkbox isDisabled isChecked={fieldProps.value} id={generateElementIds(fieldProps, addedProps)} />
+                );
             case 'dateRange':
             case 'datetime':
                 if (fieldProps.value) {
-                    return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                    return (
+                        <DateTime
+                            {...dateProps}
+                            {...fieldProps}
+                            elementId={generateElementIds(fieldProps, addedProps)}
+                            isReadOnly
+                        />
+                    );
                 }
-                return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
+                return (
+                    <div className="nexus-c-field__placeholder" id={generateElementIds(fieldProps, addedProps)}>
+                        {`Enter ${label}...`}
+                    </div>
+                );
             case 'castCrew':
                 return (
                     <CastCrew
@@ -541,6 +565,7 @@ const NexusField = ({
                         path={path}
                         // isVerticalLayout is used in EMET section, hence used to distinguish b/w core and emet section
                         language={isVerticalLayout ? get(formData, 'editorial.language', 'en') : 'en'}
+                        sectionId={generateElementIds(fieldProps, addedProps)}
                     />
                 );
             case 'rowDataItem':
@@ -552,6 +577,7 @@ const NexusField = ({
                         data={fieldProps.value || []}
                         canDelete={false}
                         canAdd={false}
+                        id={generateElementIds(fieldProps, addedProps)}
                     />
                 );
             case 'msvIds':
@@ -560,25 +586,46 @@ const NexusField = ({
                         selectValues={selectValues}
                         data={fieldProps.value ? fieldProps.value : []}
                         isEdit={false}
+                        id={generateElementIds(fieldProps, addedProps)}
                     />
                 );
             case 'link': {
                 const url = createUrl(linkConfig, initialData);
                 const body = fieldProps.value ? (
-                    getValue(fieldProps)
+                    <div>
+                        <span id={generateElementIds(fieldProps, addedProps)}>{getValue(fieldProps)}</span>
+                    </div>
                 ) : (
-                    <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
+                    <div id={generateElementIds(fieldProps, addedProps)} className="nexus-c-field__placeholder">
+                        {`Enter ${label}...`}
+                    </div>
                 );
 
                 return url.includes('http') ? <a href={url}>{body}</a> : <Link to={`./../${url}`}>{body}</Link>;
             }
+            case 'tenantData': {
+                return get(props, 'value') ? (
+                    <div>{get(props, 'value')}</div>
+                ) : (
+                    <div className="nexus-c-field__placeholder" id={generateElementIds(fieldProps, addedProps)}>
+                        {`Enter ${label}...`}
+                    </div>
+                );
+            }
             default:
                 return fieldProps.value ? (
                     <div>
-                        <span dir={hebrew.test(getValue(fieldProps)) ? 'rtl' : 'ltr'}>{getValue(fieldProps)}</span>
+                        <span
+                            dir={hebrew.test(getValue(fieldProps)) ? 'rtl' : 'ltr'}
+                            id={generateElementIds(fieldProps, addedProps)}
+                        >
+                            {getValue(fieldProps)}
+                        </span>
                     </div>
                 ) : (
-                    <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
+                    <div className="nexus-c-field__placeholder" id={generateElementIds(fieldProps, addedProps)}>
+                        {`Enter ${label}...`}
+                    </div>
                 );
         }
     };
@@ -646,8 +693,8 @@ const NexusField = ({
                                             {error && validationName('areAllWithdrawn')
                                                 ? renderError(RIGHT_STATUS_CANCELED)
                                                 : error && isRequired
-                                                    ? renderError(FIELD_REQUIRED)
-                                                    : error && renderError(toString(error))}
+                                                ? renderError(FIELD_REQUIRED)
+                                                : error && renderError(toString(error))}
                                         </div>
                                     </div>
                                 </div>

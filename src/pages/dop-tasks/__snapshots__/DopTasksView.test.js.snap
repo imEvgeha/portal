@@ -65,11 +65,11 @@ exports[`DopTasksView should match snapshot 1`] = `
     <div
       className="nexus-c-dop-tasks-view__refresh-btn"
     >
-      <IconButton
-        icon={[Function]}
-        isDisabled={false}
-        label="Refresh"
+      <Button
+        className="p-button-text"
+        icon="po po-reload"
         onClick={[Function]}
+        tooltip="Refresh"
       />
     </div>
   </DopTasksHeader>

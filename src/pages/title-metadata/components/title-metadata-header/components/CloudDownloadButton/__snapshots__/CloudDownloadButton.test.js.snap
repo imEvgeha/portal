@@ -6,11 +6,7 @@ exports[`CloudDownloadButton should match snapshot 1`] = `
 >
   <Button
     className="p-button-text"
-    icon={
-      Object {
-        "process": [Function],
-      }
-    }
+    icon="po po-download"
     onClick={[Function]}
     tooltip="Download"
     tooltipOptions={
