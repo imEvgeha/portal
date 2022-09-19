@@ -58,9 +58,9 @@ import {
     handleTitleCategory,
     isNexusTitle,
     isStateEditable,
+    isValidContentTypeToCreateCopy,
     prepareCategoryField,
     propagateSeasonsPersonsToEpisodes,
-    isValidContentTypeToCreateCopy,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';

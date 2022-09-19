@@ -14,7 +14,10 @@ const NexusTenantData = ({title, sectionID}) => {
     const calculateLabel = externalId => {
         switch (externalId) {
             case 'movida':
+            case 'movidaTitleId':
                 return 'Movida Title ID';
+            case 'movidaId':
+                return 'Movida ID';
             case 'movida-uk':
                 return 'Movida Int Title ID';
             case 'vz':
@@ -51,7 +54,7 @@ const NexusTenantData = ({title, sectionID}) => {
      */
     const RenderNexusTitleExternalIds = externalId => {
         return (
-            <div className={classnames('nexus-c-dynamic-form__field')}>
+            <div className={classnames('nexus-c-dynamic-form__field col-lg-6 col-12')}>
                 <NexusField
                     id={externalId.externalId}
                     key={`${externalId.externalId}_key`}
@@ -75,7 +78,7 @@ const NexusTenantData = ({title, sectionID}) => {
      */
     const RenderExternalTitleIds = externalId => {
         return (
-            <div className={classnames('nexus-c-dynamic-form__field')}>
+            <div className={classnames('nexus-c-dynamic-form__field col-lg-6 col-12')}>
                 <NexusField
                     id={externalId.name}
                     key={`${externalId.name}_key`}
