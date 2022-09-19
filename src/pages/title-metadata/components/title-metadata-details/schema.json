@@ -510,28 +510,28 @@
                         "tenantDefExtIds": {
                             "name": "tenantDefExtIds",
                             "type": "rowDataItem",
-                            "path": "externalSystemIds",
+                            "path": "externalTitleIds",
                             "firstColLbl": "External ID Type:",
-                            "firstColKey": "externalSystem",
+                            "firstColKey": "externalIdType",
                             "secondColLbl": "External ID:",
-                            "secondColKey": "titleId",
+                            "secondColKey": "externalId",
                             "canAdd": true,
                             "canDelete": false,
                             "addNewModalOptions": {
                                 "header": "Add External ID",
                                 "triggerBtnLabel": "+ Add External ID",
-                                "valuesPath": "externalSystem",
-                                "uniqueByFields": ["externalSystem", "titleId"],
+                                "valuesPath": "externalIdType",
+                                "uniqueByFields": ["externalIdType", "externalId"],
                                 "duplicationErrorMessage": "External ID Type + External ID must be unique.",
                                 "fields": [
                                     {
                                         "sections": [
                                             {
                                                 "fields": {
-                                                    "externalSystem": {
+                                                    "externalIdType": {
                                                         "stackLabel": true,
                                                         "name": "External ID Type",
-                                                        "path": "externalSystem",
+                                                        "path": "externalIdType",
                                                         "type": "select",
                                                         "inModal": true,
                                                         "optionsConfig": {
@@ -540,10 +540,10 @@
                                                         },
                                                         "isRequired": true
                                                     },
-                                                    "titleId": {
+                                                    "externalId": {
                                                         "stackLabel": true,
                                                         "name": "External ID",
-                                                        "path": "titleId",
+                                                        "path": "externalId",
                                                         "type": "string",
                                                         "isRequired": true
                                                     }

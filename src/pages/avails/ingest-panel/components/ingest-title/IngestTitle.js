@@ -8,7 +8,7 @@ const IngestTitle = ({link, isHeader}) => {
     return (
         <div className={classnames('nexus-c-ingest-title', isHeader && 'nexus-c-ingest-title--is-header')}>
             <div className="nexus-c-ingest-title__details">
-                <i className="po po-add nexus-c-ingest-title__type" />
+                <i className="po po-file nexus-c-ingest-title__type" />
                 <span title={fileName} className="nexus-c-ingest-title__filename">
                     {fileName}
                 </span>

@@ -47,7 +47,7 @@
             "versions": [1, 2]
         },
         "mediaImageServices": {
-            "baseURI": "/image-services"
+            "baseURI": "/mediaimage/image-services"
         },
         "mediaCatalog": {
             "baseURI": "/mediacatalog/catalog"

@@ -14,7 +14,7 @@ import './ExternalIDsSection.scss';
 const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
     const {fields, append, remove} = useFieldArray({
         control,
-        name: 'externalSystemIds',
+        name: 'externalTitleIds',
     });
 
     const onRemoveField = (e, index) => {
@@ -38,7 +38,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
                             labelProps={{label: 'External ID type', stacked: true, isRequired: true}}
                             placeholder="Select External ID type"
                             id="externalIdType"
-                            name={`externalSystemIds.${index}.externalSystem`}
+                            name={`externalTitleIds.${index}.externalIdType`}
                             className="nexus-c-title-create_input without-margin-bottom"
                             options={
                                 !isEmpty(externalDropdownOptions)
@@ -46,7 +46,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
                                     : []
                             }
                             formControlOptions={{
-                                formControlName: `externalSystemIds.${index}.externalSystem`,
+                                formControlName: `externalTitleIds.${index}.externalIdType`,
                                 rules: {
                                     required: {value: true, message: 'Field cannot be empty!'},
                                 },
@@ -57,7 +57,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
                     <div className="col-5">
                         <InputText
                             formControlOptions={{
-                                formControlName: `externalSystemIds.${index}.titleId`,
+                                formControlName: `externalTitleIds.${index}.externalId`,
                                 rules: {
                                     required: {value: true, message: 'Field cannot be empty!'},
                                 },
@@ -65,7 +65,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
                             labelProps={{label: 'External ID', stacked: true, isRequired: true}}
                             placeholder="Enter External ID"
                             id="externalId"
-                            name={`externalSystemIds.${index}.titleId`}
+                            name={`externalTitleIds.${index}.externalId`}
                             className="nexus-c-title-create_input without-margin-bottom"
                         />
                     </div>

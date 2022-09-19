@@ -344,7 +344,7 @@ const TitleDetails = ({
 
     const getPublishedAt = repo => {
         if (isNexusTitle(title.id)) {
-            return externalIds.find(ids => ids.externalSystem === repo);
+            return externalIds.find(ids => ids.externalIdType === repo);
         }
     };
 
@@ -454,7 +454,7 @@ const TitleDetails = ({
         let res = {...selectValues};
 
         if (externalIdTypes) {
-            res = {...selectValues, externalSystem: externalIdTypes};
+            res = {...selectValues, externalIdType: externalIdTypes};
         } else if (!isFetchingExternalIdTypes.current) {
             isFetchingExternalIdTypes.current = true;
             titleConfigurationService
