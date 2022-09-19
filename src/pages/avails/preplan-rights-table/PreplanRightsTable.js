@@ -6,6 +6,7 @@ import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/co
 import {defineButtonColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
+import withSelectableRows from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSelectableRows';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {connect, useSelector} from 'react-redux';
 import {compose} from 'redux';
@@ -32,7 +33,12 @@ import {
 } from './constants';
 import './PrePlanRightsTable.scss';
 
-const PrePlanGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
+const PrePlanGrid = compose(
+    withColumnsResizing(),
+    withSideBar(),
+    withEditableColumns(),
+    withSelectableRows()
+)(NexusGrid);
 
 const PreplanRightsTable = ({
     columnDefs,
