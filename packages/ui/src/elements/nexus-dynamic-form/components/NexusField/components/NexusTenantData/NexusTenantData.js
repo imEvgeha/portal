@@ -53,13 +53,13 @@ const NexusTenantData = ({title, sectionID}) => {
      * @returns {*[]} Returns a JSX.Element for the given schema
      */
     const calculateExternalIds = () => {
-        if (title && title?.extendTitleWithExternalIds) {
+        if (title && title?.systemExternalIds) {
             // Nexus titles
             if (isNexusTitle(title.id)) {
-                return title.extendTitleWithExternalIds.map(externalId => RenderNexusTitleExternalIds(externalId));
+                return title.systemExternalIds.map(externalId => RenderNexusTitleExternalIds(externalId));
             }
             // non-Nexus titles have different schema
-            return title.extendTitleWithExternalIds.map(externalId => RenderExternalTitleIds(externalId));
+            return title.systemExternalIds.map(externalId => RenderExternalTitleIds(externalId));
         }
     };
 
