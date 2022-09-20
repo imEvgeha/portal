@@ -377,7 +377,7 @@ const TitleDetails = ({
     };
 
     const extendTitleWithExternalIds = () => {
-        const externalIds = calculateExternalIds();
+        const systemExternalIds = calculateExternalIds();
 
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'categories', 'name');
@@ -395,7 +395,7 @@ const TitleDetails = ({
             ...updatedTitle,
             episodesCount: episodesCount.total ? episodesCount.total : '0',
             seasonsCount: seasonsCount.total ? seasonsCount.total : '0',
-            externalIds,
+            systemExternalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
             territorialMetadata: updatedTerritorialMetadata,
         };
