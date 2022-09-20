@@ -11,16 +11,36 @@ const NexusTenantData = ({title, sectionID}) => {
      * @param externalId - the current external ID processing
      * @returns {string} - user-friendly label for display purposes
      */
-    const calculateLabel = externalId => {
+    const calculateLabelForTitleIDs = externalId => {
         switch (externalId) {
             case 'movida':
+            case 'movidaTitleId':
                 return 'Movida Title ID';
+            case 'movidaId':
+                return 'Movida ID';
             case 'movida-uk':
                 return 'Movida Int Title ID';
             case 'vz':
             case 'vzTitleId':
                 return 'VZ Title ID';
             case 'vzId':
+                return 'VZ ID';
+            default:
+                return '';
+        }
+    };
+
+    const calculateLabelForIDs = externalId => {
+        switch (externalId) {
+            case 'movida':
+            case 'movidaTitleId':
+            case 'movidaId':
+                return 'Movida ID';
+            case 'movida-uk':
+                return 'Movida Int ID';
+            case 'vz':
+            case 'vzId':
+            case 'vzTitleId':
                 return 'VZ ID';
             default:
                 return '';
@@ -45,25 +65,43 @@ const NexusTenantData = ({title, sectionID}) => {
 
     /**
      * Render method for Nexus Titles External IDs
+     * Renders two NexusFields for TitleID(number) and ID of title(string)
      * @param externalId
      * @returns {JSX.Element}
      * @constructor
      */
     const RenderNexusTitleExternalIds = externalId => {
         return (
-            <div className={classnames('nexus-c-dynamic-form__field')}>
-                <NexusField
-                    id={externalId.externalId}
-                    key={`${externalId.externalId}_key`}
-                    name={externalId.externalSystem}
-                    sectionID={sectionID}
-                    isGridLayout={true}
-                    isTitlePage={true}
-                    label={calculateLabel(externalId.externalSystem)}
-                    type="tenantData"
-                    value={externalId.externalTitleId}
-                />
-            </div>
+            <>
+                {/* Show the ID as a number */}
+                <div className={classnames('nexus-c-dynamic-form__field col-lg-6 col-12')}>
+                    <NexusField
+                        id={externalId.externalId}
+                        key={`${externalId.externalId}_key`}
+                        name={externalId.externalSystem}
+                        sectionID={sectionID}
+                        isGridLayout={true}
+                        isTitlePage={true}
+                        label={calculateLabelForTitleIDs(externalId.externalSystem)}
+                        type="tenantData"
+                        value={externalId.externalTitleId}
+                    />
+                </div>
+                {/* Show Also the IDs - titl_ascd_123 */}
+                <div className={classnames('nexus-c-dynamic-form__field col-lg-6 col-12')}>
+                    <NexusField
+                        id={externalId.externalId}
+                        key={`${externalId.externalId}_key_${externalId.titleId}`}
+                        name={externalId.externalSystem}
+                        sectionID={sectionID}
+                        isGridLayout={true}
+                        isTitlePage={true}
+                        label={calculateLabelForIDs(externalId.externalSystem)}
+                        type="tenantData"
+                        value={externalId.titleId}
+                    />
+                </div>
+            </>
         );
     };
 
@@ -75,7 +113,7 @@ const NexusTenantData = ({title, sectionID}) => {
      */
     const RenderExternalTitleIds = externalId => {
         return (
-            <div className={classnames('nexus-c-dynamic-form__field')}>
+            <div className={classnames('nexus-c-dynamic-form__field col-lg-6 col-12')}>
                 <NexusField
                     id={externalId.name}
                     key={`${externalId.name}_key`}
@@ -83,7 +121,7 @@ const NexusTenantData = ({title, sectionID}) => {
                     sectionID={sectionID}
                     isGridLayout={true}
                     isTitlePage={true}
-                    label={calculateLabel(externalId.name)}
+                    label={calculateLabelForTitleIDs(externalId.name)}
                     type="tenantData"
                     value={externalId.value}
                 />
