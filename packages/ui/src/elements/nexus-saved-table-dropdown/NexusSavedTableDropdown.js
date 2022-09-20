@@ -116,19 +116,17 @@ const NexusSavedTableDropdown = ({
     };
 
     return (
-        <div className="nexus-c-dop-tasks-dropdown">
-            <div className="nexus-c-dop-tasks-dropdown__elements">
-                <DynamicDropdown
-                    columnClass="col-12"
-                    options={constructOptions()}
-                    value={selectedItem}
-                    onChange={onSelectView}
-                    onAddValue={saveButtonHandler}
-                    disabled={isDisabled}
-                    onDeleteItem={onDeleteItem}
-                    placeholder="Select"
-                />
-            </div>
+        <div className="nexus-c-saved-views">
+            <DynamicDropdown
+                columnClass="col-12"
+                options={constructOptions()}
+                value={selectedItem}
+                onChange={onSelectView}
+                onAddValue={saveButtonHandler}
+                disabled={isDisabled}
+                onDeleteItem={onDeleteItem}
+                placeholder="Select"
+            />
         </div>
     );
 };

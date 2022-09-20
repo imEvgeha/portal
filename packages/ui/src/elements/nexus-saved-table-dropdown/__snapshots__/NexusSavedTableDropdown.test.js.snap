@@ -2,31 +2,27 @@
 
 exports[`NexusSavedTableDropdown should match snapshot 1`] = `
 <div
-  className="nexus-c-dop-tasks-dropdown"
+  className="nexus-c-saved-views"
 >
-  <div
-    className="nexus-c-dop-tasks-dropdown__elements"
-  >
-    <DynamicDropdown
-      columnClass="col-12"
-      disabled={false}
-      onAddValue={[Function]}
-      onChange={[Function]}
-      onDeleteItem={[Function]}
-      options={
-        Array [
-          Object {
-            "label": "User Defined Views",
-            "options": Array [],
-          },
-          Object {
-            "label": "Predifined Views",
-            "options": Array [],
-          },
-        ]
-      }
-      placeholder="Select"
-    />
-  </div>
+  <DynamicDropdown
+    columnClass="col-12"
+    disabled={false}
+    onAddValue={[Function]}
+    onChange={[Function]}
+    onDeleteItem={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "User Defined Views",
+          "options": Array [],
+        },
+        Object {
+          "label": "Predifined Views",
+          "options": Array [],
+        },
+      ]
+    }
+    placeholder="Select"
+  />
 </div>
 `;

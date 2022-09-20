@@ -16,7 +16,6 @@ describe('DopTasksView', () => {
     beforeEach(() => {
         wrapper = shallow(<DopTasksView {...props} />);
         dopTasksTable = wrapper.find('DopTasksTable');
-        dopTasksHeader = wrapper.find('DopTasksHeader');
         queuedTasks = wrapper.find('QueuedTasks');
     });
 
@@ -26,10 +25,6 @@ describe('DopTasksView', () => {
 
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('should render DopTasksHeader', () => {
-        expect(dopTasksHeader.length).toEqual(1);
     });
 
     it('should render DopTasksTable', () => {

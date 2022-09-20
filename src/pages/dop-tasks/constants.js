@@ -1,4 +1,3 @@
-export const DOP_TASKS_HEDER = 'DOP Tasks';
 export const DOP_QUEUED_TASKS_LABEL = 'Queued Tasks';
 export const USER = 'user';
 export const POTENTIAL_OWNERS = 'potentialOwners';
