@@ -191,12 +191,6 @@
                                 },
                                 [
                                     {
-                                        "field": "seriesTitleName",
-                                        "hasValue": "any"
-                                    }
-                                ],
-                                [
-                                    {
                                         "field": "contentType",
                                         "hasValue": "sports"
                                     },
