@@ -4,7 +4,7 @@ import {cloneDeep, get, isArray, isEqual, isObjectLike, toString, toUpper} from 
 import {store} from '../../index';
 import {CONTENT_TYPES} from './components/titleCreateModal/TitleCreateModalConstants';
 import TitleService from './services/TitleService';
-import TitleTerittorialService from './services/TitleTerittorialService';
+import TitleTerritorialService from './services/TitleTerritorialService';
 import {getTerritoryMetadata} from './titleMetadataActions';
 import {
     MOVIDA,
@@ -16,7 +16,7 @@ import {
 } from './constants';
 
 const titleServiceSingleton = TitleService.getInstance();
-const titleTerritorialService = TitleTerittorialService.getInstance();
+const titleTerritorialService = TitleTerritorialService.getInstance();
 
 export const onViewTitleClick = (titleId, realm) => {
     const url = `${getDomainName()}/${realm}/metadata/detail/${titleId}`;

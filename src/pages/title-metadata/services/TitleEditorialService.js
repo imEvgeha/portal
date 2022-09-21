@@ -23,6 +23,7 @@ export default class TitleEditorialService extends HttpService {
 
     constructor() {
         super();
+        this.serviceReference = 'TitleEditorialService';
     }
 
     /** CRUD APIs * */

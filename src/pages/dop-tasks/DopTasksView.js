@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import {getUsername} from '@portal/portal-auth/authSelectors';
-import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
+import {Button} from '@portal/portal-components';
 import NexusSavedTableDropdown from '@vubiquity-nexus/portal-ui/lib/elements/nexus-saved-table-dropdown/NexusSavedTableDropdown';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
-import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
 import {assignDopTasks, changeDOPPriority, setDopTasksUserDefinedGridState, unAssignDopTasks} from './dopTasksActions';
@@ -76,30 +74,42 @@ export const DopTasksView = ({
 
     return (
         <div className="nexus-c-dop-tasks-view">
-            <DopTasksHeader>
-                <QueuedTasks onChange={onSelectedTaskTypeChanged} value={selectedTaskType} />
-                <NexusSavedTableDropdown
-                    gridApi={gridApi}
-                    columnApi={columnApi}
-                    username={username}
-                    setUserDefinedGridState={setDopTasksUserDefinedGridState}
-                    userDefinedGridStates={userDefinedGridStates}
-                    applyPredefinedTableView={(gridApi, filter, columnApi) =>
-                        applyPredefinedTableView(gridApi, filter, columnApi, applyPredefinedTableViewCallBack)
-                    }
-                    onUserDefinedViewSelected={onUserDefinedViewSelected}
-                    externalFilter={externalFilter}
-                    tableLabels={tableLabels}
-                    tableOptions={tableOptions}
-                />
-                <div className="nexus-c-dop-tasks-view__refresh-btn">
-                    <IconButton
-                        icon={() => <RefreshIcon size="large" />}
-                        onClick={() => toggleRefreshGridData(true)}
-                        label="Refresh"
+            <div className="row align-items-center mx-3 my-3">
+                <div className="col-2">
+                    <h1>DOP Tasks</h1>
+                </div>
+
+                <div className="col-2 text-start">
+                    <QueuedTasks onChange={onSelectedTaskTypeChanged} value={selectedTaskType} />
+                </div>
+
+                <div className="col-2 text-start">
+                    <NexusSavedTableDropdown
+                        gridApi={gridApi}
+                        columnApi={columnApi}
+                        username={username}
+                        setUserDefinedGridState={setDopTasksUserDefinedGridState}
+                        userDefinedGridStates={userDefinedGridStates}
+                        applyPredefinedTableView={(gridApi, filter, columnApi) =>
+                            applyPredefinedTableView(gridApi, filter, columnApi, applyPredefinedTableViewCallBack)
+                        }
+                        onUserDefinedViewSelected={onUserDefinedViewSelected}
+                        externalFilter={externalFilter}
+                        tableLabels={tableLabels}
+                        tableOptions={tableOptions}
                     />
                 </div>
-            </DopTasksHeader>
+
+                <div className="col-6 text-end">
+                    <Button
+                        className="p-button-text mx-2"
+                        icon="po po-reload"
+                        tooltip="Refresh"
+                        tooltipOptions={{position: 'left', appendTo: 'self'}}
+                        onClick={() => toggleRefreshGridData(true)}
+                    />
+                </div>
+            </div>
             <DopTasksTable
                 externalFilter={externalFilter}
                 setExternalFilter={setExternalFilter}

@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {isAllowed, Restricted} from '@portal/portal-auth/permissions';
-import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
-import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
-import IconActionEdit from '@vubiquity-nexus/portal-assets/icon-action-edit.svg';
 import NexusConfirmationDialog from '@vubiquity-nexus/portal-ui/lib/elements/nexus-confirmation-dialog/NexusConfirmationDialog';
 import CreateEditConfig from '@vubiquity-nexus/portal-ui/lib/elements/nexus-create-edit-config/CreateEditConfig';
 import NexusDataPanel from '@vubiquity-nexus/portal-ui/lib/elements/nexus-data-panel/NexusDataPanel';
@@ -134,7 +131,7 @@ const EndpointContainer = ({endpoint}) => {
                             <Button
                                 key="add_new_config"
                                 id="add_new_config__btn"
-                                icon={IconActionAdd}
+                                icon="po po-add"
                                 onClick={() => {
                                     setSelectedConfig({});
                                     setShowEditConfigModal(true);
@@ -179,7 +176,7 @@ const EndpointContainer = ({endpoint}) => {
     const endpointListItemTemplate = entry => {
         const actions = [
             new Action({
-                icon: IconActionEdit,
+                icon: 'po po-edit',
                 action: () => {
                     setSelectedConfig(entry);
                     setShowEditConfigModal(true);
@@ -190,7 +187,7 @@ const EndpointContainer = ({endpoint}) => {
             }),
             isAllowed('settingsDelete') &&
                 new Action({
-                    icon: ActionCrossCircle,
+                    icon: 'po po-remove',
                     action: () => confirmDeletion(entry),
                     position: 4,
                     disabled: false,

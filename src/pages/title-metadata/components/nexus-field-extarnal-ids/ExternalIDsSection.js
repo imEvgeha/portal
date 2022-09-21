@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {InputText, Dropdown, Button} from '@portal/portal-components';
-import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
-import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
+import {Button, Dropdown, InputText} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {
     EXTERNAL_SYSTEM_ID_EXAMPLE,
@@ -16,7 +14,7 @@ import './ExternalIDsSection.scss';
 const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
     const {fields, append, remove} = useFieldArray({
         control,
-        name: 'externalSystemIds',
+        name: 'externalTitleIds',
     });
 
     const onRemoveField = (e, index) => {
@@ -40,7 +38,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
                             labelProps={{label: 'External ID type', stacked: true, isRequired: true}}
                             placeholder="Select External ID type"
                             id="externalIdType"
-                            name={`externalSystemIds.${index}.externalSystem`}
+                            name={`externalTitleIds.${index}.externalIdType`}
                             className="nexus-c-title-create_input without-margin-bottom"
                             options={
                                 !isEmpty(externalDropdownOptions)
@@ -48,7 +46,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
                                     : []
                             }
                             formControlOptions={{
-                                formControlName: `externalSystemIds.${index}.externalSystem`,
+                                formControlName: `externalTitleIds.${index}.externalIdType`,
                                 rules: {
                                     required: {value: true, message: 'Field cannot be empty!'},
                                 },
@@ -59,7 +57,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
                     <div className="col-5">
                         <InputText
                             formControlOptions={{
-                                formControlName: `externalSystemIds.${index}.titleId`,
+                                formControlName: `externalTitleIds.${index}.externalId`,
                                 rules: {
                                     required: {value: true, message: 'Field cannot be empty!'},
                                 },
@@ -67,17 +65,13 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
                             labelProps={{label: 'External ID', stacked: true, isRequired: true}}
                             placeholder="Enter External ID"
                             id="externalId"
-                            name={`externalSystemIds.${index}.titleId`}
+                            name={`externalTitleIds.${index}.externalId`}
                             className="nexus-c-title-create_input without-margin-bottom"
                         />
                     </div>
 
                     <div className="col-1  px-2 text-md-start text-lg-start text-xl-center">
-                        <Button
-                            className="p-button-text"
-                            icon={ActionCrossCircle}
-                            onClick={e => onRemoveField(e, index)}
-                        />
+                        <Button className="p-button-text" icon="po po-remove" onClick={e => onRemoveField(e, index)} />
                     </div>
                 </div>
             );
@@ -86,7 +80,7 @@ const ExternalIDsSection = ({control, externalDropdownOptions, header}) => {
 
     const groupActions = () => [
         new Action({
-            icon: IconActionAdd,
+            icon: 'po po-add',
             action: e => onAddField(e),
             position: 4,
             disabled: false,

@@ -8,7 +8,7 @@ describe('QueuedTasks', () => {
 
     beforeEach(() => {
         wrapper = shallow(<QueuedTasks />);
-        select = wrapper.find('.nexus-c-dop-tasks-queued-select');
+        select = wrapper.find('#ddlTaskType');
     });
 
     it('should match snapshot', () => {

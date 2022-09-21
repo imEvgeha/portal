@@ -1,7 +1,0 @@
-@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
-@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
-
-.nexus-c-dop-tasks-queued-select {
-    @include addSpacing('width', 40);
-    @include margin(0, 0, 0, 10);
-}

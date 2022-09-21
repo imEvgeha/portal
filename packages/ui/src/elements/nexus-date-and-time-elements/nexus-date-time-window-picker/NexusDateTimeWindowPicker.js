@@ -33,6 +33,7 @@ const NexusDateTimeWindowPicker = ({
     isClearable,
     isWithInlineEdit,
     isReadOnly,
+    elementId,
 }) => {
     const getIsSimulCast = () => {
         if (startDateTimePickerProps.defaultValue && typeof startDateTimePickerProps.defaultValue === 'string') {
@@ -230,7 +231,7 @@ const NexusDateTimeWindowPicker = ({
 
     return (
         <CustomIntlProvider>
-            <div className="nexus-c-date-time-window-picker">
+            <div className="nexus-c-date-time-window-picker" id={elementId}>
                 {label && <div className="nexus-c-date-time-window-picker__label">{label}</div>}
                 {isReadOnly ? (
                     <ReadView />
@@ -269,6 +270,7 @@ NexusDateTimeWindowPicker.propTypes = {
     isClearable: PropTypes.bool,
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
+    elementId: PropTypes.string,
 };
 
 NexusDateTimeWindowPicker.defaultProps = {
@@ -281,6 +283,7 @@ NexusDateTimeWindowPicker.defaultProps = {
     isClearable: false,
     isWithInlineEdit: false,
     isReadOnly: false,
+    elementId: '',
 };
 
 export default NexusDateTimeWindowPicker;

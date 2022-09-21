@@ -46,7 +46,7 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 propagateRemovePersons: payload,
             };
         case actionTypes.CLEAR_TITLE: {
-            const {gridState, filter, ...gridStateExcluded} = initialState;
+            const {gridState, filter, contentTypes, externalDropdownIDs, ...gridStateExcluded} = initialState;
             return {
                 ...state,
                 ...gridStateExcluded,

@@ -14,10 +14,10 @@ module.exports = envFile => ({
     bail: true,
     module: {
         rules: [
-            {
-                test: /.s?css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-            },
+            // {
+            //     test: /.s?css$/,
+            //     use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+            // },
         ],
     },
     optimization: {

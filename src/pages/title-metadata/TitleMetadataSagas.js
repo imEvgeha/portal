@@ -5,13 +5,13 @@ import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes
 import PublishService from './services/PublishService';
 import TitleEditorialService from './services/TitleEditorialService';
 import TitleService from './services/TitleService';
-import TitleTerittorialService from './services/TitleTerittorialService';
+import TitleTerritorialService from './services/TitleTerritorialService';
 import * as actionTypes from './titleMetadataActionTypes';
 import {SERIES, UPDATE_TITLE_SUCCESS, UPLOAD_SUCCESS_MESSAGE} from './constants';
 
 const titleServiceInstance = TitleService.getInstance();
 const publishServiceInstance = PublishService.getInstance();
-const territoryServiceInstance = TitleTerittorialService.getInstance();
+const territoryServiceInstance = TitleTerritorialService.getInstance();
 const editorialServiceInstance = TitleEditorialService.getInstance();
 
 export function* loadParentTitle(title) {
