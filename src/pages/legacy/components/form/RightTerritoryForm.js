@@ -45,11 +45,11 @@ const RightTerritoryForm = ({
     const dateFormat = `${getDateFormatBasedOnLocale(locale)}`;
 
     const initialValues = {
-        country: '',
-        rightContractStatus: '',
-        vuContractId: '',
-        dateWithdrawn: '',
-        comment: '',
+        country: null,
+        rightContractStatus: null,
+        vuContractId: null,
+        dateWithdrawn: null,
+        comment: null,
         selected: false,
     };
 

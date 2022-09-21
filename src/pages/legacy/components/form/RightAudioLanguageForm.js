@@ -14,8 +14,8 @@ const RightAudioLanguageForm = ({onSubmit, isOpen, onClose, languageOptions, aud
     };
 
     const initialValues = {
-        language: '',
-        audioType: '',
+        language: null,
+        audioType: null,
     };
 
     const form = useForm({
