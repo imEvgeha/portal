@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import Form from '@atlaskit/form';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {getProperPriceFormValues} from './utils';
 import {RIGHTS_CREATE, RIGHTS_EDIT} from '../../constants/constant-variables';
 import RightPriceFields from './RightPriceFields';
@@ -59,12 +59,18 @@ class RightPriceForm extends React.Component {
                             priceIndex={this.props.priceIndex}
                         />
                         <ModalFooter>
-                            <Button appearance="default" onClick={this.props.onClose}>
-                                Cancel
-                            </Button>
-                            <Button appearance="primary" type="submit">
-                                {this.props.isEdit ? 'Update' : 'Create'}
-                            </Button>
+                            <Button
+                                className="p-button-outlined p-button-secondary"
+                                label="Cancel"
+                                appearance="default"
+                                onClick={this.props.onClose}
+                            />
+                            <Button
+                                className="p-button-outlined"
+                                label={this.props.isEdit ? 'Update' : 'Create'}
+                                appearance="primary"
+                                type="submit"
+                            />
                         </ModalFooter>
                     </Modal>
                 )}

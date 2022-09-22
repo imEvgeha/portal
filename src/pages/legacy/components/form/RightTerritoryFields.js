@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import EditorErrorIcon from '@atlaskit/icon/glyph/editor/error';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {useIntl} from 'react-intl';
@@ -239,14 +239,12 @@ const RightTerritoryFields = ({
             </Field>
             {showClearButton && (
                 <Button
-                    appearance="subtle-link"
                     onClick={clearDateWithdrawn}
-                    className={classnames('nexus-c-right-territory-fields__close-button', {
+                    className={classnames('nexus-c-right-territory-fields__close-button p-button-text', {
                         'nexus-c-right-territory-fields__close-button--date-selected': isEdit && dateSelected,
                     })}
-                >
-                    <EditorErrorIcon />
-                </Button>
+                    icon={() => <EditorErrorIcon />}
+                />
             )}
             {showErrorDateWithdrawn && <ErrorMessage> Only the current date can be selected </ErrorMessage>}
             <Field
