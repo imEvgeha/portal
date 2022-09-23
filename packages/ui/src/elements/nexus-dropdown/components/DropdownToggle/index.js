@@ -11,12 +11,12 @@ const DropdownToggle = ({label, isMobile, ...otherProps}) => {
         <Button
             onClick={toggle}
             appearance="primary"
-            style={{background: '#f2f2f2', padding: '15px 21px'}}
+            style={{background: '#f2f2f2', padding: '15px 21px', alignItems: 'center'}}
             {...otherProps}
         >
             <Wrapper>
                 {isMobile ? (
-                    <i className="po po-more" />
+                    <i className="po po-more" style={{color: 'black'}} />
                 ) : (
                     <>
                         <Label>{label}</Label>

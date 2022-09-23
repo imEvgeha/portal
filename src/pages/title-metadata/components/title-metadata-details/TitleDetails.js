@@ -574,7 +574,9 @@ const TitleDetails = ({
                                 <ActionMenu
                                     title={title}
                                     containerClassName={
-                                        isAllowed('publishTitleMetadata') ? 'nexus-c-actions-menu-container' : ''
+                                        isAllowed('publishTitleMetadata')
+                                            ? 'nexus-c-actions-menu-container'
+                                            : 'nexus-c-actions-menu-container-without-buttons'
                                     }
                                     externalIdOptions={externalIdOptions.find(e =>
                                         isEqual(toUpper(toString(e.tenantCode)), toUpper(toString(selectedTenant.id)))
