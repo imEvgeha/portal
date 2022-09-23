@@ -158,7 +158,7 @@ export const RightsRepositoryHeader = ({
                     <Button
                         tooltip={CREATE_NEW_RIGHT}
                         tooltipOptions={{position: 'left'}}
-                        icon={IconActionAdd}
+                        icon="po po-add"
                         onClick={() => navigate(URL.keepEmbedded('rights/create'))}
                         className="p-button-text"
                     />

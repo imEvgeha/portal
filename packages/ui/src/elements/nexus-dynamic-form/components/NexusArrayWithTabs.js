@@ -5,7 +5,7 @@ import SectionMessage from '@atlaskit/section-message';
 import {Restricted} from '@portal/portal-auth/permissions';
 import {Button} from '@portal/portal-components';
 import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
-import {cloneDeep, get, isEqual} from 'lodash';
+import {cloneDeep, get, isEqual, toLower} from 'lodash';
 import TitleAutoDecorateModal from '../../nexus-auto-decorate-modal/TitleAutoDecorateModal';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
@@ -431,17 +431,13 @@ const NexusArrayWithTabs = ({
                 ? {...currentData, contentType: initialData.contentType}
                 : {...data[0], contentType: initialData.contentType};
             const tabId = initData.id ? initData.id : initData.ratingSystem;
-            const tabIndex = data.findIndex(item => {
-                const isItRating = initData.ratingSystem && initData.rating;
-                return isItRating ? item.ratingSystem === tabId && item.rating === initData.rating : item.id === tabId;
-            });
 
             return (
                 <div key={`nexus-c-array__field_${tabId}_${key}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
                         initialData: initData,
                         field: fields[key],
-                        sectionID: tabIndex >= 0 ? `${sectionID}.${tabIndex}` : sectionID,
+                        sectionID,
                         selectValues,
                         setFieldValue,
                         config,
@@ -483,6 +479,7 @@ const NexusArrayWithTabs = ({
                         {view === VIEWS.EDIT && (
                             <Button
                                 className="p-button-outlined p-button-secondary mx-4"
+                                id={`${toLower(name.split(' ').join('.'))}.addButton`}
                                 onClick={openEditModal}
                                 label={`+ Add ${name} Data`}
                             />

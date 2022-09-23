@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {getApiURI, getConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {nexusFetch} from '@vubiquity-nexus/portal-utils/lib/http-client';
 import {pick} from 'lodash/object';
@@ -5,6 +6,7 @@ import HttpHeaders from './HttpHeaders';
 
 export default class HttpService extends HttpHeaders {
     loading = true;
+    _serviceReference;
 
     /**
      * Initialize new TitleService, if not exist
@@ -34,16 +36,13 @@ export default class HttpService extends HttpHeaders {
         });
     };
 
-    // constructHeaders() {}
-
     constructBaseUrl(apiVersion) {
-        let baseUrl = getConfig('gateway.kongUrl');
-        const serviceReference = this.constructor.name;
+        let baseUrl;
 
         // construct base url for the needed service
-        switch (serviceReference) {
+        switch (this.serviceReference) {
             case 'TitleService':
-            case 'TitleTerittorialService':
+            case 'TitleTerritorialService':
             case 'TitleEditorialService':
                 baseUrl = getApiURI('title', '/titles', apiVersion === 'v1' ? 1 : 2);
                 break;
@@ -54,8 +53,9 @@ export default class HttpService extends HttpHeaders {
                 baseUrl = getApiURI('movida');
                 break;
             default:
-                baseUrl = '';
+                baseUrl = getConfig('gateway.kongUrl');
         }
+
         return baseUrl;
     }
 
@@ -101,5 +101,13 @@ export default class HttpService extends HttpHeaders {
                 return ''.concat(encodeURIComponent(x[0]), '=').concat(encodeURIComponent(x[1]));
             })
             .join('&');
+    }
+
+    get serviceReference() {
+        return this._serviceReference;
+    }
+
+    set serviceReference(value) {
+        this._serviceReference = value;
     }
 }

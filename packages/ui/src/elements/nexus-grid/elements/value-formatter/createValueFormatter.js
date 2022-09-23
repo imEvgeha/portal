@@ -1,7 +1,4 @@
 import React from 'react';
-import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
-import CloudDownloadIcon from '@vubiquity-nexus/portal-assets/action-cloud-download.svg';
-import WithdrawnIcon from '@vubiquity-nexus/portal-assets/withdrawn.svg';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {camelCase, capitalize, isBoolean, startCase} from 'lodash';
 import './createValueFormatter.scss';
@@ -13,19 +10,21 @@ export const getIcon = (value, isFocus) => {
         case 'warning':
             return (
                 <span className={`nexus-c-warning-icon ${isFocus ? 'nexus-c-warning-icon--is-active' : ''}`}>
-                    <WarningIcon />
+                    <i className="po po-warning" />
                 </span>
             );
         case 'block':
             return (
-                <WithdrawnIcon
-                    className={`nexus-c-withdrawn-icon ${isFocus ? 'nexus-c-withdrawn-icon--is-active' : ''}`}
+                <i
+                    className={`po po-remove-alt nexus-c-withdrawn-icon ${
+                        isFocus ? 'nexus-c-withdrawn-icon--is-active' : ''
+                    }`}
                 />
             );
         case 'download':
             return (
                 <span className={`nexus-c-download-icon ${isFocus ? 'nexus-c-download-icon--is-active' : ''}`}>
-                    <CloudDownloadIcon />
+                    <i className="po po-download" />
                 </span>
             );
         default:

@@ -49,7 +49,7 @@ export const RepositorySelectsAndButtons = ({
                         <Button
                             tooltip="Create New Title"
                             tooltipOptions={{position: 'left'}}
-                            icon={IconActionAdd}
+                            icon="po po-add"
                             onClick={() => setShowModal(true)}
                             className="p-button-text nexus-c-title-metadata__create-btn"
                         />

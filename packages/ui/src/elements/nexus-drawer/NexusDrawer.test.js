@@ -27,15 +27,6 @@ describe('NexusDrawer', () => {
         expect(wrapper.contains(<div>Child</div>)).toBeTruthy();
     });
 
-    it('should have only one close button and call onClose when button is clicked', () => {
-        const onClose = jest.fn();
-        wrapper = shallow(<NexusDrawer onClose={onClose} isOpen={true} />);
-
-        expect(wrapper.find('IconButton')).toHaveLength(1);
-        wrapper.find('IconButton').props().onClick();
-        expect(onClose).toHaveBeenCalled();
-    });
-
     it('shows a spinner when the isLoading prop is true', () => {
         wrapper = shallow(<NexusDrawer isLoading={true} isOpen={true} onClose={() => null} />);
         expect(wrapper.find('Spinner')).toBeTruthy();

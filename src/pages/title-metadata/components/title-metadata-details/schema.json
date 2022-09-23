@@ -191,12 +191,6 @@
                                 },
                                 [
                                     {
-                                        "field": "seriesTitleName",
-                                        "hasValue": "any"
-                                    }
-                                ],
-                                [
-                                    {
                                         "field": "contentType",
                                         "hasValue": "sports"
                                     },
@@ -510,28 +504,28 @@
                         "tenantDefExtIds": {
                             "name": "tenantDefExtIds",
                             "type": "rowDataItem",
-                            "path": "externalSystemIds",
+                            "path": "externalTitleIds",
                             "firstColLbl": "External ID Type:",
-                            "firstColKey": "externalSystem",
+                            "firstColKey": "externalIdType",
                             "secondColLbl": "External ID:",
-                            "secondColKey": "titleId",
+                            "secondColKey": "externalId",
                             "canAdd": true,
                             "canDelete": false,
                             "addNewModalOptions": {
                                 "header": "Add External ID",
                                 "triggerBtnLabel": "+ Add External ID",
-                                "valuesPath": "externalSystem",
-                                "uniqueByFields": ["externalSystem", "titleId"],
+                                "valuesPath": "externalIdType",
+                                "uniqueByFields": ["externalIdType", "externalId"],
                                 "duplicationErrorMessage": "External ID Type + External ID must be unique.",
                                 "fields": [
                                     {
                                         "sections": [
                                             {
                                                 "fields": {
-                                                    "externalSystem": {
+                                                    "externalIdType": {
                                                         "stackLabel": true,
                                                         "name": "External ID Type",
-                                                        "path": "externalSystem",
+                                                        "path": "externalIdType",
                                                         "type": "select",
                                                         "inModal": true,
                                                         "optionsConfig": {
@@ -540,10 +534,10 @@
                                                         },
                                                         "isRequired": true
                                                     },
-                                                    "titleId": {
+                                                    "externalId": {
                                                         "stackLabel": true,
                                                         "name": "External ID",
-                                                        "path": "titleId",
+                                                        "path": "externalId",
                                                         "type": "string",
                                                         "isRequired": true
                                                     }
@@ -557,7 +551,7 @@
                     }
                 },
                 {
-                    "title": "MetaVU Originated External IDs",
+                    "title": "Industry Originated External IDs",
                     "sectionID": "metavuOriginatedExternalIDs",
                     "isGridLayout": true,
                     "fields": {
@@ -611,40 +605,20 @@
                             "type": "string",
                             "path": "externalIds.maId"
                         },
-                        "vzTitleId": {
-                            "name": "VZ Title ID",
-                            "type": "string",
-                            "path": "vzExternalIds.externalTitleId",
-                            "isReadOnly": true
-                        },
-                        "vzId": {
-                            "name": "VZ Vendor ID",
-                            "type": "string",
-                            "path": "vzExternalIds.externalId",
-                            "isReadOnly": true
-                        },
-                        "movidaTitleId": {
-                            "name": "Movida Title ID",
-                            "type": "string",
-                            "path": "movidaExternalIds.externalTitleId",
-                            "isReadOnly": true
-                        },
-                        "movidaId": {
-                            "name": "Movida ID",
-                            "type": "string",
-                            "path": "movidaExternalIds.externalId",
-                            "isReadOnly": true
-                        },
-                        "movidaIntTitleId": {
-                            "name": "Movida Int Title ID",
-                            "type": "string",
-                            "path": "movidaUkExternalIds.externalTitleId",
-                            "isReadOnly": true
-                        },
                         "assetName": {
                             "name": "Asset Name",
                             "type": "string",
                             "path": "externalIds.assetName"
+                        }
+                    }
+                },
+                {
+                    "sectionID": "tenantData",
+                    "isGridLayout": true,
+                    "fields": {
+                        "tenantData": {
+                            "name": "Tenant Data",
+                            "type": "tenantData"
                         }
                     }
                 },

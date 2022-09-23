@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import File from '@vubiquity-nexus/portal-assets/file.svg';
 import classnames from 'classnames';
 import './IngestTitle.scss';
 
@@ -9,7 +8,7 @@ const IngestTitle = ({link, isHeader}) => {
     return (
         <div className={classnames('nexus-c-ingest-title', isHeader && 'nexus-c-ingest-title--is-header')}>
             <div className="nexus-c-ingest-title__details">
-                <File className="nexus-c-ingest-title__type" />
+                <i className="po po-file nexus-c-ingest-title__type" />
                 <span title={fileName} className="nexus-c-ingest-title__filename">
                     {fileName}
                 </span>

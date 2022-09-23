@@ -109,7 +109,6 @@ const ServicingOrdersView = () => {
                     <Dropdown
                         labelProps={{
                             label: CUSTOMER_LBL,
-                            shouldUpper: false,
                             stacked: true,
                         }}
                         id="ddlCustomer"

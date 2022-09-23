@@ -131,7 +131,7 @@ const NexusArray = ({
                                 {renderNexusField(`${path}[${index}].${key}`, view, getValues, generateMsvIds, {
                                     initialData,
                                     field: fields[key],
-                                    sectionID: `${sectionID}.${index}`,
+                                    sectionID,
                                     selectValues,
                                     setFieldValue,
                                     config,

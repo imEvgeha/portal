@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Dropdown} from '@portal/portal-components';
+import {Dropdown, MultiSelect, Tooltip} from '@portal/portal-components';
 import {cloneDeep} from 'lodash';
-import {MultiSelect} from 'primereact/multiselect';
 import {compose} from 'redux';
-import {LOCALIZED_VALUE_NOT_DEFINED} from '../nexus-dynamic-form/constants';
 import withOptionalCheckbox from '../nexus-dynamic-form/hoc/withOptionalCheckbox';
 import {formatOptions} from '../nexus-dynamic-form/utils';
 import './NexusSelect.scss';
@@ -79,37 +77,10 @@ const NexusSelect = ({
         return fetchedOptions;
     };
 
-    const formatOptionLabel = option => {
-        const notLocalized = !!(option?.label?.includes('(') && option?.label?.includes(')*'));
-        const genresArray = selectValues.genres;
-        let singleGenre;
-        let localisedGenreName;
-        let localisedCheck = false;
-        const foundOption = genresArray.find(o => o.name === option.label.substring(1, option.label.length - 2));
-        if (foundOption) {
-            singleGenre = foundOption;
-            const foundLocalization = singleGenre.localizations.find(
-                o => o.language === language && o.language !== 'en'
-            );
-            foundLocalization
-                ? ((localisedGenreName = `${foundLocalization.name} (${singleGenre.name})`), (localisedCheck = true))
-                : ((localisedGenreName = language === 'en' ? singleGenre.name : `(${singleGenre.name})*`),
-                  (localisedCheck = false));
-        }
-        return (
-            <div className={`${localisedCheck || language === 'en' || !notLocalized ? 'bold' : 'italic'}`}>
-                <span title={!localisedCheck && language !== 'en' ? LOCALIZED_VALUE_NOT_DEFINED : null}>
-                    {localisedGenreName || option.label}
-                </span>
-            </div>
-        );
-    };
-
     if (path === 'metadataStatus') {
         const selectLabel = fieldValues?.label;
         if (selectLabel) {
-            const upperLabel = selectLabel[0].toUpperCase() + selectLabel.substr(1);
-            fieldValues.label = upperLabel;
+            fieldValues.label = selectLabel[0].toUpperCase() + selectLabel.substr(1);
         }
     }
 
@@ -144,7 +115,27 @@ const NexusSelect = ({
                             setSelectedItem(e.value);
                         }}
                     />
-                ) : null
+                ) : (
+                    <div>
+                        <Tooltip
+                            target=".disabled-multiselect"
+                            content="No available options to select"
+                            position="bottom"
+                        />
+                        <span className="disabled-multiselect">
+                            <MultiselectWithOptional
+                                {...fieldProps}
+                                id={id}
+                                value={selectedItem}
+                                options={options}
+                                columnClass="col-12"
+                                placeholder="Select"
+                                appendTo="self"
+                                disabled={true}
+                            />
+                        </span>
+                    </div>
+                )
             ) : (
                 <DropdownWithOptional
                     {...fieldProps}

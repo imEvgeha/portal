@@ -1,7 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
-import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import {debounce, toUpper} from 'lodash';
 import NexusEntity from '../../../nexus-entity/NexusEntity';
 import {NEXUS_ENTITY_TYPES} from '../../../nexus-entity/constants';
@@ -200,7 +198,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
 
     const groupActions = index => [
         new Action({
-            icon: ActionCrossCircle,
+            icon: 'po po-remove',
             action: e => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -269,7 +267,7 @@ const ArrayElement = ({elementsSchema, form, values, cache, dataApi}) => {
 
     const constructActions = () => [
         new Action({
-            icon: IconActionAdd,
+            icon: 'po po-add',
             action: e => {
                 e.preventDefault();
                 e.stopPropagation();

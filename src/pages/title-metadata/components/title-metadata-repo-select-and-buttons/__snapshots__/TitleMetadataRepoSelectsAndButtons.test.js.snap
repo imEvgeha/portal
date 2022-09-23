@@ -48,11 +48,7 @@ exports[`RepositorySelectsAndButtons should match snapshot 1`] = `
     >
       <Button
         className="p-button-text nexus-c-title-metadata__create-btn"
-        icon={
-          Object {
-            "process": [Function],
-          }
-        }
+        icon="po po-add"
         onClick={[Function]}
         tooltip="Create New Title"
         tooltipOptions={

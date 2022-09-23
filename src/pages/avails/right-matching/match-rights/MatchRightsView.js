@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {Button} from '@portal/portal-components';
+import {backArrowColor} from '@vubiquity-nexus/portal-styles/constants';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     defineColumn,
@@ -14,7 +15,6 @@ import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import {backArrowColor} from '../../../../../packages/styles/constants';
 import {NexusGrid, NexusTitle} from '../../../../ui/elements';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
 import {AVAILS_PATH} from '../../availsRoutes';

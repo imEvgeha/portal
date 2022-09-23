@@ -2,7 +2,7 @@ import React from 'react';
 import PT from 'prop-types';
 import Button from '@atlaskit/button';
 import {useDropdownContext} from '../../NexusDropdown';
-import {Wrapper, Label, DotsIcon, PointDownIcon} from './styled';
+import {Label, Wrapper} from './styled';
 
 const DropdownToggle = ({label, isMobile, ...otherProps}) => {
     const {isOpen, toggle} = useDropdownContext();
@@ -11,16 +11,16 @@ const DropdownToggle = ({label, isMobile, ...otherProps}) => {
         <Button
             onClick={toggle}
             appearance="primary"
-            style={{background: '#f2f2f2', padding: '15px 21px'}}
+            style={{background: '#f2f2f2', padding: '15px 21px', alignItems: 'center'}}
             {...otherProps}
         >
             <Wrapper>
                 {isMobile ? (
-                    <DotsIcon />
+                    <i className="po po-more" style={{color: 'black'}} />
                 ) : (
                     <>
                         <Label>{label}</Label>
-                        <PointDownIcon open={+isOpen} />
+                        <i className={`po po-${isOpen ? 'collapse-section' : 'expand-section'}`} />
                     </>
                 )}
             </Wrapper>

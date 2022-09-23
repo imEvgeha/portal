@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Dialog} from '@portal/portal-components';
-import CloudDownloadIcon from '@vubiquity-nexus/portal-assets/action-cloud-download.svg';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {exportService} from '../../../../../legacy/containers/avail/service/ExportService';
 import DownloadEmetModal from '../DownloadEmetModal/DownloadEmetModal';
@@ -54,7 +53,7 @@ const CloudDownloadButton = ({showSuccess}) => {
     return (
         <div className="nexus-c-button-cloud-download">
             <Button
-                icon={CloudDownloadIcon}
+                icon="po po-download"
                 onClick={openModal}
                 tooltip="Download"
                 className="p-button-text"

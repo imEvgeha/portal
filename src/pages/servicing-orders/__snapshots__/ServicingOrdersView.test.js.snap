@@ -18,7 +18,6 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
         labelProps={
           Object {
             "label": "Customer",
-            "shouldUpper": false,
             "stacked": true,
           }
         }

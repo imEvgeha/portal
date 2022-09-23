@@ -107,11 +107,7 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
     <div>
       <Button
         className="p-button-text"
-        icon={
-          Object {
-            "process": [Function],
-          }
-        }
+        icon="po po-add"
         onClick={[Function]}
         tooltip="Create New Right"
         tooltipOptions={

@@ -1,6 +1,6 @@
 import React, {useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {Restricted} from '@portal/portal-auth/permissions';
+import {Restricted, isAllowed} from '@portal/portal-auth/permissions';
 import NexusDropdown, {
     DropdownOption,
     DropdownOptions,
@@ -8,6 +8,7 @@ import NexusDropdown, {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dropdown/NexusDropdown';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
+import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {toString, toLower, startCase, toUpper} from 'lodash';
 import {useDispatch} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
@@ -22,6 +23,9 @@ const UNMERGE_TITLE = 'Unmerge';
 const UNMERGE_MESSAGE = 'Would you like to unmerge this title?';
 
 const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMetadata}) => {
+    const complexProperties = title?.tenantData?.complexProperties;
+    const tenantDataLegacyIds = complexProperties?.find(item => item.name === 'legacyIds');
+
     const dropdownOption = {copyDesc: 'Copy...', unmergeDesc: 'Unmerge', deleteDesc: 'Delete'};
     const contentTypeLowerCase = toLower(toString(title.contentType));
     const contentTypeUpperCase = toUpper(toString(title.contentType));
@@ -30,6 +34,11 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
         contentTypeUpperCase === 'SEASON' ||
         contentTypeUpperCase === 'SERIES' ||
         contentTypeUpperCase === 'MINI-SERIES';
+
+    const displayUnmergeBtn = tenantDataLegacyIds && isAllowed('unmergeTitleAction') && isNexusTitle(title.id);
+    const displayCopyBtn = isAllowed('createTitleCopyAction') & isValidContentTypeToCreateCopy(contentTypeLowerCase);
+    const displayDeleteBtn = isAllowed('deleteTitleAction');
+    const displayThreeDots = displayUnmergeBtn || displayCopyBtn || displayDeleteBtn;
 
     const [displayCreateCopyModal, setDisplayCreateCopyModal] = React.useState(false);
     const [displayDeleteTitleModal, setDisplayDeleteTitleModal] = React.useState(false);
@@ -114,7 +123,7 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
     return (
         <div className={containerClassName}>
             <NexusDropdown>
-                <DropdownToggle label="Actions" isMobile />
+                {displayThreeDots ? <DropdownToggle label="Actions" isMobile /> : null}
                 <DropdownOptions isMobile align="top">
                     <Restricted resource="deleteTitleAction">
                         <DropdownOption value="delete" onSelect={() => setDisplayDeleteTitleModal(true)}>
@@ -122,18 +131,20 @@ const ActionMenu = ({title, containerClassName, externalIdOptions, editorialMeta
                         </DropdownOption>
                         <hr />
                     </Restricted>
-                    {isValidContentTypeToCreateCopy(contentTypeLowerCase) && (
+                    {displayCopyBtn ? (
                         <Restricted resource="createTitleCopyAction">
                             <DropdownOption value="copy" onSelect={() => setDisplayCreateCopyModal(true)}>
                                 <i className="pi pi-copy pe-3" /> {dropdownOption.copyDesc}
                             </DropdownOption>
                         </Restricted>
-                    )}
-                    <Restricted resource="unmergeTitleAction">
-                        <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
-                            <i className="pi pi-window-maximize pe-3" /> {dropdownOption.unmergeDesc}
-                        </DropdownOption>
-                    </Restricted>
+                    ) : null}
+                    {displayUnmergeBtn ? (
+                        <Restricted resource="unmergeTitleAction">
+                            <DropdownOption value="unmerge" onSelect={() => openUnmergeDialog(title.id)}>
+                                <i className="pi pi-window-maximize pe-3" /> {dropdownOption.unmergeDesc}
+                            </DropdownOption>
+                        </Restricted>
+                    ) : null}
                 </DropdownOptions>
             </NexusDropdown>
 

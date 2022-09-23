@@ -4,75 +4,96 @@ exports[`DopTasksView should match snapshot 1`] = `
 <div
   className="nexus-c-dop-tasks-view"
 >
-  <DopTasksHeader
-    label="DOP Tasks"
+  <div
+    className="row align-items-center mx-3 my-3"
   >
-    <QueuedTasks
-      onChange={[Function]}
-      value="user"
-    />
-    <NexusSavedTableDropdown
-      applyPredefinedTableView={[Function]}
-      columnApi={null}
-      currentUserView={Object {}}
-      externalFilter={
-        Object {
-          "user": "user",
-        }
-      }
-      gridApi={null}
-      isDisabled={false}
-      onUserDefinedViewSelected={[Function]}
-      previousGridState={Array []}
-      setBlockLastFilter={[Function]}
-      setCurrentUserView={[Function]}
-      setUserDefinedGridState={[Function]}
-      tableLabels={
-        Object {
-          "predifinedViewsLabel": "Predefined Views",
-          "savedDropdownLabel": "Saved Table View:",
-          "savedViewslabel": "My Saved Views",
-        }
-      }
-      tableOptions={
-        Array [
-          Object {
-            "label": "All",
-            "value": "all",
-          },
-          Object {
-            "label": "Open",
-            "value": "open",
-          },
-          Object {
-            "label": "Not Started",
-            "value": "notStarted",
-          },
-          Object {
-            "label": "In Progress",
-            "value": "inProgress",
-          },
-          Object {
-            "label": "Closed",
-            "value": "closed",
-          },
-        ]
-      }
-      updateColumnsAction={[Function]}
-      userDefinedGridStates={Array []}
-      username=""
-    />
     <div
-      className="nexus-c-dop-tasks-view__refresh-btn"
+      className="col-2"
     >
-      <IconButton
-        icon={[Function]}
-        isDisabled={false}
-        label="Refresh"
-        onClick={[Function]}
+      <h1>
+        DOP Tasks
+      </h1>
+    </div>
+    <div
+      className="col-2 text-start"
+    >
+      <QueuedTasks
+        onChange={[Function]}
+        value="user"
       />
     </div>
-  </DopTasksHeader>
+    <div
+      className="col-2 text-start"
+    >
+      <NexusSavedTableDropdown
+        applyPredefinedTableView={[Function]}
+        columnApi={null}
+        currentUserView={Object {}}
+        externalFilter={
+          Object {
+            "user": "user",
+          }
+        }
+        gridApi={null}
+        isDisabled={false}
+        onUserDefinedViewSelected={[Function]}
+        previousGridState={Array []}
+        setBlockLastFilter={[Function]}
+        setCurrentUserView={[Function]}
+        setUserDefinedGridState={[Function]}
+        tableLabels={
+          Object {
+            "predifinedViewsLabel": "Predefined Views",
+            "savedDropdownLabel": "Saved Table View:",
+            "savedViewslabel": "My Saved Views",
+          }
+        }
+        tableOptions={
+          Array [
+            Object {
+              "label": "All",
+              "value": "all",
+            },
+            Object {
+              "label": "Open",
+              "value": "open",
+            },
+            Object {
+              "label": "Not Started",
+              "value": "notStarted",
+            },
+            Object {
+              "label": "In Progress",
+              "value": "inProgress",
+            },
+            Object {
+              "label": "Closed",
+              "value": "closed",
+            },
+          ]
+        }
+        updateColumnsAction={[Function]}
+        userDefinedGridStates={Array []}
+        username=""
+      />
+    </div>
+    <div
+      className="col-6 text-end"
+    >
+      <Button
+        className="p-button-text mx-2"
+        icon="po po-reload"
+        onClick={[Function]}
+        tooltip="Refresh"
+        tooltipOptions={
+          Object {
+            "appendTo": "self",
+            "position": "left",
+          }
+        }
+      />
+    </div>
+  </div>
   <DopTasksTable
     assignTasks={[Function]}
     changePriority={[Function]}

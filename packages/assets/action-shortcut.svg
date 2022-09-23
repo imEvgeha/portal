@@ -1,8 +1,0 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" width="20" height="20">
-    <title>action-shortcut</title>
-    <path
-        fill="#000"
-        d="M19,6.41l-6.29,6.3a1,1,0,0,1-1.42-1.42L17.59,5H16a1,1,0,0,1,0-2h4a1,1,0,0,1,.38.08,1,1,0,0,1,.33.21A1,1,0,0,1,21,4V8a1,1,0,0,1-2,0V6.41M19,13v6H5V5h6V3H5A2,2,0,0,0,3,5V19a2,2,0,0,0,2,2H19a2,2,0,0,0,2-2V13H19"
-        transform="translate(-3 -3)"
-    />
-</svg>

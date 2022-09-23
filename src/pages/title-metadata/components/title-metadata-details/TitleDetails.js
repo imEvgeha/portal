@@ -10,7 +10,7 @@ import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/load
 import {addToast} from '@vubiquity-nexus/portal-ui/src/toast/NexusToastNotificationActions';
 import {searchPerson} from '@vubiquity-nexus/portal-utils/lib/services/rightDetailsServices';
 import classnames from 'classnames';
-import {get, isEmpty, isEqual, toString, toUpper} from 'lodash';
+import {get, isEmpty, isEqual, isNull, isUndefined, orderBy, toString, toUpper} from 'lodash';
 import moment from 'moment';
 import {connect, useSelector} from 'react-redux';
 import {useLocation, useParams} from 'react-router-dom';
@@ -35,7 +35,7 @@ import {
 import TitleConfigurationService from '../../services/TitleConfigurationService';
 import TitleEditorialService from '../../services/TitleEditorialService';
 import TitleService from '../../services/TitleService';
-import TitleTerittorialService from '../../services/TitleTerittorialService';
+import TitleTerritorialService from '../../services/TitleTerritorialService';
 import {
     clearSeasonPersons,
     clearTitle,
@@ -58,9 +58,9 @@ import {
     handleTitleCategory,
     isNexusTitle,
     isStateEditable,
+    isValidContentTypeToCreateCopy,
     prepareCategoryField,
     propagateSeasonsPersonsToEpisodes,
-    isValidContentTypeToCreateCopy,
 } from '../../utils';
 import ActionMenu from './components/ActionMenu';
 import SyncPublish from './components/SyncPublish';
@@ -263,7 +263,7 @@ const TitleDetails = ({
     };
 
     const updateTerritoryMetadata = async (territorialMetadata = [], titleId) => {
-        const titleTerritorialService = TitleTerittorialService.getInstance();
+        const titleTerritorialService = TitleTerritorialService.getInstance();
 
         const promises = [];
         territorialMetadata.forEach(tmet => {
@@ -342,21 +342,9 @@ const TitleDetails = ({
         }
     };
 
-    const getExternaIds = repo => {
-        if (isNexusTitle(title.id)) {
-            return externalIds.filter(ids => ids.externalSystem === repo);
-        }
-        return [
-            {
-                externalTitleId: get(title.legacyIds, `${repo}.${repo}TitleId`, ''),
-                externalId: get(title.legacyIds, `${repo}.${repo}Id`, ''),
-            },
-        ];
-    };
-
     const getPublishedAt = repo => {
         if (isNexusTitle(title.id)) {
-            return externalIds.find(ids => ids.externalSystem === repo);
+            return externalIds.find(ids => ids.externalIdType === repo);
         }
     };
 
@@ -368,10 +356,28 @@ const TitleDetails = ({
         return dateTime ? `Updated At: ${moment(dateTime?.publishedAt).utc().format('YYYY/MM/DD, h:mm:ss a')}` : '';
     };
 
+    /**
+     * Calculate the external ids for a given title
+     * Nexus Titles get this info from a different API
+     * whereas non-nexus titles have it in {title.tenantData} property
+     * @returns Flat External Ids list
+     */
+    const calculateExternalIds = () => {
+        const repositories = ['vz', 'movida', 'movida-uk'];
+        // for Nexus titles, external ids are fetched from getPublishInfo API
+        if (isNexusTitle(title.id)) {
+            return orderBy(
+                externalIds.filter(ids => repositories.includes(ids.externalSystem)),
+                ['externalSystem'],
+                ['desc']
+            );
+        }
+        // else if the title is not a Nexus title
+        return title?.tenantData?.complexProperties.find(property => property.name === 'legacyIds').simpleProperties;
+    };
+
     const extendTitleWithExternalIds = () => {
-        const [vzExternalIds] = getExternaIds('vz');
-        const [movidaExternalIds] = getExternaIds('movida');
-        const [movidaUkExternalIds] = getExternaIds('movida-uk');
+        const systemExternalIds = calculateExternalIds();
 
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'categories', 'name');
@@ -389,9 +395,7 @@ const TitleDetails = ({
             ...updatedTitle,
             episodesCount: episodesCount.total ? episodesCount.total : '0',
             seasonsCount: seasonsCount.total ? seasonsCount.total : '0',
-            vzExternalIds,
-            movidaExternalIds,
-            movidaUkExternalIds,
+            systemExternalIds,
             editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
             territorialMetadata: updatedTerritorialMetadata,
         };
@@ -428,7 +432,15 @@ const TitleDetails = ({
 
     const canEdit = isNexusTitle(title?.id) && isStateEditable(title?.metadataStatus) && isEditPermitted();
 
-    const loading = isLoadingSelectValues || isEmpty(selectValues) || emetLoading || titleLoading || externalIdsLoading;
+    const loading =
+        isLoadingSelectValues ||
+        isEmpty(selectValues) ||
+        emetLoading ||
+        titleLoading ||
+        externalIdsLoading ||
+        isEmpty(title) ||
+        isNull(title) ||
+        isUndefined(title);
 
     const getActions = () => {
         return {
@@ -446,7 +458,7 @@ const TitleDetails = ({
         let res = {...selectValues};
 
         if (externalIdTypes) {
-            res = {...selectValues, externalSystem: externalIdTypes};
+            res = {...selectValues, externalIdType: externalIdTypes};
         } else if (!isFetchingExternalIdTypes.current) {
             isFetchingExternalIdTypes.current = true;
             titleConfigurationService
@@ -562,7 +574,9 @@ const TitleDetails = ({
                                 <ActionMenu
                                     title={title}
                                     containerClassName={
-                                        isAllowed('publishTitleMetadata') ? 'nexus-c-actions-menu-container' : ''
+                                        isAllowed('publishTitleMetadata')
+                                            ? 'nexus-c-actions-menu-container'
+                                            : 'nexus-c-actions-menu-container-without-buttons'
                                     }
                                     externalIdOptions={externalIdOptions.find(e =>
                                         isEqual(toUpper(toString(e.tenantCode)), toUpper(toString(selectedTenant.id)))
