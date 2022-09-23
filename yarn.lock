@@ -4694,11 +4694,6 @@
     react-intl "^5.25.1"
     web-vitals "^2.1.4"
 
-"@portal/portal-icons@^1.0.0-12":
-  version "1.0.0-12"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@portal/portal-icons/-/portal-icons-1.0.0-12.tgz#6e1c22809b4709a745ae2915a3cb2ce9549e3261"
-  integrity sha512-P0r5A7L9vcROZk5rqoxTGZI5vaqHOABn866OOaZ/Thf4ND1aHWCZW9Wmby7mDJDvTYgwdZphguh6iRva0trwCg==
-
 "@redux-saga/core@^1.1.3":
   version "1.1.3"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@redux-saga/core/-/core-1.1.3.tgz#3085097b57a4ea8db5528d58673f20ce0950f6a4"
