@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {SimpleTag as Tag} from '@atlaskit/tag';
+import {Button} from '@portal/portal-components';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {defineCheckboxSelectionColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
@@ -256,7 +257,11 @@ const DopTasksTable = ({
 
     return (
         <div className="nexus-c-dop-tasks-table">
-            <i className="po po-more nexus-c-dop-tasks-table__more-actions" onClick={openMenu} />
+            <Button
+                icon="po po-more"
+                onClick={openMenu}
+                className="p-button-text nexus-c-dop-tasks-table__more-actions"
+            />
             {isMenuOpen && (
                 <div className="nexus-c-dop-tasks-table__action-menu">
                     {[TASK_ACTIONS_ASSIGN, TASK_ACTIONS_UNASSIGN, TASK_ACTIONS_FORWARD, CHANGE_PRIORITY_TITLE].map(

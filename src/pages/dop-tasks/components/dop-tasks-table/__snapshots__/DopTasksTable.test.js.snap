@@ -4,8 +4,9 @@ exports[`DopTasksTable should match snapshot 1`] = `
 <div
   className="nexus-c-dop-tasks-table"
 >
-  <i
-    className="po po-more nexus-c-dop-tasks-table__more-actions"
+  <Button
+    className="p-button-text nexus-c-dop-tasks-table__more-actions"
+    icon="po po-more"
     onClick={[Function]}
   />
   <Component
