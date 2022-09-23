@@ -260,7 +260,7 @@ const DopTasksTable = ({
             <Button
                 icon="po po-more"
                 onClick={openMenu}
-                className="p-button-text nexus-c-dop-tasks-table__more-actions p-button-text"
+                className="p-button-text nexus-c-dop-tasks-table__more-actions"
             />
             {isMenuOpen && (
                 <div className="nexus-c-dop-tasks-table__action-menu">
