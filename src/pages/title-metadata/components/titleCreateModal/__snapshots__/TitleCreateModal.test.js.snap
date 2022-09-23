@@ -23,37 +23,21 @@ exports[`TitleCreateModal Default TitleCreateModal should match snapshot 1`] = `
       <div
         className="nexus-c-title-create_footer-buttons-container"
       >
-        <Memo(Button)
-          __TYPE="Button"
-          badge={null}
-          badgeClassName={null}
+        <Button
           className="p-button-outlined p-button-secondary"
           disabled={false}
-          icon={null}
-          iconPos="left"
           id="titleCancelBtn"
           label="Cancel"
-          loading={false}
-          loadingIcon="pi pi-spinner pi-spin"
           onClick={[Function]}
-          tooltip={null}
-          tooltipOptions={null}
         />
-        <Memo(Button)
-          __TYPE="Button"
-          badge={null}
-          badgeClassName={null}
+        <Button
           className="p-button-outlined"
-          disabled={false}
-          icon={null}
           iconPos="right"
           id="titleSaveBtn"
           label="Save"
           loading={false}
           loadingIcon="pi pi-spin pi-spinner"
           onClick={[Function]}
-          tooltip={null}
-          tooltipOptions={null}
         />
       </div>
     </div>
@@ -498,37 +482,21 @@ exports[`TitleCreateModal Matching TitleCreateModal should match snapshot 1`] = 
       <div
         className="nexus-c-title-create_footer-buttons-container"
       >
-        <Memo(Button)
-          __TYPE="Button"
-          badge={null}
-          badgeClassName={null}
+        <Button
           className="p-button-outlined p-button-secondary"
           disabled={false}
-          icon={null}
-          iconPos="left"
           id="titleCancelBtn"
           label="Cancel"
-          loading={false}
-          loadingIcon="pi pi-spinner pi-spin"
           onClick={[Function]}
-          tooltip={null}
-          tooltipOptions={null}
         />
-        <Memo(Button)
-          __TYPE="Button"
-          badge={null}
-          badgeClassName={null}
+        <Button
           className="p-button-outlined"
-          disabled={false}
-          icon={null}
           iconPos="right"
           id="titleSaveBtn"
           label="Match & Create"
           loading={false}
           loadingIcon="pi pi-spin pi-spinner"
           onClick={[Function]}
-          tooltip={null}
-          tooltipOptions={null}
         />
       </div>
     </div>

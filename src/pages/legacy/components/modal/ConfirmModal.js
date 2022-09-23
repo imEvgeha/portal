@@ -1,7 +1,8 @@
 import React from 'react';
 import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
-import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
+import {ModalBody, ModalFooter, ModalHeader, Modal} from 'reactstrap';
+import {Button} from '@portal/portal-components';
 import PropTypes from 'prop-types';
 
 class Confirm extends React.Component {
@@ -52,12 +53,12 @@ class Confirm extends React.Component {
                 <ModalHeader toggle={this.toggle}>{this.props.message}</ModalHeader>
                 {modalBody}
                 <ModalFooter>
-                    <Button color="primary" onClick={this.confirm}>
-                        {this.props.confirmLabel}
-                    </Button>{' '}
-                    <Button color="secondary" onClick={this.abort}>
-                        {this.props.abortLabel}
-                    </Button>
+                    <Button label={this.props.confirmLabel} className="p-button-outlined" onClick={this.confirm} />
+                    <Button
+                        label={this.props.abortLabel}
+                        className="p-button-outlined p-button-secondary"
+                        onClick={this.abort}
+                    />
                 </ModalFooter>
             </Modal>
         );

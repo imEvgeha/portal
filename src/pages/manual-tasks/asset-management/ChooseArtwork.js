@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {URL as VuURL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
@@ -139,9 +139,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList, fetchAsset, asset, job
             </div>
             <div className="artwork-actions">
                 {asset ? (
-                    <Button onClick={openUploadModal} appearance="primary">
-                        Upload
-                    </Button>
+                    <Button className="p-button-outlined" label="Upload" onClick={openUploadModal} />
                 ) : (
                     <Loading />
                 )}

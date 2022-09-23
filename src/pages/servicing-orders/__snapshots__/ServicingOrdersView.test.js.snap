@@ -42,25 +42,49 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
         value=""
       />
     </div>
+    <ToggleButton
+      __TYPE="ToggleButton"
+      checked={false}
+      className={null}
+      iconPos="left"
+      id={null}
+      offIcon={null}
+      offLabel="Hide Ready"
+      onBlur={null}
+      onChange={[Function]}
+      onFocus={null}
+      onIcon={null}
+      onLabel="Hide Ready"
+      style={null}
+      tabIndex={0}
+      tooltip={null}
+      tooltipOptions={null}
+    />
+    <ToggleButton
+      __TYPE="ToggleButton"
+      checked={false}
+      className={null}
+      iconPos="left"
+      id={null}
+      offIcon={null}
+      offLabel="Hide Completed"
+      onBlur={null}
+      onChange={[Function]}
+      onFocus={null}
+      onIcon={null}
+      onLabel="Hide Completed"
+      style={null}
+      tabIndex={0}
+      tooltip={null}
+      tooltipOptions={null}
+    />
     <Button
-      isSelected={false}
+      className="p-button-outlined"
+      disabled={true}
+      label="Export"
+      loading={false}
       onClick={[Function]}
-    >
-      Hide Ready
-    </Button>
-    <Button
-      isSelected={false}
-      onClick={[Function]}
-    >
-      Hide Completed
-    </Button>
-    <LoadingButton
-      isDisabled={true}
-      isLoading={false}
-      onClick={[Function]}
-    >
-      Export
-    </LoadingButton>
+    />
   </div>
   <ServicingOrdersTable
     dataRefreshComplete={[Function]}

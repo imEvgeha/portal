@@ -27,22 +27,19 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
           <div
             className="fulfillment-order__save-buttons"
           >
-            <ButtonGroup>
-              <Button
-                isDisabled={null}
-                onClick={[Function]}
-              >
-                Cancel
-              </Button>
-              <LoadingButton
-                appearance="primary"
-                isDisabled={true}
-                isLoading={Object {}}
-                onClick={[Function]}
-              >
-                Save
-              </LoadingButton>
-            </ButtonGroup>
+            <Button
+              className="p-button-outlined p-button-secondary  mx-3"
+              disabled={null}
+              label="Cancel"
+              onClick={[Function]}
+            />
+            <Button
+              className="p-button-outlined"
+              disabled={true}
+              label="Save"
+              loading={Object {}}
+              onClick={[Function]}
+            />
           </div>
         </div>
         <GridWrapper

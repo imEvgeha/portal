@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {OPERATIONAL_ERRORS} from '../services-table/Constants';
 import './FulfillmentOrder.scss';
 
@@ -29,9 +29,7 @@ const ErrorsList = ({errors = [], closeModal}) => {
             <hr className="solid" />
             <div className="error-list__footer">
                 <p>{`${errors.length} errors found`}</p>
-                <Button appearance="primary" onClick={closeModal}>
-                    OK
-                </Button>
+                <Button className="p-button-outlined" label="OK" appearance="primary" onClick={closeModal} />
             </div>
         </div>
     );

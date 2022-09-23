@@ -1,9 +1,9 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {HelperMessage} from '@atlaskit/form';
 import SectionMessage from '@atlaskit/section-message';
+import {Button} from '@portal/portal-components';
 import './ComponentsPicker.scss';
 import AudioComponentsPicker from './audio-picker/AudioComponentsPicker';
 import TextComponentPicker from './text-picker/TextComponentPicker';
@@ -34,10 +34,8 @@ export const Footer = ({warning, onCancel, onSave, isSummaryChanged}) => {
                 <span className="picker__footer-warning">{warning}</span>
             </HelperMessage>
             <div className="picker__footer-buttons">
-                <Button onClick={onCancel}>Cancel</Button>
-                <Button appearance="primary" onClick={onSave} isDisabled={!isSummaryChanged}>
-                    save
-                </Button>
+                <Button label="Cancel" className="p-button-outlined p-button-secondary" onClick={onCancel} />
+                <Button label="Save" className="p-button-outlined" onClick={onSave} disabled={!isSummaryChanged} />
             </div>
         </div>
     );
@@ -48,9 +46,12 @@ export const AddToService = ({isEnabled, onClick, count, type}) => {
     return (
         <div className="picker__service-panel">
             <b>{` Step ${step}: Add to service ${count ? `(${count})` : ''}`}</b>
-            <Button appearance="primary" isDisabled={!isEnabled} onClick={onClick}>
-                {`Add to service ${count ? `(${count})` : ''}`}
-            </Button>
+            <Button
+                label={`Add to service ${count ? `(${count})` : ''}`}
+                className="p-button-outlined"
+                disabled={!isEnabled}
+                onClick={onClick}
+            />
         </div>
     );
 };

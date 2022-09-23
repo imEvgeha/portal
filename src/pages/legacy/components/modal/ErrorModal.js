@@ -1,7 +1,8 @@
 import React from 'react';
 import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
-import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
+import {ModalBody, ModalFooter, ModalHeader, Modal} from 'reactstrap';
+import {Button} from '@portal/portal-components';
 import PropTypes from 'prop-types';
 
 class ErrorModal extends React.Component {
@@ -52,13 +53,17 @@ class ErrorModal extends React.Component {
                 {modalBody}
                 <ModalFooter>
                     {!this.props.closable && !this.props.status === 403 ? (
-                        <Button color="danger" onClick={this.refresh}>
-                            Refresh
-                        </Button>
+                        <Button
+                            label="Refresh"
+                            className="p-button-outlined p-button-secondary"
+                            onClick={this.refresh}
+                        />
                     ) : (
-                        <Button color="danger" onClick={this.accept}>
-                            {this.props.buttonLabel}
-                        </Button>
+                        <Button
+                            label={this.props.buttonLabel}
+                            className="p-button-outlined p-button-secondary"
+                            onClick={this.accept}
+                        />
                     )}
                 </ModalFooter>
             </Modal>

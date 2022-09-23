@@ -1,9 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup, LoadingButton} from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
-import {Dropdown, InputText, InputTextarea, Tooltip as PortalTooltip} from '@portal/portal-components';
+import {Dropdown, InputText, InputTextarea, Tooltip as PortalTooltip, Button} from '@portal/portal-components';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {createSuccessMessageSelector} from '@vubiquity-nexus/portal-ui/lib/success/successSelector';
@@ -312,22 +311,19 @@ export const FulfillmentOrder = ({
                                 <div>Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}</div>
                             </div>
                             <div className="fulfillment-order__save-buttons">
-                                <ButtonGroup>
-                                    <Button
-                                        onClick={onCancel}
-                                        isDisabled={userHasPermissions && (isSaveDisabled || isSaving)}
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <LoadingButton
-                                        onClick={onSaveHandler}
-                                        appearance="primary"
-                                        isDisabled={!userHasPermissions}
-                                        isLoading={isSaving}
-                                    >
-                                        Save
-                                    </LoadingButton>
-                                </ButtonGroup>
+                                <Button
+                                    label="Cancel"
+                                    className="p-button-outlined p-button-secondary  mx-3"
+                                    onClick={onCancel}
+                                    disabled={userHasPermissions && (isSaveDisabled || isSaving)}
+                                />
+                                <Button
+                                    label="Save"
+                                    className="p-button-outlined"
+                                    onClick={onSaveHandler}
+                                    disabled={!userHasPermissions}
+                                    loading={isSaving}
+                                />
                             </div>
                         </div>
                         <Grid layout="fluid">

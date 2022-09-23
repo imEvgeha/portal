@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {shallow} from 'enzyme';
 import PartnerRequest from '../partner-request/PartnerRequest';
 import ServiceOrderFilter from './ServiceOrderFilter';

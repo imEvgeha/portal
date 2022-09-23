@@ -1,7 +1,8 @@
 import React from 'react';
 import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
-import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
+import {ModalBody, ModalFooter, ModalHeader, Modal} from 'reactstrap';
+import {Button} from '@portal/portal-components';
 import PropTypes from 'prop-types';
 
 class AlertModal extends React.Component {
@@ -45,9 +46,11 @@ class AlertModal extends React.Component {
                 </ModalHeader>
                 {modalBody}
                 <ModalFooter>
-                    <Button color="dark" onClick={this.accept}>
-                        {this.props.buttonLabel}
-                    </Button>
+                    <Button
+                        label={this.props.buttonLabel}
+                        className="p-button-outlined p-button-secondary"
+                        onClick={this.accept}
+                    />
                 </ModalFooter>
             </Modal>
         );

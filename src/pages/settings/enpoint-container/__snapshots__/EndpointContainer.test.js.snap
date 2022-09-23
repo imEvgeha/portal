@@ -66,25 +66,15 @@ exports[`EndpointContainer should match snapshot 1`] = `
               <Restricted
                 resource="settingsCreate"
               >
-                <Memo(Button)
-                  __TYPE="Button"
-                  badge={null}
-                  badgeClassName={null}
+                <Button
                   className="p-button-text"
-                  disabled={false}
                   icon={
                     Object {
                       "process": [Function],
                     }
                   }
-                  iconPos="left"
                   id="add_new_config__btn"
-                  label={null}
-                  loading={false}
-                  loadingIcon="pi pi-spinner pi-spin"
                   onClick={[Function]}
-                  tooltip={null}
-                  tooltipOptions={null}
                 />
               </Restricted>
             </div>

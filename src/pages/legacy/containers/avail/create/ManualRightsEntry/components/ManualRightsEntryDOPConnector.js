@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
-// import Button from '@atlaskit/button';
 
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 
@@ -44,7 +43,6 @@ class ManualRightsEntryDOPConnector extends Component {
 
         return (
             <div>
-                {/*<Button onClick={DOP.mockOnDOPMessage}>DOP Trigger</Button>*/}
                 <ModalTransition>
                     {isConfirmOpen && (
                         <Modal actions={actions} onClose={this.close} heading="Selected Rights">

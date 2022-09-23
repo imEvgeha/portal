@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import Form from '@atlaskit/form';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {RIGHTS_CREATE, RIGHTS_EDIT} from '../../constants/constant-variables';
 import {ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import RightTerritoryFields from './RightTerritoryFields';
@@ -68,12 +68,20 @@ class RightTerritoryForm extends React.Component {
                             isBonusRight={this.props.isBonusRight}
                         />
                         <ModalFooter>
-                            <Button appearance="default" onClick={this.props.onClose}>
-                                Cancel
-                            </Button>
-                            <Button appearance="primary" type="submit" isDisabled={this.props.isBonusRight}>
-                                {this.props.isEdit ? 'Update' : 'Create'}
-                            </Button>
+                            <Button
+                                label="Cancel"
+                                className="p-button-outlined p-button-secondary"
+                                onClick={this.props.onClose}
+                            />
+                            <Button
+                                label={this.props.isEdit ? 'Update' : 'Create'}
+                                className="p-button-outlined"
+                                type="submit"
+                                disabled={e => {
+                                    e.preventDefault();
+                                    this.props.isBonusRight(e);
+                                }}
+                            />
                         </ModalFooter>
                     </Modal>
                 )}

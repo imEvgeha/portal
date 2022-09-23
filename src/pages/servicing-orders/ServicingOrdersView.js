@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
-import Button, {LoadingButton} from '@atlaskit/button';
-import {Dropdown} from '@portal/portal-components';
+import {Dropdown, Button} from '@portal/portal-components';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {ToggleButton} from 'primereact/togglebutton';
 import './ServicingOrdersView.scss';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import {exportServicingOrders} from './servicingOrdersService';
@@ -118,19 +118,25 @@ const ServicingOrdersView = () => {
                         onChange={e => setCustomerFilter(e.value)}
                     />
                 </div>
-                <Button isSelected={isHideReady} onClick={() => setIsHideReady(!isHideReady)}>
-                    {HIDE_READY_BTN}
-                </Button>
-                <Button isSelected={isHideCompleted} onClick={() => setIsHideCompleted(!isHideCompleted)}>
-                    {HIDE_COMPLETED_BTN}
-                </Button>
-                <LoadingButton
-                    isDisabled={!selectedServicingOrders.length}
+                <ToggleButton
+                    onLabel={HIDE_READY_BTN}
+                    offLabel={HIDE_READY_BTN}
+                    checked={isHideReady}
+                    onChange={() => setIsHideReady(!isHideReady)}
+                />
+                <ToggleButton
+                    onLabel={HIDE_COMPLETED_BTN}
+                    offLabel={HIDE_COMPLETED_BTN}
+                    checked={isHideCompleted}
+                    onChange={() => setIsHideCompleted(!isHideCompleted)}
+                />
+                <Button
+                    label="Export"
+                    className="p-button-outlined"
+                    disabled={!selectedServicingOrders.length}
                     onClick={handleExportRequest}
-                    isLoading={isExporting}
-                >
-                    Export
-                </LoadingButton>
+                    loading={isExporting}
+                />
             </div>
             <ServicingOrdersTable
                 fixedFilter={fixedFilter}

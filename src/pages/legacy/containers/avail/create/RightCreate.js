@@ -5,7 +5,8 @@ import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificat
 import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {connect} from 'react-redux';
-import {Button, Input, Label} from 'reactstrap';
+import {Input, Label} from 'reactstrap';
+import {Button} from '@portal/portal-components';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import BlockUi from 'react-block-ui';
@@ -1245,22 +1246,18 @@ class RightCreate extends React.Component {
                         <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                             <div className="mt-4 mx-5">
                                 <Button
-                                    className="mr-2"
+                                    label="Submit"
+                                    className="p-button-outlined mx-2"
                                     id="right-create-submit-btn"
-                                    color="primary"
                                     onClick={this.confirm}
                                     disabled={this.state.isSubmitting}
-                                >
-                                    Submit
-                                </Button>
+                                />
                                 <Button
-                                    className="mr-4"
+                                    label="Cancel"
+                                    className="p-button-outlined p-button-secondary mx-2"
                                     id="right-create-cancel-btn"
-                                    color="primary"
                                     onClick={this.cancel}
-                                >
-                                    Cancel
-                                </Button>
+                                />
                             </div>
                         </div>
                     )}

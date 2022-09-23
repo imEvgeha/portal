@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {isAllowed, Restricted} from '@portal/portal-auth/permissions';
+import {Button} from '@portal/portal-components';
 import ActionCrossCircle from '@vubiquity-nexus/portal-assets/action-cross-circle.svg';
 import IconActionAdd from '@vubiquity-nexus/portal-assets/icon-action-add.svg';
 import IconActionEdit from '@vubiquity-nexus/portal-assets/icon-action-edit.svg';
@@ -16,7 +17,6 @@ import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
 import {configService} from '@vubiquity-nexus/portal-utils/lib/services/ConfigService';
 import {useDebounce} from '@vubiquity-nexus/portal-utils/lib/useDebounce';
 import {capitalize, cloneDeep} from 'lodash';
-import {Button} from 'primereact/button';
 import {InputText} from 'primereact/inputtext';
 import {useDispatch} from 'react-redux';
 import './EndpointContainer.scss';

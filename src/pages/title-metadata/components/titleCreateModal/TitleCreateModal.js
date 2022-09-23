@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Restricted} from '@portal/portal-auth/permissions';
-import {AutoComplete, Checkbox, Dropdown, InputText} from '@portal/portal-components';
+import {AutoComplete, Checkbox, Dropdown, InputText, Button} from '@portal/portal-components';
 import NexusEntity from '@vubiquity-nexus/portal-ui/lib/elements/nexus-entity/NexusEntity';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActions';
 import {NEXUS_ENTITY_TYPES} from '@vubiquity-nexus/portal-ui/src/elements/nexus-entity/constants';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {isEmpty, isObject} from 'lodash';
-import {Button} from 'primereact/button';
 import {Dialog} from 'primereact/dialog';
 import {FormProvider, useForm, useWatch} from 'react-hook-form';
 import {connect} from 'react-redux';

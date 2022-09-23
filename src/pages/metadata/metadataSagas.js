@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import {Button} from '@portal/portal-components';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/NexusToastNotificationActionTypes';
 import {normalizeDataForStore, URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getAuthConfig} from '@vubiquity-nexus/portal-utils/lib/config';
 import {get} from 'lodash';
-import {Button} from 'primereact/button';
 import {push} from 'redux-first-history';
 import {all, call, fork, put, select, take, takeEvery} from 'redux-saga/effects';
 import {titleService} from '../legacy/containers/metadata/service/TitleService';

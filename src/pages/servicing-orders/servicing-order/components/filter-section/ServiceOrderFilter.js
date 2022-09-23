@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
-import {Dropdown} from '@portal/portal-components';
+import {Dropdown, Button} from '@portal/portal-components';
 import NexusDatePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
@@ -44,7 +43,11 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, sortDirection, set
             </div>
 
             <div className="so-panel-filter-detail__row">
-                <Button onClick={() => setIsDrawerOpen(true)}>Partner Request</Button>
+                <Button
+                    label="Partner Request"
+                    className="p-button-outlined p-button-secondary"
+                    onClick={() => setIsDrawerOpen(true)}
+                />
                 <NexusDrawer
                     isOpen={isDrawerOpen}
                     onClose={() => setIsDrawerOpen(false)}

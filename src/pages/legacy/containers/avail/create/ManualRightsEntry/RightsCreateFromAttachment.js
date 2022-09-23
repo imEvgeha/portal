@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import {Button} from 'reactstrap';
+import {Button} from '@portal/portal-components';
 import AkButton from '@atlaskit/button';
 import {connect} from 'react-redux';
 import RightsResultTable from '../../dashboard/components/RightsResultTable';
@@ -368,12 +368,11 @@ class RightsCreateFromAttachment extends React.Component {
                             />
                             <div className="nexus-c-manual-rights-entry__actions">
                                 <Button
-                                    className="nexus-c-manual-rights-entry__button"
+                                    label="Create Right"
+                                    className="p-button-outlined p-button-secondary nexus-c-manual-rights-entry__button"
                                     id="right-create"
                                     onClick={this.createRight}
-                                >
-                                    Create Right
-                                </Button>
+                                />
                                 <TableColumnCustomization
                                     availsMapping={availsMapping}
                                     updateColumnsOrder={this.updateColumnsOrder}

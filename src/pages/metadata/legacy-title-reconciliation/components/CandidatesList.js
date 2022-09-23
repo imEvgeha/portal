@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {Button} from '@portal/portal-components';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {getLinkableColumnDefs} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
@@ -60,9 +60,12 @@ const CandidatesList = ({
                     {`${CANDIDATES_LIST_TITLE} (${totalCount === 'One' ? 1 : totalCount})`}
                 </NexusTitle>
                 <div className="nexus-c-candidates-toolbar">
-                    <Button className="nexus-c-button" onClick={handleClearFilterClick} isDisabled={!gridApi}>
-                        {CLEAR_FILTER}
-                    </Button>
+                    <Button
+                        label={CLEAR_FILTER}
+                        className="p-button-outlined p-button-secondary nexus-c-button"
+                        onClick={handleClearFilterClick}
+                        disabled={!gridApi}
+                    />
                     <SelectedButton
                         selectedRightsCount={selectedItems.length}
                         isSelected={isSelected}

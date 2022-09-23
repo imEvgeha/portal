@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {Field} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import Textfield from '@atlaskit/textfield';
-import {Dropdown} from '@portal/portal-components';
+import {Dropdown, Button} from '@portal/portal-components';
 import NexusUpload from '@vubiquity-nexus/portal-ui/lib/elements/nexus-upload/NexusUpload';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {connect} from 'react-redux';
@@ -105,12 +104,19 @@ const UploadArtworkForm = ({asset, closeModal, uploadArtwork, isUploading, tenan
                 )}
             </AKForm>
             <ButtonContainer>
-                <Button isDisabled={isUploading} onClick={closeModal}>
-                    Cancel
-                </Button>
-                <Button appearance="primary" onClick={handleUploadClick} isDisabled={!file} isLoading={isUploading}>
-                    Upload
-                </Button>
+                <Button
+                    label="Cancel"
+                    className="p-button-outlined p-button-secondary"
+                    disabled={isUploading}
+                    onClick={closeModal}
+                />
+                <Button
+                    label="Upload"
+                    className="p-button-outlined"
+                    onClick={handleUploadClick}
+                    disabled={!file}
+                    loading={isUploading}
+                />
             </ButtonContainer>
         </>
     );
