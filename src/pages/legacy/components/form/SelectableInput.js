@@ -467,7 +467,7 @@ class SelectableInput extends Component {
                 {this.props.dataType === 'duration' && (
                     <span
                         title={
-                            '* format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'
+                            '* format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT05H30M5S (three years, six months, four days, five hours, thirty minutes, and five seconds)'
                         }
                         style={{color: 'grey'}}
                     >
