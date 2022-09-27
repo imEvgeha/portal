@@ -214,7 +214,7 @@
                             "showWhen": [
                                 {
                                     "field": "contentSubType",
-                                    "hasValue": "mini-series"
+                                    "hasValue": "episode"
                                 }
                             ]
                         },

@@ -41,7 +41,10 @@ const TitleDetailsHeader = ({title, containerRef, canEdit, selectedTenant}) => {
 
     return (
         <div className="nexus-c-title-details-header">
-            <span onClick={onBackArrowClicked}>
+            <span
+                onClick={onBackArrowClicked}
+                className={window.history.length === 1 ? 'nexus-c-title-disable-back-button' : null}
+            >
                 <ArrowLeftIcon size="large" primaryColor={ARROW_COLOR} />
             </span>
             <div

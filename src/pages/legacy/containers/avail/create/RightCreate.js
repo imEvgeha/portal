@@ -160,8 +160,7 @@ class RightCreate extends React.Component {
         if (!this.mappingErrorMessage[name] || !this.mappingErrorMessage[name].inner) {
             const validationError = this.validateField(name, value, this.right);
 
-            const errorMessage = {inner: '', pair: '', range: '', date: '', text: validationError};
-            this.mappingErrorMessage[name] = errorMessage;
+            this.mappingErrorMessage[name] = {inner: '', pair: '', range: '', date: '', text: validationError};
 
             if (!validationError) {
                 const pairFieldName = this.getPairFieldName(name);
@@ -199,8 +198,7 @@ class RightCreate extends React.Component {
         }
 
         if (setNewValue) {
-            const newRight = {...this.right, [name]: value};
-            this.right = newRight;
+            this.right = {...this.right, [name]: value};
             this.setState({});
         }
     }
@@ -246,11 +244,7 @@ class RightCreate extends React.Component {
     }
 
     anyInvalidField() {
-        if (this.isAnyErrors() || this.areMandatoryFieldsEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
+        return !!(this.isAnyErrors() || this.areMandatoryFieldsEmpty());
     }
 
     isAnyErrors() {
@@ -1127,7 +1121,7 @@ class RightCreate extends React.Component {
                                         mapping.displayName,
                                         required,
                                         value,
-                                        'format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'
+                                        'format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT05H30M5S (three years, six months, four days, five hours, thirty minutes, and five seconds)'
                                     )
                                 );
                                 break;
